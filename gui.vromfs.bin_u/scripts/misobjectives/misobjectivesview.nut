@@ -1,13 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/misObjectives/objectiveStatus.nut" import getObjectiveStatusByCode
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "guiMission" import get_objectives_list, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 
 function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return handlersManager.loadHandler(get_gui_handler("misObjectivesView"),
@@ -110,6 +110,6 @@ let misObjectivesView = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("misObjectivesView", misObjectivesView)
 
-return {
+return freeze({
   gui_load_mission_objectives
-}
+})

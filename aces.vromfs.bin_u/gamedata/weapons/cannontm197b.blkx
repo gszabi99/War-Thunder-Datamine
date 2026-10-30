@@ -1,13 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.2,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shootingCharge": 5.5,
-  "shouldCollideWithRendinsts": true,
-  "mass": 138.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,6 +14,27 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.2,
+  "shotFreq": 12.5,
+  "bullets": 250,
+  "shootingCharge": 5.5,
+  "shouldCollideWithRendinsts": true,
+  "mass": 138.0,
+  "overheat": {
+    "overheat": [
+      [
+        30.0,
+        0.0
+      ],
+      [
+        35.9,
+        0.02
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.101,
@@ -456,7 +468,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2155,7 +2167,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -3793,7 +3805,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -5493,7 +5505,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -8279,27 +8291,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m197_gun_outside",
-    "cockpit": "m197_gun_inside",
-    "charge": "m197_rotor_outside",
-    "charge_inside": "m197_rotor_inside",
-    "ai": "m197_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        30.0,
-        0.0
-      ],
-      [
-        35.9,
-        0.02
-      ]
-    ]
-  },
   "t_160_new_gun": {
     "maxDeltaAngle": 0.3,
     "overheat": {
@@ -8314,5 +8305,14 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m197_gun_outside",
+    "cockpit": "m197_gun_inside",
+    "charge": "m197_rotor_outside",
+    "charge_inside": "m197_rotor_inside",
+    "ai": "m197_gun_ai"
   }
 }

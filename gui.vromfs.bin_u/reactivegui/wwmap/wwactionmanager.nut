@@ -20,7 +20,7 @@ let isArtilleryFire = @() wwGetCurrActionType() == actionType.AUT_ArtilleryFire
 
 
 
-return {
+return freeze({
   haveActiveAction
   isArtilleryFire
   isTransportLoad
@@ -28,4 +28,4 @@ return {
   doAction
   moveArmy
   sendAircraft
-}
+})

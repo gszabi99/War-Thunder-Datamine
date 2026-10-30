@@ -1,10 +1,44 @@
+import "%scripts/hud/hudActionBarInfo.nut" as actionBarInfo
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/weaponry/unitWeaponsHandler.nut" import unitWeaponsHandler
+from "%scripts/missionBuilder/changeAircraftForBuilder.nut" import changeAircraftForBuilder
+from "%scripts/genericOptions.nut" import GenericOptions, GenericOptionsModal
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, getTorpedoAutoUpdateDepthByDiff
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/unit/unitWeaponryInfo.nut" import getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion
+from "%scripts/options/optionsManager.nut" import isTripleColorSmokeAvailable
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/customization/skins.nut" import isPreviewingLiveSkin, setCurSkinToHangar
+from "%scripts/options/optionsExt.nut" import set_option, get_option, create_options_container
+from "%scripts/missionBuilder/testFlightBQInfo.nut" import sendStartTestFlightToBq
+from "%scripts/unit/unitInfo.nut" import getUnitName, getBattleTypeByUnit
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText
+from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar, isUnitAvailableForGM
+from "%scripts/missions/startMissionsList.nut" import guiStartBuilder, guiStartFlight, guiStartCdOptions
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/wishlist/addWishWnd.nut" import tryAddToWishlist, updateWishlistButton
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/weaponry/weaponryActions.nut" import enable_current_modifications, updateBulletCountOptions
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/missions/missionsUtils.nut" import getMaxPlayersForGamemode
+from "%scripts/clientState/contentPacks.nut" import checkDiffPkg
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/unit/unitStatus.nut" import isTestFlightAvailable
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "guiOptions" import getCdBaseDifficulty, set_gui_option, get_gui_option
 from "hudActionBar" import getActionBarUnitName
 from "guiMission" import select_training_mission, get_meta_mission_info_by_name
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "blkGetters" import get_game_settings_blk, get_unittags_blk
 from "%scripts/dagui_natives.nut" import enable_bullets_modifications
 from "%globalScripts/gameModeNativeConsts.nut" import *
@@ -14,40 +48,7 @@ from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_rada
 from "%scripts/options/optionsConsts.nut" import AIR_SPAWN_POINT
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { unitWeaponsHandler } = require("%scripts/weaponry/unitWeaponsHandler.nut")
-let { changeAircraftForBuilder } = require("%scripts/missionBuilder/changeAircraftForBuilder.nut")
-let { GenericOptions, GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { getLastWeapon, getTorpedoAutoUpdateDepthByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
-let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { isPreviewingLiveSkin, setCurSkinToHangar } = require("%scripts/customization/skins.nut")
-let { set_option, get_option, create_options_container } = require("%scripts/options/optionsExt.nut")
-let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
-let { getUnitName, getBattleTypeByUnit } = require("%scripts/unit/unitInfo.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { guiStartBuilder, guiStartFlight, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { tryAddToWishlist, updateWishlistButton } = require("%scripts/wishlist/addWishWnd.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { missionBuilderVehicleConfigForBlk } = require("%scripts/missionBuilder/testFlightState.nut")
 
 function mergeToBlk(sourceTable, blk) {
@@ -358,11 +359,11 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
       return
     }
 
-    this.applyFunc = function() {
-      this.saveAircraftOptions()
+    this.applyFunc = function(optionsHandler) {
+      optionsHandler.saveAircraftOptions()
 
       guiStartBuilder()
-      this.applyFunc = null
+      optionsHandler.applyFunc = null
     }
     this.applyOptions()
   }
@@ -391,14 +392,14 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
 
     checkQueueAndStart(
       Callback(function() {
-        this.applyFunc = function() {
+        this.applyFunc = function(optionsHandler) {
           if (get_gui_option(USEROPT_DIFFICULTY) == "custom") {
-            guiStartCdOptions(this.startTestFlight, this) 
-            this.doWhenActiveOnce("updateSceneDifficulty")
+            guiStartCdOptions(optionsHandler.startTestFlight, optionsHandler) 
+            optionsHandler.doWhenActiveOnce("updateSceneDifficulty")
           }
           else
-            this.startTestFlight()
-          this.applyFunc = null
+            optionsHandler.startTestFlight()
+          optionsHandler.applyFunc = null
         }
         this.applyOptions()
       }, this)
@@ -586,7 +587,7 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
       return
     }
 
-    this.applyFunc = Callback(function() {
+    this.applyFunc = Callback(function(_) {
         this.unit = crewUnit
         this.updateAircraft()
         this.applyFunc = null

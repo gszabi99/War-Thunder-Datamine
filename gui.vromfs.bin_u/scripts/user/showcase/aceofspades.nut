@@ -1,12 +1,12 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/user/profileStates.nut" import userIdStr
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let uTypes = [unitTypes.AIRCRAFT, unitTypes.TANK, unitTypes.SHIP, unitTypes.HELICOPTER, unitTypes.BOAT]
 const whiteLineColor = "#05111111"

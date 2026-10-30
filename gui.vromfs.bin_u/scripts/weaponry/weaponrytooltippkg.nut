@@ -1,4 +1,24 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes, getCurrentGameModeEdiff
+from "%scripts/weaponry/itemInfo.nut" import getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef, isResearchableItem
+  , countWeaponsUpgrade, getItemUpgradesList
+from "%scripts/weaponry/bulletsInfo.nut" import isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet, getModificationInfo, getModificationName, isBulletsWithoutTracer
+  , getBulletsSetData, isPairBulletsGroup
+from "%scripts/weaponry/bulletsVisual.nut" import addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets, checkBulletParamsBeforeRender
+from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk
+  , getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes, getWeaponGameModeRestrictionsRows, isItemMrankLocked, isWeaponBlkPathMrankLocked, getMrankLockText
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData
+from "%scripts/weaponry/infantryWeapons.nut" import getPresetCompositionViewParams
+from "%scripts/weaponry/infantryArmor.nut" import getUnitArmorData, getArmorIconViewData
+from "%scripts/weaponry/modificationInfo.nut" import isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup, calcHumanModEffects
+from "%scripts/hud/hudActionBarInfo.nut" import getActionItemAmountText, getActionItemModificationName
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeaponsByTier, getUnitWeaponsByPreset
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/discounts/discountUtils.nut" import getDiscountByPath
+from "%scripts/weaponry/modsTree.nut" import getNextTierModsCount
+from "%scripts/weaponry/infantryBelts.nut" import getInfantryBeltAnnotation
 from "%appGlobals/econWeaponUtils.nut" import getPresetRewardMul, getWeaponDamage
 from "string" import format
 from "%sqstd/string.nut" import utf8Capitalize
@@ -8,31 +28,15 @@ from "unitCalculcation" import calculate_tank_bullet_parameters
 from "hudActionBar" import getActionBarItems
 from "blkGetters" import get_warpoints_blk
 from "gameplayBinding" import isInFlight
-from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
+from "%scripts/dagui_natives.nut" import shop_get_module_exp, wp_get_repair_cost_by_mode
+from "%scripts/unit/unitCalcRequests.nut" import calculateModOrWeaponEffect
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
 from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText, roman_numerals
 
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
-let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef, isResearchableItem, countWeaponsUpgrade, getItemUpgradesList } = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet, getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData, isPairBulletsGroup } = require("%scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets, checkBulletParamsBeforeRender } = require("%scripts/weaponry/bulletsVisual.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes, getWeaponGameModeRestrictionsRows } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
-let { getUnitArmorData, getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
-let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup, calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
-let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
-let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
-let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
-let { getInfantryBeltAnnotation } = require("%scripts/weaponry/infantryBelts.nut")
 
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM,
@@ -87,24 +91,14 @@ function getPresetWeaponsDescArrayForHuman(unit, item, ediff, maxSoldiersActive)
     if (maxSoldiersActive != null && idx >= maxSoldiersActive)
       continue
 
-    let isSoldierInactiveInEvent = (maxSoldiersActive != null) && (idx + 1 > maxSoldiersActive)
     let isSoldierDisabled = soldierIcons.disabledSoldier
-
-    local presetName = "".concat(loc("infantry/squad/member"), $"{idx + 1}")
-    let inactiveReason = isSoldierInactiveInEvent ? loc("infantry/squad/member_inactive_for_event")
-      : isSoldierDisabled ? " ".concat(loc("ui/mdash"), loc("infantry/squad/member_inactive_advice"))
-      : ""
-    if (inactiveReason != "")
-      presetName = "".concat(presetName, loc("ui/parentheses/space", {
-        text = " ".concat(loc("infantry/squad/member_inactive"), inactiveReason)
-      }))
 
     let presetParamsWithImg = []
     foreach (weapon in soldierIcons.icons) {
       presetParamsWithImg.append({
         weaponNameStr = loc($"weapons/{weapon.weaponName}")
         itemImg = weapon.itemImg
-        isDisabled = isSoldierInactiveInEvent || isSoldierDisabled
+        isDisabled = isSoldierDisabled
       })
     }
     if (maxSoldiersActive == 1) {
@@ -116,7 +110,7 @@ function getPresetWeaponsDescArrayForHuman(unit, item, ediff, maxSoldiersActive)
           isDisabled = false
         })
     }
-    presetsWeapons.append({ presetName, presetParamsWithImg, hasPresetParamsWithImg = true })
+    presetsWeapons.append({ presetParamsWithImg, hasPresetParamsWithImg = true })
   }
   return presetsWeapons
 }
@@ -222,6 +216,12 @@ function addGameModeRestrictionsToDescTbl(descTbl, unit, weaponOrBlkPath) {
     }
 }
 
+function addMrankLockToDescTbl(descTbl, isLocked) {
+  if (!isLocked)
+    return
+  descTbl.topReqBlock <- getMrankLockText()
+}
+
 function getSingleWeaponDescTbl(unit, params) {
   let { blkPath, tType, presetName } = params
   let weapons = addWeaponsFromBlk({}, getUnitWeaponsByPreset(unit, blkPath, presetName), unit)
@@ -239,6 +239,7 @@ function getSingleWeaponDescTbl(unit, params) {
     res.presetsWeapons <- presetsWeapons
 
   addGameModeRestrictionsToDescTbl(res, unit, blkPath)
+  addMrankLockToDescTbl(res, isWeaponBlkPathMrankLocked(unit, blkPath))
   addArmorPiercingDataToDescTbl(res, unit, blkPath, tType, weaponInfoData)
   return res
 }
@@ -337,6 +338,7 @@ function getTierDescTbl(unit, params) {
   })
 
   addGameModeRestrictionsToDescTbl(res, unit, params.blk)
+  addMrankLockToDescTbl(res, isWeaponBlkPathMrankLocked(unit, params.blk))
 
   let additionalWeaponryDesc = addWeaponry
     ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
@@ -555,6 +557,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       return res
     }
   }
+  addMrankLockToDescTbl(res, isItemMrankLocked(unit, item, params?.mrankDelta))
 
   if (item.type == weaponsItem.weapon) {
     name = ""
@@ -571,10 +574,9 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     else if (unit.isHuman()) {
       let { curEdiff = getCurrentGameModeEdiff(), maxSoldiersActive = null } = params
       res.presetsWeapons <- getPresetWeaponsDescArrayForHuman(unit, item, curEdiff, maxSoldiersActive)
-      res.presetCompositionHint <- loc("weaponry/presetCompositionHint")
       local maxPresetsInRow = PRESETS_IN_ROW
       foreach (presetWeapons in res.presetsWeapons)
-        maxPresetsInRow = max(maxPresetsInRow, presetWeapons.len())
+        maxPresetsInRow = max(maxPresetsInRow, presetWeapons.presetParamsWithImg.len())
       if (maxPresetsInRow > PRESETS_IN_ROW)
         res.maxPresetsInRow <- maxPresetsInRow
     }
@@ -609,8 +611,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         res.estimatedDamageToBases <- estimatedDamageAndMultiplier
     }
     if (!effect && updateEffectFunc)
-      res.delayed = calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
-        updateEffectFunc, null) ?? true
+      res.delayed = calculateModOrWeaponEffect(unit.name, item.name, false, updateEffectFunc)
   }
   else if (item.type == weaponsItem.primaryWeapon) {
     name = ""
@@ -712,7 +713,6 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       let info = getModificationInfo(unit, item.name, {
         isShortDesc = false
         isLimitedName = false
-        obj = this
         itemDescrRewriteFunc = updateEffectFunc
         needAddName = name == ""
       })
@@ -795,7 +795,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         if (isCountermeasures) {
           let tip = getTipForCountermeasures(unit, item)
           if (tip != "")
-            res.topReqBlock <- tip
+            res.topReqBlock <- "\n".join([res?.topReqBlock, tip], true)
         } else if (item?.isDefaultForGroup != null) {
           let tip = getTipForBullet(unit, item)
           if (tip != "")
@@ -851,7 +851,7 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
     isPurchaseInfoHidden = false
   } = params
   let descTbl = getItemDescTbl(unit, item, params, effect,
-    function(effect_, ...) {
+    function(effect_) {
       if (checkObj(obj) && obj.isVisible()) {
         let itemAndEffectToPass = checkItemBeforeGetDescFn ? checkItemBeforeGetDescFn(item, effect_)
           : { item , effect = effect_ }
@@ -967,7 +967,7 @@ function getArmorDescArray(armorData) {
         true
       )
     )
-  if (armorData.body?.complex) {
+  if (armorData?.body.complex) {
     res.append(getArmorDescArrayElement("body", null, null, true))
     foreach(subPart in armorData.body.complex) {
       let { subPartName, subPartData } = subPart
@@ -1027,6 +1027,7 @@ let defaultWeaponTooltipParamKeys = [
   "pairModName"
   "isPurchaseInfoHidden"
   "isModalTooltip"
+  "mrankDelta"
 ]
 function validateWeaponryTooltipParams(params) {
   if (params == null)
@@ -1038,7 +1039,7 @@ function validateWeaponryTooltipParams(params) {
   return res
 }
 
-return {
+return freeze({
   updateModType
   getTierTooltipParams
   getTierDescTbl
@@ -1049,4 +1050,4 @@ return {
   setWidthForWeaponsPresetTooltip
   getInfantryWeaponParamToDesc
   getInfantryArmorParamToDesc
-}
+})

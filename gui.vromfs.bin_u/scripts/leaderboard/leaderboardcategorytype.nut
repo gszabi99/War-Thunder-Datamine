@@ -1,15 +1,16 @@
+from "%scripts/events/eventsState.nut" import isGameTypeOfEvent
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/events/eventInfo.nut" import getEventTournamentMode, isEventLastManStanding
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbItemCell
 from "%sqStdLibs/helpers/u.nut" import isEmpty
-from "%sqstd/string.nut" import startsWith, stripTags
+from "%sqstd/string.nut" import startsWith
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
-let { isGameTypeOfEvent } = require("%scripts/events/eventsState.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { getEventTournamentMode, isEventLastManStanding } = require("%scripts/events/eventInfo.nut")
-let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 enum LB_MODE {
   ARCADE            = 0x00001

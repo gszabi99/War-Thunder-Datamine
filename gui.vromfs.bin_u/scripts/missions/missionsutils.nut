@@ -1,5 +1,10 @@
 import "DataBlock" as DataBlock
 import "regexp2" as regexp2
+from "%scripts/squads/squadState.nut" import isNotAloneOnline
+from "%scripts/missions/missionsUtilsModule.nut" import isMissionComplete
+from "%scripts/missions/missionsText.nut" import getMissionTimeText, getWeatherLocName
+from "%scripts/unit/unitParams.nut" import getEsUnitType, findUnitNoCase
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
 from "%sqstd/datablock.nut" import getBlkValueByPath, blkOptFromPath, blkFromPath
 from "guiMission" import get_meta_missions_info_by_campaigns, add_custom_mission_list_full, get_current_mission_desc, get_meta_missions_info
 from "mission" import get_game_mode, get_game_type, get_current_mission_name
@@ -10,23 +15,18 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { isNotAloneOnline } = require("%scripts/squads/squadState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isMissionComplete } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { getEsUnitType, findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 const COOP_MAX_PLAYERS = 4
 
-let dynamicLayouts = persist("dynamicLayouts", @() [])
-let gameModeMaps = persist("gameModeMaps", @() [])
+let dynamicLayouts = []
+let gameModeMaps = []
 let campaignNames = []
 
-let canPlayGamemodeBySquad = @(gm) !isNotAloneOnline()
-  || gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
+let isSquadGamemode = @(gm) gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
+let canPlayGamemodeBySquad = @(gm) !isNotAloneOnline() || isSquadGamemode(gm)
 
 
 function getMaxPlayersForGamemode(gm) {
@@ -317,7 +317,7 @@ function getLevelMapBackgroundColors(levelName) {
 let isMissionExtrByName = @(misName = "") regexp2(@"_extr$").match(misName)
 let isMissionExtr = @() isMissionExtrByName(get_current_mission_name())
 
-return {
+return freeze({
   isMissionComplete
   setMissionEnviroment
   getGameModeMaps
@@ -336,7 +336,8 @@ return {
   isSkirmishWithKillStreaks
   getMaxPlayersForGamemode
   canPlayGamemodeBySquad
+  isSquadGamemode
   isMissionWithBadWeatherConditions
   getBadWeatherTooltipText
   getLevelMapBackgroundColors
-}
+})

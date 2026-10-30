@@ -1,16 +1,15 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/instantAction.nut" import checkBrokenAirsAndDo
+from "%scripts/unit/brokenAirsInfo.nut" import getBrokenAirsInfo
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/queue/queueManager.nut" import joinQueue, checkQueueAndStart
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownloadByTimes
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/unit/unitInfo.nut" import isLoadedModelHighQuality
 from "dagor.time" import get_time_msec
 from "worldwar" import wwGetOperationId
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
-let { getBrokenAirsInfo } = require("%scripts/unit/brokenAirsInfo.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { joinQueue, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 
 let WwBattleJoinProcess = class {
   wwBattle = null
@@ -67,7 +66,7 @@ let WwBattleJoinProcess = class {
 
   function joinStep2_external() {
     if (!isLoadedModelHighQuality()) {
-      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep3_internal, this, this.remove)
+      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep3_internal, this, this.remove, true)
       return
     }
 

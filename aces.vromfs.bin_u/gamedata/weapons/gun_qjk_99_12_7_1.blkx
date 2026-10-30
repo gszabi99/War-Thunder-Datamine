@@ -1,14 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 13.3,
-  "alternativeShotFreq": 11.6,
-  "traceFreq": 4,
-  "bullets": 640,
-  "shouldCollideWithRendinsts": true,
-  "mass": 42.25,
-  "dragCx": 0.001,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 13.3,
+  "alternativeShotFreq": 11.6,
+  "bullets": 640,
+  "shouldCollideWithRendinsts": true,
+  "mass": 42.25,
+  "dragCx": 0.001,
+  "overheat": {
+    "overheat": [
+      [
+        25.0,
+        0.0
+      ],
+      [
+        28.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.047,
@@ -7091,25 +7103,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "a127_gun_outside",
-    "cockpit": "a127_gun_inside",
-    "ai": "a127_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        25.0,
-        0.0
-      ],
-      [
-        28.0,
-        0.05
-      ]
-    ]
-  },
   "qjk_99_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -7124,5 +7117,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "a127_gun_outside",
+    "cockpit": "a127_gun_inside",
+    "ai": "a127_gun_ai"
   }
 }

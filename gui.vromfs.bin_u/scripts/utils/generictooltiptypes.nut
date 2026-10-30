@@ -62,7 +62,7 @@ function getTooltipType(typeName) {
   return res instanceof Table ? res : this.EMPTY
 }
 
-return {
+return freeze({
   addTooltipTypes
   getTooltipType
-}
+})

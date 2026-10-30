@@ -1,3 +1,4 @@
+from "%scripts/dynamic/misGenFuncTools.nut" import getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
 from "dagor.math" import Point3
 from "dagor.debug" import debug_dump_stack
 from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt, mgSetReal
@@ -7,11 +8,9 @@ from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, m
 from "blkGetters" import get_warpoints_blk
 from "math" import max, min, sqrt, clamp
 
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
-
 function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   const mission_preset_name = "ground_defense_preset01"
-  mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
+  mgBeginMission($"gamedata/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
   let bombtargets = createGroundUnitsProc(playerSide)
@@ -299,6 +298,6 @@ function genBombingDefenseMission(isFreeFlight) {
   )
 }
 
-return {
+return freeze({
   genBombingDefenseMission
-}
+})

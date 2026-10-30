@@ -1,14 +1,13 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/worldWar/worldWarCfgState.nut" import getInfantryUnits, getArtilleryUnits, getTransportUnits
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getInfantryUnits, getArtilleryUnits, getTransportUnits } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 const fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2

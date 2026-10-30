@@ -1,12 +1,11 @@
 import "regexp2" as regexp2
+from "%scripts/clientState/clientStates.nut" import isInBattleState, isMatchingOnline
+from "%scripts/matching/api.nut" import matchingApiFunc, matchingRpcSubscribe
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "dagor.workcycle" import resetTimeout
 from "matching.errors" import OPERATION_COMPLETE
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
-
-let { isInBattleState, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
-let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 
@@ -80,6 +79,6 @@ matchingRpcSubscribe("hmanager.notify_hosts_list_changed", function(result) {
 tryApplyChangedHosts()
 tryFetchHosts()
 
-return {
+return freeze({
   clusterHosts
-}
+})

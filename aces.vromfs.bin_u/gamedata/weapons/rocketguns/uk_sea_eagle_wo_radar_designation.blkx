@@ -98,18 +98,21 @@
       -0.25,
       0.0
     ],
+    "signature": {
+      "infraRed": {
+        "rocketEngineBand": 1
+      }
+    },
     "guidance": {
+      "uncageBeforeLaunch": true,
+      "lockDistance": 31000.0,
       "indicateOnHud": false,
       "inertialNavigation": true,
+      "lockAfterLaunch": true,
+      "inertialNavigationDriftSpeed": 0.05,
       "warmUpTime": 0.3,
       "workTime": 100.0,
-      "uncageBeforeLaunch": true,
-      "lockAfterLaunch": true,
-      "lockDistance": 31000.0,
       "breakLockMaxTime": 400.0,
-      "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.05
-      },
       "radarSeeker": {
         "band": 8,
         "active": true,

@@ -1,11 +1,10 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/chardConsts.nut" import *
 from "%scripts/dagui_natives.nut" import inventory_get_transfer_items_by_state
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 local sendingList = {}
 
@@ -32,6 +31,6 @@ addListenersWithoutEnv({
   ProfileUpdated = @(_p) updateSendingList()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getSendingList = @() sendingList
-}
+})

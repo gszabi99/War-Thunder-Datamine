@@ -1,7 +1,11 @@
 require ecs
 require DagorMath
 require DngHuman
+require WTPhysActor
 require %game.events
+
+def private is_aim_state_simulated(human_net_phys : HumanActor; watched_by_plr : EntityId const?) : bool
+  return (int(human_net_phys.role) & (int(NetRole.URF_LOCAL_CONTROL) | int(NetRole.URF_AUTHORITY))) != 0 || watched_by_plr != null
 
 def reset_human_aim_zoom(var human_net_phys : HumanActor; var camera__magnification : float&)
   human_net_phys.phys.currentState.aimPosition = 0.f
@@ -34,6 +38,7 @@ def human_weap_phys_es(
                        boltActionProgress : float;
                        isGunManualLoadMode : bool;
                        var human_net_phys : HumanActor;
+                       watchedByPlr : EntityId const?;
                        human_weap__staminaCanAim : bool = true;
                        human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                        human__lockZoom = false;
@@ -42,6 +47,8 @@ def human_weap_phys_es(
                        bipod__enabled = false;
                        action__running = false)
 
+  if !is_aim_state_simulated(human_net_phys, watchedByPlr)
+    return
   assume ct = human_net_phys.phys.currentState
   let reloading = (info.curTime <= human_weap__reloadAtTime ||
                   human_weap__weapModActivateStartTime > 0.0f ||
@@ -130,7 +137,10 @@ def aim_in_jump_human_weap_phys_es(info : ParallelUpdateFrameDelayed;
                                    human_phys__aimPoseHeightVelThreshold : float;
                                    human_phys__aimPoseHeightThreshold : float;
                                    action__running : bool = false;
+                                   watchedByPlr : EntityId const?;
                                    var human_net_phys : HumanActor&)
+  if !is_aim_state_simulated(human_net_phys, watchedByPlr)
+    return
   assume ct = human_net_phys.phys.currentState
   let isChangingCrawlTransition = ct.height < human_phys__aimPoseHeightThreshold && abs(ct.heightCurVel) > human_phys__aimPoseHeightVelThreshold
   let isJumpState = (!human_weap__canAimInJump &&

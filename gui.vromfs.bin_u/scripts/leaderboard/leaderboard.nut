@@ -1,3 +1,28 @@
+import "%scripts/time.nut" as time
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
+import "%scripts/clans/clanContextMenu.nut" as clanContextMenu
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+import "%scripts/clans/showClanPageModal.nut" as showClanPageModal
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/leaderboard/leaderboardTable.nut" import LeaderboardTable
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/social/crossplay.nut" import getSeparateLeaderboardPlatformName
+from "%scripts/userstat/userstat.nut" import refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats, addTimerForRefreshStatsWhenTableEnd, getTableActiveIndex
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/leaderboard/leaderboardCategoryType.nut" import getLbCategoryTypeByField, getLbCategoryTypeById
+from "%scripts/viewUtils/paginator.nut" import generatePaginator, hidePaginator
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/clans/clanRequests.nut" import requestMembership
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/events/eventInfo.nut" import getEventLeaderboardModes, getLeagueNameByLevel
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "math" import ceil, floor
 from "string" import format
@@ -7,34 +32,11 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/options/optionsCtors.nut" import create_option_list
+from "%globalScripts/loc_helpers.nut" import locByVendor
 
-let { events } = require("%scripts/events/eventsManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LeaderboardTable } = require("%scripts/leaderboard/leaderboardTable.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
-let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats, addTimerForRefreshStatsWhenTableEnd, getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig, leaderboardsList, leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { eventsTableConfig, leaderboardsList, leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { requestMembership } = require("%scripts/clans/clanRequests.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { getEventLeaderboardModes, getLeagueNameByLevel } = require("%scripts/events/eventInfo.nut")
 
 function gui_modal_event_leaderboards(params) {
   loadHandler(get_gui_handler("EventsLeaderboardWindow"), params)
@@ -159,8 +161,11 @@ let LeaderboardWindow = class (BaseGuiHandlerWT) {
     let showPlayer = rowData != null && !this.forClans && !isCountriesLb
     let showClan = rowData != null && this.forClans
 
+    let userCardBtn = this.scene.findObject("btn_usercard")
+    if (userCardBtn?.isValid())
+      userCardBtn.setValue(locByVendor("mainmenu/btnProfile"))
     showObjectsByTable(this.scene, {
-      btn_usercard = showPlayer && hasFeature("UserCards")
+      btn_usercard = showPlayer
       btn_clan_info = showClan
       btn_membership_req = showClan && !is_in_clan() && clan_get_requested_clan_id() != this.getLbClanUid(rowData)
     })
@@ -678,8 +683,8 @@ let EventsLeaderboardWindow = class (LeaderboardWindow) {
 }
 register_gui_handler("EventsLeaderboardWindow", EventsLeaderboardWindow)
 
-return {
+return freeze({
   LeaderboardWindow
   openLeaderboardWindow = @() loadHandler(LeaderboardWindow)
   gui_modal_event_leaderboards
-}
+})

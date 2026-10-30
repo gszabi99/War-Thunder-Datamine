@@ -1,3 +1,40 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagForUnitTooltip
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry, getUnitCost, getUnitRealCost
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor
+from "%scripts/time.nut" import buildDateTimeStr, TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
+from "%scripts/shop/shopSearchCore.nut" import isUnitLocNameMatchSearchStr
+from "%scripts/limitBuyUnits/limitBuyUnitsFilter.nut" import getFiltersView, applyFilterChange, getSelectedFilters
+from "%scripts/limitBuyUnits/filterUtils.nut" import getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods
+from "%scripts/unit/unitActions.nut" import buyUnit
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/remainingTimeUnit.nut" import promoteUnits
+from "%scripts/discounts/discountsState.nut" import haveAnyUnitDiscount, getUnitsDiscounts, getUnitDiscount
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/wndLib/nameFilterHandler.nut" import loadNameFilterHandler
+from "%scripts/onlineShop/discountBundles.nut" import discountUnitsBundles
+from "%scripts/money.nut" import Cost
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/tasker.nut" import addTask
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%appGlobals/timeLoc.nut" import hoursToString
 from "steam" import steam_is_overlay_active
 from "chard" import get_charserver_time_sec
@@ -9,44 +46,7 @@ from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry, getUnitCost, getUnitRealCost } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { buildDateTimeStr, TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS } = require("%scripts/time.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
-let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/limitBuyUnits/limitBuyUnitsFilter.nut")
-let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/limitBuyUnits/filterUtils.nut")
-let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { buyUnit } = require("%scripts/unit/unitActions.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { haveAnyUnitDiscount, getUnitsDiscounts, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { loadNameFilterHandler } = require("%scripts/wndLib/nameFilterHandler.nut")
-let { discountUnitsBundles } = require("%scripts/onlineShop/discountBundles.nut")
-let { Cost } = require("%scripts/money.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const MAX_SHOW_UNITS = 50
 

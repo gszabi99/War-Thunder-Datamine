@@ -1127,7 +1127,7 @@
             "count": 1
           },
           "ammo_body_13_dm": {
-            "count": 1
+            "count": 2
           }
         }
       ]
@@ -1361,7 +1361,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_01",
         "aimForOperatedShell": true,
         "defaultYaw": 0.0,
@@ -1423,7 +1423,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_9M123_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_9M123_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1489,7 +1489,7 @@
         "dummy": true,
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "antenna_target_tagging",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1526,8 +1526,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_9p157_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_9p157_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2573,14 +2573,13 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_khrizantema.blk",
+        "blk": "gamedata/sensors/su_khrizantema.blk",
         "dmPart": "antenna_target_tagging_dm",
-        "turretIndex": 2,
         "designationFromBody": false,
         "designationTurretIndex": 0
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+        "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
       }
     ]
   },
@@ -2654,17 +2653,16 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_khrizantema.blk",
+              "blk": "gamedata/sensors/su_khrizantema.blk",
               "dmPart": "antenna_target_tagging_dm",
-              "turretIndex": 2,
               "designationFromBody": false,
               "designationTurretIndex": 0
             },
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }

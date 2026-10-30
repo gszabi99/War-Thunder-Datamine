@@ -1,19 +1,18 @@
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/controls/input/button.nut" import Button
+from "%scripts/guiBox.nut" import getBlockFromObjData, createHighlight
+from "%scripts/linesGenerator.nut" import findGoodPos
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import call_for_handler
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { Button } = require("%scripts/controls/input/button.nut")
-let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
-let { findGoodPos } = require("%scripts/linesGenerator.nut")
 
 const TUTOR_STEP_TIMEOUT_SEC  = 30
 
@@ -241,7 +240,7 @@ function gui_modal_tutor(stepsConfig, wndHandler, isTutorialCancelable = false) 
 
 register_gui_handler("Tutor", Tutor)
 
-return {
+return freeze({
   gui_modal_tutor
   Tutor
-}
+})

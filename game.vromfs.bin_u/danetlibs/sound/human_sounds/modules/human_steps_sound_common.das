@@ -33,6 +33,11 @@ def read_state(state_flag : StateFlag; states : int) : bool
   return (states & int(state_flag)) != 0
 
 
+def advance_step_trace_cadence(var human_steps_sound__stepIdx : uint&) : bool
+  ++human_steps_sound__stepIdx
+  return (human_steps_sound__stepIdx & 1u) != 0u
+
+
 
 def trace_footstep(human_eid : EntityId;
                    pos, human_up : float3;
@@ -115,11 +120,7 @@ def play_footstep(desc : Object;
 
   let normalizedUp = normalize(human_up)
 
-  if human_net_phys == null 
-    step_material_id = get_sound_step_material_id(get_material_id("default"))
-    step_water_depth = 0.
-
-  elif is_watched_sound || should_trace_enemy
+  if is_watched_sound || should_trace_enemy
     trace_footstep(human_eid,
                    pos,
                    normalizedUp,
@@ -129,6 +130,10 @@ def play_footstep(desc : Object;
                    step_material_id,
                    step_water_depth,
                    human_net_phys)
+
+  if step_material_id < 0
+    step_material_id = get_sound_step_material_id(get_material_id("default"))
+    step_water_depth = 0.
 
   if step_material_id >= 0
     var pathStr : string

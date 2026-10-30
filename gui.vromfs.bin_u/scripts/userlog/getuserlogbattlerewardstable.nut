@@ -1,11 +1,10 @@
+from "%scripts/money.nut" import Cost
+from "%scripts/userLog/userlogUtils.nut" import getBattleRewardDetails, getBattleRewardTable
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/time.nut" import secondsToString
+from "%scripts/unit/unitInfo.nut" import getRomanNumeralRankByUnitName
 from "%sqStdLibs/helpers/u.nut" import isArray
 from "%scripts/dagui_library.nut" import *
-
-let { Cost } = require("%scripts/money.nut")
-let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let visibleRewards = [
   {

@@ -18,9 +18,9 @@ enum AIR_SPAWN_POINT {
   ON_WATER
 }
 
-return {
+return freeze({
   misCountries
   SAVE_ONLINE_JOB_DIGIT = 123 
   TANK_ALT_CROSSHAIR_ADD_NEW = -2
   AIR_SPAWN_POINT
-}
+})

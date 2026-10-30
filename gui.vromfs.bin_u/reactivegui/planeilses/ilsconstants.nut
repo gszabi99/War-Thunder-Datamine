@@ -39,7 +39,7 @@ enum weaponTriggerName {
   SMOKE_GRENADE_TRIGGER,
 }
 
-return {
+return freeze({
   mpsToKnots
   metrToFeet
   meterToYard
@@ -52,4 +52,4 @@ return {
   feetToNavMile,
   weaponTriggerName,
   degToRad
-}
+})

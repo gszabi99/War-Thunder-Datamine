@@ -13,10 +13,6 @@ def update_human_entity_with_scope_eid_es(info : ParallelUpdateFrameDelayed;
                                           human_weap__currentGunModEids : EidList;
                                           human_weap__currentGunEid : EntityId;
                                           var attached_gun_scope__currentEid : EntityId&)
-  
-  
-    
-
   if get_bool(human_weap__currentGunEid, "gunmod__lensActive") ?? false
     attached_gun_scope__currentEid = human_weap__currentGunEid
   else

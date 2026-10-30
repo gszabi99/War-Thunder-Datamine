@@ -61,6 +61,6 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   registerBoosterUpdateTimer
-}
+})

@@ -1,9 +1,11 @@
 import "gdk.voice" as voice
 from "eventbus" import subscribe
 
+from "%scripts/dagui_library.nut" import mkHardPersist
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_VOICE] ")
 
-let voiceChatMembers = persist("voiceChatMembers", @() {})
+let voiceChatMembers = mkHardPersist("gdk.voice")("voiceChatMembers", {})
 
 
 function _add_voice_chat_member(uid, is_friend) {

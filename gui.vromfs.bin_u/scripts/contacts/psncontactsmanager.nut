@@ -1,5 +1,12 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sonyLib/webApi.nut" as psn
+from "%sqstd/platform.nut" import isSony
+from "%scripts/contacts/externalContactsService.nut" import requestUnknownPSNIds
+from "%scripts/contacts/contactsListState.nut" import psnApprovedUids, psnBlockedUids, findContactByPSNId
+from "%scripts/contacts/contactsState.nut" import fetchContacts, updatePresencesByList
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/contacts/contactsActions.nut" import updateContact
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "dagor.time" import get_time_msec
@@ -8,16 +15,9 @@ from "%scripts/dagui_library.nut" import *
 
 let logS = log_with_prefix("[PSN: Contacts] ")
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
-let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/contacts/contactsListState.nut")
-let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { isEqual } = u
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { updateContact } = require("%scripts/contacts/contactsActions.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
-let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
+let isContactsUpdated = Watched(false)
 
 const LIMIT_FOR_ONE_TASK_GET_USERS = 200
 const UPDATE_TIMER_LIMIT = 10000
@@ -129,9 +129,6 @@ function proceedPlayersList() {
 }
 
 function onReceviedUsersList(groupName, responseInfoName, response, err) {
-  let size = (response?.size ?? 0) + (response?.start ?? 0)
-  let total = response?.totalResults ?? size
-
   if (!(groupName in pendingContactsChanges))
     pendingContactsChanges[groupName] <- {
       isFinished = false
@@ -148,7 +145,8 @@ function onReceviedUsersList(groupName, responseInfoName, response, err) {
       logerr($"[PSN: Contacts] Update {groupName}: received error: {toString(err)}")
   }
 
-  pendingContactsChanges[groupName].isFinished = err || size >= total
+  
+  pendingContactsChanges[groupName].isFinished = err || response?.nextOffset == null
   proceedPlayersList()
 }
 
@@ -179,7 +177,7 @@ function fetchContactsList() {
 }
 
 function updateContacts(needIgnoreInitedFlag = false) {
-  if (!isPlatformSony)
+  if (!isSony)
     return
 
   if (!isInMenu.get()) {
@@ -245,6 +243,6 @@ addListenersWithoutEnv({
 if (isLoggedIn.get())
   initHandlers()
 
-return {
+return freeze({
   updateContacts
-}
+})

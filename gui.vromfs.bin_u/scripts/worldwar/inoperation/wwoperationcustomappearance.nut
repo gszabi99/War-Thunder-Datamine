@@ -1,9 +1,8 @@
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
-
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let getCustomAppearance = @(mapName) getWwSetting("mapCustomAppearance", null)?[mapName]
 
@@ -17,6 +16,6 @@ function getCustomViewCountryData(countryName, mapName = null, needIconId = fals
   }
 }
 
-return {
+return freeze({
   getCustomViewCountryData
-}
+})

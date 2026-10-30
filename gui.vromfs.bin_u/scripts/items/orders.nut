@@ -1,3 +1,16 @@
+import "%scripts/time.nut" as time
+from "%scripts/items/orderUseResult.nut" import getOrderUseResultByCode
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionInfo
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getInventoryList
+from "%scripts/misObjectives/objectiveStatus.nut" import getObjectiveStatusByCode
+from "%scripts/squads/squadState.nut" import isEqualSquadId
+from "%scripts/statistics/mplayersList.nut" import buildMplayerName
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, removeAllListenersByEnv, subscribe_handler
 from "matching.errors" import INVALID_SQUAD_ID
 from "hudMessages" import HUD_MSG_OBJECTIVE
@@ -16,29 +29,19 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/items/itemsConsts.nut" import itemType, itemsTab
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { orderUseResult, getOrderUseResultByCode } = require("%scripts/items/orderUseResult.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
+let { orderUseResult } = require("%scripts/items/orderUseResult.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInSessionRoom, getSessionInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
-let { objectiveStatus, getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
-let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
-let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 const MAX_ROWS_IN_SCORE_TABLE = 3
 
-let hasActiveOrder = persist("asActiveOrder", @() { value = false })
-let activeLocalOrderIds = persist("activeLocalOrderIds", @() [])
-let timesUsedByOrderItemId = persist("timesUsedByOrderItemId", @() {})
-let activeOrder = persist("activeOrder", @() {
+let hardPersist = mkHardPersist("items.orders")
+local hasActiveOrder = false
+let activeLocalOrderIds = hardPersist("activeLocalOrderIds", [])
+let timesUsedByOrderItemId = hardPersist("timesUsedByOrderItemId", {})
+let activeOrder = {
   orderId = -1
   orderObjective = null
   orderType = orderTypes.UNKNOWN
@@ -54,17 +57,16 @@ let activeOrder = persist("activeOrder", @() {
   
   
   statusTextView = {}
-})
+}
 
 
 let prevActiveOrder = persist("prevActiveOrder", @() { value = null })
-let cooldownTimeleft = persist("cooldownTimeleft", @() { value = 0 })
+local cooldownTimeleft = 0
 
 
 
 
 let winnerScoreDataByOrderId = persist("winnerScoreDataByOrderId", @() {})
-let orderStatusPosition = persist("orderStatusPosition", @() { value = [] })
 
 let emptyPlayerData = {
   name = ""
@@ -151,14 +153,14 @@ let getOrderAutoActivateHint = @() loc("guiHints/order_auto_activate",
 
 
 let collectOrdersToActivate = @() ordersToActivate = getInventoryList(
-  itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
+  itemType.ORDER, @(item) item.getAmount() > 0).sortby(@(a) a.expiredTimeSec)
 
 let hasOrdersToActivate = @() (ordersToActivate?.len() ?? 0) > 0
 
 function getActivateButtonLabel() {
   local label = loc("flightmenu/btnActivateOrder")
-  if (cooldownTimeleft.value > 0) {
-    let timeText = time.secondsToString(cooldownTimeleft.value)
+  if (cooldownTimeleft > 0) {
+    let timeText = time.secondsToString(cooldownTimeleft)
     label = "".concat(label, format(" (%s)", timeText))
   }
   return label
@@ -230,7 +232,7 @@ function getOrderActivateInfoText() {
     return loc("order/usableOnlyInBattle")
   if ((get_game_type() & GT_USE_ORDERS) == 0)
     return loc("order/notUsableInCurrentBattle")
-  if (hasActiveOrder.value)
+  if (hasActiveOrder)
     return loc("order/onlyOneOrderCanBeActive")
   return ""
 }
@@ -246,8 +248,8 @@ let getTimesUsedOrderItem = @(orderItem) (timesUsedByOrderItemId?[orderItem.id] 
 
 let isOrderItemActive = @(orderItem) isInArray(orderItem.id, activeLocalOrderIds)
 
-let isOrderInfoVisible = @() hasActiveOrder.value
-  || (cooldownTimeleft.value > 0 && prevActiveOrder.value != null)
+let isOrderInfoVisible = @() hasActiveOrder
+  || (cooldownTimeleft > 0 && prevActiveOrder.value != null)
 
 function updateHideOrderBlock() {
   if (!checkObj(ordersStatusObj))
@@ -322,7 +324,7 @@ function updateStatusTextView(orderObject, fullUpdate) {
     : null
 
   view.orderTimeleft <- time.secondsToString(getOrderTimeleft(orderObject))
-  view.cooldownTimeleft <- time.secondsToString(cooldownTimeleft.value)
+  view.cooldownTimeleft <- time.secondsToString(cooldownTimeleft)
   if (orderObject.targetPlayer != emptyPlayerData)
     view.orderTarget <- buildMplayerName(orderObject.targetPlayer)
   if (orderObject.timeToSwitchTarget != -1)
@@ -331,13 +333,13 @@ function updateStatusTextView(orderObject, fullUpdate) {
 
 
 function getStatusText() {
-  let orderObject = hasActiveOrder.value ? activeOrder : prevActiveOrder.value
+  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder.value
   if (orderObject == null)
     return ""
 
   updateStatusTextView(orderObject, false)
   let view = orderObject.statusTextView
-  if (!hasActiveOrder.value) {
+  if (!hasActiveOrder) {
     return "".concat(colorize(statusColorScheme.parameterLabelColor, view.orderFinishedLabel),
       colorize(statusColorScheme.parameterValueColor, view.orderName))
   }
@@ -372,10 +374,10 @@ function getCooldownTimeleft() {
 }
 
 
-let updateCooldownTimeleft = @() cooldownTimeleft.value = max(getCooldownTimeleft(), 0)
+let updateCooldownTimeleft = @() cooldownTimeleft = max(getCooldownTimeleft(), 0)
 
 function getStatusTextBottom() {
-  if (hasActiveOrder.value || prevActiveOrder.value == null)
+  if (hasActiveOrder || prevActiveOrder.value == null)
     return ""
   let view = prevActiveOrder.value.statusTextView
   return "".concat(colorize(statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel),
@@ -653,7 +655,7 @@ function getScoreTableTexts() {
   if (!showOrder)
     return []
 
-  let orderObject = hasActiveOrder.value ? activeOrder : prevActiveOrder.value
+  let orderObject = hasActiveOrder ? activeOrder : prevActiveOrder.value
   let scoreData = getOrderScores(orderObject)
   if (!scoreData)
     return []
@@ -671,7 +673,7 @@ function getScoreTableTexts() {
 
 
 function getWarningText(selectedOrderItem = null) {
-  if (hasActiveOrder.value)
+  if (hasActiveOrder)
     return loc("items/order/activateOrderWarning/hasActiveOrder")
   if (!hasOrdersToActivate())
     return loc("items/order/noOrdersAvailable")
@@ -728,7 +730,7 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   if (orderTargetId != objectiveTargetId || activeOrder.targetPlayer == null)
     activeOrder.targetPlayer = getPlayerDataById(objectiveTargetId)
 
-  hasActiveOrder.value = orderObjective != null
+  hasActiveOrder = orderObjective != null
 
   
   updateActiveLocalOrders()
@@ -745,16 +747,16 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
 
   
   
-  if (!hasActiveOrder.value)
+  if (!hasActiveOrder)
     updateCooldownTimeleft()
 
   updateHideOrderBlock()
 
   
   
-  if ((activeOrderChanged || orderStatusChanged) && hasActiveOrder.value)
+  if ((activeOrderChanged || orderStatusChanged) && hasActiveOrder)
     updateStatusTextView(activeOrder, true)
-  if (cooldownTimeleft.value > 0 && prevActiveOrder.value != null)
+  if (cooldownTimeleft > 0 && prevActiveOrder.value != null)
     updateStatusTextView(prevActiveOrder.value, true)
 
   if (dispatchEvents) {
@@ -773,7 +775,7 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   eventbus_send("orderStateUpdate", {
     statusText = getStatusText()
     statusTextBottom = getStatusTextBottom()
-    showOrder = hasActiveOrder.value || (cooldownTimeleft.value > 0 && prevActiveOrder.value != null)
+    showOrder = hasActiveOrder || (cooldownTimeleft > 0 && prevActiveOrder.value != null)
     scoresTable = visibleScoreTableTexts
   })
 }
@@ -793,7 +795,7 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
   if (!checkObj(statusObj))
     return
 
-  let orderObject = hasActiveOrder.value
+  let orderObject = hasActiveOrder
     ? activeOrder
     : prevActiveOrder.value
 
@@ -808,8 +810,8 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
       orderTimerObj.setUserData({ onOrderTimerUpdate })
   }
 
-  let waitingForCooldown = cooldownTimeleft.value > 0 && prevActiveOrder.value != null
-  let showStatus = hasActiveOrder.value || waitingForCooldown
+  let waitingForCooldown = cooldownTimeleft > 0 && prevActiveOrder.value != null
+  let showStatus = hasActiveOrder || waitingForCooldown
   setStatusObjVisibility(statusObj, showStatus)
   if (!showStatus)
     return
@@ -852,7 +854,7 @@ function orderCanBeActivated() {
   if (!ordersCanBeUsed() || !hasOrdersToActivate())
     return false
   updateActiveOrder()
-  return !hasActiveOrder.value
+  return !hasActiveOrder
 }
 
 function openOrdersInventory() {
@@ -862,35 +864,14 @@ function openOrdersInventory() {
   loadHandler(get_gui_handler("OrderActivationWindow"), { curTab = itemsTab.INVENTORY })
 }
 
-function saveOrderStatusPositionAndSize() {
-  if (!checkObj(ordersStatusObj))
-    return
-
-  let frameObj = ordersStatusObj.findObject("order_status_frame")
-  if (!checkObj(frameObj)) 
-    return
-
-  let frameSize = frameObj.getSize()
-
-  
-  
-  if (frameSize[0] == -1)
-    return
-
-  orderStatusPosition.value = frameObj.getPosRC()
-  let statusObjPosition = ordersStatusObj.getPosRC()
-
-  
-  orderStatusPosition.value[0] -= statusObjPosition[0]
-  orderStatusPosition.value[1] -= statusObjPosition[1]
-}
-
 function updateOrderStatus(fullUpdate) {
-  saveOrderStatusPositionAndSize()
   updateOrderStatusObject(ordersStatusObj, fullUpdate)
 }
 
 function disableOrders() {
+  
+  timesUsedByOrderItemId.clear()
+  activeLocalOrderIds.clear()
   if (!ordersEnabled) {
     debugPrint("orders: disableOrders:Skipped. Already disabled.")
     debug_dump_stack()
@@ -902,14 +883,11 @@ function disableOrders() {
   
   updateActiveOrder()
   ordersEnabled = false
-  timesUsedByOrderItemId.clear()
   playerDataById.clear()
-  activeLocalOrderIds.clear()
   winnerScoreDataByOrderId.clear()
   activatingLocalOrderId = null
   activatingLocalOrderCallback = null
   set_order_accepted_cb(null, null)
-  orderStatusPosition.value = null
   localPlayerData = null
 }
 
@@ -931,7 +909,7 @@ function onEventActiveOrderChanged(params) {
   updateOrderStatus(true)
 
   local text = ""
-  if (hasActiveOrder.value) {
+  if (hasActiveOrder) {
     text = loc("items/order/hudMessage/activate", {
       playerName = buildMplayerName(activeOrder.starterPlayer)
       orderName = activeOrder.orderItem.getName(false)
@@ -1008,7 +986,7 @@ eventbus_subscribe("on_order_result_received", on_order_result_received)
 eventbus_subscribe("active_order_request_update", @(_) ordersEnabled && updateActiveOrder())
 eventbus_subscribe("active_order_enable", @(_) enableOrdersWithoutDagui())
 
-return {
+return freeze({
   collectOrdersToActivate
   getActivateButtonLabel
   getWarningText
@@ -1026,4 +1004,4 @@ return {
   getTimesUsedOrderItem
   isOrderItemActive
   activateOrder
-}
+})

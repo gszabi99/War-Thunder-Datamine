@@ -1,14 +1,14 @@
+from "%scripts/contacts/externalContactsService.nut" import requestUnknownSteamIds
+from "%scripts/contacts/contactsListState.nut" import findContactBySteamId, steamContactsGroup
+from "%scripts/contacts/contactPresence.nut" import updateContactPresence
+from "%scripts/contacts/contactsActions.nut" import updateContact
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "steam" import get_friends_ids, get_friend_info, steam_is_running, steam_get_app_id
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { requestUnknownSteamIds } = require("%scripts/contacts/externalContactsService.nut")
-let { findContactBySteamId, steamContactsGroup } = require("%scripts/contacts/contactsListState.nut")
-let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let Contact = require("%scripts/contacts/contact.nut")
-let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
 enum STEAM_FRIEND_STATE { 
   OFFLINE
@@ -26,7 +26,7 @@ let onlineStates = {
   [STEAM_FRIEND_STATE.TO_PLAY] = true
 }
 
-let steamFriendsList = persist("steamFriendsList", @() {})
+let steamFriendsList = {}
 
 let steam2uid = {}
 

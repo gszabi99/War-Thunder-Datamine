@@ -1,3 +1,7 @@
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getWeaponryByPresetInfo
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/respawn/weaponSelectorUtils.nut" import updateTierStats, preparePresetData
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, removeEventListenersByEnv, broadcastEvent
 from "weaponSelector" import get_all_weapons, get_current_weapon_preset
 from "aimingMemPoints" import get_aim_points_linked_weapons, get_secondary_cycles, get_aim_point_relative_pos, set_aim_slot_idx_for_bullet, can_use_aiming_points
@@ -6,11 +10,6 @@ from "eventbus" import eventbus_subscribe
 from "%sqstd/math.nut" import roundToDigits
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
-
-let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { updateTierStats, preparePresetData } = require("%scripts/respawn/weaponSelectorUtils.nut")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 
@@ -498,6 +497,6 @@ eventbus_subscribe("aim_mem_point_stop_drag", onAimMemPointStopDrag)
 eventbus_subscribe("aim_mem_point_start_drag", onAimMemPointStartDrag)
 
 
-return {
+return freeze({
   MapAimPointWeaponSelector
-}
+})

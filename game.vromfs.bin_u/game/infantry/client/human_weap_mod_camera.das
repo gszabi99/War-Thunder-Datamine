@@ -3,6 +3,7 @@ require DngHuman
 require DagorMath
 require AnimV20
 require GeomNodeTree
+require RenderModule
 require %appGame.infantry.es.vehicle.vehicle_events
 
 
@@ -20,6 +21,7 @@ def set_lookat_from_sight_node(cur_time : float;
                                cam_shift_max : float;
                                cam_fov_min : float;
                                cam_fov_max : float;
+                               lens_only_zoom_cam_shift : float;
                                gunmod_eid : EntityId;
                                gunmod__bipodScopeOffset : float;
                                bipod_enabled : bool;
@@ -61,7 +63,7 @@ def set_lookat_from_sight_node(cur_time : float;
       rotzTM(-aimOffset.y, rotTm)
       aimTm = human__aimTm * rotTm
     let lookDir = use_scope_axis ? float3(nodeDir) : normalize(aimTm[0])
-    let rawShift = cvt(fov, cam_fov_min, cam_fov_max, cam_shift_min, cam_shift_max)
+    let rawShift = is_lens_only_zoom_enabled() ? lens_only_zoom_cam_shift : cvt(fov, cam_fov_min, cam_fov_max, cam_shift_min, cam_shift_max)
     let baseShift = bipod_enabled ? lerp(gunmod__bipodScopeOffset, rawShift, zoomPosition) : rawShift
     let shift = baseShift + human_weap__gunOffset.x * gunmod__gunOffsetMult
     let threshold = 0.5
@@ -131,13 +133,15 @@ def optics_lookat_camera_impl(cur_time : float;
                                 gunmod__camFovMin : float;
                                 gunmod__camFovMax : float;
                                 gunmod__frontsightCamNodeId : int = -1;
-                                gunmod__bipodScopeOffset : float = 0.1)
+                                gunmod__bipodScopeOffset : float = 0.1;
+                                gunmod__lensOnlyZoomCamShift : float = -1.0)
     set_lookat_from_sight_node(cur_time, human_net_phys,
                                gunmod__camNodeId, gunmod__frontsightCamNodeId, animchar,
                                human__aimTm, human_weap__gunOffset, gunmod__gunOffsetMult,
                                gunTm, bindedCamera,
                                gunmod__camShiftMin, gunmod__camShiftMax,
                                gunmod__camFovMin, gunmod__camFovMax,
+                               gunmod__lensOnlyZoomCamShift >= 0.0 ? gunmod__lensOnlyZoomCamShift : gunmod__camShiftMin,
                                gunScopeEid,
                                gunmod__bipodScopeOffset,
                                bipod__enabled,

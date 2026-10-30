@@ -1,4 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/time.nut" import buildTimeStr, buildDateStrShort, isInTimerangeByUtcStrings, getTimestampFromStringUtc
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
 from "%appGlobals/timeLoc.nut" import secondsToString
 from "%sqstd/datablock.nut" import eachBlock, eachParam
 from "%sqstd/time.nut" import secondsToDays
@@ -8,11 +12,6 @@ from "%scripts/dagui_natives.nut" import have_you_valid_tournament_ticket, is_su
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "types" import String
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { buildTimeStr, buildDateStrShort, isInTimerangeByUtcStrings, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 const NEXT_DAYS = 14
 
@@ -322,9 +321,7 @@ function getSeasonsList() {
         })
       }
 
-      tour.tickets.sort(@(a, b)
-        getTimestampFromStringUtc(a.startActiveTime)
-          <=> getTimestampFromStringUtc(b.startActiveTime))
+      tour.tickets.sortby(@(a) getTimestampFromStringUtc(a.startActiveTime))
 
       
       let scheduler = []
@@ -338,8 +335,7 @@ function getSeasonsList() {
             day.append(session)
         }
 
-        scheduler.append(day.sort(@(a, b)
-          getTimestampFromStringUtc(a.train.start) <=> getTimestampFromStringUtc(b.train.start)))
+        scheduler.append(day.sortby(@(a) getTimestampFromStringUtc(a.train.start)))
       }
 
       tour.scheduler = scheduler
@@ -348,11 +344,11 @@ function getSeasonsList() {
       season.tournamentList.append(tour)
     })
 
-    season.tournamentList.sort(@(a, b) a.beginDate <=> b.beginDate)
+    season.tournamentList.sortby(@(a) a.beginDate)
     seasonsList.append(season)
   }
 
-  return seasonsList.sort(@(a, b) a.competitiveSeason <=> b.competitiveSeason)
+  return seasonsList.sortby(@(a) a.competitiveSeason)
 }
 
 function getTourActiveTicket(eName, tourId) {

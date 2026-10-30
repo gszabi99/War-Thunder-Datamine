@@ -1,30 +1,33 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, getSelectedChild
+from "%scripts/crossModuleEvents.nut" import EVENTS_DATA_UPDATED
+from "%scripts/firstChoice/firstChoice.nut" import checkUnlockedCountriesByAirs, unlockCountry, getFirstChosenUnitType, isFirstChoiceShown, fillUserNick
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/slotbar/slotbarStateData.nut" import getReserveAircraftName
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/unit/unitInfo.nut" import getUnitTypesInCountries, getCountriesByUnitType
+from "%scripts/user/newbieTutorialDisplay.nut" import saveShowedTutorial
+from "%scripts/crew/crewTrain.nut" import createBatchTrainCrewRequestBlk
+from "%scripts/tasker.nut" import addTask
+from "%scripts/slotbar/slotbarPresets.nut" import newbieInitSlotbarPresets
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "dagor.random" import rnd
 from "%scripts/dagui_natives.nut" import char_send_blk
+from "console" import register_command
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { EVENTS_DATA_UPDATED } = require("%scripts/crossModuleEvents.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { checkUnlockedCountriesByAirs, unlockCountry, getFirstChosenUnitType, isFirstChoiceShown, fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getUnitTypesInCountries, getCountriesByUnitType } = require("%scripts/unit/unitInfo.nut")
-let { saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewTrain.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { newbieInitSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 function createReserveTasksData(country, unitType, checkCurrentCrewAircrafts = true, ignoreSlotbarCheck = false) {
   let tasksData = []
@@ -73,6 +76,7 @@ let UnitTypeChoiceHandler = class (BaseGuiHandlerWT) {
 
   selItemIdx = -1
   unitTypesList = null
+  currentHoveredBtn = null
 
   function initScreen() {
     isFirstChoiceShown.set(true)
@@ -222,8 +226,31 @@ let UnitTypeChoiceHandler = class (BaseGuiHandlerWT) {
       move_mouse_on_child(listBoxObj, focusItemNum)
   }
 
-  function onSelectSlot(obj) {
-    this.selItemIdx = obj.getValue()
+  function onSelectSlot(btnsList) {
+    this.selItemIdx = btnsList.getValue()
+    let btnObj = getSelectedChild(btnsList)
+    if (!btnObj)
+      return
+    this.scene.findObject("hint_text").setValue(btnObj.tooltipText);
+  }
+
+  function onUnitBtnHover(obj) {
+    if (showConsoleButtons.get())
+      return
+
+    if (this.currentHoveredBtn == obj)
+      return
+    this.currentHoveredBtn = obj
+    this.scene.findObject("hint_text").setValue(obj.tooltipText);
+  }
+
+  function onUnitBtnUnhover(obj) {
+    if (showConsoleButtons.get())
+      return
+    if (this.currentHoveredBtn != obj)
+      return
+    this.currentHoveredBtn = null
+    this.scene.findObject("hint_text").setValue("");
   }
 
   function afterModalDestroy() {
@@ -232,4 +259,12 @@ let UnitTypeChoiceHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("UnitTypeChoiceHandler", UnitTypeChoiceHandler)
 
-return { UnitTypeChoiceHandler }
+register_command(function() {
+  handlersManager.loadHandler(UnitTypeChoiceHandler)
+}, "debug.unit_type_choice_wnd_open")
+
+register_command(function() {
+  handlersManager.findHandlerClassInScene(UnitTypeChoiceHandler)?.goBack()
+}, "debug.unit_type_choice_wnd_close")
+
+return freeze({ UnitTypeChoiceHandler })

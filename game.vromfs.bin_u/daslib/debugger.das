@@ -11,6 +11,13 @@ require debugapi public
 
 require daslib/rtti public
 
+
+
+
+
+
+
+
 class DapiDebugAgent {
     def abstract onInstall(agent : DebugAgent?) : void
     def abstract onUninstall(agent : DebugAgent?) : void
@@ -68,7 +75,6 @@ def install_new_thread_local_debug_agent(var agentPtr) {
     }
 }
 
-
 struct DapiArray {
     data : void?
     size : uint64
@@ -79,36 +85,32 @@ struct DapiArray {
     _pad_after_flags : uint
 }
 
-
 struct DapiTable : DapiArray {
     keys : void?
     hashes : uint?
     tombstones : uint64
 }
 
-
 struct DapiBlock {
     stackOffset : uint
     argumentsOffset : uint
-    body : void?                    
+    body : void?
     aotFunction : void?
+    jitFunction : void?
     functionArguments : float4?
     info : FuncInfo?
 }
-
 
 struct DapiFunc {
     index : int
 }
 
-
 struct DapiLambda {
     captured : void?
 }
 
-
 struct DapiSequence {
-    iter : void?        
+    iter : void?
 }
 
 class DapiDataWalker {

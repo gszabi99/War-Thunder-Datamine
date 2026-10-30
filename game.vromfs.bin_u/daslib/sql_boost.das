@@ -10,7 +10,7 @@ options _comment_hygiene = true
 module sql_boost shared public
 
 require strings public
-require daslib/fio                  
+require daslib/fio
 require daslib/contracts
 require daslib/option public
 require daslib/sql public
@@ -19,13 +19,12 @@ require daslib/ast_boost
 require daslib/macro_boost
 require daslib/templates
 require daslib/templates_boost
-require daslib/json public          
-require daslib/json_boost public    
-require daslib/archive public       
+require daslib/json public
+require daslib/json_boost public
+require daslib/archive public
+require daslib/module_group
 
-require ?sqlite sqlite/sqlite_provider    
-require ?duckdb duckdb/duckdb_provider    
-require ?postgres postgres/postgres_provider    
+require [sql_provider]
 
 
 
@@ -39,26 +38,14 @@ def public sql_register_present_providers {
     
     
     if (sql_register_present_providers_done()) return
-    static_if (typeinfo builtin_module_exists(sqlite)) {
-        register_sqlite_provider()
-    }
-    static_if (typeinfo builtin_module_exists(duckdb)) {
-        register_duckdb_provider()
-    }
-    static_if (typeinfo builtin_module_exists(postgres)) {
-        register_postgres_provider()
-    }
+    call_module_group("sql_provider", "register_provider")
 }
-
-
 
 [_macro]
 def private _sql_boost_register_providers {
     if (!is_compiling_macros_in_module("sql_boost")) return
     sql_register_present_providers()
 }
-
-
 
 def like_escape_prefix(s : string) : string {
     
@@ -78,9 +65,27 @@ def like_escape_substring(s : string) : string {
     return "%" + (s |> replace("\\", "\\\\") |> replace("%", "\\%") |> replace("_", "\\_")) + "%"
 }
 
+def private glob_escape(s : string) : string {
+    return s |> replace("[", "[[]") |> replace("*", "[*]") |> replace("?", "[?]")
+}
 
+def glob_escape_prefix(s : string) : string {
+    
+    
+    return glob_escape(s) + "*"
+}
 
+def glob_escape_suffix(s : string) : string {
+    
+    
+    return "*" + glob_escape(s)
+}
 
+def glob_escape_substring(s : string) : string {
+    
+    
+    return "*" + glob_escape(s) + "*"
+}
 
 def sql_bind(v : int64) : int64 {
     return v
@@ -119,8 +124,6 @@ def sql_bind(b : array<uint8>) : array<uint8> {
 def sql_extract(b : array<uint8>; t : type<array<uint8>>) : array<uint8> {
     return <- clone_to_move(b)
 }
-
-
 
 def sql_bind(v : int) : int64 {
     return int64(v)
@@ -206,8 +209,6 @@ def sql_extract(v : int64; t : type<bool>) : bool {
     return v != 0l
 }
 
-
-
 def sql_bind(value : auto(TT)) : int64 {
     static_if (typeinfo is_enum(value)) {
         return int64(value)
@@ -217,8 +218,6 @@ def sql_bind(value : auto(TT)) : int64 {
     }
 }
 
-
-
 [unused_argument(value)]
 def sql_bind(value : $Option < auto(TT) >) {
     return _::sql_bind(default<TT>)
@@ -227,9 +226,6 @@ def sql_bind(value : $Option < auto(TT) >) {
 [unused_argument(t)]
 def sql_extract(value : int64; t : type<auto(TT)>) : TT {
     static_if (typeinfo is_enum(default<TT>)) {
-        
-        
-        
         static_if (typeinfo sizeof(type<TT>) == 1) {
             return unsafe(reinterpret<TT>(int8(value)))
         } static_elif (typeinfo sizeof(type<TT>) == 2) {
@@ -242,7 +238,6 @@ def sql_extract(value : int64; t : type<auto(TT)>) : TT {
         return default<TT>
     }
 }
-
 
 [unused_argument(witness)]
 def sql_storage_type_witness(witness : int64) : string {
@@ -281,8 +276,6 @@ def sql_storage_type_for(t : type<$Option<auto(TT)>>) : string {
     
     return sql_storage_type_for(type<TT>)
 }
-
-
 
 [unused_argument(witness)]
 def sql_storage_enum_witness(witness : int64) : SqlType {
@@ -326,7 +319,6 @@ def column_info(t : type<auto(TT)>) : array<ColumnInfo> {
     return <- _::_sql_column_info(default<TT>)
 }
 
-
 def find_annotation(args : AnnotationArgumentList; argn : string; default_value : auto(TT)) : TT {
     let v = find_arg(args, argn)
     static_if (typeinfo is_string(default_value)) {
@@ -340,7 +332,6 @@ def find_annotation(args : AnnotationArgumentList; argn : string; default_value 
 def private find_string_array_annotation(args : AnnotationArgumentList; argn : string) : array<string> {
     return <- [for (a in args); string(a.sValue); where a.name == argn && a.basicType == Type.tString]
 }
-
 
 let private SQL_DEFAULT_FN_WHITELIST = ["CURRENT_TIMESTAMP", "CURRENT_DATE", "CURRENT_TIME"]
 
@@ -381,18 +372,14 @@ struct FieldInfo {
     is_stored : bool
     is_json : bool
     is_blob : bool
-    is_fts_rank : bool   
-    is_fts_unindexed : bool   
+    is_fts_rank : bool
+    is_fts_unindexed : bool
     computed_sql : string
     default_clause : string
     references_clause : string
 }
 
-
-
-
 def private affinity_to_typedecl(sql_type : SqlType; not_null : bool) : TypeDeclPtr {
-    
     var inner : TypeDeclPtr
     if (sql_type == SqlType.Integer) {
         inner = qmacro_type(type<int64>)
@@ -410,18 +397,13 @@ def private affinity_to_typedecl(sql_type : SqlType; not_null : bool) : TypeDecl
 }
 
 def private resolve_schema_from_path(p : string) : string {
-    
     if (is_absolute(p)) return p
     return path_join(get_das_root(), p)
 }
 
 def is_option_field_type(td : TypeDeclPtr) : bool {
     if (td == null) return false
-    
     if (td.baseType == Type.typeMacro && !empty(td.typeMacroExpr) && (td.typeMacroExpr[0] is ExprConstString)) return (td.typeMacroExpr[0] as ExprConstString).value == "Option"
-    
-    
-    
     return (td.baseType == Type.tTuple
             && length(td.argTypes) == 2
             && length(td.argNames) == 2
@@ -431,8 +413,6 @@ def is_option_field_type(td : TypeDeclPtr) : bool {
 }
 
 def unwrap_option_payload_type(var td : TypeDeclPtr) : TypeDeclPtr {
-    
-    
     if (td == null) return td
     if (td.baseType == Type.typeMacro) {
         if (length(td.typeMacroExpr) < 2 || td.typeMacroExpr[0] == null || !(td.typeMacroExpr[0] is ExprConstString)
@@ -440,7 +420,6 @@ def unwrap_option_payload_type(var td : TypeDeclPtr) : TypeDeclPtr {
             || td.typeMacroExpr[1] == null || !(td.typeMacroExpr[1] is ExprTypeDecl)) return td
         return clone_type((td.typeMacroExpr[1] as ExprTypeDecl).typeexpr)
     }
-    
     if (td.baseType == Type.tTuple
             && length(td.argTypes) == 2
             && length(td.argNames) == 2
@@ -450,66 +429,9 @@ def unwrap_option_payload_type(var td : TypeDeclPtr) : TypeDeclPtr {
     return td
 }
 
-def private build_create_indexes_sql(st : StructurePtr; table_name : string; field_names : array<string>; var errors : das_string; var ok : bool&) : string {
-    ok = true
-    var stmt_count = 0
-    let sql = build_string() $(var w) {
-        for (ann in st.annotations) {
-            if (ann.annotation.name != "sql_index") continue
-            let idx_name_arg = find_annotation(ann.arguments, "name", "")
-            let is_unique = find_annotation(ann.arguments, "unique", false)
-            let cols = find_string_array_annotation(ann.arguments, "fields")
-            if (empty(cols)) {
-                errors := "[sql_index]: missing or empty `fields=` argument. Use `fields=\"ColName\"` for a single-column index or `fields=(\"A\", \"B\")` for a composite."
-                ok = false
-                return
-            }
-            for (col in cols) {
-                var found = false
-                for (fn in field_names) {
-                    if (fn == col) {
-                        found = true
-                    }
-                }
-                if (!found) {
-                    errors := "[sql_index]: field '{col}' is not a column of struct '{st.name}'. Available: {field_names}"
-                    ok = false
-                    return
-                }
-            }
-            let auto_name = build_string() $(var w2) {
-                w2 |> write("idx_")
-                w2 |> write(table_name)
-                for (col in cols) {
-                    w2 |> write("_")
-                    w2 |> write(col)
-                }
-            }
-            let idx_name = empty(idx_name_arg) ? auto_name : idx_name_arg
-            let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
-            if (stmt_count > 0) {
-                w |> write("; ")
-            }
-            stmt_count++
-            w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
-            for (j in range(length(cols))) {
-                if (j > 0) {
-                    w |> write(", ")
-                }
-                w |> write("\"")
-                w |> write(cols[j])
-                w |> write("\"")
-            }
-            w |> write(")")
-        }
-    }
-    return sql
-}
-
 def private extract_string_return(var fn : FunctionPtr) : string {
     if (fn == null || fn.body == null || !(fn.body is ExprBlock)) return ""
     let blk = fn.body as ExprBlock
-    
     for (stmt in blk.list) {
         if (!(stmt is ExprReturn)) continue
         let ret = stmt as ExprReturn
@@ -532,8 +454,35 @@ def private find_struct_helper_fn(name : string; st : StructurePtr) : FunctionPt
     return found
 }
 
+def private quoted_column_list(fields : array<FieldInfo>) : string {
+    return build_string() $(var w) {
+        for (i in range(length(fields))) {
+            if (i > 0) {
+                w |> write(", ")
+            }
+            w |> write("\"")
+            w |> write(fields[i].col_name)
+            w |> write("\"")
+        }
+    }
+}
+
+def private index_ddl(kind, idx_name, table_name : string; sql_cols : array<string>) : string {
+    return build_string() $(var w) {
+        w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
+        for (j in range(length(sql_cols))) {
+            if (j > 0) {
+                w |> write(", ")
+            }
+            w |> write("\"")
+            w |> write(sql_cols[j])
+            w |> write("\"")
+        }
+        w |> write(")")
+    }
+}
+
 def private derive_index_name(table_name : string; sql_cols : array<string>) : string {
-    
     return build_string() $(var w) {
         w |> write("idx_")
         w |> write(table_name)
@@ -563,9 +512,7 @@ def private build_field_unique_indexes_sql(table_name : string; fields : array<F
 class SqlIndexMacro : AstStructureAnnotation {
     
     
-    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
-        
-        
+    def override apply(var st : StructurePtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {
         if (find_struct_helper_fn("_sql_legacy_table_marker", st) != null) {
             errors := "[sql_index] on '{st.name}': not supported on [sql_table(legacy=true)] structs (they don't define schema). Drop the [sql_index] annotation; the current (non-legacy) struct's indexes are reapplied automatically by ``convert_and_rename``."
             return false
@@ -578,7 +525,6 @@ class SqlIndexMacro : AstStructureAnnotation {
         let is_unique = find_annotation(args, "unique", false)
         let idx_name_arg = find_annotation(args, "name", "")
 
-        
         var sql_cols : array<string>
         sql_cols |> reserve(length(cols))
         for (col in cols) {
@@ -600,7 +546,6 @@ class SqlIndexMacro : AstStructureAnnotation {
             sql_cols |> push(resolved)
         }
 
-        
         var idx_fn = find_struct_helper_fn("_sql_create_indexes_sql", st)
         if (idx_fn == null) {
             errors := "[sql_index] on struct '{st.name}': no [sql_table] declared earlier in the annotation list. Use `[sql_table(...), sql_index(...), ...]` order so the index helper is in scope."
@@ -617,24 +562,11 @@ class SqlIndexMacro : AstStructureAnnotation {
             return false
         }
 
-        
         let auto_name = derive_index_name(table_name, sql_cols)
         let idx_name = empty(idx_name_arg) ? auto_name : idx_name_arg
         let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
-        let this_stmt = build_string() $(var w) {
-            w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
-            for (j in range(length(sql_cols))) {
-                if (j > 0) {
-                    w |> write(", ")
-                }
-                w |> write("\"")
-                w |> write(sql_cols[j])
-                w |> write("\"")
-            }
-            w |> write(")")
-        }
+        let this_stmt = index_ddl(kind, idx_name, table_name, sql_cols)
 
-        
         let prev_sql = extract_string_return(idx_fn)
         let new_sql = empty(prev_sql) ? this_stmt : "{prev_sql}; {this_stmt}"
         idx_fn.body = qmacro_block() {
@@ -665,7 +597,6 @@ def private find_parent_table_and_pk(var st : StructurePtr; parent_name : string
     }
     for (pf in found_st.fields) {
         if (find_annotation(pf.annotation, "sql_primary_key", false)) {
-            
             var pk_col = string(pf.name)
             let pk_anno = find_arg(pf.annotation, "sql_column")
             if (pk_anno is tString) {
@@ -679,9 +610,8 @@ def private find_parent_table_and_pk(var st : StructurePtr; parent_name : string
 
 [structure_macro(name=sql_table)]
 class SqlTableMacro : AstStructureAnnotation {
-    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {   
+    def override apply(var st : StructurePtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {   
         let table_name = find_annotation(args, "name", string(st.name))
-        
         let is_legacy = find_annotation(args, "legacy", false)
 
         var schema_assert_exprs : array<ExpressionPtr>
@@ -703,26 +633,21 @@ class SqlTableMacro : AstStructureAnnotation {
             let is_unique = find_annotation(field.annotation, "sql_unique", false)
             let is_optional = is_option_field_type(field._type)
 
-            
             let computed_sql = find_annotation(field.annotation, "sql_computed", "")
             let is_computed = !empty(computed_sql)
             let is_stored = find_annotation(field.annotation, "sql_stored", false)
 
-            
             let is_json = find_annotation(field.annotation, "sql_json", false)
             let is_blob = find_annotation(field.annotation, "sql_blob", false)
 
-            
             let sql_default_fn = find_annotation(field.annotation, "sql_default_fn", "")
 
-            
             let references = find_annotation(field.annotation, "sql_references", "")
             let on_delete = find_annotation(field.annotation, "sql_on_delete", "no_action")
             let on_update = find_annotation(field.annotation, "sql_on_update", "no_action")
             let has_on_delete_attr = !empty(find_annotation(field.annotation, "sql_on_delete", ""))
             let has_on_update_attr = !empty(find_annotation(field.annotation, "sql_on_update", ""))
 
-            
             var col_name = fname
             let col_anno = find_arg(field.annotation, "sql_column")
             if (col_anno is tString) {
@@ -738,7 +663,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 col_name = cv
             }
 
-            
             if (is_pk && is_optional) {
                 errors := "[sql_table]: @sql_primary_key on field '{fname}' must not be Option<T> - primary keys cannot be NULL in SQL. Use a non-optional type."
                 return false
@@ -821,7 +745,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 }
             }
 
-            
             var default_clause = ""
             if (!empty(sql_default_fn)) {
                 default_clause = " DEFAULT {sql_default_fn}"
@@ -860,9 +783,8 @@ class SqlTableMacro : AstStructureAnnotation {
             ))
         }
 
-        
         {
-            var seen_cols : table<string; string>  
+            var seen_cols : table<string; string>
             for (info in fields) {
                 if (key_exists(seen_cols, info.col_name)) {
                     let first_owner = seen_cols[info.col_name]
@@ -873,14 +795,9 @@ class SqlTableMacro : AstStructureAnnotation {
             }
         }
 
-        
         if (!emit_json_blob_adapters_for_struct(st, fields, "[sql_table]", errors)) return false
 
-        
-        
-        
         if (is_legacy) {
-            
             var fn_legacy_marker = qmacro_function("_sql_legacy_table_marker") $(typ : $t(st)) : bool {
                 return true
             }
@@ -890,13 +807,10 @@ class SqlTableMacro : AstStructureAnnotation {
         }
         var fn_table_name = make_table_name_fn(st, table_name, schema_assert_exprs)
         compiling_module() |> add_function(fn_table_name)
-        
-        
         var fn_drop_named = make_drop_sql_named_fn(st)
         compiling_module() |> add_function(fn_drop_named)
         var fn_drop = make_drop_sql_fn(st, table_name)
         compiling_module() |> add_function(fn_drop)
-        
         var fn_select_all_named = make_select_all_sql_named_fn(st, fields)
         compiling_module() |> add_function(fn_select_all_named)
         var fn_select_all = make_select_all_sql_fn(st, table_name, fields)
@@ -906,18 +820,13 @@ class SqlTableMacro : AstStructureAnnotation {
         var fn_col_info = make_column_info_fn(st, fields)
         compiling_module() |> add_function(fn_col_info)
 
-        
         if (!is_legacy) {
             var fn_create_named = make_create_table_sql_named_fn(st, fields)
             compiling_module() |> add_function(fn_create_named)
             var fn_create = make_create_table_sql_fn(st, table_name, fields)
             compiling_module() |> add_function(fn_create)
-            
-            
             var fn_indexes_named = make_create_indexes_sql_named_fn(st, table_name)
             compiling_module() |> add_function(fn_indexes_named)
-            
-            
             let unique_indexes_sql = build_field_unique_indexes_sql(table_name, fields)
             var fn_indexes = make_create_indexes_sql_fn(st, unique_indexes_sql)
             compiling_module() |> add_function(fn_indexes)
@@ -955,9 +864,6 @@ class SqlTableMacro : AstStructureAnnotation {
                           tbl_name : string;
                           var assert_exprs : array<ExpressionPtr>&;
                           var errors : das_string) : bool {
-        
-        
-        
         let resolved = resolve_schema_from_path(raw_path)
         var pidx = -1
         for (i in range(sql_provider_count())) {
@@ -984,11 +890,9 @@ class SqlTableMacro : AstStructureAnnotation {
             errors := "[sql_table]: schema_from=\"{raw_path}\" - table \"{tbl_name}\" has no columns or doesn't exist in this database."
             return false
         }
-        
         var covered : array<bool>
         covered |> resize(length(cols))
         assert_exprs |> reserve(length(st.fields))
-        
         for (ufi in range(length(st.fields))) {
             let ufname = string(st.fields[ufi].name)
             var matched_col_idx = -1
@@ -1006,8 +910,6 @@ class SqlTableMacro : AstStructureAnnotation {
             let col_name_s = cols[matched_col_idx].name
             let col_not_null = cols[matched_col_idx].not_null
             let col_pk = cols[matched_col_idx].pk
-            
-            
             let col_generated = cols[matched_col_idx].generated
             let user_computed = find_arg(st.fields[ufi].annotation, "sql_computed")
             let user_is_computed = user_computed is tString && !empty(user_computed as tString)
@@ -1019,7 +921,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 }
                 return false
             }
-            
             let user_is_pk = find_annotation(st.fields[ufi].annotation, "sql_primary_key", false)
             if (user_is_pk != col_pk) {
                 if (user_is_pk) {
@@ -1029,8 +930,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 }
                 return false
             }
-            
-            
             let user_is_nullable = is_option_field_type(st.fields[ufi]._type)
             let col_is_nullable = !col_not_null && !col_pk
             if (user_is_nullable != col_is_nullable) {
@@ -1041,8 +940,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 }
                 return false
             }
-            
-            
             let expected_sql_type = cols[matched_col_idx].data_type
             let storage_label = invoke(provider.sqlTypeFor, expected_sql_type)
             var expected_native = ""
@@ -1062,15 +959,9 @@ class SqlTableMacro : AstStructureAnnotation {
                 }
             }))
         }
-        
         for (is_covered, col in covered, cols) {
-            
-            
-            
             if (is_covered || col.generated) continue
             let sql_type = col.data_type
-            
-            
             let effective_not_null = col.not_null || col.pk
             var td = affinity_to_typedecl(sql_type, effective_not_null)
             if (td == null) {
@@ -1096,7 +987,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_drop_sql_fn(var st : StructurePtr; table_name : string) : FunctionPtr {
-        
         var fn = qmacro_function("_sql_drop_table_if_exists_sql") $(typ : $t(st)) : string {
             return _sql_drop_table_if_exists_sql(default<$t(st)>, $v(table_name))
         }
@@ -1106,9 +996,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_drop_sql_named_fn(var st : StructurePtr) : FunctionPtr {
-        
-        
-        
         var fn = qmacro_function("_sql_drop_table_if_exists_sql") $(typ : $t(st); name : string) : string {
             return "DROP TABLE IF EXISTS " + sql_quote_id(name)
         }
@@ -1147,8 +1034,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_create_table_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
-        
-        
         var fn = qmacro_function("_sql_create_table_sql") $(typ : $t(st)) : string {
             return _sql_create_table_sql(default<$t(st)>, $v(table_name))
         }
@@ -1158,13 +1043,9 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_create_table_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
-        
-        
         var write_exprs : array<ExpressionPtr>
         write_exprs |> reserve(3 * length(fields) + 4)
 
-        
         write_exprs |> push(qmacro_expr(${ writer |> write("CREATE TABLE "); }))
         write_exprs |> push(qmacro_expr(${ writer |> write(sql_quote_id(name)); }))
         write_exprs |> push(qmacro_expr(${ writer |> write("("); }))
@@ -1172,7 +1053,6 @@ class SqlTableMacro : AstStructureAnnotation {
         for (i in range(length(fields))) {
             let info = fields[i]
             let prefix = i == 0 ? "\"{info.col_name}\" " : ", \"{info.col_name}\" "
-            
             var suffix = ""
             if (info.is_computed) {
                 let storage = info.is_stored ? "STORED" : "VIRTUAL"
@@ -1187,7 +1067,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 suffix += info.references_clause
             }
             write_exprs |> push(qmacro_expr(${ writer |> write($v(prefix)); }))
-            
             if (info.is_json) {
                 write_exprs |> push(qmacro_expr(${ writer |> write("TEXT"); }))
             } elif (info.is_blob) {
@@ -1218,7 +1097,6 @@ class SqlTableMacro : AstStructureAnnotation {
             let name = info.col_name
             let is_pk = info.is_pk
             let is_nullable = info.is_optional
-            
             var default_expr = ""
             if (length(info.default_clause) > length(" DEFAULT ")) {
                 default_expr = info.default_clause |> slice(length(" DEFAULT "))
@@ -1261,8 +1139,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_insert_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>; include_pk : bool) : FunctionPtr {
-        
-        
         let helper_name = include_pk ? "_sql_insert_with_pk_sql" : "_sql_insert_no_pk_sql"
         var fn = qmacro_function(helper_name) $(typ : $t(st)) : string {
             return $c(helper_name)(default<$t(st)>, $v(table_name))
@@ -1273,9 +1149,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_insert_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>; include_pk : bool) : FunctionPtr {
-        
-        
-        
         let helper_name = include_pk ? "_sql_insert_with_pk_sql" : "_sql_insert_no_pk_sql"
         let cols = build_string() $(var w) {
             var first = true
@@ -1301,8 +1174,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 first = false
             }
         }
-        
-        
         let suffix = (empty(cols)
             ? " DEFAULT VALUES"
             : " ({cols}) VALUES ({placeholders})")
@@ -1341,7 +1212,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_bind_row_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
         var with_pk_exprs : array<ExpressionPtr>
         var no_pk_exprs : array<ExpressionPtr>
         with_pk_exprs |> reserve(length(fields))
@@ -1368,8 +1238,6 @@ class SqlTableMacro : AstStructureAnnotation {
             }))
         }
 
-        
-        
         var fn = qmacro_function("_sql_bind_row") $(var stmt; row : $t(st); include_pk : bool) : void {
             if (include_pk) {
                 $b(with_pk_exprs)
@@ -1383,7 +1251,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_select_all_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
-        
         var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st)) : string {
             return _sql_select_all_sql(default<$t(st)>, $v(table_name))
         }
@@ -1393,17 +1260,7 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_select_all_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
-        let col_list = build_string() $(var w) {
-            for (i in range(length(fields))) {
-                if (i > 0) {
-                    w |> write(", ")
-                }
-                w |> write("\"")
-                w |> write(fields[i].col_name)
-                w |> write("\"")
-            }
-        }
+        let col_list = quoted_column_list(fields)
         let prefix = "SELECT {col_list} FROM "
         var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st); name : string) : string {
             return $v(prefix) + sql_quote_id(name)
@@ -1431,8 +1288,6 @@ class SqlTableMacro : AstStructureAnnotation {
             }))
         }
 
-        
-        
         var fn = qmacro_function("_sql_read_row") $(stmt; typ : $t(st)) : $t(st) {
             var row = default<$t(st)>
             $b(assign_exprs)
@@ -1451,8 +1306,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_update_by_pk_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
-        
-        
         var fn = qmacro_function("_sql_update_by_pk_sql") $(typ : $t(st)) : string {
             return _sql_update_by_pk_sql(default<$t(st)>, $v(table_name))
         }
@@ -1462,8 +1315,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_update_by_pk_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
-        
         let pk_idx = find_pk_field(fields)
         if (pk_idx < 0) {
             let st_name = string(st.name)
@@ -1490,7 +1341,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 first = false
             }
         }
-        
         if (empty(set_clause)) {
             let st_name = string(st.name)
             let msg = "[sql_table] {st_name}: update(row) has nothing to SET - every non-PK column is missing or @sql_computed. Add at least one writable non-PK column, or use raw `exec`."
@@ -1513,7 +1363,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_delete_by_pk_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
-        
         var fn = qmacro_function("_sql_delete_by_pk_sql") $(typ : $t(st)) : string {
             return _sql_delete_by_pk_sql(default<$t(st)>, $v(table_name))
         }
@@ -1523,7 +1372,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_delete_by_pk_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
         let pk_idx = find_pk_field(fields)
         if (pk_idx < 0) {
             let st_name = string(st.name)
@@ -1548,7 +1396,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_bind_row_for_update_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
         let pk_idx = find_pk_field(fields)
         if (pk_idx < 0) {
             var fn = qmacro_function("_sql_bind_row_for_update") $(var stmt; row : $t(st)) : void {
@@ -1561,7 +1408,6 @@ class SqlTableMacro : AstStructureAnnotation {
 
         var bind_exprs : array<ExpressionPtr>
         var bind_idx = 0
-        
         for (field in fields) {
             if (field.is_pk || field.is_computed) continue
             bind_idx++
@@ -1571,7 +1417,6 @@ class SqlTableMacro : AstStructureAnnotation {
                 sql_bind_to_stmt(stmt, $v(bi), row.$f(field_name));
             }))
         }
-        
         bind_idx++
         let pk_bind_idx = bind_idx
         let pk_field_name = fields[pk_idx].name
@@ -1588,7 +1433,6 @@ class SqlTableMacro : AstStructureAnnotation {
     }
 
     def make_bind_row_pk_only_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-        
         let pk_idx = find_pk_field(fields)
         if (pk_idx < 0) {
             var fn = qmacro_function("_sql_bind_row_pk_only") $(var stmt; row : $t(st)) : void {
@@ -1609,10 +1453,7 @@ class SqlTableMacro : AstStructureAnnotation {
 
 }
 
-
-
 def private make_json_sql_bind_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
-    
     var t1 <- clone_type(field_type)
     t1.flags.constant = true
     var fn = qmacro_function("sql_bind") $(v : $t(t1)) : string {
@@ -1627,7 +1468,6 @@ def private make_json_sql_extract_fn(field_type : TypeDeclPtr; at : LineInfo) : 
     t1.flags.constant = true
     var t2 <- clone_type(field_type)
     var t3 <- clone_type(field_type)
-    
     var fn = qmacro_function("sql_extract") $(v : string; t : type<$t(t1)>) : $t(t2) {
         var err = ""
         let jv = _::read_json(v, err)
@@ -1639,8 +1479,6 @@ def private make_json_sql_extract_fn(field_type : TypeDeclPtr; at : LineInfo) : 
     fn.body |> force_at(at)
     return <- fn
 }
-
-
 
 def private make_blob_sql_bind_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
     var t1 <- clone_type(field_type)
@@ -1667,7 +1505,6 @@ def private make_blob_sql_extract_fn(field_type : TypeDeclPtr; at : LineInfo) : 
     fn.body |> force_at(at)
     return <- fn
 }
-
 
 enum private SqlAdapterKind {
     None
@@ -1701,7 +1538,6 @@ def private emit_json_blob_adapters_for_struct(var st : StructurePtr; fields : a
     for (i in range(length(fields))) {
         let info = fields[i]
         if (!info.is_json && !info.is_blob) continue
-        
         let ft = unwrap_option_payload_type(st.fields[i]._type)
         if (ft == null) continue
         let key = describe(ft)
@@ -1741,20 +1577,16 @@ def private emit_json_blob_adapters_for_struct(var st : StructurePtr; fields : a
     return true
 }
 
-
-
 [structure_macro(name=sql_view)]
 class private SqlViewMacro : AstStructureAnnotation {
-    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {   
+    def override apply(var st : StructurePtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {   
         let view_name = find_annotation(args, "name", string(st.name))
-        
         for (annDecl in st.annotations) {
             if (annDecl.annotation.name == "sql_index") {
                 errors := "[sql_view] on struct '{st.name}': [sql_index] cannot apply to a view - views are read-only and inherit indexing from the underlying table. Move the index to the underlying table's struct."
                 return false
             }
         }
-        
         var fields : array<FieldInfo>
         fields |> reserve(length(st.fields))
         for (field in st.fields) {
@@ -1803,7 +1635,6 @@ class private SqlViewMacro : AstStructureAnnotation {
                 errors := "[sql_view]: field '{fname}' has both @sql_json and @sql_blob - pick one. Use @sql_json for queryable, schema-tolerant TEXT storage; use @sql_blob for opaque binary storage."
                 return false
             }
-            
             var col_name = fname
             let col_anno = find_arg(field.annotation, "sql_column")
             if (col_anno is tString) {
@@ -1833,7 +1664,6 @@ class private SqlViewMacro : AstStructureAnnotation {
                 default_clause = "",
                 references_clause = ""))
         }
-        
         {
             var seen_cols : table<string; string>
             for (info in fields) {
@@ -1845,9 +1675,7 @@ class private SqlViewMacro : AstStructureAnnotation {
                 seen_cols |> insert(info.col_name, info.name)
             }
         }
-        
         if (!emit_json_blob_adapters_for_struct(st, fields, "[sql_view]", errors)) return false
-        
         var fn_table_name = make_view_table_name_fn(st, view_name)
         compiling_module() |> add_function(fn_table_name)
         var fn_drop = make_view_drop_sql_fn(st, view_name)
@@ -1858,7 +1686,6 @@ class private SqlViewMacro : AstStructureAnnotation {
         compiling_module() |> add_generic(fn_read)
         var fn_col_info = make_view_column_info_fn(st, fields)
         compiling_module() |> add_function(fn_col_info)
-        
         let st_name = string(st.name)
         var fn_ins_pk = make_view_string_panic_stub_fn(st, "_sql_insert_with_pk_sql", st_name, "insert")
         compiling_module() |> add_function(fn_ins_pk)
@@ -1879,9 +1706,6 @@ class private SqlViewMacro : AstStructureAnnotation {
         return true
     }
 }
-
-
-
 
 def make_const_string_helper_fn(var st : StructurePtr; helper_name, val : string) : FunctionPtr {
     var fn = qmacro_function(helper_name) $(typ : $t(st)) : string {
@@ -1940,16 +1764,7 @@ def private make_view_drop_sql_fn(var st : StructurePtr; view_name : string) : F
 }
 
 def private make_view_select_all_sql_fn(var st : StructurePtr; view_name : string; fields : array<FieldInfo>) : FunctionPtr {
-    let col_list = build_string() $(var w) {
-        for (i in range(length(fields))) {
-            if (i > 0) {
-                w |> write(", ")
-            }
-            w |> write("\"")
-            w |> write(fields[i].col_name)
-            w |> write("\"")
-        }
-    }
+    let col_list = quoted_column_list(fields)
     let sql = "SELECT {col_list} FROM \"{view_name}\""
     var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st)) : string {
         return $v(sql)
@@ -1960,7 +1775,6 @@ def private make_view_select_all_sql_fn(var st : StructurePtr; view_name : strin
 }
 
 def make_read_row_helper_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
-    
     var assign_exprs : array<ExpressionPtr>
     assign_exprs |> reserve(length(fields))
     for (i in range(length(fields))) {
@@ -1976,7 +1790,6 @@ def make_read_row_helper_fn(var st : StructurePtr; fields : array<FieldInfo>) : 
             }
         }))
     }
-    
     var fn = qmacro_function("_sql_read_row") $(stmt; typ : $t(st)) : $t(st) {
         var row = default<$t(st)>
         $b(assign_exprs)
@@ -2039,11 +1852,9 @@ def private make_view_bind_row_panic_stub_fn(var st : StructurePtr; helper_name 
     return <- make_void_panic_stub_helper_fn(st, helper_name, msg, has_include_pk)
 }
 
-
 [macro_function]
 def private resolve_sql_table(prog : ProgramPtr; at : LineInfo; var typeArg : ExpressionPtr;
                               macroName : string; var st : StructurePtr&; var table_name : string&) : bool {
-    
     if (typeArg._type == null) {
         macro_error(prog, at, "{macroName}: `type<T>` argument has no inferred type yet")
         return false
@@ -2068,7 +1879,6 @@ def private resolve_sql_table(prog : ProgramPtr; at : LineInfo; var typeArg : Ex
 
 [macro_function]
 def private resolve_field_index(var st : StructurePtr; field_name : string) : int {
-    
     for (i in range(length(st.fields))) {
         if (st.fields[i].name == field_name) return i
     }
@@ -2077,7 +1887,6 @@ def private resolve_field_index(var st : StructurePtr; field_name : string) : in
 
 [macro_function]
 def private field_sql_name_at(var st : StructurePtr; idx : int) : string {
-    
     let ca = find_arg(st.fields[idx].annotation, "sql_column")
     if (ca is tString) return ca as tString
     return string(st.fields[idx].name)
@@ -2085,7 +1894,6 @@ def private field_sql_name_at(var st : StructurePtr; idx : int) : string {
 
 [macro_function]
 def private decode_string_const(e : ExpressionPtr) : tuple<ok : bool; value : string> {
-    
     var inner = e
     if (inner != null && inner is ExprRef2Value) {
         inner = (inner as ExprRef2Value).subexpr
@@ -2097,14 +1905,12 @@ def private decode_string_const(e : ExpressionPtr) : tuple<ok : bool; value : st
 [call_macro(name="add_column")]
 class private AddColumnMacro : AstCallMacro {
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {   
-        
         let nArgs = call.arguments |> length
         macro_verify(nArgs == 3 || nArgs == 4, prog, call.at,
             "add_column expects (db, type<T>, \"Field\" [, defaultLit]) — got {nArgs} args")
         var st : StructurePtr
         var table_name : string
         if (!resolve_sql_table(prog, call.at, call.arguments[1], "add_column", st, table_name)) return null
-        
         let nameRes = decode_string_const(call.arguments[2])
         if (!nameRes.ok) {
             macro_error(prog, call.at, "add_column: third argument must be a string literal naming the field - got '{describe(call.arguments[2])}'")
@@ -2116,7 +1922,6 @@ class private AddColumnMacro : AstCallMacro {
             macro_error(prog, call.at, "add_column: field '{field_name}' is not a column of struct '{st.name}'")
             return null
         }
-        
         let pk_arg = find_arg(st.fields[idx].annotation, "sql_primary_key")
         if (pk_arg is tBool && (pk_arg as tBool)) {
             macro_error(prog, call.at,
@@ -2141,14 +1946,12 @@ class private AddColumnMacro : AstCallMacro {
                 "add_column does not support @sql_default_fn fields yet; use a literal default or `db |> exec(...)`")
             return null
         }
-        
         let json_arg = find_arg(st.fields[idx].annotation, "sql_json")
         let is_json = json_arg is tBool && (json_arg as tBool)
         let blob_arg = find_arg(st.fields[idx].annotation, "sql_blob")
         let is_blob = blob_arg is tBool && (blob_arg as tBool)
         let is_optional = is_option_field_type(st.fields[idx]._type)
         let col_name = field_sql_name_at(st, idx)
-        
         var default_clause = ""
         if (nArgs == 4) {
             if (is_json || is_blob) {
@@ -2167,12 +1970,10 @@ class private AddColumnMacro : AstCallMacro {
                 return null
             }
         } elif (!is_optional && !is_json && !is_blob) {
-            
             macro_error(prog, call.at,
                 "add_column: field '{field_name}' on '{st.name}' is non-nullable; provide a literal default (e.g. `add_column(type<T>, \"{field_name}\", 0)`) or wrap the field in Option<T>")
             return null
         }
-        
         let null_clause = is_optional ? "" : " NOT NULL"
         let prefix = "ALTER TABLE \"{table_name}\" ADD COLUMN \"{col_name}\" "
         let suffix = "{null_clause}{default_clause}"
@@ -2201,7 +2002,6 @@ class private AddColumnMacro : AstCallMacro {
 def private resolve_field_columns(prog : ProgramPtr; at : LineInfo; var st : StructurePtr;
                                   fieldsArg : ExpressionPtr; macroName : string;
                                   var sql_cols : array<string>&) : bool {
-    
     if (fieldsArg == null) {
         macro_error(prog, at, "{macroName}: missing fields argument")
         return false
@@ -2275,18 +2075,7 @@ def private emit_create_index(prog : ProgramPtr; var call : ExprCallMacro?; is_u
         idx_name = nameRes.value
     }
     let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
-    let ddl = build_string() $(var w) {
-        w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
-        for (j in range(length(sql_cols))) {
-            if (j > 0) {
-                w |> write(", ")
-            }
-            w |> write("\"")
-            w |> write(sql_cols[j])
-            w |> write("\"")
-        }
-        w |> write(")")
-    }
+    let ddl = index_ddl(kind, idx_name, table_name, sql_cols)
     var res = qmacro(_::exec($e(call.arguments[0]), $v(ddl)))
     res.force_at(call.at)
     return res
@@ -2305,10 +2094,6 @@ class private CreateUniqueIndexMacro : AstCallMacro {
         return emit_create_index(prog, call, true)
     }
 }
-
-
-
-
 
 enum public SqlFnTag : uint8 {
     
@@ -2341,8 +2126,6 @@ struct public SqlFunctionEntry {
     directonly : bool
     fn : SqlFnCarrier
 }
-
-
 
 var private g_sql_functions : array<SqlFunctionEntry>
 
@@ -2397,7 +2180,6 @@ def public sql_fn_tag_for_type(td : TypeDeclPtr) : tuple<tag : uint8; ok : bool>
 }
 
 def private _is_valid_sql_function_name(s : string) : bool {
-    
     if (empty(s)) return false
     var ok = true
     peek_data(s) $(arr) {
@@ -2423,7 +2205,7 @@ class SqlFunctionMacro : AstFunctionAnnotation {
     
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup;   
-                       args : AnnotationArgumentList; var errors : das_string) : bool {
+                       var args : AnnotationArgumentList; var errors : das_string) : bool {
         if (func.fromGeneric != null) {
             errors := "[sql_function] is not supported on generic functions; instantiate with concrete types and tag the concrete instance"
             return false
@@ -2491,14 +2273,11 @@ class SqlFunctionMacro : AstFunctionAnnotation {
         let tag2 = tags[2]
         let tag3 = tags[3]
         let retTag = retR.tag
-        
         var fnType = new TypeDecl(at = func.at, baseType = Type.tFunction)
         for (a in func.arguments) {
             fnType.argTypes |> emplace_new <| clone_type(a._type)
         }
         fnType.firstType = clone_type(func.result)
-        
-        
         var fnAddr = new ExprAddr(at = func.at, target := "__::{funcDasName}", funcType <- fnType)
         reg.list |> emplace_new <| qmacro_block() {
             sql_boost::_add_sql_function_entry($v(sqlName), $v(nArgsLit),

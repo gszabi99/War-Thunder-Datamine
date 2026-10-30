@@ -1,11 +1,10 @@
-from "%scripts/dagui_library.nut" import *
 import "%sqstd/math.nut" as stdMath
-
-let { get_array_by_bit_value } = require("%scripts/utils_sa.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_child, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+from "%scripts/utils_sa.nut" import get_array_by_bit_value
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, setPopupMenuPosAndAlign
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/dagui_library.nut" import *
 
 
 
@@ -109,4 +108,4 @@ let MultiSelectMenu = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MultiSelectMenu", MultiSelectMenu)
 
-return { MultiSelectMenu }
+return freeze({ MultiSelectMenu })

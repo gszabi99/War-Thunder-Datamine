@@ -1,3 +1,9 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wheelmenu/wheelmenu.nut" import wheelMenuHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/wheelmenu/voiceMessages.nut" import getVoiceMessageNames, getCategoryLoc
+from "%scripts/options/consoleMode.nut" import showConsoleButtons, getIsConsoleModeEnabled
 from "string" import format
 from "%sqstd/functools.nut" import KWARG_NON_STRICT
 from "%globalScripts/inputDeviceConsts.nut" import *
@@ -7,12 +13,6 @@ from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { showConsoleButtons, getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 
 register_gui_handler("voiceMenuHandler", class (wheelMenuHandler) {
   wndType = handlerType.CUSTOM

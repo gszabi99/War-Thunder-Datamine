@@ -1,5 +1,6 @@
+import "%scripts/controls/shortcutsList/shortcutTemplate.nut" as shortcutTemplate
 from "%scripts/dagui_library.nut" import *
-let shortcutTemplate = require("%scripts/controls/shortcutsList/shortcutTemplate.nut")
+
 let shGroupAxis = require("%scripts/controls/shortcutsList/shortcutsGroupAxis.nut")
 
 let shortcutsAxis = {

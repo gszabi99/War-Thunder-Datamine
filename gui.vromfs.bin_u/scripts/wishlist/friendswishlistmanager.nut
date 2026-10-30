@@ -1,8 +1,7 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import charRequestJson
+from "%scripts/wishlist/wishlistHandler.nut" import openWishlist
 from "%scripts/dagui_library.nut" import *
-
-let { charRequestJson } = require("%scripts/tasker.nut")
-let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 
 function onTryOpenFriendWishlistSuccess(data) {
   let { isEnabledForFriends = true, units = null, userId = "" } = data
@@ -20,6 +19,6 @@ function tryOpenFriendWishlist(uid) {
   charRequestJson("ano_get_wishlist_json", requestBlk, { showErrorMessageBox = true }, onTryOpenFriendWishlistSuccess)
 }
 
-return {
+return freeze({
   tryOpenFriendWishlist
-}
+})

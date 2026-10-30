@@ -1,6 +1,5 @@
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 const TIME_INTERVAL_SWITCH_OFF = 1000000.0
 
@@ -90,7 +89,7 @@ let DaguiSceneTimers = class {
   }
 
   function sortTimers() {
-    this.timersList.sort(@(a, b) a.time <=> b.time)
+    this.timersList.sortby(@(a) a.time)
   }
 
   function setObjTimeInterval(obj, interval) {

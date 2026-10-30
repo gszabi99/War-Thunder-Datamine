@@ -1,10 +1,14 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/utils/datablockConverter.nut" import dataToBlk, blkToData
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
-let matchSearchGm = mkWatched(persist, "matchSearchGm", -1)
-let isRemoteMissionVar = mkWatched(persist, "isRemoteMissionVar", false)
-let currentCampaignId = mkWatched(persist, "currentCampaignId", null)
-let currentCampaignMission = mkWatched(persist, "currentCampaignMission", null)
+let hardPersistWatched = mkHardPersistWatched("missions.missionsStates")
+let matchSearchGm = hardPersistWatched("matchSearchGm", -1)
+let isRemoteMissionVar = hardPersistWatched("isRemoteMissionVar", false)
+let currentCampaignId = hardPersistWatched("currentCampaignId", null)
+let currentCampaignMission = hardPersistWatched("currentCampaignMission", null)
 
 let persist_state = persist("persist_state", @() {
   current_campaign = null,
@@ -44,7 +48,7 @@ let persist_state = persist("persist_state", @() {
     isBotsAllowed = true
     rounds = 0
     arcadeCountry = false
-    maxRespawns = -1
+    maxRespawns = RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW
     autoBalance = true
     dynlist = []
     hasTeamDesignation = false
@@ -53,13 +57,22 @@ let persist_state = persist("persist_state", @() {
 
 })
 
+
+let storedMissionState = hardPersistOnUnload("missions.missionsStates", "persist_state",
+  @() dataToBlk(persist_state).formatAsString())
+if (storedMissionState != null) {
+  let blk = DataBlock()
+  blk.loadFromText(storedMissionState)
+  persist_state.__update(blkToData(blk))
+}
+
 function is_user_mission(missionBlk) {
   return missionBlk?.userMission == true 
 }
 
 let isCustomMissionFlight = Watched(false)
 
-return {
+return freeze({
   matchSearchGm
   isRemoteMissionVar
   currentCampaignId
@@ -74,4 +87,4 @@ return {
   is_user_mission
   isCustomMissionFlight
   isUrlMission = @(mission) "urlMission" in mission
-}
+})

@@ -2,7 +2,7 @@
   "model": "j_7e",
   "fmFile": "fm/j_7e.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.157,
   "gearSinkRangeC": 0.308,
@@ -33,16 +33,16 @@
   "paratrooper": "ally",
   "advancedInstructor": true,
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2300kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
@@ -671,15 +671,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -692,36 +696,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -754,15 +768,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -805,7 +823,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2655,11 +2675,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/uk_marconi_type_226.blk",
+        "blk": "gamedata/sensors/uk_marconi_type_226.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/cn_kj_8602.blk"
+        "blk": "gamedata/sensors/cn_kj_8602.blk"
       }
     ]
   },
@@ -2673,43 +2693,43 @@
     "preset": [
       {
         "name": "j_7e_default",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_default.blk"
       },
       {
         "name": "j_7e_2x_pl5_default",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_2x_pl5_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_2x_pl5_default.blk"
       },
       {
         "name": "j_7e_4x_pl2",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_4x_pl2.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_4x_pl2.blk"
       },
       {
         "name": "j_7e_4x_pl5b",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_4x_pl5b.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_4x_pl5b.blk"
       },
       {
         "name": "j_7e_16x_type130",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_16x_type130.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_16x_type130.blk"
       },
       {
         "name": "j_7e_28x_type90",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_28x_type90.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_28x_type90.blk"
       },
       {
         "name": "j_7e_4x250_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_4x250_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_4x250_bombs.blk"
       },
       {
         "name": "j_7e_2x500_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_2x500_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_2x500_bombs.blk"
       },
       {
         "name": "j_7e_4x250_4_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_4x250_4_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_4x250_4_bombs.blk"
       },
       {
         "name": "j_7e_2x500_4_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/j_7e_2x500_4_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_2x500_4_bombs.blk"
       }
     ]
   },
@@ -2757,7 +2777,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType30_1.blk",
+              "blk": "gamedata/weapons/cannonType30_1.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2768,7 +2788,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 72,
               "external": true,
@@ -2795,7 +2815,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl2.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl2.blk",
               "emitter": "r_3s_l1",
               "bullets": 1,
               "external": true,
@@ -2813,7 +2833,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl5b_default.blk",
               "emitter": "r_3s_l1",
               "bullets": 1,
               "external": true,
@@ -2829,7 +2849,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_90_cn_hf9.blk",
+              "blk": "gamedata/weapons/containers/type_90_cn_hf9.blk",
               "emitter": "pod_hf6_003",
               "external": true
             }
@@ -2846,7 +2866,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_130_cn_hf14.blk",
+              "blk": "gamedata/weapons/containers/type_130_cn_hf14.blk",
               "emitter": "hf_14_pod_l1",
               "external": true
             }
@@ -2863,7 +2883,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_3.blk",
               "emitter": "china_gp_250_3",
               "bullets": 1,
               "external": true,
@@ -2882,7 +2902,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_4.blk",
               "emitter": "china_gp_250_3",
               "bullets": 1,
               "external": true,
@@ -2901,7 +2921,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/su_490l_j_7_left_wing.blk",
+              "blk": "gamedata/weapons/drop_tank/su_490l_j_7_left_wing.blk",
               "emitter": "490l_drop_tank2",
               "bullets": 1,
               "external": true
@@ -2931,7 +2951,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl2.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl2.blk",
               "emitter": "r_3s_l",
               "bullets": 1,
               "external": true,
@@ -2950,7 +2970,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl5b.blk",
               "emitter": "r_3s_l",
               "bullets": 1,
               "external": true,
@@ -2966,7 +2986,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_90_cn_hf9.blk",
+              "blk": "gamedata/weapons/containers/type_90_cn_hf9.blk",
               "emitter": "pod_hf6_001",
               "external": true
             }
@@ -2983,7 +3003,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_130_cn_hf14.blk",
+              "blk": "gamedata/weapons/containers/type_130_cn_hf14.blk",
               "emitter": "hf_14_pod_l",
               "external": true
             }
@@ -3000,7 +3020,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_3.blk",
               "emitter": "china_gp_250_1",
               "bullets": 1,
               "external": true,
@@ -3019,7 +3039,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_4.blk",
               "emitter": "china_gp_250_1",
               "bullets": 1,
               "external": true,
@@ -3038,7 +3058,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_500_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_500_3.blk",
               "emitter": "china_gp_250_1",
               "bullets": 1,
               "external": true,
@@ -3057,7 +3077,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_500_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_500_4.blk",
               "emitter": "china_gp_250_1",
               "bullets": 1,
               "external": true,
@@ -3093,7 +3113,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/cn_720l_drop_tank.blk",
+            "blk": "gamedata/weapons/drop_tank/cn_720l_drop_tank.blk",
             "emitter": "800l_drop_tank1",
             "bullets": 1,
             "external": true
@@ -3118,7 +3138,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl2.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl2.blk",
               "emitter": "r_3s_r",
               "bullets": 1,
               "external": true,
@@ -3137,7 +3157,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl5b.blk",
               "emitter": "r_3s_r",
               "bullets": 1,
               "external": true,
@@ -3153,7 +3173,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_90_cn_hf9.blk",
+              "blk": "gamedata/weapons/containers/type_90_cn_hf9.blk",
               "emitter": "pod_hf6_002",
               "external": true
             }
@@ -3170,7 +3190,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_130_cn_hf14.blk",
+              "blk": "gamedata/weapons/containers/type_130_cn_hf14.blk",
               "emitter": "hf_14_pod_r",
               "external": true
             }
@@ -3187,7 +3207,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_3.blk",
               "emitter": "china_gp_250_2",
               "bullets": 1,
               "external": true,
@@ -3206,7 +3226,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_4.blk",
               "emitter": "china_gp_250_2",
               "bullets": 1,
               "external": true,
@@ -3225,7 +3245,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_500_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_500_3.blk",
               "emitter": "china_gp_250_2",
               "bullets": 1,
               "external": true,
@@ -3244,7 +3264,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_500_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_500_4.blk",
               "emitter": "china_gp_250_2",
               "bullets": 1,
               "external": true,
@@ -3270,7 +3290,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl2.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl2.blk",
               "emitter": "r_3s_r1",
               "bullets": 1,
               "external": true,
@@ -3288,7 +3308,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_pl5b_default.blk",
               "emitter": "r_3s_r1",
               "bullets": 1,
               "external": true,
@@ -3304,7 +3324,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_90_cn_hf9.blk",
+              "blk": "gamedata/weapons/containers/type_90_cn_hf9.blk",
               "emitter": "pod_hf6_004",
               "external": true
             }
@@ -3321,7 +3341,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/type_130_cn_hf14.blk",
+              "blk": "gamedata/weapons/containers/type_130_cn_hf14.blk",
               "emitter": "hf_14_pod_r1",
               "external": true
             }
@@ -3338,7 +3358,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_3.blk",
               "emitter": "china_gp_250_4",
               "bullets": 1,
               "external": true,
@@ -3357,7 +3377,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_4.blk",
               "emitter": "china_gp_250_4",
               "bullets": 1,
               "external": true,
@@ -3376,7 +3396,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/su_490l_j_7_right_wing.blk",
+              "blk": "gamedata/weapons/drop_tank/su_490l_j_7_right_wing.blk",
               "emitter": "490l_drop_tank3",
               "bullets": 1,
               "external": true
@@ -4417,6 +4437,972 @@
         "endPositionNoiseStrength": 0.0,
         "endPositionNoiseSpeed": 1.0,
         "fmPart": "spar1_r_dm"
+      }
+    ]
+  },
+  "wingVapors": {
+    "wingVapor": [
+      {
+        "name": "_wingvapor_mig_21_0",
+        "wingsCriticalAOA": [
+          15.0,
+          22.0,
+          45.0,
+          90.0
+        ],
+        "vorticesCriticalAOA": [
+          15.0,
+          25.0,
+          30.0,
+          50.0
+        ],
+        "minSpeedForCriticalAOA": 300.0,
+        "maxSpeedForCriticalAOA": 1300.0,
+        "wingCriticalAOAOffsetAtMaxSpeed": -8.0,
+        "vorticesCriticalAOAOffsetAtMaxSpeed": -3.0,
+        "wingCompressionAtMaxSpeed": 0.3,
+        "vorticesCompressionAtMaxSpeed": 0.3,
+        "minMaxIntensityForWingVapor": [
+          0.0,
+          1.0
+        ],
+        "minMaxIntensityForVorticesVapor": [
+          0.0,
+          1.0
+        ],
+        "vorticesIntensityMult": 0.0,
+        "wingIntensityMult": 1.0,
+        "animationViscosity": 100.0,
+        "vaporVorticesMinMaxFrequency": [
+          8.0,
+          8.0
+        ],
+        "vaporVorticesMinMaxNoise": [
+          1.0,
+          1.0
+        ],
+        "vaporVorticesMinMaxAngles": [
+          0.0,
+          0.0
+        ],
+        "vaporVorticesMinMaxSurfaceNoise": [
+          0.5,
+          0.5
+        ],
+        "vaporVorticesMinMaxAttenUp": [
+          0.5,
+          0.5
+        ],
+        "wingsVaporMinMaxNoiseSpeed": [
+          5.0,
+          5.0
+        ],
+        "vorticesVaporMinMaxNoiseSpeed": [
+          5.0,
+          5.0
+        ],
+        "wingsVaporMinMaxDeltaBack": [
+          0.5,
+          0.7
+        ],
+        "wingsVaporMinMaxDeltaFront": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxDeltaRight": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxDeltaUp": [
+          1.5,
+          1.0
+        ],
+        "wingsVaporMinMaxBackFade": [
+          0.4,
+          0.4
+        ],
+        "wingsVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "vorticesVaporMinMaxDeltaBack": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaFront": [
+          0.85,
+          0.85
+        ],
+        "vorticesVaporMinMaxDeltaRight": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "vorticesVaporMinMaxBackFade": [
+          0.4,
+          0.4
+        ],
+        "vorticesVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxMult": [
+          0.2,
+          0.2
+        ],
+        "wingsVaporMinMaxScale": [
+          0.2,
+          0.2
+        ],
+        "vorticesVaporMinMaxMult": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxScale": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporHumidityPlateaus": [
+          4.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "wingsVaporHumidityMult": [
+          0.7,
+          1.3,
+          2.0
+        ],
+        "aoaNoiseStrength": 15.0,
+        "aoaNoiseSpeed": 5.0,
+        "minSpeedForVapor": [
+          300.0,
+          500.0
+        ],
+        "maxSpeedForVapor": [
+          1000.0,
+          1900.0
+        ],
+        "Vertex": {
+          "vertex": [
+            [
+              -3.17246,
+              0.06297,
+              -0.59397
+            ],
+            [
+              2.84704,
+              0.00999,
+              -0.56974
+            ],
+            [
+              -1.9469,
+              -0.0783,
+              -3.55565
+            ],
+            [
+              -2.75798,
+              -0.0783,
+              -3.55565
+            ],
+            [
+              -2.81863,
+              0.75557,
+              -1.21067
+            ],
+            [
+              -0.17308,
+              0.39184,
+              -0.85908
+            ],
+            [
+              -1.39482,
+              0.73025,
+              -2.35155
+            ],
+            [
+              -2.47956,
+              0.79597,
+              -2.65013
+            ],
+            [
+              -0.84978,
+              0.82243,
+              -1.7353
+            ],
+            [
+              -2.64422,
+              1.02427,
+              -1.89934
+            ],
+            [
+              -3.03,
+              0.03648,
+              -2.07967
+            ],
+            [
+              0.37848,
+              0.00999,
+              -2.02669
+            ],
+            [
+              -3.17246,
+              0.06297,
+              0.59397
+            ],
+            [
+              2.84704,
+              0.00999,
+              0.56974
+            ],
+            [
+              -1.9469,
+              -0.0783,
+              3.55565
+            ],
+            [
+              -2.75798,
+              -0.0783,
+              3.55565
+            ],
+            [
+              -2.81863,
+              0.75557,
+              1.21067
+            ],
+            [
+              -0.17308,
+              0.39184,
+              0.85908
+            ],
+            [
+              -1.39482,
+              0.73025,
+              2.35155
+            ],
+            [
+              -2.47956,
+              0.79597,
+              2.65013
+            ],
+            [
+              -0.84978,
+              0.82243,
+              1.7353
+            ],
+            [
+              -2.64422,
+              1.02427,
+              1.89934
+            ],
+            [
+              -3.03,
+              0.03648,
+              2.07967
+            ],
+            [
+              0.37848,
+              0.00999,
+              2.02669
+            ]
+          ]
+        },
+        "Indices": {
+          "index": [
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              8,
+              11,
+              6
+            ],
+            [
+              11,
+              2,
+              6
+            ],
+            [
+              5,
+              1,
+              8
+            ],
+            [
+              11,
+              8,
+              1
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              9,
+              10,
+              4
+            ],
+            [
+              10,
+              0,
+              4
+            ],
+            [
+              9,
+              7,
+              10
+            ],
+            [
+              3,
+              10,
+              7
+            ],
+            [
+              5,
+              8,
+              4
+            ],
+            [
+              9,
+              8,
+              6
+            ],
+            [
+              7,
+              9,
+              6
+            ],
+            [
+              8,
+              9,
+              4
+            ],
+            [
+              10,
+              11,
+              0
+            ],
+            [
+              11,
+              1,
+              0
+            ],
+            [
+              11,
+              10,
+              2
+            ],
+            [
+              10,
+              3,
+              2
+            ],
+            [
+              12,
+              17,
+              13
+            ],
+            [
+              12,
+              16,
+              17
+            ],
+            [
+              18,
+              23,
+              20
+            ],
+            [
+              23,
+              18,
+              14
+            ],
+            [
+              17,
+              20,
+              13
+            ],
+            [
+              23,
+              13,
+              20
+            ],
+            [
+              14,
+              19,
+              15
+            ],
+            [
+              14,
+              18,
+              19
+            ],
+            [
+              16,
+              22,
+              21
+            ],
+            [
+              16,
+              12,
+              22
+            ],
+            [
+              22,
+              19,
+              21
+            ],
+            [
+              19,
+              22,
+              15
+            ],
+            [
+              17,
+              16,
+              20
+            ],
+            [
+              18,
+              20,
+              21
+            ],
+            [
+              19,
+              18,
+              21
+            ],
+            [
+              20,
+              16,
+              21
+            ],
+            [
+              12,
+              23,
+              22
+            ],
+            [
+              23,
+              12,
+              13
+            ],
+            [
+              23,
+              14,
+              22
+            ],
+            [
+              22,
+              14,
+              15
+            ]
+          ]
+        }
+      },
+      {
+        "name": "_wingvapor_mig_21_1",
+        "wingsCriticalAOA": [
+          5.0,
+          20.0,
+          40.0,
+          90.0
+        ],
+        "vorticesCriticalAOA": [
+          5.0,
+          25.0,
+          30.0,
+          50.0
+        ],
+        "minSpeedForCriticalAOA": 300.0,
+        "maxSpeedForCriticalAOA": 1300.0,
+        "wingCriticalAOAOffsetAtMaxSpeed": -4.0,
+        "vorticesCriticalAOAOffsetAtMaxSpeed": -4.0,
+        "wingCompressionAtMaxSpeed": 0.3,
+        "vorticesCompressionAtMaxSpeed": 0.3,
+        "minMaxIntensityForWingVapor": [
+          0.1,
+          1.0
+        ],
+        "minMaxIntensityForVorticesVapor": [
+          0.1,
+          1.5
+        ],
+        "vorticesIntensityMult": 3.0,
+        "wingIntensityMult": 1.0,
+        "animationViscosity": 100.0,
+        "vaporVorticesMinMaxFrequency": [
+          14.0,
+          11.0
+        ],
+        "vaporVorticesMinMaxNoise": [
+          0.0,
+          0.1
+        ],
+        "vaporVorticesMinMaxAngles": [
+          0.05,
+          0.05
+        ],
+        "vaporVorticesMinMaxSurfaceNoise": [
+          0.4,
+          0.5
+        ],
+        "vaporVorticesMinMaxAttenUp": [
+          0.65,
+          0.5
+        ],
+        "wingsVaporMinMaxNoiseSpeed": [
+          4.0,
+          4.0
+        ],
+        "vorticesVaporMinMaxNoiseSpeed": [
+          4.0,
+          4.0
+        ],
+        "wingsVaporMinMaxDeltaBack": [
+          1.0,
+          1.5
+        ],
+        "wingsVaporMinMaxDeltaFront": [
+          0.85,
+          0.85
+        ],
+        "wingsVaporMinMaxDeltaRight": [
+          0.4,
+          0.4
+        ],
+        "wingsVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "wingsVaporMinMaxBackFade": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "vorticesVaporMinMaxDeltaBack": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaFront": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxDeltaRight": [
+          0.2,
+          0.2
+        ],
+        "vorticesVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "vorticesVaporMinMaxBackFade": [
+          0.5,
+          0.5
+        ],
+        "vorticesVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxMult": [
+          0.1,
+          0.25
+        ],
+        "wingsVaporMinMaxScale": [
+          0.1,
+          0.25
+        ],
+        "vorticesVaporMinMaxMult": [
+          0.1,
+          0.25
+        ],
+        "vorticesVaporMinMaxScale": [
+          0.1,
+          0.25
+        ],
+        "wingsVaporHumidityPlateaus": [
+          4.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "wingsVaporHumidityMult": [
+          0.7,
+          1.3,
+          2.0
+        ],
+        "aoaNoiseStrength": 4.0,
+        "aoaNoiseSpeed": 3.0,
+        "minSpeedForVapor": [
+          250.0,
+          450.0
+        ],
+        "maxSpeedForVapor": [
+          1400.0,
+          2000.0
+        ],
+        "Vertex": {
+          "vertex": [
+            [
+              -2.99778,
+              0.04882,
+              -0.54675
+            ],
+            [
+              2.48638,
+              -0.01981,
+              -0.60091
+            ],
+            [
+              -1.93896,
+              -0.09656,
+              -3.54727
+            ],
+            [
+              -2.787,
+              -0.12524,
+              -3.61035
+            ],
+            [
+              -1.67199,
+              0.29461,
+              -1.06104
+            ],
+            [
+              -0.01801,
+              0.22247,
+              -1.05793
+            ],
+            [
+              -1.15111,
+              0.17339,
+              -2.46833
+            ],
+            [
+              -2.05718,
+              0.24554,
+              -2.30998
+            ],
+            [
+              -0.72788,
+              0.27344,
+              -1.79142
+            ],
+            [
+              -2.07847,
+              0.37138,
+              -1.79446
+            ],
+            [
+              0.37413,
+              -0.03825,
+              -1.9181
+            ],
+            [
+              -2.86899,
+              -0.03536,
+              -1.86171
+            ],
+            [
+              -2.99778,
+              0.04882,
+              0.54675
+            ],
+            [
+              2.48638,
+              -0.01981,
+              0.60091
+            ],
+            [
+              -1.93896,
+              -0.09656,
+              3.54727
+            ],
+            [
+              -2.787,
+              -0.12524,
+              3.61035
+            ],
+            [
+              -1.67199,
+              0.29461,
+              1.06104
+            ],
+            [
+              -0.01801,
+              0.22247,
+              1.05793
+            ],
+            [
+              -1.15111,
+              0.17339,
+              2.46833
+            ],
+            [
+              -2.05718,
+              0.24554,
+              2.30998
+            ],
+            [
+              -0.72788,
+              0.27344,
+              1.79142
+            ],
+            [
+              -2.07847,
+              0.37138,
+              1.79446
+            ],
+            [
+              0.37413,
+              -0.03825,
+              1.9181
+            ],
+            [
+              -2.86899,
+              -0.03536,
+              1.86171
+            ]
+          ]
+        },
+        "Indices": {
+          "index": [
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              8,
+              10,
+              6
+            ],
+            [
+              10,
+              2,
+              6
+            ],
+            [
+              10,
+              8,
+              1
+            ],
+            [
+              8,
+              5,
+              1
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              9,
+              11,
+              4
+            ],
+            [
+              11,
+              0,
+              4
+            ],
+            [
+              11,
+              9,
+              3
+            ],
+            [
+              9,
+              7,
+              3
+            ],
+            [
+              5,
+              8,
+              4
+            ],
+            [
+              9,
+              8,
+              6
+            ],
+            [
+              7,
+              9,
+              6
+            ],
+            [
+              8,
+              9,
+              4
+            ],
+            [
+              11,
+              10,
+              0
+            ],
+            [
+              10,
+              1,
+              0
+            ],
+            [
+              10,
+              11,
+              2
+            ],
+            [
+              11,
+              3,
+              2
+            ],
+            [
+              12,
+              17,
+              13
+            ],
+            [
+              12,
+              16,
+              17
+            ],
+            [
+              18,
+              22,
+              20
+            ],
+            [
+              22,
+              18,
+              14
+            ],
+            [
+              22,
+              13,
+              20
+            ],
+            [
+              13,
+              17,
+              20
+            ],
+            [
+              14,
+              19,
+              15
+            ],
+            [
+              14,
+              18,
+              19
+            ],
+            [
+              16,
+              23,
+              21
+            ],
+            [
+              16,
+              12,
+              23
+            ],
+            [
+              23,
+              15,
+              21
+            ],
+            [
+              15,
+              19,
+              21
+            ],
+            [
+              17,
+              16,
+              20
+            ],
+            [
+              18,
+              20,
+              21
+            ],
+            [
+              19,
+              18,
+              21
+            ],
+            [
+              20,
+              16,
+              21
+            ],
+            [
+              12,
+              22,
+              23
+            ],
+            [
+              22,
+              12,
+              13
+            ],
+            [
+              22,
+              14,
+              23
+            ],
+            [
+              23,
+              14,
+              15
+            ]
+          ]
+        }
       }
     ]
   }

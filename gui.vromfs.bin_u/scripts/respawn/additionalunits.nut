@@ -1,15 +1,17 @@
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened, isUnlockExist
 from "blkGetters" import get_current_mission_info_cached
+from "multiplayer" import get_mp_session_id_str
 from "%scripts/dagui_library.nut" import *
 
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isUnlockOpened, isUnlockExist } = require("%scripts/unlocks/unlocksModule.nut")
-
-let units = mkWatched(persist, "units", [])
-let usedUnits = mkWatched(persist, "usedUnits", {})
-let baseUnit = mkWatched(persist, "baseUnit", {})
-let selectedUnit = mkWatched(persist, "selectedUnit", {})
+let hardPersistWatched = mkHardPersistWatched("respawn.additionalUnits")
+let units = Watched([])
+let usedUnits = hardPersistWatched("usedUnits", {})
+let baseUnit = Watched({})
+let selectedUnit = hardPersistWatched("selectedUnit", {})
+let initedSessionId = hardPersistWatched("initedSessionId", null)
 
 function initAdditionalUnits(blk) {
   let res = []
@@ -31,9 +33,13 @@ function initAdditionalUnits(blk) {
     return r
   }, {}))
 
-  selectedUnit.set(initialSelectedUnits)
-
   units.set(res)
+
+  let sessionId = get_mp_session_id_str()
+  if (sessionId == initedSessionId.get())
+    return
+  initedSessionId.set(sessionId)
+  selectedUnit.set(initialSelectedUnits)
   usedUnits.set({})
 }
 
@@ -90,7 +96,7 @@ function createAdditionalUnitsViewData(unitName) {
 
 let updateUnitSelection = @(unitName) selectedUnit.mutate(@(su) su[baseUnit.get()[unitName]] <- unitName)
 
-return {
+return freeze({
   initAdditionalUnits
   isUnitSelected
   getUnitsBlockByUnitName
@@ -100,4 +106,4 @@ return {
   isEventUnit
   isUnitUsed
   setUnitUsed
-}
+})

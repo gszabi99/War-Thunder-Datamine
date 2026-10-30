@@ -183,7 +183,7 @@ let generateCompassTCSFMark = function(num, _elemWidth, _font) {
     ]
     transform = {
       rotate = num
-      pivot = [0.0, 0.0]
+      pivot = 0.0
     }
   }
 }
@@ -234,7 +234,7 @@ function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, f
     update = @() {
       transform = {
         rotate = -CompassValue.get()
-        pivot = [0.0, 0]
+        pivot = 0.0
       }
     }
     children = children
@@ -380,7 +380,7 @@ let generateCompassMarkElbit = function(num, _elemWidth, _font) {
   }
 }
 
-return {
+return freeze({
   compassWrap
   generateCompassMarkASP
   generateCompassMarkSUM
@@ -394,4 +394,4 @@ return {
   generateCompassMarkVE130
   generateCompassMarkSU145
   generateCompassMarkElbit
-}
+})

@@ -1,3 +1,21 @@
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocksWithBlkOrder
+from "%scripts/time.nut" import getTimestampFromStringUtc, buildDateStr
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/unlocks/unlocksAction.nut" import openUnlockManually, buyUnlock
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/trophyRewardList.nut" import openUnlockPrizesList
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter, RESET_ID, SELECT_ALL_ID
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavButton, initUnlockFavInContainer
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockMainCondDescByCfg, getUnlockNameText, getUnlockCondsDescByCfg, getUnlockMultDescByCfg
+from "%scripts/unlocks/unlocksViewModule.nut" import fillUnlockTitle, fillUnlockImage, fillUnlockProgressBar, fillUnlockPurchaseButton, fillUnlockManualOpenButton, canPreviewUnlockPrize, doPreviewUnlockPrize
 from "%appGlobals/config/specEventsCfg.nut" import eventsCfg, eventsFilters
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -7,26 +25,9 @@ from "math" import ceil
 from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, findUnusableUnitForManualUnlock, canClaimUnlockReward, isUnlockComplete, isUnlockOpened, getUnlockCompletedVal
 from "%scripts/dagui_library.nut" import *
 
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { getTimestampFromStringUtc, buildDateStr } = require("%scripts/time.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { openPopupFilter, RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { buildConditionsConfig, getUnlockMainCondDescByCfg, getUnlockNameText, getUnlockCondsDescByCfg, getUnlockMultDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
-let { fillUnlockImage, fillUnlockProgressBar, fillUnlockPurchaseButton, fillUnlockManualOpenButton, canPreviewUnlockPrize, doPreviewUnlockPrize } = require("%scripts/unlocks/unlocksViewModule.nut")
 
+const DEFAULT_CARDS_COUNT = 11
 
 function getEventActive(data) {
   let { beginTs, endTs } = data
@@ -42,7 +43,7 @@ function getEventStatusText(data) {
     return loc("mainmenu/dataFinishedTimeShort", { time = buildDateStr(endTs) })
 
   if (currTs < beginTs)
-    return loc("mainmenu/dataStartTimeShort", { time = buildDateStr(endTs) })
+    return loc("mainmenu/dataStartTimeShort", { time = buildDateStr(beginTs) })
 
   return loc("mainmenu/dataRemaningTimeShort", { time = buildDateStr(endTs) })
 }
@@ -58,12 +59,12 @@ function getOrderStatusText(data, isCompleted) {
     return loc("mainmenu/taskOverdueTime", { time = buildDateStr(endTs) })
 
   if (currTs < beginTs)
-    return loc("mainmenu/taskStartTime", { time = buildDateStr(endTs) })
+    return loc("mainmenu/taskStartTime", { time = buildDateStr(beginTs) })
 
   return loc("mainmenu/taskRemaningTime", { time = buildDateStr(endTs) })
 }
 
-local SpecEvents = class (BaseGuiHandlerWT) {
+let SpecEvents = class (BaseGuiHandlerWT) {
   wndType         = handlerType.BASE
   sceneBlkName    = "%gui/unlocks/specEventsModal.blk"
   emptyOrderBlk   = "%gui/unlocks/specEventsOrders.blk"
@@ -71,10 +72,9 @@ local SpecEvents = class (BaseGuiHandlerWT) {
 
   chaptersCache = null
   eventsCache = null
-  eventsCacheFilterd = null
+  eventsCacheFiltered = null
   selectedEventKey = null
   selectedOrderValue = null
-  eventOffsetIdx = 0
   maxViewEvents = 0
   filtersWidget = null
   selectedFilters = null
@@ -139,7 +139,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
 
     foreach (eventKey, eventCfg in eventsCfg)
       if (eventKey not in this.eventsCache) {
-        let { beginTs, endTs = 0 } = eventCfg
+        let { beginTs = 0, endTs = 0 } = eventCfg
         this.eventsCache[eventKey] <- {
           eventKey
           beginTs
@@ -152,7 +152,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
 
   function applyEventsFilter() {
     let filters = this.selectedFilters ?? {}
-    this.eventsCacheFilterd = this.eventsCache
+    this.eventsCacheFiltered = this.eventsCache
       .filter(function(_event, id) {
         let { unitType = null } = eventsCfg[id]
         return unitType == null
@@ -168,32 +168,42 @@ local SpecEvents = class (BaseGuiHandlerWT) {
       this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
   }
 
-  function updateEventsScreen() {
+  function updateEventsScreen(fromGoBack = false) {
     if (this.selectedEventKey == null) {
       this.updateEventsFilter()
-      this.updateEventsList()
+      this.updateEventsList(!fromGoBack)
     }
     else
       this.updateOrdersList()
   }
 
-  function updateEventsPaginator() {
-    let hasNextBtn = this.eventOffsetIdx + this.eventsCacheFilterd.len() >= this.maxViewEvents
-    this.scene.findObject("prevEventBtn").enable(this.eventOffsetIdx <= 0)
-    this.scene.findObject("nextEventBtn").enable(hasNextBtn)
-    showObjById("prevEventBg", this.eventOffsetIdx <= 0, this.scene)
-    showObjById("nextEventBg", hasNextBtn, this.scene)
+  function updateEventsPaginator(listBox) {
+    let scrollX = listBox.getScrollX()
+    let slotWidth = to_pixels("1@eventSlotWidth + 1@eSItemMargin")
+    let needShowLeft = scrollX > (slotWidth / 2)
+    let needShowRight= scrollX < ((listBox.childrenCount() - this.maxViewEvents) * slotWidth - slotWidth/2)
+
+    this.scene.findObject("prevEventBtn").enable(needShowLeft)
+    this.scene.findObject("nextEventBtn").enable(needShowRight)
+    showObjById("prevEventBg", needShowLeft, this.scene)
+    showObjById("nextEventBg", needShowRight, this.scene)
   }
 
-  function updateEventsList() {
+  function updateEventsList(autoScrollToEvent = true) {
     let currTs = get_local_unixtime()
-    let eventsList = this.eventsCacheFilterd.values().sort(@(a, b) a.endTs <=> b.endTs)
+    let eventsList = this.eventsCacheFiltered.values().sortby(@(a) a.endTs)
 
-    let maxVisibleSlots = to_pixels("@rw") / to_pixels("@eventSlotWidth") - 1
+    let navBtn = this.scene.findObject("prevEventBtn")
+    let btnSize = navBtn.getSize()
+
+    let slotWidth = to_pixels("1@eventSlotWidth + 1@eSItemMargin")
+    let maxVisibleSlots = ((to_pixels("@rw") - btnSize[0]*2)/ slotWidth)
     this.maxViewEvents = min(maxVisibleSlots, eventsList.len())
 
-    this.scene.findObject("eventsNest").width = $"{maxVisibleSlots}@eventSlotWidth"
-    this.scene.findObject("eventsBlock").width = $"{this.maxViewEvents}@eventSlotWidth"
+    let listWidth = $"{this.maxViewEvents}*{slotWidth} + 1"
+    this.scene.findObject("eventsNest").width = listWidth
+    let eventsListObj = showObjById("eventsContainer", true, this.scene)
+    eventsListObj.width = listWidth
 
     let rewardsList = this.chaptersCache
     let view = {
@@ -217,33 +227,25 @@ local SpecEvents = class (BaseGuiHandlerWT) {
         }
       })
     }
-    let objIdxToScroll = eventsList.findindex(@(v)
-      (v.beginTs == -1 || v.beginTs <= currTs) && (v.endTs == -1 || v.endTs > currTs)
-    ) ?? eventsList.len() - 1
 
-    showObjById("ordersContainer", false, this.scene)
-    showObjById("rewardsContainer", false, this.scene)
+    showObjById("rewardsAndOrdersContainer", false, this.scene)
     showObjById("filter_nest", true, this.scene)
-    let eventsContainerObj = showObjById("eventsContainer", true, this.scene)
     let markup = handyman.renderCached("%gui/unlocks/specEvents.tpl", view)
-    this.guiScene.replaceContentFromText(eventsContainerObj, markup, markup.len(), this)
+    this.guiScene.replaceContentFromText(eventsListObj, markup, markup.len(), this)
 
-    let reqPaginator = this.eventsCacheFilterd.len() > this.maxViewEvents
-    if (reqPaginator) {
-      this.updateEventsPaginator()
-      this.eventOffsetIdx = -(objIdxToScroll - ceil(this.maxViewEvents / 2.0).tointeger() + 1)
-      if (this.eventOffsetIdx > 1)
-        this.eventOffsetIdx = 1
-      else if (this.eventOffsetIdx < this.maxViewEvents - this.eventsCacheFilterd.len() - 1)
-        this.eventOffsetIdx = this.maxViewEvents - this.eventsCacheFilterd.len() - 1
+    if (autoScrollToEvent) {
+      let objIdxToScroll = eventsList.findindex(@(v)
+        (v.beginTs == -1 || v.beginTs <= currTs) && (v.endTs == -1 || v.endTs > currTs)
+        ) ?? eventsList.len() - 1
+
+      eventsListObj.scrollToX(slotWidth * objIdxToScroll)
     }
-    else
-      this.eventOffsetIdx = 0
+
+    let reqPaginator = this.eventsCacheFiltered.len() > this.maxViewEvents
+    if (reqPaginator)
+      this.updateEventsPaginator(eventsListObj)
 
     showObjById("eventsButtons", reqPaginator, this.scene)
-
-
-    this.applyEventOffset()
   }
 
   function updateEventsFilter() {
@@ -251,7 +253,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
     let popupFilterHandler = openPopupFilter({
       scene = obj
       btnTitle = loc("tournaments/filters")
-      btnName = ""
+      btnName = "RB"
       popupAlign = "bottom"
       onChangeFn = this.applyFilter.bindenv(this)
       filterTypesFn = this.getFilterList.bindenv(this)
@@ -292,7 +294,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
 
   function findRewardCard(obj) {
     local card = obj
-    while (card?.isValid() && (card?.isSpecEventSlot ?? "") != "yes")
+    while (card?.isValid() && (card?.isSpecEventOrder ?? "") != "yes")
       card = card.getParent()
     return card
   }
@@ -378,7 +380,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
 
     let showPrizesBtnObj = containerObj.findObject("show_prizes_btn")
     showPrizesBtnObj.show(unlockCfg?.trophyId != null)
-    showPrizesBtnObj.trophyId = unlockCfg?.trophyId
+    showPrizesBtnObj.trophyId = unlockCfg?.trophyId ?? ""
   }
 
   function updateOrdersList() {
@@ -389,15 +391,20 @@ local SpecEvents = class (BaseGuiHandlerWT) {
     let currTs = get_local_unixtime()
     let rewardsList = this.chaptersCache?[this.selectedEventKey.split("/")?[0]] ?? []
     let rewardsCount = rewardsList.len()
-    let rewardsContainerObj = showObjById("rewardsContainer", true, this.scene)
+
+    let rewardsAndOrdersContainer = showObjById("rewardsAndOrdersContainer", true, this.scene)
+    let rewardsContainerObj = rewardsAndOrdersContainer.findObject("rewardsContainer")
     let addRewardsCount = rewardsCount - rewardsContainerObj.childrenCount()
     if (addRewardsCount > 0)
       this.guiScene.createMultiElementsByObject(rewardsContainerObj, this.emptyRewardBlk,
-        "tdiv", addRewardsCount, this)
+        "specEventsReward", addRewardsCount, this)
 
-    let ordersList = this.eventsCacheFilterd?[this.selectedEventKey].orders ?? []
+    let ordersList = this.eventsCacheFiltered?[this.selectedEventKey].orders ?? []
 
-    local hasBigRewardFound = rewardsList.findindex(@(r) r?.isMainReward ?? false) != null
+    local bigRewardIdx = rewardsList.findindex(@(r) r?.isMainReward ?? false) ?? -1
+    let defaultRewardSlotWidth = to_pixels("156@sf/@pf")
+    let totalWidth = DEFAULT_CARDS_COUNT * defaultRewardSlotWidth
+
     for (local i = 0; i < rewardsContainerObj.childrenCount(); i++) {
       let child = rewardsContainerObj.getChild(i)
       child.show(rewardsCount > i)
@@ -411,27 +418,37 @@ local SpecEvents = class (BaseGuiHandlerWT) {
       let content = trophy?.getContent() ?? []
 
       local isBigReward = isMainReward
-      if (!hasBigRewardFound) {
+      if (bigRewardIdx < 0) {
         if (i == rewardsList.len() - 1 || content.findindex(@(c) (c?.unit ?? "") != "") != null) {
-          hasBigRewardFound = true
+          bigRewardIdx = i
           isBigReward = true
         }
       }
 
-      child.findObject("reward_container").width = isBigReward
-        ? "2@rewardSlotWidth"
-        : "@rewardSlotWidth"
       showObjById("bg_image", isBigReward, child)
       showObjById("last_vertical_line", isBigReward, child)
-
       this.fillReward(unlockBlk, unlockCfg, child)
     }
 
-    rewardsContainerObj.width =
-      $"{min(rewardsCount + (hasBigRewardFound ? 1 : 0), 11)}(@rewardSlotWidth + @dp) + @dp"
+    let bigSlotsWidth = defaultRewardSlotWidth * 2
+    let smallSlotsCount = max(rewardsCount - 1, 1)
+    let rewardSlotWidth = (totalWidth - bigSlotsWidth) / smallSlotsCount
+
+    for (local i = 0; i < rewardsCount; i++) {
+      let child = rewardsContainerObj.getChild(i)
+      let isBigReward = i == bigRewardIdx
+      child.findObject("reward_container").width = isBigReward
+        ? bigSlotsWidth
+        : rewardSlotWidth
+
+      child.findObject("achivment_ico_nest")["max-width"] = isBigReward ? bigSlotsWidth : defaultRewardSlotWidth
+    }
+
+    let containersWidth = $"{totalWidth} + {rewardsCount + 1}*@dp"
+    rewardsAndOrdersContainer.width = containersWidth
 
     let ordersCount = ordersList.len()
-    let ordersContainerObj = showObjById("ordersContainer", true, this.scene)
+    let ordersContainerObj = rewardsAndOrdersContainer.findObject("ordersContainer")
     let addOrdersCount = ordersCount - ordersContainerObj.childrenCount()
     if (addOrdersCount > 0)
       this.guiScene.createMultiElementsByObject(ordersContainerObj, this.emptyOrderBlk,
@@ -460,6 +477,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
       if (isActive && !isCompleted)
         initUnlockFavInContainer(unlockCfg.id, child)
 
+      fillUnlockTitle(unlockCfg, child)
       child.findObject("status_text").setValue(getOrderStatusText(order, isCompleted))
       child.findObject("main_cond_text").setValue(getUnlockMainCondDescByCfg(unlockCfg))
 
@@ -469,7 +487,12 @@ local SpecEvents = class (BaseGuiHandlerWT) {
     }
   }
 
-  function onEventClick(obj) {
+  function onEventClick(listObj) {
+    let selectedId = listObj.getValue()
+    if (selectedId < 0 || (selectedId > listObj.childrenCount() - 1))
+      return
+    let obj = listObj.getChild(selectedId)
+
     let { eventKey } = obj
     if (this.eventsCache[eventKey]?.isFake ?? false)
       return
@@ -479,25 +502,20 @@ local SpecEvents = class (BaseGuiHandlerWT) {
     this.updateEventsScreen()
   }
 
-  function applyEventOffset() {
-    this.scene.findObject("eventsContainer").left = $"{this.eventOffsetIdx}@eventSlotWidth"
-    this.updateEventsPaginator()
+  function scrollByEventCount(scrollCount) {
+    let eventsListObj = this.scene.findObject("eventsContainer")
+    let slotWidth = to_pixels("1@eventSlotWidth + 1@eSItemMargin")
+    let scrollX = eventsListObj.getScrollX()
+    let curEventIdx = ceil(scrollX.tofloat() / slotWidth)
+    eventsListObj.scrollToX((curEventIdx + scrollCount) * slotWidth)
   }
 
   function onMovePrevEvent() {
-    if (this.eventOffsetIdx > 0)
-      return
-
-    this.eventOffsetIdx++
-    this.applyEventOffset()
+    this.scrollByEventCount(-1)
   }
 
   function onMoveNextEvent() {
-    if (this.eventOffsetIdx + this.eventsCacheFilterd.len() < this.maxViewEvents)
-      return
-
-    this.eventOffsetIdx--
-    this.applyEventOffset()
+    this.scrollByEventCount(1)
   }
 
   function onBuyUnlock(obj) {
@@ -576,7 +594,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
   }
 
   function showUnlockPrizes(obj) {
-    openTrophyRewardsList({ trophy = findItemById(obj.trophyId) })
+    openUnlockPrizesList(obj.trophyId)
   }
 
   function goBack() {
@@ -585,7 +603,7 @@ local SpecEvents = class (BaseGuiHandlerWT) {
     else {
       this.selectedEventKey = null
       this.updateNavBar()
-      this.updateEventsScreen()
+      this.updateEventsScreen(true)
     }
   }
 
@@ -630,6 +648,6 @@ register_gui_handler("SpecEvents", SpecEvents)
 
 let openSpecEventsWnd = @() handlersManager.loadHandler(SpecEvents)
 
-return {
+return freeze({
   openSpecEventsWnd
-}
+})

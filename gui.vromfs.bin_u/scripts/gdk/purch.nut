@@ -1,3 +1,6 @@
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/gdk/loginState.nut" import native_login
 from "%gdkLib/impl/user.nut" import is_any_user_active
 from "gameplayBinding" import isInHangar
 from "%globalScripts/yuplay2Consts.nut" import *
@@ -5,9 +8,6 @@ from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_PURCH] ")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { native_login } = require("%scripts/gdk/loginState.nut")
 
 
 local callbackReturnFunc = null
@@ -51,7 +51,7 @@ function update_purchases() {
 }
 
 
-return {
+return freeze({
   update_purchases
   set_xbox_on_purchase_cb
-}
+})

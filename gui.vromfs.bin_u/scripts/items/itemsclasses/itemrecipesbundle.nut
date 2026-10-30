@@ -1,11 +1,11 @@
+from "%scripts/items/itemsManagerModule.nut" import getItemGenerator
+from "%scripts/items/exchangeRecipes.nut" import getRequirementsMarkup, getRequirementsText
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
-let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
 let { Chest } = require("%scripts/items/itemsClasses/itemChest.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let RecipesBundle = class (Chest) {
   static iType = itemType.RECIPES_BUNDLE

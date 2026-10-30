@@ -1,3 +1,11 @@
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import getMultiStageLocId
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockIconConfig
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/options/options.nut" import get_gui_option_in_mode
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "loading" import loading_play_voice
@@ -5,15 +13,6 @@ from "replays" import is_replay_playing
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
-
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockIconConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_DELAY_TIME = 0.5
@@ -235,9 +234,9 @@ eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
 
 registerForNativeCall("get_loc_for_streak", getLocForStreak)
 
-return {
+return freeze({
   add_streak_message
   getLocForStreak
   clearStreaks
   onUpdateStreaks
-}
+})

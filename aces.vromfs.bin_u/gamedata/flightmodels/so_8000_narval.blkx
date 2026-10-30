@@ -1,25 +1,25 @@
 {
   "model": "so_8000_narval",
   "fmFile": "fm/so_8000_narval.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.275,
   "gearSinkRangeC": 0.147,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "france_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "700kph",
   "fightAiBehaviour": "fighter",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
     "armor10": {
       "armor2_dm": {
@@ -614,15 +614,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -665,7 +669,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2080,7 +2086,7 @@
     "Weapon": [
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "cannon1_dm",
@@ -2089,7 +2095,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "cannon2_dm",
@@ -2099,7 +2105,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "cannon3_dm",
@@ -2109,7 +2115,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "dm": "cannon4_dm",
@@ -2119,7 +2125,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare5",
         "flash": "flare5",
         "dm": "cannon5_dm",
@@ -2129,7 +2135,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare6",
         "flash": "flare6",
         "dm": "cannon6_dm",
@@ -2143,21 +2149,21 @@
     "preset": [
       {
         "name": "so_8000_narval_default",
-        "blk": "gameData/FlightModels/weaponPresets/so_8000_narval_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/so_8000_narval_default.blk"
       },
       {
         "name": "so_8000_narval_bombs_1000",
-        "blk": "gameData/FlightModels/weaponPresets/so_8000_narval_1000.blk",
+        "blk": "gamedata/flightModels/weaponPresets/so_8000_narval_1000.blk",
         "reqModification": "b-25_lbc"
       },
       {
         "name": "so_8000_narval_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/so_8000_narval_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/so_8000_narval_rockets.blk",
         "reqModification": "fr_matra_t_10",
         "weaponConfig": {
           "Weapon": [
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
               "tier": {
                 "idx": 5,
                 "amountPerTier": 4.0,
@@ -2165,7 +2171,7 @@
               }
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "tier": {
                 "idx": 7,
                 "amountPerTier": 4.0,
@@ -2177,12 +2183,12 @@
       },
       {
         "name": "so_8000_narval_rockets_150",
-        "blk": "gameData/FlightModels/weaponPresets/so_8000_narval_rockets_150.blk",
+        "blk": "gamedata/flightModels/weaponPresets/so_8000_narval_rockets_150.blk",
         "reqModification": "fr_matra_t_10_150",
         "weaponConfig": {
           "Weapon": [
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
               "tier": {
                 "idx": 5,
                 "amountPerTier": 4.0,
@@ -2190,7 +2196,7 @@
               }
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "tier": {
                 "idx": 7,
                 "amountPerTier": 4.0,

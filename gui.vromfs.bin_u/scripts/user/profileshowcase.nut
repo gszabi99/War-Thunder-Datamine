@@ -1,17 +1,18 @@
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/tasker.nut" import addTask
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksViewModule.nut" import getConditionsToUnlockShowcaseById
+from "%scripts/user/profileShowcasesData.nut" import setCurrentShowcase, updateShowcaseDataInCache
+from "%scripts/user/showcase/showcaseValues.nut" import getUnitFromTerseInfo, getStatsValue, defaultShowcaseType, findUnitStats
 from "chard" import charSendBlk
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { setCurrentShowcase, updateShowcaseDataInCache } = require("%scripts/user/profileShowcasesData.nut")
-let { showcaseValues, getUnitFromTerseInfo, getStatsValue, defaultShowcaseType, diffNames, findUnitStats } = require("%scripts/user/showcase/showcaseValues.nut")
+let { showcaseValues, diffNames } = require("%scripts/user/showcase/showcaseValues.nut")
 let { favoriteShowcase } = require("%scripts/user/showcase/favoriteShowcase.nut")
 let { aceOfSpades } = require("%scripts/user/showcase/aceOfSpades.nut")
 let { unitsCollector } = require("%scripts/user/showcase/unitsCollector.nut")
@@ -442,7 +443,7 @@ function getShowcaseUnitsFilter(terseInfo, unitIdx = -1) {
   return showcase?.getUnitsFilter(terseInfo, unitIdx) ?? @(_u) true
 }
 
-return {
+return freeze({
   defaultTitleIcon
   getShowcaseTitleViewData
   getEditViewData
@@ -460,4 +461,4 @@ return {
   getShowcaseIndexByTerseName
   getShowcaseUnitsFilter
   getDiffByIndex
-}
+})

@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.32,
-  "shotFreq": 1.66,
-  "traceFreq": 1,
-  "bullets": 30,
-  "reloadSpeedK": 1.5,
-  "soundLoop": false,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,30 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 1,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.32,
+  "shotFreq": 1.66,
+  "bullets": 30,
+  "reloadSpeedK": 1.5,
+  "soundLoop": false,
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.475,
@@ -1872,29 +1888,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m4_gun_outside",
-    "cockpit": "m4_gun_inside",
-    "ai": "m4_gun_ai"
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
-  },
   "ho203_new_gun": {
     "maxDeltaAngle": 0.96,
     "overheat": {
@@ -1913,5 +1906,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m4_gun_outside",
+    "cockpit": "m4_gun_inside",
+    "ai": "m4_gun_ai"
   }
 }

@@ -470,6 +470,39 @@
       "omni_light__shadow_quality": 2
     }
   },
+  "omni_light_wall_10_shadow_unused_box": {
+    "_use": "omni_light",
+    "light__max_radius": 10.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      80,
+      170,
+      255,
+      255
+    ],
+    "light__brightness": 0.3,
+    "light__radius_scale": 5.0,
+    "light__contact_shadows": false,
+    "light__direction": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "light__enable_lens_flares": true,
+    "light__nightly": false,
+    "light__use_box": false,
+    "_group": {
+      "_track": true,
+      "_replicate": true,
+      "omni_light__shadows": true,
+      "omni_light__shadow_shrink": 0,
+      "omni_light__shadow_quality": 2
+    }
+  },
   "omni_light_wall_6_shadow": {
     "_use": "omni_light",
     "light__max_radius": 6.0,
@@ -2914,6 +2947,31 @@
       "omni_light__shadow_quality": 0,
       "omni_light__shadow_near_far_planes": [
         0.15,
+        0.0
+      ]
+    }
+  },
+  "light_industrial_hangar_light_a": {
+    "_use": "spot_light",
+    "light__max_radius": 20.0,
+    "light__color": [
+      255,
+      250,
+      255,
+      255
+    ],
+    "light__brightness": 5.5,
+    "light__radius_scale": 3.0,
+    "light__enable_lens_flares": true,
+    "light__nightly": false,
+    "_group": {
+      "spot_light__shadows": true,
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__inner_attenuation": 0.5,
+      "spot_light__cone_angle": 70.0,
+      "spot_light__shadow_cone_angle": 60.0,
+      "spot_light__shadow_near_far_planes": [
+        0.5,
         0.0
       ]
     }

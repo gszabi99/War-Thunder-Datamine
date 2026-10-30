@@ -31,7 +31,7 @@ def explosion_sound_manager_init(evt : Event;
                                  var explosion_sound_manager__slotCount : IntList&;
                                  var explosion_sound_manager__soundSlot : IntList&;
                                  var explosion_sound_manager__soundCooldown : FloatList&;
-                                 var explosion_sound_manager__typeNames : StringList&;
+                                 var explosion_sound_manager__typeHashes : UInt32List&;
                                  var explosion_sound_manager__eventNames : StringList&;
                                  var explosion_sound_manager__debugPos : Point3List&;
                                  var explosion_sound_manager__debugLod : IntList&;
@@ -92,7 +92,7 @@ def explosion_sound_manager_init(evt : Event;
       fullName = "{infantryPath}/{eventName}"
       if fullName == ""
         continue
-      explosion_sound_manager__typeNames |> push(string(*explosionsBlk |> datablock_getParamName(param_i)))
+      explosion_sound_manager__typeHashes |> push(ecs_hash(*explosionsBlk |> datablock_getParamName(param_i)))
       explosion_sound_manager__eventNames |> push(fullName)
 
 
@@ -103,7 +103,7 @@ def explosion_sound_on_effect_appear(evt : Event;
   if explosion_sound_type == ""
     return
 
-  broadcastEvent(EventPlayExplosionSound(pos = transform[3], explosionSoundType = explosion_sound_type))
+  broadcastEvent(EventPlayExplosionSound(pos = transform[3], explosionSoundTypeHash = ecs_hash(explosion_sound_type)))
 
 
 [es(tag=sound)]
@@ -111,7 +111,7 @@ def explosion_sound_manager_play(evt : EventPlayExplosionSound;
                                  explosion_sound_manager__lodRadiusSq : FloatList;
                                  explosion_sound_manager__lodMaxPerSector : IntList;
                                  explosion_sound_manager__maxRadiusSq : float;
-                                 explosion_sound_manager__typeNames : StringList;
+                                 explosion_sound_manager__typeHashes : UInt32List;
                                  explosion_sound_manager__eventNames : StringList;
                                  explosion_sound_manager__debugEnabled : bool;
                                  var explosion_sound_manager__slotCount : IntList&;
@@ -139,8 +139,8 @@ def explosion_sound_manager_play(evt : EventPlayExplosionSound;
     return
 
   var explosionType = -1
-  for i in range(0, length(explosion_sound_manager__typeNames))
-    if string(explosion_sound_manager__typeNames[i]) == evt.explosionSoundType
+  for i in range(0, length(explosion_sound_manager__typeHashes))
+    if explosion_sound_manager__typeHashes[i] == evt.explosionSoundTypeHash
       explosionType = i
       break
   if explosionType < 0

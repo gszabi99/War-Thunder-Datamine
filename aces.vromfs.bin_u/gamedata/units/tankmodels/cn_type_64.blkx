@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "chinese_gunner_char",
@@ -2436,7 +2442,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_M1_open_turret_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_M1_open_turret_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.165,
@@ -2500,7 +2506,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2562,7 +2568,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_aa_flame_02",
         "defaultYaw": 0.0,
@@ -2605,8 +2611,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_type_64_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_type_64_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3673,5 +3679,29 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.086,
+      1.1742,
+      0.9084
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

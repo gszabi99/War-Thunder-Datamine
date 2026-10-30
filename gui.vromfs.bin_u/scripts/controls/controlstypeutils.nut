@@ -1,21 +1,21 @@
+from "%sqstd/platform.nut" import is_android, is_xbox, isPC, isPS4, isSony, isXbox, is_steam_deck
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/options/optionsExt.nut" import set_option, get_option, registerOption
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
+from "%scripts/controls/controlsPresets.nut" import parseControlsPresetName, getHighestVersionControlsPreset, getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/shortcutsUtils.nut" import restoreShortcuts
+from "%scripts/options/consoleMode.nut" import switchShowConsoleButtons
+from "%scripts/clientState/saveProfile.nut" import saveProfile
+from "%scripts/controls/aircraftHelpers.nut" import getCurrentHelpersMode
+from "%scripts/controls/controlsManager.nut" import setAndCommitCurControlsPreset
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
 from "chard" import save_profile
-from "%sqstd/platform.nut" import is_android, is_xbox, isPC, isPS4, isSony, isXbox
 from "globalEnv" import ControlHelpersMode, setControlHelpersMode
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { set_option, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
-let { parseControlsPresetName, getHighestVersionControlsPreset, getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename } = require("%scripts/controls/controlsPresets.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
-let { switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let { setAndCommitCurControlsPreset } = require("%scripts/controls/controlsManager.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 function setHelpersModeAndOption(mode) { 
   set_option(USEROPT_HELPERS_MODE, mode) 
@@ -89,11 +89,11 @@ function setControlTypeByID(ct_id) {
   if (ct_preset != "")
     preset = parseControlsPresetName(ct_preset)
   else if (ct_id == "ct_mouse") {
-    if (isPlatformSony)
+    if (isSony)
       preset = parseControlsPresetName("dualshock4")
     else if (is_xbox)
       preset = parseControlsPresetName("xboxone_ma")
-    else if (isPlatformSteamDeck)
+    else if (is_steam_deck)
       preset = parseControlsPresetName("steamdeck_ma")
     else
       preset = parseControlsPresetName("keyboard_shooter")
@@ -101,7 +101,7 @@ function setControlTypeByID(ct_id) {
   preset = getHighestVersionControlsPreset(preset)
   applyJoyPresetXchange(preset.fileName)
 
-  if (isPlatformSony || isPlatformXbox || isPlatformSteamDeck) {
+  if (isSony || isXbox || is_steam_deck) {
     let presetMode = get_option(USEROPT_CONTROLS_PRESET)
     ct_preset = parseControlsPresetName(presetMode.values[presetMode.value])
     
@@ -164,8 +164,8 @@ function setUseroptControlsPreset(value, descr, _optionId) {
 
 registerOption(USEROPT_CONTROLS_PRESET, fillUseroptControlsPresetDescr, setUseroptControlsPreset)
 
-return {
+return freeze({
   setHelpersModeAndOption
   setControlTypeByID
   applyJoyPresetXchange
-}
+})

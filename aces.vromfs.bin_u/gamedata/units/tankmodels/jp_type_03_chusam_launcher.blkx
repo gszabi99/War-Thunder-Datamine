@@ -2290,7 +2290,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2315,7 +2315,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/320mm_type_03_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/320mm_type_03_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2381,13 +2381,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2677,8 +2687,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_03_chusam_launcher_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_03_chusam_launcher_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4182,22 +4192,22 @@
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
         "ammo_turret_02_dm": {
-          "count": 1
-        },
-        "ammo_turret_04_dm": {
-          "count": 1
-        },
-        "ammo_turret_06_dm": {
-          "count": 1
-        },
-        "ammo_turret_05_dm": {
           "count": 1
         },
         "ammo_turret_03_dm": {
           "count": 1
         },
-        "ammo_turret_01_dm": {
+        "ammo_turret_04_dm": {
+          "count": 1
+        },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
           "count": 1
         }
       }

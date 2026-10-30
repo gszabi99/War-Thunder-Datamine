@@ -1675,10 +1675,12 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_BGM_71_tow_Wiesel_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_BGM_71_tow_Wiesel_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpName": "ammo_body_08_dm",
         "recoilMultiplier": 0.0,
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
@@ -1752,7 +1754,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "recoilMultiplier": 0.1,
@@ -1797,8 +1799,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_wiesel_1_tow_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_wiesel_1_tow_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2918,5 +2920,29 @@
         "to": "ger_camo_modern_desert_threecolor*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -1.495,
+      0.775,
+      0.74
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

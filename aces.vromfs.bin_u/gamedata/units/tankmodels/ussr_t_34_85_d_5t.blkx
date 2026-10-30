@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "sound": {
     "EngineName": "engine_t34",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -307,7 +313,11 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm"
       ],
       "effect": [
         {
@@ -2921,7 +2931,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/85mm_D5T_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/85mm_D5T_user_cannon.blk",
         "shotFreq": 0.12,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -2965,7 +2975,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -3011,7 +3021,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_t_34_85_d_5t_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_34_85_d_5t_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_t_34_85_d_5t_default.blk"
     }
   },
   "cockpit": {

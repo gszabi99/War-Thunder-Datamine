@@ -1,15 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/events/eventRewards.nut" import getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText, getConditionText
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/showUnlockWnd.nut" import checkDelayedUnlockWnd
+from "%scripts/events/eventsManager.nut" import events
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
-  getConditionText } = require("%scripts/events/eventRewards.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
-let { events } = require("%scripts/events/eventsManager.nut")
 
 let TournamentRewardReceivedWnd = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"

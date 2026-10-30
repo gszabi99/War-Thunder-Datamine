@@ -1,10 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let RestrictionsWeaponryPresetModal = class (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
@@ -61,6 +62,6 @@ register_gui_handler("RestrictionsWeaponryPresetModal", RestrictionsWeaponryPres
 
 let openRestrictionsWeaponryPreset = @(params) handlersManager.loadHandler(RestrictionsWeaponryPresetModal, params)
 
-return {
+return freeze({
   openRestrictionsWeaponryPreset
-}
+})

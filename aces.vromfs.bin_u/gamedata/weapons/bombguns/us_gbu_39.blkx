@@ -1,22 +1,20 @@
 {
   "bombGun": true,
-  "preset_cost": 100,
+  "preset_cost": 200,
+  "external": true,
   "shotFreq": 10.0,
   "sound": "weapon.bombgun",
-  "offsetForDemonstration": [
-    0.0,
-    0.03,
-    0.0
-  ],
   "mesh": "us_285lb_gbu_39_na",
   "mesh_deployed": "us_285lb_gbu_39",
   "shellAnimChar": "us_285lb_gbu_39_char",
   "bombCart": "missile_stand_heavy",
   "rollForDemonstration": 180.0,
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "offsetForDemonstration": [
+    0.0,
+    0.03,
+    0.0
+  ],
+  "tags": {},
   "bomb": {
     "gunnerFilterMaxDistMult": 0.3,
     "mass": 121.563,
@@ -151,13 +149,13 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
+      "angleMax": 180.0,
       "positionError": 5.0,
       "guidanceAutopilot": {
         "loftEnabled": true,

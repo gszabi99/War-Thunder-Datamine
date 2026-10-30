@@ -1,11 +1,10 @@
 import "userstat" as userstat
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/userstat/userstat.nut" import userstatStats, refreshUserstatStats
 from "app" import APP_ID
 from "chard" import get_charserver_time_sec
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 
 enum CaptchaUserstatName {
   FAILS_BLOCK_COUNTER    = "val_captcha_fail_count"
@@ -111,7 +110,7 @@ function setLastAttemptTime(time) {
 
 
 
-return {
+return freeze({
   captchaFailsBlockCounter,
   resetAllCaptchaFailsCounters,
   increaseCaptchaFailsCount,
@@ -121,4 +120,4 @@ return {
   captchFailsBanCounter,
   resetCaptchaFailsBanCounter,
   setLastAttemptTime
- }
+ })

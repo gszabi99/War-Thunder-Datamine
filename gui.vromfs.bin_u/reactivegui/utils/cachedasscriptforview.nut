@@ -9,6 +9,6 @@ function getDasScriptByPath(scriptPath) {
   return loadedDasScripts[scriptPath]
 }
 
-return {
+return freeze({
   getDasScriptByPath
-}
+})

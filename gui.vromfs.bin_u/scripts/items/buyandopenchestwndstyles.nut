@@ -51,7 +51,7 @@ function getBuyAndOpenChestWndStyle(item) {
   return params
 }
 
-return {
+return freeze({
   hasBuyAndOpenChestWndStyle
   getBuyAndOpenChestWndStyle
-}
+})

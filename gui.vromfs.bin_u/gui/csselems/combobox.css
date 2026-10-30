@@ -1,26 +1,3 @@
-@const comboListPadding:0;
-@const comboOptionPadding:5@sf/@pf_outdated;
-@const comboBtnWidth:@baseTrHeight - 4@dp;
-@const comboBtnHeight:11@sf/@pf;
-@const comboOptContainerHeight:32@sf/@pf;
-
-@const comboBgColor:                 #000000;
-@const comboHoveredBgColor:          #303030;
-@const comboExpanedBgColor:          #505050;
-@const comboOptionColor:             #585858;
-@const comboSelOptionColor:          #f1f1f1;
-@const comboHoverOptionColor:        #909090;
-@const comboListBgColor:             #212121;
-
-@const comboExpandedTextColor:       #e0e0e0;
-@const comboExpandedSelTextColor:    #3b3b3b;
-@const comboExpandedHoverTextColor:  #F3F3F3;
-
-@const comboExpandedLockedTextColor: #ff5c41;
-
-@const option_font:           @fontNormal;
-@const option_selected_font:  @fontNormal;
-
 ComboBox {
   behaviour:dropdown-select;
   re-type:dropdown-select;
@@ -339,10 +316,6 @@ ComboBox > listBox > option:disabled > optiontext
 
 ComboBox > option[isDisabled=yes] {
   color:@missionLockedHoverColor;
-}
-
-ComboBox.systemOption {
-  width:1@systemOptContainerControlWidth;
 }
 
 tr[optionHeight=doubleAndHalf] > td > ComboBox:expanded option[shown-option=yes] {

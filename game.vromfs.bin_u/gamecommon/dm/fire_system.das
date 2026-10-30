@@ -124,8 +124,8 @@ def fire_damage_process_start_burn_event(eid : EntityId;
   let coll_node_bsph = collres_get_node_bsphere(*dm.collisionResource, int(coll_node.nodeIndex))
   let radius = fire_system_calc_burn_radius(*fire_params, coll_node_bsph, unit.boundingSphere.r)
   var offset : float3
-  if pos != float4(0.0f) && unit.collNodeTree != null && (fire_params.allowMultipleFires || fire_params.allowMultipleFx)
-    offset = fire_system_calc_burn_offset(*fire_params, coll_node_bsph, *unit.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
+  if pos != float4(0.0f) && dm.collNodeTree != null && (fire_params.allowMultipleFires || fire_params.allowMultipleFx)
+    offset = fire_system_calc_burn_offset(*fire_params, coll_node_bsph, *dm.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
   else
     offset = coll_node_bsph.c
 
@@ -169,12 +169,12 @@ def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffen
                                            fire_data__extinguishProgress : FloatList;
                                            fire_data__underwaterTimer : FloatList;
                                            fire_damage__isBurn : bool;
-                                           extinguish_system_last_extinguish_time : float const;
                                            fire_system_require_net_sync : bool;
                                            ammo_slots__state : UInt32List const;
                                            ammo_stowage__partIdRemap : IPoint4List const
-                                           >)
-  if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
+                                           >;
+                                         extinguish_system_last_extinguish_time : float = -1.0f)
+  if !extinguish_system_can_reignite(extinguish_system_last_extinguish_time)
     return
   let unit = unit__ref.unit
   if unit.isDelayed
@@ -201,12 +201,12 @@ def fire_damage_start_burn_with_offender_in_pos(evt : EventFireSystemStartBurnWi
                                                   fire_data__extinguishProgress : FloatList;
                                                   fire_data__underwaterTimer : FloatList;
                                                   fire_damage__isBurn : bool;
-                                                  extinguish_system_last_extinguish_time : float const;
                                                   fire_system_require_net_sync : bool;
                                                   ammo_slots__state : UInt32List const;
                                                   ammo_stowage__partIdRemap : IPoint4List const
-                                                  >)
-  if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
+                                                  >;
+                                                extinguish_system_last_extinguish_time : float = -1.0f)
+  if !extinguish_system_can_reignite(extinguish_system_last_extinguish_time)
     return
   let unit = unit__ref.unit
   if unit.isDelayed
@@ -334,6 +334,8 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
     burning_parts |> push((packed_part_id = packed_part_id, fire_params_id = fire_params_id, fx_id = fx_id, already_burning = false))
 
   for fire_id, packed_part_id in iter_range(v.fire_data__packedPartId), v.fire_data__packedPartId
+    if v.fire_data__startTime[fire_id] < 0.0f
+      continue
     var fire_found = false
     for part in burning_parts
       if packed_part_id == part.packed_part_id

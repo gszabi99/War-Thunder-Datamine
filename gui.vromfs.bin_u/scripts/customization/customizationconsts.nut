@@ -5,8 +5,8 @@ enum PREVIEW_MODE {
   DECORATOR = 0x0004
 }
 
-return {
+return freeze({
   PREVIEW_MODE
   TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
   TANK_CAMO_ROTATION_SLIDER_FACTOR = 2
-}
+})

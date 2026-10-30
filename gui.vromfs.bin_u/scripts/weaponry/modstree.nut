@@ -1,3 +1,5 @@
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName, getModificationBulletsGroup, isModResearched
+from "%scripts/money.nut" import Cost
 from "chardResearch" import getTiersOpenedAndAwarded
 from "blkGetters" import get_ranks_blk
 from "%sqstd/math.nut" import roundToDigits
@@ -6,8 +8,6 @@ from "%scripts/dagui_library.nut" import *
 from "types" import Array, Table, String
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getModificationByName, getModificationBulletsGroup, isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
-let { Cost } = require("%scripts/money.nut")
 
 const PROGRESS_ROUND_DIGITS = 3
 const PROGRESS_MIN_VALUE = 0.001

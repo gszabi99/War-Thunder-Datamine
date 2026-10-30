@@ -1,3 +1,7 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/hud/baseUnitHud.nut" import BaseUnitHud
+from "%scripts/hud/hudActionBar.nut" import mkActionBarAir
+from "%scripts/hud/hudDisplayTimers.nut" import hudDisplayTimersInit, hudDisplayTimersReInit
 from "replays" import is_replay_playing
 from "hudActionBar" import getActionBarUnitName
 from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType
@@ -5,15 +9,14 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/hudNativeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
+from "%scripts/hud/dargHudLayers.nut" import infantryKillFeedPlace
 
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
-let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
-let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 
 let HudInfantryDrone = class(BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudInfantryDrone.blk"
+  killFeedPlace = infantryKillFeedPlace
+  hasMpScore = true
 
   function initScreen() {
     base.initScreen()
@@ -22,7 +25,6 @@ let HudInfantryDrone = class(BaseUnitHud) {
     this.actionBarWeak = actionBar.weakref()
 
     this.updateTacticalMapVisibility()
-    this.updatePosHudMultiplayerScore()
   }
 
   function reinitScreen(_params = null) {
@@ -42,6 +44,6 @@ let HudInfantryDrone = class(BaseUnitHud) {
 }
 register_gui_handler("HudInfantryDrone", HudInfantryDrone)
 
-return {
+return freeze({
   HudInfantryDrone
-}
+})

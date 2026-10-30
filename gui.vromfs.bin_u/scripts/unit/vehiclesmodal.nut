@@ -1,23 +1,23 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID, openPopupFilter
+from "%scripts/sqDagui/daguiUtil.nut" import findChildIndex, getObjValidIndex
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitStatus.nut" import isUnitGroup, isClanUnitResearched
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/bonusModule.nut" import showAirExpWpBonus
+from "%scripts/discounts/discountUtils.nut" import showUnitDiscount
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
 from "string" import format
 from "dagor.time" import get_time_msec
 from "%sqstd/math.nut" import ceil
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { findChildIndex, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isUnitGroup, isClanUnitResearched } = require("%scripts/unit/unitStatus.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
-let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
                                                     
@@ -179,7 +179,7 @@ local handlerClass = class (BaseGuiHandlerWT) {
         })
       }
 
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+      view.checkbox.sortby(@(a) a.idx)
 
       if (view.checkbox.len() > 0)
         view.checkbox[view.checkbox.len() - 1].isLastCheckBox <- true
@@ -397,10 +397,10 @@ local handlerClass = class (BaseGuiHandlerWT) {
 
 register_gui_handler("vehiclesModal", handlerClass)
 
-return {
+return freeze({
   handlerClass = handlerClass
   open = function(unitsFilter = null, params = {}) {
     let handlerParams = params.__merge({ unitsFilter = unitsFilter })
     handlersManager.loadHandler(handlerClass, handlerParams)
   }
-}
+})

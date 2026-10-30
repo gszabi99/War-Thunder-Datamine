@@ -1,6 +1,12 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/warbonds/warbond.nut" import Warbond
+from "%scripts/warbonds/warbondShopState.nut" import leftSpecialTasksBoughtCount
+from "%scripts/warbonds/warbondsState.nut" import FULL_ID_SEPARATOR, maxAllowedWarbondsBalance
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/string.nut" import split
 from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
@@ -8,15 +14,9 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
-let { Warbond } = require("%scripts/warbonds/warbond.nut")
-let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
-let { FULL_ID_SEPARATOR, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 const OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -48,11 +48,7 @@ function validateWarbondsList() {
     }
   }
 
-  warbondsList.sort(function(a, b) {
-    if (a.expiredTime != b.expiredTime)
-      return a.expiredTime > b.expiredTime ? -1 : 1
-    return 0
-  })
+  warbondsList.sortby(@(a) -a.expiredTime)
 
   seenWarbondsShop.setDaysToUnseen(OUT_OF_DATE_DAYS_WARBONDS_SHOP)
   seenWarbondsShop.onListChanged()
@@ -142,7 +138,7 @@ function checkWarbondsOverLimit(wbAmount, onAcceptFn, params, silent = false) {
 }
 
 function updateLeftSpecialTasksBoughtCount() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   let specialTaskAward = getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
@@ -182,7 +178,7 @@ seenWarbondsShop.setCompatibilityLoadData(function() {
   })
 
 
-return {
+return freeze({
   getWarbondsList
   getWarbondsBalanceText
   findWarbond
@@ -192,4 +188,4 @@ return {
   openWarbondsShop
   isWarbondsShopButtonVisible
   checkWarbondsOverLimit
-}
+})

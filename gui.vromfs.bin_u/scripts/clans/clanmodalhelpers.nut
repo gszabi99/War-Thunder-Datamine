@@ -1,14 +1,14 @@
+import "%scripts/rewards/clanRewardsModal.nut" as clanRewardsModal
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/tasker.nut" import addTask
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table
+from "%scripts/penitentiary/banhammer.nut" import gui_modal_complain
+from "%scripts/clans/clanInfo.nut" import getClanPlaceRewardLogData
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/clanNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_request_info
 
-let { addTask } = require("%scripts/tasker.nut")
-let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
-let { gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")
 
 function openComplainWnd(clanData) {
   local leader = u.search(clanData.members, @(member) member.role == ECMR_LEADER)
@@ -37,8 +37,8 @@ function showClanRewardLog(clanData) {
   })
 }
 
-return {
+return freeze({
   openComplainWnd
   requestOpenComplainWnd
   showClanRewardLog
-}
+})

@@ -1,14 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wheelmenu/wheelmenu.nut" import wheelMenuHandler
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/controlsVisual.nut" import getShortcutText
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%sqstd/platform.nut" import isPC
 from "controls" import isXInputDevice
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 
 

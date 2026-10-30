@@ -43,7 +43,6 @@ function mkArtilleryCursorPart(data, cursorTexture) {
     color
     image = Picture($"{cursorTexture}:{partSize}:{partSize}")
     transform = {
-      pivot = [0.5, 0.5]
       rotate
     }
   }
@@ -52,7 +51,7 @@ function mkArtilleryCursorPart(data, cursorTexture) {
 function artilleryCursor() {
   if (artilleryReadyToStrike.get() == null)
     return {
-      watch = [artilleryReadyToStrike]
+      watch = artilleryReadyToStrike
     }
 
   let armyData = artilleryReadyToStrike.get()
@@ -137,7 +136,7 @@ function transportUnloadCursor() {
       image = Picture(armyIconName)
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
-      size = [armyIconSize, armyIconSize]
+      size = armyIconSize
     }
   }
 }
@@ -147,7 +146,7 @@ function mkActionCircle(pos, r1, r2) {
   let actualRadius = r1 + lineWidth / 2
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [actualRadius, actualRadius]
+    size = actualRadius
     pos = [pos[0] - actualRadius / 2, pos[1] - actualRadius / 2]
     lineWidth
     color = Color(0, 0, 0, 128)
@@ -220,24 +219,22 @@ let mkArmyIcon = @(airfieldType, armyPos, armySize, armyAngle, color, fillColor)
     rendObj = ROBJ_BOX
     borderColor = color
     pos = [armyPos.x - armySize / 2, armyPos.y - armySize / 2]
-    size = [armySize, armySize]
+    size = armySize
     fillColor = getMapColor(fillColor)
     borderWidth
     borderRadius = armySize / 2
-    children = [
-      {
-        rendObj = ROBJ_IMAGE
-        keepAspect = true
-        size = [armySize, armySize]
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        image = Picture($"{iconName}:{armySize}:{armySize}")
-        color = Color(0, 0, 0)
-        transform = {
-          rotate = isHelicopter ? 0 : (armyAngle - 90)
-        }
+    children = {
+      rendObj = ROBJ_IMAGE
+      keepAspect = true
+      size = armySize
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      image = Picture($"{iconName}:{armySize}:{armySize}")
+      color = Color(0, 0, 0)
+      transform = {
+        rotate = isHelicopter ? 0 : (armyAngle - 90)
       }
-    ]
+    }
   }
 }
 
@@ -249,24 +246,22 @@ function mkArmyArrow(arrowPos, radius, arrowAngle, color, fillColor) {
     rendObj = ROBJ_BOX
     borderColor = color
     pos = [arrowPos.x - arrowSize / 2, arrowPos.y - arrowSize / 2]
-    size = [arrowSize, arrowSize]
+    size = arrowSize
     fillColor
     borderWidth
     borderRadius = arrowSize / 2
     transform = {
       rotate = arrowAngle + 180
     }
-    children = [
-      {
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color
-        fillColor = color
-        commands = [
-          [VECTOR_POLY, radius + 50, 50, -radius * 0.5 + 50, radius * 0.866 + 50, -radius * 0.5 + 50, -radius * 0.866 + 50]
-        ]
-      }
-    ]
+    children = {
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = FLEX
+      color
+      fillColor = color
+      commands = [
+        [VECTOR_POLY, radius + 50, 50, -radius * 0.5 + 50, radius * 0.866 + 50, -radius * 0.5 + 50, -radius * 0.866 + 50]
+      ]
+    }
   }
 }
 
@@ -333,6 +328,6 @@ let actionsLayer = @() {
   }
 }
 
-return {
+return freeze({
   actionsLayer
-}
+})

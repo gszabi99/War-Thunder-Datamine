@@ -1,7 +1,7 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as stdSubscriptions
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "types" import Array
 
-let stdSubscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 function isArray(v) { return v instanceof Array }
 
 const SUBSCRPTIONS_LIST_ID = -123
@@ -96,11 +96,12 @@ function notifyChanged(pathArray) {
 
 local clearInvalidSubscriptions
 clearInvalidSubscriptions = function(subs) { 
-  foreach (key, list in subs) {
+  foreach (key in subs.$keys()) {
+    let list = subs[key]
     if (key != SUBSCRPTIONS_LIST_ID) {
       clearInvalidSubscriptions(list)
       if (list.len() == 0)
-        subs.rawdelete(key) 
+        subs.$rawdelete(key)
       continue
     }
 
@@ -108,7 +109,7 @@ clearInvalidSubscriptions = function(subs) {
       validateSubscriptionsArray(list)
 
     if (list.len() == 0)
-      subs.rawdelete(key) 
+      subs.$rawdelete(key)
   }
 }
 
@@ -118,7 +119,7 @@ stdSubscriptions.add_event_listener("GuiSceneCleared",
   null,
   stdSubscriptions.CONFIG_VALIDATION)
 
-return {
+return freeze({
   subscribe = subscribe
   notifyChanged = notifyChanged
-}
+})

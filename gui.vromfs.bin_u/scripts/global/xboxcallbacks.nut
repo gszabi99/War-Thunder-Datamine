@@ -1,9 +1,9 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/user/xboxFeatures.nut" import updateMultiplayerPrivilege
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_CALLBACKS] ")
-let { updateMultiplayerPrivilege } = require("%scripts/user/xboxFeatures.nut")
 
 
 function onLogout() {

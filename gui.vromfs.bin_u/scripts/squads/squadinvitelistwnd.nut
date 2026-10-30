@@ -1,17 +1,17 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/playerContextMenu.nut" import showSquadMemberMenu
 from "string" import format
 from "math" import ceil
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 
 let squadInviteListWnd = class (BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
@@ -52,8 +52,7 @@ let squadInviteListWnd = class (BaseGuiHandlerWT) {
   }
 
   static function canOpen() {
-    return hasFeature("Squad") && hasFeature("SquadWidget")
-      && g_squad_manager.isInSquad()
+    return g_squad_manager.isInSquad()
       && (g_squad_manager.canChangeSquadSize(false) || g_squad_manager.getInvitedPlayers().len() > 0
           || g_squad_manager.getApplicationsToSquad().len() > 0)
   }
@@ -212,4 +211,4 @@ let squadInviteListWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("squadInviteListWnd", squadInviteListWnd)
 
-return { squadInviteListWnd }
+return freeze({ squadInviteListWnd })

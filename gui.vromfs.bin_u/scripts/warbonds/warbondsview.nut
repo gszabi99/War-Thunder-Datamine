@@ -1,9 +1,7 @@
-from "%scripts/dagui_library.nut" import *
 import "%sqstd/math.nut" as stdMath
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
-
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/warbonds/warbondShopState.nut" import leftSpecialTasksBoughtCount
+from "%scripts/dagui_library.nut" import *
 
 enum WARBOND_SHOP_LEVEL_STATUS {
   LOCKED = "locked"
@@ -224,7 +222,7 @@ function createProgressBox(wbClass, placeObj, handler, getBPStageCb, needForceHi
   updateProgressBar(wbClass, nest)
 }
 
-return {
+return freeze({
   progressBarId
   progressBarAddId
   levelItemIdPrefix
@@ -247,4 +245,4 @@ return {
   getProgressBoxMarkUp
   calculateProgressBarValue
   updateProgressBar
-}
+})

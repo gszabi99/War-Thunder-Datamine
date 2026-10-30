@@ -1,18 +1,18 @@
 import "%scripts/time.nut" as time
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/contacts/contactsListState.nut" import getContactByName
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
 from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 
 let LeaderboardTable = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -181,7 +181,7 @@ let LeaderboardTable = class (BaseGuiHandlerWT) {
     if (category.id == "EVENT_SCORE_RATING" || category.id == "EVENT_SCORE_RATING_X10000") {
       let bestStats = (customSelfStats?["$sessions"] ?? [])
         .filter(@(s) (s?.stats.score_rating ?? 0) > 0)
-        .sort(@(a, b) b.stats.score_rating <=> a.stats.score_rating)
+        .sortby(@(a) -a.stats.score_rating)
 
       if (bestStats.len() == 0)
         return ""
@@ -200,7 +200,7 @@ let LeaderboardTable = class (BaseGuiHandlerWT) {
 
     let { field } = category
     local bestStats = (customSelfStats?["$sessions"] ?? [])
-      .map(@(s) s?.stats[field] ?? 0).filter(@(stat) stat > 0).sort(@(a, b) b <=> a)
+      .map(@(s) s?.stats[field] ?? 0).filter(@(stat) stat > 0).sort().reverse()
 
     if (bestStats.len() == 0)
       return ""
@@ -269,4 +269,4 @@ let LeaderboardTable = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("LeaderboardTable", LeaderboardTable)
 
-return { LeaderboardTable }
+return freeze({ LeaderboardTable })

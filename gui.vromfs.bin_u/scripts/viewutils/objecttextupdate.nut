@@ -1,12 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/money.nut" import Cost, Money
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import removeTextareaTags
+from "%scripts/controls/activeInputDevice.nut" import isGamepadInputActive
 from "string" import format
 from "app" import get_game_version_str
 from "%scripts/dagui_library.nut" import *
-
-let { Cost, Money } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { removeTextareaTags } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!checkObj(nestObj) || firstBtnId == "")
@@ -75,7 +74,7 @@ function setHelpTextOnLoading(nestObj = null) {
   if (!checkObj(nestObj))
     return
 
-  let text = showConsoleButtons.get() ? "" : loc("loading/help_tip01")
+  let text = isGamepadInputActive.get() ? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 
@@ -108,7 +107,7 @@ function warningIfGold(text, cost) {
   return text
 }
 
-return {
+return freeze({
   setDoubleTextToButton = setDoubleTextToButton
   setColoredDoubleTextToButton = setColoredDoubleTextToButton
   placePriceTextToButton = placePriceTextToButton
@@ -116,4 +115,4 @@ return {
   setVersionText = setVersionText
   formatLocalizationArrayToDescription
   warningIfGold
-}
+})

@@ -471,7 +471,7 @@ function debugDirtyWordsFilter(text, isName, temporaryDebugLogFunc) {
   temporaryDebugLogFunc("".concat(isPassing ? "(CLEAN)" : "(DIRTY)", " \"", censoredResult, "\""))
 }
 
-return {
+return freeze({
   init
   continueInitAfterLogin
   checkPhrase
@@ -481,4 +481,4 @@ return {
   clearExcessiveWhitespace
   setDebugLogFunc
   debugDirtyWordsFilter
-}
+})

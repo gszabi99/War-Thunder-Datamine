@@ -1,5 +1,17 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
+from "%scripts/items/boosterEffect.nut" import getActiveBoostersArray, getActiveBoostersDescription
+from "%scripts/unlocks/unlocksConditions.nut" import loadConditionsFromBlk, getMainProgressCondition
+from "%scripts/unlocks/unlocksViewModule.nut" import getFullUnlockCondsDesc, getFullUnlockCondsDescInline
+from "%scripts/utils/sharedSubtrees.nut" import shareSubtree
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/items/bonusEffectsGetters.nut" import getSquadBonusForSameCyberCafe
 from "%appGlobals/ranks_common_shared.nut" import calc_personal_boost, calc_public_boost
 from "mission" import get_mission_time
 from "string" import format
@@ -10,20 +22,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { getActiveBoostersArray, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getFullUnlockCondsDesc, getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 
 function getArrayFromInt(intNum) {
   let arr = []
@@ -50,6 +51,7 @@ let Booster = class (BaseItem) {
   wpRate = 0
   sortOrder = 0
   personal = true
+  spentInSessionTimeMin = 0
 
   static mulIconSymbolsOffsetYMul = -0.017
   static mulIconSymbolsSpacing    = -0.025
@@ -95,7 +97,7 @@ let Booster = class (BaseItem) {
 
     let event = blk?.event
     if (event != null)
-      this.eventConditions = loadConditionsFromBlk(event)
+      this.eventConditions = shareSubtree(loadConditionsFromBlk(event))
 
     let eventType = event?.type
     foreach (idx, block in this.eventTypesTable)
@@ -106,7 +108,7 @@ let Booster = class (BaseItem) {
       }
 
     if (blk?.stop != null)
-      this.stopConditions = loadConditionsFromBlk(blk.stop)
+      this.stopConditions = shareSubtree(loadConditionsFromBlk(blk.stop))
   }
 
   function getBoostersEffectsDiffByItem() {
@@ -129,10 +131,10 @@ let Booster = class (BaseItem) {
         effectsArray.append(value)
     }
 
-    effectsArray.sort(@(a, b) b <=> a)
+    effectsArray.sort().reverse()
     let effectsVal = this.getDiffEffect(effectsArray)
     effectsArray.append(effect.getValue(this))
-    effectsArray.sort(@(a, b) b <=> a)
+    effectsArray.sort().reverse()
     let newEffectsVal = this.getDiffEffect(effectsArray)
 
     return newEffectsVal - effectsVal

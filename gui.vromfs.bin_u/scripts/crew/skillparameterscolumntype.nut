@@ -1,14 +1,14 @@
+from "%scripts/crew/crewSkills.nut" import isAffectedBySpecialization, isAffectedByLeadership
+from "%scripts/crew/crew.nut" import getCrewSkillValue
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/crew/crewShortCache.nut" import getCachedCrewId, getCachedCrewUnit
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "string" import format
 from "math" import fabs
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let { isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
-let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCachedCrewId, getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
 const HEADER_DEFAULT_IMAGE_SIZE = 32
@@ -260,6 +260,6 @@ enumsAddTypes(skillParametersColumnType, {
   }
 }, null, "id")
 
-skillParametersColumnType.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
+skillParametersColumnType.types.sortby(@(a) a.sortOrder)
 
 return skillParametersColumnType

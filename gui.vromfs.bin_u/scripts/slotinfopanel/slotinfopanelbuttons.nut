@@ -2,6 +2,6 @@ from "%scripts/dagui_library.nut" import *
 
 let buttons = Watched([])
 
-return {
+return freeze({
   slotInfoPanelButtons = buttons
-}
+})

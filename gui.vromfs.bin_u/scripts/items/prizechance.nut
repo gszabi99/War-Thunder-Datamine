@@ -1,4 +1,5 @@
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%sqStdLibs/helpers/u.nut" import isArray
 from "blkGetters" import get_game_settings_blk
 from "%sqstd/math.nut" import roundToDigits
@@ -6,7 +7,6 @@ from "chard" import calcTrophiesDropChance
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { request } = require("%scripts/inventory/inventoryClient.nut")
 
 let chestPrizeChanceCache = {}
@@ -146,11 +146,11 @@ function fillChestChances(nest, chancesData) {
   }
 }
 
-return {
+return freeze({
   getChestChancesData
   getTrophyChancesData
   isTrophyChancesCalculated
   fillChestChances
   getPrizeChanceConfig = getPrizeChanceConfig
   getPrizeChanceLegendMarkup = getPrizeChanceLegendMarkup
-}
+})

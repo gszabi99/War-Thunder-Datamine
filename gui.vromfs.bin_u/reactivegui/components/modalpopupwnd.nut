@@ -1,9 +1,8 @@
+import "%rGui/control/gui_buttons.nut" as JB
 from "%rGui/components/modalWindowsMngr.nut" import addModalWindow, removeModalWindow
 from "%rGui/style/screenState.nut" import safeAreaSizeMenu
 from "%rGui/globals/ui_library.nut" import *
 from "types" import Array
-
-let JB = require("%rGui/control/gui_buttons.nut")
 
 let POPUP_PARAMS = {
   uid = null 

@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.099999994,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bullets": 150,
-  "preciseGun": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,13 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.099999994,
+  "shotFreq": 12.5,
+  "bullets": 150,
+  "preciseGun": true,
   "bullet": [
     {
       "mass": 0.127,
@@ -421,17 +421,16 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmBrightRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
-      "mass": 0.127,
+      "mass": 0.1271,
       "caliber": 0.02,
-      "speed": 750.0,
       "Cx": 0.45,
       "maxDistance": 3000.0,
-      "explosiveType": "tnt",
-      "explosiveMass": 0.005,
+      "explosiveType": "detonite_tnt",
+      "explosiveMass": 0.0046,
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
       "groundRicochetPreset": "he_small_caliber_ground",
@@ -467,6 +466,7 @@
       "groundRicochetEffect": "hit_15_18mm_dirt_ap",
       "explosionPatchRadius": 0.3,
       "rendinstDamageRadius": 0.0,
+      "speed": 750.0,
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -485,24 +485,6 @@
             45.0,
             0.3
           ]
-        ]
-      },
-      "hitpower": {
-        "HitPower10m": [
-          1.0,
-          10.0
-        ],
-        "HitPower1000m": [
-          0.95,
-          1000.0
-        ],
-        "HitPower1500m": [
-          0.85,
-          1500.0
-        ],
-        "HitPower2000m": [
-          0.3,
-          2000.0
         ]
       },
       "damage": {
@@ -853,6 +835,24 @@
         ],
         "traceFreq": 1,
         "tracer": "noColor"
+      },
+      "hitpower": {
+        "HitPower10m": [
+          1.0,
+          10.0
+        ],
+        "HitPower1000m": [
+          0.95,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.85,
+          1500.0
+        ],
+        "HitPower2000m": [
+          0.3,
+          2000.0
+        ]
       }
     },
     {
@@ -3299,13 +3299,12 @@
         }
       },
       {
-        "mass": 0.127,
+        "mass": 0.1271,
         "caliber": 0.02,
-        "speed": 750.0,
         "Cx": 0.45,
         "maxDistance": 3000.0,
-        "explosiveType": "tnt",
-        "explosiveMass": 0.005,
+        "explosiveType": "detonite_tnt",
+        "explosiveMass": 0.0046,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -3341,6 +3340,7 @@
         "groundRicochetEffect": "hit_15_18mm_dirt_ap",
         "explosionPatchRadius": 0.3,
         "rendinstDamageRadius": 0.0,
+        "speed": 750.0,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -3359,24 +3359,6 @@
               45.0,
               0.3
             ]
-          ]
-        },
-        "hitpower": {
-          "HitPower10m": [
-            1.0,
-            10.0
-          ],
-          "HitPower1000m": [
-            0.95,
-            1000.0
-          ],
-          "HitPower1500m": [
-            0.85,
-            1500.0
-          ],
-          "HitPower2000m": [
-            0.3,
-            2000.0
           ]
         },
         "damage": {
@@ -3727,6 +3709,24 @@
           ],
           "traceFreq": 1,
           "tracer": "noColor"
+        },
+        "hitpower": {
+          "HitPower10m": [
+            1.0,
+            10.0
+          ],
+          "HitPower1000m": [
+            0.95,
+            1000.0
+          ],
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ]
         }
       },
       {
@@ -4172,13 +4172,12 @@
         }
       },
       {
-        "mass": 0.127,
+        "mass": 0.1271,
         "caliber": 0.02,
-        "speed": 750.0,
         "Cx": 0.45,
         "maxDistance": 3000.0,
-        "explosiveType": "tnt",
-        "explosiveMass": 0.005,
+        "explosiveType": "detonite_tnt",
+        "explosiveMass": 0.0046,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -4214,6 +4213,7 @@
         "groundRicochetEffect": "hit_15_18mm_dirt_ap",
         "explosionPatchRadius": 0.3,
         "rendinstDamageRadius": 0.0,
+        "speed": 750.0,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -4232,24 +4232,6 @@
               45.0,
               0.3
             ]
-          ]
-        },
-        "hitpower": {
-          "HitPower10m": [
-            1.0,
-            10.0
-          ],
-          "HitPower1000m": [
-            0.95,
-            1000.0
-          ],
-          "HitPower1500m": [
-            0.85,
-            1500.0
-          ],
-          "HitPower2000m": [
-            0.3,
-            2000.0
           ]
         },
         "damage": {
@@ -4600,6 +4582,24 @@
           ],
           "traceFreq": 1,
           "tracer": "noColor"
+        },
+        "hitpower": {
+          "HitPower10m": [
+            1.0,
+            10.0
+          ],
+          "HitPower1000m": [
+            0.95,
+            1000.0
+          ],
+          "HitPower1500m": [
+            0.85,
+            1500.0
+          ],
+          "HitPower2000m": [
+            0.3,
+            2000.0
+          ]
         }
       },
       {

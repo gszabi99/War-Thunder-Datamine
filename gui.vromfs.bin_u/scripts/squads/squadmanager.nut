@@ -1,12 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/squads/squadApplications.nut" as squadApplications
+from "%scripts/chat/squadChatRoom.nut" import joinSquadRoom, leaveSquadRoom, isSquadRoomJoined
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "string" import format
 from "dagor.time" import get_time_msec
-from "%sqstd/platform.nut" import is_gdk
+from "%sqstd/platform.nut" import is_gdk, platformId
 from "blkGetters" import get_game_settings_blk
 from "gameplayBinding" import isInFlight
 from "worldwar" import wwGetOperationId
@@ -15,8 +16,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState, squadStatusUpdateState, SQUAD_REQEST_TIMEOUT
 from "%scripts/utils_sa.nut" import gen_rnd_password
 from "%scripts/events/secondGameModesUtils.nut" import getSecondGameModesForSquadLeader
+from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName, isPS4PlayerName
 
-let { joinSquadRoom, leaveSquadRoom, isSquadRoomJoined } = require("%scripts/chat/squadChatRoom.nut")
 
 
 require("%scripts/gameModes/leaderGameModeReadyCheck.nut")
@@ -44,7 +45,6 @@ let { checkMatchingError, request_matching } = require("%scripts/matching/api.nu
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { SQUAD_LEAVE_REQUESTED, SQUAD_REVOKE_ALL_INVITES_REQUESTED, SQUAD_SET_READY_REQUESTED, SQUAD_SET_CREWS_READY_REQUESTED, SQUAD_MY_MEMBER_DATA_UPDATE_REQUESTED, SQUAD_JOIN_REQUESTED } = require("%scripts/crossModuleEvents.nut")
 let { hasAnyFeature } = require("%scripts/user/features.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
 let battleRating = require("%scripts/battleRating.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -109,8 +109,6 @@ const DEFAULT_SQUADS_VERSION = 1
 const skipSetSquadDataParams = ["members", "invitedPlayers", "applications"] 
 
 let SQUAD_SIZE_FEATURES_CHECK = {
-  squad = ["Squad"]
-  platoon = ["Clans", "WorldWar"]
   battleGroup = ["WorldWar"]
 }
 
@@ -168,9 +166,9 @@ g_squad_manager = {
   canStartStateChanging = @() !g_squad_manager.isStateInTransition()
   canJoinSquad = @() !g_squad_manager.isInSquad() && g_squad_manager.canStartStateChanging()
   canLeaveSquad = @() g_squad_manager.isInSquad() && g_squad_manager.canManageSquad()
-  canManageSquad = @() hasFeature("Squad") && isInMenu.get()
-  canChangeReceiveApplications = @(shouldCheckLeader = true) hasFeature("ClanSquads")
-    && (!shouldCheckLeader || g_squad_manager.isSquadLeader())
+  canManageSquad = @() isInMenu.get()
+  canChangeReceiveApplications = @(shouldCheckLeader = true)
+    (!shouldCheckLeader || g_squad_manager.isSquadLeader())
 
   canInviteMember = @(uid = null) !g_squad_manager.isMe(uid)
     && g_squad_manager.canManageSquad()
@@ -461,7 +459,7 @@ g_squad_manager = {
       isWorldWarAvailable = isWorldwarEnabled
       isEacInited = is_eac_inited()
       squadsVersion = SQUADS_VERSION
-      platform = platformModule.targetPlatform
+      platform = platformId
       isGdkClient = is_gdk
     })
     let wwOperations = []
@@ -579,9 +577,9 @@ g_squad_manager = {
     let checksArray = [g_squad_manager.getMembers(), g_squad_manager.getInvitedPlayers(), g_squad_manager.getApplicationsToSquad()]
     foreach (_idx, membersArray in checksArray)
       foreach (_uid, member in membersArray) {
-        if (platformModule.isXBoxPlayerName(member.name))
+        if (isXBoxPlayerName(member.name))
           u.appendOnce("xboxOne", playerPlatforms)
-        else if (platformModule.isPS4PlayerName(member.name))
+        else if (isPS4PlayerName(member.name))
           u.appendOnce("ps4", playerPlatforms)
         else
           u.appendOnce("pc", playerPlatforms)
@@ -603,8 +601,8 @@ g_squad_manager = {
   function canInviteMemberByPlatform(name) {
     let platformInfo = g_squad_manager.getPlatformInfo()
     if (!hasFeature("Ps4XboxOneInteraction")
-        && ((platformModule.isPS4PlayerName(name) && isInArray("xboxOne", platformInfo))
-          || (platformModule.isXBoxPlayerName(name) && isInArray("ps4", platformInfo))))
+        && ((isPS4PlayerName(name) && isInArray("xboxOne", platformInfo))
+          || (isXBoxPlayerName(name) && isInArray("ps4", platformInfo))))
       return false
 
     return true
@@ -661,7 +659,7 @@ g_squad_manager = {
   }
 
   function createSquad(callback) {
-    if (!hasFeature("Squad") || disableNetwork)
+    if (disableNetwork)
       return
 
     if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || isAnyQueuesActive())
@@ -717,7 +715,7 @@ g_squad_manager = {
   }
 
   function checkForSquad() {
-    if (!isLoggedIn.get() || disableNetwork)
+    if (!isLoggedIn.get())
       return
 
     let callback = function(response) {
@@ -808,7 +806,7 @@ g_squad_manager = {
       return addPopup(null, loc("msg/squad/noPlayersForDiffConsoles"))
 
     local isInvitingPsnPlayer = false
-    if (platformModule.isPS4PlayerName(name)) {
+    if (isPS4PlayerName(name)) {
       let contact = getContact(uid, name)
       isInvitingPsnPlayer = true
       if (u.isEmpty(g_squad_manager.getPsnSessionId()))
@@ -1391,6 +1389,7 @@ g_squad_manager = {
   onEventChatConnected = @(_params) g_squad_manager.joinSquadChatRoom()
   onEventAvatarChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventCrewsListInvalidate = @(_p) g_squad_manager.updateMyMemberData()
+  onEventUnitMrankSelectionChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventUnitRepaired = @(_p) updateMyCountryData()
   onEventCrossPlayOptionChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventMatchingDisconnect = @(_p) g_squad_manager.reset()
@@ -1499,12 +1498,14 @@ addListenersWithoutEnv({
 
 
 
+if (isLoggedIn.get())
+  g_squad_manager.initSquadSizes()
 g_squad_manager.checkForSquad()
 
 
 
 g_squad_manager = freeze(g_squad_manager)
 
-return {
+return freeze({
   g_squad_manager
-}
+})

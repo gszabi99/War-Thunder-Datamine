@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1941,7 +1947,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2020,7 +2026,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2063,7 +2069,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
         "emitter": "emtr_mg_flame_04",
         "flash": "emtr_mg_flame_04",
         "useEmitter": true,
@@ -2128,7 +2134,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "speedYaw": 0.0,
         "speedPitch": 0.0,
@@ -2158,8 +2164,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_bat_chat_25t_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_bat_chat_25t_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3339,7 +3345,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/90mm_Char_25t_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3418,7 +3424,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin_01",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3461,7 +3467,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
               "emitter": "emtr_mg_flame_04",
               "flash": "emtr_mg_flame_04",
               "useEmitter": true,
@@ -3526,7 +3532,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "speedYaw": 0.0,
               "speedPitch": 0.0,
@@ -3555,7 +3561,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

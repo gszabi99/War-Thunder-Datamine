@@ -14,7 +14,7 @@ function popBhvValueConfig(id) {
   return configs.rawdelete(id)
 }
 
-return {
+return freeze({
   stashBhvValueConfig = stashBhvValueConfig
   popBhvValueConfig = popBhvValueConfig
-}
+})

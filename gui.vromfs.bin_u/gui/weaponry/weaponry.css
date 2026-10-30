@@ -1,29 +1,3 @@
-@const bulletAnimationHeight: (152@sf/@pf)\1;
-@const bulletAnimationWidth: 4@bulletAnimationHeight;
-
-@const tooltipAnimationHeight: 3/4@tooltipAnimationWidth\1;
-@const tooltipAnimationWidth: (600@sf/@pf)\1;
-@const weaponFrameBlockInterval: (7@sf/@pf)\1;
-@const weaponFramePadding: (11@sf/@pf)\1;
-
-@const weaponsPresetDescriptionWidth: 1@bulletTooltipCardWidthNarrow+1@scrollBarSize+2@framePadding;
-
-@const modBgColor                 :#ff171b20;
-@const modBorderColor             :#ff263138;
-@const modTopLineColor            :#ff3f4d54;
-@const dropMenuArrowColor         :#3F4D54;
-@const modResearchBgColor         :#14141414;
-@const modSeparatorColor          :#ff37454d;
-@const bgrPresetColor             :#171b23;
-@const chosenPresetColor          :#28333c;
-@const selectedPresetBorderColor  :#677282;
-
-@const penetrationTableFirstColWidth: 50@sf/@pf;
-
-@const bulletGraphLineThickness: (2 * (2@sf/@pf\2)) $max 2;
-@const bulletGraphPointSize: (2 * (6@sf/@pf\2)) $max 6;
-@const bulletGraphSlotHeight: (70@sf/@pf)\1;
-
 weaponry_item {
   mouse-pointer-centering:50, 75;
   input-transparent:yes;
@@ -440,15 +414,6 @@ modResearchProgress[paused=yes] {
   foreground-color:@cardProgressDisabledFGColor;
 }
 
-
-table[modTestTable] {
-  border:yes; border-color:@blue;
-}
-
-table[modTestTable] > tr > td {
-  size:0.5@modCellWidth, 0.5@modCellHeight;
-}
-
 weapon_item_unit, weapon_item_unit > td {
   css-hier-invalidate:yes;
 }
@@ -485,6 +450,20 @@ weaponryPreset[chosen=yes] {
   border:yes;
   border-offset:@dp;
   border-color:@selectedPresetBorderColor;
+}
+
+presetHeader > presetHeaderTextNest > textareaNoTab {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:30*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+  move-axis:vertical;
+  move-start:no;
+}
+
+weaponryPreset[selected=yes] presetHeader > presetHeaderTextNest > textareaNoTab,
+presetHeader:hover > presetHeaderTextNest > textareaNoTab {
+  move-start:yes;
 }
 
 fadedImageFrame {
@@ -666,4 +645,20 @@ bulletGraphLegend[graphColor=FFB7B7B7] > bulletGraphPoint {
 bulletGraphLegend[graphColor=FF94D244] > bulletGraphLine,
 bulletGraphLegend[graphColor=FF94D244] > bulletGraphPoint {
   background-color:#FF94D244;
+}
+
+weaponry_item > weaponBody > modIcon > mrankLockIcon {
+  display:hide;
+}
+weaponry_item[mrankLock=yes] > weaponBody > modIcon > mrankLockIcon {
+  display:show;
+}
+weaponry_item[mrankLock=yes] > weaponBody > modIcon > img {
+  background-color:#969696;
+}
+weaponry_item[mrankLock=yes] > weaponBody > modIcon[hoverStyle=yes] > img {
+  background-color:#eeeeee;
+}
+weaponry_item[mrankLock=yes] > weaponBody > wallpaper > pattern {
+  type:dark_diag_lines;
 }

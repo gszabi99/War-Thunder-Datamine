@@ -2052,7 +2052,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_ZT_3_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_ZT_3_launcher_user_cannon.blk",
         "recoilMultiplier": 0.01,
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2140,7 +2140,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
         "recoilMultiplier": 0.01,
         "recoilOffset": 0.01,
         "emitter": "bone_gun_barrel",
@@ -2208,13 +2208,13 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_ratel_zt3_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_ratel_zt3_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
     }
   },
   "VehiclePhys": {
@@ -3822,10 +3822,10 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }
@@ -3841,7 +3841,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/127mm_ZT_3_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/127mm_ZT_3_launcher_user_cannon.blk",
               "recoilMultiplier": 0.01,
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
@@ -3929,7 +3929,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
               "recoilMultiplier": 0.01,
               "recoilOffset": 0.01,
               "emitter": "bone_gun_barrel",
@@ -3996,7 +3996,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4209,5 +4209,29 @@
       "rotation": 2.5,
       "collisionNode": "cls_turret"
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.638,
+      1.302,
+      1.249
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

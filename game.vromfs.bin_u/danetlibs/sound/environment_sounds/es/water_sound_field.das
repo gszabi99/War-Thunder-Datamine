@@ -60,7 +60,7 @@ def water_sound_field_init(evt : Event;
   offset = water_sound_field__worldAABB.xy
   ncells = int2(ceil((water_sound_field__worldAABB.zw - water_sound_field__worldAABB.xy) / cellSize))
 
-  var water : array<float>
+  var inscope water : array<float>
   make_water(water, ncells, cellSize, water_sound_field__depthThreshold, offset, 2)
 
   resize(water_sound_field__cells, ncells.x * ncells.y)
@@ -73,6 +73,8 @@ def water_sound_field_init(evt : Event;
       water_sound_field__cells[cell_idx(x, z, ncells)] = uint8(saturate(water[cell_idx(x, z, ncells)]) * 255.)
 
   sound_debug("init water_sound_field ncells={ncells}, size(kb)={ncells.x * ncells.y / 1024}")
+
+  shrink_heap_memory()
 
 
 [es(no_order, tag=sound, on_event=ParallelUpdateFrameDelayed)]

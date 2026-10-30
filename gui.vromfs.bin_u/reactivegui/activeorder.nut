@@ -1,3 +1,5 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/style/fontsState.nut" as fontsState
 import "%rGui/style/teamColors.nut" as teamColors
 from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/orderState.nut" import showOrder, scoresTable, statusText, statusTextBottom
@@ -6,17 +8,12 @@ from "%rGui/components/scrollbarBase.nut" import makeVertScroll
 from "eventbus" import eventbus_send
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = require("%rGui/style/colors.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
-
 let isOrderVisible = Computed(@() isOrderStatusVisible.get() && showOrder.get())
 let isCollapsed = Watched(false)
 
-let pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
 let rowHeight = scrn_tgt(0.0224)
 const collapseBtnSize = hdpx(45)
 const collapseIconSize = hdpx(30)
-let collapseIcon = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{collapseIconSize}:{collapseIconSize}")
 
 let lineSpacing = {
   lineSpacing = hdpx(2)
@@ -31,7 +28,7 @@ let shadow = {
   fontFxOffsY = hdpx(1)
 }
 
-let collapseIconComp = @() {
+let mkCollapseIconComp = @(collapseIcon) @() {
   watch = isCollapsed
   rendObj = ROBJ_IMAGE
   size = const [collapseIconSize, collapseIconSize]
@@ -42,7 +39,7 @@ let collapseIconComp = @() {
   }
 }
 
-let collapseButton = watchElemState(@(sf) {
+let mkCollapseButton = @(collapseIconComp) watchElemState(@(sf) {
   behavior = Behaviors.Button
   rendObj = ROBJ_SOLID
   size = const [collapseBtnSize, collapseBtnSize]
@@ -73,7 +70,7 @@ let collapsedOrder = {
   children = orderIcon
 }
 
-let mkPlayerComp = @(item) {
+let mkPlayerComp = @(item, pilotIcon) {
   size = [SIZE_TO_CONTENT, rowHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
@@ -81,7 +78,7 @@ let mkPlayerComp = @(item) {
   children = [
     {
       rendObj = ROBJ_IMAGE
-      size = [rowHeight, rowHeight]
+      size = rowHeight
       image = pilotIcon
     }
     @() {
@@ -107,13 +104,13 @@ let mkScoreComp = @(item) {
   color = colors.menu.commonTextColor
 }.__update(shadow)
 
-function scoresTableComp() {
+let mkScoresTableComp = @(pilotIcon) function() {
   let res = {
     playerComps = []
     scoreComps = []
   }
   foreach (item in scoresTable.get()) {
-    res.playerComps.append(mkPlayerComp(item))
+    res.playerComps.append(mkPlayerComp(item, pilotIcon))
     res.scoreComps.append(mkScoreComp(item))
   }
   return {
@@ -160,35 +157,41 @@ let orderStatus = @() {
   colorTable = teamColors.get()
 }.__update(shadow, lineSpacing)
 
-let activeOrder = {
+let mkActiveOrder = @() {
   flow = FLOW_VERTICAL
   size = [scrn_tgt(0.4), SIZE_TO_CONTENT]
   margin = const [0, 0, 0, hdpx(4)]
   gap = hdpx(4)
   children = [
     orderDesc
-    scoresTableComp
+    mkScoresTableComp(Picture("!ui/gameuiskin#player_in_queue"))
     orderStatus
   ]
 }
 
 let undateOrderState = @() eventbus_send("active_order_request_update")
 
-function activeOrderComps() {
-  local children = null
-  if (isOrderVisible.get())
-    children = (cursorVisible.get() && isCollapsed.get()) ? [collapseButton, collapsedOrder]
-      : cursorVisible.get() ? [collapseButton, activeOrder]
-      : isCollapsed.get() ? null
-      : activeOrder
-
-  return {
-    watch = [isOrderVisible, cursorVisible, isCollapsed]
+function mkOrderComps() {
+  let collapseIcon = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{collapseIconSize}:{collapseIconSize}")
+  let collapseButton = mkCollapseButton(mkCollapseIconComp(collapseIcon))
+  let activeOrder = mkActiveOrder()
+  return @() {
+    watch = [cursorVisible, isCollapsed]
     size = SIZE_TO_CONTENT
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
     gap = hdpx(4)
-    children
+    children = (cursorVisible.get() && isCollapsed.get()) ? [collapseButton, collapsedOrder]
+      : cursorVisible.get() ? [collapseButton, activeOrder]
+      : isCollapsed.get() ? null
+      : activeOrder
+  }
+}
+
+function activeOrderComps() {
+  return {
+    watch = isOrderVisible
+    children = isOrderVisible.get() ? mkOrderComps() : null
 
     onAttach = function() {
       eventbus_send("active_order_enable")
@@ -198,17 +201,17 @@ function activeOrderComps() {
   }
 }
 
-let activeOrderLogContentInner = {
+let mkActiveOrderLogContentInner = @() {
   rendObj = ROBJ_SOLID
   size = const [FLEX, SIZE_TO_CONTENT]
   minHeight = hdpx(158)
   padding = [scrn_tgt(0.005), scrn_tgt(0.005)]
   valign = ALIGN_TOP
   color = colors.hud.hudLogBgColor
-  children = activeOrder
+  children = mkActiveOrder()
 }
 
-let activeOrderLogContent = makeVertScroll(activeOrderLogContentInner, {
+let activeOrderLogContent = @() makeVertScroll(mkActiveOrderLogContentInner(), {
   size = const [FLEX, hdpx(158)]
   needReservePlace = false
 })

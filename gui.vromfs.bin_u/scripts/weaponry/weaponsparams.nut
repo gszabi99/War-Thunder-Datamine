@@ -20,8 +20,8 @@ function initWeaponParams() {
     reloadCooldownTimeByCaliber.mutate(@(v) v[time.x] <- time.y) 
 }
 
-return {
+return freeze({
   saclosMissileBeaconIRSourceBand
   reloadCooldownTimeByCaliber
   initWeaponParams
-}
+})

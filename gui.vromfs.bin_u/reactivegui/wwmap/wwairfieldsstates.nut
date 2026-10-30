@@ -73,7 +73,7 @@ function updateAirfieldsStates() {
 let updateHoveredAirfield = @(airfieldData) hoveredAirfield.set(airfieldData)
 subscribe("ww.unselectAirfield", @(_v) updateSelectedAirfield(null))
 
-return {
+return freeze({
   updateAirfieldsData
   airfieldsInfo
   getAirfieldByPoint
@@ -83,4 +83,4 @@ return {
   hoveredAirfieldIndex
   selectedAirfield
   updateAirfieldsStates
-}
+})

@@ -12,7 +12,7 @@ module linq_fold_sql shared public
 
 
 
-require daslib/linq_fold_common public   
+require daslib/linq_fold_common public
 require daslib/ast_boost
 require daslib/ast
 
@@ -31,7 +31,6 @@ def sql_linq_loaded(prog : ProgramPtr) : bool {
 }
 
 def private is_sql_table_select(c : ExprCall?) : bool {
-    
     if (c._type == null || !c._type.isGoodArrayType || c._type.firstType == null) return false
     let st = c._type.firstType.structType
     if (st == null) return false
@@ -41,9 +40,6 @@ def private is_sql_table_select(c : ExprCall?) : bool {
     }
     return false
 }
-
-
-
 
 [macro_function]
 def extract_sql_source(var expr : Expression?) : ExprCall? {

@@ -1,10 +1,9 @@
+import "%rGui/components/scrollableData.nut" as scrollableData
+import "%rGui/style/fontsState.nut" as fontsState
 import "%rGui/killLogState.nut" as killLogState
 import "%rGui/components/hudLog.nut" as hudLog
 import "%rGui/style/teamColors.nut" as teamColors
 from "%rGui/globals/ui_library.nut" import *
-
-let scrollableData = require("%rGui/components/scrollableData.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
 
 let logEntryComponent = function (log_entry) {
   return function () {
@@ -26,7 +25,7 @@ let logBox = hudLog({
   messageComponent = logEntryComponent
 })
 
-return {
+return freeze({
   size = FLEX_H
   children = logBox
-}
+})

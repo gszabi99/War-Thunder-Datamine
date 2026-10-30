@@ -1,43 +1,44 @@
+import "%scripts/items/prizesRewardWnd.nut" as prizesRewardWnd
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton, warningIfGold
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/user/personalOffersStates.nut" import curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer, isSeenOffer, clearOfferCache
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/promo/promo.nut" import performPromoAction, togglePromoItem
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/onlineShop/entitlements.nut" import getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText, getEntitlementLocParams
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/wishlist/wishlistManager.nut" import hasInWishlist
+from "%scripts/items/prizesView.nut" import getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType, isRewardItem
 from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
 from "chard" import charSendBlk, get_charserver_time_sec
 from "string" import format
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/datablock.nut" import convertBlk, copyParamsToTable
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer, isSeenOffer, clearOfferCache } = require("%scripts/user/personalOffersStates.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
-let { performPromoAction, togglePromoItem } = require("%scripts/promo/promo.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText, getEntitlementLocParams } = require("%scripts/onlineShop/entitlements.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText } = require("%scripts/items/prizesView.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 
 function getEntitlementTimeForDesc(config) {
   let ent = getEntitlementConfig(config.entitlement)
@@ -90,7 +91,7 @@ let personalOfferWndStyles = {
 
 let offerTypes = {
   unit = @(_c) loc("shop/section/premium")
-  unlock = @(_c) loc("trophy/unlockables_names/achievement")
+  unlock = @(_c) locByVendor("trophy/unlockables_names/achievement")
   gold = @(_c) loc("charServer/chapter/eagles")
   premium_in_hours = @(_c) loc("charServer/entitlement/PremiumAccount")
   item = @(_c) loc("item")
@@ -132,7 +133,7 @@ class PersonalOfferHandler (BaseGuiHandlerWT) {
     this.scene.findObject("header_image_center")["width"] = max(0, personalTextSize[0] - maxTextWidthNoResize)
   }
 
-  getGroupTitle = @(offerType, config) offerTypes?[offerType](config) ?? loc($"trophy/unlockables_names/{offerType}", "")
+  getGroupTitle = @(offerType, config) offerTypes?[offerType](config) ?? locByVendor($"trophy/unlockables_names/{offerType}", "")
 
   function prepareRewardsData() {
     this.groups = []
@@ -394,6 +395,6 @@ addPromoButtonConfig({
   }
 })
 
-return {
+return freeze({
   checkShowPersonalOffers
-}
+})

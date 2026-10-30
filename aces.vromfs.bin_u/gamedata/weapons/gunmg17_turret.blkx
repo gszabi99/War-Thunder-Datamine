@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 1,
-  "maxDeltaAngle": 0.21,
-  "shotFreq": 19.166668,
-  "traceFreq": 4,
-  "bullets": 500,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.21,
+  "shotFreq": 19.166668,
+  "bullets": 500,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        9.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.01,
@@ -426,7 +438,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmGreen",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2059,7 +2071,8 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "noColor"
+        "tracer": "noColor",
+        "trail": "noTrail"
       }
     }
   ],
@@ -3697,7 +3710,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmGreen",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
     ]
@@ -4516,7 +4529,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmGreen",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -5331,21 +5344,9 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmGreen",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
-    ]
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        9.0,
-        0.05
-      ]
     ]
   },
   "mg15_turret_new_gun": {

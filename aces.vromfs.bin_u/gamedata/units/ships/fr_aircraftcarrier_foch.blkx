@@ -8,16 +8,18 @@
   "dynCollisionGeom": true,
   "harmonizationSuffix": "_tomoe",
   "moveType": "ship",
-  "maxFwdSpeed": 80.0,
+  "maxFwdSpeed": 55.0,
   "maxRevSpeed": 5.0,
-  "maxAngSpeed": 15.0,
-  "maxAccel": 20.0,
+  "maxAngSpeed": 5.0,
+  "maxAccel": 5.0,
   "maxDecel": 5.0,
-  "maxAngAccel": 15.0,
-  "maxAngAccel0": 2.0,
-  "maxAngAccelV": 15.0,
-  "groundNormSmoothViscosity": 0.1,
+  "maxAngAccel": 5.0,
+  "maxAngAccel0": 1.0,
+  "maxAngAccelV": 5.0,
+  "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
+  "drownGFactor": 0.00001,
+  "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "ikPilotMaxUpdateDistance": 200.0,
@@ -1379,9 +1381,9 @@
     "mass": {
       "Empty": 40000000.0,
       "momentOfInertia": [
-        240.0,
+        300.0,
         7000.0,
-        3400.0
+        3500.0
       ],
       "CenterOfGravity": [
         1.0,
@@ -1392,6 +1394,7 @@
     "engines": {
       "maxSpeed": 16.72,
       "maxReverseSpeed": 5.0,
+      "horsePowers": 126000.0,
       "speedToTime": {
         "row": [
           [
@@ -1485,7 +1488,69 @@
         "deflection": 36.0,
         "dmPart": "steering_gear_01_dm"
       }
+    },
+    "settings": {
+      "rollDampingMult": 1.5,
+      "pitchDampingMult": 1.5
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.6,
+        700.0
+      ],
+      [
+        9.3,
+        1500.0
+      ],
+      [
+        13.9,
+        2600.0
+      ],
+      [
+        18.6,
+        4500.0
+      ],
+      [
+        23.2,
+        7000.0
+      ],
+      [
+        27.9,
+        8600.0
+      ],
+      [
+        32.5,
+        10300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        3000.0
+      ],
+      [
+        -2.0,
+        1800.0
+      ],
+      [
+        -1.0,
+        800.0
+      ],
+      [
+        0.0,
+        400.0
+      ],
+      [
+        5.0,
+        400.0
+      ]
+    ]
   },
   "cockpit": {
     "headPos": [
@@ -1513,27 +1578,28 @@
     "binoculars": "navy_binoculars"
   },
   "shipDamageControl": {
-    "shipDamageControlEnabled": true
+    "shipDamageControlEnabled": true,
+    "shipDamageControlCoeff": 0.154
   },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/fr_drbv15.blk",
+        "blk": "gamedata/sensors/naval/fr_drbv15.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/fr_drbi10.blk",
+        "blk": "gamedata/sensors/naval/fr_drbi10.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_02_dm"
       },
       {
-        "blk": "gameData/sensors/naval/fr_drbi10.blk",
+        "blk": "gamedata/sensors/naval/fr_drbi10.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_03_dm"
       },
       {
-        "blk": "gameData/sensors/naval/fr_drbv23b.blk",
+        "blk": "gamedata/sensors/naval/fr_drbv23b.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_04_dm"
       }
@@ -1557,7 +1623,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1637,7 +1703,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1729,7 +1795,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -1833,7 +1899,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/100mm_55_mle_1953_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -1939,7 +2005,7 @@
   "weapon_presets": {
     "preset": {
       "name": "fr_aircraftcarrier_foch_default",
-      "blk": "gameData/units/ships/weaponPresets/fr_aircraftcarrier_foch_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/fr_aircraftcarrier_foch_default.blk"
     }
   },
   "boilerExplosionFx": {
@@ -3434,14 +3500,14 @@
   },
   "breaches": {
     "repairSpeed": 22.0,
-    "waterMassVel": -100000.0,
-    "waterMassMult": 400.0,
     "sizeToRepair": [
       0.01,
-      10.0,
-      100.0,
-      1250.0
+      7.5,
+      154.0,
+      1185.8
     ],
+    "waterMassVel": -172000.0,
+    "waterMassMult": 400.0,
     "additionalWaterDeathThreshold": 400000000.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 45.0,
@@ -3449,6 +3515,10 @@
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
+    "maxTrimmingAngle": 3.5,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 5.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.06,
     "minCaliberToBreach": 0.2,

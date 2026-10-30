@@ -1,11 +1,9 @@
-from "%sqstd/platform.nut" import isPC
+from "%scripts/chat/chatStates.nut" import chatStatesCanUseVoice
+from "%sqstd/platform.nut" import isPC, isSony
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/options/optionsExtNames.nut" import USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP
 from "%scripts/dagui_natives.nut" import gchat_is_voice_enabled
 from "%scripts/dagui_library.nut" import *
-
-let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP } = require("%scripts/options/optionsExtNames.nut")
 
 return [
 
@@ -90,7 +88,7 @@ return [
   }
   {
     id = "ID_GAMEPAD_RESET_GYRO_TILT"
-    showFunc = @() isPlatformSony
+    showFunc = @() isSony
     checkAssign = false
   }
   {

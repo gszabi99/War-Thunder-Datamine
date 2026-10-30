@@ -2236,7 +2236,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2505,7 +2505,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
@@ -2549,8 +2549,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_lvkv_90c_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_lvkv_90c_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3519,6 +3519,7 @@
     "ammo1": {
       "removeLoadedAmmo": false,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,
@@ -3526,6 +3527,7 @@
       "shells": [
         {
           "autoLoad": true,
+          "index": 0,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -3601,6 +3603,7 @@
         },
         {
           "reloadTimeMult": 10.0,
+          "index": 1,
           "ammo_turret_25_dm": {
             "count": 1
           },
@@ -3748,6 +3751,7 @@
         },
         {
           "reloadTimeMult": 15.0,
+          "index": 2,
           "ammo_body_01_dm": {
             "count": 8
           },
@@ -3883,19 +3887,19 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/sw_triad_search.blk",
+              "blk": "gamedata/sensors/sw_triad_search.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
               "dmPart": "antenna_target_location_dm"
             },
             {
-              "blk": "gameData/sensors/sw_utaas_track.blk",
+              "blk": "gamedata/sensors/sw_utaas_track.blk",
               "turretIndex": 0,
               "dmPart": "optic_gun_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }
@@ -3912,7 +3916,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -4181,7 +4185,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_04",
               "defaultYaw": 0.0,
@@ -4224,7 +4228,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4373,14 +4377,14 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/sw_triad_search.blk",
+        "blk": "gamedata/sensors/sw_triad_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
         "dmPart": "antenna_target_tagging_dm"
       },
       {
-        "blk": "gameData/sensors/sw_utaas_track.blk",
+        "blk": "gamedata/sensors/sw_utaas_track.blk",
         "turretIndex": 0,
         "dmPart": "optic_gun_dm"
       }

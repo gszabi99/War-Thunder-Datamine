@@ -35,4 +35,4 @@ let reticle = @(width, height, line_width_scale, color) @() {
   reticleOnlyColor = color
 }
 
-return { litening2, mfdCamLitening2SettingsUpd, reticle }
+return freeze({ litening2, mfdCamLitening2SettingsUpd, reticle })

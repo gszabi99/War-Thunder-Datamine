@@ -5,9 +5,9 @@ require DngHuman
 require MotionMatching
 require %game.events
 
-[es(tag=gameClient, after=(after_net_phys_sync), before=(before_animchar_update_sync, human_vehicle_seats_non_shooter_pre_animchar_es))]
+[es(tag=gameClient, after=(after_net_phys_sync, human_anim_fpv), before=(before_animchar_update_sync, human_vehicle_seats_non_shooter_pre_animchar_es))]
 def human_locomotion_es(info : ParallelUpdateFrameDelayed;
-                        eid : EntityId;
+                        human_anim__isFpv : bool = false;
                         human_net_phys : HumanActor;
                         locomotionParams : float4;
                         locomotionFactor : float;
@@ -20,11 +20,7 @@ def human_locomotion_es(info : ParallelUpdateFrameDelayed;
                         var prevLocoVel : float3&;
                         var prevLocoAcc : float3&;
                         var prevLocoQuat : float4&)
-  var isInCockpitCam = false
-  query() <| $ [es] (isHeroCockpitCam : bool; camera__target : EntityId; camera__active : bool)
-    if camera__active && camera__target == eid
-      isInCockpitCam = isHeroCockpitCam
-  if isInCockpitCam
+  if human_anim__isFpv
     return
   let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
   var vel = lerp(human_net_phys.phys.previousState.velocity, human_net_phys.phys.currentState.velocity, interpK)

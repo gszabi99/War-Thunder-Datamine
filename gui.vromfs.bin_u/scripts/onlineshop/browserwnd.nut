@@ -1,23 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/web/webpoll.nut" import getPollIdByFullUrl, generatePollUrl
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
-from "%sqstd/string.nut" import startsWith, stripTags
+from "%sqstd/string.nut" import startsWith
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import browser_reload_page, browser_go, browser_get_current_url, browser_go_back
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/browserEventConsts.nut" import *
 from "types" import String
-
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 eventbus_subscribe("notify_browser_window", @(params) broadcastEvent("EmbeddedBrowser", params))
 
@@ -184,4 +184,4 @@ let BrowserModalHandler = class (BaseGuiHandler) {
 }
 register_gui_handler("BrowserModalHandler", BrowserModalHandler)
 
-return { BrowserModalHandler }
+return freeze({ BrowserModalHandler })

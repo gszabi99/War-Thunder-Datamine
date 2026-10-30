@@ -1100,6 +1100,7 @@
     "engines": {
       "maxSpeed": 15.41,
       "maxReverseSpeed": 6.6,
+      "horsePowers": 30000.0,
       "speedToTime": {
         "row": [
           [
@@ -1202,6 +1203,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.3,
+        400.0
+      ],
+      [
+        8.6,
+        900.0
+      ],
+      [
+        12.9,
+        1500.0
+      ],
+      [
+        17.1,
+        2700.0
+      ],
+      [
+        21.4,
+        4400.0
+      ],
+      [
+        25.7,
+        6700.0
+      ],
+      [
+        30.0,
+        8000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        3100.0
+      ],
+      [
+        -2.0,
+        1600.0
+      ],
+      [
+        -1.0,
+        700.0
+      ],
+      [
+        0.0,
+        200.0
+      ],
+      [
+        5.0,
+        200.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
@@ -1232,19 +1291,19 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/uk_type_293q.blk",
+        "blk": "gamedata/sensors/naval/uk_type_293q.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/uk_type_278.blk",
+        "blk": "gamedata/sensors/naval/uk_type_278.blk",
         "dmPart": [
           "antenna_target_tagging_01_dm",
           "antenna_target_tagging_mount_01_dm"
         ]
       },
       {
-        "blk": "gameData/sensors/naval/uk_type_275.blk",
+        "blk": "gamedata/sensors/naval/uk_type_275.blk",
         "dmPart": [
           "antenna_target_tagging_02_dm",
           "antenna_target_tagging_mount_02_dm"
@@ -1281,7 +1340,7 @@
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.4
+    "shipDamageControlCoeff": 0.361
   },
   "modifications": {
     "new_ship_hull": {},
@@ -2812,23 +2871,27 @@
   },
   "breaches": {
     "repairSpeed": 30.0,
-    "waterMassVel": -80000.0,
-    "waterMassMult": 180.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      120.0,
-      500.0
+      7.5,
+      150.0,
+      1401.0
     ],
-    "additionalWaterDeathThreshold": 8200000.0,
+    "waterMassVel": -48003.0,
+    "waterMassMult": 200.0,
+    "additionalWaterDeathThreshold": 11990006.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 37.0,
+    "maxHeelingAngle": 38.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.65,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 5.3,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18,
+    "sideCenterOfMassOffsetPercent": 0.264,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.2,
     "deadCoverCounterfloodingRel": 0.5,
@@ -2838,7 +2901,7 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.2,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
@@ -2849,8 +2912,14 @@
             "critWaterLevel": 0.75
           }
         ],
-        "weight": 1.0,
-        "maxWaterAlive": 1.0
+        "weight": 0.2,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "fire_control_room_01_dm",
+            "critWaterLevel": 0.9
+          }
+        }
       },
       {
         "part": "cover_03_dm",
@@ -2860,40 +2929,40 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.54
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.54
             }
           ]
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 0.5,
+        "weight": 0.6,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.53
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.52
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.2,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]
@@ -3615,7 +3684,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/114mm_45_qf_mk4_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/114mm_45_qf_mk4_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3752,7 +3821,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/114mm_45_qf_mk4_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/114mm_45_qf_mk4_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3889,7 +3958,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_qf_bofors_staag_mk2_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_qf_bofors_staag_mk2_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -4154,7 +4223,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_qf_bofors_staag_mk2_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_qf_bofors_staag_mk2_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -4422,12 +4491,12 @@
     "preset": [
       {
         "name": "bomb_mortar",
-        "blk": "gameData/units/ships/weaponPresets/uk_frigate_whitby_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_frigate_whitby_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "uk_frigate_whitby_default",
-        "blk": "gameData/units/ships/weaponPresets/uk_frigate_whitby_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/uk_frigate_whitby_default.blk"
       }
     ]
   },

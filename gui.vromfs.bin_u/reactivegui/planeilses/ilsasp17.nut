@@ -1,3 +1,4 @@
+import "%rGui/hudUnitType.nut" as hudUnitType
 from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockValid, AirTargetMode
 from "%rGui/planeState/planeWeaponState.nut" import SelectedTrigger
 from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth, weaponTriggerName
@@ -6,7 +7,6 @@ from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
 
 let { AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
-let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let ASP17crosshair = @() {
   watch = IlsColor
@@ -15,7 +15,7 @@ let ASP17crosshair = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, -10, 0, -60, 0],
     [VECTOR_LINE, 0, -10, 0, -60],
@@ -33,13 +33,13 @@ let ASP17Roll = @() {
   lineWidth = baseLineWidth * IlsLineScale.get()
   fillColor = IlsColor.get()
   behavior = Behaviors.RtPropUpdate
-  commands = [
+  commands = const [
     [VECTOR_POLY, -2, -70, 0, -77, 2, -70]
   ]
   update = @() {
     transform = {
       rotate = clamp(Roll.get(), -30, 30).tointeger()
-      pivot = [0, 0]
+      pivot = 0
     }
   }
 }
@@ -57,19 +57,19 @@ let ASP17Distances = @() {
     [VECTOR_SECTOR, 0, 0, 93, 93, -80, max(-80, min(DistToTargetWatch.get(), -3))],
     [VECTOR_SECTOR, 0, 0, 90, 90, -90, DistToTargetWatch.get()],
     [VECTOR_WIDTH, baseLineWidth * 1.5 * IlsLineScale.get()],
-    [VECTOR_LINE, 0, -90, 0, -82], 
-    (DistToTargetWatch.get() > -30 ? [VECTOR_LINE, 78, -45, 71, -41] : []),  
-    (DistToTargetWatch.get() > -60 ? [VECTOR_LINE, 45, -78, 41, -71] : []), 
-    (DistToTargetWatch.get() > 0 ? [VECTOR_LINE, 82, 0, 90, 0] : []), 
+    const [VECTOR_LINE, 0, -90, 0, -82], 
+    (DistToTargetWatch.get() > -30 ? const [VECTOR_LINE, 78, -45, 71, -41] : const []),  
+    (DistToTargetWatch.get() > -60 ? const [VECTOR_LINE, 45, -78, 41, -71] : const []), 
+    (DistToTargetWatch.get() > 0 ? const [VECTOR_LINE, 82, 0, 90, 0] : const []), 
     [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get()],
-    (DistToTargetWatch.get() >= 15 ? [VECTOR_LINE, 82.1, 22, 86.9, 23.3] : []),  
-    (DistToTargetWatch.get() > -15 ? [VECTOR_LINE, 82.1, -22, 86.9, -23.3] : []),  
-    (DistToTargetWatch.get() > -37.5 ? [VECTOR_LINE, 67.4, -51.7, 71.4, -54.8] : []),  
-    (DistToTargetWatch.get() > -45 ? [VECTOR_LINE, 60.1, -60.1, 63.6, -63.6] : []),  
-    (DistToTargetWatch.get() > -52.5 ? [VECTOR_LINE, 51.7, -67.4, 54.8, -71.4] : []),  
-    (DistToTargetWatch.get() > -67.5 ? [VECTOR_LINE, 32.5, -78.5, 34.4, -83.2] : []),  
-    (DistToTargetWatch.get() > -75 ? [VECTOR_LINE, 22, -82.1, 23.3, -86.9] : []),  
-    (DistToTargetWatch.get() > -82.5 ? [VECTOR_LINE, 11, -84.3, 11.7, -89.2] : [])  
+    (DistToTargetWatch.get() >= 15 ? const [VECTOR_LINE, 82.1, 22, 86.9, 23.3] : const []),  
+    (DistToTargetWatch.get() > -15 ? const [VECTOR_LINE, 82.1, -22, 86.9, -23.3] : const []),  
+    (DistToTargetWatch.get() > -37.5 ? const [VECTOR_LINE, 67.4, -51.7, 71.4, -54.8] : const []),  
+    (DistToTargetWatch.get() > -45 ? const [VECTOR_LINE, 60.1, -60.1, 63.6, -63.6] : const []),  
+    (DistToTargetWatch.get() > -52.5 ? const [VECTOR_LINE, 51.7, -67.4, 54.8, -71.4] : const []),  
+    (DistToTargetWatch.get() > -67.5 ? const [VECTOR_LINE, 32.5, -78.5, 34.4, -83.2] : const []),  
+    (DistToTargetWatch.get() > -75 ? const [VECTOR_LINE, 22, -82.1, 23.3, -86.9] : const []),  
+    (DistToTargetWatch.get() > -82.5 ? const [VECTOR_LINE, 11, -84.3, 11.7, -89.2] : const [])  
   ]
 }
 

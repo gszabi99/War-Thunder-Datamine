@@ -61,8 +61,8 @@ ecs.register_es("apply_squad_behaviour_on_spawn_es", {
   { tags = "gameClient" }
 )
 
-return {
+return freeze({
   setSquadBehaviour
   squadBehaviour
   SquadBehaviourEnum
-}
+})

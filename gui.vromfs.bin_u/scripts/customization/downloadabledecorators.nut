@@ -1,12 +1,11 @@
+import "%scripts/guidParser.nut" as guidParser
 import "DataBlock" as DataBlock
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/skinUtils.nut" import getSkinId
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "types" import Integer
-
-let guidParser = require("%scripts/guidParser.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getSkinId } = require("%scripts/customization/skinUtils.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let downloadableSkins = {} 
 
@@ -70,7 +69,7 @@ function getSuggestedSkins(unitName, skinType) {
 
 eventbus_subscribe("updateDownloadableDecoratorsInfo", @(p) updateDownloadableSkins(p.unitName, p.skinType))
 
-return {
+return freeze({
   getDownloadableSkins
   getSuggestedSkins
-}
+})

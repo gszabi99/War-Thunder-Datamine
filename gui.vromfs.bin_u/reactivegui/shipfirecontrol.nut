@@ -1,20 +1,19 @@
+import "%rGui/fcsState.nut" as fcsState
 import "%rGui/compass.nut" as compass
+import "%rGui/shipTorpedoStatus.nut" as torpedoWeaponsStatus
 from "%rGui/compassState.nut" import CompassValue
 from "%rGui/style/airHudStyle.nut" import greenColor, greenColorGrid
-from "%rGui/shipState.nut" import fov, gunStatesFirstNumber, gunStatesSecondNumber, artilleryType, showReloadedSignalFirstRow, showReloadedSignalSecondRow
+from "%rGui/shipState.nut" import fov, gunStatesFirstNumber, gunStatesSecondNumber, artilleryType
 from "%rGui/radarState.nut" import IsRadarVisible
-from "%rGui/hud/actionBarState.nut" import actionBarPos, isActionBarCollapsed
 from "%rGui/fcsComponent.nut" import drawArrow
-from "%rGui/shipStateConsts.nut" import FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState
-from "string" import format
-from "%sqstd/math.nut" import PI, fabs, sqrt, lerpClamped
-from "mission" import get_mission_time
-from "eventbus" import eventbus_send
+from "%rGui/shipFireControlCommon.nut" import mkActionBarPanel
+from "%rGui/shipStateConsts.nut" import FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER
+from "%rGui/shipGunStatus.nut" import mkWeaponsStatus
+from "%sqstd/math.nut" import PI, fabs, sqrt
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/weaponConsts.nut" import *
 
 let { gunStatesFirstRow, gunStatesSecondRow } = require("%rGui/shipState.nut")
-let fcsState = require("%rGui/fcsState.nut")
 
 const redColor = Color(255, 109, 108, 255)
 const greyColor = Color(15, 25, 25, 255)
@@ -24,88 +23,59 @@ let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 const rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 const rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
-const reloadCircleSize = hdpxi(76)
-const reloadSignalSize = hdpxi(110)
 const firstGunsRowHeight = hdpx(38)
 const secondGunsRowHeight = hdpx(32)
-const noBulletsIconSize = hdpxi(32)
-
-let gunStatusColors = {
-  ready = Color(0, 255, 0, 255)
-  overheat = Color(255, 0, 0, 255)
-  inoperable = Color(255, 0, 0, 255)
-  inoperableDeadzone = Color(128, 0, 0, 255)
-  deadzone = Color(128, 128, 128, 255)
-  readyDeadzone = Color(0, 128, 0, 255)
-  neuterDeadzone = Color(64, 64, 64, 255)
-  inner = Color(128, 128, 128, 255)
-  inoperableBackground = Color(255, 0, 0, 96)
-  defaultBackgroud = Color(0, 0, 0, 0)
-  empty = Color(0, 0, 0, 0)
-}
-
-let signalPlayedWathByTrigger = {
-  [FIRST_ROW_SIGNAL_TRIGGER] = showReloadedSignalFirstRow,
-  [SECOND_ROW_SIGNAL_TRIGGER] = showReloadedSignalSecondRow
-}
-
-let emptyCircleImg = Picture($"ui/gameuiskin#ship_weapon_status_circle.svg:{reloadCircleSize}:{reloadCircleSize}:P")
-let bluredCircleImg = Picture($"ui/gameuiskin#ship_weapon_reloaded_signal.avif:{reloadSignalSize}:{reloadSignalSize}:P")
-let filledCircleImg = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{reloadCircleSize}:{reloadCircleSize}:P")
-let noBulletsIcon = Picture($"ui/gameuiskin#has_no_bullets_icon.svg:{noBulletsIconSize}:{noBulletsIconSize}:P")
+const weaponGroupsGap = hdpx(20)
 
 let compassComponent = {
   pos = compassPos
   children = compass(compassSize, greenColor)
 }
 
-let shipFireControlCachedPos = mkWatched(persist, "shipFireControlCachedPos", [0,0])
-shipFireControlCachedPos.subscribe(@(v) eventbus_send("update_ship_fire_control_panel", {pos = v}))
-showReloadedSignalFirstRow.subscribe(@(val) val ? anim_start(FIRST_ROW_SIGNAL_TRIGGER) : null)
-showReloadedSignalSecondRow.subscribe(@(val) val ? anim_start(SECOND_ROW_SIGNAL_TRIGGER) : null)
+let progressBarContent = {
+  halign = ALIGN_RIGHT
+  children = {
+    children = [
+      @() {
+        watch = fcsState.CalcProgress
+        size = FLEX
+        opacity = 0.25
+        fValue = fcsState.CalcProgress.get()
+        rendObj = ROBJ_PROGRESS_LINEAR
+        fgColor = rangefinderProgressBarColor1
+        bgColor = rangefinderProgressBarColor2
+      }
+      @() {
+        watch = fcsState.IsTargetDataAvailable
+        isHidden = !fcsState.IsTargetDataAvailable.get()
+        size = const [SIZE_TO_CONTENT, sh(2)]
+        padding = const [0, hdpx(5)]
+        color = Color(0, 0, 0, 255)
+        valign = ALIGN_CENTER
+        rendObj = ROBJ_INSCRIPTION
+        font = Fonts.tiny_text_hud
+        text = loc("updating_range")
+      }
+      @() {
+        watch = fcsState.IsTargetDataAvailable
+        isHidden = fcsState.IsTargetDataAvailable.get()
+        size = const [SIZE_TO_CONTENT, sh(2)]
+        padding = const [0, hdpx(5)]
+        color = Color(0, 0, 0, 255)
+        valign = ALIGN_CENTER
+        halign = ALIGN_RIGHT
+        rendObj = ROBJ_INSCRIPTION
+        font = Fonts.tiny_text_hud
+        text = loc("measuring_range")
+      }
+    ]
+  }
+}
 
 let progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
   pos = [sw(52) + fcsState.OpticsWidth.get(), fcsState.StaticFov.get() > 6. ? sh(56.5) : sh(55)]
-  children = {
-    halign = ALIGN_RIGHT
-    children = {
-      children = [
-        @() {
-          watch = fcsState.CalcProgress
-          size = FLEX
-          opacity = 0.25
-          fValue = fcsState.CalcProgress.get()
-          rendObj = ROBJ_PROGRESS_LINEAR
-          fgColor = rangefinderProgressBarColor1
-          bgColor = rangefinderProgressBarColor2
-        }
-        @() {
-          watch = fcsState.IsTargetDataAvailable
-          isHidden = !fcsState.IsTargetDataAvailable.get()
-          size = const [SIZE_TO_CONTENT, sh(2)]
-          padding = const [0, hdpx(5)]
-          color = Color(0, 0, 0, 255)
-          valign = ALIGN_CENTER
-          rendObj = ROBJ_INSCRIPTION
-          font = Fonts.tiny_text_hud
-          text = loc("updating_range")
-        }
-        @() {
-          watch = fcsState.IsTargetDataAvailable
-          isHidden = fcsState.IsTargetDataAvailable.get()
-          size = const [SIZE_TO_CONTENT, sh(2)]
-          padding = const [0, hdpx(5)]
-          color = Color(0, 0, 0, 255)
-          valign = ALIGN_CENTER
-          halign = ALIGN_RIGHT
-          rendObj = ROBJ_INSCRIPTION
-          font = Fonts.tiny_text_hud
-          text = loc("measuring_range")
-        }
-      ]
-    }
-  }
+  children = progressBarContent
 }
 
 function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
@@ -237,211 +207,7 @@ let forestallIndicator = @() {
     fcsState.IsBinocular.get())
 }
 
-function mkFilledCircle(size, color) {
-  return {
-    size = [size, size]
-    rendObj = ROBJ_IMAGE
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    image = filledCircleImg
-    color = color
-    fValue = 1
-  }
-}
-
-function mkCircle(size, color, fValue = 1, reloadSignalTrigger = "", playReloadSignal = false) {
-  return {
-    size = [size, size]
-    rendObj = ROBJ_PROGRESS_CIRCULAR
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    image = emptyCircleImg
-    color = color
-    fgColor = color
-    fValue = fValue
-
-    children = (reloadSignalTrigger == "") ? null : {
-      size = pw(120)
-      rendObj = ROBJ_IMAGE
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      image = bluredCircleImg
-      color = color
-      fgColor = color
-      transform = {}
-      opacity = 0
-      animations = [
-        {
-          prop = AnimProp.opacity, from = 0.1, to = 0.5, duration = 0.7, easing = InOutQuad,
-          trigger = reloadSignalTrigger,
-          play = playReloadSignal
-        },
-        {
-          prop = AnimProp.scale, from = [0.85, 0.85], to = [1.6, 1.6], duration = 0.7, easing = InOutQuad,
-          trigger = reloadSignalTrigger,
-          play = playReloadSignal
-        }
-      ]
-    }
-  }
-}
-
-let mkNoBulletsIcon = @(size) {
-  size = [size, size]
-  rendObj = ROBJ_IMAGE
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  image = noBulletsIcon
-  color = Color(255, 175, 45)
-}
-
-function mkProgressCircle(size, startTime, endTime, curTime, color) {
-  let timeLeft = endTime - curTime
-  local startValue = startTime >= endTime ? 1.0
-    : lerpClamped(startTime, endTime, 0.0, 1.0, curTime)
-
-  return {
-    key = {}
-    size = [size, size]
-    rendObj = ROBJ_PROGRESS_CIRCULAR
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    image = emptyCircleImg
-    fgColor = color
-    fValue = 1
-    animations = timeLeft <= 0 ? null :
-      [{ prop = AnimProp.fValue, from = startValue, duration = timeLeft , play = true }]
-  }
-}
-
-function getReloadText(endTime) {
-  let timeToReload = endTime - get_mission_time()
-  return timeToReload <= 0 ? ""
-    : timeToReload > 9.5 ? format("%.0f", timeToReload)
-    : format("%.1f", timeToReload)
-}
-
-function mkProgressText(textColor, endTime) {
-  return {
-    color = textColor
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    rendObj = ROBJ_TEXT
-    font = Fonts.tiny_text_hud
-    behavior = Behaviors.RtPropUpdate
-    text = getReloadText(endTime)
-    update = @() {
-      text = getReloadText(endTime)
-    }
-  }
-}
-
-let mkGunStatus = @(gunStates, reloadedSignalTrigger) function() {
-  let { state, inDeadZone, startTime, endTime, gunProgress, bulletsCount } = gunStates.get()
-  if (state < 0)
-    return { watch = gunStates }
-
-  if (state < 0)
-    return null
-
-  local outerColor = gunStatusColors.ready
-  local innerColor = gunStatusColors.inner
-  local neuterColor = gunStatusColors.inner
-  local overheatColor = gunStatusColors.inoperable
-  local textColor = gunStatusColors.ready
-  let curTime = get_mission_time();
-
-  if (bulletsCount == 0) {
-    outerColor = gunStatusColors.deadzone
-    textColor = gunStatusColors.deadzone
-    innerColor = gunStatusColors.deadzone
-    neuterColor = gunStatusColors.deadzone
-    overheatColor = gunStatusColors.deadzone
-  } else if (state == gunState.INOPERABLE) {
-    innerColor = gunStatusColors.inoperable
-    outerColor = gunStatusColors.inoperable
-  } else if (state == gunState.DEADZONE) {
-    innerColor = gunStatusColors.deadzone
-    outerColor = gunStatusColors.deadzone
-  } else if (inDeadZone) {
-    outerColor = gunStatusColors.readyDeadzone
-    textColor = gunStatusColors.readyDeadzone
-    innerColor = gunStatusColors.neuterDeadzone
-    neuterColor = gunStatusColors.neuterDeadzone
-    overheatColor = gunStatusColors.inoperableDeadzone
-  }
-
-  let childrenCircles = []
-
-  if (state == gunState.INOPERABLE) {
-    childrenCircles.append(mkFilledCircle(ph(100), gunStatusColors.inoperableBackground))
-  }
-
-  childrenCircles.append(
-    mkCircle(ph(80), innerColor)
-  )
-
-  if (state == gunState.NORMAL) {
-    childrenCircles.append(
-      mkCircle(ph(100), neuterColor)
-      mkProgressCircle(ph(100), startTime, endTime, curTime, outerColor)
-      mkProgressText(textColor, endTime)
-    )
-  } else {
-    let hasReloadAnim = !inDeadZone && (state != gunState.DEADZONE)
-    if (hasReloadAnim) {
-      let isSignalPlayed = signalPlayedWathByTrigger[reloadedSignalTrigger].get()
-      childrenCircles.append(mkCircle(ph(100), outerColor, 1, reloadedSignalTrigger, isSignalPlayed))
-    } else {
-      childrenCircles.append(mkCircle(ph(100), outerColor))
-    }
-  }
-
-  if (state == gunState.OVERHEAT && gunProgress < 1) {
-    childrenCircles.append(mkCircle(ph(100), overheatColor, 1 - gunProgress))
-  }
-
-  if (bulletsCount == 0) {
-    childrenCircles.append(mkNoBulletsIcon(ph(45)))
-  }
-
-  return {
-    size = ph(100)
-    watch = gunStates
-    children = childrenCircles
-  }
-}
-
-function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon, reloadedSignalTrigger) {
-  if (gunStatesNumber <= 0) {
-    return null
-  }
-
-  let childrenGuns = [
-    {
-      size = [size, size]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{icon}:{size}:{size}")
-    }
-  ]
-
-  for (local i = 0; i < gunStatesNumber; ++i) {
-    childrenGuns.append(
-      mkGunStatus(gunStatesArray[i], reloadedSignalTrigger)
-    )
-  }
-
-  return @() {
-    gap = hdpx(4)
-    size = [SIZE_TO_CONTENT, size]
-    flow = FLOW_HORIZONTAL
-    children = childrenGuns
-  }
-}
-
-function weaponsStatus(){
-  let gap = hdpx(11)
-
+function getWeaponsStatusChildren() {
   let artType = artilleryType.get()
   let firstRowIcon = artType == TRIGGER_GROUP_PRIMARY     ? "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
                    : artType == TRIGGER_GROUP_SECONDARY   ? "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"
@@ -449,32 +215,28 @@ function weaponsStatus(){
                    : "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
 
   let hasSecondRow = gunStatesSecondNumber.get() > 0
-  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.get(), gunStatesFirstRow, firstRowIcon, FIRST_ROW_SIGNAL_TRIGGER)]
+
+  local childrens = [
+    {
+      gap = weaponGroupsGap
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      children = [
+        mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.get(), gunStatesFirstRow, firstRowIcon, FIRST_ROW_SIGNAL_TRIGGER)
+        torpedoWeaponsStatus
+      ]
+    }
+  ]
   if (hasSecondRow) {
     childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.get(), gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg", SECOND_ROW_SIGNAL_TRIGGER))
   }
 
-  let height = hasSecondRow ? firstGunsRowHeight + secondGunsRowHeight + gap : firstGunsRowHeight
-  let position = [0, (actionBarPos.get() != null ? actionBarPos.get()[1] : 0) - height - hdpx(11)]
-
-  return {
-    watch = [gunStatesFirstNumber, gunStatesSecondNumber, actionBarPos, isActionBarCollapsed, artilleryType]
-    pos = position
-    gap = gap
-    hplace = ALIGN_CENTER
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    children = childrens
-    behavior = Behaviors.RecalcHandler
-    function onRecalcLayout(_initial, elem) {
-      let x = elem.getScreenPosX()
-      let y = elem.getScreenPosY()
-      if (shipFireControlCachedPos.get()[0] == x && shipFireControlCachedPos.get()[1] == y)
-        return
-      shipFireControlCachedPos.set([x, y])
-    }
-  }
+  return childrens
 }
+
+let weaponsStatus = mkActionBarPanel(getWeaponsStatusChildren,
+  [gunStatesFirstNumber, gunStatesSecondNumber, artilleryType],
+  { gap = hdpx(11), flow = FLOW_VERTICAL })
 
 
 let root = @() {

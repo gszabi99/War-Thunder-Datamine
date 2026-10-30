@@ -1,10 +1,10 @@
+from "%scripts/user/playerCountry.nut" import profileCountrySq
 from "%scripts/dagui_library.nut" import *
 
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-
-let slotbarPresetsByCountry = persist("slotbarPresetsByCountry", @() {})
-let slotbarPresetsSeletected = persist("slotbarPresetsSeletected", @() {})
-let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
+let hardPersist = mkHardPersist("slotbar.slotbarPresetsState")
+let slotbarPresetsByCountry = hardPersist("slotbarPresetsByCountry", {})
+let slotbarPresetsSeletected = hardPersist("slotbarPresetsSeletected", {})
+let slotbarPresetsVersion = hardPersist("slotbarPresetsVersion", { ver = 0 })
 
 let isSlotbarPresetsLoading = Watched(false)
 

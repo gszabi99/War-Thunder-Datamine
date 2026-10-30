@@ -1,8 +1,7 @@
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+from "%scripts/worldWar/inOperation/model/wwArmyOwner.nut" import WwArmyOwner
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import WwFormation
 from "%scripts/dagui_library.nut" import *
-
-let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwFormation} = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwCustomFormation = class (WwFormation) {
   constructor(blk, airfield) {
@@ -37,4 +36,4 @@ let WwCustomFormation = class (WwFormation) {
     }, [])
   }
 }
-return {WwCustomFormation}
+return freeze({WwCustomFormation})

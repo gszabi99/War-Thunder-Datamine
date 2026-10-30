@@ -109,9 +109,6 @@
         "armorThickness": 50.0,
         "armorEffectiveThicknessMax": 50.0,
         "armorClass": "CHA_tank_modern"
-      },
-      "auxiliary_power_unit_dm": {
-        "armorClass": "RHA_tank_modern"
       }
     },
     "internal_armor": {
@@ -719,6 +716,16 @@
         "armorThrough": 20.0,
         "armorThickness": 10.0,
         "hp": 20.0
+      }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
       }
     }
   },
@@ -1969,7 +1976,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/155mm_FH70_L_39_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/155mm_FH70_L_39_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.2,
@@ -2004,16 +2011,12 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "gun_trunnion_dm",
-            "turret_hydraulics_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "turret_hydraulics_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
             "verNode": "bone_roll_03",
             "verLimits": [
@@ -2040,7 +2043,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame",
         "barrelDP": "gun_barrel_01_dm",
@@ -2084,8 +2087,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_palmaria_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_palmaria_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2210,6 +2213,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_turbine_start",
+    "sfxRun": "apu_turbine",
+    "sfxStop": "apu_turbine_stop"
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -3075,7 +3090,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/155mm_FH70_L_39_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/155mm_FH70_L_39_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilMultiplier": 0.2,
@@ -3110,16 +3125,12 @@
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "gun_trunnion_dm",
-                  "turret_hydraulics_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "turret_hydraulics_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
                 "linkedAnimPart": {
                   "verNode": "bone_roll_03",
                   "verLimits": [
@@ -3146,7 +3157,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame",
               "barrelDP": "gun_barrel_01_dm",
@@ -3189,7 +3200,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3495,5 +3506,29 @@
         }
       ]
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.693,
+      1.0647,
+      1.5266
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

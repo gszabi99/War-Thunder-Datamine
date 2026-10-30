@@ -23,9 +23,6 @@ require strings
 
 typedef SqlError = Option<string>
 
-
-
-
 def sql_quote_id(s : string) : string {
     
     let escaped = s |> replace("\"", "\"\"")
@@ -38,8 +35,6 @@ def sql_quote_lit(s : string) : string {
     let escaped = s |> replace("'", "''")
     return "'{escaped}'"
 }
-
-
 
 enum SqlType {
     Integer            

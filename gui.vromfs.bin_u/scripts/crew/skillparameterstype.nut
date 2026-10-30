@@ -1,10 +1,10 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/crew/crewSkills.nut" import getMeasureTypeBySkillParameterName
+from "%scripts/crew/crewShortCache.nut" import getCachedCrewUnit
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
 let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
 let g_skill_parameters_type = {

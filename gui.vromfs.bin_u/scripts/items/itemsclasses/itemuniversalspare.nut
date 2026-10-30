@@ -1,17 +1,17 @@
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/tasker.nut" import addTask
+from "%scripts/items/usedItemsInBattle.nut" import getUsedItemCount
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/unit/unitClassType.nut" import processUnitTypeArray
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let UniversalSpare = class (BaseItemModClass) {
   static iType = itemType.UNIVERSAL_SPARE

@@ -1,12 +1,11 @@
+from "%scripts/matching/api.nut" import checkMatchingError, matchingApiFunc
+from "%scripts/clans/clanInfo.nut" import getMyClanMembers
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-
-let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
-let { getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 
 const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 
 const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 

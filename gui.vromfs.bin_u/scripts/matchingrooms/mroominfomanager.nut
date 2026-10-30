@@ -24,6 +24,6 @@ function getMroomInfo(roomId) {
   return info
 }
 
-return {
+return freeze({
   getMroomInfo
-}
+})

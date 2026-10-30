@@ -2,7 +2,7 @@
 tdiv {
   height:t='1@firstChoiceHeaderHeight'
   position:t='relative'
-  padding:t='1@countryChoiceInterval, 0'
+  padding:t='10@sf/@pf, 0'
   cardImg{
     position:t='relative'
     background-image:t = '#ui/images/avatars/<<userIcon>>.avif'

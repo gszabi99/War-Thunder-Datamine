@@ -1,18 +1,18 @@
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/selectionWindow.nut" import openSelectionWindow
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder, getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockNameText
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockImageConfig
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqstd/underscore.nut" import isArray
 from "%sqstd/string.nut" import utf8ToLower
 from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor, getVendorLocId
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { openSelectionWindow } = require("%scripts/selectionWindow.nut")
-let { getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const ACHIEVEMENTS_SLOTS_COUNT = 10
 const ACHIEV_HUNTER_EDIT_CONTAINER_ID = "achiev_hunter_container_edit"
@@ -110,7 +110,7 @@ let achivHunter = {
     let onApplyFunc = @(achievData) (onAchievChooseApply(slotIdx, achievData, scene, terseInfo))
 
     openSelectionWindow({
-      items = achievs, itemsCountX = 8, itemsCountY = 6, title = loc("unlocks/chapter/achievements")
+      items = achievs, itemsCountX = 8, itemsCountY = 6, title = locByVendor("unlocks/chapter/achievements")
       hasDeleteBtn = obj.achiev != "", getTooltip = getTrophyTooltip,
       sizeX = "100@sf/@pf", sizeY = "100@sf/@pf", spaceX = "20@sf/@pf", spaceY = "20@sf/@pf",
       searchFn = searchAchiev
@@ -167,7 +167,8 @@ let achivHunter = {
     let achievStats = getAchievStats(terseInfo, playerStats)
     return handyman.renderCached("%gui/profile/showcase/achievementHunter.tpl", { achievementsView, achievSize,
       scale, editableSlots, width = "112@sf/@pf", height = "112@sf/@pf",
-      achievStats = $"{achievStats.gained}/{achievStats.totalCount}", containerId = ACHIEV_HUNTER_EDIT_CONTAINER_ID
+      achievStats = $"{achievStats.gained}/{achievStats.totalCount}", containerId = ACHIEV_HUNTER_EDIT_CONTAINER_ID,
+      chapterLocId = getVendorLocId("unlocks/chapter/achievements")
     })
   }
 }

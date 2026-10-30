@@ -1,13 +1,12 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/matching/api.nut" import checkMatchingError, matchingApiFunc
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 let queuesList = persist("queuesList", @() [])
 local delayedInfoUpdateEventtTime = -1
@@ -170,7 +169,7 @@ function removeQueueFromList(queue) {
       return queuesList.remove(idx)
 }
 
-return {
+return freeze({
   getShouldEventQueueCustomMode
   setShouldEventQueueCustomMode
   requestLeaveQueue
@@ -192,4 +191,4 @@ return {
   checkQueueType
   applyQueueInfo
   pushQueueInfoUpdatedEvent
-}
+})

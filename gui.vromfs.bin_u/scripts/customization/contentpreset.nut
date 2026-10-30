@@ -1,5 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/options/optionsExt.nut" import get_option, registerOption
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/datablock.nut" import eachBlock
 from "guiOptions" import set_gui_option
 from "%scripts/dagui_natives.nut" import get_ugc_blk, get_preset_by_skin_tags
@@ -9,9 +12,6 @@ from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROP
 from "types" import Array
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
 
 let contentPresets = []
 local contentPresetIdxByName = {}
@@ -19,7 +19,7 @@ local contentPresetIdxByName = {}
 const AGREED_PRESET_SAVE_ID_PREFIX = "contentPreset/agreed"
 
 function getContentPresets() {
-  if (contentPresets.len() > 0 || !isLoggedIn.get())
+  if (contentPresets.len() > 0 || !hasFullLoginState.get())
     return contentPresets
 
   eachBlock(get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))
@@ -111,11 +111,11 @@ registerOption(USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, fillContentAllowedPrese
 registerOption(USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, fillContentAllowedPreset, setContentAllowedPreset)
 registerOption(USEROPT_CONTENT_ALLOWED_PRESET, fillContentAllowedPreset, setContentAllowedPreset)
 
-return {
+return freeze({
   getContentPresets = getContentPresets
   getDifficultyByOptionId = getDifficultyByOptionId
   getCurPresetId = getCurPresetId
   setPreset = setPreset
   getPresetIdBySkin = getPresetIdBySkin
   isAgreed = isAgreed
-}
+})

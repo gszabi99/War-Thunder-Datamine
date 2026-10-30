@@ -358,6 +358,21 @@ massTransp[needAnim=yes] {
   behaviour:massTransparency;
 }
 
+massTransp[type=freezingInfo] {
+  transp-time: 500;
+}
+massTransp[type=freezingInfo][animation=hidden] {
+  transp-base:1;
+  transp-end:0;
+}
+massTransp[type=freezingInfo][animation=quickFadeIn] {
+  transp-time: 250;
+}
+massTransp[type=freezingInfo][animation=fadeOut] {
+  transp-base: 255;
+  transp-end: 0;
+}
+
 
 transpBlinkAnimation {
   transp-base:0;

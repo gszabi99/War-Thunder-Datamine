@@ -23,7 +23,7 @@ ecs.register_es("engine_overheat_damage_es_darg", {
   comps_rq = ["controlledHero"]
 })
 
-return {
+return freeze({
   tracksData
   turretDriveData
   gunData
@@ -31,4 +31,4 @@ return {
   engineOverheatState
   fireState
   reInitTankDebuffsStates = hud_request_hud_tank_debuffs_state
-}
+})

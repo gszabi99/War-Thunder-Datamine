@@ -1,9 +1,8 @@
+import "%scripts/sqDagui/focusFrame/bhvFocusFrameTarget.nut" as focusTarget
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "math" import abs
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let focusTarget = require("%scripts/sqDagui/focusFrame/bhvFocusFrameTarget.nut")
 
 
 
@@ -143,9 +142,9 @@ function setHideTgtImageTimeMsec(timeMsec) {
   focusTarget.setShouldHideImage(hideTgtImageTimeMsec > 0)
 }
 
-return {
+return freeze({
    play
    setRegisterFunctions
    setAnimFunction = @(animFunction)  animFunc = animFunction
    setHideTgtImageTimeMsec
-}
+})

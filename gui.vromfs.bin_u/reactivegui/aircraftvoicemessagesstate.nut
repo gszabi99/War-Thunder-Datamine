@@ -11,4 +11,4 @@ interopGen({
   postfix = "Update"
 })
 
-return aircraftVoiceMessagesState
+return freeze(aircraftVoiceMessagesState)

@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.2,
-  "shotFreq": 83.3,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shouldCollideWithRendinsts": true,
-  "mass": 149.0,
-  "rotationAnimScale": "gun_rotate_01:CRS",
-  "shootingCharge": 5.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,28 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.2,
+  "shotFreq": 83.3,
+  "bullets": 250,
+  "shouldCollideWithRendinsts": true,
+  "mass": 149.0,
+  "rotationAnimScale": "gun_rotate_01:CRS",
+  "shootingCharge": 5.5,
+  "overheat": {
+    "overheat": [
+      [
+        100.0,
+        0.0
+      ],
+      [
+        120.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.387,
@@ -462,7 +474,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmBrightRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1268,7 +1280,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -2937,7 +2949,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -5075,7 +5087,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmBrightRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       }
     ]
@@ -6362,27 +6374,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "gsh_6_30_gun_outside",
-    "cockpit": "gsh_6_30_gun_inside",
-    "charge": "gsh_6_30_gun_rotor",
-    "charge_inside": "gsh_6_30_gun_rotor_interior",
-    "ai": "gsh_6_30_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        100.0,
-        0.0
-      ],
-      [
-        120.0,
-        0.05
-      ]
-    ]
-  },
   "GSh-30-2K_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -6397,5 +6388,14 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "gsh_6_30_gun_outside",
+    "cockpit": "gsh_6_30_gun_inside",
+    "charge": "gsh_6_30_gun_rotor",
+    "charge_inside": "gsh_6_30_gun_rotor_interior",
+    "ai": "gsh_6_30_gun_ai"
   }
 }

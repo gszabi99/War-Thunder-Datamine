@@ -260,8 +260,6 @@ def RttiValue_nothing {
     return t
 }
 
-
-
 var private nolint_consumed : table<string>
 
 

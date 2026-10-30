@@ -1,11 +1,11 @@
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/hud/hudActionBarInfo.nut" import shouldActionBarFontBeTiny
 from "hudState" import getHudUnitType
 from "weaponSelector" import has_secondary_weapons
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { shouldActionBarFontBeTiny } = require("%scripts/hud/hudActionBarInfo.nut")
 
 const WEAPON_SELECTOR_SHORTCUT_ID = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
 
@@ -91,7 +91,7 @@ function getExtraActionItemsView() {
   return items
 }
 
-return {
+return freeze({
   getExtraActionItemsView
   WEAPON_SELECTOR_SHORTCUT_ID
-}
+})

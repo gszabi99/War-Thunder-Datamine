@@ -11,7 +11,6 @@ assert(toJson!=null, "no json module found")
 let nativeApi = require_optional("sony.webapi")
 let {abortAllPendingRequests= @() null,
   getNewRequestId = @() 0,
-  getPreferredVersion = @() 2,
   subscribeToBlocklistUpdates= @(...) null,
   subscribeToFriendsUpdates = @(...) null,
   subscribeToPresenceUpdates = @(...) null,
@@ -54,9 +53,6 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
     request.request = data
   if (data instanceof Table)
     request.request = toJson(data)
-  else if (data instanceof Array)
-    foreach(part in data)
-      request.part <- part
 
   if (headers.len()) {
     request.reqHeaders = DataBlock()
@@ -67,11 +63,8 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
 }
 
 function makeIterable(request, pos, size) {
-  
-  request.params.start = pos
-  request.params.offset = request.params.start
-  request.params.size = size
-  request.params.limit = request.params.size
+  request.params.offset = pos
+  request.params.limit = size
   return request
 }
 
@@ -133,18 +126,6 @@ let gameSessionManager = {
   }
 }
 
-
-let invitationApi = { group = "sdk:sessionInvitation", path = "/v1/users/me/invitations" }
-let invitation = {
-  function use(invitationId) {
-    return createRequest(invitationApi, webApiMethodPut, invitationId, {}, {usedFlag = true})
-  }
-
-  function list() {
-    return createRequest(invitationApi, webApiMethodGet, null, {fields="@default,sessionId"})
-  }
-}
-
 let playerSessionInvitationsApi = {
   group = "sessionManager"
   path = "/v1/users/me/playerSessionsInvitations"
@@ -155,18 +136,6 @@ let playerSessionInvitations = {
   }
 }
 
-
-let profileApi = { group = "sdk:userProfile", path = "/v1/users/me" }
-let profile = {
-  function listFriends() {
-    let params = { friendStatus = "friend", presenceType = "incontext" }
-    return createRequest(profileApi, webApiMethodGet, "friendList", params)
-  }
-
-  function listBlockedUsers() {
-    return createRequest(profileApi, webApiMethodGet, "blockingUsers", {})
-  }
-}
 
 let userProfileApi = { group = "userProfile", path = "/v1/users" }
 let userProfile = {
@@ -200,30 +169,6 @@ let communicationRestrictionStatus = {
 }
 
 
-
-let feedApi = { group = "sdk:activityFeed", path = "/v1/users/me" }
-let feed = {
-  function post(message) {
-    return createRequest(feedApi, webApiMethodPost, "feed", {}, message)
-  }
-}
-
-
-let commerceApi = { group = "sdk:commerce" path = "/v1/users/me/container" }
-let commerce = {
-  function detail(products, params={}) {
-    let path = ":".join(products)
-    return createRequest(commerceApi, webApiMethodGet, path, params)
-  }
-
-  
-  function listCategory(category, params={}) {
-    assert(category instanceof String, "[PSWA] only one category can be listed at a time")
-    return createRequest(commerceApi, webApiMethodGet, category, params)
-  }
-}
-
-
 let inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 let inGameCatalog = {
   
@@ -232,17 +177,6 @@ let inGameCatalog = {
                          params.__merge({serviceLabel, containerIds = ":".join(ids)}))
   }
 }
-
-
-
-let entitlementsApi = { group = "sdk:entitlement", path = "/v1/users/me/entitlements"}
-let entitlements = {
-  function granted() {
-    let params = { entitlement_type = ["service", "unified"] }
-    return createRequest(entitlementsApi, webApiMethodGet, null, params)
-  }
-}
-
 
 
 let matchesApi = { group = "matches", path = "/v1/matches" }
@@ -305,8 +239,9 @@ function send(action, onResponse=null) {
     let httpErr = (!isHttpSuccess(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
     if (httpErr != null && err == null)
       err = { }
-    if (err && err?.code == null)
-      err.code <- httpErr ? httpErr : "undefined";
+    if (err && err?.code == null) {
+      err = err.__merge({code = httpErr ? httpErr : "undefined"})
+    }
 
     onResponse?(r?.response, err)
   })
@@ -319,10 +254,8 @@ function fetch(action, onChunkReceived, chunkSize = 20) {
   function onResponse(response, err) {
     
     let entry = ((response instanceof Array) ? response?[0] : response) ?? {}
-    let received = (getPreferredVersion() == 2)
-                   ? (entry?.nextOffset ?? entry?.totalItemCount ?? 0)
-                   : (entry?.start ?? 0) + (entry?.size ?? 0)
-    let total = entry?.total_results ?? entry?.totalResults ?? entry?.totalItemCount ?? received
+    let received = entry?.nextOffset ?? entry?.totalItemCount ?? 0
+    let total = entry?.totalItemCount ?? received
 
     if (err == null && received < total && received > lastPos) {
       lastPos = received
@@ -381,23 +314,17 @@ return freeze({
   send
   fetch
   abortAllPendingRequests = abortAllPendingRequests ?? @() null
-  getPreferredVersion = getPreferredVersion
 
   sessionManager
   gameSessionManager
 
-  invitation
   playerSessionInvitations
   matches
 
-  profile = (getPreferredVersion() == 2) ? userProfile : profile
+  profile = userProfile
   communicationRestrictionStatus
 
-  feed
-
-  commerce
   inGameCatalog
-  entitlements
 
   noOpCb
 

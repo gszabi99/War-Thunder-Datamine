@@ -1,12 +1,48 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "controllerState" as controllerState
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/controls/controlsBackupManager.nut" import ControlsBackupManager
+from "%scripts/genericOptions.nut" import GenericOptions
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler, handlersManager
+from "%scripts/controls/controlsConsts.nut" import AXIS_MODIFIERS, MAX_SHORTCUTS, CONTROL_TYPE, AIR_MOUSE_USAGE, HELP_CONTENT_SET
+from "%scripts/wheelmenu/voiceMessages.nut" import resetFastVoiceMessages
+from "%sqstd/platform.nut" import is_windows, isPC, isSony, isXbox
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams, getBackSceneName
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/shortcutsUtils.nut" import getShortcutParts, getInputsParts, isShortcutMapped, isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem, getSliderValueText
+from "%scripts/controls/controlsUtils.nut" import getControlsPresetBySelectedType, canChangeHelpersMode, gui_modal_controlsWizard
+from "%scripts/controls/controlsCompatibility.nut" import joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM
+from "%scripts/controls/controlsVisual.nut" import remapAxisName
+from "%scripts/controls/startControls.nut" import switchControlsMode, gui_start_controls_type_choice
+from "%scripts/controls/input/button.nut" import Button
+from "%scripts/controls/input/combination.nut" import Combination
+from "%scripts/controls/input/axis.nut" import Axis
+from "%scripts/help/helpWnd.nut" import gui_modal_help
+from "%scripts/controls/assignShortcut.nut" import openAssignShortcut
+from "%scripts/controls/axisSetup.nut" import openAxisSetup, updateAxisSetupParams, closeAxisSetup
+from "%scripts/controls/aircraftHelpers.nut" import getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, getCurrentHelpersMode
+from "%scripts/controls/controlsPresets.nut" import parseControlsPresetName, getHighestVersionControlsPreset
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions
+from "%scripts/controls/shortcutsList/shortcutsList.nut" import getShortcutById
+from "%scripts/controls/controlsManager.nut" import restoreHardcodedKeys, isLastLoadControlsSucceeded
+from "%scripts/controls/controlsTypeUtils.nut" import applyJoyPresetXchange
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%sqstd/platform.nut" import is_windows, isPC
+from "%appGlobals/controls/controlsScreenState.nut" import controlsScreen, controlsItems, setControlsScreenField,
+  setControlsItem, resetControlsScreen
+from "%scripts/dargScreenBridge.nut" import locText, mkControlObj, subscribeScreenActions
+from "%scripts/controls/controlRowsView.nut" import mkViewRows
 from "string" import format
 from "globalEnv" import ControlHelpersMode, setControlHelpersMode
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
 from "mission" import get_game_mode
+from "modules" import on_module_unload
 from "%sqstd/string.nut" import utf8ToLower
 from "controlsOptions" import set_option_mouse_joystick_square, set_option_mouse_joystick_square_helicopter
 from "%scripts/dagui_library.nut" import *
@@ -14,54 +50,37 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index
   , export_current_layout, export_current_layout_by_path
 from "gameOptions" import *
-from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, HELP_CONTENT_SET
 from "types" import Function
+from "%scripts/controls/activeInputDevice.nut" import locByInputDevice
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
 let { FileDialog } = require("%scripts/fileDialog/fileDialog.nut")
-let { ControlsBackupManager } = require("%scripts/controls/controlsBackupManager.nut")
-let { GenericOptions } = require("%scripts/genericOptions.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { AXIS_MODIFIERS, MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformPC, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped, isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem } = require("%scripts/controls/shortcutsUtils.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode, gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx } = require("%scripts/options/optionsExtNames.nut")
-let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { switchControlsMode, gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
-let { Button } = require("%scripts/controls/input/button.nut")
-let { Combination } = require("%scripts/controls/input/combination.nut")
-let { Axis } = require("%scripts/controls/input/axis.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
-let { getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, controlHelpersOptions, getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { recommendedControlPresets } = require("%scripts/controls/controlsUtils.nut")
+let { userOptionNameByIdx } = require("%scripts/options/optionsExtNames.nut")
+let { controlHelpersOptions } = require("%scripts/controls/aircraftHelpers.nut")
 
-let { parseControlsPresetName, getHighestVersionControlsPreset } = require("%scripts/controls/controlsPresets.nut")
-let { getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions } = require("%scripts/controls/controlsState.nut")
-let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
-let { restoreHardcodedKeys, isLastLoadControlsSucceeded } = require("%scripts/controls/controlsManager.nut")
+let METHOD_BY_BUTTON = {
+  btn_back = "goBack"
+  btn_apply = "onApply"
+  btn_switchMode = "onSwitchModeButton"
+  btn_controlsWizard = "onControlsWizard"
+  btn_controlsHelp = "onControlsHelp"
+  btn_clearAll = "onClearAll"
+  btn_exportToFile = "onExportToFile"
+  btn_importFromFile = "onImportFromFile"
+  btn_backupManager = "onManageBackup"
+  btn_controls_workshop_online = "onControlsWorkshop"
+  btn_reset_shortcut = "onButtonReset"
+  btn_reset_axis = "onButtonReset"
+  btn_assign = "onTblDblClick"
+}
 
-let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
-
-
-function getAxisActivationShortcutData(shortcuts, item, preset) {
+function getAxisActivationShortcutParts(shortcuts, item, preset) {
   preset = preset ?? getCurControlsPreset()
   let inputs = []
   let axisDescr = g_shortcut_type._getDeviceAxisDescription(item.id)
@@ -84,7 +103,7 @@ function getAxisActivationShortcutData(shortcuts, item, preset) {
   if (scArr.len() == 0 && axisInput)
     inputs.append(axisInput)
 
-  return getInputsMarkup(inputs)
+  return getInputsParts(inputs)
 }
 
 function resetDefaultControlSettings() {
@@ -131,9 +150,10 @@ function resetDefaultControlSettings() {
   set_option_gain(1); 
 }
 
+
 let Hotkeys = class (GenericOptions) {
   wndType = handlerType.BASE
-  sceneBlkName = "%gui/controls.blk"
+  sceneBlkName = "%gui/controlsDargShell.blk"
   sceneNavBlkName = null
 
   filterValues = null
@@ -141,16 +161,15 @@ let Hotkeys = class (GenericOptions) {
   filter = null
   lastFilter = null
 
-  navigationHandlerWeak = null
-  shouldUpdateNavigationSection = true
+  shownControlKinds = null
 
   shortcuts = null
   shortcutNames = null
   shortcutItems = null
   modifierSymbols = null
+  axisScNames = null
 
   dontCheckControlsDupes = null
-  notAssignedAxis = null
 
   inputBox = null
 
@@ -171,47 +190,34 @@ let Hotkeys = class (GenericOptions) {
 
   filledControlGroupTab = null
 
-  updateButtonsHandler = null
-  optionTableId = "controls_tbl"
   curShortcut = null
-  curShortcutBtn = null
 
-  axisControlsHandlerWeak = null
+  getWidgetsList = @() [{ widgetId = DargWidgets.SCREEN, screen = "controls" }]
 
   function initScreen() {
+    resetControlsScreen()
+    this.shownControlKinds = {}
     setBreadcrumbGoBackParams(this)
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.scene.findObject("hotkeys_update").setUserData(this)
 
-    if (is_low_width_screen()) {
-      let helpersModeObj = this.scene.findObject("helpers_mode")
-      if (checkObj(helpersModeObj))
-        helpersModeObj.smallFont = "yes"
-    }
-
     this.shortcuts = []
     this.shortcutNames = []
     this.shortcutItems = []
     this.dontCheckControlsDupes = []
-    this.notAssignedAxis = []
 
-    this.initNavigation()
     this.initMainParams()
 
     if (!fetch_devices_inited_once())
       gui_start_controls_type_choice()
 
-    if (controllerState?.add_event_handler) {
-      this.updateButtonsHandler = this.updateButtons.bindenv(this)
-      controllerState.add_event_handler(this.updateButtonsHandler)
-    }
+    setControlsScreenField("backSceneName", getBackSceneName())
   }
 
   function onDestroy() {
-    if (this.updateButtonsHandler && controllerState?.remove_event_handler)
-      controllerState.remove_event_handler(this.updateButtonsHandler)
+    closeAxisSetup()
   }
 
   function onSwitchModeButton() {
@@ -230,27 +236,25 @@ let Hotkeys = class (GenericOptions) {
     this.fillControlsType()
   }
 
-  function initNavigation() {
-    let handler = loadHandler(
-      navigationPanel,
-      { scene = this.scene.findObject("control_navigation")
-        onSelectCb = Callback(this.doNavigateToSection, this)
-        panelWidth        = "0.35@sf, ph"
-        
-        headerHeight      = "0.05@sf + @sf/@pf"
-        headerOffsetX     = "0.015@sf"
-        headerOffsetY     = "0.015@sf"
-      })
-    this.registerSubHandler(this.navigationHandlerWeak)
-    this.navigationHandlerWeak = handler.weakref()
+  function setNavItems(navItems) {
+    let items = navItems.map(@(n) { id = n.id, text = locText(n?.text ?? n.id) })
+    controlsScreen.mutate(function(s) {
+      s.navItems = items
+      s.curNavIdx = 0
+    })
+  }
+
+  getNavItems = @() controlsScreen.get().navItems
+
+  function setCurrentNavItem(navItem) {
+    let idx = this.getNavItems().indexof(navItem)
+    if (idx != null)
+      setControlsScreenField("curNavIdx", idx)
   }
 
   function fillFilterObj() {
-    if (this.filterObjId) {
-      let filterObj = this.scene.findObject(this.filterObjId)
-      if (checkObj(filterObj) && this.filterValues && filterObj.childrenCount() == this.filterValues.len() && !isPresetChanged.get())
-        return 
-    }
+    if (this.filterValues && this.getHelpersFilterItemsCount() == this.filterValues.len() && !isPresetChanged.get())
+      return 
 
     local modsBlock = null
     foreach (block in shortcutsList)
@@ -267,49 +271,82 @@ let Hotkeys = class (GenericOptions) {
     this.filterObjId = modsBlock.id
     this.filterValues = options.values
 
-    let view = { items = [] }
+    let items = []
     foreach (idx, item in options.items)
-      view.items.append({
+      items.append({
         id = $"option_{options.values[idx]}"
         text = item.text
         selected = options.value == idx
         tooltip = item.tooltip
       })
 
-    let listBoxObj = this.scene.findObject(modsBlock.id)
-    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-    this.guiScene.replaceContentFromText(listBoxObj, data, data.len(), this)
+    this.showHelpersFilter(items)
     this.onOptionsFilter()
+  }
+
+  getHelpersFilterItemsCount = @() controlsScreen.get().helpersFilter.len()
+  getHelpersFilterIdx = @() this.filterObjId == null ? null : controlsScreen.get().helpersFilterIdx
+  showHelpersFilterBlock = @(isShown) setControlsScreenField("isHelpersFilterShown", isShown)
+
+  function showHelpersFilter(items) {
+    let helpersFilter = items.map(@(i) { id = i.id, text = locText(i.text), tooltip = locText(i?.tooltip) })
+    let idx = items.findindex(@(i) i.selected) ?? -1
+    controlsScreen.mutate(function(s) {
+      s.helpersFilter = helpersFilter
+      s.helpersFilterIdx = idx
+    })
+  }
+
+  function setHelpersFilterIdx(idx) {
+    if (this.filterObjId == null || idx == controlsScreen.get().helpersFilterIdx)
+      return
+    setControlsScreenField("helpersFilterIdx", idx)
+    this.onOptionsFilter(mkControlObj(this, this.filterObjId))
   }
 
   function fillControlsType() {
     this.fillFilterObj()
   }
 
-  function onFilterEditBoxActivate() {}
-  function onFilterEditBoxChangeValue() {
+  function applySearchText() {
     if (u.isEmpty(this.filledControlGroupTab))
       return
 
-    let filterEditBox = this.scene.findObject("filter_edit_box")
-    if (!checkObj(filterEditBox))
-      return
-
-    let filterText = utf8ToLower(filterEditBox.getValue())
+    let filterText = utf8ToLower(this.getSearchText())
 
     local parentId = ""
+    let isShownByRowId = {}
     foreach (_idx, data in this.filledControlGroupTab) {
       local show = filterText == "" || data.text.indexof(filterText) != null
       if(show && data?.isHeader == true)
         parentId = data.id
       if(parentId != "" && data?.parentId == parentId)
         show = true
-      showObjById(data.id, show, this.scene)
+      isShownByRowId[data.id] <- show
     }
+    
+    
+    let { rows } = controlsScreen.get()
+    controlsItems.mutate(function(items) {
+      foreach (row in rows) {
+        let shown = !shortcutsList[row.rowIdx].isHidden && (isShownByRowId?[row.id] ?? true)
+        if (items?[row.itemId]?.shown != shown)
+          items[row.itemId] <- (items?[row.itemId] ?? {}).__merge({ shown })
+      }
+    })
   }
 
-  function onFilterEditBoxCancel(obj) {
-    if (obj.getValue() != "")
+  getSearchText = @() controlsScreen.get().searchText
+
+  function setSearchText(text) {
+    if (text == controlsScreen.get().searchText)
+      return
+    setControlsScreenField("searchText", text)
+    this.applySearchText()
+  }
+
+  function onSearchCancel() {
+    if (this.getSearchText() != "")
       this.resetSearch()
     else
       this.guiScene.performDelayed(this, function() {
@@ -319,11 +356,7 @@ let Hotkeys = class (GenericOptions) {
   }
 
   function resetSearch() {
-    let filterEditBox = this.scene.findObject("filter_edit_box")
-    if (! checkObj(filterEditBox))
-      return
-
-    filterEditBox.setValue("")
+    this.setSearchText("")
   }
 
   function isScriptOpenFileDialogAllowed() {
@@ -335,21 +368,20 @@ let Hotkeys = class (GenericOptions) {
     let isImportExportAllowed = !isTutorial
       && (this.isScriptOpenFileDialogAllowed() || is_windows)
 
-    showObjById("btn_exportToFile", isImportExportAllowed, this.scene)
-    showObjById("btn_importFromFile", isImportExportAllowed, this.scene)
-    showObjById("btn_switchMode", isPlatformSony || isPlatformXbox || isPlatformShieldTv(), this.scene)
-    showObjById("btn_backupManager", ControlsBackupManager.isAvailable(), this.scene)
-    showObjById("btn_controlsWizard", hasFeature("ControlsPresets"), this.scene)
-    showObjById("btn_clearAll", !isTutorial, this.scene)
-    showObjById("btn_controlsHelp", hasFeature("ControlsHelp"), this.scene)
-    showObjById("btn_controls_workshop_online", isPlatformPC, this.scene)
+    this.showSceneItem("btn_exportToFile", isImportExportAllowed)
+    this.showSceneItem("btn_importFromFile", isImportExportAllowed)
+    this.showSceneItem("btn_switchMode", isSony || isXbox || isPlatformShieldTv())
+    this.showSceneItem("btn_backupManager", ControlsBackupManager.isAvailable())
+    this.showSceneItem("btn_controlsWizard", hasFeature("ControlsPresets"))
+    this.showSceneItem("btn_clearAll", !isTutorial)
+    this.showSceneItem("btn_controlsHelp", hasFeature("ControlsHelp"))
+    this.showSceneItem("btn_controls_workshop_online", isPC)
   }
 
-  function fillControlGroupsList() {
-    let groupsList = this.scene.findObject("controls_groups_list")
-    if (!checkObj(groupsList))
-      return
+  showSceneItem = @(id, isShown) setControlsItem(id, "shown", isShown)
+  setNavButtonText = @(id, text) setControlsItem(id, "value", text)
 
+  function fillControlGroupsList() {
     local curValue = 0
     this.controlsGroupsIdList = []
     let currentUnit = getPlayerCurUnit()
@@ -385,23 +417,19 @@ let Hotkeys = class (GenericOptions) {
           curValue = this.controlsGroupsIdList.len() - 1
       }
 
-    let view = { tabs = [] }
-    foreach (idx, group in this.controlsGroupsIdList)
-      view.tabs.append({
-        id = group
-        tabName = $"#hotkeys/{group}"
-        navImagesText = getNavigationImagesText(idx, this.controlsGroupsIdList.len())
-      })
-
-    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
-    this.guiScene.replaceContentFromText(groupsList, data, data.len(), this)
-
-    let listValue = groupsList.getValue()
-    if (groupsList.getValue() != curValue)
-      groupsList.setValue(curValue)
-    if (listValue <= 0 && curValue == 0) 
-      this.onControlsGroupChange()
+    this.showControlGroupTabs(curValue)
   }
+
+  function showControlGroupTabs(curIdx) {
+    let groupTabs = this.controlsGroupsIdList.map(@(id) { id, text = loc($"hotkeys/{id}") })
+    controlsScreen.mutate(function(s) {
+      s.groupTabs = groupTabs
+      s.curGroupIdx = curIdx
+    })
+    this.onControlsGroupChange()
+  }
+
+  getControlGroupTabIdx = @() controlsScreen.get().curGroupIdx
 
   function onControlsGroupChange() {
     this.doControlsGroupChange()
@@ -411,7 +439,7 @@ let Hotkeys = class (GenericOptions) {
     if (!checkObj(this.scene))
       return
 
-    local groupId = this.scene.findObject("controls_groups_list").getValue()
+    local groupId = this.getControlGroupTabIdx()
     if (groupId < 0)
       groupId = 0
 
@@ -430,15 +458,13 @@ let Hotkeys = class (GenericOptions) {
     this.fillControlGroupTab(this.curGroupId)
   }
 
-  function fillControlGroupTab(groupId) {
-    local data = "";
+  function getControlGroupTabData(groupId) {
     let joyParams = joystickGetCurSettings();
-    local gRow = 0  
     local isSectionShowed = true
     local isHelpersVisible = false
 
     let navigationItems = []
-    this.filledControlGroupTab = []
+    let rows = []
     local headerId = ""
 
     for (local n = 0; n < shortcutsList.len(); n++) {
@@ -471,47 +497,45 @@ let Hotkeys = class (GenericOptions) {
         }
         else
           hotkeyData.parentId <- headerId
-
-        this.filledControlGroupTab.append(hotkeyData)
-        if (hotkeyData.markup == "")
-          continue
-
-        data = $"{data}{hotkeyData.markup}"
-        gRow++
+        rows.append(hotkeyData)
       }
 
       break
     }
-
-    let controlTblObj = this.scene.findObject(this.optionTableId);
-    if (checkObj(controlTblObj))
-      this.guiScene.replaceContentFromText(controlTblObj, data, data.len(), this);
-    showObjById("helpers_mode", isHelpersVisible, this.scene)
-    if (this.navigationHandlerWeak)
-      this.navigationHandlerWeak.setNavItems(navigationItems)
-    this.updateSceneOptions()
-    this.optionsFilterApply()
-    this.onFilterEditBoxChangeValue()
+    return { rows, navigationItems, isHelpersVisible }
   }
 
-  function doNavigateToSection(navItem) {
-    let sectionId = navItem.id
-    this.shouldUpdateNavigationSection = false
-    let rowIdx = this.getRowIdxBYId(sectionId)
-    let rowId = $"table_row_{rowIdx}"
-    let rowObj = this.scene.findObject(rowId)
+  function fillControlGroupTab(groupId) {
+    let { rows, navigationItems, isHelpersVisible } = this.getControlGroupTabData(groupId)
+    this.filledControlGroupTab = rows
+    this.showControlRows(rows)
+    this.showHelpersFilterBlock(isHelpersVisible)
+    this.setNavItems(navigationItems)
+    this.updateSceneOptions()
+    this.updateHidden()
+    this.dontCheckControlsDupes = refillControlsDupes()
+    this.applySearchText()
+  }
 
-    rowObj.scrollToView(true)
-    this.selectRowByRowIdx(rowIdx)
-    this.shouldUpdateNavigationSection = true
+  function showControlRows(rows) {
+    let { viewRows, items, kinds } = mkViewRows(rows)
+    this.shownControlKinds = kinds
+    
+    controlsItems.mutate(@(v) v.__update(items))
+    this.curShortcut = null
+    controlsScreen.mutate(function(s) {
+      s.rows = viewRows
+      s.selectedRowId = null
+    })
+    this.updateButtonsChangeValue()
   }
 
   function checkCurrentNavagationSection() {
     let item = this.getCurItem()
-    if (!this.navigationHandlerWeak || !this.shouldUpdateNavigationSection || !item)
+    if (!item)
       return
 
-    let navItems = this.navigationHandlerWeak.getNavItems()
+    let navItems = this.getNavItems()
     if (navItems.len() > 1) {
       local navId = null
       for (local i = 0; i < shortcutsList.len(); i++) {
@@ -523,7 +547,7 @@ let Hotkeys = class (GenericOptions) {
 
         let curItem = u.search(navItems, @(it) it.id == navId)
         if (curItem != null)
-          this.navigationHandlerWeak.setCurrentItem(curItem)
+          this.setCurrentNavItem(curItem)
 
         break
       }
@@ -535,7 +559,7 @@ let Hotkeys = class (GenericOptions) {
       return
 
     this.initMainParams()
-    this.updateAxisControlsHandlerParams()
+    updateAxisSetupParams(this)
     isPresetChanged.set(false)
     if (this.forceLoadWizard) {
       this.forceLoadWizard = false
@@ -555,6 +579,7 @@ let Hotkeys = class (GenericOptions) {
       if ("symbol" in item)
         this.modifierSymbols[item.id] <- $"{loc(item.symbol)}{loc("ui/colon")}"
     }
+    this.axisScNames = axisScNames
 
     this.shortcutNames = []
     this.shortcutItems = []
@@ -592,39 +617,37 @@ let Hotkeys = class (GenericOptions) {
   }
 
   function updateAxisShortcuts(item) {
-    let itemObj = this.scene.findObject($"sc_{item.id}")
-    if (!checkObj(itemObj))
+    if (!this.isShortcutCellShown(item.id))
       return
 
-    local data = ""
+    let parts = []
     let curPreset = getCurControlsPreset()
     if ("modifiersId" in item) {
       if ("" in item.modifiersId && item.modifiersId[""] in this.shortcuts) {
-        let activationShortcut = getAxisActivationShortcutData(this.shortcuts, item, curPreset)
-        if (activationShortcut != "")
-          data = $"{getTextMarkup(this.getSymbol(""))}{activationShortcut}"
+        let activationParts = getAxisActivationShortcutParts(this.shortcuts, item, curPreset)
+        if (activationParts.len() > 0)
+          parts.append({ text = this.getSymbol("") }).extend(activationParts)
       }
       
-      foreach (modifier, id in item.modifiersId)
-        if (modifier != "") {
-          let scData = getShortcutData(this.shortcuts, id, false, curPreset)
-          if (scData != "")
-          data = "".concat(data, (data == "" ? "" : getTextMarkup(loc("ui/semicolon"))),
-            getTextMarkup(this.getSymbol(modifier)), scData)
+      foreach (modifier in this.axisScNames)
+        if (modifier != "" && modifier in item.modifiersId) {
+          let scParts = getShortcutParts(this.shortcuts, item.modifiersId[modifier], false, curPreset)
+          if (scParts.len() == 0)
+            continue
+          if (parts.len() > 0)
+            parts.append({ text = loc("ui/semicolon") })
+          parts.append({ text = this.getSymbol(modifier) }).extend(scParts)
         }
     }
 
-    let notAssignedId = u.find_in_array(this.notAssignedAxis, item)
-    if (data == "") {
-      data = getTextMarkup(loc("joystick/axis_not_assigned"))
-      if (notAssignedId < 0)
-        this.notAssignedAxis.append(item)
-    }
-    else if (notAssignedId >= 0)
-        this.notAssignedAxis.remove(notAssignedId)
+    if (parts.len() == 0)
+      parts.append({ text = loc("joystick/axis_not_assigned") })
 
-    this.guiScene.replaceContentFromText(itemObj, data, data.len(), this)
+    this.showShortcutCell(item.id, parts)
   }
+
+  isShortcutCellShown = @(id) this.shownControlKinds?[id] == "shortcut"
+  showShortcutCell = @(id, parts) setControlsItem(id, "cell", parts)
 
   function updateSceneOptions() {
     for (local i = 0; i < shortcutsList.len(); i++) {
@@ -633,17 +656,6 @@ let Hotkeys = class (GenericOptions) {
       else if (shortcutsList[i].type == CONTROL_TYPE.SLIDER)
         this.updateSliderValue(shortcutsList[i])
     }
-  }
-
-  function getRowIdx(rowObj) {
-    let id = rowObj?.id
-    if (!id || id.len() <= 10 || id.slice(0, 10) != "table_row_")
-      return -1
-    return id.slice(10).tointeger()
-  }
-
-  function getRowIdxBYId(id) {
-    return shortcutsList.findindex(@(s) s.id == id) ?? -1
   }
 
   getCurItem = @() this.curShortcut
@@ -663,31 +675,25 @@ let Hotkeys = class (GenericOptions) {
     this.updateButtonsChangeValue()
   }
 
-  function onScClick(obj) {
-    let sc = this.getScById(obj?.scId)
+  function onShortcutClick(rowIdx, byGamepad = false) {
+    let sc = this.getScById(rowIdx)
     if (sc == null)
       return
-    if (sc == this.curShortcut) {
-      obj.selected = "no"
-      this.curShortcut = null
-      this.curShortcutBtn = null
-    }
-    else {
-      if (checkObj(this.curShortcutBtn))
-        this.curShortcutBtn.selected = "no"
-      obj.selected = "yes"
-      this.curShortcut = sc
-      this.curShortcutBtn = obj
-    }
+    
+    let isConsole = showConsoleButtons.get()
+    this.curShortcut = sc == this.curShortcut && !isConsole ? null : sc
+    setControlsScreenField("selectedRowId", this.curShortcut == null ? null : $"table_row_{rowIdx}")
     this.updateButtonsChangeValue()
+    if (isConsole && byGamepad)
+      this.onTblDblClick()
   }
 
-  function onScDblClick(obj) {
-    let sc = this.getScById(obj?.scId)
+  function onShortcutDblClick(rowIdx) {
+    let sc = this.getScById(rowIdx)
     if (sc == null)
       return
     if (sc != this.curShortcut)
-      this.onScClick(obj)
+      this.onShortcutClick(rowIdx)
     this.onTblDblClick()
   }
 
@@ -715,9 +721,9 @@ let Hotkeys = class (GenericOptions) {
       let option = get_option(optionId)
       for (local i = 0; i < shortcutsList.len(); i++)
         if (shortcutsList[i]?.optionType == optionId) {
-          let object = this.scene.findObject(shortcutsList[i].id)
-          if (checkObj(object) && object.getValue() != option.value)
-            object.setValue(option.value)
+          let value = this.getControlItemValue(shortcutsList[i])
+          if (value != null && value != option.value)
+            this.setControlValue(shortcutsList[i].id, option.value)
         }
     }
 
@@ -737,15 +743,8 @@ let Hotkeys = class (GenericOptions) {
   function onOptionsFilter(obj = null) {
     this.applyAirHelpersChange(obj)
 
-    if (!this.filterObjId)
-      return
-
-    let filterObj = this.scene.findObject(this.filterObjId)
-    if (!checkObj(filterObj))
-      return
-
-    let filterId = filterObj.getValue()
-    if (!(filterId in this.filterValues))
+    let filterId = this.getHelpersFilterIdx()
+    if (filterId == null || !(filterId in this.filterValues))
       return
 
     if (!canChangeHelpersMode() && this.filter != null) {
@@ -754,11 +753,7 @@ let Hotkeys = class (GenericOptions) {
           if (idx != filterId) {
             let newValue = idx
             this.msgBox("cant_change_controls", loc("msgbox/tutorial_controls_type_locked"),
-                   [["ok", function() {
-                       if (checkObj(filterObj))
-                         filterObj.setValue(newValue)
-                     }
-                   ]], "ok")
+                   [["ok", @() this.setHelpersFilterIdx(newValue)]], "ok")
           }
           break
         }
@@ -770,34 +765,15 @@ let Hotkeys = class (GenericOptions) {
     
   }
 
-  function selectRowByRowIdx(idx) {
-    let controlTblObj = this.scene.findObject(this.optionTableId)
-    if (!checkObj(controlTblObj) || idx < 0)
-      return
-
-    let id = $"table_row_{idx}"
-    for (local i = 0; i < controlTblObj.childrenCount(); i++) {
-      let child = controlTblObj.getChild(i)
-      if (child.id == id)
-        child.scrollToView()
-    }
-  }
-
-  function getFilterObj() {
-    if (!checkObj(this.scene) || !this.filterObjId)
-      return null
-    return this.scene.findObject(this.filterObjId)
-  }
-
   delayedControlsGroupStrated = false
   function doControlsGroupChangeDelayed(_obj = null) {
     this.delayedControlsGroupStrated = true
     this.guiScene.performDelayed(this, function() {
       this.delayedControlsGroupStrated = false
       let filterOption = get_option(USEROPT_HELPERS_MODE)
-      let filterObj = this.getFilterObj()
-      if (checkObj(filterObj) && filterObj.getValue() != filterOption.value)
-        filterObj.setValue(filterOption.value)
+      let filterIdx = this.getHelpersFilterIdx()
+      if (filterIdx != null && filterIdx != filterOption.value)
+        this.setHelpersFilterIdx(filterOption.value)
       this.doControlsGroupChange(true)
     })
   }
@@ -828,36 +804,6 @@ let Hotkeys = class (GenericOptions) {
     }
   }
 
-  function optionsFilterApply() {
-    this.updateHidden()
-    let mainTbl = this.scene.findObject(this.optionTableId)
-    if (!checkObj(mainTbl))
-      return
-
-    let totalRows = mainTbl.childrenCount()
-
-    for (local i = 0; i < totalRows; i++) {
-      let obj = mainTbl.getChild(i)
-      let itemIdx = this.getRowIdx(obj)
-      if (itemIdx < 0)
-        continue
-
-      let item = shortcutsList[itemIdx]
-      let show = !item.isHidden
-
-      if (obj) {
-        obj.hiddenTr = show ? "no" : "yes"
-        obj.inactive = (show && item.type != CONTROL_TYPE.HEADER
-          && item.type != CONTROL_TYPE.SECTION) ? null : "yes"
-      }
-    }
-
-    showObjById("btn_preset", this.filter != ControlHelpersMode.EM_MOUSE_AIM, this.scene)
-    showObjById("btn_defaultpreset", this.filter == ControlHelpersMode.EM_MOUSE_AIM, this.scene)
-
-    this.dontCheckControlsDupes = refillControlsDupes()
-  }
-
   function loadPresetWithMsg(msg, presetSelected, askKeyboardDefault = false) {
     this.msgBox(
       "controls_restore_question", msg,
@@ -870,7 +816,7 @@ let Hotkeys = class (GenericOptions) {
                 this.applySelectedPreset(getControlsPresetBySelectedType(name).fileName)
               }
             ])
-            this.msgBox("ask_kbd_type", loc("controls/askKeyboardWasdType"), presets, "classic")
+            this.msgBox("ask_kbd_type", locByInputDevice("controls/askKeyboardWasdType"), presets, "classic")
             return
           }
 
@@ -906,7 +852,7 @@ let Hotkeys = class (GenericOptions) {
   function onDefaultPreset() {
     this.backAfterSave = false
     this.doApply()
-    this.loadPresetWithMsg(loc("controls/askRestoreDefaults"), 0, isPlatformPC)
+    this.loadPresetWithMsg(loc("controls/askRestoreDefaults"), 0, isPC)
   }
 
   function onButtonReset() {
@@ -919,22 +865,9 @@ let Hotkeys = class (GenericOptions) {
       return
 
     this.guiScene.performDelayed(this, function() {
-      if (this.scene && this.scene.isValid()) {
-        let obj = this.scene.findObject("controls_input_root")
-        if (obj)
-          this.guiScene.destroyElement(obj)
-      }
-
-      if (!item)
-        return
-
       this.shortcuts[item.shortcutId] = []
       broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = [item.shortcutId] })
     })
-  }
-
-  function onTblSelect() {
-    this.updateButtonsChangeValue()
   }
 
   function updateButtonsChangeValue() {
@@ -942,10 +875,10 @@ let Hotkeys = class (GenericOptions) {
     let isShortcut = item != null && (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
     let isAxis = item != null && item.type == CONTROL_TYPE.AXIS
 
-    showObjById("btn_reset_shortcut", isShortcut, this.scene)
-    showObjById("btn_reset_axis", isAxis, this.scene)
-    let btnA = showObjById("btn_assign", isShortcut || isAxis, this.scene)
-    btnA.setValue(isAxis ? loc("mainmenu/btnEditAxis") : loc("mainmenu/btnAssign"))
+    this.showSceneItem("btn_reset_shortcut", isShortcut)
+    this.showSceneItem("btn_reset_axis", isAxis)
+    this.showSceneItem("btn_assign", isShortcut || isAxis)
+    this.setNavButtonText("btn_assign", isAxis ? loc("mainmenu/btnEditAxis") : loc("mainmenu/btnAssign"))
 
     this.checkCurrentNavagationSection()
   }
@@ -958,21 +891,13 @@ let Hotkeys = class (GenericOptions) {
     if (item.type == CONTROL_TYPE.AXIS)
       this.openAxisBox(item)
     else if (item.type == CONTROL_TYPE.SHORTCUT || item.type == CONTROL_TYPE.AXIS_SHORTCUT)
-      this.openShortcutInputBox()
+      this.openShortcutInputBox(item)
     else if (item.type == CONTROL_TYPE.BUTTON)
       this.doItemAction(item)
   }
 
-  function openShortcutInputBox() {
-    assignButtonWindow(this, this.onAssignButton, this.getCurItem()?.id ?? "")
-  }
-
-  function onAssignButton(dev, btn, activationType) {
-    if (dev.len() > 0 && dev.len() == btn.len()) {
-      let item = this.getCurItem()
-      if (item)
-        this.bindShortcut(dev, btn, activationType, item.shortcutId)
-    }
+  function openShortcutInputBox(item) {
+    openAssignShortcut(this, @(dev, btn, activationType) this.bindShortcut(dev, btn, activationType, item.shortcutId), item.id)
   }
 
   function doBind(devs, btns, activationType, shortcutId) {
@@ -989,12 +914,9 @@ let Hotkeys = class (GenericOptions) {
       return
 
     let item = this.shortcutItems[shortcutId]
-    let itemObj = this.scene.findObject($"sc_{this.shortcutNames[shortcutId]}")
-
-    if (itemObj?.isValid()) {
-      let data = getShortcutData(this.shortcuts, shortcutId)
-      this.guiScene.replaceContentFromText(itemObj, data, data.len(), this)
-    }
+    let cellId = this.shortcutNames[shortcutId]
+    if (this.isShortcutCellShown(cellId))
+      this.showShortcutCell(cellId, getShortcutParts(this.shortcuts, shortcutId))
 
     if (item.type == CONTROL_TYPE.AXIS)
       this.updateAxisShortcuts(item)
@@ -1067,24 +989,9 @@ let Hotkeys = class (GenericOptions) {
     return res
   }
 
-  getAxisHandlerParams = @() {
-    curJoyParams = this.curJoyParams,
-    shortcuts = this.shortcuts,
-    shortcutItems = this.shortcutItems
-  }
-
   function openAxisBox(axisItem) {
-    if (!this.curJoyParams || !axisItem || axisItem.axisIndex < 0)
-      return
-
-    let handler = loadHandler(get_gui_handler("AxisControls"),
-      this.getAxisHandlerParams().__update({ axisItem = axisItem }))
-    this.axisControlsHandlerWeak = handler.weakref()
-  }
-
-  function updateAxisControlsHandlerParams() {
-    if (this.axisControlsHandlerWeak?.isValid() ?? false)
-      this.axisControlsHandlerWeak.setShortcutsParams(this.getAxisHandlerParams())
+    if (this.curJoyParams && axisItem && axisItem.axisIndex >= 0)
+      openAxisSetup(this, axisItem)
   }
 
   function onAxisReset() {
@@ -1114,19 +1021,6 @@ let Hotkeys = class (GenericOptions) {
 
     let axisItem = getShortcutById(axisName)
     broadcastEvent("ControlsChangedAxes", { changedAxes = [axisItem] })
-  }
-
-  function onChangeAxisRelative(obj) {
-    if (!obj)
-      return
-
-    let isRelative = obj.getValue() == 1
-    local txtObj = this.scene.findObject("txt_rangeMax")
-    if (txtObj)
-      txtObj.setValue(loc(isRelative ? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
-    txtObj = this.scene.findObject("txt_rangeMin")
-    if (txtObj)
-      txtObj.setValue(loc(isRelative ? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
   }
 
   function getUnmappedByGroups() {
@@ -1214,25 +1108,11 @@ let Hotkeys = class (GenericOptions) {
   }
 
   function updateSliderValue(item) {
-    let valueObj = this.scene.findObject($"{item.id}_value")
-    if (!valueObj)
-      return
-    let vlObj = this.scene.findObject(item.id)
-    if (!vlObj)
+    let value = this.getControlItemValue(item)
+    if (value == null)
       return
 
-    let value = vlObj.getValue()
-    local valueText = ""
-    if ("showValueMul" in item)
-      valueText = (item.showValueMul * value).tostring()
-    else
-      valueText = "".concat(value * (("showValuePercMul" in item) ? item.showValuePercMul : 1), "%")
-    valueObj.setValue(valueText)
-  }
-
-  function onSliderChange(obj) {
-    if (obj?.id)
-      this.updateSliderValue(getShortcutById(obj.id))
+    setControlsItem(item.id, "valueText", getSliderValueText(item, value))
   }
 
   function onActionButtonClick(obj) {
@@ -1254,6 +1134,30 @@ let Hotkeys = class (GenericOptions) {
       this.doApplyJoystickImpl(shortcutsList, this.curJoyParams)
   }
 
+  getControlItemValue = @(item) this.getControlValue(item.id)
+
+  
+  function getControlValue(id) {
+    if (id == this.filterObjId)
+      return this.getHelpersFilterIdx()
+    return this.shownControlKinds?[id] == null ? null : controlsItems.get()?[id]?.value
+  }
+
+  
+  function setControlValue(id, value) {
+    if (id == this.filterObjId)
+      return this.setHelpersFilterIdx(value)
+    let kind = this.shownControlKinds?[id]
+    if (kind == null || kind == "shortcut" || controlsItems.get()?[id]?.value == value)
+      return
+    setControlsItem(id, "value", value)
+    let item = getShortcutById(id)
+    if (item?.type == CONTROL_TYPE.SLIDER)
+      setControlsItem(id, "valueText", getSliderValueText(item, value))
+    else if (item?.onChangeValue != null)
+      this[item.onChangeValue](mkControlObj(this, id))
+  }
+
   function doApplyJoystickImpl(itemsList, setValueContext) {
     if (!this.isValid())
       return
@@ -1262,18 +1166,16 @@ let Hotkeys = class (GenericOptions) {
           || item.type == CONTROL_TYPE.SHORTCUT)
         continue
 
-      let obj = this.scene.findObject(item.id)
-      if (!checkObj(obj))
+      let value = this.getControlItemValue(item)
+      if (value == null)
         continue
 
       if ("optionType" in item) {
-        let value = obj.getValue()
         set_option(item.optionType, value)
         continue
       }
 
       if (item.type == CONTROL_TYPE.MOUSE_AXIS && ("axis_num" in item)) {
-        let value = obj.getValue()
         if (value in item.values)
           if (item.values[value] == "none")
             this.curJoyParams.setMouseAxis(item.axis_num, "")
@@ -1284,7 +1186,6 @@ let Hotkeys = class (GenericOptions) {
       if (!("setValue" in item))
         continue
 
-      let value = obj.getValue()
       if ((item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.DROPRIGHT || item.type == CONTROL_TYPE.LISTBOX)
           && (item.options.len() > 0))
         if (value in item.options)
@@ -1564,7 +1465,17 @@ let Hotkeys = class (GenericOptions) {
     }
   }
 
-  function onOptionsListboxDblClick(_obj) {}
+  function onGroupTab(idx) {
+    if (idx == controlsScreen.get().curGroupIdx)
+      return
+    setControlsScreenField("curGroupIdx", idx)
+    this.onControlsGroupChange()
+  }
+
+  function onNavItem(idx) {
+    if (idx in this.getNavItems())
+      setControlsScreenField("curNavIdx", idx)
+  }
 
   function getShortcutsVisibilityMap() {
     let helpersMode = getCurrentHelpersMode()
@@ -1592,4 +1503,31 @@ let Hotkeys = class (GenericOptions) {
 }
 register_gui_handler("Hotkeys", Hotkeys)
 
-return { Hotkeys }
+subscribeScreenActions("controlsScreen.action", Hotkeys, {
+  function button(h, p) {
+    let method = METHOD_BY_BUTTON?[p.id]
+    if (method != null)
+      h[method]()
+  }
+  rowButton = @(h, p) h.onActionButtonClick({ id = p.id })
+  value = @(h, p) h.setControlValue(p.id, p.value)
+  helpersFilter = @(h, p) h.setHelpersFilterIdx(p.idx)
+  groupTab = @(h, p) h.onGroupTab(p.idx)
+  navItem = @(h, p) h.onNavItem(p.idx)
+  search = @(h, p) h.setSearchText(p.text)
+  searchCancel = @(h, _) h.onSearchCancel()
+  shortcutClick = @(h, p) h.onShortcutClick(p.rowIdx, p.byGamepad)
+  shortcutDblClick = @(h, p) h.onShortcutDblClick(p.rowIdx)
+  shortcutHover = @(h, p) h.onScHover({ scId = p.rowIdx })
+  shortcutUnhover = @(h, p) h.onScUnHover({ scId = p.rowIdx })
+})
+
+function onControllerEvent() {
+  handlersManager.findHandlerClassInScene(Hotkeys)?.updateButtons()
+}
+
+controllerState.add_event_handler(onControllerEvent)
+
+on_module_unload(@(_) controllerState.remove_event_handler(onControllerEvent))
+
+return freeze({ Hotkeys })

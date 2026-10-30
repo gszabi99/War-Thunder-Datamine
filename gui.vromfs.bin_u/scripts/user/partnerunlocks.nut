@@ -1,4 +1,8 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/g_listener_priority.nut" import CONFIG_VALIDATION
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/tasker.nut" import charRequestBlk
 from "%sqStdLibs/helpers/u.nut" import isEmpty, isDataBlock, isEqual
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%sqstd/datablock.nut" import convertBlk
@@ -6,17 +10,12 @@ from "dagor.time" import get_time_msec
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { CONFIG_VALIDATION } = require("%scripts/g_listener_priority.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let time = require("%scripts/time.nut")
-let { charRequestBlk } = require("%scripts/tasker.nut")
+let partnerExectutedUnlocks = mkHardPersist("user.partnerUnlocks")("partnerExectutedUnlocks", {})
 
-let partnerExectutedUnlocks = persist("partnerExectutedUnlocks", @() {})
-
-let partnerUnlocksTimes = persist("partnerUnlocksTimes", @() {
+let partnerUnlocksTimes = {
   lastRequestTime = -9999999999
   lastUpdateTime = -9999999999
-})
+}
 
 const REQUEST_TIMEOUT_MSEC = 45000
 const UPDATE_TIMEOUT_MSEC = 60000
@@ -103,6 +102,6 @@ addListenersWithoutEnv({
   SignOut = @(_) resetCache()
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   isPartnerUnlockAvailable
-}
+})

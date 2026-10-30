@@ -2046,6 +2046,7 @@
     "engines": {
       "maxSpeed": 17.0,
       "maxReverseSpeed": 7.2,
+      "horsePowers": 70000.0,
       "speedToTime": {
         "row": [
           [
@@ -2153,6 +2154,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.7,
+        700.0
+      ],
+      [
+        9.5,
+        1500.0
+      ],
+      [
+        14.2,
+        3100.0
+      ],
+      [
+        18.9,
+        5800.0
+      ],
+      [
+        23.6,
+        8000.0
+      ],
+      [
+        28.4,
+        9900.0
+      ],
+      [
+        33.1,
+        11700.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        6200.0
+      ],
+      [
+        -2.0,
+        2800.0
+      ],
+      [
+        -1.0,
+        1200.0
+      ],
+      [
+        0.0,
+        300.0
+      ],
+      [
+        5.0,
+        300.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
@@ -2183,17 +2242,17 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/us_an_sps_37.blk",
+        "blk": "gamedata/sensors/naval/us_an_sps_37.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_02_dm"
       },
       {
-        "blk": "gameData/sensors/naval/us_an_sps_39.blk",
+        "blk": "gamedata/sensors/naval/us_an_sps_39.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_03_dm"
       },
       {
-        "blk": "gameData/sensors/naval/us_an_spg_51.blk",
+        "blk": "gamedata/sensors/naval/us_an_spg_51.blk",
         "dmPart": [
           "antenna_target_tagging_01_dm",
           "antenna_target_tagging_02_dm",
@@ -2204,13 +2263,7 @@
     ],
     "fireDirecting": {
       "dmPartMain": "fire_control_room_01_dm",
-      "dmPart": [
-        "fire_director_01_dm",
-        "antenna_target_tagging_01_dm",
-        "antenna_target_tagging_02_dm",
-        "antenna_target_tagging_mount_01_dm",
-        "antenna_target_tagging_mount_02_dm"
-      ],
+      "dmPart": "fire_director_01_dm",
       "measureAccuracy": 1.0,
       "targetLockTime": 6.0,
       "calcTime": 3.0,
@@ -2232,14 +2285,14 @@
       {
         "radarAnimVar": "target_tagging_yaw_rotate",
         "radarAntenaSpeed": 50.0,
-        "animatedRadarIdx": 1,
+        "animatedRadarIdx": 2,
         "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }
     ]
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.356
+    "shipDamageControlCoeff": 0.326
   },
   "boilerExplosionFx": {
     "fx": [
@@ -4007,23 +4060,27 @@
   },
   "breaches": {
     "repairSpeed": 27.0,
-    "waterMassVel": -60000.0,
-    "waterMassMult": 100.0,
     "sizeToRepair": [
       0.01,
-      15.0,
-      140.0,
-      1200.0
+      7.5,
+      135.0,
+      610.2
     ],
-    "additionalWaterDeathThreshold": 12500000.0,
+    "waterMassVel": -92091.0,
+    "waterMassMult": 307.0,
+    "additionalWaterDeathThreshold": 14935031.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 35.0,
+    "maxHeelingAngle": 25.0,
     "maxHeelingTime": 8.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 3.0,
+    "maxTrimmingAngle": 3.7,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.3,
+    "sideCenterOfMassOffsetPercent": 0.288,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.4,
     "deadCoverCounterfloodingRel": 0.5,
@@ -4033,22 +4090,22 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.2,
+        "weight": 0.1,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.29
             },
             {
               "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.27
             }
           ]
         }
@@ -4061,57 +4118,61 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.52
             },
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.52
             }
           ]
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 1.0,
+        "weight": 0.87,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.53
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.54
+            },
+            {
+              "partNo": "fire_control_room_01_dm",
+              "critWaterLevel": 0.9
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.77,
-        "maxWaterAlive": 1.0
+        "weight": 0.47,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "ammunition_storage_shells_02_dm",
+            "critWaterLevel": 0.38
+          }
+        }
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": [
-            {
-              "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.75
-            }
-          ]
+          "part": {
+            "partNo": "ammunition_storage_charges_02_dm",
+            "critWaterLevel": 0.31
+          }
         }
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.2,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]
@@ -5824,8 +5885,8 @@
         "antenna_target_location_03",
         "antenna_target_tagging_01",
         "antenna_target_tagging_02",
-        "antenna_target_tagging_mount_01_dm",
-        "antenna_target_tagging_mount_02_dm",
+        "antenna_target_tagging_mount_01",
+        "antenna_target_tagging_mount_02",
         "auxiliary_caliber_gun_02"
       ]
     },
@@ -5833,7 +5894,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk42_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_54_mk42_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -6158,7 +6219,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk42_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_54_mk42_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -6483,7 +6544,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/rocket_mk11_naval_rocket_launcher.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_mk11_naval_rocket_launcher.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_09",
         "emitterGenRange": [
@@ -6575,12 +6636,12 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/us_destroyer_cf_adams_class_cf_adams_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/us_destroyer_cf_adams_class_cf_adams_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "us_destroyer_cf_adams_class_cf_adams_default",
-        "blk": "gameData/units/ships/weaponPresets/us_destroyer_cf_adams_class_cf_adams_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/us_destroyer_cf_adams_class_cf_adams_default.blk"
       }
     ]
   },

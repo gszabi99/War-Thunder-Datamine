@@ -1,7 +1,12 @@
+from "%scripts/matching/requests.nut" import request_nick_by_uid_batch
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/contacts/contactsListState.nut" import steamContactsGroup, recentGroup, blockedMeUids, psnApprovedUids, psnBlockedUids, xboxApprovedUids, xboxBlockedUids, getContactByName
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
-from "%appGlobals/login/loginState.nut" import isLoggedIn
-from "%sqstd/platform.nut" import is_gdk
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "chard" import get_charserver_time_sec
 from "%sqstd/datablock.nut" import convertBlk
 from "%sqstd/underscore.nut" import isDataBlock
@@ -9,19 +14,14 @@ from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME, EPLX_SEARCH, EPLX_PS4_FRIENDS, EPLX_STEAM, getMaxContactsByGroup
 
-let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { predefinedContactsGroupToWtGroup, steamContactsGroup, recentGroup, blockedMeUids, psnApprovedUids, psnBlockedUids, xboxApprovedUids, xboxBlockedUids, contactsGroups, contactsByGroups, getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
+let { predefinedContactsGroupToWtGroup, contactsGroups, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
 local isDisableContactsBroadcastEvents = false
 
 let additionalConsolesContacts = 
-  isPlatformSony ? {
+  isSony ? {
       [EPLX_PS4_FRIENDS] = psnApprovedUids,
       [EPL_BLOCKLIST] = psnBlockedUids
     }
@@ -110,7 +110,7 @@ function loadRecentGroupOnce() {
 }
 
 function addRecentContacts(contacts) {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   loadRecentGroupOnce()
@@ -219,11 +219,11 @@ addListenersWithoutEnv({
   LoginComplete = @(_) loadRecentGroupOnce()
 })
 
-return {
+return freeze({
   verifyContact
   addContact
   addContactGroup
   updateContactsGroups
   clear_contacts
   addRecentContacts
-}
+})

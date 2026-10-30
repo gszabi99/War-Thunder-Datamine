@@ -1,25 +1,25 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/unlocks/unlockMarkers.nut" import getUnitListByUnlockId
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTitle
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 function getUnitsData(unlockId) {
   let data = {}

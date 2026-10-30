@@ -2071,7 +2071,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_launcher_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_launcher_user_cannon.blk",
       "flash": "bone_rocket_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
@@ -2148,13 +2148,23 @@
         "rotatedTurret": "bone_turret",
         "verDriveDm": [
           "drive_turret_v_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_v_01_dm",
+          "drive_turret_v_02_dm"
         ],
         "horDriveDm": [
           "drive_turret_h_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_h_01_dm"
         ],
-        "shootingDmPart": "fire_control_system_dm"
+        "shootingDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ]
       },
       "limits": {
         "yaw": [
@@ -2373,8 +2383,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_amx_30_roland_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_amx_30_roland_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2427,14 +2437,25 @@
     "engine": {
       "horsePowers": 680.0,
       "maxRPM": 2400.0,
-      "minRPM": 600.0
+      "minRPM": 600.0,
+      "manufacturer": "hispano_suiza",
+      "model": "hs_110",
+      "torqFormula": {
+        "a": -1.2989067,
+        "b": 1.9704741,
+        "c": 0.3284316
+      }
     },
     "mechanics": {
-      "steerType": "clutch_braking",
-      "maxBrakeForce": 170000.0,
+      "maxBrakeForce": 150000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
       "sideGearRatio": 1.0,
+      "neutralGearRatio": 13.0,
+      "manufacturer": "amx",
+      "model": "bv_5_sd_200_d",
+      "type": "mech",
+      "steerType": "clutch_braking",
       "gearRatios": {
         "ratio": [
           -0.62,
@@ -3416,7 +3437,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_launcher_user_cannon.blk",
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3493,13 +3514,23 @@
                 "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3711,7 +3742,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3866,7 +3897,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/de_roland_sr.blk",
+        "blk": "gamedata/sensors/de_roland_sr.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -3876,7 +3907,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/sam_tv_ir_track_rc.blk",
+        "blk": "gamedata/sensors/sam_tv_ir_track_rc.blk",
         "turretIndex": 0,
         "dmPart": [
           "optic_gun_dm",

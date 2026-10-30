@@ -1,16 +1,15 @@
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/onlineInfo/clustersManagement.nut" import getClusterShortName
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/queue/queueInfo/qiHandlerBase.nut" import QiHandlerBase
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/matchingRooms/fillCountriesList.nut" import fillCountriesList
+from "%scripts/queue/queueInfo.nut" import getQueueTeam, getQueueClusters
+from "%scripts/events/eventInfo.nut" import getCustomViewCountryData, isTeamSizeBalancedEvent
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import buildTableRow
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { QiHandlerBase } = require("%scripts/queue/queueInfo/qiHandlerBase.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
-let { getQueueTeam, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
-let { getCustomViewCountryData, isTeamSizeBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
 register_gui_handler("QiHandlerByTeams", class (QiHandlerBase) {
   timerUpdateObjId = "queue_box"

@@ -1,10 +1,10 @@
+from "%scripts/weaponry/weaponryTypes.nut" import getSpareAvailableAmount
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/items/listPopupWnd/itemsListWndBase.nut" import ItemsListWndBase
+from "%scripts/items/itemsManagerModule.nut" import getUniversalSparesForUnit
 from "%scripts/dagui_library.nut" import *
 
-let { getSpareAvailableAmount } = require("%scripts/weaponry/weaponryTypes.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
-let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 
 let UniversalSpareApplyWnd = class (ItemsListWndBase) {
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
@@ -103,4 +103,4 @@ let UniversalSpareApplyWnd = class (ItemsListWndBase) {
 }
 register_gui_handler("UniversalSpareApplyWnd", UniversalSpareApplyWnd)
 
-return { UniversalSpareApplyWnd }
+return freeze({ UniversalSpareApplyWnd })

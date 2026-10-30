@@ -1,17 +1,18 @@
+import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/mainmenu/topMenuButtons.nut" import addButtonConfig
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById, hasAvailableMapToBattle, getMapByName
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder
+from "%scripts/onlineShop/url.nut" import openUrlByObj
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "worldwar" import wwGetOperationId, wwIsOperationLoaded
 from "worldwarConst" import RenderCategory
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
+from "%globalScripts/loc_helpers.nut" import getVendorLocId
 from "%scripts/seen/seenIds.nut" import SEEN
 
 let { WwLeaderboard } = require("%scripts/worldWar/handler/wwLeaderboard.nut")
-let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
-let { getOperationById, hasAvailableMapToBattle, getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let template = {
   category = -1
@@ -89,7 +90,7 @@ let list = {
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_ACHIEVEMENTS = {
-    text = "#mainmenu/btnUnlockAchievement"
+    text = $"#{getVendorLocId("mainmenu/btnUnlockAchievement")}"
     onClickFunc = @(_obj, handler) handler?.onOpenAchievements()
     isHidden = @(...) getUnlocksByTypeInBlkOrder("achievement").findindex(
       @(u) u?.chapter && u.chapter == "worldwar" && u?.hidden != true) == null

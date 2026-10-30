@@ -5,4 +5,4 @@ from "dagor.localize" import loc
 let logs = require("logs.nut")
 
 
-return { utf8, loc }.__update(logs)
+return freeze({ utf8, loc }.__update(logs))

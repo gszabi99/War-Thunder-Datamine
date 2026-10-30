@@ -1,19 +1,19 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/collections/collections.nut" import getCollectionsList
+from "%scripts/customization/decoratorDescription.nut" import updateDecoratorDescription
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex, move_mouse_on_child_by_value
+from "%scripts/customization/decoratorAcquire.nut" import askPurchaseDecorator, askConsumeDecoratorCoupon, findDecoratorCouponOnMarketplace
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/items/itemsManagerGetters.nut" import canGetDecoratorFromTrophy
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCollectionsList } = require("%scripts/collections/collections.nut")
-let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getObjValidIndex, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { askPurchaseDecorator, askConsumeDecoratorCoupon, findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { canGetDecoratorFromTrophy } = require("%scripts/items/itemsManagerGetters.nut")
 
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
@@ -305,6 +305,6 @@ local CollectionsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("CollectionsHandler", CollectionsHandler)
 
-return {
+return freeze({
   openCollectionsPage = @(params = {}) handlersManager.loadHandler(CollectionsHandler, params)
-}
+})

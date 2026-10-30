@@ -1,31 +1,3 @@
-@const shopFilterHFlowHeight: 0.04*@sf;
-@const shopFilterTextCountryHeight: 28@sf/@pf;
-@const listboxItemsInterval:1@dp;
-@const listboxHPadding: 0.015@sf;
-@const slotsHeaderBoxPadding: 0.01@sf;
-
-@const listboxBgColor:              #CC03070C;
-
-@const listboxHoverOptionColor:     #7d868e;
-@const listboxHoverTextColor:       @textInWhiteBlockColor;
-@const listboxHoverOptionLineColor: #e8e8e8;
-
-@const listboxSelOptionColor:       #ff313a41;
-@const listboxSelTextColor:         #e0e0e0;
-@const listboxSelOptionLineColor:   #96b1b1;
-
-@const headerOptionTextColor:       #908f8f;
-
-@const headerOptionHoverColor:      #996a2211;
-@const headerOptionSelectedColor:   #ffb2391d;
-
-@const headerOptionSelectedTextColor: #e0e0e0;
-
-@const shopFilterFontColorDisabled: #26343434;
-@const crewTabBgColor: #000A0A0A;
-@const crewTabHoverColor: #00262626;
-@const crewTabSelectedColor: #00333333;
-
 listbox,
 listboxNoScroll {
   behaviour:select;
@@ -510,7 +482,7 @@ shopFilterText[colorTag=squad]                   { color:@mChatSenderMySquadColo
 [selected=yes] > shopFilterText[colorTag=squad]  { color:@mChatSenderMySquadColor; }
 
 shopFilterText[colorTag=friend]                  { color:@mChatSenderFriendColorDark;}
-::hover > shopFilterText[colorTag=friend],
+:hover > shopFilterText[colorTag=friend],
 [selected=yes] > shopFilterText[colorTag=friend] { color:@mChatSenderFriendColor;}
 
 shopFilterImg {
@@ -583,8 +555,7 @@ shopFilter > shopFilterImg[isLeftAligned=yes] {
 }
 
 shopFilter[selected=yes] > shopFilterImg,
-shopFilter[selected=yes] > flagImageHolder > img,
-.header shopFilter[hasChangedIcon=yes] > shopFilterImg {
+shopFilter[selected=yes] > flagImageHolder > img {
   background-color:@white;
 }
 
@@ -659,14 +630,6 @@ cornerImgGlow {
 
 .header cornerImg[imgTiny=yes][type=left] {
   pos:1.5@blockInterval, h;
-}
-
-.header shopFilter[hasChangedIcon=yes] > cornerImg {
-  display:show;
-}
-
-.header shopFilter[hasChangedIcon=yes][selected=yes] > cornerImg {
-  display:hide;
 }
 
 navigationImage {

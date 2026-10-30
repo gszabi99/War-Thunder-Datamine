@@ -1,5 +1,22 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "regexp2" as regexp2
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
+from "%scripts/weaponry/weaponryInfo.nut" import addWeaponsFromBlk, getWeaponLocByTrigger, convertTriggerToTriggerForLoc
+from "%scripts/weaponry/weaponryVisual.nut" import getWeaponItemViewParams
+from "%scripts/popups/popupTreeList.nut" import openPopupTreeList
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import addCustomPreset, isPresetChanged, convertPresetToBlk
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut" import getChildInContainers
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/string.nut" import clearBorderSymbols
 from "%sqstd/math.nut" import round_by_value
@@ -7,26 +24,9 @@ from "unitCustomization" import set_weapon_visual_custom_blk
 from "%sqstd/datablock.nut" import eachParam
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { addWeaponsFromBlk, getWeaponLocByTrigger, convertTriggerToTriggerForLoc } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { openPopupTreeList } = require("%scripts/popups/popupTreeList.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { addCustomPreset, isPresetChanged, convertPresetToBlk } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getChildInContainers } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
@@ -148,7 +148,7 @@ class EditWeaponryPresetsModal (BaseGuiHandlerWT) {
       foreach (weapon in triggers)
         foreach (id, inst in weapon.weaponBlocks)
           res.append(inst.__merge({ id = id, tType = inst?.editPresetChapter ?? weapon.trigger }))
-    res.sort(@(a, b) a.id <=> b.id)
+    res.sortby(@(a) a.id)
     return res
   }
 
@@ -419,8 +419,8 @@ register_gui_handler("EditWeaponryPresetsModal", EditWeaponryPresetsModal)
 
 let openEditWeaponryPreset = @(params) handlersManager.loadHandler(EditWeaponryPresetsModal, params)
 
-return {
+return freeze({
   openEditWeaponryPreset
   openEditPresetName
   EditWeaponryPresetsModal
-}
+})

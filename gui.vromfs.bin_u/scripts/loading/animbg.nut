@@ -1,26 +1,29 @@
+import "%scripts/clientState/fileCheck.nut" as fileCheck
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "DataBlock" as DataBlock
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%scripts/loading/loadingBgData.nut" import getCurLoadingBgData, removeLoadingBgFromLists
+from "%scripts/options/preloaderOptions.nut" import isLoadingScreenBanned
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "dagor.fs" import file_exists
 from "dagor.random" import frnd
+from "%appGlobals/loading/loadingBgChoice.nut" import pickLoadingBg, loadingBgBlkPath
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let fileCheck = require("%scripts/clientState/fileCheck.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { getCurLoadingBgData, removeLoadingBgFromLists } = require("%scripts/loading/loadingBgData.nut")
-let { isLoadingScreenBanned } = require("%scripts/options/preloaderOptions.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MODIFY_UNKNOWN = -1
 const MODIFY_NO_FILE = -2
 
 local lastBg = ""
+let shownBgImages = persist("shownBgImages", @() [])
 
-let getFullFileName = @(name) name.split(".").len() > 1 ? name : $"loadingbg/{name}.blk"
-let getLastBgFileName = @() lastBg.len() ? getFullFileName(lastBg) : ""
+let getLastBgFileName = @() lastBg.len() ? loadingBgBlkPath(lastBg) : ""
 
 local isDebugMode = false
 local debugLastModified = MODIFY_UNKNOWN
@@ -30,10 +33,25 @@ function invalidateCache() {
   lastBg = ""
 }
 
+function discardUnusedBgTextures() {
+  get_cur_gui_scene().discardUnusedTextures(shownBgImages)
+}
+
+function releaseUnusedBgTextures() {
+  discardUnusedBgTextures()
+  resetTimeout(1.0, discardUnusedBgTextures)
+}
+
+function addShownBgImages(bgBlk) {
+  foreach (img in fileCheck.getBlkImages(bgBlk))
+    if (!shownBgImages.contains(img))
+      shownBgImages.append(img)
+}
+
 function loadBgBlk(name) {
   loadErrorText = null
   local res = DataBlock()
-  let fullName = getFullFileName(name)
+  let fullName = loadingBgBlkPath(name)
   let isLoaded = res.load(fullName)
   if (isLoaded)
     return res
@@ -63,7 +81,7 @@ function load(blkFilePath = "", obj = null, curBgData = null) {
 
   if (blkFilePath != "")
     lastBg = blkFilePath
-  else if (isLoggedIn.get() || lastBg == "") { 
+  else if (hasFullLoginState.get() || lastBg == "") { 
       if (hasFeature("LoadingBackgroundFilter")
         && isProfileReceived.get() && havePremium.get()) {
         let filteredCurBgList = curBgList.filter(@(_v, id) !isLoadingScreenBanned(id))
@@ -71,16 +89,7 @@ function load(blkFilePath = "", obj = null, curBgData = null) {
           curBgList = filteredCurBgList
       }
 
-      local sum = 0.0
-      foreach (_name, value in curBgList)
-        sum += value
-      sum = frnd() * sum
-      foreach (name, value in curBgList) {
-        lastBg = name
-        sum -= value
-        if (sum <= 0)
-          break
-      }
+      lastBg = pickLoadingBg(curBgList, frnd())
     }
 
   local bgBlk = loadBgBlk(lastBg)
@@ -98,8 +107,11 @@ function load(blkFilePath = "", obj = null, curBgData = null) {
     let markup = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2'; position:t='absolute'; text:t='{0}' }".subst(loadErrorText)
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), this)
   }
-  else
+  else {
+    addShownBgImages(bgBlk)
     obj.getScene().replaceContentFromDataBlock(obj, bgBlk, this)
+    releaseUnusedBgTextures()
+  }
   debugLastModified = MODIFY_UNKNOWN
 }
 
@@ -138,9 +150,13 @@ function debugLoad(blkFilePath = "") {
 
 subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateCache()
+  NewSceneLoaded = @(_p) deferOnce(releaseUnusedBgTextures)
 })
 
-return {
+eventbus_subscribe("onGuiFinishLoading", @(_) deferOnce(releaseUnusedBgTextures))
+
+return freeze({
   animBgLoad = load
   debugLoad = debugLoad
-}
+  releaseUnusedBgTextures
+})

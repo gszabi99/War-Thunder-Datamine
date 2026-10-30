@@ -1,3 +1,10 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob, isLangJobRunning, setReloadUnsafeWork
+from "%scripts/missions/missionsText.nut" import getCombineLocNameMission
+from "%scripts/unit/unitInfo.nut" import getUnitName, image_for_air
+from "%scripts/unit/unitInfoRoles.nut" import getUnitBasicRole
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage, getUnitClassIco
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "dagor.fs" import mkdir
 from "dagor.workcycle" import defer
@@ -6,22 +13,21 @@ from "app" import get_game_version_str
 from "%sqstd/path.nut" import fileName
 from "%sqstd/json.nut" import saveJson
 from "%sqstd/datablock.nut" import blkFromPath
-from "language" import getLocalLanguage
 from "guiMission" import get_meta_missions_info
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/webRPC.nut" import webRpcRegister
 
-let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
+const LANG_JOB_ID = "exportInfo.tssDataExporter"
 
-let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
-
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { getUnitBasicRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getUnitTooltipImage, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-
+let exportState = mkHardPersist("exportInfo.tssDataExporter")("exportState", { isSuccessful = null })
 local activeExporter = null
+
+function debugLog(message) {
+  
+  
+  dlog($"[TSS Exporter] {message}") 
+}
 
 function fileNameWithoutExt(path) {
   let nameWithExt = fileName(path)
@@ -29,26 +35,41 @@ function fileNameWithoutExt(path) {
   return nameParts[0]
 }
 
+function getMissionsList() {
+  let missionsList = get_meta_missions_info(GM_SKIRMISH)
+    .filter(function (mission) {
+      let misChapter = mission?.chapter
+
+      return !["test", "hidden"].contains(misChapter)
+    })
+
+  return missionsList
+}
+
+function getUnitsList() {
+  return getAllUnits()
+    .filter(@(unit) unit.isInShop && !unit.isPkgDev)
+    .values()
+}
+
+function finishExport(isSuccessful) {
+  debugLog("Finish export")
+  activeExporter = null
+  setReloadUnsafeWork(LANG_JOB_ID, false)
+  exportState.isSuccessful = isSuccessful
+}
+
 
 class ExporterForTss {
   currentStep = -1
   startTime = null
-  isSuccessful = null
 
   outputDir = ""
-  initialLang = ""
   exportLangsList = []
-
-  debugLog = function(message) {
-    
-    
-    dlog($"[TSS Exporter] {message}") 
-  }
 
   cachedData = {}
 
   constructor(langsList, outputDir) {
-    this.initialLang = getLocalLanguage()
     let gameLocalizationInfo = getGameLocalizationInfo()
 
     local filteredLangs = gameLocalizationInfo.filter(@(value) langsList.contains(value.id))
@@ -66,8 +87,9 @@ class ExporterForTss {
       return
 
     this.startTime = get_local_unixtime()
-    this.isSuccessful = null
-    this.debugLog("Start export")
+    exportState.isSuccessful = null
+    setReloadUnsafeWork(LANG_JOB_ID, true)
+    debugLog("Start export")
 
     this.nextStep()
   }
@@ -76,11 +98,9 @@ class ExporterForTss {
     return [
       this.fillMissionsList,
       this.fillUnitsList,
-      this.makeLocData,
       this.makeMissionsInfo,
       this.makeUnitsInfo,
-      this.buildExportData,
-      this.finish
+      this.makeLocData
     ]
   }
 
@@ -92,7 +112,7 @@ class ExporterForTss {
     let steps = this.getSteps()
 
     if (steps.len() <= this.currentStep) {
-      this.finish(false)
+      finishExport(false)
       return
     }
 
@@ -103,43 +123,31 @@ class ExporterForTss {
       try {
         stepFn()
       } catch (e) {
-        this.debugLog($"[ERROR] Step {this.currentStep} is broken | {e}")
-        this.finish(false)
+        debugLog($"[ERROR] Step {this.currentStep} is broken | {e}")
+        finishExport(false)
       }
     }).bindenv(this))
   }
 
   
   function fillMissionsList() {
-    this.debugLog("Fill missions list")
+    debugLog("Fill missions list")
 
-    let missionsList = this.getMissionsList()
-    this.cachedData.missionsList <- missionsList
+    this.cachedData.missionsList <- getMissionsList()
 
     this.nextStep()
   }
 
-  function getMissionsList() {
-    let missionsList = get_meta_missions_info(GM_SKIRMISH)
-      .filter(function (mission) {
-        let misChapter = mission?.chapter
-
-        return !["test", "hidden"].contains(misChapter)
-      })
-
-    return missionsList
-  }
-
   
   function makeMissionsInfo() {
-    this.debugLog("Make missions info")
+    debugLog("Make missions info")
 
     let missionsInfo = []
     let missionsList = this.cachedData.missionsList
 
     foreach (mission in missionsList) {
       let missionName = mission.name
-      this.debugLog($"Make mission info for {missionName}")
+      debugLog($"Make mission info for {missionName}")
 
       let missionInfo = this.getMissionInfo(mission)
       missionsInfo.append(missionInfo)
@@ -168,11 +176,8 @@ class ExporterForTss {
            [ levelBlk.tankMapCoord1.x, levelBlk.tankMapCoord1.y ]] )
       : null
 
-    let locData = this.cachedData?.locData?.missions ?? {}
-
     let missionInfo = {
       id = mission.name
-      loc = locData?[mission.name] ?? {}
       chapter = mission.chapter
       allowedUnitTypes = {
         isAirplanesAllowed = mission?.isAirplanesAllowed ?? false
@@ -227,19 +232,16 @@ class ExporterForTss {
 
    
   function fillUnitsList() {
-    this.debugLog("Fill units list")
+    debugLog("Fill units list")
 
-    let unitsList = getAllUnits()
-      .filter(@(unit) unit.isInShop && !unit.isPkgDev)
-      .values()
-    this.cachedData.unitsList <- unitsList
+    this.cachedData.unitsList <- getUnitsList()
 
     this.nextStep()
   }
 
   
   function makeUnitsInfo() {
-    this.debugLog("Make units info")
+    debugLog("Make units info")
 
     let unitsList = this.cachedData.unitsList
     let unitsInfo = []
@@ -254,11 +256,8 @@ class ExporterForTss {
   }
 
   function getUnitInfo(unit) {
-    let locData = this.cachedData?.locData?.units ?? {}
-
     let unitInfo = {
       id = unit.name
-      loc = locData?[unit.name] ?? {}
       type = unit.esUnitType
       expType = unit.isSquadronVehicle()
         ? "squadron"
@@ -279,142 +278,136 @@ class ExporterForTss {
 
   
   function makeLocData() {
-    this.debugLog("Make loc data")
+    debugLog("Make loc data")
 
-    let langsList = clone this.exportLangsList
-    let locData = {}
-
-    defer((function() {
-      this.processNextLang(langsList, locData)
-    }).bindenv(this))
-  }
-
-  function processNextLang(langsList, locData) {
-    let curLang = langsList.pop()
-    this.debugLog($"Processing lang {curLang}")
-
-    try {
-      setGameLocalization(curLang, false, false)
-
-      this.langsForMissions(curLang, locData)
-      this.langsForUnits(curLang, locData)
-    } catch (e) {
-      this.debugLog($"[ERROR] Processing lang is broken | {e}")
-      this.finish(false)
+    let { missionsInfo, unitsInfo } = this.cachedData
+    let jobData = {
+      outputDir = this.outputDir
+      startTime = this.startTime
+      missionsInfo
+      unitsInfo
+      locData = {}
+      leftLangsLen = this.exportLangsList.len()
     }
-
-    if (langsList.len() == 0) {
-      this.finishLangProcessing(locData)
-    } else {
-      defer((function() {
-        this.processNextLang(langsList, locData)
-      }).bindenv(this))
-    }
-  }
-
-  function langsForMissions(curLang, locData) {
-    if (!("missions" in locData)) {
-      locData["missions"] <- {}
-    }
-
-    let missionsList = this.cachedData.missionsList
-    foreach (mission in missionsList) {
-      let missionId = mission.name
-      let missionLocName = getCombineLocNameMission(mission)
-
-      if (!(missionId in locData["missions"])) {
-        locData["missions"][missionId] <- {}
-      }
-
-      locData["missions"][missionId][curLang] <- missionLocName
-    }
-  }
-
-  function langsForUnits(curLang, locData) {
-    if (!("units" in locData)) {
-      locData["units"] <- {}
-    }
-
-    let unitsList = this.cachedData.unitsList
-    foreach (unit in unitsList) {
-      let unitId = unit.name
-      let unitLocName = getUnitName(unit)
-
-      if (!(unitId in locData["units"])) {
-        locData["units"][unitId] <- {}
-      }
-
-      locData["units"][unitId][curLang] <- unitLocName
-    }
-  }
-
-  function finishLangProcessing(locData) {
-    this.cachedData.locData <- locData
-    this.nextStep()
-  }
-
-  
-  function buildExportData() {
-    this.debugLog("Build export data")
-
-    let missionsInfo = this.cachedData.missionsInfo
-    let unitsInfo = this.cachedData.unitsInfo
-
-    let exportData = {
-      missions = missionsInfo
-      units = unitsInfo
-      version = get_game_version_str()
-      timestamp = this.startTime
-    }
-
-    this.saveExportData(exportData)
-
-    this.nextStep()
-  }
-
-  function saveExportData(exportData) {
-    this.debugLog("Save export data")
-
-    mkdir(this.outputDir)
-
-    saveJson(
-      $"{this.outputDir}/export_tss.json",
-      exportData,
-      {pretty_print=false}
-    )
-  }
-
-  
-  function finish(isSuccessful = true) {
-    try {
-      this.debugLog($"Return initial locale {this.initialLang}")
-      setGameLocalization(this.initialLang, false, false)
-    } catch (e) {
-      this.debugLog($"[ERROR] Return initial locale is broken | {e}")
-      isSuccessful = false
-    }
-
-    this.debugLog("Finish export")
-
-    this.cachedData = {}
-    this.startTime = null
-    this.currentStep = -1
-    this.isSuccessful = isSuccessful
+    activeExporter = null
+    setReloadUnsafeWork(LANG_JOB_ID, false)
+    if (!startLangJob(LANG_JOB_ID, this.exportLangsList, jobData))
+      finishExport(false)
   }
 }
+
+function langsForMissions(curLang, locData) {
+  if (!("missions" in locData)) {
+    locData["missions"] <- {}
+  }
+
+  foreach (mission in getMissionsList()) {
+    let missionId = mission.name
+    let missionLocName = getCombineLocNameMission(mission)
+
+    if (!(missionId in locData["missions"])) {
+      locData["missions"][missionId] <- {}
+    }
+
+    locData["missions"][missionId][curLang] <- missionLocName
+  }
+}
+
+function langsForUnits(curLang, locData) {
+  if (!("units" in locData)) {
+    locData["units"] <- {}
+  }
+
+  foreach (unit in getUnitsList()) {
+    let unitId = unit.name
+    let unitLocName = getUnitName(unit)
+
+    if (!(unitId in locData["units"])) {
+      locData["units"][unitId] <- {}
+    }
+
+    locData["units"][unitId][curLang] <- unitLocName
+  }
+}
+
+function processLang(lang, data, onDone) {
+  debugLog($"Processing lang {lang}")
+
+  try {
+    langsForMissions(lang, data.locData)
+    langsForUnits(lang, data.locData)
+    data.leftLangsLen--
+  } catch (e) {
+    debugLog($"[ERROR] Processing lang is broken | {e}")
+  }
+  onDone()
+}
+
+function saveExportData(outputDir, exportData) {
+  debugLog("Save export data")
+
+  mkdir(outputDir)
+
+  saveJson(
+    $"{outputDir}/export_tss.json",
+    exportData,
+    {pretty_print=false}
+  )
+}
+
+
+function buildExportData(data) {
+  debugLog("Build export data")
+
+  let { missionsInfo, unitsInfo, locData } = data
+  foreach (info in missionsInfo)
+    info.loc <- locData?.missions?[info.id] ?? {}
+  foreach (info in unitsInfo)
+    info.loc <- locData?.units?[info.id] ?? {}
+
+  let exportData = {
+    missions = missionsInfo
+    units = unitsInfo
+    version = get_game_version_str()
+    timestamp = data.startTime
+  }
+
+  saveExportData(data.outputDir, exportData)
+}
+
+function finishLangs(data) {
+  if (data.leftLangsLen != 0) {
+    finishExport(false)
+    return
+  }
+
+  try {
+    buildExportData(data)
+  } catch (e) {
+    debugLog($"[ERROR] Build export data is broken | {e}")
+    finishExport(false)
+    return
+  }
+  finishExport(true)
+}
+
+registerLangJob(LANG_JOB_ID, processLang, finishLangs)
 
 function handlerExportForTss(params) {
   
   let isForceStart = params?.forced ?? false
-  if (activeExporter?.startTime) {
+  if (activeExporter?.startTime || isLangJobRunning(LANG_JOB_ID)) {
     return "in progress"
-  } else if (activeExporter?.isSuccessful != null && !isForceStart) {
-    if (activeExporter?.isSuccessful) {
+  } else if (exportState.isSuccessful != null && !isForceStart) {
+    if (exportState.isSuccessful) {
       return "finished | success"
     } else {
       return "finished | error"
     }
   }
+  
+  if (isLangJobRunning())
+    return "error: a language job is running"
 
   let { langs, path } = params
   activeExporter = ExporterForTss(langs, path)

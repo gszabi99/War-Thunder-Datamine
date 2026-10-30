@@ -175,9 +175,9 @@ class FA18CockpitElementBase : Canvas
       aamGuidance.lockState = aamLockState
       aamGuidance.guidanceType = aamGuidanceType
 
-      if get_aam_tracker_visible()
+      if get_hmd_aam_tracker_visible()
         aamGuidance.screenPosValid = true
-        aamGuidance.screenPos = toRelPos(get_screen_aam_tracker_pos())
+        aamGuidance.screenPos = toRelPos(get_hmd_aam_tracker_pos())
 
       if get_ils_aam_tracker_visible()
         aamGuidance.ilsPosValid = true

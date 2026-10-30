@@ -1,7 +1,8 @@
+from "%scripts/unlocks/battleTaskDifficulty.nut" import getDifficultyTypeByName
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, isTable, isString
 from "%scripts/dagui_library.nut" import *
 
-let { getDifficultyTypeByName, UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 
 let isMediumTaskComplete = Watched(false)

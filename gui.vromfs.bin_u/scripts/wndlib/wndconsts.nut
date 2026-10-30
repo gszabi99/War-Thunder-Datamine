@@ -3,4 +3,4 @@ enum RCLICK_MENU_ORIENT {
   RIGHT
 }
 
-return { RCLICK_MENU_ORIENT }
+return freeze({ RCLICK_MENU_ORIENT })

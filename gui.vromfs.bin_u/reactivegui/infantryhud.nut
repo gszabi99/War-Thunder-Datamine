@@ -8,6 +8,7 @@ import "%rGui/hudLogs.nut" as hudLogs
 from "%rGui/hudState.nut" import isSpectatorMode, unitType, tacticalMapStates
 from "%rGui/style/screenState.nut" import rw, rh
 from "%rGui/hud/hitMarks.nut" import hitMarks
+from "%rGui/hud/plantSites/plantSiteMarkers.nut" import plantSiteMarkers
 from "%rGui/hud/humanSquad/humanConst.nut" import weaponBlockGap, healthStateBlockGap
 from "%rGui/hudUnitType.nut" import isHuman
 from "%rGui/activeOrder.nut" import activeOrderComps
@@ -90,6 +91,7 @@ let infantryHud = @() {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
+    plantSiteMarkers
     killMarks
     centerPanel
     sightPresetsPanel

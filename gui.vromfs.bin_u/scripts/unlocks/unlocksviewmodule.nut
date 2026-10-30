@@ -1,40 +1,45 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/time.nut" import buildDateTimeStr
+from "%scripts/loading/loadingBgData.nut" import isLoadingBgUnlock
+from "%scripts/unlocks/unlocksConditions.nut" import isBitModeType, getMainProgressCondition, getProgressBarData
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, getUnlockType, isUnlockOpened, canClaimUnlockReward, isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit
+  , isUnlockVisible, hasSpecialMultiStageLocId, isUnlockComplete
+from "%scripts/customization/decoratorGetters.nut" import getDecorator, getDecoratorById
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId
+from "%scripts/unlocks/unlockProgressSnapshots.nut" import getUnlockProgressSnapshot
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unlocks/unlockMarkers.nut" import hasActiveUnlock, getUnitListByUnlockId
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/seen/bhvUnseen.nut" import makeConfigStr
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByUnlockedItemType, getTypeByResourceType
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes, getTooltipType
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/warbonds/warbondsState.nut" import getWarbondPriceText
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks
+from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockDesc, getFullUnlockDescByName, getUnlockMultDescByCfg, getUnlockMultDesc, getUnlockCondsDescByCfg, getUnlockCondsDesc
+  , getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getLocForBitValues, getUnlockNameText, getSubUnlockLocName, getUnlockLocName
 from "string" import format
 from "%sqstd/math.nut" import number_of_set_bits, is_bit_set
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import roman_numerals, locOrStrip
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { buildDateTimeStr } = require("%scripts/time.nut")
-let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
-let { isBitModeType, getMainProgressCondition, getProgressBarData } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, getUnlockType, isUnlockOpened, canClaimUnlockReward, isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit, isUnlockVisible, hasSpecialMultiStageLocId, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator, getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 
-let { buildConditionsConfig, getUnlockDesc, getFullUnlockDescByName, getUnlockMultDescByCfg, getUnlockMultDesc, getUnlockCondsDescByCfg, getUnlockCondsDesc, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getLocForBitValues, getUnlockNameText, getSubUnlockLocName, getUnlockLocName } = require("%scripts/unlocks/unlocksState.nut")
 
 
 const MAX_STAGES_NUM = 10 
@@ -77,14 +82,16 @@ function findPreviewablePrize(unlockCfg) {
   let itemId = unlockCfg.unlockType == UNLOCKABLE_INVENTORY
     ? unlockCfg.userLogId.tointeger()
     : unlockCfg.userLogId
-  let item = findItemById(itemId)
+  let item = getItemOrRecipeBundleById(itemId)
   if (item == null)
     return null
 
   if (item.iType == itemType.VEHICLE
       || item.iType == itemType.ATTACHABLE
       || item.iType == itemType.SKIN
-      || item.iType == itemType.DECAL)
+      || item.iType == itemType.DECAL
+      || item.iType == itemType.CHEST
+      || item.iType == itemType.RECIPES_BUNDLE)
     return item
 
   if (item.iType == itemType.TROPHY) {
@@ -145,13 +152,13 @@ function getUnlockTypeText(unlockType, id = null) {
   if (unlockType == -1)
     return ""
 
-  return loc($"unlocks/{get_name_by_unlock_type(unlockType)}")
+  return locByVendor($"unlocks/{get_name_by_unlock_type(unlockType)}")
 }
 
 
 function getUnlockTitle(unlockConfig, params = null) {
   local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
-    : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
+    : (unlockConfig.locId != "" || (unlockConfig?.name ?? "") != "") ? getUnlockLocName(unlockConfig)
     : getUnlockNameText(unlockConfig.unlockType, unlockConfig.id, params)
   if (name == "")
     name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
@@ -169,7 +176,7 @@ function getUnlockTitle(unlockConfig, params = null) {
 function getUnlockChapterAndGroupText(unlockBlk) {
   let chapterAndGroupText = []
   if ("chapter" in unlockBlk)
-    chapterAndGroupText.append(loc($"unlocks/chapter/{unlockBlk.chapter}"))
+    chapterAndGroupText.append(locByVendor($"unlocks/chapter/{unlockBlk.chapter}"))
   if ((unlockBlk?.group ?? "") != "") {
     local locId = $"unlocks/group/{unlockBlk.group}"
     let parentUnlock = getUnlockById(unlockBlk.group)
@@ -1012,7 +1019,7 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   getUnlockRewardsText
   getUnlockTypeText
   getUnlockTitle
@@ -1053,4 +1060,4 @@ return {
   fillUnlockBlock
   buildUnlockTooltipByConfig
   canPreviewUnlockPrize
-}
+})

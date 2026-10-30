@@ -30,6 +30,7 @@
     "%wtlibs/templates/replay.blk",
     "%wtlibs/templates/envi_cover.blk",
     "%wtlibs/templates/sound.blk",
+    "anim_rendinsts/*.blk",
     "rendinsts_hangars.blk",
     "hangar_weather.blk",
     "explosion_fx.blk",
@@ -50,9 +51,12 @@
     "render/adaptation.blk",
     "render/tonemap_exposure_correction.blk",
     "render/character_rim_highlight.blk",
+    "render/camera_in_camera.blk",
     "render/vhs_camera.blk",
+    "render/neural_rendering.blk",
     "render/lens_distortion.blk",
     "render/screen_droplets.blk",
+    "render/tiled_map.blk",
     "%gameLibs/render/beamTracer/templates/beam_tracers.template.blk",
     "nuclear_escalation/*.blk",
     "mission_custom_logic.blk"
@@ -894,63 +898,6 @@
       "spot_light__inner_attenuation": 0.2
     }
   },
-  "lamppost_a": {
-    "_use": [
-      "spot_light",
-      "replicating"
-    ],
-    "light__max_radius": 14.0,
-    "light__brightness": 60.0,
-    "light__color": [
-      160,
-      220,
-      255,
-      255
-    ],
-    "_group": {
-      "spot_light__inner_attenuation": 0.5,
-      "spot_light__dynamic_obj_shadows": true
-    },
-    "destroyable_with_rendinst:tag": {}
-  },
-  "lamppost_b": {
-    "_use": [
-      "spot_light",
-      "replicating"
-    ],
-    "light__max_radius": 9.0,
-    "light__brightness": 15.0,
-    "light__color": [
-      180,
-      250,
-      255,
-      255
-    ],
-    "_group": {
-      "spot_light__inner_attenuation": 0.5,
-      "spot_light__dynamic_obj_shadows": true
-    },
-    "destroyable_with_rendinst:tag": {}
-  },
-  "lamppost_c": {
-    "_use": [
-      "spot_light",
-      "replicating"
-    ],
-    "light__max_radius": 19.0,
-    "light__brightness": 150.0,
-    "light__color": [
-      180,
-      250,
-      255,
-      255
-    ],
-    "_group": {
-      "spot_light__inner_attenuation": 0.5,
-      "spot_light__dynamic_obj_shadows": true
-    },
-    "destroyable_with_rendinst:tag": {}
-  },
   "spot_light_footbal_field": {
     "_use": [
       "spot_light",
@@ -1290,6 +1237,16 @@
     "game_objects__createChance:object": {
       "stationary_mg42": 0.4,
       "chimney_exhaust": 0.15
+    },
+    "_group": {
+      "_tags": "render",
+      "camera_indoor__pos": [
+        0.0,
+        -100000.0,
+        0.0
+      ],
+      "camera_indoor__target": 0.0,
+      "camera_indoor__value": 0.0
     }
   },
   "game_object_creator": {
@@ -1897,10 +1854,48 @@
       "effect__name": "location_snow_pieces_fall_cmps_fx"
     }
   },
+  "target_for_ai": {
+    "ai_target__noiseLevel": 0.0,
+    "ai_target": {
+      "_tags": "server"
+    },
+    "unitAiTargetPos:tag": {}
+  },
+  "reload_from_ammo_box": {
+    "_replicated": "reloadedFromAmmoBoxCount",
+    "reloadedFromAmmoBoxCount:list<i>": {
+      "primary": 0,
+      "secondary": 0,
+      "special": 0
+    },
+    "canReloadFromBox:list<b>": {
+      "primary": false,
+      "secondary": false,
+      "special": false
+    },
+    "reloadFromBoxTriggerGroupMask:u8": {
+      "value": 0
+    }
+  },
   "base_unit_ext": {},
-  "aircraft_ext": {},
+  "aircraft_ext": {
+    "agent_dangers__tag": "plane",
+    "_use": "target_for_ai",
+    "aircraft__troubleScore:r": {
+      "value": 0.0,
+      "_tags": "server"
+    }
+  },
   "barrage_ballon_ext": {},
-  "ground_unit_ext": {},
+  "ground_unit_ext": {
+    "_use": [
+      "unit_repair",
+      "unit_fire_and_extinguish"
+    ],
+    "modEids:list<eid>": {
+      "_replicate": true
+    }
+  },
   "ship_ext": {
     "unit_dm_part_fx": {
       "_tags": "gameClient"
@@ -1910,10 +1905,25 @@
     },
     "ship_sinking_fx": {
       "_tags": "gameClient"
+    },
+    "mods:list<t>": {
+      "mod": [
+        "ship_toolkit_ecs",
+        "ship_extinguisher_ecs",
+        "medicalkit_ecs",
+        "ship_smokescreen_ecs"
+      ]
     }
   },
   "tank_ext": {
-    "_use": "ik_pilot_inertia_seats",
+    "_use": [
+      "ik_pilot_inertia_seats",
+      "base_damage_model_ai_points",
+      "target_for_ai",
+      "reload_from_ammo_box",
+      "tank_phys_tracks"
+    ],
+    "agent_dangers__tag": "vehicle",
     "unit_dm_part_fx": {
       "_tags": "gameClient"
     },
@@ -1925,6 +1935,14 @@
     "free_area_check_states_list:u8": {
       "_replicate": true,
       "value": 0
+    },
+    "mods:list<t>": {
+      "mod": [
+        "toolkit_ecs",
+        "extinguisher_ecs",
+        "medicalkit_ecs",
+        "tank_smokescreen_ecs"
+      ]
     }
   },
   "walker_ext": {},
@@ -1985,7 +2003,7 @@
       0.0
     ],
     "collres__res": "ammunition_box_construction_120x55x30_dynamic_collision",
-    "builder_preview__physBlk": "gameData/units/structures/ammo_box_phys.blk",
+    "builder_preview__physBlk": "gamedata/units/structures/ammo_box_phys.blk",
     "builder_preview__soundName": "ground/effects/construction_set",
     "_tracked": "buildingTimer",
     "simpleObject__model_res_list": {},
@@ -4403,35 +4421,6 @@
     "lastSpawnTime": 0.0,
     "kamikazeRespawn:tag": {}
   },
-  "drone_box_flight_area": {
-    "transform": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.0
-      ]
-    ],
-    "drone_area__weakSignalBorderDist": 5.0,
-    "drone_area__outOfOrderMaxTime": 5.0,
-    "drone_area__outOfOrderMaxDist": 5.0,
-    "box_zone:tag": {},
-    "drone_area__flightBox:tag": {}
-  },
   "soldier_info_cache": {
     "_singleton": true,
     "_tags": "server",
@@ -4836,10 +4825,9 @@
     }
   },
   "wt_fast_grass_settings": {
-    "_use": [
-      "fast_grass_settings",
-      "replicating"
-    ],
+    "_use": "fast_grass_settings",
+    "fast_grass__clipmap_resolution": 128,
+    "fast_grass__clipmap_cascades": 4,
     "_group": {
       "_track": true,
       "fast_grass__tracks_height_mul": 0.2,

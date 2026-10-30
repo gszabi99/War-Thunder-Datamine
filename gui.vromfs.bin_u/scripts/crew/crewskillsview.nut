@@ -1,19 +1,21 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/crew/crewSkills.nut" import getSkillCategoryByName
+from "%scripts/crew/crewSkillParameters.nut" import getSkillListParameterRowsView, getSkillDescriptionView
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/slotbar/slotbarStateData.nut" import getSelectedCrews
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/crew/crew.nut" import getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel, getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue
+  , getCrew, getCrewSkillValue
+from "%scripts/crew/crewSpecType.nut" import getCrewSpecTypeByCode, getSpecTypeByCrewAndUnit
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getSkillCategoryByName } = require("%scripts/crew/crewSkills.nut")
-let { getSkillListParameterRowsView, getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel, getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue, getCrew, getCrewSkillValue } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getCrewSpecTypeByCode, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 function getSkillCategoryName(skillCategory) {
   return loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
@@ -178,6 +180,6 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   getSkillCategoryName
-}
+})

@@ -181,7 +181,9 @@
             "matching_5_8",
             "matching_9_12",
             "matching_13_16",
-            "matching_17_20"
+            "matching_17_20",
+            "matching_22_26",
+            "matching_27_plus"
           ]
         },
         "wait": {
@@ -600,11 +602,18 @@
         }
       },
       "conditions": {
-        "varCompareInt": {
-          "var_value": "balance_level",
-          "value": 16,
-          "comparasion_func": "more"
-        }
+        "varCompareInt": [
+          {
+            "var_value": "balance_level",
+            "value": 16,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "balance_level",
+            "value": 22,
+            "comparasion_func": "less"
+          }
+        ]
       },
       "actions": {
         "triggerDisable": {
@@ -613,7 +622,9 @@
             "matching_2_4",
             "matching_5_8",
             "matching_9_12",
-            "matching_13_16"
+            "matching_13_16",
+            "matching_22_26",
+            "matching_27_plus"
           ]
         },
         "comment": [
@@ -637,6 +648,157 @@
           },
           {
             "value": "assault_rank_05",
+            "var": "wave_plane_assault_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
+        },
+        "varSetReal": [
+          {
+            "value": 224000.0,
+            "var": "base_hp"
+          },
+          {
+            "value": 20.0,
+            "var": "land_base_damge_to_zone"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "matching_22_26": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "balance_level",
+            "value": 21,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "balance_level",
+            "value": 27,
+            "comparasion_func": "less"
+          }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20",
+            "matching_27_plus"
+          ]
+        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "bomber_rank_06",
+            "var": "wave_plane_bomber_name"
+          },
+          {
+            "value": "assault_rank_06",
+            "var": "wave_plane_assault_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "fill_wave_counting_descriptor"
+        },
+        "varSetReal": [
+          {
+            "value": 224000.0,
+            "var": "base_hp"
+          },
+          {
+            "value": 20.0,
+            "var": "land_base_damge_to_zone"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "matching_27_plus": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "balance_level",
+          "value": 26,
+          "comparasion_func": "more"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "matching_0_1",
+            "matching_2_4",
+            "matching_5_8",
+            "matching_9_12",
+            "matching_13_16",
+            "matching_17_20",
+            "matching_22_26"
+          ]
+        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "bomber_rank_07",
+            "var": "wave_plane_bomber_name"
+          },
+          {
+            "value": "assault_rank_07",
             "var": "wave_plane_assault_name"
           }
         ],
@@ -2554,7 +2716,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2569,7 +2731,8 @@
         "varSetRandomInt": {
           "var": "wave_next_spawn_idx",
           "from": 1,
-          "to_not_including": 6
+          "to_not_including": 6,
+          "check_prev_value": "wave_cur_spawn_idx"
         },
         "comment": [
           {
@@ -2610,7 +2773,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2655,7 +2818,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2700,7 +2863,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2746,7 +2909,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2766,6 +2929,12 @@
             "value": "uvelichivaem tekushchij indeks volny"
           },
           {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
             "value": "sbrasyvaem tajmer sleduyushchej volny"
           },
           {
@@ -2783,23 +2952,90 @@
           },
           {
             "value": 0,
+            "var": "wave_ring_idx",
+            "input_var": "wave_cur_index"
+          },
+          {
+            "value": 0,
+            "var": "wave_cur_bombers_count",
+            "input_var": "@wave_cur_bombers_count_variable_name"
+          },
+          {
+            "value": 0,
             "var": "next_wave_cur_timer"
           }
         ],
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "wave_cur_index"
-        },
-        "varSetString": {
-          "value": "t2_spawn_",
-          "var": "wave_spawn_name"
-        },
-        "varAddString": {
-          "value": "@wave_cur_spawn_idx",
-          "digits": 2,
-          "var": "wave_spawn_name"
-        },
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "wave_cur_index"
+          },
+          {
+            "operator": "modAB",
+            "use_variable": true,
+            "var_value": "wave_ring_size",
+            "var": "wave_ring_idx"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "wave_ring_idx"
+          },
+          {
+            "operator": "mul",
+            "value": 1.0,
+            "var": "wave_cur_bombers_count",
+            "use_variable": true,
+            "var_value": "players_online_count_int"
+          },
+          {
+            "operator": "add",
+            "value": 1.0,
+            "var": "wave_cur_bombers_count",
+            "use_variable": true,
+            "var_value": "players_max_count_int"
+          },
+          {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "wave_cur_bombers_count"
+          },
+          {
+            "operator": "divAB",
+            "value": 1.0,
+            "var": "wave_cur_bombers_count",
+            "use_variable": true,
+            "var_value": "players_max_count_int"
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "wave_",
+            "var": "wave_cur_bombers_count_variable_name"
+          },
+          {
+            "value": "t2_spawn_",
+            "var": "wave_spawn_name"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "@wave_cur_index",
+            "digits": 2,
+            "var": "wave_cur_bombers_count_variable_name"
+          },
+          {
+            "value": "_bombers_count",
+            "digits": 0,
+            "var": "wave_cur_bombers_count_variable_name"
+          },
+          {
+            "value": "@wave_cur_spawn_idx",
+            "digits": 2,
+            "var": "wave_spawn_name"
+          }
+        ],
         "triggerEnable": {
           "target": [
             "wave_spawn_bombers",
@@ -2828,7 +3064,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -2856,12 +3092,6 @@
             "value": ""
           },
           {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
             "value": "nazemka"
           }
         ],
@@ -2871,17 +3101,11 @@
             "wave_spawn_land"
           ]
         },
-        "varSetString": [
-          {
-            "value": "",
-            "var": "bombers_wave_name",
-            "input_var": "wave_plane_bomber_name"
-          },
-          {
-            "value": "wave_",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
-        ],
+        "varSetString": {
+          "value": "",
+          "var": "bombers_wave_name",
+          "input_var": "wave_plane_bomber_name"
+        },
         "varAddString": [
           {
             "value": "_wave_",
@@ -2889,66 +3113,14 @@
             "var": "bombers_wave_name"
           },
           {
-            "value": "@wave_cur_index",
+            "value": "@wave_ring_idx",
             "digits": 2,
             "var": "bombers_wave_name"
-          },
-          {
-            "value": "@wave_cur_index",
-            "digits": 2,
-            "var": "wave_cur_bombers_count_variable_name"
-          },
-          {
-            "value": "_bombers_count",
-            "digits": 0,
-            "var": "wave_cur_bombers_count_variable_name"
           }
         ],
-        "varGetStringValue": {
-          "from_var_name": "wave_cur_bombers_count_variable_name",
-          "var": "wave_cur_bombers_count_variable_name"
+        "unitPutToSleep": {
+          "target": "@bombers_wave_name"
         },
-        "varSetInt": [
-          {
-            "value": 0,
-            "var": "wave_cur_bombers_count",
-            "input_var": "@wave_cur_bombers_count_variable_name"
-          },
-          {
-            "value": 24,
-            "var": "num_bombers_to_sleep"
-          }
-        ],
-        "varModify": [
-          {
-            "operator": "mul",
-            "value": 10.0,
-            "var": "wave_cur_bombers_count",
-            "use_variable": true,
-            "var_value": "players_online_count_int"
-          },
-          {
-            "operator": "divAB",
-            "value": 10.0,
-            "var": "wave_cur_bombers_count",
-            "use_variable": true,
-            "var_value": "players_max_count_int"
-          },
-          {
-            "operator": "subAB",
-            "value": 1.0,
-            "var": "num_bombers_to_sleep",
-            "use_variable": true,
-            "var_value": "wave_cur_bombers_count"
-          },
-          {
-            "operator": "subAB",
-            "value": 1.0,
-            "var": "land_units_mode",
-            "use_variable": true,
-            "var_value": "land_units_mode_modifier"
-          }
-        ],
         "unitRespawn": {
           "delay": 0.0,
           "offset": [
@@ -2959,19 +3131,10 @@
           "keepFormation": false,
           "object": "@bombers_wave_name",
           "object_type": "isInactive",
-          "target": "@wave_spawn_name"
+          "target": "@wave_spawn_name",
+          "randomObjectsCountVar": "wave_cur_bombers_count",
+          "order": "fromStart"
         },
-        "triggerEnable": [
-          {
-            "target": "clamp_put_to_sleep_count"
-          },
-          {
-            "target": "wave_last_wave_check"
-          },
-          {
-            "target": "wave_spawn_land"
-          }
-        ],
         "wait": {
           "time": 1.0
         },
@@ -3007,10 +3170,25 @@
           "target": "@bombers_wave_name",
           "target_marking_var": "wave_cur_index"
         },
+        "triggerEnable": [
+          {
+            "target": "wave_last_wave_check"
+          },
+          {
+            "target": "wave_spawn_land"
+          }
+        ],
         "varSetRandomInt": {
           "var": "land_units_mode",
           "from": 0,
           "to_not_including": 100
+        },
+        "varModify": {
+          "operator": "subAB",
+          "value": 1.0,
+          "var": "land_units_mode",
+          "use_variable": true,
+          "var_value": "land_units_mode_modifier"
         },
         "unitSetStealth": {
           "set": true,
@@ -3030,7 +3208,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.2
         }
       },
       "conditions": {
@@ -3061,12 +3239,6 @@
             "value": ""
           },
           {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
             "value": "nazemka"
           }
         ],
@@ -3076,17 +3248,11 @@
             "wave_spawn_land"
           ]
         },
-        "varSetString": [
-          {
-            "value": "",
-            "var": "bombers_wave_name",
-            "input_var": "wave_plane_assault_name"
-          },
-          {
-            "value": "wave_",
-            "var": "wave_cur_bombers_count_variable_name"
-          }
-        ],
+        "varSetString": {
+          "value": "",
+          "var": "bombers_wave_name",
+          "input_var": "wave_plane_assault_name"
+        },
         "varAddString": [
           {
             "value": "_wave_",
@@ -3094,66 +3260,14 @@
             "var": "bombers_wave_name"
           },
           {
-            "value": "@wave_cur_index",
+            "value": "@wave_ring_idx",
             "digits": 2,
             "var": "bombers_wave_name"
-          },
-          {
-            "value": "@wave_cur_index",
-            "digits": 2,
-            "var": "wave_cur_bombers_count_variable_name"
-          },
-          {
-            "value": "_bombers_count",
-            "digits": 0,
-            "var": "wave_cur_bombers_count_variable_name"
           }
         ],
-        "varGetStringValue": {
-          "from_var_name": "wave_cur_bombers_count_variable_name",
-          "var": "wave_cur_bombers_count_variable_name"
+        "unitPutToSleep": {
+          "target": "@bombers_wave_name"
         },
-        "varSetInt": [
-          {
-            "value": 0,
-            "var": "wave_cur_bombers_count",
-            "input_var": "@wave_cur_bombers_count_variable_name"
-          },
-          {
-            "value": 24,
-            "var": "num_bombers_to_sleep"
-          }
-        ],
-        "varModify": [
-          {
-            "operator": "mul",
-            "value": 10.0,
-            "var": "wave_cur_bombers_count",
-            "use_variable": true,
-            "var_value": "players_online_count_int"
-          },
-          {
-            "operator": "divAB",
-            "value": 10.0,
-            "var": "wave_cur_bombers_count",
-            "use_variable": true,
-            "var_value": "players_max_count_int"
-          },
-          {
-            "operator": "subAB",
-            "value": 1.0,
-            "var": "num_bombers_to_sleep",
-            "use_variable": true,
-            "var_value": "wave_cur_bombers_count"
-          },
-          {
-            "operator": "subAB",
-            "value": 1.0,
-            "var": "land_units_mode",
-            "use_variable": true,
-            "var_value": "land_units_mode_modifier"
-          }
-        ],
         "unitRespawn": {
           "delay": 0.0,
           "offset": [
@@ -3164,11 +3278,16 @@
           "keepFormation": false,
           "object": "@bombers_wave_name",
           "object_type": "isInactive",
-          "target": "@wave_spawn_name"
+          "target": "@wave_spawn_name",
+          "randomObjectsCountVar": "wave_cur_bombers_count",
+          "order": "fromStart"
+        },
+        "wait": {
+          "time": 1.0
         },
         "triggerEnable": [
           {
-            "target": "clamp_put_to_sleep_count"
+            "target": "assault_load_beh_tree"
           },
           {
             "target": "wave_last_wave_check"
@@ -3177,13 +3296,6 @@
             "target": "wave_spawn_land"
           }
         ],
-        "wait": {
-          "time": 1.0
-        },
-        "unitLoadBehTree": {
-          "name": "missionAssault",
-          "objects": "@bombers_wave_name"
-        },
         "unitMoveTo": {
           "object_marking": 0,
           "target": "assault_point",
@@ -3221,6 +3333,13 @@
           "from": 0,
           "to_not_including": 100
         },
+        "varModify": {
+          "operator": "subAB",
+          "value": 1.0,
+          "var": "land_units_mode",
+          "use_variable": true,
+          "var_value": "land_units_mode_modifier"
+        },
         "unitSetStealth": {
           "set": true,
           "radius": 64000.0,
@@ -3229,7 +3348,7 @@
       },
       "else_actions": {}
     },
-    "clamp_put_to_sleep_count": {
+    "assault_load_beh_tree": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -3239,80 +3358,33 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 0.2
         }
       },
       "conditions": {
-        "varCompareInt": {
-          "var_value": "num_bombers_to_sleep",
-          "value": 20,
-          "comparasion_func": "more"
-        }
+        "varCompareString": [
+          {
+            "var_value": "wave_plane_assault_name",
+            "value": "assault_rank_06",
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "wave_plane_assault_name",
+            "value": "assault_rank_07",
+            "comparasion_func": "equal"
+          }
+        ]
       },
       "actions": {
-        "varSetInt": {
-          "value": 20,
-          "var": "num_bombers_to_sleep"
-        },
-        "triggerEnable": {
-          "target": "put_to_sleep_excess_units"
+        "unitLoadBehTree": {
+          "name": "missionBomber",
+          "objects": "@bombers_wave_name"
         }
       },
       "else_actions": {
-        "triggerEnable": {
-          "target": "put_to_sleep_excess_units"
-        }
-      }
-    },
-    "put_to_sleep_excess_units": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isActive",
-          "object_marking": 0,
-          "func": "notLess",
-          "value": 24,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@bombers_wave_name",
-          "object_var_value": 0
-        },
-        "varCompareInt": {
-          "var_value": "put_to_sleep_timer",
-          "value": 50,
-          "comparasion_func": "more"
-        }
-      },
-      "actions": {
-        "unitPutToSleep": {
-          "target": "@bombers_wave_name",
-          "varNameNumToSleep": "num_bombers_to_sleep",
-          "order": "fromEnd"
-        },
-        "varSetInt": {
-          "value": 0,
-          "var": "put_to_sleep_timer"
-        },
-        "triggerDisable": {
-          "target": "put_to_sleep_excess_units"
-        }
-      },
-      "else_actions": {
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "put_to_sleep_timer"
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": "@bombers_wave_name"
         }
       }
     },
@@ -3398,10 +3470,6 @@
             "var": "wave_spawn_name"
           }
         ],
-        "varGetStringValue": {
-          "from_var_name": "wave_cur_bombers_count_variable_name",
-          "var": "wave_cur_bombers_count_variable_name"
-        },
         "varSetInt": {
           "value": 0,
           "var": "wave_cur_bombers_count",
@@ -4246,6 +4314,8 @@
     "waves_counter": 15,
     "wave_spawn_name": "",
     "wave_cur_index": 0,
+    "wave_ring_idx": 0,
+    "wave_ring_size": 4,
     "wave_plane_bomber_name": "",
     "balance_level": 0,
     "next_wave_timer": 90,
@@ -4261,7 +4331,6 @@
     "mission_timer": 1800,
     "wave_cur_bombers_count": 0,
     "bombers_wave_name": "",
-    "num_bombers_to_sleep": 0,
     "land_units_mode": 0,
     "land_damage_to_zone": 0.0,
     "land_units_alive": 0,
@@ -4279,8 +4348,7 @@
     "base_int_1hp_in_tickets": 0,
     "base_int_hp_old": 0,
     "diff_tickets": 0,
-    "put_to_sleep_timer": 0,
-    "players_online_count_int": 8,
+    "players_online_count_int": 6,
     "players_max_count_int": 10
   },
   "dialogs": {},

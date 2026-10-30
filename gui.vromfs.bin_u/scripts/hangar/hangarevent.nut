@@ -1,3 +1,11 @@
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/events/eventInfo.nut" import getEventDisplayType
+from "%scripts/events/eventsHandler.nut" import guiStartModalEvents
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient, isUnlockOpened
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission, isCustomMissionFlight
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "eventbus" import eventbus_subscribe
@@ -7,15 +15,7 @@ from "guiMission" import select_training_mission, get_meta_mission_info_by_gm_an
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
-let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
-let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
-let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 function startGameMode(params) {
   if(handlersManager.findHandlerClassInScene(MainMenu) == null)
@@ -104,6 +104,10 @@ function clickToReqUnlock(params) {
 
   reqUnlockByClient(unlockName)
 }
+
+
+
+
 
 
 

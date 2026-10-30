@@ -1,7 +1,7 @@
+from "%globalScripts/iconRender/itemTexReplace.nut" import getTexReplaceString, getTexSetString
 from "dagor.math" import Color4
 from "types" import Table, Array
 
-let { getTexReplaceString, getTexSetString } = require("%globalScripts/iconRender/itemTexReplace.nut")
 
 
 
@@ -69,6 +69,7 @@ const RENDER_PARAMS = @"ui/gameuiskin#render{
   distance:r={distance};
   {ssaa}
   attachType:t={attachType};
+  recalcAnimation:b={recalcAnimation};
   brightness:r={brightness};
   sun:c={sunColor};
   zenith:r={zenith};
@@ -260,6 +261,7 @@ function iconWidget(item, params = {}) {
     silhouetteMinShadow = item?.silhouetteMinShadow ?? 1.0
     swapYZ = item?.swapYZ ?? true
     attachType = item?.attachType ?? "slot"
+    recalcAnimation = item?.recalcAnimation ?? false
     forceRealTimeRenderIcon = needEnableRTRender ? "forceRenderEveryFrame:b=yes;" : ""
     contrast = item?.contrast ?? 1.0
     sharpening = item?.sharpening ?? 0.0

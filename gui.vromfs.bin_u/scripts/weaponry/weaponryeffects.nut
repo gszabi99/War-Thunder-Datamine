@@ -1,14 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%scripts/options/optionsMeasureUnits.nut" import countMeasure
+from "%scripts/weaponry/weaponryInfo.nut" import KGF_TO_NEWTON, getScoutScoreMuliplierWithUavByDiff
 from "string" import format
 from "%sqstd/string.nut" import floatToStringRounded
 from "%sqstd/math.nut" import round_by_value, PI, fabs
 from "%scripts/dagui_library.nut" import *
 
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { KGF_TO_NEWTON, getScoutScoreMuliplierWithUavByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 
 const GOOD_COLOR = "@goodTextColor"
 const BAD_COLOR = "@badTextColor"

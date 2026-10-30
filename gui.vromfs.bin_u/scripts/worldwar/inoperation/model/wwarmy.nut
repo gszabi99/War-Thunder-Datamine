@@ -1,5 +1,18 @@
+import "%scripts/time.nut" as time
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/worldWar/wwGenericTooltipTypes.nut" import getWwTooltipType
+from "%scripts/worldWar/inOperation/model/wwArmyOwner.nut" import WwArmyOwner
+from "%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut" import WwArtilleryAmmo
+from "%scripts/worldWar/inOperation/model/wwPathTracker.nut" import WwPathTracker
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/inOperation/wwTransportManager.nut" import getLoadedTransport
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/wwArmyIconOverride.nut" import getIcon
+from "%scripts/worldWar/worldWarCfgState.nut" import getArtilleryUnits, getArtilleryUnitParamsByBlk
+from "%scripts/worldWar/worldWarState.nut" import getArmyGroupByArmy, getBattleForArmy
 from "%appGlobals/worldWar/wwArtilleryStatus.nut" import artilleryReadyState
 from "%sqstd/datablock.nut" import getBlkValueByPath
 from "worldwar" import wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo, wwGetArmyOverrideIcon, wwGetLoadedArmyType
@@ -10,20 +23,7 @@ from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_get_selected_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
-let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
-let { WwPathTracker } = require("%scripts/worldWar/inOperation/model/wwPathTracker.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getLoadedTransport } = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
-let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getArmyGroupByArmy, getBattleForArmy } = require("%scripts/worldWar/worldWarState.nut")
 
 const fullWidthColunsCount = 4
 const partialWidthColunsCount = 3
@@ -995,8 +995,8 @@ WwArmy = class(WwFormation) {
     return this.transportType > TT_NONE && this.transportType < TT_TOTAL
   }
 
-  static function sortArmiesByUnitType(a, b) {
-    return a.getUnitType() - b.getUnitType()
+  static function sortArmiesByUnitType(a) {
+    return a.getUnitType()
   }
 
   function getCasualtiesCount(blk) {
@@ -1036,11 +1036,11 @@ artilleryReadyState.subscribe(function(p) {
   wwEvent("MapArmiesByStatusUpdated", { armies })
 })
 
-return {
+return freeze({
   WwArmy
   WwArmyView
   WwFormation
   getArmyByName
   getSelectedArmies
   hasEntrenchedInList
-}
+})

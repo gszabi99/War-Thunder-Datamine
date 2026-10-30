@@ -1,4 +1,10 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/unlocks/unlocksModule.nut" import combineSimilarAwards
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/missions/missionsUtils.nut" import isMissionExtr
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "guiMission" import GO_NONE, GO_WAITING_FOR_RESULT
 from "mission" import get_game_mode, get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_id, get_local_mplayer
@@ -12,13 +18,7 @@ from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { combineSimilarAwards } = require("%scripts/unlocks/unlocksModule.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 enum LIVE_STATS_MODE {
   WATCH
@@ -27,7 +27,7 @@ enum LIVE_STATS_MODE {
 
   TOTAL
 }
-let hudLiveStatsState = persist("hudLiveStatsState", @() {spawnStartState = null})
+local spawnStartState = null
 
 let g_hud_live_stats = {
 
@@ -222,7 +222,7 @@ let g_hud_live_stats = {
     }
 
     let isCompareStates = this.curViewMode == LIVE_STATS_MODE.SPAWN
-    let state = this.getState(this.curViewPlayerId, isCompareStates ? hudLiveStatsState.spawnStartState : null)
+    let state = this.getState(this.curViewPlayerId, isCompareStates ? spawnStartState : null)
 
     local title = ""
     if (this.curViewMode == LIVE_STATS_MODE.WATCH || this.missionResult == GO_WAITING_FOR_RESULT)
@@ -284,7 +284,7 @@ let g_hud_live_stats = {
       return
 
     let isCompareStates = this.curViewMode == LIVE_STATS_MODE.SPAWN
-    let state = this.getState(this.curViewPlayerId, isCompareStates ? hudLiveStatsState.spawnStartState : null)
+    let state = this.getState(this.curViewPlayerId, isCompareStates ? spawnStartState : null)
 
     foreach (id in this.curColumnsOrder) {
       let param = g_mplayer_param_type.getTypeById(id)
@@ -406,8 +406,8 @@ let g_hud_live_stats = {
   function onPlayerSpawn() {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
-    hudLiveStatsState.spawnStartState = this.getState()
-    u.appendOnce(hudLiveStatsState.spawnStartState.player?.aircraftName, this.hero.units)
+    spawnStartState = this.getState()
+    u.appendOnce(spawnStartState.player?.aircraftName, this.hero.units)
     this.show(false)
   }
 

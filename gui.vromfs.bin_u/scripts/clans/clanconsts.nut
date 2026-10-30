@@ -8,7 +8,7 @@ enum CLAN_SEASON_MEDAL_TYPE {
 }
 
 
-return {
+return freeze({
   CLAN_SEASON_MEDAL_TYPE
   CLAN_SEASON_NUM_IN_YEAR_SHIFT
-}
+})

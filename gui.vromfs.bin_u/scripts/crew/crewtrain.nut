@@ -1,8 +1,7 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
 
 function createBatchTrainCrewRequestBlk(requestData) {
   let requestBlk = DataBlock()
@@ -32,7 +31,7 @@ function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, onErr
   addTask(taskId, taskOptions, onSuccess, onError)
 }
 
-return {
+return freeze({
   batchTrainCrew
   createBatchTrainCrewRequestBlk
-}
+})

@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "japan_gunner_char",
@@ -2368,7 +2374,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/120mm_10th_Year_type_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/120mm_10th_Year_type_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "shellCasingEmitter": "emtr_shell",
@@ -2427,8 +2433,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_navy_120mm_spg_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_navy_120mm_spg_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2481,7 +2487,10 @@
       "minRPM": 800.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.287,
       "mainGearRatio": 1.45,
@@ -2513,7 +2522,18 @@
         30000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {

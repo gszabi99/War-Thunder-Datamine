@@ -1,17 +1,20 @@
+import "%scripts/items/itemInfoHandler.nut" as itemInfoHandler
+import "%scripts/items/listPopupWnd/trophyRewardListByCategory.nut" as trophyRewardListByCategory
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType, isRewardItem
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/items/prizesView.nut" import getPrizeFullDescriptonView, getPrizesStacksView, prizesStackLevel
 from "%sqStdLibs/helpers/u.nut" import isDataBlock
 from "console" import register_command
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getPrizeFullDescriptonView, getPrizesStacksView, prizesStackLevel } = require("%scripts/items/prizesView.nut")
 
 let trophyRewardsList = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -90,7 +93,7 @@ let trophyRewardsList = class (BaseGuiHandlerWT) {
     if (val < 0)
       return
 
-    let reward_config = this.rewardsArray[val]
+    let reward_config = clone this.rewardsArray[val]
     let rewardType = getTrophyRewardType(reward_config)
     let isItem = isRewardItem(rewardType)
     this.infoHandler?.setHandlerVisible(isItem)
@@ -103,6 +106,9 @@ let trophyRewardsList = class (BaseGuiHandlerWT) {
       this.infoHandler.updateHandlerData(item, true, true, reward_config)
       return
     }
+
+    if (rewardType == "resource" || rewardType == "resourceType")
+      reward_config.sizeParams <- { w = "0.6@chestRewardWidth" }
     let trophyDesc = getPrizeFullDescriptonView(reward_config)
     this.guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
@@ -164,6 +170,16 @@ function openTrophyRewardsList(params = {}) {
   handlersManager.loadHandler(trophyRewardsList, params)
 }
 
+function openUnlockPrizesList(trophyId) {
+  let trophy = getItemOrRecipeBundleById(to_integer_safe(trophyId, trophyId, false))
+  let iType = trophy?.iType ?? 0
+  let isChest = iType == itemType.CHEST || iType == itemType.RECIPES_BUNDLE
+  if (isChest && trophy.getDropChanceType() != CHANCE_VIEW_TYPE.NONE)
+    trophyRewardListByCategory({ chestItem = trophy })
+  else
+    openTrophyRewardsList({ trophy })
+}
+
 function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
   let trophy = findItemById(id)
   openTrophyRewardsList({ trophy })
@@ -171,6 +187,7 @@ function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
 
 register_command(debug_trophy_rewards_list, "debug.trophy_rewards_list")
 
-return {
+return freeze({
   openTrophyRewardsList
-}
+  openUnlockPrizesList
+})

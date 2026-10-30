@@ -481,7 +481,7 @@ function select_editbox(obj) {
     obj.setMouseCursorOnObject()
 }
 
-return {
+return freeze({
   setFocusToNextObj
   getSelectedChild
   findChildIndex
@@ -510,4 +510,4 @@ return {
   select_editbox
 
   ALIGN
-}
+})

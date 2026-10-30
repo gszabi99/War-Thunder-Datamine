@@ -1,10 +1,8 @@
 import "regexp2" as regexp2
+from "%scripts/items/itemsManager.nut" import getRawInventoryItemAmount
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let { getRawInventoryItemAmount } = require("%scripts/items/itemsManager.nut")
-
 
 class ItemLifetimeModifier {
   static dependenciesRe = regexp2("\\bs\\.count_([0-9]+)")

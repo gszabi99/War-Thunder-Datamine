@@ -1,18 +1,17 @@
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/unlocks/unlocksConditions.nut" import addToText
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/leaderboard/leaderboardCategoryType.nut" import getLbCategoryTypeByField
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/events/rewardProgressManager.nut" import requestRewardProgress
 from "%sqstd/datablock.nut" import getBlkValueByPath
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
-
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { requestRewardProgress } = require("%scripts/events/rewardProgressManager.nut")
 
                                  
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -420,7 +419,7 @@ function getNextReward(rewardBlk, event) {
   return null
 }
 
-return {
+return freeze({
   getRewardConditionId
   getRewardCondition
   getRewardConditionById
@@ -439,4 +438,4 @@ return {
   getTotalRewardDescText
   getConditionText
   isRewardReceived
-}
+})

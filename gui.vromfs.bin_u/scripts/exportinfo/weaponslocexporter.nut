@@ -1,13 +1,13 @@
-from "dagor.workcycle" import defer
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob
 from "%sqstd/json.nut" import saveJson
 from "dagor.fs" import mkpath
 from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
 
-let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-
 const TARGET_WEAPONS_LOC = "weaponsLoc"
+const LANG_JOB_ID = "exportInfo.weaponsLocExporter"
 
 class ExporterStatus {
   static DETAILS_FIELD = "details"
@@ -16,9 +16,9 @@ class ExporterStatus {
   filename = ""
   status = null
 
-  constructor(filename_) {
+  constructor(filename_, status_) {
     this.filename = filename_
-    this.status = {}
+    this.status = status_
   }
 
   function setTargetField(target, field, value) {
@@ -29,6 +29,10 @@ class ExporterStatus {
 
   function setTargetDetails(target, details) {
     this.setTargetField(target, this.DETAILS_FIELD, details)
+  }
+
+  function getTargetDetails(target) {
+    return this.status[target][this.DETAILS_FIELD]
   }
 
   function finishTarget(target, isSuccess) {
@@ -144,109 +148,85 @@ function resolveLangsInfo(requestedLangs) {
   return getGameLocalizationInfo().filter(@(value) requestedLangs.contains(value.id))
 }
 
-function startBuildWeaponsLocAsync(path, spec, langsInfo, curLang, locFileName, statusPath, runningState) {
-  if (runningState.running) {
-    logerr("weapons loc export rejected: another weapons export (DB or loc) is already running")
-    return false
+function safeFlushStatus(status) {
+  try {
+    status.forceFlushToFile()
+  } catch (e) {
+    logerr($"failed to write weapons loc status: {e}")
   }
-  runningState.running = true
-
-  let status = ExporterStatus(statusPath ?? "")
-  let details = {
-    state = "processing"
-    totalLangsLen = langsInfo.len()
-    leftLangsLen = langsInfo.len()
-    processedLangs = []
-    failedLangs = []
-    outFiles = {}
-  }
-  status.setTargetDetails(TARGET_WEAPONS_LOC, details)
-
-  let pending = clone langsInfo
-
-  function safeFlushStatus() {
-    try {
-      status.forceFlushToFile()
-    } catch (e) {
-      logerr($"failed to write weapons loc status: {e}")
-    }
-  }
-
-  safeFlushStatus()
-  log($"building weapons loc: totalLangs={langsInfo.len()}")
-
-  function finalize(isSuccess) {
-    details.state = isSuccess ? "done" : "failed"
-    details.leftLangsLen = pending.len()
-    status.finishTarget(TARGET_WEAPONS_LOC, isSuccess)
-    safeFlushStatus()
-    runningState.running = false
-    setGameLocalization(curLang, false, false)
-    log($"DONE weapons loc: processed={details.processedLangs.len()} failed={details.failedLangs.len()}")
-  }
-
-  function stepImpl() {
-    try {
-      if (pending.len() == 0) {
-        finalize(details.failedLangs.len() == 0)
-        return
-      }
-
-      let lang = pending.pop()
-      let langId = lang.id
-
-      try {
-        setGameLocalization(langId, false, false)
-        let locTable = buildLocTableForCurLang(spec)
-        let outFile = makeLocOutPath(path, locFileName, langId)
-        mkpath(outFile)
-        saveJson(outFile, locTable)
-        details.processedLangs.append(langId)
-        details.outFiles[langId] <- outFile
-        log($"weapons loc saved: lang={langId} -> {outFile}")
-      } catch (e) {
-        logerr($"failed to build weapons loc for lang='{langId}': {e}")
-        details.failedLangs.append(langId)
-      }
-
-      details.leftLangsLen = pending.len()
-
-      if (pending.len() == 0) {
-        finalize(details.failedLangs.len() == 0)
-        return
-      }
-
-      defer(callee())
-    } catch (e) {
-      logerr($"weapons loc step failed unexpectedly: {e}")
-      finalize(false)
-    }
-  }
-
-  stepImpl()
-  return true
 }
+
+function buildLangLoc(lang, data, onDone) {
+  let { path, locFileName, statusPath, spec } = data
+  let details = ExporterStatus(statusPath, data.status).getTargetDetails(TARGET_WEAPONS_LOC)
+  try {
+    let locTable = buildLocTableForCurLang(spec)
+    let outFile = makeLocOutPath(path, locFileName, lang)
+    mkpath(outFile)
+    saveJson(outFile, locTable)
+    details.processedLangs.append(lang)
+    details.outFiles[lang] <- outFile
+    log($"weapons loc saved: lang={lang} -> {outFile}")
+  } catch (e) {
+    logerr($"failed to build weapons loc for lang='{lang}': {e}")
+    details.failedLangs.append(lang)
+  }
+  details.leftLangsLen--
+  onDone()
+}
+
+function finishWeaponsLoc(data) {
+  let status = ExporterStatus(data.statusPath, data.status)
+  let details = status.getTargetDetails(TARGET_WEAPONS_LOC)
+  let isSuccess = details.leftLangsLen == 0 && details.failedLangs.len() == 0
+  details.state = isSuccess ? "done" : "failed"
+  status.finishTarget(TARGET_WEAPONS_LOC, isSuccess)
+  safeFlushStatus(status)
+  log($"DONE weapons loc: processed={details.processedLangs.len()} failed={details.failedLangs.len()}")
+}
+
+registerLangJob(LANG_JOB_ID, buildLangLoc, finishWeaponsLoc)
 
 function buildWeaponsLoc(params) {
   let exportDb = params?.exportDb
-  let runningState = params?.runningState
-  if (exportDb == null || runningState == null) {
-    logerr("weapons loc: missing exportDb or runningState")
+  if (exportDb == null) {
+    logerr("weapons loc: missing exportDb")
     return false
   }
 
-  let langsInfo = resolveLangsInfo(params?.langs)
-  if (langsInfo.len() == 0) {
+  let langs = resolveLangsInfo(params?.langs).map(@(lang) lang.id)
+  if (langs.len() == 0) {
     log("weapons loc: no matching languages, skipping")
     return false
   }
 
   let path = params?.path ?? "export"
-  let locFileName = params?.locFileName ?? "weapons_loc.json"
-  let statusPath = makePath(path, params?.locStatusFileName ?? "weapons_loc_status.json")
-  let spec = collectLocSpec(exportDb)
+  let jobData = {
+    path
+    locFileName = params?.locFileName ?? "weapons_loc.json"
+    statusPath = makePath(path, params?.locStatusFileName ?? "weapons_loc_status.json")
+    spec = collectLocSpec(exportDb)
+    status = {}
+  }
+  let status = ExporterStatus(jobData.statusPath, jobData.status)
+  status.setTargetDetails(TARGET_WEAPONS_LOC, {
+    state = "processing"
+    totalLangsLen = langs.len()
+    leftLangsLen = langs.len()
+    processedLangs = []
+    failedLangs = []
+    outFiles = {}
+  })
 
-  return startBuildWeaponsLocAsync(path, spec, langsInfo, params?.curLang, locFileName, statusPath, runningState)
+  if (!startLangJob(LANG_JOB_ID, langs, jobData)) {
+    status.getTargetDetails(TARGET_WEAPONS_LOC).state = "failed"
+    status.finishTarget(TARGET_WEAPONS_LOC, false)
+    safeFlushStatus(status)
+    return false
+  }
+  safeFlushStatus(status)
+  log($"building weapons loc: totalLangs={langs.len()}")
+  return true
 }
 
 return buildWeaponsLoc

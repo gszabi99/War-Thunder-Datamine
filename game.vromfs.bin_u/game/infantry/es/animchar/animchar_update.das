@@ -22,8 +22,9 @@ def animchar_server_update_es(info : ParallelUpdateFrameDelayed;
                               human_anim__diffToUpdateHeight = 0.2;
                               var animchar : AnimcharBaseComponent;
                               var human_anim__lastUpdatedDedHeight : float&;
-                              animchar__turnDir = false)
-  if !animchar__updatable
+                              animchar__turnDir = false;
+                              phys__tickRate = 1)
+  if !animchar__updatable || phys__tickRate == 0
     return
 
   var resultTm = transform

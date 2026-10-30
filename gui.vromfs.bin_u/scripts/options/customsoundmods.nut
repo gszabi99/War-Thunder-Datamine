@@ -17,9 +17,9 @@ let setCustomSoundMods = @(value) setSystemConfigOption(ENABLE_MOD_PARAMETR_NAME
 
 let hasCustomSoundMods = @() getSystemConfigOption(ENABLE_MOD_PARAMETR_NAME) != null
 
-return {
+return freeze({
   isUsedCustomSoundMods
   isEnabledCustomSoundMods
   setCustomSoundMods
   hasCustomSoundMods
-}
+})

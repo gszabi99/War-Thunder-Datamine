@@ -62,9 +62,9 @@ enum itemType {
 }
 
 
-return {
+return freeze({
   MARK_RECIPE
   CHANCE_VIEW_TYPE
   itemsTab
   itemType
-}
+})

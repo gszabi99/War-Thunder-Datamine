@@ -1,23 +1,20 @@
+import "%scripts/openCrossPromoWnd.nut" as openCrossPromoWnd
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, isUnitMaxExp, canResearchUnit, isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable, isUnitResearched
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unit/unitActions.nut" import repairWithMsgBox, buy, flushSquadronExp, research
+from "%scripts/unit/unitInfo.nut" import getUnitExp
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift, canSpendGoldOnUnitWithPopup
+from "%scripts/unit/unitChecks.nut" import checkForResearch
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/convertExp/convertExp.nut" import openConvertExpModalWnd
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/unit/unitEvents.nut" import hasUnitEvent, getUnitEventId
+from "%scripts/user/profileHandler.nut" import guiStartProfile
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
-
-let {canBuyNotResearched, isUnitMaxExp, canResearchUnit,
-  isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable, isUnitResearched
-} = require("%scripts/unit/unitStatus.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { repairWithMsgBox, buy, flushSquadronExp, research } = require("%scripts/unit/unitActions.nut")
-let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit, isUnitGift, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
-let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { hasUnitEvent, getUnitEventId } = require("%scripts/unit/unitEvents.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -115,7 +112,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return research(unit)
 }
 
-return {
+return freeze({
   getSlotActionFunctionName
   slotMainAction
-}
+})

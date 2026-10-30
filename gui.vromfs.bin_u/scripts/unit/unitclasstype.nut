@@ -1,9 +1,8 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
-
-let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 
 local unitClassType = {
   types = []
@@ -176,7 +175,7 @@ function() {
   this.expClassName = this.code == EUCT_SPAA ? this.name.toupper() : this.name
 })
 
-unitClassType.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+unitClassType.types.sortby(@(a) a.checkOrder)
 
 function getTypesFromCodeMask(codeMask) {
   let resultTypes = []

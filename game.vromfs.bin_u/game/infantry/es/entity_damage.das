@@ -87,6 +87,7 @@ struct EntityShatterHitData
   dir : float3
   collNodeId : int
   penetration : float
+  weaponEcsTemplateName : string
 
 [event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventNotifyServerOnHitEntity
@@ -158,7 +159,7 @@ def handoff_vehicle_control_to_dying_driver(victim : EntityId)
   sendEventImmediate(playerEid, CmdPlayerSetControlledUnit(toEid = victim))
 
 
-def make_credited_offender_data(offender : EntityId; proj_props_id : PropsId)
+def make_credited_offender_data(offender : EntityId; proj_props_id : PropsId; weapon_ecs_template_name : string = "")
   var creditedOffender = offender
   var launcherTemplate = ""
   query(offender) <| $ [es(REQUIRE=isDrone)] (drone__owner : EntityId;
@@ -170,6 +171,8 @@ def make_credited_offender_data(offender : EntityId; proj_props_id : PropsId)
   var offenderData = OffenderData(creditedOffender, proj_props_id)
   if !empty(launcherTemplate)
     offenderData.setWeaponEcsTemplateName(split_template(launcherTemplate)[0])
+  elif !empty(weapon_ecs_template_name)
+    offenderData.setWeaponEcsTemplateName(weapon_ecs_template_name)
   return offenderData
 
 
@@ -1134,7 +1137,8 @@ def calc_and_apply_entity_shatter_hit_damage(hit_data : EntityShatterHitData;
         damage_debug_msg("base armor: {partArmorMin}, total armor: {partArmorMinTotal}")
         damage_debug_msg("damage: {damageToArmor}")
 
-    apply_damage(eid, OffenderData(), offenderEid, pos, projPropsId, damageToHp, damageToArmor, armorSegmentEid, DamageType.DM_EXPLOSION, collNodeId,  INVALID_ENTITY_ID, outputDebug, dir)
+    let offenderData = make_credited_offender_data(offenderEid, projPropsId, hit_data.weaponEcsTemplateName)
+    apply_damage(eid, offenderData, offenderEid, pos, projPropsId, damageToHp, damageToArmor, armorSegmentEid, DamageType.DM_EXPLOSION, collNodeId,  INVALID_ENTITY_ID, outputDebug, dir)
 
     
     
@@ -1314,7 +1318,8 @@ def on_splash_entity_hit(var evt : EventSplashHitEntity&;
     friendly = evt.offender != eid && is_teams_friendly(victim_team, offender_team)
 
   if authority && !friendly
-    apply_damage(eid, OffenderData(), evt.offender, evt.pos, PropsId(evt.packedProjPropsId), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_EXPLOSION, 0,  INVALID_ENTITY_ID,  false, evt.dir, evt.isExplosionHaveProps)
+    let offenderData = make_credited_offender_data(evt.offender, PropsId(evt.packedProjPropsId), evt.weaponEcsTemplateName)
+    apply_damage(eid, offenderData, evt.offender, evt.pos, PropsId(evt.packedProjPropsId), damage, 0.0, INVALID_ENTITY_ID, DamageType.DM_EXPLOSION, 0,  INVALID_ENTITY_ID,  false, evt.dir, evt.isExplosionHaveProps)
 
 [es(tag=server)]
 def on_melee_entity_hit(evt : EventMeleeHitEntity;
@@ -1363,7 +1368,8 @@ def on_shatter_entity_hit(var evt : EventShatterHitEntity&;
                                        pos = evt.pos,
                                        dir = evt.dir,
                                        collNodeId = evt.collNodeId,
-                                       penetration = evt.penetration)
+                                       penetration = evt.penetration,
+                                       weaponEcsTemplateName = evt.weaponEcsTemplateName)
     var isFriendly = false
     if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isFriendly,  true)
       return

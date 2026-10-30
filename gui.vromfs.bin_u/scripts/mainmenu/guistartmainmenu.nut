@@ -1,3 +1,9 @@
+import "%scripts/mainmenu/onMainMenuReturnActions.nut" as onMainMenuReturnActions
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%appGlobals/login/loginState.nut" import getStateDebugStr
+from "%scripts/missions/missionsStates.nut" import set_mission_settings
+from "%scripts/replays/backFromReplaysFn.nut" import setBackFromReplaysFn
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "eventbus" import eventbus_subscribe
 from "dagor.debug" import debug_dump_stack
@@ -6,13 +12,7 @@ from "guiMission" import mission_desc_clear
 from "%scripts/dagui_natives.nut" import switch_gui_scene
 from "%scripts/dagui_library.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
-let { set_mission_settings } = require("%scripts/missions/missionsStates.nut")
-let { setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 
 local dbgStartCheck = 0
 
@@ -63,7 +63,7 @@ let guiStartMainmenuDelayed = @() get_cur_gui_scene().performDelayed({},
 eventbus_subscribe("gui_start_mainmenu", gui_start_mainmenu)
 eventbus_subscribe("guiStartMainmenuDelayed", @(_) guiStartMainmenuDelayed())
 
-return {
+return freeze({
   gui_start_mainmenu
   gui_start_mainmenu_reload
-}
+})

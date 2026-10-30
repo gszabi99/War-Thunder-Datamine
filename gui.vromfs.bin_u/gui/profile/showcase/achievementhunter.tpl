@@ -120,7 +120,7 @@ tdiv {
       behaviour:t='textArea'
       position:t='absolute'
       font:t="tiny_text_hud"
-      text:t='#unlocks/chapter/achievements'
+      text:t='#<<chapterLocId>>'
       color:t='@showcaseGreyText'
       left:t='<<scale>>*20@sf/@pf'
       font-pixht:t='<<scale>>*24@sf/@pf \ 1'

@@ -1,20 +1,18 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockNameText
+from "%scripts/unlocks/unlocksViewModule.nut" import fillReward, fillUnlockManualOpenButton
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened, findUnusableUnitForManualUnlock
+from "%scripts/unlocks/unlocksAction.nut" import openUnlockManually
+from "%scripts/unlocks/favoriteUnlocks.nut" import initUnlockFavInContainer, toggleUnlockFavButton
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unlocks/commandersHandbookState.nut" import getAllCmhGroups, getCmhGroupUnlocks, getCmhUnlockProgressData, getCmhGroupCompletedTotal, getCurrentCmhGroup, mkCmhUnseenCfg
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { fillReward, fillUnlockManualOpenButton } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isUnlockOpened, findUnusableUnitForManualUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { openUnlockManually } = require("%scripts/unlocks/unlocksAction.nut")
-let { initUnlockFavInContainer, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getAllCmhGroups, getCmhGroupUnlocks, getCmhUnlockProgressData, getCmhGroupCompletedTotal,
-  getCurrentCmhGroup, mkCmhUnseenCfg } = require("%scripts/unlocks/commandersHandbookState.nut")
 
 function splitDescVideo(desc) {
   const markerStart = "{{video:"
@@ -188,6 +186,6 @@ let CommandersHandbookWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("CommandersHandbookWnd", CommandersHandbookWnd)
 
-return {
+return freeze({
   openCommandersHandbookWnd = @(params = {}) loadHandler(CommandersHandbookWnd, params)
-}
+})

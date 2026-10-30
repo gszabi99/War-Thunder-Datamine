@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.17,
-  "shotFreq": 15.0,
-  "traceFreq": 4,
-  "bullets": 350,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.17,
+  "shotFreq": 15.0,
+  "bullets": 350,
+  "overheat": {
+    "overheat": [
+      [
+        8.3,
+        0.0
+      ],
+      [
+        12.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.03607,
@@ -405,7 +417,7 @@
         ],
         "traceFreq": 1,
         "tracer": "12mmBrightRed",
-        "trail": "thin"
+        "trail": "smallTrail"
       }
     },
     {
@@ -1632,7 +1644,7 @@
           ],
           "traceFreq": 1,
           "tracer": "12mmBrightRed",
-          "trail": "thin"
+          "trail": "smallTrail"
         }
       },
       {
@@ -2402,7 +2414,7 @@
           ],
           "traceFreq": 1,
           "tracer": "12mmBrightRed",
-          "trail": "thin"
+          "trail": "smallTrail"
         }
       }
     ]
@@ -2793,7 +2805,7 @@
           ],
           "traceFreq": 1,
           "tracer": "12mmBrightRed",
-          "trail": "thin"
+          "trail": "smallTrail"
         }
       },
       {
@@ -4160,25 +4172,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m2_gun_outside",
-    "cockpit": "m2_gun_inside",
-    "ai": "m2_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        8.3,
-        0.0
-      ],
-      [
-        12.0,
-        0.05
-      ]
-    ]
-  },
   "ho103_turret_new_gun": {
     "maxDeltaAngle": 0.37,
     "overheat": {
@@ -4193,5 +4186,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m2_gun_outside",
+    "cockpit": "m2_gun_inside",
+    "ai": "m2_gun_ai"
   }
 }

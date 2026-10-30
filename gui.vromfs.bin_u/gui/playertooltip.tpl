@@ -25,9 +25,14 @@ tdiv {
       background-svg-size:t='1@contactTooltipAvatarImgSize, 1@contactTooltipAvatarImgSize'
       background-image:t='<<icon>>'
 
-      <<#hasAvatarFrame>>
-      avatarFrame { background-image:t='!ui/images/avatar_frames/<<frame>>.avif' }
-      <</hasAvatarFrame>>
+      <<#frameImagePath>>
+      avatarFrame {
+        background-image:t='<<frameImagePath>>'
+        <<#framesCount>>
+        background-frames:t='<<framesCount>>'
+        <</framesCount>>
+      }
+      <</frameImagePath>>
     }
   }
 
@@ -48,6 +53,27 @@ tdiv {
         flow:t='vertical'
 
         tdiv {
+          <<#team>>
+          tdiv {
+            team:t='<<team>>'
+            valign:t='center'
+            margin-right:t='1@blockInterval'
+            teamImg {
+              size:t='1@cIco, 1@cIco'
+              background-svg-size:t='1@cIco, 1@cIco'
+            }
+          }
+          <</team>>
+          <<#countryIcon>>
+          img {
+            size:t='1@cIco, 0.66@cIco'
+            valign:t='center'
+            margin-right:t='1@blockInterval'
+            background-svg-size:t='1@cIco, 0.66@cIco'
+            background-repeat:t='aspect-ratio'
+            background-image:t='<<countryIcon>>'
+          }
+          <</countryIcon>>
           <<#clanTag>>
           textareaNoTab {
             margin-right:t='1@blockInterval'
@@ -82,6 +108,14 @@ tdiv {
         }
       }
     }
+
+    <<#statusText>>
+    textareaNoTab {
+      margin-top:t='16@sf/@pf'
+      text:t='<<statusText>>'
+      smallFont:t='yes'
+    }
+    <</statusText>>
 
     <<#onlineStatusText>>
     statusesContainer {

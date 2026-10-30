@@ -8,16 +8,18 @@
   "dynCollisionGeom": true,
   "harmonizationSuffix": "_tomoe",
   "moveType": "ship",
-  "maxFwdSpeed": 80.0,
+  "maxFwdSpeed": 55.0,
   "maxRevSpeed": 5.0,
-  "maxAngSpeed": 15.0,
-  "maxAccel": 20.0,
+  "maxAngSpeed": 5.0,
+  "maxAccel": 5.0,
   "maxDecel": 5.0,
-  "maxAngAccel": 15.0,
-  "maxAngAccel0": 2.0,
-  "maxAngAccelV": 15.0,
-  "groundNormSmoothViscosity": 0.1,
+  "maxAngAccel": 5.0,
+  "maxAngAccel0": 1.0,
+  "maxAngAccelV": 5.0,
+  "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
+  "drownGFactor": 0.00001,
+  "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "ikPilotMaxUpdateDistance": 200.0,
@@ -4578,9 +4580,9 @@
     "mass": {
       "Empty": 37000000.0,
       "momentOfInertia": [
-        220.0,
-        6500.0,
-        3200.0
+        200.0,
+        6300.0,
+        3100.0
       ],
       "CenterOfGravity": [
         0.0,
@@ -4591,6 +4593,7 @@
     "engines": {
       "maxSpeed": 16.56,
       "maxReverseSpeed": 5.0,
+      "horsePowers": 160000.0,
       "speedToTime": {
         "row": [
           [
@@ -4707,7 +4710,69 @@
         "deflection": 36.0,
         "dmPart": "steering_gear_01_dm"
       }
+    },
+    "settings": {
+      "rollDampingMult": 1.5,
+      "pitchDampingMult": 1.5
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.6,
+        800.0
+      ],
+      [
+        9.2,
+        1900.0
+      ],
+      [
+        13.8,
+        3300.0
+      ],
+      [
+        18.4,
+        5900.0
+      ],
+      [
+        23.0,
+        8000.0
+      ],
+      [
+        27.6,
+        9900.0
+      ],
+      [
+        32.2,
+        11800.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        3700.0
+      ],
+      [
+        -2.0,
+        2300.0
+      ],
+      [
+        -1.0,
+        1000.0
+      ],
+      [
+        0.0,
+        500.0
+      ],
+      [
+        5.0,
+        500.0
+      ]
+    ]
   },
   "cockpit": {
     "headPos": [
@@ -4735,14 +4800,15 @@
     "binoculars": "navy_binoculars"
   },
   "shipDamageControl": {
-    "shipDamageControlEnabled": true
+    "shipDamageControlEnabled": true,
+    "shipDamageControlCoeff": 0.16
   },
   "commonWeapons": {
     "Weapon": [
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -4799,7 +4865,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -4856,7 +4922,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_09",
         "flash": "emtr_gun_flame_09",
         "useEmitter": true,
@@ -4913,7 +4979,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_10",
         "flash": "emtr_gun_flame_10",
         "useEmitter": true,
@@ -4970,7 +5036,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -5027,7 +5093,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -5084,7 +5150,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
         "useEmitter": true,
@@ -5141,7 +5207,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_12",
         "flash": "emtr_gun_flame_12",
         "useEmitter": true,
@@ -5198,7 +5264,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -5255,7 +5321,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -5312,7 +5378,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -5369,7 +5435,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
@@ -5426,7 +5492,7 @@
       {
         "trigger": "gunner6",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_67",
         "flash": "emtr_gun_flame_67",
         "useEmitter": true,
@@ -5503,7 +5569,7 @@
       {
         "trigger": "gunner6",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_68",
         "flash": "emtr_gun_flame_68",
         "useEmitter": true,
@@ -5580,7 +5646,7 @@
       {
         "trigger": "gunner7",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_69",
         "flash": "emtr_gun_flame_69",
         "useEmitter": true,
@@ -5657,7 +5723,7 @@
       {
         "trigger": "gunner7",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/127mm_5_40_type_89_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_70",
         "flash": "emtr_gun_flame_70",
         "useEmitter": true,
@@ -5734,7 +5800,7 @@
       {
         "trigger": "gunner8",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
         "useEmitter": true,
@@ -5815,7 +5881,7 @@
       {
         "trigger": "gunner8",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",
         "flash": "emtr_gun_flame_14",
         "useEmitter": true,
@@ -5896,7 +5962,7 @@
       {
         "trigger": "gunner8",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_15",
         "flash": "emtr_gun_flame_15",
         "useEmitter": true,
@@ -5977,7 +6043,7 @@
       {
         "trigger": "gunner9",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",
         "useEmitter": true,
@@ -6058,7 +6124,7 @@
       {
         "trigger": "gunner9",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_17",
         "flash": "emtr_gun_flame_17",
         "useEmitter": true,
@@ -6139,7 +6205,7 @@
       {
         "trigger": "gunner9",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_18",
         "flash": "emtr_gun_flame_18",
         "useEmitter": true,
@@ -6220,7 +6286,7 @@
       {
         "trigger": "gunner10",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_19",
         "flash": "emtr_gun_flame_19",
         "useEmitter": true,
@@ -6307,7 +6373,7 @@
       {
         "trigger": "gunner10",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_20",
         "flash": "emtr_gun_flame_20",
         "useEmitter": true,
@@ -6394,7 +6460,7 @@
       {
         "trigger": "gunner10",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_21",
         "flash": "emtr_gun_flame_21",
         "useEmitter": true,
@@ -6482,8 +6548,8 @@
         "trigger": "gunner11",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_22",
         "flash": "emtr_gun_flame_22",
@@ -6572,8 +6638,8 @@
         "trigger": "gunner11",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_23",
         "flash": "emtr_gun_flame_23",
@@ -6662,8 +6728,8 @@
         "trigger": "gunner11",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_24",
         "flash": "emtr_gun_flame_24",
@@ -6752,8 +6818,8 @@
         "trigger": "gunner12",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_25",
         "flash": "emtr_gun_flame_25",
@@ -6848,8 +6914,8 @@
         "trigger": "gunner12",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_26",
         "flash": "emtr_gun_flame_26",
@@ -6944,8 +7010,8 @@
         "trigger": "gunner12",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_27",
         "flash": "emtr_gun_flame_27",
@@ -7040,8 +7106,8 @@
         "trigger": "gunner13",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_28",
         "flash": "emtr_gun_flame_28",
@@ -7130,8 +7196,8 @@
         "trigger": "gunner13",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_29",
         "flash": "emtr_gun_flame_29",
@@ -7220,8 +7286,8 @@
         "trigger": "gunner13",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_30",
         "flash": "emtr_gun_flame_30",
@@ -7310,8 +7376,8 @@
         "trigger": "gunner14",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_31",
         "flash": "emtr_gun_flame_31",
@@ -7400,8 +7466,8 @@
         "trigger": "gunner14",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_32",
         "flash": "emtr_gun_flame_32",
@@ -7490,8 +7556,8 @@
         "trigger": "gunner14",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_33",
         "flash": "emtr_gun_flame_33",
@@ -7580,8 +7646,8 @@
         "trigger": "gunner15",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_34",
         "flash": "emtr_gun_flame_34",
@@ -7676,8 +7742,8 @@
         "trigger": "gunner15",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_35",
         "flash": "emtr_gun_flame_35",
@@ -7772,8 +7838,8 @@
         "trigger": "gunner15",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_36",
         "flash": "emtr_gun_flame_36",
@@ -7868,8 +7934,8 @@
         "trigger": "gunner16",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_37",
         "flash": "emtr_gun_flame_37",
@@ -7970,8 +8036,8 @@
         "trigger": "gunner16",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_38",
         "flash": "emtr_gun_flame_38",
@@ -8072,8 +8138,8 @@
         "trigger": "gunner16",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_39",
         "flash": "emtr_gun_flame_39",
@@ -8174,8 +8240,8 @@
         "trigger": "gunner17",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_40",
         "flash": "emtr_gun_flame_40",
@@ -8270,8 +8336,8 @@
         "trigger": "gunner17",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_41",
         "flash": "emtr_gun_flame_41",
@@ -8366,8 +8432,8 @@
         "trigger": "gunner17",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_42",
         "flash": "emtr_gun_flame_42",
@@ -8462,8 +8528,8 @@
         "trigger": "gunner18",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_43",
         "flash": "emtr_gun_flame_43",
@@ -8552,8 +8618,8 @@
         "trigger": "gunner18",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_44",
         "flash": "emtr_gun_flame_44",
@@ -8642,8 +8708,8 @@
         "trigger": "gunner18",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_45",
         "flash": "emtr_gun_flame_45",
@@ -8732,8 +8798,8 @@
         "trigger": "gunner19",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_46",
         "flash": "emtr_gun_flame_46",
@@ -8828,8 +8894,8 @@
         "trigger": "gunner19",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_47",
         "flash": "emtr_gun_flame_47",
@@ -8924,8 +8990,8 @@
         "trigger": "gunner19",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_48",
         "flash": "emtr_gun_flame_48",
@@ -9020,8 +9086,8 @@
         "trigger": "gunner20",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_49",
         "flash": "emtr_gun_flame_49",
@@ -9122,8 +9188,8 @@
         "trigger": "gunner20",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_50",
         "flash": "emtr_gun_flame_50",
@@ -9224,8 +9290,8 @@
         "trigger": "gunner20",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_51",
         "flash": "emtr_gun_flame_51",
@@ -9326,8 +9392,8 @@
         "trigger": "gunner21",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_52",
         "flash": "emtr_gun_flame_52",
@@ -9422,8 +9488,8 @@
         "trigger": "gunner21",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_53",
         "flash": "emtr_gun_flame_53",
@@ -9518,8 +9584,8 @@
         "trigger": "gunner21",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_54",
         "flash": "emtr_gun_flame_54",
@@ -9614,8 +9680,8 @@
         "trigger": "gunner22",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_55",
         "flash": "emtr_gun_flame_55",
@@ -9692,8 +9758,8 @@
         "trigger": "gunner21",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_56",
         "flash": "emtr_gun_flame_56",
@@ -9770,8 +9836,8 @@
         "trigger": "gunner21",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_57",
         "flash": "emtr_gun_flame_57",
@@ -9848,8 +9914,8 @@
         "trigger": "gunner23",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_58",
         "flash": "emtr_gun_flame_58",
@@ -9926,8 +9992,8 @@
         "trigger": "gunner23",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_59",
         "flash": "emtr_gun_flame_59",
@@ -10004,8 +10070,8 @@
         "trigger": "gunner23",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_60",
         "flash": "emtr_gun_flame_60",
@@ -10082,8 +10148,8 @@
         "trigger": "gunner24",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_61",
         "flash": "emtr_gun_flame_61",
@@ -10172,8 +10238,8 @@
         "trigger": "gunner24",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_62",
         "flash": "emtr_gun_flame_62",
@@ -10262,8 +10328,8 @@
         "trigger": "gunner24",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_63",
         "flash": "emtr_gun_flame_63",
@@ -10352,8 +10418,8 @@
         "trigger": "gunner25",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_64",
         "flash": "emtr_gun_flame_64",
@@ -10448,8 +10514,8 @@
         "trigger": "gunner25",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_65",
         "flash": "emtr_gun_flame_65",
@@ -10544,8 +10610,8 @@
         "trigger": "gunner25",
         "triggerGroup": "secondary",
         "blk": [
-          "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-          "gameData/Weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
+          "gamedata/weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+          "gamedata/weapons/navalModels_weapons/100mm_47_1928_naval_user_cannon.blk"
         ],
         "emitter": "emtr_gun_flame_66",
         "flash": "emtr_gun_flame_66",
@@ -10641,7 +10707,7 @@
   "weapon_presets": {
     "preset": {
       "name": "jp_aircraftcarrier_shokaku_default",
-      "blk": "gameData/units/ships/weaponPresets/jp_aircraftcarrier_shokaku_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/jp_aircraftcarrier_shokaku_default.blk"
     }
   },
   "boilerExplosionFx": {
@@ -12136,14 +12202,14 @@
   },
   "breaches": {
     "repairSpeed": 22.0,
-    "waterMassVel": -100000.0,
-    "waterMassMult": 400.0,
     "sizeToRepair": [
       0.01,
-      10.0,
-      100.0,
-      1250.0
+      7.5,
+      154.0,
+      1185.8
     ],
+    "waterMassVel": -172000.0,
+    "waterMassMult": 400.0,
     "additionalWaterDeathThreshold": 200000000.0,
     "additionalWaterShouldDiePercent": 0.25,
     "fatalBreachDrownTime": 45.0,
@@ -12151,6 +12217,10 @@
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
+    "maxTrimmingAngle": 3.5,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 5.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.25,
     "minCaliberToBreach": 0.2,

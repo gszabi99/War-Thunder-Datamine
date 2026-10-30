@@ -1,12 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 10.0,
-  "traceFreq": 4,
-  "bullets": 400,
-  "shootingCharge": 5.5,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,26 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 10.0,
+  "bullets": 400,
+  "shootingCharge": 5.5,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        20.0,
+        0.0
+      ],
+      [
+        30.0,
+        0.09
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0495,
@@ -9814,25 +9826,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "kord_gun_outside",
-    "cockpit": "kord_gun_inside",
-    "ai": "kord_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        20.0,
-        0.0
-      ],
-      [
-        30.0,
-        0.09
-      ]
-    ]
-  },
   "kord_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -9847,5 +9840,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "kord_gun_outside",
+    "cockpit": "kord_gun_inside",
+    "ai": "kord_gun_ai"
   }
 }

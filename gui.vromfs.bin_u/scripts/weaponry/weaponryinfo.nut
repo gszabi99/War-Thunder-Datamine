@@ -1,4 +1,24 @@
 import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%scripts/money.nut" import zero_money
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName, isModificationEnabled
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoCost, getAmmoAmount, checkAmmoAmount, getAmmoMaxAmount
+from "%scripts/weaponry/weaponsParams.nut" import saclosMissileBeaconIRSourceBand
+from "%scripts/slotbar/slotbarOverride.nut" import getMissionEditSlotbarBlk
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams, isCustomPreset
+from "%scripts/weaponry/dmgModel.nut" import getTntEquivalentText, getDestructionInfoTexts, getNuclearWeaponAdditionalInfo
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedWeapon, getSavedBullets
+from "%scripts/options/optionsExtNames.nut" import USEROPT_WEAPONS
+from "%scripts/unit/unitParams.nut" import getEsUnitType, getFullUnitBlk
+from "%scripts/unit/unitStatus.nut" import isUnitUsable, isUnitRandomUnit
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeVersus
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/options/optionsMeasureUnits.nut" import countMeasure
+from "%appGlobals/clientState/localProfile.nut" import getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings
+from "%scripts/weaponry/radarBandsView.nut" import mkRadarBandsListMarkup
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%globalScripts/modeXrayLib.nut" import addBandsText
 from "blkGetters" import get_game_params_blk, get_wpcost_blk, get_current_mission_info_cached
@@ -7,7 +27,6 @@ from "string" import format, split_by_chars
 from "mission" import get_current_mission_name, get_game_mode, get_mission_custom_state
 from "unitCustomization" import set_last_weapon
 from "%sqstd/datablock.nut" import eachBlock
-import "DataBlock" as DataBlock
 from "guiOptions" import set_unit_option
 from "%sqstd/string.nut" import lastIndexOf, INVALID_INDEX, endsWith
 from "chardResearch" import shopIsModificationPurchased
@@ -17,29 +36,13 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "weaponryOptions" import get_option_torpedo_dive_depth, get_option_torpedo_dive_depth_auto
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
+from "%scripts/unit/unitMrankSelectionState.nut" import isUnitMrankLockAvailable, isMrankLockableItem, getEffectiveMrankDelta
 from "types" import String
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 
-let { zero_money } = require("%scripts/money.nut")
-let { get_difficulty_by_ediff, g_difficulty } = require("%scripts/difficulty.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
-let { AMMO, getAmmoCost, getAmmoAmount, checkAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
-let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
-let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams, isCustomPreset } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getTntEquivalentText, getDestructionInfoTexts, getNuclearWeaponAdditionalInfo } = require("%scripts/weaponry/dmgModel.nut")
-let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
-let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { isUnitUsable, isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings } = require("%scripts/clientState/localProfile.nut")
-let { mkRadarBandsListMarkup } = require("%scripts/weaponry/radarBandsView.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -49,7 +52,7 @@ let weaponsStatusNameByStatusCode = {
   [UNIT_WEAPONS_READY]   = "ready"
 }
 
-let TRIGGER_TYPE = {
+const TRIGGER_TYPE = {
   MACHINE_GUN     = "machine gun"
   CANNON          = "cannon"
   ADD_GUN         = "additional gun"
@@ -74,7 +77,7 @@ let TRIGGER_TYPE = {
   BOOSTERS        = "boosters"
 }
 
-let WEAPON_TYPE = {
+const WEAPON_TYPE = {
   GUNS            = "guns"
   CANNON          = "cannon"
   TURRETS         = "turrets"
@@ -141,10 +144,10 @@ let mkMissileTrajectoryBtnMarkup = @(weapon, unit)
     unitName = unit?.name ?? ""
   })
 
-let additionalMarkupByType = {
+let additionalMarkupByType = freeze({
   [additionalMarkupTypes.MISSILE_SPEED] = mkMissileTrajectoryBtnMarkup,
   [additionalMarkupTypes.RADAR_BANDS] = mkRadarBandsListMarkup,
-}
+})
 
 function getAdditionalWeaponMarkupTypes(weapon) {
   let res = {}
@@ -169,13 +172,13 @@ function getWeaponLocByTrigger(trigger) {
   return loc($"triggerType/{locTriggerName}")
 }
 
-let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
+const CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
   TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.MINES,
   TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES ]
 
-let NOT_WEAPON_TYPES = [ "targetingPod", "fuel tanks" ]
+const NOT_WEAPON_TYPES = [ "targetingPod", "fuel tanks" ]
 
-let WEAPON_TAG = {
+const WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
   BULLET           = "bullet"
   ROCKET           = "rocket"
@@ -185,7 +188,7 @@ let WEAPON_TAG = {
   CANNON           = "cannon"
 }
 
-let WEAPON_TEXT_PARAMS = { 
+const WEAPON_TEXT_PARAMS = {
   isPrimary             = null 
   weaponPreset          = -1 
   newLine               = "\n" 
@@ -468,6 +471,8 @@ function getWeaponGameModeRestrictionsBlk(unit, weapon) {
     return res
   let unitBlk = getFullUnitBlk(unit.name)
   foreach (presetWeapon in getPresetWeapons(unitBlk, weapon, unit.name)) {
+    if (presetWeapon?.dummy)
+      continue
     let singleWeaponName = getWpcostWeaponNameFromBlkPath(presetWeapon.blk)
     let singleWeaponBlk = get_wpcost_blk()?[unit.name].weapons[singleWeaponName]
     if (singleWeaponBlk == null) {
@@ -523,6 +528,140 @@ function getWeaponBlockedByGameModeText(unit, weapon) {
     minSessionRank = format("%.1f", calcBattleRatingFromRank(blockedMinRank))
     sessionRank = format("%.1f", calcBattleRatingFromRank(sessionMaxRank))
   })
+}
+
+let mrankReqModCache = {}
+let wpcostWeaponReqModCache = {}
+
+function toMrankReqModifications(reqMod) {
+  if (reqMod instanceof String)
+    return reqMod.len() ? [reqMod] : null
+  return reqMod?.len() ? reqMod : null
+}
+
+function getWpcostWeaponReqModification(unit, weaponName) {
+  if (weaponName == null || weaponName == "")
+    return null
+  let unitName = unit.name
+  if (wpcostWeaponReqModCache?[unitName] == null)
+    wpcostWeaponReqModCache[unitName] <- {}
+  let cache = wpcostWeaponReqModCache[unitName]
+  if (weaponName in cache)
+    return cache[weaponName]
+  let wpcostWeapons = get_wpcost_blk()?[unit.name].weapons
+  local res = null
+  if (wpcostWeapons != null) {
+    let weaponBlk = wpcostWeapons?[weaponName]
+    if (weaponBlk != null) {
+      let wpcostReqMod = weaponBlk % "reqModification"
+      res = wpcostReqMod.len() ? wpcostReqMod : null
+    }
+  }
+  cache[weaponName] <- res
+  return res
+}
+
+function getPresetWeaponReqModification(preset, weapon) {
+  let presetReqMod = preset % "reqModification"
+  if (presetReqMod.len())
+    return presetReqMod
+  let weaponReqMod = weapon % "reqModification"
+  return weaponReqMod.len() ? weaponReqMod : null
+}
+
+function getWeaponMrankReqModificationFromUnitBlk(unit, weaponBlkPath) {
+  let unitBlk = getFullUnitBlk(unit.name)
+  let weaponSlots = unitBlk?.WeaponSlots
+  if (weaponSlots != null)
+    foreach (slot in (weaponSlots % "WeaponSlot"))
+      foreach (preset in (slot % "WeaponPreset"))
+        foreach (pWeapon in (preset % "Weapon"))
+          if (getWeaponBlkParams(unit.name, pWeapon.blk).weaponBlkPath == weaponBlkPath) {
+            let reqMod = getPresetWeaponReqModification(preset, pWeapon)
+            if (reqMod != null)
+              return reqMod
+          }
+  foreach (preset in getUnitPresets(unitBlk)) {
+    let presetWeapon = getPresetWeapons(unitBlk, preset, unit.name)
+      .findvalue(@(w) getWeaponBlkParams(unit.name, w.blk).weaponBlkPath == weaponBlkPath)
+    if (presetWeapon == null)
+      continue
+    let presetReqMod = preset % "reqModification"
+    if (presetReqMod.len())
+      return presetReqMod
+    let reqMod = toMrankReqModifications(presetWeapon?.reqModification)
+    if (reqMod != null)
+      return reqMod
+  }
+  return null
+}
+
+function getWeaponMrankReqModificationByBlkPath(unit, weaponBlkPath) {
+  let unitName = unit.name
+  if (mrankReqModCache?[unitName] == null)
+    mrankReqModCache[unitName] <- {}
+  let cache = mrankReqModCache[unitName]
+  if (weaponBlkPath in cache)
+    return cache[weaponBlkPath]
+  let wpcostReqMod = getWpcostWeaponReqModification(unit, getWpcostWeaponNameFromBlkPath(weaponBlkPath))
+  let res = wpcostReqMod != null ? wpcostReqMod
+    : getWeaponMrankReqModificationFromUnitBlk(unit, weaponBlkPath)
+  cache[weaponBlkPath] <- res
+  return res
+}
+
+function getWeaponMrankReqModificationByItem(unit, weapon) {
+  let reqMod = toMrankReqModifications(weapon?.reqModification)
+  if (reqMod != null)
+    return reqMod
+  let weaponBlkPath = weapon?.blk
+  if (weaponBlkPath == null)
+    return null
+  let wpcostReqMod = getWpcostWeaponReqModification(unit, weapon?.name)
+  if (wpcostReqMod != null)
+    return wpcostReqMod
+  return getWeaponMrankReqModificationByBlkPath(unit, weaponBlkPath)
+}
+
+function getMrankLockDelta(unit, curDelta) {
+  return curDelta ?? getEffectiveMrankDelta(unit)
+}
+
+function getWeaponMrankReqAddMrank(unit, reqMod) {
+  if (reqMod == null)
+    return 0
+  local res = 0
+  foreach (mod in unit.getModifications())
+    if (reqMod.indexof(mod.name) != null)
+      res = max(res, mod.addMrank)
+  return res
+}
+
+function getMrankLockText() {
+  return colorize("badTextColor", loc("modification/mrankLockedModTooltip"))
+}
+
+function getItemMrankReqAddMrank(unit, item) {
+  if (isMrankLockableItem(item))
+    return item.addMrank
+  return getWeaponMrankReqAddMrank(unit, getWeaponMrankReqModificationByItem(unit, item))
+}
+
+function isMrankAddLocked(unit, addMrank, curDelta = null) {
+  return isUnitMrankLockAvailable(unit) && addMrank > getMrankLockDelta(unit, curDelta)
+}
+
+function isItemMrankLocked(unit, item, curDelta = null) {
+  if (!isUnitMrankLockAvailable(unit) || item == null)
+    return false
+  return getItemMrankReqAddMrank(unit, item) > getMrankLockDelta(unit, curDelta)
+}
+
+function isWeaponBlkPathMrankLocked(unit, weaponBlkPath) {
+  if (!isUnitMrankLockAvailable(unit))
+    return false
+  return getWeaponMrankReqAddMrank(unit,
+    getWeaponMrankReqModificationByBlkPath(unit, weaponBlkPath)) > getMrankLockDelta(unit, null)
 }
 
 let skipWeaponParams = { num = true, ammo = true, tiers = true, additionalMassKg = true }
@@ -1440,7 +1579,7 @@ function get_weapon_icons_text(unitName, weaponName) {
   return colorize("weaponPresetColor", "".join(weaponIconsText))
 }
 
-return {
+return freeze({
   KGF_TO_NEWTON
   TRIGGER_TYPE
   WEAPON_TYPE
@@ -1493,9 +1632,14 @@ return {
   getWeaponBlockedByGameModeMinRank
   isWeaponAllowedByGameModeRestrictions
   getWeaponBlockedByGameModeText
+  isItemMrankLocked
+  isWeaponBlkPathMrankLocked
+  getMrankLockText
+  getItemMrankReqAddMrank
+  isMrankAddLocked
   convertTriggerToTriggerForLoc
   additionalMarkupTypes
   additionalMarkupByType
   getAdditionalWeaponMarkupTypes
   getAdditionalBulletMarkupTypes
-}
+})

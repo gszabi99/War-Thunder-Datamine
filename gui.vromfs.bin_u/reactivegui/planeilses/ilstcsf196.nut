@@ -20,14 +20,14 @@ let tcsfAimMark = @() {
       fillColor = Color(255, 70, 10)
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
-        [VECTOR_POLY, 0, -100, -2, -92.5, 0, -85, 2, -92.5],
-        [VECTOR_POLY, 0, 100, -2, 92.5, 0, 85, 2, 92.5],
-        [VECTOR_POLY, -85.5, -50, -80, -44.75, -72.5, -42.5, -78, -47.75],
-        [VECTOR_POLY, 85.5, -50, 80, -44.75, 72.5, -42.5, 78, -47.75],
-        [VECTOR_POLY, 85.5, 50, 80, 44.75, 72.5, 42.5, 78, 47.75],
-        [VECTOR_POLY, -85.5, 50, -80, 44.75, -72.5, 42.5, -78, 47.75],
+        const [VECTOR_POLY, 0, -100, -2, -92.5, 0, -85, 2, -92.5],
+        const [VECTOR_POLY, 0, 100, -2, 92.5, 0, 85, 2, 92.5],
+        const [VECTOR_POLY, -85.5, -50, -80, -44.75, -72.5, -42.5, -78, -47.75],
+        const [VECTOR_POLY, 85.5, -50, 80, -44.75, 72.5, -42.5, 78, -47.75],
+        const [VECTOR_POLY, 85.5, 50, 80, 44.75, 72.5, 42.5, 78, 47.75],
+        const [VECTOR_POLY, -85.5, 50, -80, 44.75, -72.5, 42.5, -78, 47.75],
         [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 3.0],
-        [VECTOR_LINE, 0, 0, 0, 0]
+        const [VECTOR_LINE, 0, 0, 0, 0]
       ]
       behavior = Behaviors.RtPropUpdate
       update = @() {
@@ -62,7 +62,7 @@ let tcsfRadarAimMark = @() {
       color = Color(255, 70, 10)
       fillColor = Color(255, 70, 10)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = const [
         [VECTOR_LINE, -100, 0, -70, -30],
         [VECTOR_LINE, -50, -50, -50, -50],
         [VECTOR_LINE, -30, -70, 0, -100],
@@ -135,9 +135,7 @@ function altWrap(width, height, generateFunc) {
     size = [width * 0.17, height * 0.3]
     pos = [width * 0.75, height * 0.35]
     clipChildren = true
-    children = [
-      altitude(height * 0.3, generateFunc),
-    ]
+    children = altitude(height * 0.3, generateFunc)
   }
 }
 
@@ -208,7 +206,7 @@ function generatePitchLine(num) {
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 30, 0],
           [VECTOR_LINE, 7.5, 10, 22.5, 10],
           [VECTOR_LINE, 11.25, 20, 18.75, 20],
@@ -225,22 +223,22 @@ function generatePitchLine(num) {
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
         commands = [
-          (fabs(num) == 10 ? [VECTOR_LINE, 15, 0, 30, 0] : []),
-          (fabs(num) == 10 ? [VECTOR_LINE, 70, 0, 85, 0] : []),
-          (fabs(num) == 10 ? [VECTOR_LINE, 21.5, 10, 23.5, 10] : []),
-          (fabs(num) == 10 ? [VECTOR_LINE, 78.5, 10, 76.5, 10] : []),
-          (fabs(num) == 20 ? [VECTOR_LINE, 25, 0, 30, 0] : []),
-          (fabs(num) == 20 ? [VECTOR_LINE, 70, 0, 75, 0] : []),
-          (fabs(num) == 20 ? [VECTOR_LINE, 73.25, 10, 71.75, 10] : []),
-          (fabs(num) == 20 ? [VECTOR_LINE, 28.25, 10, 26.75, 10] : []),
-          (fabs(num) == 30 ? [VECTOR_LINE, 32.5, 0, 37.5, 0] : []),
-          (fabs(num) == 30 ? [VECTOR_LINE, 62.5, 0, 67.5, 0] : []),
-          (fabs(num) == 30 ? [VECTOR_LINE, 65.75, 10, 64.25, 10] : []),
-          (fabs(num) == 30 ? [VECTOR_LINE, 34.25, 10, 35.75, 10] : []),
-          (fabs(num) > 30 ? [VECTOR_LINE, 42.5, 0, 37.5, 0] : []),
-          (fabs(num) > 30 ? [VECTOR_LINE, 62.5, 0, 57.5, 0] : []),
-          (fabs(num) > 30 ? [VECTOR_LINE, 60.75, 10, 59.25, 10] : []),
-          (fabs(num) > 30 ? [VECTOR_LINE, 39.25, 10, 40.75, 10] : []),
+          (fabs(num) == 10 ? const [VECTOR_LINE, 15, 0, 30, 0] : const []),
+          (fabs(num) == 10 ? const [VECTOR_LINE, 70, 0, 85, 0] : const []),
+          (fabs(num) == 10 ? const [VECTOR_LINE, 21.5, 10, 23.5, 10] : const []),
+          (fabs(num) == 10 ? const [VECTOR_LINE, 78.5, 10, 76.5, 10] : const []),
+          (fabs(num) == 20 ? const [VECTOR_LINE, 25, 0, 30, 0] : const []),
+          (fabs(num) == 20 ? const [VECTOR_LINE, 70, 0, 75, 0] : const []),
+          (fabs(num) == 20 ? const [VECTOR_LINE, 73.25, 10, 71.75, 10] : const []),
+          (fabs(num) == 20 ? const [VECTOR_LINE, 28.25, 10, 26.75, 10] : const []),
+          (fabs(num) == 30 ? const [VECTOR_LINE, 32.5, 0, 37.5, 0] : const []),
+          (fabs(num) == 30 ? const [VECTOR_LINE, 62.5, 0, 67.5, 0] : const []),
+          (fabs(num) == 30 ? const [VECTOR_LINE, 65.75, 10, 64.25, 10] : const []),
+          (fabs(num) == 30 ? const [VECTOR_LINE, 34.25, 10, 35.75, 10] : const []),
+          (fabs(num) > 30 ? const [VECTOR_LINE, 42.5, 0, 37.5, 0] : const []),
+          (fabs(num) > 30 ? const [VECTOR_LINE, 62.5, 0, 57.5, 0] : const []),
+          (fabs(num) > 30 ? const [VECTOR_LINE, 60.75, 10, 59.25, 10] : const []),
+          (fabs(num) > 30 ? const [VECTOR_LINE, 39.25, 10, 40.75, 10] : const []),
         ]
         children = {
           rendObj = ROBJ_TEXT

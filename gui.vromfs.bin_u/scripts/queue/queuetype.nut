@@ -1,15 +1,14 @@
+import "%scripts/clusterSelect.nut" as clustersModule
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/matching/api.nut" import request_matching
+from "%scripts/slotbar/slotbarState.nut" import getSelSlotsData
+from "%scripts/user/myStatsState.nut" import isNewbieEventId
+from "%scripts/events/eventsState.nut" import isEventRandomBattlesById
+from "%scripts/queue/queue/queueClasses.nut" import getQueueClass
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { request_matching } = require("%scripts/matching/api.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
-let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
-let { isEventRandomBattlesById } = require("%scripts/events/eventsState.nut")
-let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 
 enum qTypeCheckOrder {
   COMMON
@@ -114,7 +113,7 @@ enumsAddTypes(g_queue_type,
   "typeName"
 )
 
-g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+g_queue_type.types.sortby(@(a) a.checkOrder)
 
 g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
   if (!params)

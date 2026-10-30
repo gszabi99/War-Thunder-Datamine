@@ -1,5 +1,12 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox, move_mouse_on_child_by_value
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqstd/platform.nut" import is_windows, platformId
 from "string" import format
@@ -9,14 +16,7 @@ from "%sqstd/string.nut" import lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWit
 from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
 let stdpath = require("%sqstd/path.nut")
-let { select_editbox, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 let FileDialog = class (BaseGuiHandlerWT) {

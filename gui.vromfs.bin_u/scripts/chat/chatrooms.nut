@@ -1,12 +1,13 @@
+from "%scripts/chat/chatStorage.nut" import isRoomJoined
+from "%scripts/chat/chatHelper.nut" import systemMessage, checkChatConnected
+from "%scripts/user/profileStates.nut" import userName
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { chatRooms, isRoomJoined } = require("%scripts/chat/chatStorage.nut")
-let { systemMessage, checkChatConnected } = require("%scripts/chat/chatHelper.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
+let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 
 local _roomJoinedIdx = 0
 
@@ -92,7 +93,7 @@ function isImRoomOwner(roomData) {
   return false
 }
 
-return {
+return freeze({
   joinThread
   addRoom
   generateInviteMenu
@@ -100,4 +101,4 @@ return {
   isRoomClan
   isNotUsersClanRoom
   isImRoomOwner
-}
+})

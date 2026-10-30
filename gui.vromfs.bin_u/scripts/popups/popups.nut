@@ -1,11 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
+from "%scripts/gamercard/gamercardHelpers.nut" import getActiveGamercardPopupNestObj
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils/delayedActions.nut" import LOST_DELAYED_ACTION_MSEC
-
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getActiveGamercardPopupNestObj } = require("%scripts/gamercard/gamercardHelpers.nut")
 
 
 
@@ -251,8 +250,8 @@ addListenersWithoutEnv({
   ActiveHandlersChanged = @(_p) performDelayedFlushPopupsIfCan()
 }, DEFAULT_HANDLER)
 
-return {
+return freeze({
   MAX_POPUPS_ON_SCREEN
   addPopup
   removePopupByHandler
-}
+})

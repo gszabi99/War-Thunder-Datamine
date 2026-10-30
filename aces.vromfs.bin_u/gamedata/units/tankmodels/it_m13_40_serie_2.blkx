@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2993,7 +2999,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/47mm_Ansaldo_47_32_M35_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/47mm_Ansaldo_47_32_M35_user_cannon.blk",
         "shotFreq": 0.34,
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
@@ -3039,7 +3045,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -3083,7 +3089,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "barrelDP": "gun_barrel_02_dm",
@@ -3126,8 +3132,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_m13_40_serie_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_m13_40_serie_2_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "ammoStowages": {

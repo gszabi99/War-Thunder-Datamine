@@ -1,20 +1,21 @@
 import "%sqStdLibs/helpers/u.nut" as u
+import "packed" as packed
+from "%scripts/events/eventsState.nut" import isCustomGameMode
+from "%scripts/events/eventTeamsInfo.nut" import getCountriesByTeams
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/matching/api.nut" import checkMatchingError
+from "%scripts/crossModuleEvents.nut" import MATCHING_EVENTS_DATA_RECEIVED
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/matching/serviceNotifications/match.nut" import fetchGameModesDigest, fetchGameModesInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "string" import startswith
 from "dagor.workcycle" import clearTimer, resetTimeout
 from "json" import parse_json
+from "%scripts/utils/sharedSubtrees.nut" import shareSubtree, clearSharedSubtrees
 from "%scripts/dagui_natives.nut" import is_online_available
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
-
-let { isCustomGameMode } = require("%scripts/events/eventsState.nut")
-let { getCountriesByTeams } = require("%scripts/events/eventTeamsInfo.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { checkMatchingError } = require("%scripts/matching/api.nut")
-let { MATCHING_EVENTS_DATA_RECEIVED } = require("%scripts/crossModuleEvents.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { fetchGameModesDigest, fetchGameModesInfo } = require("%scripts/matching/serviceNotifications/match.nut")
 
 
 
@@ -45,6 +46,8 @@ const BOT_FALLBACK_GAME_MODE_TAGS = [
   "player_v_bots",
 ]
 
+const PACKED_MODE_KEYS = ["mission_decl", "missions_info"] 
+
 let isSubGameMode = @(gameMode) gameMode?.tag != null
   && SUB_GAME_MODE_TAG_PREFIXES.findindex(@(prefix) startswith(gameMode.tag, prefix)) != null
 
@@ -65,7 +68,7 @@ let showModesNotLoadedHelpMessage = @() needShowGameModesNotLoadedMsg.set(true)
 function notifyGmChanged() {
   let gameEventsOldFormat = {}
   let modes = gameModes.values()
-  modes.sort(@(a, b) a.gameModeId - b.gameModeId)
+  modes.sortby(@(a) a.gameModeId)
   foreach (modeInfo in modes) {
     let name = modeInfo.name
     if (name in gameEventsOldFormat)
@@ -81,7 +84,11 @@ function notifyGmChanged() {
 
 function onGameModesUpdated(modes_list_str) {
   let modes_list = parse_json(modes_list_str)
-  foreach (modeInfo in modes_list) {
+  let packedParts = packed.pack(modes_list.map(@(m) m.filter(@(_, key) PACKED_MODE_KEYS.contains(key))))
+  foreach (idx, modeInfo in modes_list) {
+    let modePackedParts = packedParts[idx]
+    foreach (key in modeInfo.$keys())
+      modeInfo[key] = key in modePackedParts ? modePackedParts[key] : shareSubtree(modeInfo[key])
     let gameModeId = modeInfo.gameModeId
     log($"matching game mode fetched '{modeInfo.name}.{modeInfo.tag}' [{gameModeId}] chapter {modeInfo?.chapter}")
     gameModes[gameModeId] <- modeInfo
@@ -138,6 +145,7 @@ function fetchGameModes() {
   if (fetching)
     return
   gameModes.clear()
+  clearSharedSubtrees()
   fetching = true
   fetch_counter++
   let self = callee()
@@ -333,7 +341,7 @@ function getAllCountriesSets(event) {
 
   let res = []
   let mgmList = getGameModesByEconomicName(getEventEconomicName(event))
-  mgmList.sort(function(a, b) { return a.gameModeId - b.gameModeId }) 
+  mgmList.sortby(@(a) a.gameModeId) 
   foreach (mgm in mgmList) {
     if (isCustomGameMode(mgm))
       continue
@@ -360,7 +368,7 @@ function getAllCountriesSets(event) {
   return event._allCountriesSets
 }
 
-return {
+return freeze({
   getAllCountriesSets
   forceUpdateGameModes
   getModeById
@@ -377,4 +385,4 @@ return {
   NAVAL_EC_RB_GAME_MODE_TAG_PREFIX
   NUCLEAR_ESCALATION_GAME_MODE_TAG_PREFIX
   needShowGameModesNotLoadedMsg
-}
+})

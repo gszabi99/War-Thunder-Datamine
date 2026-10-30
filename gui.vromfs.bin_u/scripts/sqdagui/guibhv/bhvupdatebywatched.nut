@@ -1,8 +1,8 @@
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import popBhvValueConfig
 from "%sqStdLibs/helpers/u.nut" import isTable, isArray
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { popBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
+from "modules" import on_module_unload
 
 
 
@@ -16,6 +16,7 @@ local assertOnce = function(_uniqId, errorText) {
 
 local isScriptsIsUnloaded = false
 let isValidScripts = @() !isScriptsIsUnloaded
+on_module_unload(@(_) isScriptsIsUnloaded = true)
 
 let bhvUpdateByWatched = class {
   eventMask    = EV_ON_CMD
@@ -85,7 +86,6 @@ let bhvUpdateByWatched = class {
 
 replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
 
-return {
+return freeze({
   setAssertFunction = @(func) assertOnce = func  
-  setIsScriptsIsUnloaded = @() isScriptsIsUnloaded = true
-}
+})

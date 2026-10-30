@@ -1,8 +1,8 @@
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let CraftPart = class (ItemExternal) {
   static iType = itemType.CRAFT_PART

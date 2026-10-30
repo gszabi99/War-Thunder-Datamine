@@ -1,8 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/user/showcase/showcaseValues.nut" import defaultShowcaseType
 from "%scripts/dagui_library.nut" import *
-
-let { defaultShowcaseType } = require("%scripts/user/showcase/showcaseValues.nut")
-
 
 let favoriteShowcase = {
   lines = [

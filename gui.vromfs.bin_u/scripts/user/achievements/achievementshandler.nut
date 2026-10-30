@@ -1,3 +1,29 @@
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/unlocks/unlockUnitListWnd.nut" as openUnlockUnitListWnd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavButton, initUnlockFavInContainer
+from "%scripts/user/skins/decoratorGroupsTree.nut" import initTree
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible, getUnlockCost, canOpenUnlockManually, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit, isUnlockOpened
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockNameText
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTitle, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus, fillUnlockImage, fillUnlockProgressBar
+  , fillUnlockDescription, doPreviewUnlockPrize, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockConditions, fillUnlockStages
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocksWithBlkOrder
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/unlocks/unlockMarkers.nut" import getUnlockIds
+from "%scripts/unlocks/personalUnlocks.nut" import getManualUnlocks
+from "%scripts/unlocks/commandersHandbookState.nut" import CMH_CHAPTER
+from "%scripts/seen/bhvUnseen.nut" import makeConfig, makeConfigStrByList
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/unlocks/unlocksAction.nut" import openUnlockManually, buyUnlock
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/items/trophyRewardList.nut" import openUnlockPrizesList
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import isString
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -5,36 +31,11 @@ from "dagor.workcycle" import deferOnce, defer, setTimeout, clearTimer
 from "%sqstd/string.nut" import utf8ToLower
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
+from "%globalScripts/loc_helpers.nut" import getVendorLocId
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { initTree } = require("%scripts/user/skins/decoratorGroupsTree.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { isUnlockVisible, getUnlockCost, canOpenUnlockManually, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTitle, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus, fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockConditions, fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { CMH_CHAPTER } = require("%scripts/unlocks/commandersHandbookState.nut")
-let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
-let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 
 const SELECTED_ACHIEVEMENT_SAVE_ID = "wnd/selectedAchievement"
 
@@ -211,7 +212,7 @@ local AchievementsHandler = class (BaseGuiHandlerWT) {
       treeData.append({
         id = category
         itemType = "campaign"
-        itemText = $"#unlocks/chapter/{category}"
+        itemText = $"#{getVendorLocId($"unlocks/chapter/{category}")}"
         isCollapsable = !isNoGroups
         hidden = false
         isNoGroups
@@ -449,7 +450,7 @@ local AchievementsHandler = class (BaseGuiHandlerWT) {
   }
 
   function showUnlockPrizes(obj) {
-    openTrophyRewardsList({ trophy = findItemById(obj.trophyId) })
+    openUnlockPrizesList(obj.trophyId)
   }
 
   function onPrizePreview(obj) {
@@ -571,6 +572,6 @@ local AchievementsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("AchievementsHandler", AchievementsHandler)
 
-return {
+return freeze({
   openAchievementsPage = @(params = {}) handlersManager.loadHandler(AchievementsHandler, params)
-}
+})

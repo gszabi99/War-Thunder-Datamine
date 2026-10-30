@@ -1,4 +1,16 @@
 import "regexp2" as regexp2
+from "%scripts/controls/shortcutsUtils.nut" import isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem, isShortcutMapped, isAxisMappedOnMouse, getMouseAxis
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AXIS_MODIFIERS, MOUSE_AXIS
+from "%scripts/controls/input/nullInput.nut" import NullInput
+from "%scripts/controls/input/button.nut" import Button
+from "%scripts/controls/input/combination.nut" import Combination
+from "%scripts/controls/input/keyboardAxis.nut" import KeyboardAxis
+from "%scripts/controls/input/axis.nut" import Axis
+from "%scripts/controls/input/doubleAxis.nut" import DoubleAxis
+from "%scripts/controls/input/image.nut" import InputImage
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/aircraftHelpers.nut" import getCurrentHelpersMode
+from "%scripts/controls/shortcutsList/shortcutsList.nut" import getShortcutById
 from "%sqStdLibs/helpers/enums.nut" import addTypes, enumsAddTypes
 from "string" import split_by_chars
 from "globalEnv" import ControlHelpersMode
@@ -9,18 +21,6 @@ from "%sqstd/platform.nut" import isPC
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem, isShortcutMapped, isAxisMappedOnMouse, getMouseAxis } = require("%scripts/controls/shortcutsUtils.nut")
-let { CONTROL_TYPE, AXIS_MODIFIERS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
-let { NullInput } = require("%scripts/controls/input/nullInput.nut")
-let { Button } = require("%scripts/controls/input/button.nut")
-let { Combination } = require("%scripts/controls/input/combination.nut")
-let { KeyboardAxis } = require("%scripts/controls/input/keyboardAxis.nut")
-let { Axis } = require("%scripts/controls/input/axis.nut")
-let { DoubleAxis } = require("%scripts/controls/input/doubleAxis.nut")
-let { InputImage } = require("%scripts/controls/input/image.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 let getNullInput = @(shortcutId, showShortcutsNameIfNotAssign)
@@ -542,7 +542,7 @@ enumsAddTypes(g_shortcut_type, {
     getBaseAxesShortcuts = function (shortcutId) {
       let axes = splitCompositAxis(shortcutId)
       let result = []
-      axes.map(@(axis) result.extend(g_shortcut_type.AXIS.getBaseAxesShortcuts(axis)))
+      axes.each(@(axis) result.extend(g_shortcut_type.AXIS.getBaseAxesShortcuts(axis)))
       return result
     }
   }

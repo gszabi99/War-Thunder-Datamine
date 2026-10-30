@@ -1,16 +1,15 @@
+from "%sqstd/platform.nut" import isSony
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let {
   invite = @(...) null,
   checkInvitesAfterFlight = @() null
-} = isPlatformSony
+} = isSony
   ? (require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut"))
   : null
 
 
-return {
+return freeze({
   invite
   checkInvitesAfterFlight
-}
+})

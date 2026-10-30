@@ -1,16 +1,15 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import getSelectedChild, move_mouse_on_child_by_value
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/invites/invites.nut" import getInvitesList, findInviteByUid, markAllInvitesSeen
 from "%sqstd/string.nut" import clearBorderSymbols, utf8ToLower
 from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getSelectedChild, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getInvitesList, findInviteByUid, markAllInvitesSeen } = require("%scripts/invites/invites.nut")
 
 const INVITES_PER_PAGE = 30
 const MORE_BTN_ID = "showMoreBtn"
@@ -98,7 +97,7 @@ register_gui_handler("InvitesWnd", class (BaseGuiHandlerWT) {
     if (!hasInvites)
       return
 
-    this.invitesList.sort(@(a, b) b.receivedTime <=> a.receivedTime)
+    this.invitesList.sortby(@(a) -a.receivedTime)
     this.updateListView()
   }
 

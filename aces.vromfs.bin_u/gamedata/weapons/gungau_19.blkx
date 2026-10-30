@@ -1,15 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 33.33,
-  "alternativeShotFreq": 16.66,
-  "traceFreq": 4,
-  "bullets": 1500,
-  "shootingCharge": 5.5,
-  "dragCx": 0.15,
-  "mass": 114.0,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -25,6 +14,45 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 33.33,
+  "alternativeShotFreq": 16.66,
+  "bullets": 1500,
+  "shootingCharge": 5.5,
+  "dragCx": 0.15,
+  "mass": 114.0,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        12.3,
+        0.0
+      ],
+      [
+        14.9,
+        0.02
+      ],
+      [
+        19.0,
+        0.12
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        0.5,
+        1.5
+      ],
+      [
+        2.5,
+        2.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.023327,
@@ -862,7 +890,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "noTrail"
+        "trail": "smallTrail"
       }
     }
   ],
@@ -1285,7 +1313,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "noTrail"
+          "trail": "smallTrail"
         }
       },
       {
@@ -2547,42 +2575,6 @@
       }
     ]
   },
-  "gunSound": {
-    "pathStudio": "aircraft/weapon",
-    "outside": "gau_19_outside",
-    "cockpit": "gau_19_inside",
-    "charge": "gau_19_rotor_outside",
-    "charge_inside": "gau_19_rotor_inside",
-    "ai": "gau_19_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        12.3,
-        0.0
-      ],
-      [
-        14.9,
-        0.02
-      ],
-      [
-        19.0,
-        0.12
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        0.5,
-        1.5
-      ],
-      [
-        2.5,
-        2.0
-      ]
-    ]
-  },
   "GAU_19_new_gun": {
     "maxDeltaAngle": 0.47,
     "deviation": {
@@ -2613,5 +2605,13 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "pathStudio": "aircraft/weapon",
+    "outside": "gau_19_outside",
+    "cockpit": "gau_19_inside",
+    "charge": "gau_19_rotor_outside",
+    "charge_inside": "gau_19_rotor_inside",
+    "ai": "gau_19_ai"
   }
 }

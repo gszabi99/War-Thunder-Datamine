@@ -1,8 +1,7 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
 from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
-
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 
 let supportUnits = {
 }
@@ -46,8 +45,8 @@ function getSupportUnitImage(unitName) {
   return getUnitTooltipImage(supportUnit)
 }
 
-return {
+return freeze({
   getSupportUnits
   getSupportUnitImage
   getBaseUnit
-}
+})

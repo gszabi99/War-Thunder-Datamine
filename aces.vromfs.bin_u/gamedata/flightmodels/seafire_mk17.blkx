@@ -1,22 +1,22 @@
 {
   "model": "seafire_mk17",
   "fmFile": "fm/seafire_mk17.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "raf_para",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -858,15 +858,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -879,36 +883,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -944,15 +958,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -965,36 +983,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -1027,15 +1055,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -1078,7 +1110,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2512,31 +2546,31 @@
     "preset": [
       {
         "name": "seafire_mk17_default",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_default.blk"
       },
       {
         "name": "seafire_mk17_4rockets",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_4rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_4rockets.blk"
       },
       {
         "name": "seafire_mk17_8rockets",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_8rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_8rockets.blk"
       },
       {
         "name": "seafire_mk17_250lb_wing",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_250lb_wing.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_250lb_wing.blk"
       },
       {
         "name": "seafire_mk17_250lb",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_250lb.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_250lb.blk"
       },
       {
         "name": "seafire_mk17_500lb",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_500lb.blk"
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_500lb.blk"
       },
       {
         "name": "seafire_mk17_bombs_500lb_sap",
-        "blk": "gameData/FlightModels/weaponPresets/seafire_mk17_bombs_500lb_sap.blk",
+        "blk": "gamedata/flightModels/weaponPresets/seafire_mk17_bombs_500lb_sap.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -2567,7 +2601,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "shell": "emtr_shellrejection5",
@@ -2578,7 +2612,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare6",
               "flash": "flare6",
               "shell": "emtr_shellrejection6",
@@ -2590,7 +2624,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+              "blk": "gamedata/weapons/gunBrowning303_raf.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2601,7 +2635,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+              "blk": "gamedata/weapons/gunBrowning303_raf.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2612,7 +2646,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+              "blk": "gamedata/weapons/gunBrowning303_raf.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection3",
@@ -2622,7 +2656,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+              "blk": "gamedata/weapons/gunBrowning303_raf.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "shell": "emtr_shellrejection4",
@@ -2653,7 +2687,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a_default.blk",
                 "emitter": "rocket11",
                 "bullets": 1,
                 "order": 5
@@ -2662,7 +2696,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a_default.blk",
                 "emitter": "rocket12",
                 "bullets": 1,
                 "order": 7
@@ -2684,7 +2718,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "rocket7",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2694,7 +2728,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a.blk",
                 "emitter": "rocket11",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2704,7 +2738,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "rocket8",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2714,7 +2748,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a.blk",
                 "emitter": "rocket12",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2737,7 +2771,7 @@
           },
           "Weapon": {
             "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/uk_250lbs_default.blk",
+            "blk": "gamedata/weapons/bombguns/uk_250lbs_default.blk",
             "separate": true,
             "emitter": "bomb2",
             "bullets": 1,
@@ -2761,7 +2795,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_250lbs.blk",
               "separate": true,
               "emitter": "bomb1",
               "bullets": 1,
@@ -2778,7 +2812,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lbs.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2794,7 +2828,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lb_sap_mkII_ap.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2817,7 +2851,7 @@
           },
           "Weapon": {
             "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/uk_250lbs_default.blk",
+            "blk": "gamedata/weapons/bombguns/uk_250lbs_default.blk",
             "separate": true,
             "emitter": "bomb3",
             "bullets": 1,
@@ -2845,7 +2879,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a_default.blk",
                 "emitter": "rocket14",
                 "bullets": 1,
                 "order": 6
@@ -2854,7 +2888,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a_default.blk",
                 "emitter": "rocket13",
                 "bullets": 1,
                 "order": 8
@@ -2876,7 +2910,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "rocket10",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2886,7 +2920,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a.blk",
                 "emitter": "rocket14",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2896,7 +2930,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "rocket9",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2906,7 +2940,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4a.blk",
                 "emitter": "rocket13",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2959,9 +2993,9 @@
     "new_compressor": {},
     "new_engine_injection": {},
     "hispano_universal": {},
-    "hispano_ground_targets": {},
     "hispano_air_targets": {},
     "hispano_tracers": {},
+    "hispano_ground_targets": {},
     "hispano_stealth": {},
     "303_universal": {},
     "303_all_tracers": {},

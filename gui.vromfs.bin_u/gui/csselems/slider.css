@@ -1,15 +1,3 @@
-@const sliderThumbWidth: 9@sf/@pf_outdated;
-@const sliderThumbHeight: 22@sf/@pf_outdated;
-@const sliderValueButtonHeight: 1@cIco+4;
-@const sliderButtonSquareHeight: 0.025@scrn_tgt;
-@const sliderButtonSquareHeightSm: 20*@sf/@pf;
-@const sliderHeight: 7*@sf/@pf_outdated;
-@const sliderIncHeight: 5*@sf/@pf_outdated; @const sliderWidth: (0.3@sf) \ 1; 
-@const sliderBgColor: #606060;
-@const sliderFgColor: #A0A0A0;
-@const sliderActiveBgColor: #808080;
-@const sliderActiveFgColor: #E0E0E0;
-
 slider {
   height:@sliderHeight + 2@sliderIncHeight;
   width:@sliderWidth;
@@ -133,12 +121,6 @@ slider[fullWidth=yes] {
 
 slider[small=yes] {
   height:5@sf/@pf + 2@sliderIncHeight;
-}
-
-[optContainer=yes] slider.systemOption {
-  width:1@systemOptContainerControlWidth;
-  height:6@sf/@pf + 2@sliderIncHeight;
-  top:ph-h-1@sf/@pf;
 }
 
 slider:disabled[hitsAnalysis=yes]

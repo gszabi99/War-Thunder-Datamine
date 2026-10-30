@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1049,7 +1055,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/122mm_M30_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/122mm_M30_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "shotFreq": 0.06,
@@ -1103,8 +1109,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_su_122_1943_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_su_122_1943_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

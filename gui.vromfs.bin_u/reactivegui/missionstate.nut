@@ -1,4 +1,5 @@
 import "%rGui/interopGen.nut" as interopGet
+import "%globalScripts/missionTeamScores.nut" as missionTeamScores
 from "%rGui/globals/ui_library.nut" import *
 
 let missionState = {
@@ -6,10 +7,6 @@ let missionState = {
   gameOverReason = Watched(0)
   timeLeft = Watched(900)
   roundTimeLeft = Watched(900)
-  scoreTeamA = Watched(0)
-  scoreTeamB = Watched(0)
-  ticketsTeamA = Watched(0)
-  ticketsTeamB = Watched(0)
   localTeam = Watched(0)
   scoreLimit = Watched(0)
   deathPenaltyMul = Watched(1.0)
@@ -35,4 +32,4 @@ interopGet({
 })
 
 
-return missionState
+return freeze(missionState.__merge(missionTeamScores))

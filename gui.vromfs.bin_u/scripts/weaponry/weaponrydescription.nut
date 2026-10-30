@@ -1,4 +1,20 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%scripts/time.nut" import secondsToString
+from "%scripts/options/optionsMeasureUnits.nut" import countMeasure
+from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon, getUnitWeaponry, isCaliberCannon
+  , addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon, getWeaponExtendedInfo
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletsSetData, getModificationName
+from "%scripts/weaponry/modificationInfo.nut" import getModificationBulletsGroup
+from "%scripts/weaponry/weaponsParams.nut" import reloadCooldownTimeByCaliber
+from "%scripts/weaponry/weaponryPresets.nut" import getPresetWeapons
+from "%scripts/unit/unitParams.nut" import getEsUnitType, getFullUnitBlk
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/weaponry/weaponryTypes.nut" import getUpgradeTypeByItem
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "string" import format
 from "%sqstd/math.nut" import round_by_value
 from "%sqstd/string.nut" import utf8Capitalize
@@ -10,21 +26,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 from "types" import String
 
-let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon, getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon, getWeaponExtendedInfo } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
-let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.nut")
-let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 
 function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff())
@@ -176,12 +178,12 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
 
   let resultTurretBlocks = turretsData 
     .topairs()
-    .sort(@(a,b) b[1].caliber <=> a[1].caliber)
+    .sortby(@(a) -a[1].caliber)
     .map(@(block) block[1].guns)
 
   let resultWeaponBlocks = weaponsData 
     .topairs()
-    .sort(@(a,b) b[1].caliber <=> a[1].caliber)
+    .sortby(@(a) -a[1].caliber)
     .map(@(block) block[1].guns)
     .extend(resultTurretBlocks)
 
@@ -606,7 +608,7 @@ function getAdditionalWeaponInfoMarkup(unitAdditionWeaponsData) {
     { weapons = data, isTooltipByHold = showConsoleButtons.get() })
 }
 
-return {
+return freeze({
   getWeaponInfoText
   getWeaponNameText
   getWeaponXrayDescText
@@ -620,4 +622,4 @@ return {
   makeWeaponInfoData
   getWeaponInfoMarkup
   getAdditionalWeaponInfoMarkup
-}
+})

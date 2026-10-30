@@ -1,7 +1,7 @@
 {
   "model": "mq_1l_usa",
   "fmFile": "fm/ucav_mq_1_predator.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/fighter_metaparts.blk",
   "gForceTolerationMult": 0.0001,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -28,17 +28,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "uav_micro",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -421,15 +421,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -472,7 +476,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -1427,7 +1433,7 @@
       "dummy": true,
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "blk": "gamedata/weapons/dummy_weapon.blk",
       "emitter": "optic1_gun",
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
@@ -1456,7 +1462,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ucav_mq_1_predator_default",
-      "blk": "gameData/FlightModels/weaponPresets/ucav_mq_1_predator_hellfire.blk",
+      "blk": "gamedata/flightModels/weaponPresets/ucav_mq_1_predator_hellfire.blk",
       "tags": {
         "free": true
       }
@@ -1465,11 +1471,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "blk": "gamedata/sensors/ir_tracker_tgp.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },

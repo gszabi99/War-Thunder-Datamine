@@ -1,9 +1,8 @@
+import "%rGui/style/fontsState.nut" as fontsState
 from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
 from "%rGui/wwMap/wwMapZonesData.nut" import hoveredZone, getZones
 from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
 
 let mkMapZoneName = @(zone, areaBounds) function() {
   let { areaWidth, areaHeight } = areaBounds
@@ -50,6 +49,6 @@ let mkMapZoneNames = @() {
   children = [mkMapZonesNamePermanent(activeAreaBounds.get()), mkMapHoveredZoneName(activeAreaBounds.get())]
 }
 
-return {
+return freeze({
   mkMapZoneNames
-}
+})

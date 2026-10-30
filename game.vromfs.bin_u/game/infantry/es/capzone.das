@@ -1,4 +1,5 @@
 require ecs
+require ecs.common
 require pathfinder
 require DagorSystem
 require DagorRandom
@@ -45,8 +46,8 @@ def check_path_full(var in_out_pos : float3&; from_pos : float3; extents : float
       return true
   return false
 
-def validate_pos_for_capzone(var in_out_pos : float3&; area_name : string; points_to_check : array<float3>)
-  if !is_in_mission_area(in_out_pos, area_name)
+def validate_pos_for_capzone(var in_out_pos : float3&; is_inside : block<(pos : float3) : bool>; points_to_check : array<float3>)
+  if !invoke(is_inside, in_out_pos)
     return false
   let extents = float3(1.5, FLT_MAX, 1.5)
   
@@ -55,12 +56,12 @@ def validate_pos_for_capzone(var in_out_pos : float3&; area_name : string; point
       return true
   return false
 
-def get_nearest_pos(area_name : string; pos : float3; radius : float; points_to_check : array<float3>; skip_validate : bool) : MaybePos
+def get_nearest_pos(is_inside : block<(pos : float3) : bool>; pos : float3; radius : float; points_to_check : array<float3>; skip_validate : bool) : MaybePos
   var nearestPos = get_lower_navmesh_pos(pos, radius) <| $(var p : float3&)
-    return skip_validate || validate_pos_for_capzone(p, area_name, points_to_check)
+    return skip_validate || validate_pos_for_capzone(p, is_inside, points_to_check)
   if nearestPos is invalid
     nearestPos = get_lower_navmesh_pos_in_radius(pos, radius) <| $(var p : float3&)
-      return skip_validate || validate_pos_for_capzone(p, area_name, points_to_check)
+      return skip_validate || validate_pos_for_capzone(p, is_inside, points_to_check)
   return nearestPos
 
 def is_too_near(pos : float3; points : Point3List; min_dist_sq : float)
@@ -74,6 +75,7 @@ def is_too_near(pos : float3; points : Point3List; min_dist_sq : float)
 def init_nearest_pos(eid : EntityId;
                      transform : float3x4;
                      capture_zone__name : string;
+                     is_inside : block<(pos : float3) : bool>;
                      sphere_zone__radius : float;
                      capzone__approximateRadius : float;
                      points_to_check : array<float3>;
@@ -93,18 +95,18 @@ def init_nearest_pos(eid : EntityId;
   let radius = sphere_zone__radius > 0.0 ? sphere_zone__radius : capzone__approximateRadius > 0.0 ? capzone__approximateRadius : 0.5 * min(length(transform[0]), length(transform[2]))
 
   let basePos = transform[3]
-  var pos = get_nearest_pos(capture_zone__name, basePos, min(0.6f, radius), points_to_check, false)
+  var pos = get_nearest_pos(is_inside, basePos, min(0.6f, radius), points_to_check, false)
   if pos is invalid
-    pos = get_nearest_pos(capture_zone__name, basePos, min(4f, radius), points_to_check, false)
+    pos = get_nearest_pos(is_inside, basePos, min(4f, radius), points_to_check, false)
   capzone__hasNearestNavmeshPos = pos is pos
   if capzone__hasNearestNavmeshPos
     capzone__nearestNavmeshPos = pos as pos
   else
     if !may_fail
       logerr("can't find nearest navmesh position for capzone {capture_zone__name} <{getEntityTemplateName(eid)}> at {basePos}")
-    pos = get_nearest_pos(capture_zone__name, basePos, min(0.6f, radius), points_to_check, true)
+    pos = get_nearest_pos(is_inside, basePos, min(0.6f, radius), points_to_check, true)
     if pos is invalid
-      pos = get_nearest_pos(capture_zone__name, basePos, min(4f, radius), points_to_check, true)
+      pos = get_nearest_pos(is_inside, basePos, min(4f, radius), points_to_check, true)
     capzone__hasNearestNavmeshPos = true
     capzone__nearestNavmeshPos = basePos
     if pos is pos
@@ -144,7 +146,7 @@ def init_nearest_pos(eid : EntityId;
       while tryNum-- > 0
         if project_to_nearest_navmesh_point_avoid_obstacles(inPos, projExtents)
           if !is_too_near(inPos, capzone__insideNavmeshPositions, minDistSq)
-            if is_in_mission_area(inPos, capture_zone__name)
+            if invoke(is_inside, inPos)
               if find_path(center, inPos, distToPath, stepSize, pathSlop) == FindPathResult.FPR_FULL
                 push(capzone__insideNavmeshPositions, inPos)
                 --leftIntPoints
@@ -160,7 +162,7 @@ def init_nearest_pos(eid : EntityId;
 
       if project_to_nearest_navmesh_point_avoid_obstacles(outPos, projExtents)
         if !is_too_near(outPos, capzone__outsideNavmeshPositions, minDistSq)
-          if !is_in_mission_area(outPos, capture_zone__name)
+          if !invoke(is_inside, outPos)
             if find_path(center, outPos, distToPath, stepSize, pathSlop) == FindPathResult.FPR_FULL
               push(capzone__outsideNavmeshPositions, outPos)
               --leftExtPoints
@@ -172,7 +174,7 @@ def init_nearest_pos(eid : EntityId;
 
   sendEvent(eid, InitCapzoneRadius())
 
-[es(tag=server, on_appear, REQUIRE_NOT=moveable_capzone)]
+[es(tag=server, on_appear, REQUIRE_NOT=(moveable_capzone, sectoredCapzone))]
 def capzone_init_nearest_navmesh_point(evt : Event;
                                        eid : EntityId;
                                        transform : float3x4;
@@ -192,7 +194,7 @@ def capzone_init_nearest_navmesh_point(evt : Event;
   if pathfinder_is_loaded()
     var respbases : array<float3>
     get_respbases(respbases)
-    init_nearest_pos(eid, transform, capture_zone__name, sphere_zone__radius, capzone__approximateRadius, respbases,
+    init_nearest_pos(eid, transform, capture_zone__name, $(pos : float3) => is_in_mission_area(pos, capture_zone__name), sphere_zone__radius, capzone__approximateRadius, respbases,
                      capzone__hasNearestNavmeshPos, capzone__nearestNavmeshPos,
                      capzone__insideNavmeshPositions, capzone__outsideNavmeshPositions,
                      capzone__extendOutsideNavMeshPositionsRadius, capzone__minDistBetweenNavPoints,
@@ -205,20 +207,89 @@ def capzone_init_all_nearest_navmesh_points(evt : Event)
     return
   var respbases : array<float3>
   get_respbases(respbases)
-  query() <| $ [es(REQUIRE_NOT=moveable_capzone)] (eid : EntityId;
-                                                   transform : float3x4;
-                                                   capture_zone__name : string;
-                                                   sphere_zone__radius : float = 0.0;
-                                                   capzone__approximateRadius : float = 0.0;
-                                                   var capzone__hasNearestNavmeshPos : bool&;
-                                                   var capzone__nearestNavmeshPos : float3&;
-                                                   var capzone__insideNavmeshPositions : Point3List&;
-                                                   var capzone__outsideNavmeshPositions : Point3List&;
-                                                   capzone__extendOutsideNavMeshPositionsRadius : float = 0.0;
-                                                   capzone__minDistBetweenNavPoints : float = 2.5;
-                                                   capzone__maxInNavPoints : int = 20;
-                                                   capzone__maxOutNavPoints : int = 30)
-    init_nearest_pos(eid, transform, capture_zone__name, sphere_zone__radius, capzone__approximateRadius, respbases,
+  query() <| $ [es(REQUIRE_NOT=(moveable_capzone, sectoredCapzone))] (eid : EntityId;
+                                                                      transform : float3x4;
+                                                                      capture_zone__name : string;
+                                                                      sphere_zone__radius : float = 0.0;
+                                                                      capzone__approximateRadius : float = 0.0;
+                                                                      var capzone__hasNearestNavmeshPos : bool&;
+                                                                      var capzone__nearestNavmeshPos : float3&;
+                                                                      var capzone__insideNavmeshPositions : Point3List&;
+                                                                      var capzone__outsideNavmeshPositions : Point3List&;
+                                                                      capzone__extendOutsideNavMeshPositionsRadius : float = 0.0;
+                                                                      capzone__minDistBetweenNavPoints : float = 2.5;
+                                                                      capzone__maxInNavPoints : int = 20;
+                                                                      capzone__maxOutNavPoints : int = 30)
+    init_nearest_pos(eid, transform, capture_zone__name, $(pos : float3) => is_in_mission_area(pos, capture_zone__name), sphere_zone__radius, capzone__approximateRadius, respbases,
+                     capzone__hasNearestNavmeshPos, capzone__nearestNavmeshPos,
+                     capzone__insideNavmeshPositions, capzone__outsideNavmeshPositions,
+                     capzone__extendOutsideNavMeshPositionsRadius, capzone__minDistBetweenNavPoints,
+                     capzone__maxInNavPoints, capzone__maxOutNavPoints)
+
+def private is_in_sector(pos : float3; points : Point2List; bottom_y : float; top_y : float) : bool
+  return pos.y >= bottom_y && pos.y <= top_y && is_point_in_poly(pos.xz, points)
+
+def private sector_approximate_radius(center : float3; points : Point2List) : float
+  var radiusSq = 0.0
+  for pt in points
+    radiusSq = max(radiusSq, distance_sq(pt, center.xz))
+  return sqrt(radiusSq)
+
+[es(tag=server, on_appear, REQUIRE=capzoneSector)]
+def capzone_sector_init_nearest_navmesh_point(evt : Event;
+                                              eid : EntityId;
+                                              transform : float3x4;
+                                              capzone_sector__points : Point2List;
+                                              capzone_sector__bottomY : float;
+                                              capzone_sector__topY : float;
+                                              var capzone__approximateRadius : float&;
+                                              var capzone__hasNearestNavmeshPos : bool&;
+                                              var capzone__nearestNavmeshPos : float3&;
+                                              var capzone__insideNavmeshPositions : Point3List&;
+                                              var capzone__outsideNavmeshPositions : Point3List&;
+                                              capzone__extendOutsideNavMeshPositionsRadius : float;
+                                              capzone__minDistBetweenNavPoints : float;
+                                              capzone__maxInNavPoints : int;
+                                              capzone__maxOutNavPoints : int)
+  if (find_query() <| $ [es(REQUIRE=navmeshDisabler)] () => true)
+    return
+  if pathfinder_is_loaded()
+    var respbases : array<float3>
+    get_respbases(respbases)
+    capzone__approximateRadius = sector_approximate_radius(transform[3], capzone_sector__points)
+    init_nearest_pos(eid, transform, "sector",
+                     $(pos : float3) => is_in_sector(pos, capzone_sector__points, capzone_sector__bottomY, capzone_sector__topY),
+                     0.0, capzone__approximateRadius, respbases,
+                     capzone__hasNearestNavmeshPos, capzone__nearestNavmeshPos,
+                     capzone__insideNavmeshPositions, capzone__outsideNavmeshPositions,
+                     capzone__extendOutsideNavMeshPositionsRadius, capzone__minDistBetweenNavPoints,
+                     capzone__maxInNavPoints, capzone__maxOutNavPoints,
+                      true)
+
+[es(tag=server, on_event=EventLevelLoaded)]
+def capzone_sector_init_all_nearest_navmesh_points(evt : Event)
+  if (find_query() <| $ [es(REQUIRE=navmeshDisabler)] () => true)
+    return
+  var respbases : array<float3>
+  get_respbases(respbases)
+  query() <| $ [es(REQUIRE=capzoneSector)] (eid : EntityId;
+                                            transform : float3x4;
+                                            capzone_sector__points : Point2List;
+                                            capzone_sector__bottomY : float;
+                                            capzone_sector__topY : float;
+                                            var capzone__approximateRadius : float&;
+                                            var capzone__hasNearestNavmeshPos : bool&;
+                                            var capzone__nearestNavmeshPos : float3&;
+                                            var capzone__insideNavmeshPositions : Point3List&;
+                                            var capzone__outsideNavmeshPositions : Point3List&;
+                                            capzone__extendOutsideNavMeshPositionsRadius : float;
+                                            capzone__minDistBetweenNavPoints : float;
+                                            capzone__maxInNavPoints : int;
+                                            capzone__maxOutNavPoints : int)
+    capzone__approximateRadius = sector_approximate_radius(transform[3], capzone_sector__points)
+    init_nearest_pos(eid, transform, "sector",
+                     $(pos : float3) => is_in_sector(pos, capzone_sector__points, capzone_sector__bottomY, capzone_sector__topY),
+                     0.0, capzone__approximateRadius, respbases,
                      capzone__hasNearestNavmeshPos, capzone__nearestNavmeshPos,
                      capzone__insideNavmeshPositions, capzone__outsideNavmeshPositions,
                      capzone__extendOutsideNavMeshPositionsRadius, capzone__minDistBetweenNavPoints,

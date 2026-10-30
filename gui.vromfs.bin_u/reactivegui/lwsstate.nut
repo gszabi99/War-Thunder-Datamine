@@ -11,4 +11,4 @@ interopGen({
   postfix = "Update"
 })
 
-return lwsState
+return freeze(lwsState)

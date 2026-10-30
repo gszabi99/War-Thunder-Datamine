@@ -1,3 +1,13 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getMapByName
+from "%scripts/clans/clanInfo.nut" import getClansInfoByClanIds
+from "%scripts/userLog/userlogUtils.nut" import disableSeenUserlogs, getUserLogsList
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/worldWar/worldWarCfgState.nut" import getLastPlayedOperationId
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getOppositeSide
 from "dagor.random" import rnd
 from "console" import register_command
 from "%sqstd/math.nut" import round_by_value
@@ -6,18 +16,8 @@ from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
-let { disableSeenUserlogs, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getOppositeSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 
@@ -170,6 +170,6 @@ register_command(
   }
   , "debug.ww_operation_rewards_popup")
 
-return {
+return freeze({
   openWwOperationRewardPopup
-}
+})

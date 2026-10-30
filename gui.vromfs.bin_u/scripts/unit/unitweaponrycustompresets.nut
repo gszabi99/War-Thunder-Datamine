@@ -1,4 +1,9 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/unit/initUnitWeapons.nut" import initUnitCustomPresetsWeapons
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/weaponry/bulletsInfo.nut" import getWeaponToFakeBulletMask, updateSecondaryBullets
+from "%scripts/tasker.nut" import addTask
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "console" import register_command
@@ -7,13 +12,8 @@ from "chard" import getCustomWpnPresetBlk, charSendBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { initUnitCustomPresetsWeapons } = require("%scripts/unit/initUnitWeapons.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
-let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
-let { addTask } = require("%scripts/tasker.nut")
+let customPresetsConfigByUnit = Watched({})
+let customPresetsByUnit = Watched({})
 
 
 
@@ -203,7 +203,7 @@ addListenersWithoutEnv({
 
 register_command(@(unitName, presetName) deleteCustomPreset(getAircraftByName(unitName), presetName), "custom_preset_del")
 
-return {
+return freeze({
   addCustomPreset
   deleteCustomPreset
   renameCustomPreset
@@ -214,4 +214,4 @@ return {
   invalidateUnitCache
   setDebugPresetsOverride
   clearDebugPresetsOverride
-}
+})

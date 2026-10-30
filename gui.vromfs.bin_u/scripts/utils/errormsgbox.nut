@@ -1,14 +1,13 @@
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/matching/api.nut" import isMatchingError, matchingErrorString
+from "%scripts/matchingRooms/sessionDebugInfo.nut" import get_last_session_debug_info
+from "%scripts/penitentiary/penaltyMessages.nut" import getBannedMessage
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "string" import format
 from "matching.errors" import SERVER_ERROR_PLAYER_BANNED
 from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
-let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-let { getBannedMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 
 let errCodeToStringMap = {
   [YU2_TIMEOUT] = "80130182",
@@ -37,7 +36,7 @@ function psn_err_msg(text, res) {
   }
 
   local errText = ""
-  if (isPlatformSony)
+  if (isSony)
     errText = loc($"yn1/error/{errCode}", loc("msgbox/appearError"))
   else
     errText = loc("yn1/error/fmt", { text = loc(text == "" ? "msgbox/error_header" : text, ""), err_msg = errMsg, err_code = errCode })
@@ -91,9 +90,7 @@ function showErrorMessageBox(header, error_code, buttons, def_btn, options = {},
   if (checkObj(guiScene["errorMessageBox"]))
     return
 
-  if (error_code == SERVER_ERROR_PLAYER_BANNED
-      || error_code == (SERVER_ERROR_PLAYER_BANNED & 0xFFFFFFFF)) { 
-                                                                    
+  if (error_code == SERVER_ERROR_PLAYER_BANNED) {
     let banMessage = getBannedMessage()
     if (banMessage != "") {
       scene_msg_box("errorMessageBox", guiScene, banMessage, buttons, def_btn, options)
@@ -103,13 +100,13 @@ function showErrorMessageBox(header, error_code, buttons, def_btn, options = {},
 
   let errData = get_error_data(header, error_code)
 
-  if (!isPlatformXbox) {
+  if (!isXbox) {
     let errorLinkFormatText = loc(getCurCircuitOverride($"errorLinkFormatLocId_{errData.errCode}", "msgbox/error_link_format_game"))
     errData.text = "".concat(errData.text, "\n\n",
-      (isPlatformSony ? "" : ("".concat(errorLinkFormatText, loc("ui/colon")))))
+      (isSony ? "" : ("".concat(errorLinkFormatText, loc("ui/colon")))))
     let link = getCurCircuitOverride($"knowledgebaseUrl_{errData.errCode}")
       ?? "".concat(getCurCircuitOverride("knowledgebaseUrl") ?? loc("url/knowledgebase"), errData.errCode)
-    let linkText = isPlatformSony ? errorLinkFormatText : link
+    let linkText = isSony ? errorLinkFormatText : link
     errData.text = "".concat(errData.text, $"<url={link}>{linkText}</url>")
   }
 
@@ -122,7 +119,7 @@ function showErrorMessageBox(header, error_code, buttons, def_btn, options = {},
   return scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
 }
 
-return {
+return freeze({
   get_yu2_error_text
   showErrorMessageBox
-}
+})

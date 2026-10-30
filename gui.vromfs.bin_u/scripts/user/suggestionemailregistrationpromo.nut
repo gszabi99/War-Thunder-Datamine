@@ -1,11 +1,10 @@
+from "%scripts/promo/promo.nut" import getPromoVisibilityById
+from "%scripts/user/suggestionEmailRegistration.nut" import launchEmailRegistration, canEmailRegistration
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%sqstd/platform.nut" import isSony, isXbox
 from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
-
-let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
-let { launchEmailRegistration, canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 
 addPromoAction("email_registration", @(_handler, _params, _obj) launchEmailRegistration())
 
@@ -15,8 +14,8 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "imageButton"
   getText = @() loc("promo/btnXBOXAccount_linked")
-  image = isPlatformSony ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_psn_promo?P1"
-    : isPlatformXbox ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_xbox_promo?P1"
+  image = isSony ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_psn_promo?P1"
+    : isXbox ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_xbox_promo?P1"
     : steam_is_running() ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_steam_promo?P1"
     : ""
   aspect_ratio = 2.07

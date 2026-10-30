@@ -65,4 +65,4 @@ let WwObjectiveView = class {
   }
 }
 
-return { WwObjectiveView }
+return freeze({ WwObjectiveView })

@@ -2,6 +2,7 @@ require ecs
 require ecs.common
 require app
 require MPlayer
+require net
 require Unit
 require Grid
 require GridCollision
@@ -89,6 +90,8 @@ def private is_spawn_pos_banned_by_capzone(pos : float3; margin : float) : bool
 
 [es(REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
 def save_dynamic_respawn_positions(evt : Event)
+  let localPlayer = player_get_local()
+  let clientArmy = !is_server() && localPlayer != null ? int(localPlayer.team) : -1
   query() <| $ [es] (unit__ref : UnitRef;
                      human_net_phys : HumanActor;
                      dynamic_respawn__posDiffCacheSaveSq : float;
@@ -98,6 +101,8 @@ def save_dynamic_respawn_positions(evt : Event)
                      var dynamic_respawn__prevPositions : Point3List&)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || unit.isLoading
+      return
+    if clientArmy >= 0 && unit.army != clientArmy
       return
 
     assume currentState = human_net_phys.phys.currentState

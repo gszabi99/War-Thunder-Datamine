@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 0.66,
-  "traceFreq": 1,
-  "bullets": 13,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_80mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 1,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 0.66,
+  "bullets": 13,
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": {
     "bulletCount": 35,
     "mass": 6.8,
@@ -157,7 +173,7 @@
       ],
       "traceFreq": 1,
       "tracer": "30mmWhite",
-      "trail": "black"
+      "trail": "thick"
     },
     "collisions": {
       "default": {
@@ -1149,7 +1165,7 @@
         ],
         "traceFreq": 1,
         "tracer": "76mmPink",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -1445,29 +1461,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bk75_gun_outside",
-    "cockpit": "bk75_gun_inside",
-    "ai": "bk75_gun_ai"
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
-  },
   "bk75_new_gun": {
     "maxDeltaAngle": 0.15,
     "overheat": {
@@ -1482,5 +1475,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bk75_gun_outside",
+    "cockpit": "bk75_gun_inside",
+    "ai": "bk75_gun_ai"
   }
 }

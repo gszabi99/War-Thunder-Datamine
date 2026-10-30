@@ -1,24 +1,23 @@
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/login/loginWnd.nut" import LoginWndHandler
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%scripts/login/loginManager.nut" import addLoginState
+from "%scripts/viewUtils/projectAwards.nut" import setProjectAwards
+from "%scripts/utils/errorMsgBox.nut" import showErrorMessageBox
 from "auth_wt" import checkLoginPass, setLoginPass
 from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LoginWndHandler } = require("%scripts/login/loginWnd.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { addLoginState } = require("%scripts/login/loginManager.nut")
-let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
-let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 register_gui_handler("LoginWndHandlerGfn", class (LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
     animBgLoad()
-    setVersionText()
+    setVersionText(this.scene)
     setProjectAwards(this)
 
     this.guiScene.performDelayed(this, function() { this.doLogin() })

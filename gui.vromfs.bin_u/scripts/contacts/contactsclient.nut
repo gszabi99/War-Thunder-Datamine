@@ -1,4 +1,5 @@
 import "contacts" as lowLevelClient
+from "%scripts/contacts/contactsConsts.nut" import GAME_GROUP_NAME
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "auth_wt" import getPlayerTokenGlobal
@@ -8,7 +9,6 @@ from "dagor.random" import rnd_int
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let { GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let logC = log_with_prefix("[CONTACTS CLIENT] ")
 
 local lastRequestId = rnd_int(0, 32767)
@@ -225,4 +225,4 @@ register_command(contacts_get, "contacts.contacts_get")
 register_command(contacts_add, "contacts.contacts_add")
 register_command(contacts_search, "contacts.contacts_search")
 
-return contactsClient
+return freeze(contactsClient)

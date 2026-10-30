@@ -63,8 +63,8 @@
   "numBorderCellsZPos": 0,
   "numBorderCellsZNeg": 0,
   "water_level": 0.0,
-  "weatherPreset": "gameData/environments/weather_preset_1.blk",
-  "weatherTypes": "gameData/environments/weather_types_naval.blk",
+  "weatherPreset": "gamedata/environments/weather_preset_1.blk",
+  "weatherTypes": "gamedata/environments/weather_types_naval.blk",
   "addWhiteTemp": -1000.0,
   "heli_ground_effect": "sand",
   "average_ground_level": 0.0,
@@ -225,10 +225,163 @@
   "waterStub": {
     "enable": true
   },
+  "randomGrass": {
+    "density": 0.8,
+    "maxRadius": 300.0,
+    "sowPerlinFreq": 0.1,
+    "fadeDelta": 100.0,
+    "lodFadeDelta": 10.0,
+    "minLodDensity": 0.18,
+    "blendToLandDelta": 100.0,
+    "texSize": 1024,
+    "noise_first_rnd": 23.140692,
+    "noise_first_val_mul": 1.0,
+    "noise_first_val_add": 0.0,
+    "noise_second_rnd": 0.05,
+    "noise_second_val_mul": 1.0,
+    "noise_second_val_add": 0.0,
+    "directWindMul": 1.0,
+    "noiseWindMul": 1.0,
+    "windPerlinFreq": 50000.0,
+    "directWindFreq": 1.0,
+    "directWindModulationFreq": 1.0,
+    "windWaveLength": 100.0,
+    "windToColor": 0.2,
+    "helicopterHorMul": 2.0,
+    "helicopterVerMul": 1.0,
+    "helicopterToDirectWindMul": 2.0,
+    "helicopterFalloff": 0.001,
+    "generateUnderwater": true,
+    "minLandHeight": -350.0,
+    "layer": [
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_moss_a",
+        "density": 20.0,
+        "horScale": 3.2,
+        "horMinScale": 1.2,
+        "verScale": 2.4,
+        "verMinScale": 0.8,
+        "windMul": 0.02,
+        "radiusMul": 0.5,
+        "color_mask_r_from": [
+          45,
+          110,
+          120,
+          255
+        ],
+        "color_mask_r_to": [
+          40,
+          96,
+          78,
+          255
+        ],
+        "color_mask_b_from": [
+          25,
+          70,
+          40,
+          255
+        ],
+        "color_mask_b_to": [
+          40,
+          85,
+          95,
+          255
+        ],
+        "color_mask_g_from": [
+          33,
+          37,
+          51,
+          255
+        ],
+        "color_mask_g_to": [
+          186,
+          242,
+          247,
+          255
+        ]
+      },
+      {
+        "maskChannel": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "res": "grass_sedge_a",
+        "density": 4.0,
+        "horScale": 2.4,
+        "horMinScale": 1.0,
+        "verScale": 3.0,
+        "verMinScale": 1.2,
+        "windMul": 0.02,
+        "radiusMul": 0.6,
+        "color_mask_r_from": [
+          40,
+          120,
+          95,
+          255
+        ],
+        "color_mask_r_to": [
+          30,
+          85,
+          50,
+          255
+        ],
+        "color_mask_b_from": [
+          25,
+          70,
+          30,
+          255
+        ],
+        "color_mask_b_to": [
+          35,
+          90,
+          70,
+          255
+        ],
+        "color_mask_g_from": [
+          33,
+          37,
+          51,
+          255
+        ],
+        "color_mask_g_to": [
+          186,
+          242,
+          247,
+          255
+        ]
+      }
+    ]
+  },
   "technicsSkins": {
     "groundSkin": "sand"
   },
   "overrideRiLodRange": {
+    "light_coastal_old_coral_rocks_a": {
+      "lod2": 500.0
+    },
+    "light_coastal_old_coral_rocks_b": {
+      "lod2": 500.0
+    },
+    "light_coastal_old_coral_rocks_c": {
+      "lod2": 500.0
+    },
+    "light_coastal_old_coral_rocks_d": {
+      "lod2": 500.0
+    },
+    "light_coastal_old_coral_rocks_e": {
+      "lod2": 500.0
+    },
+    "light_coastal_old_coral_rocks_f": {
+      "lod2": 500.0
+    },
     "tunisia_stone_big_a": {
       "lod0": 240.0,
       "lod1": 1100.0,

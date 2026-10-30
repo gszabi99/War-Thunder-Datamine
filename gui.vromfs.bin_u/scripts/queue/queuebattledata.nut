@@ -1,4 +1,8 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import charRequestJwt
+from "%scripts/profileJwt/decodeJwt.nut" import decodeJwtAndHandleErrors
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
 from "dagor.workcycle" import resetTimeout
@@ -6,16 +10,11 @@ from "console" import register_command
 from "chardConst" import EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS
 from "%scripts/dagui_library.nut" import *
 
-let { charRequestJwt } = require("%scripts/tasker.nut")
-let { decodeJwtAndHandleErrors } = require("%scripts/profileJwt/decodeJwt.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-
 const SILENT_ACTUALIZE_DELAY = 60
 
-let lastResult = mkWatched(persist, "lastResult", null)
-let successResultByCountry = mkWatched(persist, "lastSuccessResult", {})
-let needRefresh = mkWatched(persist, "needRefresh", false)
+let lastResult = mkHardPersistWatched("queue.queueBattleData")("lastResult", null)
+let successResultByCountry = Watched({})
+let needRefresh = Watched(false)
 let isInRequestQueueData = mkWatched(persist, "isInRequestQueueData", false)
 let queueProfileJwt = Computed(@() successResultByCountry.get()?[profileCountrySq.get()])
 let isQueueDataActual = Computed(@() !needRefresh.get() && queueProfileJwt.get() != null && !isInRequestQueueData.get())
@@ -29,6 +28,7 @@ addListenersWithoutEnv({
   ProfileReceived            = @(_) needRefresh.set(true)
   CrewsListInvalidate        = @(_) needRefresh.set(true)
   UnitRepaired               = @(_) needRefresh.set(true)
+  UnitMrankSelectionChanged  = @(_) needRefresh.set(true)
   SignOut                    = @(_) successResultByCountry.set({})
 }, CONFIG_VALIDATION)
 
@@ -107,9 +107,9 @@ register_command(function() {
     printQueueDataResult()
 }, "meta.debugJwtQueueData")
 
-return {
+return freeze({
   queueProfileJwt
   needActualizeQueueData = needActualize
   actualizeQueueData
   isDeniedProfileJwtDueToAasLimits
-}
+})

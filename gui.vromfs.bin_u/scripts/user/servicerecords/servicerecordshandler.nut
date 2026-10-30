@@ -1,29 +1,29 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unit/unitInfo.nut" import getUnitName, reUnitLocNameSeparators
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/myStats.nut" import getStats
+from "%scripts/user/serviceRecords/serviceRecordsFilter.nut" import getUnitsStatsFiltersView, applyUnitsStatsFilterChange, getUnitsStatsSelectedFilters
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbItemCell
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "math" import floor
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getStats } = require("%scripts/myStats.nut")
-let { getUnitsStatsFiltersView, applyUnitsStatsFilterChange, getUnitsStatsSelectedFilters } = require("%scripts/user/serviceRecords/serviceRecordsFilter.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const SELECTED_RECORD_SAVE_ID = "wnd/selectedRecord"
 
@@ -348,6 +348,6 @@ local ServiceRecordsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("ServiceRecordsHandler", ServiceRecordsHandler)
 
-return {
+return freeze({
   openServiceRecordsPage = @(params = {}) handlersManager.loadHandler(ServiceRecordsHandler, params)
-}
+})

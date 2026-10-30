@@ -12,7 +12,7 @@ require GuiOptions
 require MPlayer
 require DagorMath
 require DagorMathUtils
-require DagorDriver3D
+require RenderModule
 require math.base
 require %game.events
 require %game.input.input_events
@@ -850,8 +850,7 @@ def human_input_persp_es(info : UpdateStageInfoAct;
                          var human_input__perspWk : float&)
   if camera_input__disabled
     return
-  get_Driver3dPerspective() <| $(pers : Driver3dPerspective#)
-    human_input__perspWk = pers.wk
+  human_input__perspWk = get_aim_persp_wk()
 
 [es(tag=input, REQUIRE=controlledHero)]
 def human_common_input_action_triggered_es(evt : EventOnKeyDown;

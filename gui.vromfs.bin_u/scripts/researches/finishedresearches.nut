@@ -1,13 +1,14 @@
+import "%scripts/slotbar/guiStartSelectingCrew.nut" as guiStartSelectingCrew
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/unit/unitActions.nut" import buyUnit
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { buyUnit } = require("%scripts/unit/unitActions.nut")
+
 let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 
 let researchUnitNotification = class (BaseGuiHandlerWT) {
@@ -102,4 +103,4 @@ let researchUnitNotification = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("researchUnitNotification", researchUnitNotification)
 
-return { researchUnitNotification }
+return freeze({ researchUnitNotification })

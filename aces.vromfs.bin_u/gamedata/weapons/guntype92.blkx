@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.14,
-  "shotFreq": 10.0,
-  "traceFreq": 4,
-  "bullets": -1,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.14,
+  "shotFreq": 10.0,
+  "bullets": -1,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        9.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0095,
@@ -427,7 +439,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2899,7 +2911,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -7042,25 +7054,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "type92_gun_outside",
-    "cockpit": "type92_gun_inside",
-    "ai": "type92_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        9.0,
-        0.05
-      ]
-    ]
-  },
   "type92_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -7075,5 +7068,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "type92_gun_outside",
+    "cockpit": "type92_gun_inside",
+    "ai": "type92_gun_ai"
   }
 }

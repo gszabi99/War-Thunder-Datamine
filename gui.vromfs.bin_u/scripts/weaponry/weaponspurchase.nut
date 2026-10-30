@@ -1,29 +1,27 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitShopInfo.nut" import canSpendGoldOnUnitWithPopup
+from "%scripts/unit/unitActions.nut" import repairNoMsgBox
+from "%scripts/weaponry/weaponryDescription.nut" import getModItemName
+from "%scripts/weaponry/itemInfo.nut" import getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/weaponry/weaponryTypes.nut" import getUpgradeTypeByItem
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "string" import format
 from "%scripts/dagui_natives.nut" import char_send_blk, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
-
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
-let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { repairNoMsgBox } = require("%scripts/unit/unitActions.nut")
-let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -386,7 +384,7 @@ function weaponsPurchase(unit, additionalParams = {}) {
   activePurchaseProcess = WeaponsPurchaseProcess(unit, additionalParams)
 }
 
-return {
+return freeze({
   canBuyItem
   weaponsPurchase
-}
+})

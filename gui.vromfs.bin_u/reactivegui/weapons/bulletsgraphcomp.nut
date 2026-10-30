@@ -1,3 +1,4 @@
+import "%rGui/style/fontsState.nut" as fontsState
 from "%rGui/components/tooltip.nut" import withTooltip, tooltipDetach
 from "%rGui/weapons/bulletsGraphState.nut" import graphPlayerParams
 from "dagor.time" import get_time_msec
@@ -6,8 +7,6 @@ from "%sqstd/math.nut" import lerp, truncateToMultiple
 from "string" import format
 from "math" import abs, round
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
 
 const MARK_COUNT_Y = 9
 const MARK_COUNT_X = 35
@@ -115,7 +114,7 @@ function mkGraphPointByTime(pointPosX, pointPosY, graphColor, tooltipContent, pl
   return mkGraphPoint(pointPosX, pointPosY, graphColor, tooltipContent, ovr)
 }
 
-let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
+let mkGraphLine = @[pure, nodiscard](commands, graphColor, lineWidth = graphLineThickness) {
   size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
@@ -469,7 +468,7 @@ let mkMissileTelemetrySpeedGraph = @(bulletsConfig, size)
   mkGridAndGraphComp(bulletsConfig, size, "flightTime", "speed",
     getMissileTooltip)
 
-return {
+return freeze({
   mkBulletsArmorPiercingGraph
   mkBulletsBallisticTrajectoryGraph
   mkMissileTelemetryDistanceGraph
@@ -478,4 +477,4 @@ return {
   graphGridColor
   graphGridLineThickness
   mkGraphLine
-}
+})

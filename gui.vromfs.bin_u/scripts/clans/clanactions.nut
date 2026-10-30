@@ -1,6 +1,20 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "penalty" as penalty
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/tasker.nut" import addTask, addBgTaskCb
+from "%scripts/wndLib/commentModal.nut" import openCommentModal
+from "%scripts/clans/clanInfo.nut" import getMyClanRights, getMyClanMembers
+from "%scripts/contacts/contactsManager.nut" import addContact
+from "%scripts/contacts/contactsListState.nut" import getContactByName, clanUserTable
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInFriendsGroup
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/chat/chatRooms.nut" import isRoomClan
+from "%scripts/clans/clanCandidates.nut" import setSeenCandidatesBlk, parseSeenCandidates
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "eventbus" import eventbus_subscribe
@@ -13,22 +27,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_CLAN, contactEvent
 from "%scripts/clans/clanState.nut" import is_in_clan, MY_CLAN_UPDATE_DELAY_MSEC, lastUpdateMyClanTime, myClanInfo
 
-let { addPopup } = require("%scripts/popups/popups.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
-let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
-let { getMyClanRights, getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
-let { addContact } = require("%scripts/contacts/contactsManager.nut")
-let { contactsPlayers, contactsByGroups, getContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
+let { contactsPlayers, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { chatRooms } = require("%scripts/chat/chatStorage.nut")
-let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
-let { setSeenCandidatesBlk, parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 
 const CLAN_ID_NOT_INITED = ""
 
@@ -405,10 +406,11 @@ addListenersWithoutEnv({
     setSeenCandidatesBlk(null)
     cacheSquadronExp = 0
     lastUpdateMyClanTime.set(-MY_CLAN_UPDATE_DELAY_MSEC)
+    myClanInfo.set(null)
   }
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   createClan
   editClan
   disbandClan
@@ -422,4 +424,4 @@ return {
   getMyClanMemberPresence
   handleNewMyClanData
   requestMyClanData
-}
+})

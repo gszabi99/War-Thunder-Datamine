@@ -1,11 +1,11 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/crew/crewSkills.nut" import getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership
 from "unitCalculcation" import calc_crew_parameters
 from "blkGetters" import get_game_params_blk, get_wpcost_blk
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { g_skill_parameters_type } = require("%scripts/crew/skillParametersType.nut")
 let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
@@ -202,11 +202,7 @@ function getSortedArrayByParamsTable(parameters, crewUnitType) {
     })
   }
 
-  res.sort(function(a, b) {
-    if (a.sortOrder != b.sortOrder)
-      return a.sortOrder > b.sortOrder ? 1 : -1
-    return 0
-  })
+  res.sortby(@(a) a.sortOrder)
   return res
 }
 
@@ -343,8 +339,8 @@ subscriptions.addListenersWithoutEnv({
   SignOut = onEventSignOut
 })
 
-return {
+return freeze({
   getParametersByCrewId
   getSkillListParameterRowsView
   getSkillDescriptionView
-}
+})

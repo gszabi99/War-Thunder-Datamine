@@ -1,3 +1,17 @@
+import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
+import "%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut" as getLockedCountryData
+import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup, getCurPresetUnitNames
+from "%scripts/slotbar/generatePreset.nut" import getBestPresetData, generatePreset
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo
+from "%scripts/worldWar/worldWarCfgState.nut" import fillConfigurableValues
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "chard" import getProfileCountry
 from "%globalScripts/wwNativeConsts.nut" import *
@@ -6,23 +20,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
-let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup, getCurPresetUnitNames } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
-let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { fillConfigurableValues } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 const WW_VEHICLE_SET_OUT_OF_DATE_DAYS = 90
 
@@ -200,6 +199,6 @@ local handlerClass = class (BaseGuiHandlerWT) {
 
 register_gui_handler("wwVehicleSetModal", handlerClass)
 
-return {
+return freeze({
   open = @(p) handlersManager.loadHandler(handlerClass, p)
-}
+})

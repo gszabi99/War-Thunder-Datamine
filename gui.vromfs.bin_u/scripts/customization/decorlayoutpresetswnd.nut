@@ -1,5 +1,10 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/customization/skins.nut" import setLastSkin, getSkinsOption
 from "chard" import save_profile
 from "unitCustomization" import apply_skin
 from "%sqstd/string.nut" import clearBorderSymbols
@@ -7,12 +12,7 @@ from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customiz
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -186,7 +186,7 @@ let DecorLayoutPresets = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("DecorLayoutPresets", DecorLayoutPresets)
 
-return {
+return freeze({
   open = function (unit, skinId) {
     if (!hasFeature("CustomizationLayoutPresets"))
       return
@@ -199,4 +199,4 @@ return {
       skinList = skinList
     })
   }
-}
+})

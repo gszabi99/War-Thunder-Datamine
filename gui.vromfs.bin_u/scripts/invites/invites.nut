@@ -1,20 +1,21 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/invites/invitesClasses.nut" import findInviteClass
+from "%scripts/popups/popups.nut" import MAX_POPUPS_ON_SCREEN, addPopup
+from "%scripts/gamercard/gamercardHelpers.nut" import updateGcInvites, doWithAllGamercards
+from "%scripts/invites/invitesState.nut" import invitesAmount
+from "%scripts/social/crossplay.nut" import crossNetworkChatStatus
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/string.nut" import startsWith
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, periodic_task_unregister, get_user_logs_count, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
-let { MAX_POPUPS_ON_SCREEN, addPopup } = require("%scripts/popups/popups.nut")
-let { updateGcInvites, doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { invitesAmount } = require("%scripts/invites/invitesState.nut")
-let { crossNetworkChatStatus } = require("%scripts/social/crossplay.nut")
+let { invitesClasses } = require("%scripts/invites/invitesClasses.nut")
 
 const INVITE_CHAT_LINK_PREFIX = "INV_"
 const POPUP_TEXT_COLOR = "@chatInfoColor"
@@ -30,6 +31,12 @@ local refreshInvitesTask = -1
 let userlogHandlers = {}
 
 let invitesList = persist("invitesList", @() [])
+
+let storedInvites = hardPersistOnUnload("invites.invites", "invitesList", @() invitesList.map(@(i) {
+  uid = i.uid, reloadParams = i.reloadParams, receivedTime = i.receivedTime, isSeen = i.isSeen,
+  isDelayed = i.isDelayed, isAutoAccepted = i.isAutoAccepted, isRejected = i.isRejected,
+  timedShowStamp = i.timedShowStamp, timedExpireStamp = i.timedExpireStamp
+}))
 deferOnce(@() invitesList.replace(invitesList.map(function(invite) { 
   let params = invite.reloadParams
   foreach (inviteClass in invitesClasses)
@@ -261,6 +268,22 @@ function rescheduleInvitesTask() {
   log($"Rescheduled refreshInvitesTask {refreshInvitesTask} with delay {triggerDelay}");
 }
 
+
+if (storedInvites != null)
+  deferOnce(function() {
+    foreach (record in storedInvites) {
+      let params = record.reloadParams
+      let inviteClass = invitesClasses.findvalue(@(c) c.getUidByParams(params) == record.uid)
+      if (inviteClass == null || findInviteByUid(record.uid) != null) 
+        continue
+      let invite = inviteClass(params)
+      invite.afterScriptsReload(record)
+      invitesList.append(invite)
+    }
+    rescheduleInvitesTask()
+    updateNewInvitesAmount()
+  })
+
 function fetchNewInvitesFromUserlogs() {
   local needReshedule = false
   let total = get_user_logs_count()
@@ -301,12 +324,12 @@ addListenersWithoutEnv({
   }
 
   function ProfileUpdated(_) {
-    if (isLoggedIn.get())
+    if (hasFullLoginState.get())
       fetchNewInvitesFromUserlogs()
   }
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   INVITE_CHAT_LINK_PREFIX
   addFriendInvite
   openInviteWnd
@@ -328,4 +351,4 @@ return {
   addSessionRoomInvite
   addTournamentBattleInvite
   addInviteToSquad
-}
+})

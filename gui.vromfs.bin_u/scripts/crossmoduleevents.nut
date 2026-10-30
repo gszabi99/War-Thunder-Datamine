@@ -18,6 +18,7 @@ const INVENTORY_UPDATE = "InventoryUpdate"
 const GAME_LOCALIZATION_CHANGED = "GameLocalizationChanged"
 const CHAT_JOIN_ROOM = "ChatJoinRoom"
 const CHAT_LEAVE_SQUAD_ROOM = "ChatLeaveSquadRoom"
+const CONSOLE_PACKS_READY_CHANGED = "ConsolePacksReadyChanged"
 
 return freeze({
   SQUAD_LEAVE_REQUESTED
@@ -34,4 +35,5 @@ return freeze({
   GAME_LOCALIZATION_CHANGED
   CHAT_JOIN_ROOM
   CHAT_LEAVE_SQUAD_ROOM
+  CONSOLE_PACKS_READY_CHANGED
 })

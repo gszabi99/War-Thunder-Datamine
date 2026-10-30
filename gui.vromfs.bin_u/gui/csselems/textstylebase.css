@@ -59,6 +59,10 @@ sessionInfoText {
   color:@commonTextColor;
 }
 
+sessionInfoText[talign=left] {
+  text-align:left;
+}
+
 tooltipDesc {
   max-width:500@sf/@pf;
   font:@fontSmall;
@@ -277,4 +281,9 @@ advertDiv > textAreaCentered {
 
 framedMessage[text=""] {
   display:hide;
+}
+
+statText {
+  behaviour:textArea;
+  re-type:textarea;
 }

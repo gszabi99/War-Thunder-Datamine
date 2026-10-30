@@ -1,5 +1,24 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import zero_money, Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/items/itemLimits.nut" import getLimitDataByItemName, requestLimitsForItem
+from "%scripts/items/itemsTypeClasses.nut" import BASE_ITEM_TYPE_ICON, registerBaseItemClass
+from "%scripts/items/itemsManager.nut" import markInventoryUpdateDelayed
+from "%scripts/items/itemsManagerChecks.nut" import needIgnoreItemLimits
+from "%scripts/items/itemsManagerState.nut" import getInventoryItemType
+from "%scripts/time.nut" import hoursToString, secondsToHours, getTimestampFromStringUtc
+from "%scripts/onlineShop/url.nut" import validateLink, openUrl
+from "%scripts/items/itemRestrictions.nut" import checkLegalRestrictions, isHiddenByCountry
+from "%scripts/utils/sharedSubtrees.nut" import shareSubtree
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/user/suggestionEmailRegistration.nut" import showGuestEmailRegistration, needShowGuestEmailRegistration
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "dagor.time" import get_time_msec
@@ -8,19 +27,6 @@ from "%scripts/dagui_natives.nut" import char_send_blk, wp_get_item_cost_gold, w
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getLimitDataByItemName, requestLimitsForItem } = require("%scripts/items/itemLimits.nut")
-let { BASE_ITEM_TYPE_ICON, registerBaseItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
-let { needIgnoreItemLimits } = require("%scripts/items/itemsManagerChecks.nut")
-let { getInventoryItemType } = require("%scripts/items/itemsManagerState.nut")
 
 
 
@@ -64,12 +70,6 @@ let { getInventoryItemType } = require("%scripts/items/itemsManagerState.nut")
 
 
 
-let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
-let { checkLegalRestrictions, isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-
-let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 
 
 const ITEM_SOON_EXPIRE_SEC = 14400
@@ -78,6 +78,29 @@ const ITEM_VERY_SOON_EXPIRE_SEC = 3600
 local expireTypes = {
   SOON = { id = "soon", color = "@itemSoonExpireColor" }
   VERY_SOON = { id = "very_soon", color = "@red" }
+}
+
+const baseRareFieldDefaults = {
+  isAllowWideSize = false
+  uids = null 
+  isActivateBeforeExpired = false 
+  lastChangeTimestamp = 0
+  tradeableTimestamp = 0
+  amount = 1
+  transferAmount = 0 
+  sellCountStep = 1
+  isDisguised = false 
+  canPacked = false
+  link = ""
+  forceExternalBrowser = false
+  
+  limitGlobal = 0
+  limitPersonalTotal = 0
+  limitPersonalAtTime = 0
+  forceShowRewardReceiving = false 
+  craftedFrom = ""
+  maxAmount = -1 
+  restrictedInCountries = null
 }
 
 let BaseItem = class {
@@ -97,57 +120,61 @@ let BaseItem = class {
   static includeInRecentItems = true
   static hasRecentItemConfirmMessageBox = true
 
+  static linkBigQueryKey = "item_shop"
+  static isToStringForDebug = true
+  static rareFieldDefaults = baseRareFieldDefaults
+
   blkType = ""
   canBuy = false
   isInventoryItem = false
   allowBigPicture = true
-  isAllowWideSize = false
   iconStyle = ""
   shopFilterMask = null
 
-  uids = null 
   expiredTimeSec = 0 
   expiredTimeAfterActivationH = 0
-  isActivateBeforeExpired = false 
-  spentInSessionTimeMin = 0
-  lastChangeTimestamp = 0
-  tradeableTimestamp = 0
-
-  amount = 1
-  transferAmount = 0 
-  sellCountStep = 1
 
   
   purchaseFeature = ""
   isDevItem = false
-  isDisguised = false 
   isHideInShop = false
-  canPacked = false
 
   locId = null
   showBoosterInSeparateList = false
 
-  link = ""
-  static linkBigQueryKey = "item_shop"
-  forceExternalBrowser = false
-
-  
-  limitGlobal = 0
-  limitPersonalTotal = 0
-  limitPersonalAtTime = 0
-
-  isToStringForDebug = true
-
   shouldAutoConsume = false 
-  forceShowRewardReceiving = false 
-  craftedFrom = ""
 
-  maxAmount = -1 
-
-  restrictedInCountries = null
   hiddenInCountries = null
 
   recycleItemResult = null
+  rareFields = null
+
+  function _get(key) {
+    let defaults = this.rareFieldDefaults
+    if (key not in defaults)
+      throw null
+    let fields = this.rareFields
+    return fields != null && key in fields ? fields[key] : defaults[key]
+  }
+
+  function _set(key, value) {
+    let defaults = this.rareFieldDefaults
+    if (key not in defaults)
+      throw null
+    let def = defaults[key]
+    let fields = this.rareFields
+    if (type(value) == type(def) && value == def)
+      fields?.$rawdelete(key)
+    else if (fields == null)
+      this.rareFields = { [key] = value }
+    else
+      fields[key] <- value
+  }
+
+  function _cloned(_original) {
+    if (this.rareFields != null)
+      this.rareFields = { ...this.rareFields }
+  }
 
   constructor(blk, invBlk = null, slotData = null) {
     this.id = blk.getBlockName() ?? invBlk?.id ?? ""
@@ -166,7 +193,7 @@ let BaseItem = class {
     this.recycleItemResult = blk?.recycleItemResult
     this.canPacked = !!blk?.canPacked
     let hiddenInCountriesStr = blk?.hiddenInCountries ?? ""
-    this.hiddenInCountries = hiddenInCountriesStr == "" ? [] : hiddenInCountriesStr.split(",")
+    this.hiddenInCountries = shareSubtree(hiddenInCountriesStr == "" ? [] : hiddenInCountriesStr.split(","))
 
     this.shopFilterMask = this.iType
     let types = blk % "additionalShopItemType"

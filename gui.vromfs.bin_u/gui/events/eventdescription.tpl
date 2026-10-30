@@ -138,41 +138,59 @@ tdiv {
             display:t='hide'
           }
         }
-        Button_text {
-          id:t='help_btn'
+
+        tdiv {
           pos:t='pw-w, 0'
           position:t='relative'
-          text:t='#mission_objectives'
-          on_click:t='onHelp'
-          display:t='hide'
-          enable:t='no'
-          visualStyle:t="secondary"
-          buttonWink{}
-          ButtonImg{}
-        }
-        Button_text {
-          id:t='rewards_list_btn'
-          pos:t='pw-w, 0'
-          position:t='relative'
-          text:t='#mainmenu/rewardsList'
-          _on_click:t='onRewardsList'
-          btnName:t='start'
-          display:t='hide'
-          enable:t='no'
-          visualStyle:t="secondary"
-          buttonWink{}
-          ButtonImg{}
-        }
-        Button_text {
-          id:t='players_list_btn'
-          pos:t='pw-w, 0'
-          position:t='relative'
-          text:t='#multiplayer/btnPlayers'
-          _on_click:t='onPlayersList'
-          btnName:t='start'
-          display:t='hide'
-          enable:t='no'
-          ButtonImg{}
+          flow:t='vertical'
+          gap:t='1@blockInterval'
+          Button_text {
+            id:t='help_btn'
+            pos:t='pw-w, 0'
+            position:t='relative'
+            text:t='#mission_objectives'
+            on_click:t='onHelp'
+            display:t='hide'
+            enable:t='no'
+            visualStyle:t='secondary'
+            buttonWink{}
+            ButtonImg{}
+          }
+          Button_text {
+            id:t='rewards_list_btn'
+            pos:t='pw-w, 0'
+            position:t='relative'
+            text:t='#mainmenu/rewardsList'
+            _on_click:t='onRewardsList'
+            btnName:t='start'
+            display:t='hide'
+            enable:t='no'
+            visualStyle:t='secondary'
+            buttonWink{}
+            ButtonImg{}
+          }
+          Button_text {
+            id:t='btn_battleTask'
+            pos:t='pw-w, 0'
+            position:t='relative'
+            text:t='#userlog/page/battletasks'
+            visualStyle:t='secondary'
+            on_click:t='onBattleTask'
+            display:t='hide'
+            enable:t='no'
+            buttonWink{}
+          }
+          Button_text {
+            id:t='players_list_btn'
+            pos:t='pw-w, 0'
+            position:t='relative'
+            text:t='#multiplayer/btnPlayers'
+            _on_click:t='onPlayersList'
+            btnName:t='start'
+            display:t='hide'
+            enable:t='no'
+            ButtonImg{}
+          }
         }
       }
     }

@@ -54,9 +54,14 @@ hudFrame {
           background-svg-size:t='pw,ph'
           background-image:t='<<pilotIcon>>'
 
-          <<#hasAvatarFrame>>
-          avatarFrame { background-image:t='!ui/images/avatar_frames/<<frame>>.avif' }
-          <</hasAvatarFrame>>
+          <<#frameImagePath>>
+          avatarFrame {
+            background-image:t='<<frameImagePath>>'
+            <<#framesCount>>
+            background-frames:t='<<framesCount>>'
+            <</framesCount>>
+          }
+          <</frameImagePath>>
         }
       }
 

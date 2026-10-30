@@ -1,14 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyGameMode, getSessionLobbyPlayersInfo
 from "matching.errors" import INVALID_SQUAD_ID
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { getSessionLobbyGameMode, getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}
-let playersInfo = mkWatched(persist, "playersInfo", {})
+let playersInfo = mkHardPersistWatched("statistics.squadIcon")("playersInfo", {})
 
 let getPlayersInfo = @() playersInfo.get()
 function updateIconPlayersInfo() {
@@ -128,7 +127,7 @@ function updateTopSquadScore(mplayers) {
 
 let getTopSquadId = @(teamId) topSquads?[teamId]
 
-return {
+return freeze({
   getPlayersInfo
   setSquadPlayersInfo = @(pInfo) playersInfo.set(pInfo ?? {})
   initListLabelsSquad
@@ -139,4 +138,4 @@ return {
   isShowSquad
   getSquadInfoByMemberId
   getTopSquadId
-}
+})

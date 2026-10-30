@@ -1,35 +1,46 @@
-import "%sqStdLibs/helpers/u.nut" as u
+import "%scripts/matchingRooms/fillSessionInfo.nut" as fillSessionInfo
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/genericOptions.nut" import GenericOptions
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeCoop
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
+from "%scripts/matchingRooms/sessionLobbyState.nut" import sessionLobbyStatus, getRoomMembersCnt, getRoomSize, getSessionLobbyGameMode
+from "%scripts/options/optionsExt.nut" import create_options_container, get_option
+from "%scripts/missions/startMissionsList.nut" import checkAndCreateGamemodeWnd
+from "%scripts/missions/missionsStates.nut" import matchSearchGm
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomsInfoTbl
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinSessionLobbyFoundRoom
+from "%scripts/statistics/mpStatisticsUtil.nut" import countWidthForMpTable
+from "%scripts/statistics/buildMpTables.nut" import buildMpTable
+from "%scripts/missions/missionsUtils.nut" import canPlayGamemodeBySquad
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "guiOptions" import setGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "%globalScripts/loc_helpers.nut" import locByVendor
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%scripts/contacts/contactsInfo.nut" import colorizeWhitePsnIcon
 from "types" import Array
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { VehiclesWindow, updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
-let { GenericOptions } = require("%scripts/genericOptions.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { sessionLobbyStatus, getRoomMembersCnt, getRoomSize, getSessionLobbyGameMode } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { checkAndCreateGamemodeWnd } = require("%scripts/missions/startMissionsList.nut")
-let { matchSearchGm } = require("%scripts/missions/missionsStates.nut")
-let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { getRoomsInfoTbl } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { joinSessionLobbyFoundRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { buildMpTable, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+
+function fillRoomRow(rowObj, roomInfo) {
+  rowObj.findObject("td_hasPassword").getChild(0)["background-image"] = roomInfo.hasPassword ? "#ui/gameuiskin#password.svg" : ""
+  rowObj.findObject("txt_mission").setValue(roomInfo.mission.tostring())
+  rowObj.findObject("name-text").setValue(colorizeWhitePsnIcon(roomInfo?.name ?? ""))
+  let { numPlayers, numPlayersTotal } = roomInfo
+  let playersObj = rowObj.findObject("td_numPlayers").getChild(0)
+  playersObj.setValue($"{numPlayers}/{numPlayersTotal}")
+  playersObj.overlayTextColor = numPlayers >= numPlayersTotal ? "warning" : ""
+}
 
 register_gui_handler("SessionsList", class (GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -41,56 +52,41 @@ register_gui_handler("SessionsList", class (GenericOptions) {
   
   roomsListData = null
   roomsList = null
-  curPageRoomsList = null
-  curPage = 0
-  roomsPerPage = 1
+  shownRoomsInfo = null
 
   curDifficulty = -1
 
   function initScreen() {
     base.initScreen()
+    this.scene.findObject("skirmish_no_progress").setValue(locByVendor("mainmenu/skirmish/noProgress"))
     this.sessionsListObj = this.scene.findObject("sessions_table")
 
     this.roomsList = []
-    this.curPageRoomsList = []
     this.roomsListData = MRoomsList.getMRoomsListByRequestParams(null) 
 
     this.isCoop = isGameModeCoop(matchSearchGm.get())
     this.scene.findObject("sessions_update").setUserData(this)
 
-    let head = this.scene.findObject("sessions_diff_header")
-    if (checkObj(head))
-      head.setValue(this.isCoop ? loc("multiplayer/difficultyShort") : loc("multiplayer/createModeShort"))
-
     this.updateRoomsHeader()
     this.initOptions()
-    this.initRoomsPerPage()
 
     this.onSessionsUpdate(null, 0.0)
     this.updateRoomsList()
     this.updateButtons()
   }
 
-  function initRoomsPerPage() {
-    let listHeight = this.sessionsListObj.getSize()[1]
-    let rowHeight = this.guiScene.calcString("@baseTrHeight", null)
-    this.roomsPerPage = max((listHeight / rowHeight).tointeger(), 1)
-  }
-
   function updateButtons() {
     local title = ""
     if (this.isCoop) {
-      if (hasFeature("ModeDynamic")) {
-        showObjById("btn_dynamic", true)
-        let dynBtn = this.guiScene["btn_dynamic"]
-        if (checkObj(dynBtn)) {
-          dynBtn.inactiveColor = havePremium.get() ? "no" : "yes"
-          dynBtn.tooltip = havePremium.get() ? "" : loc("mainmenu/onlyWithPremium")
-        }
+      showObjById("btn_dynamic", true)
+      let dynBtn = this.guiScene["btn_dynamic"]
+      if (checkObj(dynBtn)) {
+        dynBtn.inactiveColor = havePremium.get() ? "no" : "yes"
+        dynBtn.tooltip = havePremium.get() ? "" : loc("mainmenu/onlyWithPremium")
       }
 
       showObjById("btn_coop", true)
-      showObjById("btn_builder", hasFeature("ModeBuilder"))
+      showObjById("btn_builder", true)
       title = loc("mainmenu/btnMissions")
     }
     else {
@@ -267,56 +263,55 @@ register_gui_handler("SessionsList", class (GenericOptions) {
 
   function updateRoomsList() {
     this.roomsListData.requestList(this.getCurFilter())
-    this.roomsList = this.roomsListData.getList()
+    let selectedRoomId = this.getCurRoom()?.roomId
+    this.roomsList = clone this.roomsListData.getList()
     this.sortRoomsList()
     this.updateSearchMsg()
 
-    this.updateRoomsPage()
+    this.updateRoomsTable(selectedRoomId)
   }
 
-  function updateRoomsPage() {
+  function updateRoomsTable(selectedRoomId) {
     if (!checkObj(this.sessionsListObj))
       return
 
-    let selectedRoom = this.getCurRoom()
-    local selectedRow = -1
-    this.curPageRoomsList.clear()
+    local selectedRow = this.roomsList.findindex(@(room) room.roomId == selectedRoomId) ?? -1
+    if (selectedRow < 0 && this.roomsList.len() > 0)
+      selectedRow = clamp(this.sessionsListObj.getValue(), 0, this.roomsList.len() - 1)
 
-    let maxPage = max((this.roomsList.len() - 1) / this.roomsPerPage, 0)
-    this.curPage = clamp(this.curPage, 0, maxPage)
+    let scrollY = this.sessionsListObj.getScrollY()
+    this.guiScene.setUpdatesEnabled(false, false)
+    this.updateRoomRows(getRoomsInfoTbl(this.roomsList))
+    this.guiScene.setUpdatesEnabled(true, true)
 
-    let start = this.curPage * this.roomsPerPage
-    let end = min(start + this.roomsPerPage, this.roomsList.len())
-    for (local i = start; i < end; i++) {
-      let room = this.roomsList[i]
-      this.curPageRoomsList.append(room)
-      if (selectedRow < 0 && u.isEqual(room, selectedRoom))
-         selectedRow = this.curPageRoomsList.len() - 1
-    }
-    if (selectedRow < 0 && this.curPageRoomsList.len())
-      selectedRow = clamp(this.sessionsListObj.getValue(), 0, this.curPageRoomsList.len() - 1)
-
-    let roomsInfoTbl = getRoomsInfoTbl(this.curPageRoomsList)
-    let data = buildMpTable(roomsInfoTbl, this.getRoomsListMarkUpData(), this.getColumnsList(), roomsInfoTbl.len())
-    this.sessionsListObj.deleteChildren()
-    this.guiScene.appendWithBlk(this.sessionsListObj, data, this)
-
-    this.sessionsListObj.setValue(this.curPageRoomsList.len() > 0 ? selectedRow : -1)
+    if (this.sessionsListObj.getValue() != selectedRow)
+      this.sessionsListObj.setValue(selectedRow)
+    this.sessionsListObj.scrollToY(scrollY)
     this.updateCurRoomInfo()
-    this.updatePaginator(maxPage)
   }
 
-  function updatePaginator(maxPage) {
-    let pagObj = this.scene.findObject("paginator_place")
-    if (maxPage > 0)
-      generatePaginator(pagObj, this, this.curPage, maxPage, null, true)
-    else
-      hidePaginator(pagObj)
-  }
+  function updateRoomRows(roomsInfoTbl) {
+    let listObj = this.sessionsListObj
+    let shownCount = listObj.childrenCount()
+    let count = roomsInfoTbl.len()
+    for (local i = shownCount - 1; i >= count; i--)
+      this.guiScene.destroyElement(listObj.getChild(i))
+    if (count > shownCount) {
+      let data = buildMpTable([], this.getRoomsListMarkUpData(), this.getColumnsList(), count - shownCount)
+      this.guiScene.appendWithBlk(listObj, data, this)
+    }
 
-  function goToPage(obj) {
-    this.curPage = obj.to_page.tointeger()
-    this.updateRoomsPage()
+    for (local i = 0; i < count; i++) {
+      let rowObj = listObj.getChild(i)
+      let isNewRow = i >= shownCount
+      if (isNewRow) {
+        rowObj.even = i % 2 == 0 ? "yes" : "no"
+        rowObj.inactive = "no"
+      }
+      if (isNewRow || !isEqual(this.shownRoomsInfo?[i], roomsInfoTbl[i]))
+        fillRoomRow(rowObj, roomsInfoTbl[i])
+    }
+    this.shownRoomsInfo = roomsInfoTbl
   }
 
   function getCurRoom() {
@@ -324,15 +319,14 @@ register_gui_handler("SessionsList", class (GenericOptions) {
       return null
 
     let curRow = this.sessionsListObj.getValue()
-    if (curRow in this.curPageRoomsList)
-      return this.curPageRoomsList[curRow]
+    if (curRow in this.roomsList)
+      return this.roomsList[curRow]
     return null
   }
 
   function updateCurRoomInfo() {
     let room = this.getCurRoom()
     fillSessionInfo(this.scene, room?.public)
-    updateVehicleInfoButton(this.scene, room)
 
     let btnObj = this.scene.findObject("btn_select")
     if (checkObj(btnObj))
@@ -364,7 +358,8 @@ register_gui_handler("SessionsList", class (GenericOptions) {
     if (!room)
       return this.msgBox("no_room_selected", loc("ui/nothing_selected"), [["ok"]], "ok")
 
-    if (g_squad_manager.getSquadRoomId() != room.roomId
+    let roomId = to_integer_safe(room.roomId, -1, false)
+    if (g_squad_manager.getSquadRoomId() != roomId
       && !canJoinFlightMsgBox(
           {
             isLeaderCanJoin = canPlayGamemodeBySquad(getSessionLobbyGameMode(room)),
@@ -375,11 +370,5 @@ register_gui_handler("SessionsList", class (GenericOptions) {
       return
 
     this.checkedNewFlight(@() joinSessionLobbyFoundRoom(room))
-  }
-
-  function onVehiclesInfo(_obj) {
-    loadHandler(VehiclesWindow, {
-      teamDataByTeamName = this.getCurRoom()?.public
-    })
   }
 })

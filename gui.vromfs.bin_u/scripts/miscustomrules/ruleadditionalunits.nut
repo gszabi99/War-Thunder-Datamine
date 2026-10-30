@@ -1,7 +1,8 @@
+from "%scripts/misCustomRules/missionCustomState.nut" import registerMissionRules
+from "%scripts/respawn/additionalUnits.nut" import initAdditionalUnits, isUnitSelected, isEventUnit, isUnitUsed
 from "%scripts/dagui_library.nut" import *
-let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
-let { initAdditionalUnits, isUnitSelected, isEventUnit, isUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
 
 
 let AdditionalUnits = class (RuleBase) {

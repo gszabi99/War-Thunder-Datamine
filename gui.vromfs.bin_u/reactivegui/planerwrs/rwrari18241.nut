@@ -63,14 +63,10 @@ function createTabularGrid(gridStyle) {
   }
 }
 
-function compareRwrTarget(left, right) {
-  return left.rangeRel <=> right.rangeRel
-}
-
 function makeTargetsText(settings) {
   local text = ""
   local rwrTargetsSorted = u.copy(rwrTargets)
-  rwrTargetsSorted.sort(compareRwrTarget)
+  rwrTargetsSorted.sortby(@(target) target.rangeRel)
   for (local i = 0; i < rwrTargetsSorted.len(); ++i) {
     let target = rwrTargetsSorted[i]
     if (!target.valid || target.groupId == null)
@@ -129,9 +125,7 @@ function createRwrTarget(index, settings, objectStyle) {
       {
         pos = const [pw(50), ph(50)]
         size = FLEX
-        children = [
-          azimuth
-        ]
+        children = azimuth
       },
       targetText
     ]

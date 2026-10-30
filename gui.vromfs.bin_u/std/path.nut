@@ -18,7 +18,7 @@ from "types" import String, Array
 
 
 
-function normalize(path): string {
+function [pure] normalize(path: string): string {
   let pathSegments = split_by_chars(path, "\\/")
   local isAbsolutePath = false
 
@@ -59,7 +59,7 @@ function normalize(path): string {
 
 
 
-function isNormalized(path): bool {
+function [pure] isNormalized(path: string): bool {
   return path == normalize(path)
 }
 
@@ -67,7 +67,7 @@ function isNormalized(path): bool {
 
 
 
-function getLastSeparatorIndex(path): int {
+function [pure] getLastSeparatorIndex(path:string): int {
   for (local j = path.len() - 1; j >= 0; j--)
     if (path[j] == '/')
       return j
@@ -86,7 +86,7 @@ function getLastSeparatorIndex(path): int {
 
 
 
-function parentPath(path) {
+function [pure] parentPath(path:string): string|null {
   if (path == "/")
     return null
 
@@ -111,7 +111,7 @@ function parentPath(path) {
 
 
 
-function fileName(path) {
+function [pure] fileName(path:string): string {
   if (path == "/")
     return "/"
 
@@ -187,10 +187,9 @@ function join(...) {
 
 
 
-function splitToArray(path): array {
+function [pure] splitToArray(path: string): array {
   if (path == "")
     return []
-  assert(path instanceof String, @() $"path type is not string ({type(path)})")
   let segments = split_by_chars(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")

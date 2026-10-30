@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.21,
-  "shotFreq": 13.3,
-  "traceFreq": 4,
-  "bullets": 150,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,12 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.21,
+  "shotFreq": 13.3,
+  "bullets": 150,
   "bullet": [
     {
       "mass": 0.0438,
@@ -8280,13 +8280,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "type3_gun_outside",
-    "cockpit": "type3_gun_inside",
-    "ai": "type3_gun_ai"
-  },
   "type3_new_gun": {
     "maxDeltaAngle": 0.63,
     "overheat": {
@@ -8301,5 +8294,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "type3_gun_outside",
+    "cockpit": "type3_gun_inside",
+    "ai": "type3_gun_ai"
   }
 }

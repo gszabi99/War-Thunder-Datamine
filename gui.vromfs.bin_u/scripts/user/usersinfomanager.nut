@@ -1,4 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import charRequestBlk
+from "%scripts/user/usersInfoRetryManager.nut" import UsersInfoRetryManager
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
@@ -8,9 +10,6 @@ from "%sqstd/datablock.nut" import isDataBlock, convertBlk
 from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
-
-let { charRequestBlk } = require("%scripts/tasker.nut")
-let { UsersInfoRetryManager } = require("%scripts/user/usersInfoRetryManager.nut")
 
 
 
@@ -271,9 +270,9 @@ function setUserInfoParams(uid, params) {
 
 isLoggedIn.subscribe(@(v) v ? updateUsersInfo() : null)
 
-return {
+return freeze({
   requestUsersInfo
   forceRequestUserInfoData
   getUserInfo
   setUserInfoParams
-}
+})

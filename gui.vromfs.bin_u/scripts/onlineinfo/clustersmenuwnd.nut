@@ -1,14 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign, move_mouse_on_child
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/optionsExtNames.nut" import USEROPT_RANDB_CLUSTERS
+from "%scripts/onlineInfo/clustersManagement.nut" import getClusterFullName
 from "%sqstd/math.nut" import is_bit_set
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
 function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
   for (local i = 0; i < clusterOpt.values.len(); ++i)

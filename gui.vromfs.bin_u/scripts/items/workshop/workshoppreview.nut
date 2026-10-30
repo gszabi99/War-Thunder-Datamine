@@ -1,11 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 
 const minWindowWidthScale = 1.33  
 
@@ -49,7 +49,7 @@ let WorkshopPreview = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WorkshopPreview", WorkshopPreview)
 
-return {
+return freeze({
   WorkshopPreview
   open = @(wSet) wSet.hasPreview() && handlersManager.loadHandler(WorkshopPreview, { wSet = wSet })
-}
+})

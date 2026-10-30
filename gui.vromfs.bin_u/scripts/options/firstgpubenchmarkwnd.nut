@@ -1,17 +1,17 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/systemOptions.nut" import setQualityPreset, onConfigApplyWithoutUiUpdate
+from "%scripts/time.nut" import secondsToString
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/options/gpuBenchmarkUtils.nut" import GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID
 from "gpuBenchmark" import initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark, closeGraphicsAutodetect, getPresetFor60Fps, isGpuBenchmarkRunning, getGpuName
 from "chard" import get_charserver_time_sec
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setQualityPreset, onConfigApplyWithoutUiUpdate } = require("%scripts/options/systemOptions.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 local class FirstGpuBenchmarkWnd(BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -72,4 +72,4 @@ function showFirstGpuBenchmarkWnd() {
 
 register_command(showFirstGpuBenchmarkWnd, "debug.loadFirstBenchmarkWnd")
 
-return { FirstGpuBenchmarkWnd }
+return freeze({ FirstGpuBenchmarkWnd })

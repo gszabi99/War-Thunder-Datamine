@@ -1,21 +1,22 @@
+import "%scripts/time.nut" as time
+import "%scripts/items/itemLifetimeModifier.nut" as ItemLifetimeModifier
 import "DataBlock" as DataBlock
+from "%scripts/items/exchangeRecipes.nut" import ExchangeRecipes, hasFakeRecipesInList, saveMarkedRecipes
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/items/itemGeneratorsManager.nut" import registerItemGeneratorClass
+from "%scripts/items/itemsManagerModule.nut" import getItemGenerator, findItemById
+from "%scripts/items/itemsManagerState.nut" import getExtInventoryUpdateTime
 from "%sqStdLibs/helpers/u.nut" import isEmpty, shuffle, search
 from "math" import round
 from "dagor.random" import set_rnd_seed
 from "dagor.time" import get_time_msec, ref_time_ticks
 from "string" import split_by_chars
 from "blkGetters" import get_game_settings_blk
+from "%scripts/inventory/inventoryItemdefs.nut" import getSharedItemdefTags
 from "%scripts/dagui_library.nut" import *
 
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { ExchangeRecipes, hasFakeRecipesInList, saveMarkedRecipes } = require("%scripts/items/exchangeRecipes.nut")
-let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { registerItemGeneratorClass } = require("%scripts/items/itemGeneratorsManager.nut")
-let { getItemGenerator, findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getExtInventoryUpdateTime } = require("%scripts/items/itemsManagerState.nut")
 
 let ItemGenerator = class {
   id = -1
@@ -38,7 +39,7 @@ let ItemGenerator = class {
     this.exchange = itemDefDesc?.exchange ?? ""
     this.bundle   = itemDefDesc?.bundle ?? ""
     this.isPack   = isInArray(this.genType, [ "bundle", "delayedexchange" ])
-    this.tags     = itemDefDesc?.tags
+    this.tags     = getSharedItemdefTags(itemDefDesc)
     this.timestamp = itemDefDesc?.Timestamp ?? ""
     this.rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier

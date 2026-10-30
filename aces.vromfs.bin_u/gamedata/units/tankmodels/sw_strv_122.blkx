@@ -863,6 +863,9 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -938,6 +941,14 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1266,10 +1277,6 @@
     "superstructure_front_dm": false
   },
   "xrayOverride": {
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
-      "hideDescription": true
-    },
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
       "hideDescription": true
@@ -2599,7 +2606,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_kan_Strv_122_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_kan_Strv_122_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.1667,
@@ -2612,6 +2619,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "fireConeAngle": 1.0,
@@ -2713,7 +2724,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2760,7 +2771,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "useEmitter": true,
@@ -2842,7 +2853,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2903,8 +2914,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_strv_122_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_strv_122_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2963,12 +2974,12 @@
       "model": "mb_873_ka_501"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.312,
+      "neutralGearRatio": 17.0,
+      "steerType": "clutch_braking",
       "mainGearRatio": 4.47,
       "sideGearRatio": 1.0,
-      "neutralGearRatio": 9.0,
       "gearRatios": {
         "ratio": [
           -2.209,
@@ -3908,7 +3919,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_kan_Strv_122_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_kan_Strv_122_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.1667,
@@ -3921,6 +3932,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 40.0,
               "speedPitch": 40.0,
               "fireConeAngle": 1.0,
@@ -4022,7 +4037,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -4069,7 +4084,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_ksp_m94_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_04",
               "useEmitter": true,
@@ -4151,7 +4166,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4205,7 +4220,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4562,5 +4577,29 @@
         ]
       }
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.868,
+      1.2177,
+      1.4561
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

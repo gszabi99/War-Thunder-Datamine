@@ -1,25 +1,25 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/time.nut" import secondsToMilliseconds
+from "%scripts/tasker.nut" import charRequestJson
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue, getLastPlayedOperationId
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { secondsToMilliseconds } = require("%scripts/time.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { charRequestJson } = require("%scripts/tasker.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { getWWConfigurableValue, getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  
 
-let curData = mkWatched(persist, "curData", null)
-let validListsMask = mkWatched(persist, "validListsMask", 0)
-let lastUpdatetTime = mkWatched(persist, "lastUpdatetTime", -1)
-let lastRequestTime = mkWatched(persist, "lastRequestTime", -1)
-let isDeveloperMode = mkWatched(persist, "isDeveloperMode", false)
+let curData = Watched(null)
+let validListsMask = Watched(0)
+let lastUpdatetTime = Watched(-1)
+let lastRequestTime = Watched(-1)
+let isDeveloperMode = Watched(false)
 
 function reset() {
   curData.set(null)
@@ -99,7 +99,7 @@ function refreshGlobalStatusData(refreshDelay = null) {
     actionWithGlobalStatusRequest("cln_ww_queue_status")
 }
 
-return {
+return freeze({
   refreshGlobalStatusData
   actionWithGlobalStatusRequest
   getValidGlobalStatusListMask = @() validListsMask.get()
@@ -108,4 +108,4 @@ return {
   setDeveloperMode = @(p) isDeveloperMode.set(p)
   updateCurData
   pushStatusChangedEvent
-}
+})

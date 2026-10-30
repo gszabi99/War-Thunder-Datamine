@@ -220,7 +220,7 @@ let systemMsg = {
 
 
 
-return {
+return freeze({
   LOC_ID = LOC_ID
   VALUE_ID = VALUE_ID
   COLOR_ID = COLOR_ID
@@ -240,4 +240,4 @@ return {
   makeColoredValue = @(colorTag, value) { [COLOR_ID] = colorTag, [VALUE_ID] = value }
   
   makeColoredLocId = @(colorTag, locId) { [COLOR_ID] = colorTag, [LOC_ID] = locId }
-}
+})

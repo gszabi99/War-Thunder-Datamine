@@ -1,20 +1,21 @@
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/items/discountItemSortMethod.nut" import parseDiscountDescription, createDiscountDescriptionSortData, sortDiscountDescriptionItems
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitRealCost, getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/tasker.nut" import addTask
+from "%scripts/sqDagui/daguiUtil.nut" import removeTextareaTags
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/unit/unitActions.nut" import buyUnit
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/discounts/discounts.nut" import updateDiscountData
+from "%scripts/utils/sharedSubtrees.nut" import shareSubtree
 from "%scripts/dagui_natives.nut" import char_send_blk, get_current_personal_discount_count, get_current_personal_discount_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { parseDiscountDescription, createDiscountDescriptionSortData, sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
-let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { removeTextareaTags } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { buyUnit } = require("%scripts/unit/unitActions.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 
 let Discount = class (BaseItem) {
   static iType = itemType.DISCOUNT
@@ -23,20 +24,23 @@ let Discount = class (BaseItem) {
   static defaultIconStyle = "default_personal_discount"
   static typeIcon = "#ui/gameuiskin#item_type_discounts.svg"
 
+  static rareFieldDefaults = freeze({
+    ...BaseItem.rareFieldDefaults
+    purchasesCount = 0
+    purchasesMaxCount = 0
+    canMultipleConsume = false
+    showAmountInsteadPercent = false 
+    isSpecialOffer = false
+    specialOfferImage = null
+    specialOfferImageRatio = null
+    needHideTextOnIcon = false
+  })
+
   discountDescBlk = null
-  purchasesCount = 0
-  purchasesMaxCount = 0
   canBuy = false
   allowBigPicture = false
   discountDescriptionDataItems = null
 
-  canMultipleConsume = false
-
-  showAmountInsteadPercent = false 
-  isSpecialOffer = false
-  specialOfferImage = null
-  specialOfferImageRatio = null
-  needHideTextOnIcon = false
   
   static stackBases =    ["category", "type", "aircraftName"]
   
@@ -59,7 +63,7 @@ let Discount = class (BaseItem) {
       this.discountDescBlk = DataBlock()
       this.discountDescBlk.setFrom(discountsDesc)
     }
-    this.discountDescriptionDataItems = []
+    this.discountDescriptionDataItems = shareSubtree([])
   }
 
   function _initPersonalDiscountParams() {

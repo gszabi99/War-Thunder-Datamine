@@ -1,6 +1,8 @@
 options gen2
 options indenting = 4
 options _comment_hygiene = true
+options _cyclomatic_complexity = 62
+options _function_length = 278
 
 module linq_fold_array shared public
 
@@ -20,9 +22,8 @@ struct ZipShape {
     srcAExpr, srcBExpr : Expression?
     srcAName, srcBName : string
     srcAType, srcBType : TypeDeclPtr
-    itAName, itBName : string       
+    itAName, itBName : string
 }
-
 
 struct ArrayJoinShape {
     srcAExpr, srcBExpr : Expression?
@@ -110,7 +111,7 @@ class ArrayAdapter : SourceAdapter {
         }
     }
     def override count_shortcut(opName : string; at : LineInfo) : Expression? {
-        if (!type_has_length(top._type)) return null      
+        if (!type_has_length(top._type)) return null
         return emit_length_shortcut(opName, top, srcName, at)
     }
     def override build_group_by_adapter(var c : Captures; var ctx : EmitCtx; at : LineInfo) : SourceAdapter? {
@@ -118,7 +119,6 @@ class ArrayAdapter : SourceAdapter {
             return null
         }
         if (c.single |> key_exists("upstream_join")) {
-            
             var joinCall = c.single["upstream_join"]
             var core = extract_upstream_join_core(joinCall)
             var srcb = extract_upstream_join_array_srcb(joinCall)
@@ -147,13 +147,43 @@ class ArrayAdapter : SourceAdapter {
     }
 }
 
+[macro_function]
+def private wrap_two_source_invoke(shape; var stmts : array<Expression?>; retType : TypeDeclPtr; wrapIter : bool; at : LineInfo) : Expression? {
+    let srcAName = shape.srcAName
+    let srcBName = shape.srcBName
+    let srcAType = shape.srcAType
+    let srcBType = shape.srcBType
+    let srcAExpr = shape.srcAExpr
+    let srcBExpr = shape.srcBExpr
+    var emission : Expression?
+    if (retType != null) {
+        emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) : $t(retType) {
+            $b(stmts)
+        }, $e(srcAExpr), $e(srcBExpr)))
+    } else {
+        emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) {
+            $b(stmts)
+        }, $e(srcAExpr), $e(srcBExpr)))
+    }
+    emission.force_at(at)
+    emission.force_generated(true)
+    let blk = (emission as ExprInvoke).arguments[0] as ExprMakeBlock
+    (blk._block as ExprBlock).arguments[0].flags.can_shadow = true
+    (blk._block as ExprBlock).arguments[1].flags.can_shadow = true
+    if (wrapIter) {
+        emission = qmacro($e(emission).to_sequence_move())
+        emission.force_generated(true)
+    }
+    return emission
+}
+
 class ZipAdapter : SourceAdapter {
     shape : ZipShape
     def override name_prefix() : string {
         return "zip_"
     }
     def override supports_direct_return() : bool {
-        return true   
+        return true
     }
     def override bind_name(at : LineInfo) : string {
         return qn("it", at)
@@ -162,7 +192,6 @@ class ZipAdapter : SourceAdapter {
         return null
     }
     def override count_shortcut(opName : string; at : LineInfo) : Expression? {
-        
         if (!type_has_length(shape.srcAExpr._type) || !type_has_length(shape.srcBExpr._type)) return null
         let aN = shape.srcAName
         let bN = shape.srcBName
@@ -188,38 +217,13 @@ class ZipAdapter : SourceAdapter {
         let itAName = shape.itAName
         let itBName = shape.itBName
         return <- qmacro_block() {
-            for ($i(itAName), $i(itBName) in $i(srcAName), $i(srcBName)) { 
+            for ($i(itAName), $i(itBName) in $i(srcAName), $i(srcBName)) {
                 $e(body)
             }
         }
     }
     def override wrap_invoke(var stmts : array<Expression?>; retType : TypeDeclPtr; wrapIter : bool; at : LineInfo) : Expression? {
-        let srcAName = shape.srcAName
-        let srcBName = shape.srcBName
-        let srcAType = shape.srcAType
-        let srcBType = shape.srcBType
-        let srcAExpr = shape.srcAExpr
-        let srcBExpr = shape.srcBExpr
-        var emission : Expression?
-        if (retType != null) {
-            emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) : $t(retType) {
-                $b(stmts)
-            }, $e(srcAExpr), $e(srcBExpr)))
-        } else {
-            emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) {
-                $b(stmts)
-            }, $e(srcAExpr), $e(srcBExpr)))
-        }
-        emission.force_at(at)
-        emission.force_generated(true)
-        let blk = (emission as ExprInvoke).arguments[0] as ExprMakeBlock
-        (blk._block as ExprBlock).arguments[0].flags.can_shadow = true
-        (blk._block as ExprBlock).arguments[1].flags.can_shadow = true
-        if (wrapIter) {
-            emission = qmacro($e(emission).to_sequence_move())
-            emission.force_generated(true)
-        }
-        return emission
+        return wrap_two_source_invoke(shape, stmts, retType, wrapIter, at)
     }
 }
 
@@ -229,7 +233,7 @@ class ArrayJoinAdapter : SourceAdapter {
         return "ajoin_"
     }
     def override supports_direct_return() : bool {
-        return true   
+        return true
     }
     def override bind_name(at : LineInfo) : string {
         return shape.resBindName
@@ -251,7 +255,7 @@ class ArrayJoinAdapter : SourceAdapter {
         let srcAName = shape.srcAName
         let srcBName = shape.srcBName
         return <- qmacro_block() {
-            var $i(jhashName) : table<$t(keyType); array<$t(tupBType)>>
+            $e(join_hash_decl(jhashName, keyType, tupBType))
             for ($i(tupBName) in $i(srcBName)) {
                 $e(pieces.collectInner)
             }
@@ -261,36 +265,9 @@ class ArrayJoinAdapter : SourceAdapter {
         }
     }
     def override wrap_invoke(var stmts : array<Expression?>; retType : TypeDeclPtr; wrapIter : bool; at : LineInfo) : Expression? {
-        let srcAName = shape.srcAName
-        let srcBName = shape.srcBName
-        let srcAType = shape.srcAType
-        let srcBType = shape.srcBType
-        let srcAExpr = shape.srcAExpr
-        let srcBExpr = shape.srcBExpr
-        var emission : Expression?
-        if (retType != null) {
-            emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) : $t(retType) {
-                $b(stmts)
-            }, $e(srcAExpr), $e(srcBExpr)))
-        } else {
-            emission = qmacro(invoke($($i(srcAName) : $t(srcAType), $i(srcBName) : $t(srcBType)) {
-                $b(stmts)
-            }, $e(srcAExpr), $e(srcBExpr)))
-        }
-        emission.force_at(at)
-        emission.force_generated(true)
-        let blk = (emission as ExprInvoke).arguments[0] as ExprMakeBlock
-        (blk._block as ExprBlock).arguments[0].flags.can_shadow = true
-        (blk._block as ExprBlock).arguments[1].flags.can_shadow = true
-        if (wrapIter) {
-            emission = qmacro($e(emission).to_sequence_move())
-            emission.force_generated(true)
-        }
-        return emission
+        return wrap_two_source_invoke(shape, stmts, retType, wrapIter, at)
     }
 }
-
-
 
 [macro_function]
 def build_zip_rows {
@@ -318,10 +295,8 @@ def build_zip_rows {
 
 [macro_function]
 def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
-    
     var zipCall = c.single["zip"]
     let zipArgCount = zipCall.arguments |> length
-    
     var lastName = ""
     var counterPred : Expression?
     if (c.single |> key_exists("term")) {
@@ -348,7 +323,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
             if (candidateArgs != 2) return null
             lastName = candidateName
         } else {
-            
             return null
         }
     }
@@ -399,7 +373,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
             allProjectionsPure = false
         }
     }
-    
     for (call in c.many["head"]) {
         let opName = call_norm_name(call)
         if (opName == "where_") {
@@ -413,7 +386,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
             }
         } elif (opName == "select") {
             if (seenSelect) return null
-            
             var projRet = peel_lambda_single_return(call.arguments[1])
             if (projRet == null || projRet._type == null) return null
             var projElemType = strip_const_ref(clone_type(projRet._type))
@@ -426,7 +398,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
             }
         }
     }
-    
     if (c.single |> key_exists("skip")) {
         var skipArg = c.single["skip"].arguments[1]
         if (skipArg == null || skipArg._type == null || skipArg._type.baseType != Type.tInt) return null
@@ -465,7 +436,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
     let isCounter = lastName == "count" || lastName == "long_count"
     if (seenSelect && !allProjectionsPure && !noLimits) return null
     let lane = classify_terminator(lastName)
-    
     var zipShape = ZipShape(
         srcAExpr = srcAExpr,
         srcBExpr = srcBExpr,
@@ -480,7 +450,7 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
     if (lane == LinqLane.ACCUMULATOR && !isCounter) {
         if (projection == null) return null
         var preCondStmts : array<Expression?>
-        preCondStmts |> push <| qmacro_expr() {     
+        preCondStmts |> push <| qmacro_expr() {
             let $i(itName) = ($i(itAName), $i(itBName))
         }
         var intermediateBinds : array<Expression?>
@@ -490,7 +460,7 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
     }
     if (lane == LinqLane.EARLY_EXIT) {
         var preCondStmts : array<Expression?>
-        preCondStmts |> push <| qmacro_expr() {     
+        preCondStmts |> push <| qmacro_expr() {
             let $i(itName) = ($i(itAName), $i(itBName))
         }
         var intermediateBinds : array<Expression?>
@@ -500,8 +470,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
             skipExpr, takeExpr, skipWhileCond, takeWhileCond, at)
     }
     if (isCounter) {
-        
-        
         if (noChain) {
             var sc = adapter->count_shortcut(lastName, at)
             if (sc != null) return sc
@@ -535,7 +503,7 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
         if (needsItBind) {
             var preStmts : array<Expression?>
             preStmts |> reserve(2)
-            preStmts |> push <| qmacro_expr() {     
+            preStmts |> push <| qmacro_expr() {
                 let $i(itName) = ($i(itAName), $i(itBName))
             }
             preStmts |> push(loopBody)
@@ -544,7 +512,6 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
         return emit_counter_lane(adapter, accName, itName, names,
             skipExpr, takeExpr, skipWhileCond, loopBody, at, lastName == "long_count")
     }
-    
     let needsItBindLocal = whereCond != null || projection != null || skipWhileCond != null || takeWhileCond != null
     var pushStmts : array<Expression?>
     if (projection != null) {
@@ -564,7 +531,7 @@ def emit_zip(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
     var perElementPush = stmts_to_expr(pushStmts)
     var preCondStmts : array<Expression?>
     if (needsItBindLocal) {
-        preCondStmts |> push <| qmacro_expr() {     
+        preCondStmts |> push <| qmacro_expr() {
             let $i(itName) = ($i(itAName), $i(itBName))
         }
     }

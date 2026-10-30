@@ -1,22 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child
+from "%scripts/tasker.nut" import addTask
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/clans/clanInfo.nut" import getMyClanRights
+from "%scripts/clans/clanState.nut" import myClanInfo
 from "json" import object_to_json_string
 from "%sqstd/string.nut" import cutPrefix
 from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, char_send_custom_action, clan_get_my_clan_id
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/charActionConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
@@ -110,7 +111,7 @@ let clanRewardsModal = class (BaseGuiHandlerWT) {
       addPopup(null, loc("clan/clan_awards/hint/favoritesLimit"))
       return
     }
-    obj.tooltip = loc(isChecked
+    obj.tooltip = locByVendor(isChecked
       ? "mainmenu/UnlockAchievementsRemoveFromFavorite/hint"
       : "mainmenu/UnlockAchievementsToFavorite/hint")
     this.updateBestRewardsIds(obj.id, isChecked)
@@ -145,9 +146,9 @@ let clanRewardsModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("clanRewardsModal", clanRewardsModal)
 
-return {
+return freeze({
   open = function(params = null) {
     handlersManager.loadHandler(clanRewardsModal, params)
   }
   isRewardVisible = isRewardVisible
-}
+})

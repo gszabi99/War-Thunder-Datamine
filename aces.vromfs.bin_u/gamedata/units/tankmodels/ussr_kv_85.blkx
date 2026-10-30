@@ -892,6 +892,12 @@
     "horizontal": true
   },
   "class_tags": {},
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "dmgAngles": {
     "hatch_01": [
       35.0,
@@ -2511,6 +2517,22 @@
         "loader_03_dm",
         "radio_station_dm",
         "driver_controls_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -2807,7 +2829,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/85mm_D5T_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/85mm_D5T_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.143,
@@ -2850,7 +2872,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_01_dm",
@@ -2894,7 +2916,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_kv_85_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_kv_85_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_kv_85_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2954,7 +2976,10 @@
       "minRPM": 650.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.407,
       "mainGearRatio": 1.25,
@@ -2990,7 +3015,18 @@
       ],
       "frontBackGearRadius": 0.332,
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "cockpit": {

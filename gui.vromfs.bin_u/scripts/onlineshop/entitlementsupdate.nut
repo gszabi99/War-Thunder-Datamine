@@ -17,7 +17,7 @@ function updateEntitlementsLimited(force = false) {
   return -1
 }
 
-return {
+return freeze({
   getUpdateEntitlementsTimeoutMsec
   updateEntitlementsLimited
-}
+})

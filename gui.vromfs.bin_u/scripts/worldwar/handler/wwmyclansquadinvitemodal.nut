@@ -1,10 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/clans/clanSquadsModal.nut" import MyClanSquadsListModal
+from "%scripts/matching/serviceNotifications/postbox.nut" import addMail
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/presenceType.nut" import getByPresenceParams
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MyClanSquadsListModal } = require("%scripts/clans/clanSquadsModal.nut")
-let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
 
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
@@ -115,4 +115,4 @@ let WwMyClanSquadInviteModal = class (MyClanSquadsListModal) {
 }
 register_gui_handler("WwMyClanSquadInviteModal", WwMyClanSquadInviteModal)
 
-return { WwMyClanSquadInviteModal }
+return freeze({ WwMyClanSquadInviteModal })

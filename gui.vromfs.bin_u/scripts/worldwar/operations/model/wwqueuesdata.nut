@@ -1,11 +1,10 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+from "%scripts/time.nut" import secondsToMilliseconds
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue
+from "%scripts/queue/queueInfo.nut" import updateQueueInfoByType
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueType.nut" import g_queue_type
-
-let { secondsToMilliseconds } = require("%scripts/time.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
 local refreshMinTimeSec = 2 
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2

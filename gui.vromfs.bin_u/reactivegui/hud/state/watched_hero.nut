@@ -48,8 +48,8 @@ ecs.register_es("watched_hero_eid_es", {
 }, {comps_rq=[["watchedByPlr", ecs.TYPE_EID]], comps_ro = [["team", ecs.TYPE_INT, 0]]})
 
 
-return {
+return freeze({
   watchedHeroEid,
   watchedHeroPlayerEid,
   watchedTeam
-}
+})

@@ -1,6 +1,6 @@
 import "platform" as platform
 from "dagor.system" import dgs_get_settings, DBGLEVEL, get_arg_value_by_name
-let {get_platform_string_id, get_console_model, get_console_model_revision, is_gdk_used} = platform
+let {get_platform_string_id, get_console_model, get_console_model_revision, is_gdk_used, is_running_on_handheld} = platform
 let { is_running_on_steam_deck = @() false } = require_optional("steam")
 
 let systemPlatformId = get_platform_string_id()
@@ -10,14 +10,14 @@ let oneOf = @(...) vargv.contains(platformId)
 let consoleModel = get_console_model()
 let isModel = @(model): bool consoleModel == model
 let consoleRevision = get_console_model_revision(consoleModel)
-let pcPlatforms = ["win32", "win64", "macosx", "linux64"].totable()
+const pcPlatforms = ["win32", "win64", "macosx", "linux64"].totable()
 
 let is_pc = oneOf("win32", "win64", "macosx", "linux64")
 let is_sony = oneOf("ps4", "ps5")
-let isPlatformSony = @(pl): bool ["ps4", "ps5"].contains(pl)
+let isPlatformSony = @[pure](pl): bool ["ps4", "ps5"].contains(pl)
 let is_xbox = oneOf("xboxOne", "xboxScarlett")
 let is_gdk = is_gdk_used()
-let isPlatformXbox = @(pl): bool ["xboxOne", "xboxScarlett"].contains(pl)
+let isPlatformXbox = @[pure](pl): bool ["xboxOne", "xboxScarlett"].contains(pl)
 let is_nswitch = oneOf("nswitch")
 let is_mobile = oneOf("iOS", "android")
 let is_android = platformId == "android"
@@ -34,6 +34,9 @@ let isPC = is_pc
 let is_steam_deck = DBGLEVEL > 0
   ? dgs_get_settings().getBool("is_running_on_steam_deck", is_running_on_steam_deck())
   : is_running_on_steam_deck()
+let is_handheld = is_steam_deck || (DBGLEVEL > 0
+  ? dgs_get_settings().getBool("is_running_on_handheld", is_running_on_handheld())
+  : is_running_on_handheld())
 
 let aliases = {
   pc = is_pc
@@ -50,7 +53,7 @@ let platformAlias = is_sony ? "sony"
   : is_pc ? "pc"
   : platformId
 
-function getPlatformAlias(pl) {
+function [pure] getPlatformAlias(pl) {
   return isPlatformXbox(pl) ? "xbox"
     : isPlatformSony(pl) ? "sony"
     : (pl in pcPlatforms) ? "pc"
@@ -71,6 +74,7 @@ return freeze({
   is_pc
   is_gdk
   is_steam_deck
+  is_handheld
   is_windows = oneOf("win32", "win64")
   is_win32 = oneOf("win32")
   is_win64 = oneOf("win64")

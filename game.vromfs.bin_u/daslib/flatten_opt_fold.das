@@ -24,51 +24,67 @@ require daslib/flatten_opt_swizzle
 let private DEG_TO_RAD = 0.017453292f
 let private RAD_TO_DEG = 57.295776f
 
+def private fold_mul_identities(var that : ExprOp2?; noFastMath : bool) : ExpressionPtr {
+    if (is_one_const_op(that.right) && same_base_type(that, that.left)) return that.left
+    if (is_one_const_op(that.left) && same_base_type(that, that.right)) return that.right
+    if (is_neg_one_const_op(that.right) && same_base_type(that, that.left)) return negate(that.left)
+    if (is_neg_one_const_op(that.left) && same_base_type(that, that.right)) return negate(that.right)
+    if (is_zero_const_op(that.right) && !has_sideeffects(that.left) && (!noFastMath || !is_float_valued(that))) {
+        var z = zero_const_of(that._type, that.at)
+        if (z != null) return z
+    }
+    if (is_zero_const_op(that.left) && !has_sideeffects(that.right) && (!noFastMath || !is_float_valued(that))) {
+        var z = zero_const_of(that._type, that.at)
+        if (z != null) return z
+    }
+    return fold_mul_lane_forms(that, noFastMath)
+}
+
+def private fold_mul_lane_forms(var that : ExprOp2?; noFastMath : bool) : ExpressionPtr {
+    if (!noFastMath || !is_float_valued(that)) {
+        if (ctor_lane_kill(that.left, that.right) || ctor_lane_kill(that.right, that.left)) return that
+    }
+    var spm = splat_scalar_arg(that.right)
+    if (spm != null && is_float_vec(expr_bt(that.left))) {
+        that.right = spm
+        return that
+    }
+    spm = splat_scalar_arg(that.left)
+    if (spm != null && is_float_vec(expr_bt(that.right))) {
+        that.left = spm
+        return that
+    }
+    return null
+}
+
+def private fold_bool_identities(var that : ExprOp2?) : ExpressionPtr {
+    if (that.op == "&&") {
+        if (is_bool_val(that.left, true)) return that.right
+        if (is_bool_val(that.right, true) || is_bool_val(that.left, false)) return that.left
+        if (is_bool_val(that.right, false) && !has_sideeffects(that.left)) return that.right
+    } elif (that.op == "||") {
+        if (is_bool_val(that.left, false)) return that.right
+        if (is_bool_val(that.right, false) || is_bool_val(that.left, true)) return that.left
+        if (is_bool_val(that.right, true) && !has_sideeffects(that.left)) return that.right
+    }
+    return null
+}
+
 class private FoldVisitor : AstVisitor {
     changed : bool
     noFastMath : bool
     expandLerp : bool
     def override visitExprOp2(var that : ExprOp2?) : ExpressionPtr {
-        
         if (is_all_const(that) && eval_to_const_supported(that._type)) {
             var folded = eval_to_const(that)
             if (folded |> is_expr_const()) { changed = true; return folded }
         }
-        
         match (that.op) {
             if ("*") {
-                if (is_one_const_op(that.right) && same_base_type(that, that.left)) { changed = true; return that.left }
-                if (is_one_const_op(that.left) && same_base_type(that, that.right)) { changed = true; return that.right }
-                if (is_neg_one_const_op(that.right) && same_base_type(that, that.left)) { changed = true; return negate(that.left) }
-                if (is_neg_one_const_op(that.left) && same_base_type(that, that.right)) { changed = true; return negate(that.right) }
-                
-                if (is_zero_const_op(that.right) && !has_sideeffects(that.left) && (!noFastMath || !is_float_valued(that))) {
-                    var z = zero_const_of(that._type, that.at)
-                    if (z != null) { changed = true; return z }
-                }
-                if (is_zero_const_op(that.left) && !has_sideeffects(that.right) && (!noFastMath || !is_float_valued(that))) {
-                    var z = zero_const_of(that._type, that.at)
-                    if (z != null) { changed = true; return z }
-                }
-                
-                if (!noFastMath || !is_float_valued(that)) {
-                    if (ctor_lane_kill(that.left, that.right) || ctor_lane_kill(that.right, that.left)) {
-                        changed = true
-                        return that
-                    }
-                }
-                
-                var spm = splat_scalar_arg(that.right)
-                if (spm != null && is_float_vec(expr_bt(that.left))) {
+                var mul = fold_mul_identities(that, noFastMath)
+                if (mul != null) {
                     changed = true
-                    that.right = spm
-                    return that
-                }
-                spm = splat_scalar_arg(that.left)
-                if (spm != null && is_float_vec(expr_bt(that.right))) {
-                    changed = true
-                    that.left = spm
-                    return that
+                    return mul
                 }
             }
             if ("+") {
@@ -78,7 +94,6 @@ class private FoldVisitor : AstVisitor {
             if ("-") {
                 if (is_zero_const_op(that.right)) { changed = true; return that.left }
                 if (is_zero_const_op(that.left)) { changed = true; return negate(that.right) }
-                
                 if (describe(that.left) == describe(that.right) && !has_sideeffects(that.left) &&
                         (!noFastMath || !is_float_valued(that))) {
                     var z = zero_const_of(that._type, that.at)
@@ -86,7 +101,6 @@ class private FoldVisitor : AstVisitor {
                 }
             }
             if ("/") {
-                
                 if (!noFastMath && is_float_valued(that)) {
                     var rec = recip_const(that.right)
                     if (rec != null) {
@@ -94,7 +108,6 @@ class private FoldVisitor : AstVisitor {
                         return new ExprOp2(at = that.at, op := "*", left = that.left, right = rec)
                     }
                 }
-                
                 var spd = splat_scalar_arg(that.right)
                 if (spd != null && is_float_vec(expr_bt(that.left))) {
                     changed = true
@@ -108,25 +121,17 @@ class private FoldVisitor : AstVisitor {
                     return that
                 }
             }
-            if ("&&") {
-                
-                if (is_bool_val(that.left, true)) { changed = true; return that.right }
-                if (is_bool_val(that.right, true)) { changed = true; return that.left }
-                if (is_bool_val(that.left, false)) { changed = true; return that.left }
-                if (is_bool_val(that.right, false) && !has_sideeffects(that.left)) { changed = true; return that.right }
-            }
-            if ("||") {
-                
-                if (is_bool_val(that.left, false)) { changed = true; return that.right }
-                if (is_bool_val(that.right, false)) { changed = true; return that.left }
-                if (is_bool_val(that.left, true)) { changed = true; return that.left }
-                if (is_bool_val(that.right, true) && !has_sideeffects(that.left)) { changed = true; return that.right }
+            if ("&&" || "||") {
+                var bl = fold_bool_identities(that)
+                if (bl != null) {
+                    changed = true
+                    return bl
+                }
             }
         }
         return that
     }
     def override visitExprOp1(var that : ExprOp1?) : ExpressionPtr {
-        
         if (that.op == "!") {
             if (is_bool_val(that.subexpr, true)) { changed = true; return new ExprConstBool(at = that.at, value = false) }
             if (is_bool_val(that.subexpr, false)) { changed = true; return new ExprConstBool(at = that.at, value = true) }
@@ -136,12 +141,10 @@ class private FoldVisitor : AstVisitor {
         return that
     }
     def override visitExprOp3(var that : ExprOp3?) : ExpressionPtr {
-        
         if (that.subexpr is ExprConstBool) {
             changed = true
             return (that.subexpr as ExprConstBool).value ? that.left : that.right
         }
-        
         if (is_bool_val(that.left, true) && is_bool_val(that.right, false)) {
             changed = true
             return that.subexpr
@@ -150,7 +153,6 @@ class private FoldVisitor : AstVisitor {
             changed = true
             return new ExprOp1(at = that.at, op := "!", subexpr = that.subexpr)
         }
-        
         if (describe(that.left) == describe(that.right) && !has_sideeffects(that.subexpr)) {
             changed = true
             return that.left
@@ -158,15 +160,13 @@ class private FoldVisitor : AstVisitor {
         return that
     }
     def override visitExprCall(var that : ExprCall?) : ExpressionPtr {
-        
         if (is_all_const(that)) {
             var folded = eval_to_const(that)
-            if (!(folded is ExprCall)) {   
+            if (!(folded is ExprCall)) {
                 changed = true
                 return folded
             }
         }
-        
         if (that.func != null && that.func.flags.builtIn && length(that.arguments) == 1
                 && is_float_family(expr_bt(that.arguments[0]))) {
             let nm = simple_name("{that.func.name}")
@@ -177,7 +177,6 @@ class private FoldVisitor : AstVisitor {
                     right = new ExprConstFloat(at = that.at, value = k))
             }
         }
-        
         if (that.func != null && length(that.arguments) == 3) {
             let fname = simple_name("{that.func.name}")
             let ta = expr_bt(that.arguments[0])
@@ -187,7 +186,6 @@ class private FoldVisitor : AstVisitor {
                 var aArg = that.arguments[0]
                 var bArg = that.arguments[1]
                 var tArg = that.arguments[2]
-                
                 if (!noFastMath) {
                     if (is_zero_const_op(tArg) && !has_sideeffects(bArg)) { changed = true; return aArg }
                     if (is_one_const_op(tArg) && !has_sideeffects(aArg)) { changed = true; return bArg }
@@ -220,9 +218,6 @@ class private FoldVisitor : AstVisitor {
     }
 }
 
-
-
-
 def public is_unfolded_identity_op2(e : ExprOp2?) : bool {
     if (e == null) return false
     if (e.op == "*") {
@@ -240,20 +235,16 @@ def private same_base_type(a, b : ExpressionPtr) : bool {
     return a._type.baseType == b._type.baseType
 }
 
-
-
-
 def private negate_bool(var e : ExpressionPtr; noFastMath : bool) : ExpressionPtr {
     if (e is ExprConstBool) {
         return new ExprConstBool(at = e.at, value = !((e as ExprConstBool).value))
     }
     if (e is ExprOp1 && (e as ExprOp1).op == "!") {
-        return (e as ExprOp1).subexpr               
+        return (e as ExprOp1).subexpr
     }
     if (!(e is ExprOp2)) return null
     var o = e as ExprOp2
     let ordered = o.op == ">" || o.op == "<" || o.op == ">=" || o.op == "<="
-    
     if (ordered || o.op == "==" || o.op == "!=") {
         if (o.func == null || !o.func.flags.builtIn || (ordered && noFastMath && is_float_valued(o.left))) {
             return null
@@ -269,7 +260,7 @@ def private negate_bool(var e : ExpressionPtr; noFastMath : bool) : ExpressionPt
         }
         return new ExprOp2(at = e.at, op := flip, left = o.left, right = o.right)
     }
-    if (o.op == "&&" || o.op == "||") {        
+    if (o.op == "&&" || o.op == "||") {
         var nl = negate_bool(o.left, noFastMath)
         if (nl == null) return null
         var nr = negate_bool(o.right, noFastMath)
@@ -279,11 +270,8 @@ def private negate_bool(var e : ExpressionPtr; noFastMath : bool) : ExpressionPt
     return null
 }
 
-
-
-
 def public can_negate_bool(e : ExpressionPtr; noFastMath : bool) : bool {
-    if (e is ExprConstBool || (e is ExprOp1 && (e as ExprOp1).op == "!")) return true   
+    if (e is ExprConstBool || (e is ExprOp1 && (e as ExprOp1).op == "!")) return true
     if (!(e is ExprOp2)) return false
     let o = e as ExprOp2
     match (o.op) {
@@ -297,9 +285,6 @@ def public can_negate_bool(e : ExpressionPtr; noFastMath : bool) : bool {
     }
     return false
 }
-
-
-
 
 def private ctor_lane_kill(var ctorE : ExpressionPtr; constE : ExpressionPtr) : bool {
     if (ctorE == null || !(ctorE is ExprCall)) return false
@@ -321,7 +306,6 @@ def private ctor_lane_kill(var ctorE : ExpressionPtr; constE : ExpressionPtr) : 
     return any
 }
 
-
 def public is_uncollapsed_splat_op2(var e : ExprOp2?) : bool {
     if (e == null || (e.op != "*" && e.op != "/")) return false
     return ((splat_scalar_arg(e.left) != null && is_float_vec(expr_bt(e.right))) ||
@@ -329,7 +313,6 @@ def public is_uncollapsed_splat_op2(var e : ExprOp2?) : bool {
 }
 
 def public is_unkilled_ctor_zero_lane(var e : ExprOp2?; no_fast_math : bool = false) : bool {
-    
     if (e == null || e.op != "*" || (no_fast_math && is_float_valued(e))) return false
     var ctorE = e.left
     var constE = e.right
@@ -362,23 +345,19 @@ def private const_prop_locals(var blk : ExprBlock?) : bool {
     var constmap : table<string; ExpressionPtr>
     var i = 0
     while (i < length(blk.list)) {
-        
         if (!empty(constmap) && reads_any(blk.list[i], constmap)) {
             blk.list[i] = subst_consts(blk.list[i], constmap)
             changed = true
         }
-        
         var s = blk.list[i]
         if (s is ExprLet && length((s as ExprLet).variables) == 1) {
             var lc = s as ExprLet
             if (!is_flat_temp(lc.variables[0].name) && lc.variables[0].init != null && is_all_const(lc.variables[0].init)) {
                 var oldInit = lc.variables[0].init
                 if (oldInit |> is_expr_const()) {
-                    
                     constmap["{lc.variables[0].name}"] = oldInit
                     changed = true
                 } else {
-                    
                     var folded = eval_to_const(oldInit)
                     if (folded |> is_expr_const() && folded != oldInit) {
                         lc.variables[0].init = folded
@@ -390,7 +369,6 @@ def private const_prop_locals(var blk : ExprBlock?) : bool {
         }
         i ++
     }
-    
     if (!empty(constmap)) {
         var dead : table<int>
         for (j in range(length(blk.list))) {
@@ -403,7 +381,6 @@ def private const_prop_locals(var blk : ExprBlock?) : bool {
             }
         }
         if (!empty(dead)) {
-            
             var si = length(blk.list) - 1
             while (si >= 0) {
                 if (key_exists(dead, si)) {
@@ -417,8 +394,6 @@ def private const_prop_locals(var blk : ExprBlock?) : bool {
     }
     return changed
 }
-
-
 
 def private chain_has_const(e : ExpressionPtr; addOp : string) : bool {
     if (e == null) return false
@@ -437,15 +412,9 @@ def private chain_has_const(e : ExpressionPtr; addOp : string) : bool {
     return is_all_const(e)
 }
 
-
-
-
 def private already_grouped(that : ExprOp2?; addOp : string) : bool {
     return that.op == addOp && is_all_const(that.right) && !chain_has_const(that.left, addOp)
 }
-
-
-
 
 def private vars_sorted(vars : array<ReTerm>) : bool {
     for (i in range(1, length(vars))) {
@@ -456,9 +425,6 @@ def private vars_sorted(vars : array<ReTerm>) : bool {
     }
     return true
 }
-
-
-
 
 def private regroup(that : ExprOp2?; var terms : array<ReTerm>; addOp, subOp : string) : ExpressionPtr {
     var vars : array<ReTerm>
@@ -501,8 +467,6 @@ def private regroup(that : ExprOp2?; var terms : array<ReTerm>; addOp, subOp : s
     return new ExprOp2(at = that.at, op := addOp, left = vt, right = ct)
 }
 
-
-
 def private count_terms(e : ExpressionPtr; addOp : string; var nv : int&; var nc : int&) {
     if (e == null) return
     if (e is ExprOp2) {
@@ -527,9 +491,6 @@ def private count_terms(e : ExpressionPtr; addOp : string; var nv : int&; var nc
     }
 }
 
-
-
-
 def public has_scattered_consts(that : ExprOp2?; no_fast_math : bool = false) : bool {
     if (that == null || (no_fast_math && is_float_valued(that))) return false
     var nv = 0
@@ -550,7 +511,6 @@ class private ReassocVisitor : AstVisitor {
     changed : bool
     noFastMath : bool
     def override visitExprOp2(var that : ExprOp2?) : ExpressionPtr {
-        
         if (noFastMath && is_float_valued(that)) {
             return that
         }
@@ -572,7 +532,6 @@ class private ReassocVisitor : AstVisitor {
     }
 }
 
-
 def private select_let_name(s : ExpressionPtr) : string {
     if (s is ExprLet && length((s as ExprLet).variables) == 1 &&
             sel3((s as ExprLet).variables[0].init) != null) {
@@ -581,11 +540,8 @@ def private select_let_name(s : ExpressionPtr) : string {
     return ""
 }
 
-
-
-
-def private select_arm_eval_safe(e : ExpressionPtr) : bool {
-    if (e == null || e is ExprVar || e |> is_expr_const()) return true   
+def private select_arm_eval_safe(e : ExpressionPtr) : bool {   
+    if (e == null || e is ExprVar || e |> is_expr_const()) return true
     if (e is ExprOp1) return select_arm_eval_safe((e as ExprOp1).subexpr)
     if (e is ExprOp2) {
         let o = e as ExprOp2
@@ -612,27 +568,19 @@ def private select_arm_eval_safe(e : ExpressionPtr) : bool {
         }
         return true
     }
-    return false   
+    return false
 }
-
-
 
 def private chain_successor(var ub : FlatUsesBuilder?; var blk : ExprBlock?; accName, condKey : string;
                             afterIdx : int; consumed : table<int>) : int {
     let hk = hash(accName)
-    
     if (!key_exists(ub.nameUses, hk) || length(ub.nameUses[hk]) != 1) return -1
     let j = ub.nameUses[hk][0]
-    
     if (j <= afterIdx || key_exists(consumed, j) || select_let_name(blk.list[j]) == "") return -1
     let succSel = sel3((blk.list[j] as ExprLet).variables[0].init)
-    
     if (describe(succSel.subexpr) != condKey || ref_var_name(succSel.right) != accName) return -1
     return j
 }
-
-
-
 
 def private build_select_chain(var ub : FlatUsesBuilder?; var blk : ExprBlock?; mutableVars : table<string>;
                                consumed : table<int>; i : int) : array<int> {
@@ -647,7 +595,6 @@ def private build_select_chain(var ub : FlatUsesBuilder?; var blk : ExprBlock?; 
     while (true) {
         let j = chain_successor(ub, blk, accName, condKey, chain[length(chain) - 1], consumed)
         if (j < 0) break
-        
         let tailSel = sel3((blk.list[chain[length(chain) - 1]] as ExprLet).variables[0].init)
         if (!select_arm_eval_safe(tailSel.left)) break
         chain |> push(j)
@@ -674,14 +621,13 @@ def public fuse_select_chains(var blk : ExprBlock?) : bool {
         if (key_exists(consumed, i)) continue
         var chain <- build_select_chain(ub, blk, mutableVars, consumed, i)
         if (length(chain) >= 2) {
-            
             var baseExpr = clone_expression(sel3((blk.list[chain[0]] as ExprLet).variables[0].init).right)
-            for (ci in range(length(chain) - 1)) {     
+            for (ci in range(length(chain) - 1)) {
                 var lc = blk.list[chain[ci]] as ExprLet
                 lc.variables[0].init = sel3(lc.variables[0].init).left
                 consumed |> insert(chain[ci])
             }
-            let lastIdx = chain[length(chain) - 1]      
+            let lastIdx = chain[length(chain) - 1]
             sel3((blk.list[lastIdx] as ExprLet).variables[0].init).right = baseExpr
             consumed |> insert(lastIdx)
             changed = true
@@ -696,7 +642,6 @@ def public fuse_select_chains(var blk : ExprBlock?) : bool {
     return changed
 }
 
-
 def public has_fusable_select_chain(var blk : ExprBlock?) : bool {
     let n = length(blk.list)
     if (n < 2) return false
@@ -709,7 +654,7 @@ def public has_fusable_select_chain(var blk : ExprBlock?) : bool {
             visit(blk.list[j], adapter)
         }
     }
-    var consumed : table<int>   
+    var consumed : table<int>
     var found = false
     for (i in range(n)) {
         var chain <- build_select_chain(ub, blk, mutableVars, consumed, i)
@@ -735,14 +680,9 @@ def public fold_body(var func : FunctionPtr; no_fast_math : bool = false; expand
     if (!(func.body is ExprBlock)) return false
     let nfm = no_fast_math
     var changed = const_prop_locals(func.body as ExprBlock)
-    
-    
     if (fuse_select_chains(func.body as ExprBlock)) {
         changed = true
     }
-    
-    
-    
     var rv = new ReassocVisitor()
     rv.noFastMath = nfm
     make_visitor(*rv) $(adapter) {
@@ -764,9 +704,6 @@ def public fold_body(var func : FunctionPtr; no_fast_math : bool = false; expand
     unsafe {
         delete v
     }
-    
-    
-    
     var blk = func.body as ExprBlock
     var si = length(blk.list) - 1
     while (si >= 0) {
@@ -780,9 +717,6 @@ def public fold_body(var func : FunctionPtr; no_fast_math : bool = false; expand
         }
         si --
     }
-    
-    
-    
     if (!changed) {
         si = length(blk.list) - 1
         while (si >= 0) {
@@ -801,7 +735,6 @@ def public fold_body(var func : FunctionPtr; no_fast_math : bool = false; expand
     }
     return changed
 }
-
 
 def public is_unrcp_const_div(e : ExprOp2?) : bool {
     if (e == null || e.op != "/" || !is_float_valued(e)) return false

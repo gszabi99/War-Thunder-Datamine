@@ -33,8 +33,6 @@ let ctrlsState = keepref(Computed(function() {
 
 
 
-
-
   if (isRadarGamepadNavEnabled.get())
     return  CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY

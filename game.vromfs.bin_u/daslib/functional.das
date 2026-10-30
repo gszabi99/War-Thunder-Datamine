@@ -44,7 +44,6 @@ def filter(var src : iterator<auto(TT)>; blk : lambda<(what : TT -&) : bool>) {
     return <- filter_any(src, blk)
 }
 
-
 def filter(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : bool>) {
     
     return <- filter_any(src, blk)
@@ -82,18 +81,15 @@ def private map_any(var src : iterator<auto(TT)>; var blk) {
 }
 
 
-
 def map(var src : iterator<auto(TT)>; blk : lambda<(what : TT -&) : auto(QQ)>) {
     
     return <- map_any(src, blk)
 }
 
-
 def map(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : auto(QQ)>) {
     
     return <- map_any(src, blk)
 }
-
 
 def private reduce_any(var it : iterator<auto(TT)>; functor) {
     
@@ -117,13 +113,11 @@ def private reduce_any(var it : iterator<auto(TT)>; functor) {
     return left
 }
 
-
 def reduce(var it : iterator<auto(TT)>; blk : lambda<(left, right : TT -&) : TT const -&>) {
     
     
     return reduce_any(it, blk)
 }
-
 
 def reduce(var it : iterator<auto(TT)>; blk : function<(left, right : TT -&) : TT const -&>) {
     
@@ -131,13 +125,11 @@ def reduce(var it : iterator<auto(TT)>; blk : function<(left, right : TT -&) : T
     return reduce_any(it, blk)
 }
 
-
 def reduce(var it : iterator<auto(TT)>; blk : block<(left, right : TT -&) : TT const -&>) {
     
     
     return reduce_any(it, blk)
 }
-
 
 def sum(var it : iterator<auto(TT)>) {
     
@@ -148,7 +140,6 @@ def sum(var it : iterator<auto(TT)>) {
     }
     return temp
 }
-
 
 def any(it) {
     
@@ -170,7 +161,6 @@ def any(var it : iterator<auto(TT)>) {
     }
     return false
 }
-
 
 def all(it) {
     
@@ -249,7 +239,6 @@ def islice(var src : iterator<auto(TT)>; start, stop : int) {
     }
 }
 
-
 def repeat_ref(value : auto(TT); var total : int) {
     
     return <- generator<TT const&> {
@@ -260,7 +249,6 @@ def repeat_ref(value : auto(TT); var total : int) {
         return false
     }
 }
-
 
 def repeat(value : auto(TT); var count : int = -1) {
     
@@ -351,10 +339,6 @@ def sorted(var it : iterator<auto(TT)>) {
     }
 }
 
-
-
-
-
 def private reduce_or_default_any(var it : iterator<auto(TT)>; functor; default_value : TT -&) {
     
     var left : TT -&
@@ -390,10 +374,6 @@ def reduce_or_default(var it : iterator<auto(TT)>; default_value : TT -&; blk : 
     return reduce_or_default_any(it, blk, default_value)
 }
 
-
-
-
-
 def private fold_any(var it : iterator<auto(TT)>; seed : auto(AGG); functor) {
     
     var acc : AGG -& = seed
@@ -422,10 +402,6 @@ def fold(var it : iterator<auto(TT)>; seed : auto(AGG); blk : block<(acc : AGG -
     return fold_any(it, seed, blk)
 }
 
-
-
-
-
 def private scan_any(var src : iterator<auto(TT)>; seed : auto(AGG); var functor) {
     
     return <- generator<AGG -&> capture(<- src, <- functor) {
@@ -453,10 +429,6 @@ def scan(var src : iterator<auto(TT)>; seed : auto(AGG); blk : function<(acc : A
     return <- scan_any(src, seed, blk)
 }
 
-
-
-
-
 def enumerate(var src : iterator<auto(TT)>) {
     
     return <- generator<tuple<int, TT -&>> capture(<- src) {
@@ -481,10 +453,6 @@ def long_enumerate(var src : iterator<auto(TT)>) {
     }
 }
 
-
-
-
-
 def private for_each_any(var src : iterator<auto(TT)>; blk) {
     
     for (x in src) {
@@ -506,10 +474,6 @@ def for_each(var src : iterator<auto(TT)>; blk : block<(what : TT -&) : void>) {
     
     for_each_any(src, blk)
 }
-
-
-
-
 
 def private find_any(var src : iterator<auto(TT)>; predicate; default_value : TT -&) {
     
@@ -533,10 +497,6 @@ def find(var src : iterator<auto(TT)>; default_value : TT -&; blk : block<(what 
     
     return find_any(src, blk, default_value)
 }
-
-
-
-
 
 def private find_index_any(var src : iterator<auto(TT)>; predicate) : int {
     
@@ -562,10 +522,6 @@ def find_index(var src : iterator<auto(TT)>; blk : block<(what : TT -&) : bool>)
     
     return find_index_any(src, blk)
 }
-
-
-
-
 
 def private partition_any(var src : iterator<auto(TT)>; predicate) : tuple<array<TT -const -&>, array<TT -const -&>> {
     
@@ -595,10 +551,6 @@ def partition(var src : iterator<auto(TT)>; blk : block<(what : TT -&) : bool>) 
     
     return partition_any(src, blk)
 }
-
-
-
-
 
 def private tap_any(var src : iterator<auto(TT)>; var blk) {
     
@@ -630,10 +582,6 @@ def tap(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : void>) {
     
     return <- tap_any(src, blk)
 }
-
-
-
-
 
 def iterate(seed : auto(TT); var blk : lambda<(what : TT -&) : TT const -&>) {
     
@@ -668,10 +616,6 @@ def iterate(seed : auto(TT); var blk : function<(what : TT -&) : TT const -&>) {
     }
 }
 
-
-
-
-
 def chain(var a : iterator<auto(TT)>; var b : iterator<auto(TT)>) {
     
     static_if (!typeinfo is_ref_type(type<TT>)) {
@@ -697,10 +641,6 @@ def chain(var a : iterator<auto(TT)>; var b : iterator<auto(TT)>) {
     }
 }
 
-
-
-
-
 def pairwise(var src : iterator<auto(TT)>) {
     
     return <- generator<tuple<TT -&, TT -&>> capture(<- src) {
@@ -718,10 +658,6 @@ def pairwise(var src : iterator<auto(TT)>) {
         return false
     }
 }
-
-
-
-
 
 def private flat_map_any(var src : iterator<auto(TT)>; var blk) {
     

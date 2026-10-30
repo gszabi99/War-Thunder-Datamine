@@ -1,11 +1,10 @@
+import "%sqstd/platform.nut" as platform
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/controlsConsts.nut" import CONTROL_HELP_PATTERN, HELP_CONTENT_SET
 from "%sqStdLibs/helpers/u.nut" import search
 from "%scripts/dagui_library.nut" import *
-from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let platform = require("%scripts/clientState/platform.nut")
 let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 
 let tabGroups = [
   {
@@ -88,7 +87,7 @@ let tabGroups = [
     ]
   }
   {
-    title = platform.isPlatformXbox ? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
+    title = platform.isXbox ? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
     list = [
       helpTypes.HOTAS4_COMMON
     ]
@@ -135,7 +134,7 @@ function getPreferableType(contentSet) {
   return helpTypes.IMAGE_AIRCRAFT_NORMAL
 }
 
-return {
+return freeze({
   getTabs = getTabs
   getPreferableType = getPreferableType
-}
+})

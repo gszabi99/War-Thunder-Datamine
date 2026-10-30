@@ -1,15 +1,16 @@
+from "%scripts/gdk/voice.nut" import subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member, update_voice_chat_member_friendship, is_voice_chat_member_muted
+from "%scripts/user/externalIdsService.nut" import reqPlayerExternalIDsByUserId
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInContacts, isPlayerInFriendsGroup
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqstd/platform.nut" import is_gdk
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_uid
 from "%scripts/dagui_library.nut" import *
 
-let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member, update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%scripts/gdk/voice.nut")
-let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isPlayerInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
+let { voiceChatMembers } = require("%scripts/gdk/voice.nut")
 
-let requestedIds = persist("requestedIds", @() {})
+let requestedIds = {}
 
 
 function is_muted(uid) {
@@ -99,8 +100,8 @@ add_event_listener("UpdateExternalsIDs", @(p) on_external_ids_update(p))
 subscribe_to_state_update(on_state_update)
 
 
-return {
+return freeze({
   add_user
   remove_user
   is_muted
-}
+})

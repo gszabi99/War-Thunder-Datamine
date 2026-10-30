@@ -936,7 +936,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/130mm_Type_75_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/130mm_Type_75_rocket_launcher.blk",
         "weaponType": "rockets",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -986,7 +986,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "emtr_mg_aa_flame",
         "flash": "emtr_mg_aa_flame",
         "useEmitter": true,
@@ -1039,7 +1039,7 @@
   "weapon_presets": {
     "preset": {
       "name": "jp_type_75_mlrs_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_75_mlrs_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/jp_type_75_mlrs_default.blk"
     }
   },
   "VehiclePhys": {
@@ -1089,7 +1089,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 75000.0,
       "driveGearRadius": 0.29,
       "mainGearRatio": 4.8,
@@ -1133,7 +1136,18 @@
       "wheel_r_drive": 0.27,
       "wheel_l_drive": 0.27,
       "wheel_r_back": 0.26,
-      "wheel_l_back": 0.26
+      "wheel_l_back": 0.26,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -2227,5 +2241,29 @@
         "to": "jp_camo_post_biege_gray_green_fuji*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.749,
+      1.1023,
+      1.2772
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

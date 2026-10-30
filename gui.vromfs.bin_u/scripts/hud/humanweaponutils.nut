@@ -276,7 +276,7 @@ showNextSoldierHint.subscribe(function(v) {
 )
 })
 
-return {
+return freeze({
   currentGunEid
   canSwitchFireMods
   switchFireModOn
@@ -289,4 +289,4 @@ return {
   sightPresetsInfo
   selectSightPreset
   needShowWeaponMenu
-}
+})

@@ -1,16 +1,16 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitClassType.nut" import getUnitClassTypeByExpClass
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/misCustomRules/missionCustomState.nut" import registerMissionRules
+from "%scripts/misCustomRules/unitLimit.nut" import UnitLimitByUnitName, UnitLimitByUnitRole, UnitLimitByUnitExpClass, ActiveLimitByUnitExpClass, UnitLimitByUnitType
 from "%sqstd/string.nut" import cutPrefix, endsWith
 from "mission" import get_mplayers_count, get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
-let { UnitLimitByUnitName, UnitLimitByUnitRole, UnitLimitByUnitExpClass, ActiveLimitByUnitExpClass, UnitLimitByUnitType } = require("%scripts/misCustomRules/unitLimit.nut")
 
 let SharedPool = class (RuleBase) {
   function getMaxRespawns() {

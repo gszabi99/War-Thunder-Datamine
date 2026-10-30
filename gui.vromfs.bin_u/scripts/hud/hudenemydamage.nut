@@ -1,3 +1,4 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "eventbus" import eventbus_subscribe
 from "string" import format
 from "colorCorrector" import getRgbStrFromHsv
@@ -6,7 +7,6 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 local hudEnemyDamage = null

@@ -1,12 +1,12 @@
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/itemsManager.nut" import refreshExtInventory, markInventoryUpdateDelayed
+from "%scripts/items/trophyReward.nut" import isShowItemInTrophyReward
 from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { refreshExtInventory, markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
-let { isShowItemInTrophyReward } = require("%scripts/items/trophyReward.nut")
 
 let CraftProcess = class (ItemExternal) {
   static iType = itemType.CRAFT_PROCESS

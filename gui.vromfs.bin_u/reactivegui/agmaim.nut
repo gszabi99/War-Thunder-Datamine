@@ -1,7 +1,6 @@
+import "%rGui/agmAimState.nut" as aimState
 from "%rGui/opticWeaponAim.nut" import opticWeaponAim, opticWeaponSight
 from "%rGui/globals/ui_library.nut" import *
-
-let aimState = require("%rGui/agmAimState.nut")
 
 let dummyAlertColor = Watched(Color(230, 0, 0, 240))
 

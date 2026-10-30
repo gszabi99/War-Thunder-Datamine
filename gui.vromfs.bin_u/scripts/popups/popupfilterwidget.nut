@@ -1,12 +1,13 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/popups/popupFilterWindow.nut" import PopupFilterWindow
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { PopupFilterWindow } = require("%scripts/popups/popupFilterWindow.nut")
 
 const RESET_ID = "reset_btn"
 const SELECT_ALL_ID = "select_all_btn"
@@ -30,6 +31,7 @@ local PopupFilterWidget = class (BaseGuiHandlerWT) {
   popupFilterWnd       = null
   closeAsPopup         = true
   isShowCountFilters   = true
+  hasBtnIcon           = true
 
   function getSceneTplView() {
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
@@ -44,6 +46,8 @@ local PopupFilterWidget = class (BaseGuiHandlerWT) {
         : this.btnName ?? "Y"
       btnWidth = this.btnWidth
       visualStyle = this.visualStyle
+      btnTitle = this.btnTitle
+      hasBtnIcon = this.hasBtnIcon
       on_click = "onShowFilterBtnClick"
     }
   }
@@ -57,7 +61,7 @@ local PopupFilterWidget = class (BaseGuiHandlerWT) {
       return
 
     let count = this.getSelectedFiltersCount()
-    setDoubleTextToButton(this.scene, "filter_button", this.btnTitle,
+    setDoubleTextToButton(this.scene, "filter_button", this.hasBtnIcon ? this.btnTitle : "",
       count == 0 ? ""
         : colorize("lbActiveColumnColor", loc("ui/parentheses", { text = $"+{count}" })))
   }
@@ -80,6 +84,7 @@ local PopupFilterWidget = class (BaseGuiHandlerWT) {
         popupAlign = this.popupAlign ?? "bottom"
         closeAsPopup = this.closeAsPopup
         isShowCountFilters = this.isShowCountFilters
+        hasBtnIcon = this.hasBtnIcon
       })
     else
       this.popupFilterWnd.close()
@@ -92,8 +97,8 @@ local PopupFilterWidget = class (BaseGuiHandlerWT) {
 
 register_gui_handler("PopupFilterWidget", PopupFilterWidget)
 
-return {
+return freeze({
   RESET_ID
   SELECT_ALL_ID
   openPopupFilter = @(params = {}) handlersManager.loadHandler(PopupFilterWidget, params)
-}
+})

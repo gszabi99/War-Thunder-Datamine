@@ -1,4 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/hud/hudCrewLifebarUtils.nut" import updateCrewLifebar, setCrewLostText
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "mission" import get_mission_time
 from "eventbus" import eventbus_subscribe, eventbus_send
@@ -18,11 +21,8 @@ from "hitCamera" import *
 from "types" import Table
 
 let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
-let { updateCrewLifebar, setCrewLostText } = require("%scripts/hud/hudCrewLifebarUtils.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST = 0.15
@@ -773,8 +773,8 @@ register_command(@(crewTotal, alivePercent) dropEnemyDamage(crewTotal, alivePerc
 
 registerForNativeCall("get_hit_camera_aabb", getHitCameraAABB)
 
-return {
+return freeze({
   hitCameraInit
   hitCameraReinit
   getHitCameraAABB
-}
+})

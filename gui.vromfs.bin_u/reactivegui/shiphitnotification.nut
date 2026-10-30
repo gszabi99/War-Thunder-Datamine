@@ -1,4 +1,5 @@
 import "DataBlock" as DataBlock
+import "%rGui/style/cssColor.nut" as cssColor
 from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/options/options.nut" import shipHitIconsVisibilityStateFlags
 from "%globalScripts/shipHitIconsConsts.nut" import ShipHitIconId, IS_SHIP_HIT_NOTIFICATIONS_VISIBLE
@@ -80,9 +81,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
           size = size
           opacity = 0
           image = iconCfg.pic
-          transform = {
-            scale = [1, 1]
-          }
+          transform = true
           animations = mkAppearAnim(animTrigger)
           onAttach = @() anim_start(animTrigger)
         }
@@ -207,14 +206,14 @@ function showHitBox() {
 
 function pushIndicator(items, id) {
   items.append(id)
-  items.sort(@(a, b) a <=> b)
+  items.sort()
 }
 
 function popIndicator(items, popId) {
   foreach(idx, id in items) {
     if (id == popId) {
       items.remove(idx)
-      items.sort(@(a, b) a <=> b)
+      items.sort()
       break
     }
   }
@@ -389,7 +388,7 @@ let torpedoHitNotification = {
       color = 0xFFFFFFFF
       font = Fonts.medium_text_hud
       fontFx = FFT_BLUR
-      fontFxColor = 0xAAE02500
+      fontFxColor = cssColor("killRewardTextGlowColor")
       fontFxFactor = 48
       fontFxOffsX = hdpx(1)
     }
@@ -455,7 +454,7 @@ let simpleHitNotifications = function() {
       size = FLEX_V
       pos = isHitcamSet.get()
         ? [0, hudHitCameraState.get().pos[1] + hudHitCameraState.get().size[1]/1.15]
-        : [0, hdpx(-140)]
+        : const [0, hdpx(-140)]
     })
   }
 
@@ -471,6 +470,6 @@ let hitNotifications = {
   ]
 }
 
-return {
+return freeze({
   hitNotifications = IS_SHIP_HIT_NOTIFICATIONS_VISIBLE ? hitNotifications : null
-}
+})

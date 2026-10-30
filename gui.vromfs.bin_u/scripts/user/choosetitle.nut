@@ -1,25 +1,25 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
 import "%sqstd/math.nut" as stdMath
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav, toggleUnlockFav
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocksWithBlkOrder
+from "%scripts/tasker.nut" import addTask
+from "%scripts/myStats.nut" import getTitles, getStats, clearStats
 from "math" import ceil
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_natives.nut" import select_current_title
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getTitles, getStats, clearStats } = require("%scripts/myStats.nut")
 
 let ChooseTitle = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
@@ -61,7 +61,7 @@ let ChooseTitle = class (BaseGuiHandlerWT) {
       }
     }.bindenv(this))
 
-    local titleWidth = daguiFonts.getStringWidthPx(titlesData.map(@(t) t.text), "fontNormal", this.guiScene)
+    local titleWidth = getStringWidthPx(titlesData.map(@(t) t.text), "fontNormal", this.guiScene)
     if (hasUnseen)
       titleWidth += to_pixels("1@newWidgetIconHeight + 1@blockInterval")
     titleWidth = max(titleWidth + 2 * to_pixels("@buttonTextPadding"), to_pixels("1@buttonWidth"))
@@ -72,7 +72,7 @@ let ChooseTitle = class (BaseGuiHandlerWT) {
     let columns = clamp(gRatioColumns, min(3, maxColumns), maxColumns)
 
     
-    titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)
+    titlesData.sortby(@(a) a.lowerText)
     let orderedData = []
     let rows = ceil(titlesData.len().tofloat() / columns).tointeger()
     for (local i = 0; i < rows; i++)
@@ -195,4 +195,4 @@ let ChooseTitle = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ChooseTitle", ChooseTitle)
 
-return { ChooseTitle }
+return freeze({ ChooseTitle })

@@ -1,16 +1,15 @@
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/onlineShop/ingameConsoleStore.nut" import IngameConsoleStore
+from "%scripts/user/countryUtils.nut" import isPlayerRecommendedEmailRegistration
+from "%scripts/user/pcStorePromo.nut" import showPcStorePromo
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/discounts/discounts.nut" import updateOnlineShopDiscounts
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
-let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
-let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
 register_gui_handler("XboxShop", class (IngameConsoleStore) {
   function loadCurSheetItemsList() {

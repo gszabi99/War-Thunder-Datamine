@@ -1,7 +1,6 @@
+from "%scripts/options/optionsExt.nut" import isChatReputationFilterEnabled
 from "%globalScripts/chatState.nut" import ReputationType
 from "%scripts/dagui_library.nut" import *
-
-let { isChatReputationFilterEnabled } = require("%scripts/options/optionsExt.nut")
 
 let claimsForBadReputation = {
   [1] = 20,
@@ -54,9 +53,9 @@ function getReputationBlockMessage() {
   return loc("chat/blokedByChatRules")
 }
 
-return {
+return freeze({
   getUserReputation
   hasChatReputationFilter
   getReputationBlockMessage
   updateUserReputationData
-}
+})

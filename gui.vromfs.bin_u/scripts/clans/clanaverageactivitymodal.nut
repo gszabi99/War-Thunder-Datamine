@@ -1,18 +1,18 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unit/squadronUnitAction.nut" import isAllClanUnitsResearched
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/langUtils/textFormat.nut" import shortTextFromNum
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "math" import round
 from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 let PROGRESS_PARAMS = {
@@ -74,7 +74,7 @@ let clanAverageActivityModal = class (BaseGuiHandlerWT) {
         let pxCountToEdgeWnd = to_pixels($"{1 - markerPosMyExp / 100.0}*0.4@scrn_tgt + 1@tablePad + 5@blockInterval")
         let expBoostedShortText = shortTextFromNum((roundMyExp * expBoost).tointeger())
         let myExpText = $"{shortTextFromNum(roundMyExp)}{hasBoost ? $" + {expBoostedShortText}" : ""}"
-        let myExpTextSize = daguiFonts.getStringWidthPx(myExpText, "fontNormal", this.guiScene)
+        let myExpTextSize = getStringWidthPx(myExpText, "fontNormal", this.guiScene)
         let offsetMyExpText = min(pxCountToEdgeWnd - myExpTextSize / 2, 0)
         let myExpShortText = colorize("activeTextColor",
           $"{shortTextFromNum(roundMyExp)}{hasBoost ? $" + {colorize("goodTextColor", expBoostedShortText)}" : ""}")
@@ -162,4 +162,4 @@ let clanAverageActivityModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("clanAverageActivityModal", clanAverageActivityModal)
 
-return { clanAverageActivityModal }
+return freeze({ clanAverageActivityModal })

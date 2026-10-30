@@ -1,3 +1,4 @@
+import "%rGui/control/gui_buttons.nut" as JB
 from "%rGui/radarState.nut" import Irst, Radar2ModeNameId
 from "%rGui/hints/shortcuts.nut" import antiAirMenuShortcutHeight, getShortcut
 from "%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut" import mkShortcutButton, mkShortcutButtonContinued, mkShortcutText, mkShortcutHint
@@ -7,7 +8,6 @@ from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%rGui/globals/ui_library.nut" import *
 
 let { modeNames } = require("%rGui/radarState.nut")
-let JB = require("%rGui/control/gui_buttons.nut")
 
 const radarColor = 0xFF00FF07
 const radarColorInactive = 0x66006602
@@ -27,7 +27,7 @@ function mkBtnHint(shortcut, gamepadHotkey = "", scale = 1) {
 let mkMouseBtnHint = @(buttonImage, gamepadHotkey = "") @() {
   watch = showConsoleButtons
   children = !showConsoleButtons.get() ? getShortcut(
-        { inputName = "inputImage", buttonImage }, { place = "antiAirMenu" })
+        { inputName = "inputImage", buttonImage }, const { place = "antiAirMenu" })
     : gamepadHotkey != "" ? mkGamepadImageByHotkey(gamepadHotkey)
     : null
 }

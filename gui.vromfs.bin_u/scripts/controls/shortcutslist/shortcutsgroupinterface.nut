@@ -1,8 +1,6 @@
-from "%sqstd/platform.nut" import isPC
+from "%sqstd/platform.nut" import isPC, isSony, isXbox
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 
@@ -41,7 +39,7 @@ return [
     id = "ID_SHOW_MOUSE_CURSOR"
     checkAssign = false
     showFunc = @() hasFeature("EnableMouse")
-    condition = @() isPC || isPlatformSony || isPlatformXbox
+    condition = @() isPC || isSony || isXbox
   }
   {
     id = "ID_SCREENSHOT"

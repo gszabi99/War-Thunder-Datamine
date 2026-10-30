@@ -47,6 +47,12 @@
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "digForwardOffset": 1.5,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2113,7 +2119,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/165mm_L9A1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/165mm_L9A1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2186,7 +2192,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2228,7 +2234,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2277,7 +2283,7 @@
   "weapon_presets": {
     "preset": {
       "name": "uk_centurion_mk_5_avre_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_centurion_mk_5_avre_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/uk_centurion_mk_5_avre_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3493,7 +3499,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/165mm_L9A1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/165mm_L9A1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3566,7 +3572,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3608,7 +3614,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -3649,7 +3655,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -1,7 +1,7 @@
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import markChildrenInteractive, markObjShortcutOnHover
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 
-let { markChildrenInteractive, markObjShortcutOnHover } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
 let { posNavigator } = require("bhvPosNavigator.nut")
 
 
@@ -49,4 +49,4 @@ let HoverNavigator = class (posNavigator) {
 
 replace_script_gui_behaviour("HoverNavigator", HoverNavigator)
 
-return {HoverNavigator}
+return freeze({HoverNavigator})

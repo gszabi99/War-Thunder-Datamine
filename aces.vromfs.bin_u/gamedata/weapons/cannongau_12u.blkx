@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 60.0,
-  "alternativeShotFreq": 30.0,
-  "traceFreq": 4,
-  "bullets": 300,
-  "shootingCharge": 5.5,
-  "dragCx": 0.005,
-  "mass": 203.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,16 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 60.0,
+  "alternativeShotFreq": 30.0,
+  "bullets": 300,
+  "shootingCharge": 5.5,
+  "dragCx": 0.005,
+  "mass": 203.0,
   "bullet": [
     {
       "mass": 0.185,
@@ -405,7 +405,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1231,7 +1231,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -2773,7 +2773,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -5752,15 +5752,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "gau_12_gun_outside",
-    "cockpit": "gau_12_gun_inside",
-    "charge": "gau_12_gun_rotor",
-    "charge_inside": "gau_12_gun_rotor_interior",
-    "ai": "gau_12_gun_ai"
-  },
   "gau_12_new_gun": {
     "maxDeltaAngle": 0.25,
     "overheat": {
@@ -5775,5 +5766,14 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "gau_12_gun_outside",
+    "cockpit": "gau_12_gun_inside",
+    "charge": "gau_12_gun_rotor",
+    "charge_inside": "gau_12_gun_rotor_interior",
+    "ai": "gau_12_gun_ai"
   }
 }

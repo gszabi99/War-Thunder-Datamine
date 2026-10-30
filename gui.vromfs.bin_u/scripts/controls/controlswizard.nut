@@ -1,4 +1,22 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_obj
+from "%scripts/controls/controlsConsts.nut" import MAX_SHORTCUTS, CONTROL_TYPE
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/controls/activeInputDevice.nut" import locByInputDevice
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/help/helpPreview.nut" import getHelpPreviewHandler
+from "%scripts/controls/controlsUtils.nut" import getControlsPresetBySelectedType, canChangeHelpersMode
+from "%scripts/controls/controlsCompatibility.nut" import joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts
+from "%scripts/options/optionsExt.nut" import set_option, create_options_container, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM, USEROPT_CONTROLS_PRESET
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset, setPreviewControlsPreset, isPresetChanged
+from "%scripts/controls/controlsManager.nut" import commitControls
+from "%scripts/controls/controlsTypeUtils.nut" import applyJoyPresetXchange
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
@@ -13,27 +31,9 @@ from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 from "types" import String, Array, Integer
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-
-let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode } = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM, USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
+let { recommendedControlPresets } = require("%scripts/controls/controlsUtils.nut")
 let { getLocalizedControlName, remapAxisName, getShortcutText, addHotkeyTxt } = require("%scripts/controls/controlsVisual.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset, setPreviewControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 let aircraft_controls_wizard_config = [
   { id = "helpers_mode"
@@ -50,7 +50,7 @@ let aircraft_controls_wizard_config = [
       skipAllBefore = [null, "ID_BASIC_CONTROL_HEADER"]
     }
     { id = "msg_wasd_type",
-      text = loc("controls/askKeyboardWasdType"),
+      getText = @() locByInputDevice("controls/askKeyboardWasdType"),
       type = CONTROL_TYPE.MSG_BOX
       options = recommendedControlPresets.map(@(name) $"#msgbox/btn_{name}")
       defValue = 1,
@@ -62,7 +62,7 @@ let aircraft_controls_wizard_config = [
     }
   { id = "msg/use_mouse_for_control", type = CONTROL_TYPE.MSG_BOX
     filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
-    needSkip = @() (isPlatformSony || isPlatformXbox)
+    needSkip = @() (isSony || isXbox)
     options = ["controls/useMouseControl", "controls/useMouseView", "controls/UseMouseNone"],
     skip = [null, null, ["msg/mouseWheelAction", "ID_CAMERA_NEUTRAL"]]
     onButton = function(value) {
@@ -471,6 +471,8 @@ register_gui_handler("controlsWizardModalHandler", class (BaseGuiHandlerWT) {
   }
 
   function getItemText(item) {
+    if ("getText" in item)
+      return item.getText()
     if ("text" in item)
       return item.text
     if (item.type == CONTROL_TYPE.AXIS)

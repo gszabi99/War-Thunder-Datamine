@@ -27,7 +27,7 @@ let aaMenuCfgDefaults = {
   hasTargetList = true
   targetList = defaultFilters
 }
-local aaMenuCfg = Watched(clone aaMenuCfgDefaults)
+let aaMenuCfg = Watched(clone aaMenuCfgDefaults)
 
 function updateCfg(){
   aaMenuCfg.mutate(function(cfg) {
@@ -72,6 +72,6 @@ playerUnitName.subscribe(function(_){
   updateAAMenuVisibility()
 })
 
-return {
+return freeze({
   aaMenuCfg
-}
+})

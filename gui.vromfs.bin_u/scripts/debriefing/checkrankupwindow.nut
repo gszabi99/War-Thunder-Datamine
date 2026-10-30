@@ -1,7 +1,7 @@
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { updatePlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/user/userInfoStats.nut" import updatePlayerRankByCountry
 
 let delayedRankUpWnd = []
 

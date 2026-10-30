@@ -1,15 +1,15 @@
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%sqstd/platform.nut" import isSony
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import save_profile, save_common_local_settings
 from "math" import ceil
 from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-
-let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
+let SAVE_TIMEOUT = isSony ? 300000 : 60000
 const MIN_SAVE_TIMEOUT = 5000
 const MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
 local nextAllowedSaveTime = 0
@@ -74,7 +74,11 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+
+eventbus_subscribe("saveProfile", @(_) saveProfile())
+eventbus_subscribe("forceSaveProfile", @(_) forceSaveProfile())
+
+return freeze({
   saveProfile
   forceSaveProfile
-}
+})

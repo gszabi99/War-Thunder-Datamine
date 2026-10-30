@@ -46,6 +46,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1900,7 +1906,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 1.5,
@@ -1989,7 +1995,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_02",
         "maxAdditionalPitch": 0.0,
@@ -2032,7 +2038,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2077,7 +2083,7 @@
   "weapon_presets": {
     "preset": {
       "name": "uk_crusader_mk_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_crusader_mk_2_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/uk_crusader_mk_2_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3050,7 +3056,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilMultiplier": 1.5,
@@ -3139,7 +3145,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_02",
               "maxAdditionalPitch": 0.0,
@@ -3182,7 +3188,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
               "emitter": "emtr_mg_flame_01",
               "flash": "emtr_mg_flame_01",
               "useEmitter": true,
@@ -3225,7 +3231,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

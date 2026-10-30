@@ -1,13 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 
 
 
@@ -236,6 +237,6 @@ let SelectionWindow = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("SelectionWindow", SelectionWindow)
 
-return {
+return freeze({
   openSelectionWindow
-}
+})

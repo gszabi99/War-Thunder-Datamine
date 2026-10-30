@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1822,7 +1828,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_PaK39_L48_hetzer_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_PaK39_L48_hetzer_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "allowableDelta": 20.0,
@@ -1866,7 +1872,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "useEmitter": true,
@@ -1910,8 +1916,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_jgdpz_38t_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_jgdpz_38t_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

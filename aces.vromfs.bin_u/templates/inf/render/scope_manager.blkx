@@ -8,6 +8,15 @@
       "weapon_render__crosshair:dafg::NodeHandle": {}
     }
   },
+  "weapon_render__crosshair_resolve": {
+    "_singleton": true,
+    "_use": "replicating",
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "weapon_render__crosshair_resolve:dafg::NodeHandle": {}
+    }
+  },
   "weapon_render__transparent": {
     "_singleton": true,
     "_use": "replicating",
@@ -60,6 +69,59 @@
       "_tags": "render",
       "_track": true,
       "weapon_render__depth_for_dof:dafg::NodeHandle": {}
+    }
+  },
+  "weapon_render__copy_mips": {
+    "_singleton": true,
+    "_use": "replicating",
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "weapon_render__copy_mips:dafg::NodeHandle": {}
+    }
+  },
+  "scope_lens_ghost_tuning": {
+    "_singleton": true,
+    "_use": "replicating",
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "scope_lens_ghost__scales": [
+        0.2,
+        0.3,
+        -0.35,
+        0.0
+      ],
+      "scope_lens_ghost__lods": [
+        0.0,
+        1.0,
+        2.0,
+        0.0
+      ],
+      "scope_lens_ghost__weights": [
+        1.0,
+        0.6,
+        0.5,
+        0.0
+      ],
+      "scope_lens_ghost__tint0": [
+        1.0,
+        0.55,
+        0.35,
+        0.0
+      ],
+      "scope_lens_ghost__tint1": [
+        0.9,
+        0.9,
+        1.0,
+        0.0
+      ],
+      "scope_lens_ghost__tint2": [
+        0.7,
+        0.2,
+        0.5,
+        0.0
+      ]
     }
   }
 }

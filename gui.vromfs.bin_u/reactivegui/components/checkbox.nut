@@ -1,24 +1,40 @@
+
+
+
+
+import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/style/cssColor.nut" as cssColor
 from "sound_wt" import playSound
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
+from "%rGui/dagui/units.nut" import cssConst, px
 
 let boxSize = [hdpx(20), hdpx(20)]
 const checkboxGap = hdpx(5)
 const checkboxPadding = hdpx(2)
 
+let formBoxSize = cssConst("checkboxImgSize")
+let formRowH = px("30@sf/@pf")
+let formBoxMargin = [0, (formRowH - formBoxSize) / 2]
+let formGap = px("4@sf/@pf")
+let formBorder = cssConst("dp")
+let formDisabledCheckColor = cssColor("checkboxCheckDisabledColor")
+
 let checkboxBoxColor = {
   active = {
-    fillcolor =   0xFF435158
-    borderColor = 0xFF999B8C
+    fillColor =   cssColor("checkboxPushedBgColor")
+    borderColor = cssColor("checkboxPushedBorderColor")
   }
   hover = {
-    fillcolor =   0xFF0D1116
-    borderColor = 0xFF6D7974
+    fillColor =   cssColor("checkboxHoveredBgColor")
+    borderColor = cssColor("checkboxHoveredBorderColor")
   }
   normal = {
-    fillcolor =   0xFF0D1116
-    borderColor = 0xFF3E4B52
+    fillColor =   cssColor("checkboxBgColor")
+    borderColor = cssColor("checkboxBorderColor")
+  }
+  disabled = {
+    fillColor =   cssColor("checkboxDisabledBgColor")
+    borderColor = cssColor("checkboxDisabledBorderColor")
   }
 }
 
@@ -33,12 +49,12 @@ let calcBoxColor = @(sf) sf & S_ACTIVE ? checkboxBoxColor.active
 function calcCheckColor(sf, isCheck) {
   if (!isCheck) {
     if (sf & S_HOVER)
-      return 0x40404040
+      return cssColor("checkboxCheckHoveredUncheckedColor")
     return 0
   }
-  return sf & S_ACTIVE ? 0x80808080
-    : sf & S_HOVER ? 0xC0C0C0C0
-    : 0xFFFFFFFF
+  return sf & S_ACTIVE ? cssColor("checkboxCheckPushedColor")
+    : sf & S_HOVER ? cssColor("checkboxCheckHoveredColor")
+    : cssColor("checkboxCheckColor")
 }
 
 let mkBackground = @(stateFlags) @() {
@@ -74,7 +90,7 @@ function mkLabel(stateFlags, params) {
     color = calcTextColor(stateFlags.get())
     font = fontsState.get("normal")
     behavior = Behaviors.Marquee
-    speed = [hdpx(40),hdpx(40)]
+    speed = hdpx(40)
     delay = 0.3
     scrollOnHover = true
   }.__update(params)
@@ -118,6 +134,54 @@ function mkCheckbox(state, labelTextParams = {}, params = {}) {
   }.__update(params?.override ?? {})
 }
 
-return {
-  mkCheckbox
+function mkFormCheckbox(p, state, onChange) {
+  let { id, text, isEnabled = null } = p
+  let textW = type(text) == "string" ? null : text
+  let stateFlags = Watched(0)
+  let checkPic = Picture($"ui/gameuiskin#check.svg:{formBoxSize}:{formBoxSize}:K")
+  let font = fontsState.get("small")
+  return function() {
+    let enabled = isEnabled?.get() ?? true
+    let isChecked = state.get()
+    let markColor = enabled ? calcCheckColor(stateFlags.get(), isChecked)
+      : isChecked ? formDisabledCheckColor
+      : 0
+    return {
+      watch = [stateFlags, state, isEnabled, textW]
+      key = id
+      size = [flex(), formRowH]
+      flow = FLOW_HORIZONTAL
+      gap = formGap
+      valign = ALIGN_CENTER
+      behavior = enabled ? Behaviors.Button : null
+      onElemState = @(s) stateFlags.set(s)
+      function onClick() {
+        playSound(isChecked ? "uncheck" : "check")
+        onChange(id, !isChecked)
+      }
+      children = [
+        {
+          size = formBoxSize
+          margin = formBoxMargin
+          rendObj = ROBJ_BOX
+          borderWidth = formBorder
+          children = markColor == 0 ? null
+            : { size = flex(), rendObj = ROBJ_IMAGE, image = checkPic, keepAspect = KEEP_ASPECT_FIT, color = markColor }
+        }.__update(enabled ? calcBoxColor(stateFlags.get()) : checkboxBoxColor.disabled)
+        {
+          size = FLEX_H
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          font
+          color = cssColor(enabled ? "commonTextColor" : "minorTextColor")
+          text = textW?.get() ?? text
+        }
+      ]
+    }
+  }
 }
+
+return freeze({
+  mkCheckbox
+  mkFormCheckbox
+})

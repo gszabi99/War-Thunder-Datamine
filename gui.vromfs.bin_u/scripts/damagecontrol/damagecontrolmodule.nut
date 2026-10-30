@@ -1,9 +1,8 @@
 import "DataBlock" as DataBlock
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/weaponry/dmgModel.nut" import getShipDamageControl
 from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
-
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getShipDamageControl } = require("%scripts/weaponry/dmgModel.nut")
 
 let shipDamageControlDataCache = {}
 
@@ -31,7 +30,7 @@ function gatherShipDamageControlData(unitName) {
   return shipDamageControlDataCache[unitName]
 }
 
-return {
+return freeze({
   gatherShipDamageControlData
   hasShipDamageControl = @(unitName) gatherShipDamageControlData(unitName).hasShipDamageControl
-}
+})

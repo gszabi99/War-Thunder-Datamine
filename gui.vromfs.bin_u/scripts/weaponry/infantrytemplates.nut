@@ -1,7 +1,6 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "%globalScripts/templates.nut" import getTemplateCompValue
 from "%scripts/dagui_library.nut" import *
-
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let infantryTemplates = {}
 function getUnitTemplateNames(unit) {
@@ -34,6 +33,6 @@ function getUnitTemplateNames(unit) {
   return res
 }
 
-return {
+return freeze({
   getUnitTemplateNames
-}
+})

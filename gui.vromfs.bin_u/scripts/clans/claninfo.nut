@@ -1,13 +1,12 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import charRequestBlk
+from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rank, clan_get_role_rights, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/clanNativeConsts.nut" import *
-
-let { charRequestBlk } = require("%scripts/tasker.nut")
-let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
 
 const REQUEST_TIME_OUT_MSEC  = 20000    
 const VALID_INFO_TIME_OUT_MSEC = 1800000 
@@ -147,11 +146,11 @@ function getRewardLogData(clanData, rewardId, maxCount) {
 
 let getClanPlaceRewardLogData = @(clanData, maxCount = -1) getRewardLogData(clanData, "rewardLog", maxCount)
 
-return {
+return freeze({
   getClansInfoByClanIds
   getMyClanMembers
   getMyClanRights
   haveRankToChangeRoles
   hasRightsToQueueWWar
   getClanPlaceRewardLogData
-}
+})

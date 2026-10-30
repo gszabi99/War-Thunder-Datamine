@@ -1,13 +1,14 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/chat/chatHandler.nut" import menuChatHandler
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatStates.nut" import hasMenuChat
+
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 
 let ChatRoom = class (BaseInvite) {
   

@@ -1,6 +1,7 @@
+from "%scripts/unit/remainingTimeUnit.nut" import promoteUnits
+from "%scripts/discounts/discountsState.nut" import getDiscount
 from "%scripts/dagui_library.nut" import *
-let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { getDiscount } = require("%scripts/discounts/discountsState.nut")
+
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 
 let getDiscountIconId = @(name) $"{name}_discount"

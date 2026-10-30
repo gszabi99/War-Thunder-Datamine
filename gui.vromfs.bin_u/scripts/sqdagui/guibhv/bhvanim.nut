@@ -1,6 +1,5 @@
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
   
@@ -54,4 +53,4 @@ function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
     sizeObj["size-time"] = timeTxt
   }
 }
-return {create_ObjMoveToOBj}
+return freeze({create_ObjMoveToOBj})

@@ -1,10 +1,9 @@
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/login/logout.nut" import startLogout
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version, exitGame
 
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-
-if ((isPlatformSony || isPlatformXbox) && !is_dev_version())
+if ((isSony || isXbox) && !is_dev_version())
   return startLogout
 
 return exitGame

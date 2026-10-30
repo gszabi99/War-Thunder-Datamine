@@ -312,18 +312,6 @@
     }
   },
   "splash": {
-    "voxelBoxResolution": 80,
-    "minVoxelSize": 0.02,
-    "minObstacleSize": 0.02,
-    "thicknessMapEnabled": true,
-    "thicknessMapResolution": 32,
-    "thicknessMapMinVoxelSize": 0.1,
-    "thicknessMapRelLimits": [
-      0.1,
-      6.0
-    ],
-    "thicknessMapMinObstacleSize": 0.02,
-    "thicknessMapFaceNormalMinCosine": 0.1,
     "pushOutCenter": true,
     "underwaterPenetrationScale": 1.25,
     "underwaterDamageScale": 1.5,
@@ -331,6 +319,22 @@
       1.0,
       1.2
     ],
+    "voxelMap": {
+      "voxelBoxResolution": 80,
+      "minVoxelSize": 0.02,
+      "minObstacleSize": 0.02
+    },
+    "thicknessMap": {
+      "enabled": true,
+      "resolution": 32,
+      "minVoxelSize": 0.1,
+      "relLimits": [
+        0.1,
+        6.0
+      ],
+      "minObstacleSize": 0.02,
+      "faceNormalMinCosine": 0.1
+    },
     "squashArmorAnglesScale": {
       "p0": [
         0.0,

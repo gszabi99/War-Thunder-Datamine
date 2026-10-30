@@ -1,21 +1,19 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/squads/squadState.nut" import isInSquad, isSquadLeader, getMembers, getPlayerStatusInMySquad
+from "%scripts/events/eventsState.nut" import isEventMultiSlotEnabled
+from "%scripts/events/eventInfo.nut" import canJoinWithoutRequireCrafts
+from "%scripts/events/eventTeamsInfo.nut" import getSidesList, getTeamData, getCountries, getRequiredCrafts, getEDiffByEvent, getMinCraftsToPlay, isAirRequiredAndAllowedByTeamData
+  , isUnitMatchesRule, isUnitAllowedByTeamData
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomMGameMode, getRoomSpecialRules, getRoomTeamData
+from "%scripts/matching/matchingGameModes.nut" import getAllCountriesSets, getModeById
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/unit/brokenAirsInfo.nut" import getBrokenAirsInfo
 from "dagor.random" import rnd
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadMemberState, memberStatus
-
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isInSquad, isSquadLeader, getMembers, getPlayerStatusInMySquad } = require("%scripts/squads/squadState.nut")
-let { isEventMultiSlotEnabled } = require("%scripts/events/eventsState.nut")
-let { canJoinWithoutRequireCrafts } = require("%scripts/events/eventInfo.nut")
-let { getSidesList, getTeamData, getCountries, getRequiredCrafts, getEDiffByEvent, getMinCraftsToPlay,
-  isAirRequiredAndAllowedByTeamData, isUnitMatchesRule, isUnitAllowedByTeamData
-} = require("%scripts/events/eventTeamsInfo.nut")
-let { getRoomMGameMode, getRoomSpecialRules, getRoomTeamData } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getAllCountriesSets, getModeById } = require("%scripts/matching/matchingGameModes.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getBrokenAirsInfo } = require("%scripts/unit/brokenAirsInfo.nut")
 
 
 
@@ -349,7 +347,7 @@ function getMembersInfo(membersTeams) {
 }
 
 
-return {
+return freeze({
   getMGameMode
   getTeamDataWithRoom
   getAvailableTeams
@@ -357,4 +355,4 @@ return {
   getCountryRepairInfo
   getMembersTeamsData
   getMembersInfo
-}
+})

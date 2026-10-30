@@ -1,9 +1,9 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
 from "hangar" import hangar_enable_controls
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 class emptySceneWithDarg (BaseGuiHandler) {

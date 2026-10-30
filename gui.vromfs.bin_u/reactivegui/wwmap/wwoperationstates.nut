@@ -11,11 +11,11 @@ let getPlayerSideStr = @() zoneSideTypeStr[getPlayerSide()]
 let isPlayerSide = @(side) getPlayerSide() == side
 let isPlayerSideStr = @(side) zoneSideTypeStr[getPlayerSide()] == side
 
-return {
+return freeze({
   isOperationPausedWatch
   getPlayerSide
   getPlayerSideStr
   isPlayerSide
   isPlayerSideStr
   updateOperationState = @() isOperationPausedWatch.set(isOperationPaused())
-}
+})

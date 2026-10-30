@@ -1,21 +1,22 @@
+from "%scripts/contacts/externalContactsService.nut" import requestUnknownXboxIds
+from "%scripts/contacts/contactsListState.nut" import xboxApprovedUids, xboxBlockedUids, findContactByXboxId
+from "%scripts/contacts/contactsState.nut" import fetchContacts, updatePresencesByList
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/contacts/contactsActions.nut" import updateContact
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqstd/platform.nut" import is_gdk
 from "%gdkLib/impl/presence.nut" import subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType
-from "%gdkLib/impl/app.nut" import get_title_id
+from "%gdkLib/impl/app.nut" import get_title_id, register_resume_callback
 from "%gdkLib/impl/relationships.nut" import update_friends_list, update_avoid_list, retrieve_related_people_list, retrieve_avoid_people_list
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
-let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
-let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
+let { contactsPlayers } = require("%scripts/contacts/contactsListState.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
-let XboxContactsManagerGlobals = persist("XboxContactsManagerGlobals", @() { isInitedXboxContacts = false })
+local isInitedXboxContacts = false
 let pendingXboxContactsToUpdate = {}
 
 let console2uid = {}
@@ -66,15 +67,15 @@ function fetchContactsList() {
 
 function updateContacts(needIgnoreInitedFlag = false) {
   if (!is_gdk || !isInMenu.get()) {
-    if (needIgnoreInitedFlag && XboxContactsManagerGlobals.isInitedXboxContacts)
-      XboxContactsManagerGlobals.isInitedXboxContacts = false
+    if (needIgnoreInitedFlag)
+      isInitedXboxContacts = false
     return
   }
 
-  if (!needIgnoreInitedFlag && XboxContactsManagerGlobals.isInitedXboxContacts)
+  if (!needIgnoreInitedFlag && isInitedXboxContacts)
     return
 
-  XboxContactsManagerGlobals.isInitedXboxContacts = true
+  isInitedXboxContacts = true
   fetchContactsList()
 }
 
@@ -188,20 +189,18 @@ function on_presences_update(success, presences) {
 
 subscribe_to_presence_update_events(on_presences_update)
 
+register_resume_callback(function() {
+  if (isLoggedIn.get())
+    updateContacts(true)
+})
+
 
 addListenersWithoutEnv({
   function SignOut(_) {
     pendingXboxContactsToUpdate.clear()
-    XboxContactsManagerGlobals.isInitedXboxContacts = false
+    isInitedXboxContacts = false
     xboxApprovedUids.set({})
     xboxBlockedUids.set({})
-  }
-
-  function XboxSystemUIReturn(_) {
-    if (!isLoggedIn.get())
-      return
-
-    updateContacts(true)
   }
 
   function ContactsUpdated(_) {
@@ -215,9 +214,9 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   fetchContactsList = fetchContactsList
 
   updateContactXBoxPresence = updateContactXBoxPresence
   updateContacts = updateContacts
-}
+})

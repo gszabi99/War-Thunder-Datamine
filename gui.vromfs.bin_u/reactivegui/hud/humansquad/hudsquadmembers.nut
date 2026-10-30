@@ -2,6 +2,7 @@ import "%rGui/hints/hints.nut" as hints
 import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/style/colors.nut" import hud, white, hudSquadBgColor, attackWarningColor, transparent, attackWarningColor2, attackWarningColor3
 from "%rGui/hud/humanSquad/humanSquadState.nut" import isPersonalContextCommandMode, watchedHeroSquadMembersGetWatched, watchedHeroSquadMembersOrderedSet
 from "%appGlobals/hudSquadMembers.nut" import selectedBotForOrderEid, watchedHeroSquadMembers, hudSquadBlockCollapsed
 from "%rGui/hud/state/controlledHeroEid.nut" import controlledHeroEid
@@ -10,16 +11,15 @@ from "%rGui/hud/humanSquad/hudSquadMemberIcons.nut" import mkMineIcon, mkStatusI
 from "%rGui/hud/humanSquad/humanSquadFormation.nut" import squadFormation, SquadFormationSpreadEnum
 from "%rGui/hud/humanSquad/humanSquadBehaviour.nut" import squadBehaviour, SquadBehaviourEnum
 from "%rGui/hud/humanSquad/grenadeIcon.nut" import mkGrenadeIcon
-from "%rGui/style/colors.nut" import white, hudSquadBgColor, attackWarningColor, transparent, attackWarningColor2, attackWarningColor3
 from "%rGui/hud/humanSquad/humanEnums.nut" import ATTACK_RES
 from "%rGui/style/const.nut" import humanSquadSingleItemWidth, squadMemberGap
+from "%rGui/utils/cacheByKey.nut" import cacheByKey
 from "console" import register_command
 from "eventbus" import eventbus_subscribe
 from "controls" import emulateShortcut
 from "dagor.math" import Color4
 from "%rGui/globals/ui_library.nut" import *
 
-let { hud } = require("%rGui/style/colors.nut")
 let { infantryShortcutCommonColor, infantryShortcutCommonTextColor } = hud
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
 
@@ -50,9 +50,6 @@ let overrideItemIcon = {
 const collapseIconWidth = hdpx(8)
 const collapseIconHeight = hdpx(14)
 
-let collapseIcon = Picture(
-  $"ui/gameuiskin#icon_collapse_action_bar.svg:{collapseIconWidth}:{collapseIconHeight}")
-
 const miniPadding = hdpxi(2)
 const smallPadding = hdpxi(4)
 const sIconSize = evenPx(24)
@@ -78,7 +75,7 @@ const memberIconLightColor = 0xFFd2d2d1
 
 let whiteColor4 = Color4(255,255,255,255)
 
-let personalOrderMarker = freeze({
+let mkPersonalOrderMarker = @() freeze({
   size = const [memberMarkerSize, memberMarkerSize]
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = hudSquadBgColor
@@ -94,7 +91,7 @@ let personalOrderMarker = freeze({
   }
 })
 
-let memberSelfMarker = freeze({
+let mkMemberSelfMarker = @() freeze({
   size = const [memberMarkerSize, memberMarkerSize]
   rendObj = ROBJ_IMAGE
   hplace = ALIGN_CENTER
@@ -103,13 +100,13 @@ let memberSelfMarker = freeze({
   color = memberIconLightColor
 })
 
-let memberMarker = @(memberIdx, isSelectedForOrder) isSelectedForOrder
+let memberMarker = @(memberIdx, isSelectedForOrder, getPicture) isSelectedForOrder
   ? freeze({
     size = selectedMemberMarkerBlockSize
     rendObj = ROBJ_IMAGE
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    image = Picture($"ui/gameuiskin#infantry_{memberIdx}_selected.svg:{selectedMemberMarkerBlockSize[0]}:{selectedMemberMarkerBlockSize[1]}:P")
+    image = getPicture($"ui/gameuiskin#infantry_{memberIdx}_selected.svg:{selectedMemberMarkerBlockSize[0]}:{selectedMemberMarkerBlockSize[1]}:P")
     color = memberIconLightColor
   })
   : freeze({
@@ -117,12 +114,12 @@ let memberMarker = @(memberIdx, isSelectedForOrder) isSelectedForOrder
     rendObj = ROBJ_IMAGE
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    image = Picture($"ui/gameuiskin#infantry_{memberIdx}.svg:{memberMarkerBlockSize[0]}:{memberMarkerBlockSize[1]}:P")
+    image = getPicture($"ui/gameuiskin#infantry_{memberIdx}.svg:{memberMarkerBlockSize[0]}:{memberMarkerBlockSize[1]}:P")
     color = memberIconLightColor
   })
 
 
-let emptySlotIcon = freeze({
+let mkEmptySlotIcon = @() freeze({
   rendObj = ROBJ_IMAGE
   size = const [sIconSize, sIconSize]
   hplace = ALIGN_CENTER
@@ -178,22 +175,12 @@ function mkAiAction(member, blockSize) {
   }
 }
 
-let mkTertiaryImg = @(imagePic, color) {
-  size = tertiaryWeaponSize
+let mkTertiaryImg = @(size, imagePic, color, getPicture) {
+  size
   rendObj = ROBJ_IMAGE
   color
   keepAspect = KEEP_ASPECT_FIT
-  image = Picture(imagePic)
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-}
-
-let mkOverrideTertiaryImg = @(imagePic, color) {
-  size = [evenPx(30), evenPx(30)]
-  rendObj = ROBJ_IMAGE
-  color
-  keepAspect = KEEP_ASPECT_FIT
-  image = Picture(imagePic)
+  image = getPicture(imagePic)
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
 }
@@ -206,8 +193,9 @@ let selfBorder = [
   [VECTOR_LINE, 20, 0, 0, 0]
 ]
 
-let memberUi = memoize(function(eid) {
+let mkMemberUi = @(personalOrderMarker, memberSelfMarker, emptySlotIcon) cacheByKey(function(eid) {
   let state = watchedHeroSquadMembersGetWatched(eid)
+  let getPicture = cacheByKey(Picture)
 
   return function() {
     let member = state.get()
@@ -228,16 +216,16 @@ let memberUi = memoize(function(eid) {
     let weapTemplate = weapTemplates?.tertiary ?? ""
     let tertImage = weapTemplate != "" && tertiaryGunEid != ecs.INVALID_ENTITY_ID
       ? overrideItemIcon?[weapTemplate]
-        ? mkOverrideTertiaryImg(
+        ? mkTertiaryImg(evenPx(30),
             overrideItemIcon[weapTemplate],
-            iconColor)
-        : mkTertiaryImg(icon3dByGameTemplate(weapTemplate, {
+            iconColor, getPicture)
+        : mkTertiaryImg(tertiaryWeaponSize, icon3dByGameTemplate(weapTemplate, {
             width = tertiaryWeaponSize[0]
             height = tertiaryWeaponSize[1]
             silhouetteColor = whiteColor4
             forceRealTimeRenderIcon = forceRealTimeRenderIcon.get()
             renderSettingsPlace = "hud_squad_manager"
-          }), iconColor)
+          }), iconColor, getPicture)
       : emptySlotIcon
 
     return {
@@ -267,7 +255,7 @@ let memberUi = memoize(function(eid) {
               fillColor = transparent
               commands = selfBorder
             } : null
-            mkStatusIcon(member, iconSize)
+            mkStatusIcon(member, iconSize, getPicture)
             !isAlive ? null : {
               flow = FLOW_VERTICAL
               size = FLEX
@@ -282,8 +270,8 @@ let memberUi = memoize(function(eid) {
                 {
                   size = const [SIZE_TO_CONTENT, sIconSize]
                   children = isAliveAI || isSelf
-                      ? (mkGrenadeIcon(grenadeT, sIconSize, iconColor)
-                        ?? mkMineIcon(member, sIconSize, iconColor) )
+                      ? (mkGrenadeIcon(grenadeT, sIconSize, getPicture, iconColor)
+                        ?? mkMineIcon(member, sIconSize, getPicture, iconColor) )
                       : equipmentStatusRowDummy
                 }
               ]
@@ -301,7 +289,7 @@ let memberUi = memoize(function(eid) {
             }
             {
               hplace = ALIGN_CENTER
-              children = isSelf ? memberSelfMarker : memberMarker(memberIdx+1, isSelectedForOrder)
+              children = isSelf ? memberSelfMarker : memberMarker(memberIdx+1, isSelectedForOrder, getPicture)
             }
           ]
         } : null
@@ -310,7 +298,7 @@ let memberUi = memoize(function(eid) {
   }
 })
 
-let squadMembersList = @() {
+let mkSquadMembersList = @(memberUi) @() {
   watch = [ watchedHeroSquadMembersOrderedSet, hudSquadBlockCollapsed, isSquadBlockHidden ]
   flow = FLOW_HORIZONTAL
   gap = squadMemberGap
@@ -328,16 +316,16 @@ let mkSquadStatusIcon = @(icon) {
   image = Picture($"{icon}:{squadStatusIconSize}:{squadStatusIconSize}:P")
 }
 
-let squadFormationIcons = {
+let mkSquadFormationIcons = @() {
   [SquadFormationSpreadEnum.ESFN_CLOSEST] = mkSquadStatusIcon("ui/gameuiskin#squad_formation_closest.svg"),
   [SquadFormationSpreadEnum.ESFN_WIDE] = mkSquadStatusIcon("ui/gameuiskin#squad_formation_wide.svg")
 }
 
-let squadBehaviourIcons = {
+let mkSquadBehaviourIcons = @() {
   [SquadBehaviourEnum.ESB_PASSIVE] = mkSquadStatusIcon("ui/gameuiskin#squad_behaviour_passive.svg")
 }
 
-let squadStatus = @() {
+let mkSquadStatus = @(squadFormationIcons, squadBehaviourIcons) @() {
   watch = [squadFormation, squadBehaviour, hudSquadBlockCollapsed, isSquadBlockHidden]
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
@@ -383,7 +371,7 @@ function onCollapseHumanSquadBtnPressed() {
 eventbus_subscribe("onCollapseHumanSquadBtn",
   @(v) v?.isKeyDown == false ? onCollapseHumanSquadBtnPressed() : null)
 
-let collapseIconComp = @() {
+let mkCollapseIconComp = @(collapseIcon) @() {
   watch = hudSquadBlockCollapsed
   rendObj = ROBJ_IMAGE
   size = const [collapseIconWidth, collapseIconHeight]
@@ -402,7 +390,8 @@ let collapseButton = @() {
   onClick = onCollapseHumanSquadBtnPressed
   children = [
     getShortcutText("{{ID_CHANGE_HUMAN_SQUAD_VISIBILITY}} ")
-    collapseIconComp
+    mkCollapseIconComp(Picture(
+      $"ui/gameuiskin#icon_collapse_action_bar.svg:{collapseIconWidth}:{collapseIconHeight}"))
   ]
 }
 
@@ -410,14 +399,14 @@ let mkUnitControlHelp = @() getShortcutText(
   "{{ID_HELP}} {0}".subst(loc("hotkeys/ID_HELP"))
 )
 
-let members = {
+let mkMembers = @() {
   size = const [ SIZE_TO_CONTENT, shHud(3) + memberBlockHeight]
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT
   gap = smallPadding
   children = [
-    squadStatus
-    squadMembersList
+    mkSquadStatus(mkSquadFormationIcons(), mkSquadBehaviourIcons())
+    mkSquadMembersList(mkMemberUi(mkPersonalOrderMarker(), mkMemberSelfMarker(), mkEmptySlotIcon()))
     @() {
       watch = [ hudSquadBlockCollapsed, isSquadBlockHidden ]
       opacity = hudSquadBlockCollapsed.get() ? 0 : 1
@@ -439,7 +428,7 @@ let squadBlock = @() doNotShowMembers.get() ? { watch = doNotShowMembers} : {
   gap = memberMarkerSize
   children = [
     collapseButton
-    members
+    mkMembers()
   ]
 }
 

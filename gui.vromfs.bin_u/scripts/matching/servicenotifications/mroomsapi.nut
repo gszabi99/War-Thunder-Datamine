@@ -1,11 +1,11 @@
-from "%sqstd/platform.nut" import is_gdk
+import "%scripts/social/crossplay.nut" as crossplayModule
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%scripts/matching/api.nut" import checkMatchingError, matchingApiFunc
+from "%scripts/matching/serviceNotifications/mroomsState.nut" import cleanupRoomState, addRoomMember, onSelfReady
 from "%scripts/dagui_natives.nut" import get_dyncampaign_b64blk
 from "%scripts/dagui_library.nut" import *
 
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
-let { roomState, cleanupRoomState, addRoomMember, onSelfReady } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
+let { roomState } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 
 function onRoomJoinCb(resp) {
   cleanupRoomState()
@@ -27,7 +27,7 @@ function onRoomLeaveCb() {
 }
 
 function requestCreateRoom(params, cb) {
-  if ((is_gdk || isPlatformSony)
+  if ((is_gdk || isSony)
       && !crossplayModule.isCrossPlayEnabled()) {
     params["crossplayRestricted"] <- true
   }
@@ -126,7 +126,7 @@ function serializeDyncampaign(cb) {
   matchingApiFunc("mrooms.set_attributes", cb, { private = priv })
 }
 
-return {
+return freeze({
   requestCreateRoom
   requestDestroyRoom
   requestJoinRoom
@@ -140,4 +140,4 @@ return {
   invitePlayerToRoom
   fetchRoomsList
   serializeDyncampaign
-}
+})

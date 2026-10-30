@@ -1,29 +1,29 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/wndLib/qrWindow.nut" as openQrWindow
 import "DataBlock" as DataBlock
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/onlineShop/ps4ShopData.nut" import canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated
+from "%scripts/user/countryUtils.nut" import isPlayerRecommendedEmailRegistration
+from "%sqstd/platform.nut" import platformId
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu_reload
+from "%scripts/tasker.nut" import addBgTaskCb
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
 from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import ps4_open_store
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenEnumId = SEEN.EXT_PS4_SHOP
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
-let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated } = require("%scripts/onlineShop/ps4ShopData.nut")
-let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
-let PS4Shop = persist("PS4Shop", @() { sheetsArray = [] })
+let sheetsArray = []
 
 let defaultsSheetData = {
   WARTHUNDEREAGLES = {
@@ -55,12 +55,12 @@ let fillSheetsArray = function(bcEventParams = {}) {
     return
   }
 
-  if (!PS4Shop.sheetsArray.len()) {
+  if (!sheetsArray.len()) {
     for (local i = 0; i < getShopData().blockCount(); i++) {
       let block = getShopData().getBlock(i)
       let categoryId = block.getBlockName()
 
-      PS4Shop.sheetsArray.append({
+      sheetsArray.append({
         id = $"sheet_{categoryId}"
         locText = block?.name ?? block.displayName ?? ""
         getSeenId = @() $"##ps4_item_sheet_{categoryId}"
@@ -72,7 +72,7 @@ let fillSheetsArray = function(bcEventParams = {}) {
     }
   }
 
-  foreach (sh in PS4Shop.sheetsArray) {
+  foreach (sh in sheetsArray) {
     let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), function() {
       let res = []
@@ -145,7 +145,7 @@ let openIngameStoreImpl = kwarg(
         openStoreLocId = "items/openIn/Ps4Store"
         seenEnumId = seenEnumId
         seenList = seenList
-        sheetsArray = PS4Shop.sheetsArray
+        sheetsArray = sheetsArray
       })
       return true
     }
@@ -174,7 +174,7 @@ function openIngameStore(params = {}) {
     && isChapterSuitable(params?.chapter)
     && getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
-    sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform })
+    sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform = platformId })
     openQrWindow({
       headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
       infoText = loc("eagles/rechargeUrlNotification")
@@ -196,11 +196,11 @@ function openIngameStore(params = {}) {
   return openIngameStoreImpl(params)
 }
 
-return {
+return freeze({
   openIngameStore
   getEntStoreLocId
   getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu.get()
   getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
-}
+})

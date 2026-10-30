@@ -1,7 +1,6 @@
+from "%sqstd/platform.nut" import is_pc, is_android, is_ios
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath, blkOptFromPath
 from "app" import get_config_name
-
-let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
-let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 
 function getConfigBlkPaths() {
   
@@ -29,7 +28,7 @@ function setSystemConfigOption(path, val) {
     blk.saveToTextFile(filename)
 }
 
-return {
+return freeze({
   getSystemConfigOption
   setSystemConfigOption
-}
+})

@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.14,
-  "shotFreq": 15.0,
-  "traceFreq": 4,
-  "bullets": -1,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.14,
+  "shotFreq": 15.0,
+  "bullets": -1,
+  "overheat": {
+    "overheat": [
+      [
+        8.3,
+        0.0
+      ],
+      [
+        11.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0095,
@@ -427,7 +439,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2492,7 +2504,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4143,7 +4155,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4552,7 +4564,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4961,7 +4973,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -7443,25 +7455,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "type97_gun_outside",
-    "cockpit": "type97_gun_inside",
-    "ai": "type97_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        8.3,
-        0.0
-      ],
-      [
-        11.0,
-        0.05
-      ]
-    ]
-  },
   "type97_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -7476,5 +7469,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "type97_gun_outside",
+    "cockpit": "type97_gun_inside",
+    "ai": "type97_gun_ai"
   }
 }

@@ -1,7 +1,6 @@
+from "%scripts/gameModes/gameModeManagerState.nut" import setCurrentGameModeById
 from "%sqstd/underscore.nut" import invert
 from "%scripts/dagui_library.nut" import *
-
-let { setCurrentGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let activityToGameMode = {
   air_event_arcade = "air_arcade"
@@ -29,9 +28,8 @@ function switchGameModeByGameIntent(intent) {
   log($"[PSGI] game mode not found for {intent.activityId} ")
 }
 
-return {
+return freeze({
   getGameModeByActivity
   getActivityByGameMode
   switchGameModeByGameIntent
-}
-
+})

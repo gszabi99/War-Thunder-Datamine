@@ -1,8 +1,8 @@
+from "%scripts/ranks.nut" import maxCountryRank
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let discountPostfixArray = ["_premium", ""]
 
@@ -189,8 +189,8 @@ function parseDiscountDescription(blk) {
   return items
 }
 
-return {
+return freeze({
   sortDiscountDescriptionItems
   createDiscountDescriptionSortData
   parseDiscountDescription
-}
+})

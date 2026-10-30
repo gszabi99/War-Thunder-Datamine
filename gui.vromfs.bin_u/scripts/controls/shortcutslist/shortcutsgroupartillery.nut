@@ -1,5 +1,5 @@
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
 from "%scripts/dagui_library.nut" import *
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 

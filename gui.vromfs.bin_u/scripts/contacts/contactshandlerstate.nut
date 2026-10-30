@@ -1,3 +1,4 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, DEFAULT_HANDLER
 from "%scripts/dagui_library.nut" import *
 
 local contactsHandlerClass = null 
@@ -10,8 +11,10 @@ function loadContactsToObj(obj, owner) {
     return
 
   let guiScene = obj.getScene()
-  if (contactsHandler == null)
+  if (contactsHandler == null) {
     contactsHandler = contactsHandlerClass(guiScene)
+    subscribe_handler(contactsHandler, DEFAULT_HANDLER)
+  }
   contactsHandler.owner = owner
   contactsHandler.initScreen(obj)
 }
@@ -43,11 +46,11 @@ function switchContactsObj(scene, owner) {
 
 let isContactsWindowActive = @() contactsHandler?.isContactsWindowActive() ?? false
 
-return {
+return freeze({
   getContactsHandler = @() contactsHandler
   setContactsHandlerClass = @(handlerClass) contactsHandlerClass = handlerClass
   switchContactsObj
   isContactsWindowActive
   getLastContactsSceneShow = @() lastContactsSceneShow
   setLastContactsSceneShow = @(status) lastContactsSceneShow = status
-}
+})

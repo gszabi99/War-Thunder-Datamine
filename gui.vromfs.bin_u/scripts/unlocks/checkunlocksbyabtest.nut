@@ -1,9 +1,8 @@
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient, isUnlockOpened
+from "%scripts/user/profileStates.nut" import userIdInt64
 from "blkGetters" import get_gui_regional_blk
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks

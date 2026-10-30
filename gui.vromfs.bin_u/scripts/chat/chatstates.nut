@@ -1,16 +1,17 @@
+import "%scripts/social/crossplay.nut" as crossplayModule
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne, isPlayerFromPS4
+from "%scripts/user/matchingFeature.nut" import hasChat
+from "%scripts/user/profileStates.nut" import isGuestLogin
+from "%scripts/gdk/permissions.nut" import check_crossnetwork_communications_permission, CommunicationState
+from "%gdkLib/crossnetwork.nut" import communicationsPrivilege
+from "%globalScripts/loc_helpers.nut" import locByVendor
+from "%scripts/contacts/contactsListState.nut" import getContactByName
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInFriendsGroup
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqstd/platform.nut" import is_gdk
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_natives.nut" import ps4_show_chat_restriction, gchat_is_voice_enabled, gchat_is_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
-
-let platformModule = require("%scripts/clientState/platform.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { hasChat } = require("%scripts/user/matchingFeature.nut")
-let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 let hasChatCharPermission = Watched(hasFeature("Chat"))
 
@@ -18,6 +19,11 @@ function getXboxChatEnableStatus() {
   if (!is_gdk || !isLoggedIn.get())
     return CommunicationState.Allowed
   return check_crossnetwork_communications_permission()
+}
+
+function attemptShowOverlayMessage() {
+  if (!communicationsPrivilege.get())
+    showInfoMsgBox(locByVendor("xbox/actionNotAvailableLiveCommunications"))
 }
 
 function isChatEnabled(needOverlayMessage = false) {
@@ -29,7 +35,13 @@ function isChatEnabled(needOverlayMessage = false) {
       ps4_show_chat_restriction()
     return false
   }
-  return getXboxChatEnableStatus() != CommunicationState.Blocked
+
+  if (getXboxChatEnableStatus() == CommunicationState.Blocked) {
+    if (needOverlayMessage)
+      attemptShowOverlayMessage()
+    return false
+  }
+  return true
 }
 
 
@@ -40,8 +52,8 @@ function is_player_in_friends_group(uid, searchByUid, playerNick) {
 }
 
 function isCrossNetworkMessageAllowed(playerName) {
-  if (platformModule.isPlayerFromXboxOne(playerName)
-      || platformModule.isPlayerFromPS4(playerName))
+  if (isPlayerFromXboxOne(playerName)
+      || isPlayerFromPS4(playerName))
     return true
 
   let crossnetStatus = crossplayModule.getCrossNetworkChatStatus()
@@ -89,10 +101,6 @@ function isChatEnableWithPlayer(playerName, comms_state) {
   return isChatEnabled()
 }
 
-function attemptShowOverlayMessage() { 
-  check_communications_privilege(true, null)
-}
-
 function canUseVoice() {
   return hasFeature("Voice") && gchat_is_voice_enabled()
 }
@@ -103,7 +111,7 @@ addListenersWithoutEnv({
   ProfileUpdated             = @(_) hasChatCharPermission.set(hasFeature("Chat"))
 })
 
-return {
+return freeze({
   getXboxChatEnableStatus = getXboxChatEnableStatus
   isChatEnabled = isChatEnabled
   checkChatEnableWithPlayer = checkChatEnableWithPlayer
@@ -113,4 +121,4 @@ return {
   chatStatesCanUseVoice = canUseVoice
   hasMenuChat
   hasChatCharPermission
-}
+})

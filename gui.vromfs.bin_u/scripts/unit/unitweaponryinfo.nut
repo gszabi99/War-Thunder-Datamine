@@ -1,14 +1,12 @@
+from "%scripts/weaponry/weaponryInfo.nut" import isWeaponAux, getLastWeapon, getLastPrimaryWeapon
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, makeWeaponInfoData
+from "%scripts/weaponry/weaponryPresets.nut" import getPresetWeapons, getWeaponBlkParams
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/weaponry/weaponryTypes.nut" import getUpgradeTypeByItem
 from "%sqstd/datablock.nut" import blkFromPath, blkOptFromPath
 from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
-
-let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
-
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
 
@@ -234,7 +232,7 @@ function getWeaponUsedMods(name, modifications, overrideMods = null) {
 }
 
 
-return {
+return freeze({
   getUnitMassPerSecValue
   getUnitWeaponPresetsCount
   getCurrentPreset
@@ -248,4 +246,4 @@ return {
   getModsListByType
   getWeaponModsInfoTexts
   getWeaponUsedMods
-}
+})

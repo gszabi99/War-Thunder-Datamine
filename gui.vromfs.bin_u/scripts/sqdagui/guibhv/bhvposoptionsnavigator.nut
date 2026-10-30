@@ -1,9 +1,9 @@
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import markObjShortcutOnHover
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "types" import Integer
 
 let { posNavigator } = require("bhvPosNavigator.nut")
-let { markObjShortcutOnHover } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
 
 
 
@@ -84,4 +84,4 @@ let PosOptionsNavigator = class (posNavigator) {
 
 replace_script_gui_behaviour("PosOptionsNavigator", PosOptionsNavigator)
 
-return {PosOptionsNavigator}
+return freeze({PosOptionsNavigator})

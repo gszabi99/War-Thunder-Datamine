@@ -1,3 +1,4 @@
+from "%scripts/user/profileStates.nut" import userIdInt64
 from "%sqStdLibs/helpers/u.nut" import isString
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent
 from "%sqstd/string.nut" import capitalize
@@ -5,8 +6,6 @@ from "blkGetters" import get_current_mission_info_cached
 from "gameplayBinding" import isInFlight
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 let missionRules = {}
 local curRules = null
@@ -71,9 +70,9 @@ addListenersWithoutEnv({
   LoadingStateChange = @(_) curMissionRulesInvalidate()
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   curMissionRulesInvalidate
   getCurMissionRules
   registerMissionRules
   findRulesClassByName
-}
+})

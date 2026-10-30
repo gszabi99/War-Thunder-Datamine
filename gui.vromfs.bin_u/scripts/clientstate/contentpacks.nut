@@ -1,14 +1,26 @@
+import "%scripts/clientState/contentState.nut" as contentStateModule
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadState.nut" import checkMembersPkg
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%sqstd/platform.nut" import is_windows, platformId, is_gdk, isSony, isXbox
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/langUtils/language.nut" import needCheckLangPack
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS
+from "%scripts/clientState/clientStates.nut" import getFromSettingsBlk
 from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "eventbus" import eventbus_subscribe
-from "%sqstd/platform.nut" import is_windows, platformId, is_gdk
 from "language" import getLocalLanguage
 from "string" import format
 from "%sqstd/datablock.nut" import eachBlock, convertBlk
 from "acesInfo" import is_fully_translated
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "blkGetters" import get_game_settings_blk
 from "contentpacks" import getContentPackStatus, requestContentPack, ContentPackStatus
 from "chard" import get_charserver_time_sec
@@ -20,21 +32,14 @@ from "%scripts/utils_sa.nut" import call_for_handler
 from "app" import exitGame
 from "console" import register_command
 
-let { checkMembersPkg } = require("%scripts/squads/squadState.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let contentStateModule = require("%scripts/clientState/contentState.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { langsById, needCheckLangPack } = require("%scripts/langUtils/language.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { langsById } = require("%scripts/langUtils/language.nut")
+let logC = require("%sqstd/log.nut")().with_prefix("[PACK] ")
+
 
 let OFFER_DOWNLOAD_PACK_TIME_SEC = 14 * TIME_DAY_IN_SECONDS
+
+let { isConsoleContentPackCanBeChecked, isPackReadyCached, refreshPacks,
+  requestConsoleContentPackInstall, gatherConsolePacksProgress } = contentStateModule
 
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -62,6 +67,14 @@ function check_members_pkg(pack) {
 function havePackage(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
+
+  if (isSony || isXbox) {
+    if (isConsoleContentPackCanBeChecked(packName))
+      return isPackReadyCached(packName)
+
+    return true
+  }
+
   return getContentPackStatus(packName) == ContentPackStatus.OK
 }
 
@@ -87,8 +100,12 @@ function setAskedPack(packs) {
 }
 
 function request_packages(packList) {
-  foreach (pack in packList)
-    requestContentPack(pack)
+  foreach (pack in packList) {
+    if (isConsoleContentPackCanBeChecked(pack))
+      requestConsoleContentPackInstall(pack)
+    else
+      requestContentPack(pack)
+  }
 }
 
 function request_packages_and_restart(packList) {
@@ -106,7 +123,7 @@ function request_packages_and_restart(packList) {
   log("ERROR: new_content action not implemented");
 }
 
-function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owner = null, cancelFunc = null) {
+function checkPackageAndAskDownloadImpl(packs, msg, continueFunc, owner, cancelFunc, progress, allowContinue) {
   packs = packs.filter(@(pack) !havePackage(pack))
   if (packs.len() == 0) {
     if (continueFunc)
@@ -114,28 +131,67 @@ function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owne
     return true
   }
 
+  local defButton = "cancel"
+  let buttons = []
+
+  local needShowContinueButton = true
   local _msg = msg
   let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
-  if (isPlatformSony || isPlatformXbox) {
-    if (!isFullClient)
+  if (isSony || isXbox) {
+    if (!isFullClient) {
+      needShowContinueButton = false
       _msg = contentStateModule.getClientDownloadProgressText()
+    }
+    else {
+      let requiredPacks = packs.filter(isConsoleContentPackCanBeChecked)
+      if (requiredPacks.len() == 0) {
+        
+        if (continueFunc)
+          call_for_handler(owner, continueFunc)
+        return true
+      }
+      needShowContinueButton = false
+      if (u.isEmpty(_msg))
+        _msg = loc($"msgbox/no_package/info")
+
+      _msg = format(_msg, colorize("activeTextColor", loc("ui/comma").join(requiredPacks.map(@(pack) $"{getPkgLocName(pack)} {progress?[pack] ?? 100}%"))))
+
+      foreach (pack in requiredPacks) {
+        if ((progress?[pack] ?? 0) > 0)
+          continue
+
+        let btnId = $"download_{pack}"
+        let btnCaption = " ".concat(loc("msgbox/btn_download"), getPkgLocName(pack, true))
+        buttons.append([btnId, function() {
+          
+          if (cancelFunc)
+            call_for_handler(owner, cancelFunc)
+          requestConsoleContentPackInstall(pack, function(res) {
+            logC($"install request for pack {pack} is {res}")
+            refreshPacks([pack])
+          })
+        }, true, btnCaption])
+        defButton = btnId
+      }
+    }
   }
   else {
+    needShowContinueButton = allowContinue
     if (u.isEmpty(_msg)) {
-      let ending = continueFunc ? "/continue" : ""
-      _msg = loc($"msgbox/no_package{ending}")
+      let postfix = needShowContinueButton ? "/continue" : ""
+      _msg = loc($"msgbox/no_package{postfix}")
     }
     _msg = format(_msg, colorize("activeTextColor", loc("ui/comma").join(packs.map(@(pack) getPkgLocName(pack)))))
   }
 
-  local defButton = "cancel"
-  let buttons = [[defButton,  function() {
-                     if (cancelFunc)
-                       call_for_handler(owner, cancelFunc)
-                   }]
-                  ]
 
-  if (isPlatformSony) {
+  buttons.append(["cancel", function() {
+    if (cancelFunc)
+      call_for_handler(owner, cancelFunc)
+    }
+  ])
+
+  if (isSony) {
     if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded()) {
       buttons.insert(0, ["apply", function() { ps4_update_gui() }])
       defButton = "apply"
@@ -147,7 +203,7 @@ function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owne
                      }])
   }
 
-  if (continueFunc) {
+  if (continueFunc && needShowContinueButton) {
     defButton = "continue"
     buttons.append(["continue",  function() {
                      call_for_handler(owner, continueFunc)
@@ -158,20 +214,31 @@ function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owne
   return false
 }
 
+function checkPackageAndAskDownload(packs, msg = null, continueFunc = null, owner = null, cancelFunc = null, allowContinue = false) {
+  let consolePacks = packs.filter(isConsoleContentPackCanBeChecked)
+  if (consolePacks.len() == 0)
+    return checkPackageAndAskDownloadImpl(packs, msg, continueFunc, owner, cancelFunc, {}, allowContinue)
+
+  refreshPacks(consolePacks, function() {
+    gatherConsolePacksProgress(consolePacks, function(progress) {
+      checkPackageAndAskDownloadImpl(packs, msg, continueFunc, owner, cancelFunc, progress, allowContinue)
+    })
+  })
+  return false
+}
+
 function checkPackageFull(pack, silent = false) {
-  local res = true
-  if (silent)
-    res = havePackage(pack)
-  else
-    res = checkPackageAndAskDownload([pack])
+  local res = havePackage(pack)
+  if (!res && !silent)
+    checkPackageAndAskDownload([pack])
 
   res = res && (silent || check_members_pkg(pack))
   return res
 }
 
-function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = null, cancelFunc = null) {
+function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = null, cancelFunc = null, allowContinue = false) {
   if (!isAskedPack(pack)) {
-    checkPackageAndAskDownload([pack], null, continueFunc, owner, cancelFunc)
+    checkPackageAndAskDownload([pack], null, continueFunc, owner, cancelFunc, allowContinue)
     return
   }
   if (continueFunc)
@@ -180,7 +247,7 @@ function checkPackageAndAskDownloadByTimes(pack, continueFunc = null, owner = nu
 
 function checkGamemodePkg(gm, continueFunc) {
   if (gm == GM_SKIRMISH) {
-    checkPackageAndAskDownloadByTimes("pkg_main", continueFunc)
+    checkPackageAndAskDownloadByTimes("pkg_main", continueFunc, null, null, true)
     return
   }
   continueFunc()
@@ -195,13 +262,13 @@ function checkDiffPkg(diff, silent = false) {
 
 function checkReqContentByName(ename, pack) {
   if (has_entitlement(ename) || hasFeature(ename)) {
-    log($"[PACK] has entitlement {ename }, checking for pack {pack}");
+    logC($"has entitlement {ename }, checking for pack {pack}");
     let status = getContentPackStatus(pack)
     if (status == ContentPackStatus.MISSING)
       return pack
   }
   else
-    log($"[PACK] don't have entitlement {ename}, ignoring pack {pack}");
+    logC($"don't have entitlement {ename}, ignoring pack {pack}");
 
   return null
 }
@@ -213,13 +280,13 @@ function checkReqContent(ename, blk) {
 }
 
 function updateContentPacks() {
-  if (isPlatformSony || isPlatformXbox)
+  if (isSony || isXbox)
     return 
 
   if (!isLoggedIn.get())
     return
 
-  log("[PACK] updateContentPacks called");
+  logC("updateContentPacks called");
 
   let reqPacksList = []
   for (local i = reqPacksList.len() - 1; i >= 0; i--)
@@ -310,7 +377,7 @@ function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
 }
 
 function restart_to_launcher() {
-  if (isPlatformSony)
+  if (isSony)
     return startLogout()
   else if (is_gdk)
     return exitGamePlatform()
@@ -325,6 +392,23 @@ function restart_to_launcher() {
   }
 
   log("ERROR: restart_to_launcher action not implemented");
+}
+
+
+
+
+function refreshPacksOnContentDelivered(_p) {
+  refreshPacks()
+}
+
+if (isXbox) {
+  let { package_installed_event_name } = require("gdk.package")
+  eventbus_subscribe(package_installed_event_name, refreshPacksOnContentDelivered)
+}
+
+if (isSony) {
+  eventbus_subscribe("dng.sony.playgo.chunkAdded", refreshPacksOnContentDelivered)
+  eventbus_subscribe("dng.sony.playgo.scenarioUpdate", refreshPacksOnContentDelivered)
 }
 
 eventbus_subscribe("error_load_model_and_restart", function(params) {
@@ -375,16 +459,20 @@ addPromoAction("content_pack", @(_handler, params, _obj) checkPackageAndAskDownl
 
 addListenersWithoutEnv({
   NewSceneLoaded = function(_) {
+    refreshPacks()
     if (!needCheckLangPack.get())
       return
 
     checkLocalizationPackageAndAskDownload()
     needCheckLangPack.set(false)
   }
-  ProfileReceived = @(_) askedPackages = null
+  ProfileReceived = function(_) {
+    askedPackages = null
+    refreshPacks()
+  }
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   getPkgLocName
   havePackage
   checkPackageFull
@@ -394,4 +482,4 @@ return {
   checkPackageAndAskDownload
   checkPackageAndAskDownloadByTimes
   updateContentPacks
-}
+})

@@ -1,3 +1,9 @@
+from "%scripts/options/optionsExt.nut" import registerOption
+from "%scripts/customization/skins.nut" import getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinScale, getUserSkinRotation, setLastSkin
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/clientState/saveProfile.nut" import saveProfile
+from "%scripts/customization/infantryCamouflageStorage.nut" import getLocationInfantrySkins, saveInfantrySkin
+from "%scripts/customization/infantryCamouflageUtils.nut" import convertLevelNameToLocation, getInfantrySkinTooltip
 from "guiOptions" import set_gui_option
 from "blkGetters" import get_user_skins_profile_blk
 from "unitCustomization" import on_user_skin_profile_changed, get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
@@ -8,13 +14,6 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 from "%sqstd/platform.nut" import isPC
 from "types" import Array
-
-let { registerOption } = require("%scripts/options/optionsExt.nut")
-let { getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinScale, getUserSkinRotation, setLastSkin } = require("%scripts/customization/skins.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { getLocationInfantrySkins, saveInfantrySkin } = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertLevelNameToLocation, getInfantrySkinTooltip } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
 function fillSkin(_optionId, descr, _context) {
   descr.id = "skin"

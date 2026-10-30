@@ -1,12 +1,11 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/queue/queueInfo/qiViewUtils.nut" import updateShortQueueInfo
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue
+from "%scripts/queue/queueInfo.nut" import getQueueEvent
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { isQueueActive, findQueue } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent } = require("%scripts/queue/queueInfo.nut")
 
 let QiHandlerBase = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -100,4 +99,4 @@ let QiHandlerBase = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("QiHandlerBase", QiHandlerBase)
 
-return { QiHandlerBase }
+return freeze({ QiHandlerBase })

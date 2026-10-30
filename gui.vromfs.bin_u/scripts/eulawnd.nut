@@ -1,21 +1,21 @@
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "%globalScripts/wordHyphenation.nut" as wordHyphenation
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/firstChoice/firstChoice.nut" import fillUserNick
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings
+from "%scripts/langUtils/language.nut" import getCurLangShortName
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "sqEulaUtils" import setAgreedEulaVersion
 from "dagor.workcycle" import defer
 from "%sqstd/globalState.nut" import hardPersistWatched
-from "dagor.fs" import read_text_from_file, file_exists
+from "%sqstd/packedText.nut" import readPackedText
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" 
 
@@ -36,27 +36,18 @@ function getEulaVersion() {
   return eulaVersion
 }
 
-function getExistFileNameByPrefixAndPostfix(prefix, postfix) {
-  local fileName = $"%langTxt/{prefix}eula{postfix}.txt"
-  if (file_exists(fileName))
-    return fileName
-
-  fileName = $"%langTxt/{prefix}eula.txt" 
-  return file_exists(fileName) ? fileName : null
-}
+let readEula = @(prefix, postfix) readPackedText($"%langTxt/{prefix}eula{postfix}.txt")
+  ?? readPackedText($"%langTxt/{prefix}eula.txt") 
 
 function loadAndProcessText(){
   let shortLang = getCurLangShortName()
   local langPostfix = shortLangToEulaLang?[shortLang] ?? shortLang
   langPostfix = langPostfix == "" ? "" : $"_{langPostfix}"
   let eulaPrefixForCircuit = getCurCircuitOverride("eulaPrefix", "")
-  let fileName = getExistFileNameByPrefixAndPostfix(eulaPrefixForCircuit, langPostfix)
-    ?? getExistFileNameByPrefixAndPostfix("", langPostfix)
-
-  if (fileName == null)
-    return ""
-
-  return wordHyphenation(read_text_from_file(fileName))
+  let text = readEula(eulaPrefixForCircuit, langPostfix) ?? readEula("", langPostfix)
+  if (text == null)
+    logerr($"EulaWnd: %langTxt/{eulaPrefixForCircuit}eula{langPostfix}.txt is missing")
+  return text == null ? null : wordHyphenation(text)
 }
 
 let EulaWndHandler = class (BaseGuiHandler) {
@@ -72,8 +63,10 @@ let EulaWndHandler = class (BaseGuiHandler) {
     let textObj = this.scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
 
-    local eulaText = loadAndProcessText()
-    textObj.setValue(eulaText)
+    let eulaText = loadAndProcessText()
+    if (eulaText == null)
+      showObjById("eula_online_link", hasFeature("AllowExternalLink"), this.scene).link = getCurCircuitOverride("eulaURL", loc("url/eula"))
+    textObj.setValue(eulaText ?? loc("eula/textMissing"))
     let hasOneOkBtn = this.isForView || this.isNewEulaVersion
     showObjById("acceptNewEulaVersion", hasOneOkBtn, this.scene)
     showObjById("accept", !hasOneOkBtn, this.scene)
@@ -134,9 +127,9 @@ addListenersWithoutEnv({
   SignOut = @(_p) localAgreedEulaVersion.set(0) 
 })
 
-return {
+return freeze({
   LOCAL_AGREED_EULA_VERSION_SAVE_ID
   localAgreedEulaVersion
   getEulaVersion
   openEulaWnd = @(param = {}) handlersManager.loadHandler(EulaWndHandler, param)
-}
+})

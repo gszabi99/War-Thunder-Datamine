@@ -5,12 +5,12 @@ from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
 
 function mkBattleIcon(battleInfo, areaBounds) {
+  let isBattleHovered = Computed(@() hoveredBattle.get() == battleInfo.name)
   return function() {
     let battleStatus = getBattleState(battleInfo)
     if(battleStatus == "Ended")
       return null
 
-    let isBattleHovered = Computed(@() hoveredBattle.get() == battleInfo.name)
     let { areaWidth, areaHeight } = areaBounds
     let iconData = getBattleIconData(battleStatus)
     let battlePos = convertToRelativeMapCoords(battleInfo.pos)
@@ -25,7 +25,7 @@ function mkBattleIcon(battleInfo, areaBounds) {
       rendObj = ROBJ_IMAGE
       keepAspect = true
       pos = battleIconPos
-      size = [battleIconSize, battleIconSize]
+      size = battleIconSize
       image = Picture($"{icon}:{battleIconSize}:{battleIconSize}")
       color
     }
@@ -47,6 +47,6 @@ function battles() {
   }
 }
 
-return {
+return freeze({
   battles
-}
+})

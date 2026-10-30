@@ -54,4 +54,4 @@ let BhvRoulette = class {
 
 replace_script_gui_behaviour("bhvRoulette", BhvRoulette)
 
-return {}
+return freeze({})

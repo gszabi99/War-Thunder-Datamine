@@ -1,5 +1,19 @@
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/showUnlockHandler.nut" import ShowUnlockHandler
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDesc, getUnlockNameText, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockCostText
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocks
+from "%scripts/unlocks/unlocksModule.nut" import hasMultiStageLocId
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unlocks/showUnlockWnd.nut" import guiStartUnlockWnd
+from "%scripts/items/trophyRewardWnd.nut" import guiStartOpenTrophy
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
 from "string" import format
 from "language" import getLocalLanguage
 from "console" import register_command
@@ -10,21 +24,8 @@ from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
 from "%scripts/webRPC.nut" import webRpcRegister
 
-let { ShowUnlockHandler } = require("%scripts/unlocks/showUnlockHandler.nut")
-let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
-
-let { getFullUnlockDesc, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
-let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
-let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
+let { multiStageLocIdConfig } = require("%scripts/unlocks/unlocksModule.nut")
 
 function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!is_dev_version())
@@ -108,38 +109,34 @@ function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = fa
   res.saveToTextFile(fullPath)
 }
 
-function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
-  status = clone status
-  let self = callee()
-  let lang = langsInfo.pop()
-  setGameLocalization(lang.id, false, false)
+const LANG_JOB_ID = "debugTools.dbgUnlocks"
+
+function gen_all_unlocks_desc_to_blk_lang(lang, data, onDone) {
+  let { path, showCost, showValue, status } = data
   try {
     gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
-    status[lang.id] <- {
+    status[lang] <- {
       success=true
     }
   } catch (e) {
     logerr($"Failed to get unlocks desc blk for '{lang}' lang")
-    status[lang.id] <- {
+    status[lang] <- {
       success=false
     }
   }
+  onDone()
+}
 
-  if (!langsInfo.len()) {
-    saveJson($"{path}/status.json", status)
-    return setGameLocalization(curLang, false, false)
-  }
+registerLangJob(LANG_JOB_ID, gen_all_unlocks_desc_to_blk_lang,
+  @(data) saveJson($"{data.path}/status.json", data.status))
 
-  
-  let guiScene = get_main_gui_scene()
-  guiScene.performDelayed(this, function() {
-    self(path, showCost, showValue, langsInfo, curLang, status)
-  })
+function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo) {
+  startLangJob(LANG_JOB_ID, langsInfo.map(@(lang) lang.id), { path, showCost, showValue, status = {} })
 }
 
 function exportUnlockInfo(params) {
   let info = getGameLocalizationInfo().filter(@(value) params.langs.indexof(value.id) != null)
-  _gen_all_unlocks_desc_to_blk(params.path, false, false, info, getLocalLanguage())
+  _gen_all_unlocks_desc_to_blk(params.path, false, false, info)
   return "ok"
 }
 
@@ -149,9 +146,7 @@ function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, show
   if (!all_langs)
     return gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
 
-  let curLang = getLocalLanguage()
-  let info = getGameLocalizationInfo()
-  _gen_all_unlocks_desc_to_blk(path, showCost, showValue, info, curLang)
+  _gen_all_unlocks_desc_to_blk(path, showCost, showValue, getGameLocalizationInfo())
 }
 
 function debug_show_unlock_popup(unlockId) {

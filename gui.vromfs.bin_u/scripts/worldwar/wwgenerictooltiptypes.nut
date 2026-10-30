@@ -1,10 +1,9 @@
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
 from "%scripts/dagui_library.nut" import *
-
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let wwTooltipTypes = {}
 
-return {
+return freeze({
   setWwTooltipTypes = @(tooltipTypes) wwTooltipTypes.__update(tooltipTypes)
   getWwTooltipType = @(typeName) wwTooltipTypes?[typeName] ?? getTooltipType("EMPTY")
-}
+})

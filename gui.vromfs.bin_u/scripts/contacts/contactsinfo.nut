@@ -1,25 +1,35 @@
+from "%appGlobals/user/nickTools.nut" import PSN_ICON, PSN_CIRCLE_ICON, PSN_LETTER_ICON
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS
+
 let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
-let { PSN_ICON } = require("%scripts/user/nickTools.nut")
 
 
 
 
 
 function getPlayerFullName(name, clanTag = "", addInfo = "") {
-  local needClan = hasFeature("Clans")
+  local needClan = true
 
 
 
   return nbsp.join([needClan ? clanTag : "", utf8(name), addInfo], true)
 }
 
+function createPsnBlackIcon() {
+  return "".concat(
+    "<font=psn_icon_static>",
+    colorize("black", PSN_CIRCLE_ICON),
+    colorize("white", PSN_LETTER_ICON),
+    "</font>"
+  )
+}
+
 function colorizeWhitePsnIcon(userName) {
   if (userName.indexof(PSN_ICON) == null)
     return userName
-  return userName.replace(PSN_ICON, colorize("white", PSN_ICON))
+  return userName.replace(PSN_ICON, createPsnBlackIcon())
 }
 
 let missed_contacts_data = {}

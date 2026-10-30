@@ -1,9 +1,9 @@
+from "%scripts/items/exchangeRecipes.nut" import getRequirementsMarkup
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { getRequirementsMarkup } = require("%scripts/items/exchangeRecipes.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Key = class (ItemExternal) {
   static iType = itemType.KEY

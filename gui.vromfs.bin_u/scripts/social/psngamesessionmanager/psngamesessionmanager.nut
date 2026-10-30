@@ -1,13 +1,13 @@
+import "%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut" as psnsm
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount, getExternalSessionId
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setExternalSessionId
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqStdLibs/helpers/u.nut" import isEmpty, copy
 from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
-let { isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount, getExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { setExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 let getSessionData = @(pushContextId) {
   gameSessions = [{
@@ -38,7 +38,7 @@ let getSessionJoinData = function(pushContextId, isSpectator = false) {
   return { [isSpectator ? "spectators" : "players"] = [res] }
 }
 
-let createdSessionData = mkWatched(persist, "createdSessionData", {})
+let createdSessionData = mkHardPersistWatched("social.psnGameSessionManager.psnGameSessionManager")("createdSessionData", {})
 let dumpSessionData = function(sessionId, pushContextId, sessionData) {
   createdSessionData.mutate(@(v) v[sessionId] <- {
     pushContextId = pushContextId

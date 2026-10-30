@@ -1,5 +1,30 @@
+import "%scripts/time.nut" as time
+import "%scripts/clientState/contentState.nut" as contentStateModule
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/instantActionHandler.nut" import InstantDomination
+from "%scripts/mainmenu/topMenuHandler.nut" import TopMenu
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%sqstd/platform.nut" import isPC, is_android, isSony, isXbox
+from "%scripts/tutorials/tutorialRewardHandler.nut" import tryOpenTutorialRewardHandler
+from "%scripts/crew/crewInfo.nut" import getCrewUnlockTime, getCrewByAir
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/customization/suggestedSkins.nut" import getSuggestedSkin
+from "%scripts/missions/fleetTrainingMission.nut" import startFleetTrainingMission, getFleetTrainingMissionName
+from "%scripts/promo/promoHandler.nut" import create_promo_blocks
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
+from "%scripts/user/profileStates.nut" import userName, userIdStr
+from "%scripts/slotbar/slotbarState.nut" import reinitAllSlotbars
+from "%scripts/slotbar/slotbarStateData.nut" import getCrewUnlockTimeByUnit
+from "%scripts/slotbar/crewsList.nut" import invalidateCrewsList
+from "%scripts/clans/clanCandidates.nut" import getMyClanCandidates, isHaveRightsToReviewCandidates
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import leaveSessionRoom
+from "%scripts/onlineInfo/onlineInfo.nut" import totalRooms, totalPlayers
+from "%scripts/unit/unitInfo.nut" import isLoadedModelHighQuality
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
 from "%appGlobals/login/loginState.nut" import isAuthorized
-from "%sqstd/platform.nut" import isPC, is_android
 from "string" import format
 from "dagor.debug" import debug_dump_stack
 from "hangar" import hangar_get_current_unit_name
@@ -7,34 +32,8 @@ from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { InstantDomination } = require("%scripts/mainmenu/instantActionHandler.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
-let contentStateModule = require("%scripts/clientState/contentState.nut")
-let { TopMenu } = require("%scripts/mainmenu/topMenuHandler.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
-let { startFleetTrainingMission, getFleetTrainingMissionName } = require("%scripts/missions/fleetTrainingMission.nut")
-let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
-let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarStateData.nut")
-let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getMyClanCandidates, isHaveRightsToReviewCandidates } = require("%scripts/clans/clanCandidates.nut")
-let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 
 let MainMenu = class (InstantDomination) {
   rootHandlerClass = TopMenu
@@ -127,7 +126,7 @@ let MainMenu = class (InstantDomination) {
   }
 
   function onLoadModels() {
-    if (isPlatformSony || isPlatformXbox)
+    if (isSony || isXbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
       checkPackageAndAskDownload(["pkg_main"], loc("msgbox/ask_package_download"))
@@ -158,6 +157,11 @@ let MainMenu = class (InstantDomination) {
   function updateLowQualityModelWarning() {
     let lowQuality = !isLoadedModelHighQuality()
     showObjById("low-quality-model-warning", lowQuality, this.scene)
+    if (!lowQuality || !(isSony || isXbox))
+      return
+    let downloadBtn = this.scene.findObject("low_quality_model_download_button")
+    if (downloadBtn?.isValid())
+      downloadBtn.setValue(loc("btn/check_download_status"))
   }
 
   forceUpdateSelUnitInfo = @() this.updateSelUnitInfo(true)
@@ -262,4 +266,4 @@ let MainMenu = class (InstantDomination) {
 }
 register_gui_handler("MainMenu", MainMenu)
 
-return { MainMenu }
+return freeze({ MainMenu })

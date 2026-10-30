@@ -239,8 +239,8 @@ let rwrTargetsComponent = function(style) {
   }
 }
 
-return {
+return freeze({
   color,
   baseLineWidth,
   rwrTargetsComponent
-}
+})

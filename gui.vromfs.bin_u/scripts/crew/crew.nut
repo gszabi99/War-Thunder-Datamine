@@ -1,4 +1,13 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler, is_gui_handler_instance
+from "%scripts/money.nut" import Cost
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/tasker.nut" import addTask
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/unit/unitInfo.nut" import getUnitTypesInCountries
+from "%scripts/crew/unitCrewCache.nut" import getUnitCrewDataById
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "math" import ceil
 from "%sqstd/datablock.nut" import eachBlock
@@ -8,16 +17,8 @@ from "%scripts/dagui_natives.nut" import purchase_crew_slot, get_training_cost, 
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
-let { getUnitCrewDataById } = require("%scripts/crew/unitCrewCache.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 local crewLevelBySkill = 5 
@@ -550,10 +551,6 @@ function getCrewStatus(crew, unit) {
 }
 
 function gui_modal_crew(params = {}) {
-  if (!hasFeature("CrewSkills")) {
-    showInfoMsgBox(loc("msgbox/notAvailbleYet"))
-    return
-  }
   let curHandler = handlersManager.getActiveBaseHandler()
   let needModal = is_gui_handler_instance(curHandler, "MPLobby")
   loadHandler(needModal ? get_gui_handler("CrewWndModal") : get_gui_handler("CrewHandler"), params)

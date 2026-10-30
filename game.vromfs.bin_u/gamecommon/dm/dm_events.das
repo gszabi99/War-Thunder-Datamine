@@ -35,6 +35,7 @@ struct EventSplashHitEntity
   pos : float3
   dir : float3
   isExplosionHaveProps : bool
+  weaponEcsTemplateName : string
 
 [cpp_event(unicast, with_scheme)]
 struct EventMeleeHitEntity
@@ -61,6 +62,7 @@ struct EventShatterHitEntity
   damageMin : float
   damageMax : float
   damageScale : float
+  weaponEcsTemplateName : string
 
 [cpp_event(unicast)]
 struct CmdRestoreHpPart

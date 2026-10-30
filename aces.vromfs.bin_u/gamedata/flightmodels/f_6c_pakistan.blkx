@@ -1,7 +1,7 @@
 {
   "model": "f_6c_pakistan",
   "fmFile": "fm/f_6c_pakistan.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.135,
   "gearSinkRangeC": 0.088,
@@ -12,17 +12,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat_supersonic.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat_supersonic.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "1500kph",
   "fightAiBehaviour": "fighter",
   "paratrooper": "usa_irvin_5000_ejection_para",
@@ -729,15 +729,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -750,36 +754,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -812,15 +826,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -863,7 +881,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2334,7 +2354,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_spo-2.blk"
+      "blk": "gamedata/sensors/su_spo-2.blk"
     }
   },
   "commonWeapons": {
@@ -2347,23 +2367,23 @@
     "preset": [
       {
         "name": "f_6c_pakistan_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_6c_pakistan_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_6c_pakistan_default.blk"
       },
       {
         "name": "f_6c_pakistan_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/f_6c_pakistan_aim9.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_6c_pakistan_aim9.blk"
       },
       {
         "name": "f_6c_pakistan_oro57",
-        "blk": "gameData/FlightModels/weaponPresets/f_6c_pakistan_oro57.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_6c_pakistan_oro57.blk"
       },
       {
         "name": "f_6c_pakistan_ofab100",
-        "blk": "gameData/FlightModels/weaponPresets/f_6c_pakistan_ofab100.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_6c_pakistan_ofab100.blk"
       },
       {
         "name": "f_6c_pakistan_ofab250",
-        "blk": "gameData/FlightModels/weaponPresets/f_6c_pakistan_ofab250.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_6c_pakistan_ofab250.blk"
       }
     ]
   },
@@ -2406,7 +2426,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType30_1.blk",
+              "blk": "gamedata/weapons/cannonType30_1.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2417,7 +2437,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType30_1.blk",
+              "blk": "gamedata/weapons/cannonType30_1.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2428,7 +2448,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType30_1.blk",
+              "blk": "gamedata/weapons/cannonType30_1.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection3",
@@ -2456,7 +2476,7 @@
           },
           "Weapon": {
             "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_aim9p_sidewinder.blk",
             "emitter": "aim_9b_001",
             "bullets": 1,
             "external": true,
@@ -2478,7 +2498,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/oro_57k_su_s5k.blk",
               "emitter": "oro_57k_pod_003",
               "external": true,
               "jettisonable": true
@@ -2496,7 +2516,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_100_2.blk",
               "emitter": "gp_100_001",
               "bullets": 1,
               "external": true,
@@ -2516,7 +2536,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_2.blk",
               "emitter": "gp_250_001",
               "bullets": 1,
               "external": true,
@@ -2536,7 +2556,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/cn_760l_f_6c_drop_tank_l.blk",
+              "blk": "gamedata/weapons/drop_tank/cn_760l_f_6c_drop_tank_l.blk",
               "emitter": "cn_760l_f_6c_drop_tank_l",
               "bullets": 1,
               "external": true
@@ -2562,7 +2582,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+            "blk": "gamedata/weapons/containers/oro_57k_su_s5k.blk",
             "emitter": "oro_57k_pod_001",
             "external": true,
             "jettisonable": true
@@ -2599,7 +2619,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/f_6c_pakistan_fuse_tank.blk",
+            "blk": "gamedata/weapons/drop_tank/f_6c_pakistan_fuse_tank.blk",
             "emitter": "f_6c_pakistan_fuse_tank",
             "bullets": 1,
             "external": true,
@@ -2621,7 +2641,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+            "blk": "gamedata/weapons/containers/oro_57k_su_s5k.blk",
             "emitter": "oro_57k_pod_002",
             "external": true,
             "jettisonable": true
@@ -2642,7 +2662,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/oro_57k_su_s5k.blk",
               "emitter": "oro_57k_pod_004",
               "external": true,
               "jettisonable": true
@@ -2660,7 +2680,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_100_2.blk",
               "emitter": "gp_100_002",
               "bullets": 1,
               "external": true,
@@ -2680,7 +2700,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+              "blk": "gamedata/weapons/bombguns/cn_gp_250_2.blk",
               "emitter": "gp_250_002",
               "bullets": 1,
               "external": true,
@@ -2700,7 +2720,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/cn_760l_f_6c_drop_tank_r.blk",
+              "blk": "gamedata/weapons/drop_tank/cn_760l_f_6c_drop_tank_r.blk",
               "emitter": "cn_760l_f_6c_drop_tank_r",
               "bullets": 1,
               "external": true
@@ -2728,7 +2748,7 @@
           },
           "Weapon": {
             "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/us_aim9p_sidewinder.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_aim9p_sidewinder.blk",
             "emitter": "aim_9b_002",
             "bullets": 1,
             "external": true,

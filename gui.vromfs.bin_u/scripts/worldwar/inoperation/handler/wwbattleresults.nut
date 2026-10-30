@@ -1,12 +1,12 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/replays/replayScreen.nut" import guiStartReplayBattle
+from "%scripts/popups/popups.nut" import addPopup
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { guiStartReplayBattle } = require("%scripts/replays/replayScreen.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwBattleResults = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -40,4 +40,3 @@ let WwBattleResults = class (BaseGuiHandlerWT) {
   }
 }
 register_gui_handler("WwBattleResults", WwBattleResults)
-

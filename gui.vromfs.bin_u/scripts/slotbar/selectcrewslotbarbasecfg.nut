@@ -7,7 +7,6 @@ return freeze({
   hasExtraInfoBlock = true
   hasExtraInfoBlockTop = false
   slotbarBehavior = "posNavigator"
-  needFullSlotBlock = true
   showCrewUnseenIcon = false
   needHugeFooter = "yes"
   showSingleCountryFlag = false

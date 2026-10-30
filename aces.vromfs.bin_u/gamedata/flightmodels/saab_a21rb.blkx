@@ -1,7 +1,7 @@
 {
   "model": "saab_a21rb",
   "fmFile": "fm/saab_a21rb.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.18,
   "gearSinkRangeC": 0.23,
@@ -14,17 +14,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "800kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -847,15 +847,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -868,36 +872,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -930,15 +944,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -981,7 +999,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2504,23 +2524,23 @@
     "preset": [
       {
         "name": "saab_a21rb_default",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21rb_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a21rb_default.blk"
       },
       {
         "name": "saab_a21rb_10x145mm_psrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21rb_10x145mm_psrak.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a21rb_10x145mm_psrak.blk"
       },
       {
         "name": "saab_a21rb_10x150mm_srak_m51",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21rb_10x150mm_srak_m51.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a21rb_10x150mm_srak_m51.blk"
       },
       {
         "name": "saab_a21rb_5x180mm_hpsrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21rb_5x180mm_hpsrak.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a21rb_5x180mm_hpsrak.blk"
       },
       {
         "name": "saab_a21rb_8mm_ksp_pod",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21rb_8mm_ksp_pod.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a21rb_8mm_ksp_pod.blk"
       }
     ]
   },
@@ -2560,7 +2580,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m45.blk",
+              "blk": "gamedata/weapons/cannonAkan_m45.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2572,7 +2592,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunAkan_12_7_m39a.blk",
+              "blk": "gamedata/weapons/gunAkan_12_7_m39a.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun1_dm",
@@ -2584,7 +2604,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunAkan_12_7_m39a.blk",
+              "blk": "gamedata/weapons/gunAkan_12_7_m39a.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "mgun2_dm",
@@ -2596,7 +2616,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunAkan_12_7_m39a.blk",
+              "blk": "gamedata/weapons/gunAkan_12_7_m39a.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "mgun3_dm",
@@ -2608,7 +2628,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunAkan_12_7_m39a.blk",
+              "blk": "gamedata/weapons/gunAkan_12_7_m39a.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "dm": "mgun4_dm",
@@ -2637,7 +2657,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/sw_a21rb_drop_tank_l.blk",
+            "blk": "gamedata/weapons/drop_tank/sw_a21rb_drop_tank_l.blk",
             "emitter": "drop_tank_l",
             "bullets": 1,
             "external": true
@@ -2666,7 +2686,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket10",
                 "bullets": 1,
                 "minSize": [
@@ -2686,7 +2706,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket1",
                 "bullets": 1,
                 "minSize": [
@@ -2706,7 +2726,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket9",
                 "bullets": 1,
                 "minSize": [
@@ -2724,7 +2744,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket2",
                 "bullets": 1,
                 "minSize": [
@@ -2742,7 +2762,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket8",
                 "bullets": 1,
                 "minSize": [
@@ -2757,7 +2777,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket3",
                 "bullets": 1,
                 "minSize": [
@@ -2775,7 +2795,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket7",
                 "bullets": 1,
                 "minSize": [
@@ -2793,7 +2813,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket4",
                 "bullets": 1,
                 "minSize": [
@@ -2811,7 +2831,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket6",
                 "bullets": 1,
                 "minSize": [
@@ -2829,7 +2849,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "rocket5",
                 "bullets": 1,
                 "minSize": [
@@ -2857,7 +2877,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket10",
                 "bullets": 1,
                 "minSize": [
@@ -2877,7 +2897,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket1",
                 "bullets": 1,
                 "minSize": [
@@ -2897,7 +2917,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket9",
                 "bullets": 1,
                 "minSize": [
@@ -2915,7 +2935,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket2",
                 "bullets": 1,
                 "minSize": [
@@ -2933,7 +2953,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket8",
                 "bullets": 1,
                 "minSize": [
@@ -2951,7 +2971,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket3",
                 "bullets": 1,
                 "minSize": [
@@ -2969,7 +2989,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket7",
                 "bullets": 1,
                 "minSize": [
@@ -2987,7 +3007,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket4",
                 "bullets": 1,
                 "minSize": [
@@ -3005,7 +3025,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket6",
                 "bullets": 1,
                 "minSize": [
@@ -3023,7 +3043,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "rocket5",
                 "bullets": 1,
                 "minSize": [
@@ -3051,7 +3071,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
                 "emitter": "rocket15",
                 "bullets": 1,
                 "minSize": [
@@ -3071,7 +3091,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
                 "emitter": "rocket11",
                 "bullets": 1,
                 "minSize": [
@@ -3091,7 +3111,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
                 "emitter": "rocket14",
                 "bullets": 1,
                 "minSize": [
@@ -3111,7 +3131,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
                 "emitter": "rocket12",
                 "bullets": 1,
                 "minSize": [
@@ -3131,7 +3151,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
                 "emitter": "rocket13",
                 "bullets": 1,
                 "minSize": [
@@ -3170,7 +3190,7 @@
             "Weapon": [
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare6",
                 "flash": "flare6",
                 "dm": "mgun5_dm",
@@ -3190,7 +3210,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare7",
                 "flash": "flare7",
                 "dm": "mgun6_dm",
@@ -3210,7 +3230,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare8",
                 "flash": "flare8",
                 "dm": "mgun7_dm",
@@ -3230,7 +3250,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare9",
                 "flash": "flare9",
                 "dm": "mgun8_dm",
@@ -3250,7 +3270,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare10",
                 "flash": "flare10",
                 "dm": "mgun9_dm",
@@ -3270,7 +3290,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare11",
                 "flash": "flare11",
                 "dm": "mgun10_dm",
@@ -3290,7 +3310,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare12",
                 "flash": "flare12",
                 "dm": "mgun11_dm",
@@ -3310,7 +3330,7 @@
               },
               {
                 "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunKsp_m22.blk",
+                "blk": "gamedata/weapons/gunKsp_m22.blk",
                 "emitter": "flare13",
                 "flash": "flare13",
                 "dm": "mgun12_dm",
@@ -3348,7 +3368,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/sw_a21rb_drop_tank_r.blk",
+            "blk": "gamedata/weapons/drop_tank/sw_a21rb_drop_tank_r.blk",
             "emitter": "drop_tank_r",
             "bullets": 1,
             "external": true

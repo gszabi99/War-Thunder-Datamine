@@ -1,10 +1,9 @@
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/customization/decoratorGetters.nut" import getDecoratorByResource
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/items/prizesView.nut" import getPrizesListViewData, getPrizesListMarkupByData
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
-
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getPrizesListViewData, getPrizesListMarkupByData } = require("%scripts/items/prizesView.nut")
 
 local CollectionsSet = class {
   id = "" 

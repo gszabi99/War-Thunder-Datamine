@@ -1,31 +1,29 @@
 
 
 
+import "%scripts/dirtyWordsFilter.nut" as dirtyWordsFilter
+import "%scripts/clientState/applyRendererSettingsChange.nut" as applyRendererSettingsChange
+import "%scripts/debugTools/debugWnd.nut" as debugWnd
+import "%scripts/loading/animBg.nut" as animBg
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "DataBlock" as DataBlock
+from "%scripts/langUtils/language.nut" import setGameLocalization, getGameLocalizationInfo
+from "%scripts/options/systemOptions.nut" import getVideoResolution
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/loading/loadingTips.nut" import getAllTips
+from "%scripts/sqDagui/daguiUtil.nut" import multiplyDaguiColorStr
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
 from "language" import getLocalLanguage
 from "console" import register_command
 from "%scripts/dagui_natives.nut" import periodic_task_register, copy_to_clipboard, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
-let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { getVideoResolution } = require("%scripts/options/systemOptions.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
-let debugWnd = require("%scripts/debugTools/debugWnd.nut")
-let animBg = require("%scripts/loading/animBg.nut")
-let { getAllTips } = require("%scripts/loading/loadingTips.nut")
-let { multiplyDaguiColorStr } = require("%scripts/sqDagui/daguiUtil.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { setIsScriptsIsUnloaded } = require("%scripts/sqDagui/guiBhv/bhvUpdateByWatched.nut")
-
 function reload_dagui() {
-  setIsScriptsIsUnloaded()
   get_cur_gui_scene()?.resetGamepadMouseTarget()
-  reload_main_script_module()
+  if (!reload_main_script_module())
+    return
   update_objects_under_windows_state(get_cur_gui_scene())
-  dlog("Dagui reloaded")
+  dlog("Dagui reload requested")
 }
 
 function debug_change_language(isNext = true) {
@@ -156,7 +154,7 @@ register_command(function() {
 }, "debug.remove_unit_modificators")
 register_command(@(video) debugWnd("%gui/debugTools/dbgVideo.tpl", { video }), "debug.show_video")
 
-return {
+return freeze({
   debug_get_skyquake_path
   debug_open_url
-}
+})

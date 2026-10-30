@@ -1,21 +1,20 @@
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/slotbar/slotbarOverride.nut" import isSlotbarOverrided, getSlotbarOverrideMods
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco, getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitRoleIconAndTypeCaption
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/airInfo.nut" import fillAirInfo
 from "string" import format
 from "math" import floor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
-
+from "%scripts/options/fonts.nut" import getCurrentFontType
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isSlotbarOverrided, getSlotbarOverrideMods } = require("%scripts/slotbar/slotbarOverride.nut")
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getUnitClassIco, getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole, getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { fillAirInfo } = require("%scripts/airInfo.nut")
-let fontScaleOption = require("%scripts/options/fonts.nut")
 
 
 let getAirInfoTooltipId = @(id) $"air_info_tooltip_{id}"
@@ -111,7 +110,7 @@ addTooltipTypes({
     }
     fillTooltip = function(obj, handler, group, params) {
       let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
-      let scale = fontScaleOption.getCurrent().sizeMultiplier ?? 1.0
+      let scale = getCurrentFontType().sizeMultiplier ?? 1.0
       let view = {
         headerText = loc("shop/packWithName", { packName = loc($"shop/group/{group.name}") })
         name = group.name

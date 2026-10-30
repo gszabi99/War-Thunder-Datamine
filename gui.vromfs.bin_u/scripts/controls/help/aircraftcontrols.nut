@@ -1,14 +1,13 @@
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/controlsConsts.nut" import CONTROL_HELP_PATTERN, HELP_CONTENT_SET
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeapons
+from "%scripts/weaponry/weaponryInfo.nut" import TRIGGER_TYPE
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitWithRadar, isUnitWithRwr
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
-let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { TRIGGER_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isUnitWithRadar, isUnitWithRwr } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let cache = {}
 

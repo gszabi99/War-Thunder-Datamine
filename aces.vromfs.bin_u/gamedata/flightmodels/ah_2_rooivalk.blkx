@@ -2,7 +2,7 @@
   "model": "ah_2_rooivalk",
   "fmFile": "fm/ah_2_rooivalk.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -62,16 +62,16 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
@@ -459,15 +459,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -480,35 +484,45 @@
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 50.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 70.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -1695,19 +1709,19 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gamedata/sensors/ir_tracker.blk",
         "node": "optic1_turret",
         "powerButtonIdx": -1
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+        "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
       },
       {
-        "blk": "gameData/sensors/us_flir.blk",
+        "blk": "gamedata/sensors/us_flir.blk",
         "node": "optic1_turret"
       },
       {
-        "blk": "gameData/sensors/us_an_avr-2.blk"
+        "blk": "gamedata/sensors/us_an_avr-2.blk"
       }
     ]
   },
@@ -1752,31 +1766,31 @@
     "preset": [
       {
         "name": "ah_2_rooivalk_default",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_default.blk"
       },
       {
         "name": "ah_2_rooivalk_mistral",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_mistral.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_mistral.blk"
       },
       {
         "name": "ah_2_rooivalk_rocket_mistral",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_rocket_mistral.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_rocket_mistral.blk"
       },
       {
         "name": "ah_2_rooivalk_mk81_mistral",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_mk81_mistral.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_mk81_mistral.blk"
       },
       {
         "name": "ah_2_rooivalk_mokopa",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_mokopa.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_mokopa.blk"
       },
       {
         "name": "ah_2_rooivalk_mokopa_mistral",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_mokopa_mistral.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_mokopa_mistral.blk"
       },
       {
         "name": "ah_2_rooivalk_rocket_mokopa_mistral",
-        "blk": "gameData/flightModels/weaponPresets/ah_2_rooivalk_rocket_mokopa_mistral.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_2_rooivalk_rocket_mokopa_mistral.blk"
       }
     ]
   },
@@ -1796,7 +1810,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "optic1_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -1822,7 +1836,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/cannonGI_2.blk",
+              "blk": "gamedata/weapons/cannonGI_2.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "turret": [
@@ -1925,7 +1939,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare1",
               "bullets": 85,
               "bulletsCartridge": 1,
@@ -1934,7 +1948,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare3",
               "bullets": 85,
               "bulletsCartridge": 1,
@@ -1956,7 +1970,7 @@
             "trigger": "aam",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+            "blk": "gamedata/weapons/containers/atam_2x_mistral.blk",
             "emitter": "atam_mistral_pod_001"
           }
         }
@@ -1971,7 +1985,7 @@
             "name": "m159",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz207_ffar_x19.blk",
+              "blk": "gamedata/weapons/containers/fz207_ffar_x19.blk",
               "emitter": "m261_lwl_b001",
               "external": true
             }
@@ -1981,7 +1995,7 @@
             "name": "mk81",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "m261_lwl_b001",
               "bullets": 1,
               "external": true,
@@ -1995,7 +2009,7 @@
             "reqModification": "atgm_mokopa",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/mokopa_x4.blk",
+              "blk": "gamedata/weapons/containers/mokopa_x4.blk",
               "emitter": "mokopa_missile_launcher001",
               "external": true,
               "separate": true,
@@ -2014,7 +2028,7 @@
             "name": "m159",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz207_ffar_x19.blk",
+              "blk": "gamedata/weapons/containers/fz207_ffar_x19.blk",
               "emitter": "m261_lwl_b002",
               "external": true
             }
@@ -2024,7 +2038,7 @@
             "name": "mk81",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "m261_lwl_b002",
               "bullets": 1,
               "external": true,
@@ -2038,7 +2052,7 @@
             "reqModification": "atgm_mokopa",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/mokopa_x4.blk",
+              "blk": "gamedata/weapons/containers/mokopa_x4.blk",
               "emitter": "mokopa_missile_launcher003",
               "external": true,
               "separate": true,
@@ -2057,7 +2071,7 @@
             "name": "m159",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz207_ffar_x19.blk",
+              "blk": "gamedata/weapons/containers/fz207_ffar_x19.blk",
               "emitter": "m261_lwl_b003",
               "external": true
             }
@@ -2067,7 +2081,7 @@
             "name": "mk81",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "m261_lwl_b003",
               "bullets": 1,
               "external": true,
@@ -2081,7 +2095,7 @@
             "reqModification": "atgm_mokopa",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/mokopa_x4.blk",
+              "blk": "gamedata/weapons/containers/mokopa_x4.blk",
               "emitter": "mokopa_missile_launcher004",
               "external": true,
               "separate": true,
@@ -2100,7 +2114,7 @@
             "name": "m159",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz207_ffar_x19.blk",
+              "blk": "gamedata/weapons/containers/fz207_ffar_x19.blk",
               "emitter": "m261_lwl_b004",
               "external": true
             }
@@ -2110,7 +2124,7 @@
             "name": "mk81",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "m261_lwl_b004",
               "bullets": 1,
               "external": true,
@@ -2124,7 +2138,7 @@
             "reqModification": "atgm_mokopa",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/mokopa_x4.blk",
+              "blk": "gamedata/weapons/containers/mokopa_x4.blk",
               "emitter": "mokopa_missile_launcher002",
               "external": true,
               "separate": true,
@@ -2145,7 +2159,7 @@
             "trigger": "aam",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+            "blk": "gamedata/weapons/containers/atam_2x_mistral.blk",
             "emitter": "atam_mistral_pod_002"
           }
         }
@@ -3101,22 +3115,22 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gamedata/sensors/ir_tracker.blk",
               "node": "optic1_gun",
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+              "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
             },
             {
-              "blk": "gameData/sensors/us_an_aar_47.blk"
+              "blk": "gamedata/sensors/us_an_aar_47.blk"
             },
             {
-              "blk": "gameData/sensors/us_flir.blk",
+              "blk": "gamedata/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
+              "blk": "gamedata/sensors/us_an_avr-2.blk"
             }
           ]
         }

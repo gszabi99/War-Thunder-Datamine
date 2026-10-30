@@ -1,10 +1,9 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocksWithBlkOrder
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask
 from "%scripts/dagui_library.nut" import *
-
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const CHAPTER_NAME = "worldwar"
 
@@ -56,8 +55,8 @@ function getAllUnlocks() {
   return cacheArray
 }
 
-return {
+return freeze({
   getAllUnlocks = getAllUnlocks
   unlocksChapterName = CHAPTER_NAME
   invalidateUnlocksCache = invalidateUnlocksCache
-}
+})

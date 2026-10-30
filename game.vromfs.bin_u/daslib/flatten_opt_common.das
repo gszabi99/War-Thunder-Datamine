@@ -33,17 +33,12 @@ def public is_walkable_node(e : ExpressionPtr) : bool {
         e is ExprMakeArray)
 }
 
-
-
-
 def public guard_unhandled_node(e : ExpressionPtr) : void {
-    if (e == null || e is ExprVar || e |> is_expr_const()) return   
+    if (e == null || e is ExprVar || e |> is_expr_const()) return
     macro_error(compiling_program(), e.at, "flatten optimizer reached an unhandled expression node '{e.__rtti}': this is a real gap in the optimizer (the pass silently skips it, so a uniform/mutable subtree inside escapes hoisting / CSE / safety analysis). Comment out guard_unhandled_node in daslib/flatten_opt_common.das to unlock your current work, then please report this node kind.")
 }
 
-
-
-def public rewrite_children(var e : ExpressionPtr; fn : block<(var c : ExpressionPtr) : ExpressionPtr>) : void {
+def public rewrite_children(var e : ExpressionPtr; fn : block<(var c : ExpressionPtr) : ExpressionPtr>) : void {   
     if (e is ExprOp1) {
         var o = e as ExprOp1
         o.subexpr = invoke(fn, o.subexpr)
@@ -97,13 +92,13 @@ def public rewrite_children(var e : ExpressionPtr; fn : block<(var c : Expressio
         for (vi in range(length(o.values))) {
             o.values[vi] = invoke(fn, o.values[vi])
         }
+        o.constValues = false
     } else {
         guard_unhandled_node(e)
     }
 }
 
-
-def public fold_children_or(e : ExpressionPtr; pred : block<(c : ExpressionPtr) : bool>) : bool {
+def public fold_children_or(e : ExpressionPtr; pred : block<(c : ExpressionPtr) : bool>) : bool {   
     if (e is ExprOp1) {
         return invoke(pred, (e as ExprOp1).subexpr)
     } elif (e is ExprOp2) {
@@ -152,24 +147,14 @@ def public is_flat_temp(name : das_string) : bool {
     return name |> starts_with("__flat_")
 }
 
-
-
-
 def public is_flat_inlined_local(name : das_string) : bool {
     return name |> starts_with("__flat_loc_")
 }
-
-
-
-
 
 class public FlatVarRef : AstVisitor {
     name  : string
     count : int
     def override preVisitExprVar(expr : ExprVar?) : void {
-        
-        
-        
         if (expr.name == name) count ++
     }
 }
@@ -187,9 +172,6 @@ def public count_refs(var e : ExpressionPtr; name : string) : int {
     return c
 }
 
-
-
-
 class public FlatUsesBuilder : AstVisitor {
     nameUses : table<uint64; array<int>>
     nameCount : table<uint64; int>
@@ -205,24 +187,20 @@ class public FlatUsesBuilder : AstVisitor {
     }
 }
 
-
-
-
-
 let public CK_NONE = 0
 let public CK_FLOAT = 1
 let public CK_INT = 2
 let public CK_UINT = 3
 
 struct public ConstLanes {
-    kind : int       
-    dim  : int       
-    f    : float4    
-    i    : int4      
+    kind : int
+    dim  : int
+    f    : float4
+    i    : int4
 }
 
 
-def public const_lanes(e : ExpressionPtr) : ConstLanes {
+def public const_lanes(e : ExpressionPtr) : ConstLanes {   
     var r : ConstLanes
     if (e == null) return r
     if (e is ExprConstFloat)  { r.kind = CK_FLOAT; r.dim = 1; r.f = float4((e as ExprConstFloat).value, 0.0, 0.0, 0.0); return r }
@@ -261,10 +239,7 @@ def public make_const_lanes(L : ConstLanes; at : LineInfo) : ExpressionPtr {
     return null
 }
 
-
-
-
-def public is_zero_const(e : ExpressionPtr) : bool {
+def public is_zero_const(e : ExpressionPtr) : bool {   
     if (e == null) return false
     if (e is ExprConstInt) return (e as ExprConstInt).value == 0
     if (e is ExprConstInt8) return (e as ExprConstInt8).value == int8(0)
@@ -279,9 +254,6 @@ def public is_zero_const(e : ExpressionPtr) : bool {
     if (e is ExprConstBool) return !(e as ExprConstBool).value
     return false
 }
-
-
-
 
 def public int_const(e : ExpressionPtr; var v : int64&; var signed : bool&) : bool {
     if (e == null) return false
@@ -303,14 +275,10 @@ def public is_int_val(e : ExpressionPtr; want : int64) : bool {
 }
 
 def public is_int_neg_one(e : ExpressionPtr) : bool {
-    
     var v = 0l
     var signed = false
     return int_const(e, v, signed) && signed && v == -1l
 }
-
-
-
 
 def public is_real_val(e : ExpressionPtr; want : double) : bool {
     if (e == null) return false
@@ -318,9 +286,6 @@ def public is_real_val(e : ExpressionPtr; want : double) : bool {
     if (e is ExprConstDouble) return (e as ExprConstDouble).value == want
     return false
 }
-
-
-
 
 def public is_real_vec_val(e : ExpressionPtr; want : double) : bool {
     let L = const_lanes(e)
@@ -331,8 +296,6 @@ def public is_real_vec_val(e : ExpressionPtr; want : double) : bool {
     return true
 }
 
-
-
 def public is_int_vec_val(e : ExpressionPtr; want : int64) : bool {
     let L = const_lanes(e)
     if ((L.kind != CK_INT && L.kind != CK_UINT) || L.dim < 2) return false
@@ -342,9 +305,6 @@ def public is_int_vec_val(e : ExpressionPtr; want : int64) : bool {
     return true
 }
 
-
-
-
 def public is_int_vec_neg_one(e : ExpressionPtr) : bool {
     let L = const_lanes(e)
     if (L.kind != CK_INT || L.dim < 2) return false
@@ -353,9 +313,6 @@ def public is_int_vec_neg_one(e : ExpressionPtr) : bool {
     }
     return true
 }
-
-
-
 
 def public is_zero_const_op(e : ExpressionPtr) : bool {
     return is_int_val(e, 0l) || is_real_val(e, 0.0lf) || is_int_vec_val(e, 0l) || is_real_vec_val(e, 0.0lf)
@@ -369,8 +326,6 @@ def public is_neg_one_const_op(e : ExpressionPtr) : bool {
     return is_int_neg_one(e) || is_real_val(e, -1.0lf) || is_int_vec_neg_one(e) || is_real_vec_val(e, -1.0lf)
 }
 
-
-
 def public is_bool_val(e : ExpressionPtr; want : bool) : bool {
     if (e == null) return false
     if (e is ExprConstBool) return (e as ExprConstBool).value == want
@@ -381,10 +336,7 @@ def public negate(var e : ExpressionPtr) : ExpressionPtr {
     return new ExprOp1(at = e.at, op := "-", subexpr = e)
 }
 
-
-
-
-def public zero_const_of(t : TypeDeclPtr; at : LineInfo) : ExpressionPtr {
+def public zero_const_of(t : TypeDeclPtr; at : LineInfo) : ExpressionPtr {   
     if (t == null) return null
     match (t.baseType) {
         if (Type.tInt) { return new ExprConstInt(at = at, value = 0) }
@@ -414,7 +366,6 @@ def public expr_bt(e : ExpressionPtr) : Type {
     return (e == null || e._type == null) ? Type.none : e._type.baseType
 }
 
-
 def public vec_elem_bt(bt : Type) : Type {
     if (bt == Type.tFloat2 || bt == Type.tFloat3 || bt == Type.tFloat4) return Type.tFloat
     if (bt == Type.tInt2 || bt == Type.tInt3 || bt == Type.tInt4) return Type.tInt
@@ -426,14 +377,10 @@ def public is_float_family(bt : Type) : bool {
     return bt == Type.tFloat || bt == Type.tFloat2 || bt == Type.tFloat3 || bt == Type.tFloat4
 }
 
-
-
 def public is_float_valued(e : ExpressionPtr) : bool {
     let bt = expr_bt(e)
     return is_float_family(bt) || bt == Type.tDouble
 }
-
-
 
 def public ctor_dim_by_name(c : ExprCall?) : int {
     if (c == null) return 0
@@ -453,7 +400,6 @@ def public is_float_vec(bt : Type) : bool {
     return bt == Type.tFloat2 || bt == Type.tFloat3 || bt == Type.tFloat4
 }
 
-
 def public splat_scalar_arg(e : ExpressionPtr) : ExpressionPtr {
     if (e == null || !(e is ExprCall)) return null
     var c = e as ExprCall
@@ -461,7 +407,6 @@ def public splat_scalar_arg(e : ExpressionPtr) : ExpressionPtr {
     if ((nm != "float2" && nm != "float3" && nm != "float4") || length(c.arguments) != 1) return null
     return expr_bt(c.arguments[0]) == Type.tFloat ? c.arguments[0] : null
 }
-
 
 def public const_vec_zero_mask(e : ExpressionPtr) : int {
     let L = const_lanes(e)
@@ -477,29 +422,20 @@ def public const_vec_zero_mask(e : ExpressionPtr) : int {
 }
 
 
-
 def public is_mad_elem(bt : Type) : bool {
     return (is_float_family(bt) || bt == Type.tDouble ||
         bt == Type.tInt || bt == Type.tInt2 || bt == Type.tInt3 || bt == Type.tInt4 ||
         bt == Type.tUInt || bt == Type.tUInt2 || bt == Type.tUInt3 || bt == Type.tUInt4)
 }
 
-
-
 def public mad_shape(ta, tb, tc : Type) : bool {
     if (ta == tb && tb == tc) return is_mad_elem(ta)
     return ta == tc && tb != Type.none && vec_elem_bt(ta) == tb
 }
 
-
-
-
 def public lerp_shape(ta, tb, tt : Type) : bool {
     return ta == tb && is_float_family(ta) && tt == Type.tFloat
 }
-
-
-
 
 def public is_all_const(e : ExpressionPtr) : bool {
     if (e == null) return false
@@ -516,7 +452,6 @@ def public is_all_const(e : ExpressionPtr) : bool {
     }
     if (e is ExprCall) {
         let c = e as ExprCall
-        
         if (c.func == null || !c.func.flags.builtIn || has_sideeffects(e)) return false
         for (a in c.arguments) {
             if (!is_all_const(a)) return false
@@ -526,9 +461,6 @@ def public is_all_const(e : ExpressionPtr) : bool {
     return false
 }
 
-
-
-
 def public eval_to_const_supported(t : TypeDeclPtr) : bool {
     if (t == null) return false
     let bt = t.baseType
@@ -536,9 +468,6 @@ def public eval_to_const_supported(t : TypeDeclPtr) : bool {
         bt == Type.tInt || bt == Type.tInt2 || bt == Type.tInt3 || bt == Type.tInt4 ||
         bt == Type.tUInt || bt == Type.tUInt2 || bt == Type.tUInt3 || bt == Type.tUInt4)
 }
-
-
-
 
 def public fully_inferred(e : ExpressionPtr) : bool {
     if (e == null) return false
@@ -567,16 +496,10 @@ def public fully_inferred(e : ExpressionPtr) : bool {
     return true
 }
 
-
-
-
 def public eval_to_const(var e : ExpressionPtr) : ExpressionPtr {
     if (e == null || e._type == null || !fully_inferred(e)) return e
     var ok = false
-    var val : float4
-    unsafe {
-        val = eval_single_expression(e, ok)
-    }
+    let val = unsafe(eval_single_expression(e, ok))
     if (!ok) return e
     let bt = e._type.baseType
     if (bt == Type.tFloat) return new ExprConstFloat(at = e.at, value = val.x)
@@ -596,10 +519,6 @@ def public eval_to_const(var e : ExpressionPtr) : ExpressionPtr {
     return e
 }
 
-
-
-
-
 def public reads_any(var e : ExpressionPtr; names : table<string; ExpressionPtr>) : bool {
     for (nm in keys(names)) {
         if (count_refs(e, nm) > 0) return true
@@ -611,7 +530,6 @@ def public subst_consts(var e : ExpressionPtr; constmap : table<string; Expressi
     if (e == null) return null
     var tmpl : Template
     for (nm in keys(constmap)) {
-        
         var ex = unsafe(reinterpret<Expression?>(constmap?[nm] ?? null))
         tmpl |> replaceVariable(nm, ex)
     }
@@ -620,17 +538,10 @@ def public subst_consts(var e : ExpressionPtr; constmap : table<string; Expressi
     return res
 }
 
-
-
-
-
 struct public ReTerm {
-    neg : bool          
+    neg : bool
     e : ExpressionPtr
 }
-
-
-
 
 def public collect_add(var e : ExpressionPtr; neg : bool; var terms : array<ReTerm>) {
     if (e == null) return
@@ -651,7 +562,6 @@ def public collect_add(var e : ExpressionPtr; neg : bool; var terms : array<ReTe
     terms |> push(ReTerm(neg = neg, e = e))
 }
 
-
 def public collect_mul(var e : ExpressionPtr; var terms : array<ReTerm>) {
     if (e == null) return
     if (e is ExprOp2) {
@@ -665,9 +575,6 @@ def public collect_mul(var e : ExpressionPtr; var terms : array<ReTerm>) {
     terms |> push(ReTerm(neg = false, e = e))
 }
 
-
-
-
 def public build_chain(var terms : array<ReTerm>; at : LineInfo; addOp, subOp : string) : ExpressionPtr {
     var acc = terms[0].neg ? negate(terms[0].e) : terms[0].e
     for (i in range(1, length(terms))) {
@@ -676,14 +583,9 @@ def public build_chain(var terms : array<ReTerm>; at : LineInfo; addOp, subOp : 
     return acc
 }
 
-
-
-
-
 def public sel3(e : ExpressionPtr) : ExprOp3? {
-    return (e != null && e is ExprOp3) ? (e as ExprOp3) : null   
+    return (e != null && e is ExprOp3) ? (e as ExprOp3) : null
 }
-
 
 def public ref_var_name(e : ExpressionPtr) : string {
     var x = e
@@ -693,10 +595,6 @@ def public ref_var_name(e : ExpressionPtr) : string {
     return (x != null && x is ExprVar) ? "{(x as ExprVar).name}" : ""
 }
 
-
-
-
-
 def public simple_name(fullname : string) : string {
     let t1 = find(fullname, 96, 0)
     if (t1 < 0) return fullname
@@ -704,12 +602,6 @@ def public simple_name(fullname : string) : string {
     let endp = t2 < 0 ? length(fullname) : t2
     return slice(fullname, t1 + 1, endp)
 }
-
-
-
-
-
-
 
 def public store_base(e : Expression const?) : ExpressionPtr {
     if (e == null) return null
@@ -721,15 +613,45 @@ def public store_base(e : Expression const?) : ExpressionPtr {
     return e is ExprVar ? unsafe(reinterpret<Expression?>(e)) : null
 }
 
-
-
+def public writes_through_argument(fn : Function const?; argIndex : int) : bool {
+    if (fn == null || argIndex < 0 || argIndex >= length(fn.arguments)) return false
+    let at = fn.arguments[argIndex]._type
+    return at != null && !at.flags.constant && (at.flags.ref || at.isRefType)
+}
 
 class public MutCollect : AstVisitor {
     names : table<string>
-    def override preVisitExprCopy(expr : ExprCopy?) : void {
-        let base = store_base(expr.left)
+    def note_store(lhs : Expression const?) : void {
+        let base = store_base(lhs)
         if (base != null) {
             names |> insert("{(base as ExprVar).name}")
+        }
+    }
+    def override preVisitExprCopy(expr : ExprCopy?) : void {
+        note_store(expr.left)
+    }
+    def override preVisitExprMove(expr : ExprMove?) : void {
+        note_store(expr.left)
+        note_store(expr.right)
+    }
+    def override preVisitExprClone(expr : ExprClone?) : void {
+        note_store(expr.left)
+    }
+    def override preVisitExprOp1(expr : ExprOp1?) : void {
+        if (expr.op == "++" || expr.op == "--" || expr.op == "+++" || expr.op == "---") {
+            note_store(expr.subexpr)
+        }
+    }
+    def override preVisitExprOp2(expr : ExprOp2?) : void {
+        if (expr.op |> ends_with("=") && !(expr.op == "==" || expr.op == "!=" || expr.op == "<=" || expr.op == ">=")) {
+            note_store(expr.left)
+        }
+    }
+    def override preVisitExprCall(expr : ExprCall?) : void {
+        for (ai in range(length(expr.arguments))) {
+            if (writes_through_argument(expr.func, ai)) {
+                note_store(expr.arguments[ai])
+            }
         }
     }
 }
@@ -749,21 +671,12 @@ def public collect_mutable(blk : ExprBlock?) : table<string> {
     return <- r
 }
 
-
-
-
 def public reads_mutable(e : ExpressionPtr; mutableVars : table<string>) : bool {
     if (e == null || empty(mutableVars) || e |> is_expr_const()) return false
     if (e is ExprVar) return key_exists(mutableVars, "{(e as ExprVar).name}")
-    if (!is_walkable_node(e)) return true   
+    if (!is_walkable_node(e)) return true
     return fold_children_or(e) $(c) => reads_mutable(c, mutableVars)
 }
-
-
-
-
-
-
 
 def public recip_const(e : ExpressionPtr) : ExpressionPtr {
     if (e is ExprConstDouble) {
@@ -774,20 +687,17 @@ def public recip_const(e : ExpressionPtr) : ExpressionPtr {
     var L = const_lanes(e)
     if (L.kind != CK_FLOAT) return null
     for (k in range(L.dim)) {
-        if (L.f[k] == 0.0) return null   
+        if (L.f[k] == 0.0) return null
     }
-    L.f = float4(1.0, 1.0, 1.0, 1.0) / L.f   
+    L.f = float4(1.0, 1.0, 1.0, 1.0) / L.f
     return make_const_lanes(L, e.at)
 }
-
-
 
 def public make_float_ctor(d : int; at : LineInfo; var lanes : array<ExpressionPtr>) : ExpressionPtr {
     var c0 = 0.0
     var c1 = 0.0
     var c2 = 0.0
     var c3 = 0.0
-    
     if (length(lanes) == d && scalar_float_const(lanes[0], c0) && scalar_float_const(lanes[1], c1) &&
             (d < 3 || scalar_float_const(lanes[2], c2)) && (d < 4 || scalar_float_const(lanes[3], c3))) {
         if (d == 2) return new ExprConstFloat2(at = at, value = float2(c0, c1))
@@ -801,8 +711,6 @@ def public make_float_ctor(d : int; at : LineInfo; var lanes : array<ExpressionP
     }
     return c
 }
-
-
 
 def public component_read_of(var e : ExpressionPtr; var baseKey : string&; var base : ExpressionPtr&; var comp : string&) : bool {
     if (e == null) return false
@@ -835,19 +743,12 @@ def public scalar_float_const(e : ExpressionPtr; var v : float&) : bool {
     return true
 }
 
-
-
-
 def public make_float_splat(d : int; at : LineInfo; var sc : ExpressionPtr) : ExpressionPtr {
     let nm = d == 2 ? "float2" : (d == 3 ? "float3" : "float4")
     var c = new ExprCall(at = at, name := nm)
     emplace(c.arguments, sc)
     return c
 }
-
-
-
-
 
 def public float_vec_dim(bt : Type) : int {
     if (bt == Type.tFloat2) return 2
@@ -863,9 +764,8 @@ def public lane_index(comp : string) : int {
     return 3
 }
 
-
 def public plan_groups(M : int; minWidth : int = 2) : array<int> {
-    assert(minWidth >= 2 && minWidth <= 4, "plan_groups expects minWidth in [2..4]")   
+    assert(minWidth >= 2 && minWidth <= 4, "plan_groups expects minWidth in [2..4]")
     var g : array<int>
     g |> reserve((M + minWidth - 1) / minWidth)
     var rem = M

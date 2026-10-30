@@ -1,28 +1,27 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/captcha/captchaHandler.nut" as tryOpenCaptchaHandler
 import "%sqstd/math.nut" as stdMath
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/tutorials/tutorialsData.nut" import checkDiffTutorial
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/events/eventInfo.nut" import getEventEconomicName, checkEventFeaturePacks, isEventForNewbies, canJoinWithoutRequireCrafts, isEventAllowedByPackage
+from "%scripts/user/antiAddictSystem.nut" import checkShowMultiplayerAasWarningMsg
+from "%scripts/myStats.nut" import isMeNewbieOnUnitType
+from "%scripts/user/myStatsState.nut" import getUnitTypeByNewbieEventId
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinSessionRoom
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart, joinQueue
+from "%scripts/instantAction.nut" import checkBrokenAirsAndDo
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes
+from "%scripts/squads/squadUtils.nut" import isEventAllowedForAllSquadMembers, canJoinFlightMsgBox
+from "%scripts/unit/unitInfo.nut" import isLoadedModelHighQuality
+from "%scripts/options/systemOptions.nut" import disableVrModeValue
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
-let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies, canJoinWithoutRequireCrafts, isEventAllowedByPackage } = require("%scripts/events/eventInfo.nut")
-let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
-let { getUnitTypeByNewbieEventId } = require("%scripts/user/myStatsState.nut")
-let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { checkQueueAndStart, joinQueue } = require("%scripts/queue/queueManager.nut")
-let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
-let { isEventAllowedForAllSquadMembers, canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
-let { disableVrModeValue } = require("%scripts/options/systemOptions.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -143,10 +142,18 @@ let EventJoinProcess = class {
         !checkPackageAndAskDownload(["pkg_main"]))
       return this.remove()
 
-    if (!isEventAllowedByPackage(this.event)
-      && !checkPackageAndAskDownload(this.event.reqPacks))
-      return this.remove()
+    if (!isEventAllowedByPackage(this.event)) {
+      
+      checkPackageAndAskDownload(this.event.reqPacks, null,
+        this.joinStep3_afterPacks, this, Callback(this.remove, this))
+      return
+    }
 
+    this.joinStep3_afterPacks()
+  }
+
+  function joinStep3_afterPacks() {
+    this.processStepName = "joinStep3_afterPacks"
     if (!events.checkEventFeature(this.event))
       return this.remove()
 
@@ -163,7 +170,7 @@ let EventJoinProcess = class {
       return this.remove()
 
     if (!isLoadedModelHighQuality()) {
-      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep4_internal, this, this.remove)
+      checkPackageAndAskDownloadByTimes("pkg_main", this.joinStep4_internal, this, this.remove, true)
       return
     }
 
@@ -281,7 +288,7 @@ let EventJoinProcess = class {
 }
 
 
-return {
+return freeze({
   hasAlredyActiveJoinProcess
   EventJoinProcess
-}
+})

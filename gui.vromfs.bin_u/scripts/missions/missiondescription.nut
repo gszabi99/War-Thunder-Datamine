@@ -1,5 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/missions/mapPreview.nut" import setMapPreview
+from "%scripts/options/optionsExtNames.nut" import USEROPT_TIME_LIMIT
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/missions/missionsText.nut" import buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/controls/hotas.nut" import checkJoystickThustmasterHotas
+from "%scripts/missions/missionsUtilsModule.nut" import getMissionRewardsMarkup
+from "%scripts/tutorials/tutorialsData.nut" import getTutorialFirstCompletRewardData
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName
+from "%scripts/missions/missionsStates.nut" import is_user_mission, isUrlMission
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/missions/missionsUtils.nut" import isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors
+from "%scripts/shop/shopCountryInfo.nut" import getShopCountry
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
 from "string" import format
 from "mission" import get_game_mode, get_game_type_by_mode
 from "blkGetters" import get_pve_awards_blk
@@ -7,29 +25,12 @@ from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_player_multipliers, map_to_location
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locCtrlId
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
-let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { is_user_mission, isUrlMission } = require("%scripts/missions/missionsStates.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 
 
@@ -204,9 +205,9 @@ let MissionDescription = class (BaseGuiHandlerWT) {
 
       if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING) {
         if (isMissionForUnitType(blk, ES_UNIT_TYPE_TANK))
-          config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction/tank")
+          config.hotas4_tutorial_usage_restriction <- locCtrlId("tutorials/hotas_restriction/tank")
         else if (mission.chapter == "tutorial_adv")
-          config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction")
+          config.hotas4_tutorial_usage_restriction <- locCtrlId("tutorials/hotas_restriction")
       }
     }
     if (this.gm == GM_SINGLE_MISSION) {
@@ -367,4 +368,4 @@ let MissionDescription = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MissionDescription", MissionDescription)
 
-return { MissionDescription }
+return freeze({ MissionDescription })

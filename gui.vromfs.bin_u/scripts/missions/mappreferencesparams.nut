@@ -1,6 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
 import "mapPreferences" as mapPreferences
+from "%scripts/events/eventTeamsInfo.nut" import getEventUnitTypesMask
+from "%scripts/crossModuleEvents.nut" import EVENTS_DATA_UPDATED, GAME_LOCALIZATION_CHANGED
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/missions/missionsText.nut" import getMissionLocName
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank, calcBattleRatingFromRank
 from "dagor.debug" import debug_dump_stack
@@ -10,12 +15,7 @@ from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
 from "%scripts/matching/matchingGameModes.nut" import getGameModesByEconomicName, isSubGameMode
 from "%scripts/dagui_library.nut" import *
 
-let { getEventUnitTypesMask } = require("%scripts/events/eventTeamsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { EVENTS_DATA_UPDATED, GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 
 const MIN_AVAILABLE_VEHICLE_BR   = 1.0
 
@@ -55,7 +55,7 @@ function hasPreferences(curEvent) {
 }
 
 function sortByLevel(list) {
-  list.sort(@(a, b) a.image <=> b.image)
+  list.sortby(@(a) a.image)
   foreach (idx, map in list)
     map.mapId = idx
   return list
@@ -308,7 +308,7 @@ addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_) mapsListByEvent.clear()
 })
 
-return {
+return freeze({
   getParams = getParams
   getMapsList = getMapsList
   getCounters = getCounters
@@ -320,4 +320,4 @@ return {
   getInactiveMaps = getInactiveMaps
   getPrefTypes = getPrefTypes
   getBattleRatingsDescriptionText = getBattleRatingsDescriptionText
-}
+})

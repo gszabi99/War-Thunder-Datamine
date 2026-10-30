@@ -1,19 +1,19 @@
+import "%scripts/unit/vehiclesModal.nut" as vehiclesModal
+import "%scripts/shop/shopSearchCore.nut" as shopSearchCore
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/unit/unitInfoTexts.nut" import getUnitRarity
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitRoleIcon
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfo.nut" import image_for_air, getUnitName
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/shop/shopUnitCellFill.nut" import getUnitRankText
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
 from "%sqstd/math.nut" import floor
 from "%scripts/dagui_library.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { image_for_air, getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitRankText } = require("%scripts/shop/shopUnitCellFill.nut")
-let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 
@@ -257,8 +257,8 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
 register_gui_handler("selectUnitModal", handlerClass)
 
-return {
+return freeze({
   openSelectUnitWnd = function(params = {}) {
     handlersManager.loadHandler(handlerClass, params)
   }
-}
+})

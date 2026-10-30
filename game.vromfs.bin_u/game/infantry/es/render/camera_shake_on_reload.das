@@ -5,6 +5,7 @@ require GeomNodeTree
 require DagorSystem
 require DngHuman
 require math.base
+require %appGame.infantry.es.human_reload_common
 
 
 def clamp(x : float; minmax : float2)
@@ -72,8 +73,21 @@ def camera_shake_on_reload_update_rest_weapon_direction(info : UpdateStageInfoAc
       gun_reload_camera_shake__relaxTime = gun_reload_camera_shake__relaxDuration
 
 
-[es(tag=gameClient, after=shooter_cam_update_tm_es, before=after_camera_sync, REQUIRE=watchedByPlr)]
+def private use_anim_camera_shake(style : int; reload, reload_alt, reload_fast, inspect : bool) : bool
+  if style == int(GunReloadStyle.RELOAD_STYLE_SIMPLE)
+    return reload
+  if style == int(GunReloadStyle.RELOAD_STYLE_ALT)
+    return reload_alt
+  if style == int(GunReloadStyle.RELOAD_STYLE_QUICK)
+    return reload_fast
+  if style == int(GunReloadStyle.RELOAD_STYLE_INSPECT)
+    return inspect
+  return false
+
+
+[es(tag=gameClient, after=(shooter_cam_update_tm_es, shooter_cam_rotate_es), before=after_camera_sync, REQUIRE=watchedByPlr)]
 def camera_shake_on_reload_update(info : UpdateStageInfoAct;
+                                  hero : Tag const?;
                                   isTpsView : bool;
                                   isInVehicle : bool;
                                   human_vehicle__isShootingPassenger : bool = false;
@@ -97,6 +111,12 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
                                               gun_anim__reloadProgress : float;
                                               gun_reload_camera_shake__relaxDuration : float;
                                               gun_reload_camera_shake__smoothFactor : float = 0.1f;
+                                              gun_anim__reloadStyle : int = 0;
+                                              gun_anim__heroReloadStyle : int = 0;
+                                              gun_use_anim_camera__reload : bool = false;
+                                              gun_use_anim_camera__reloadAlt : bool = false;
+                                              gun_use_anim_camera__reloadFast : bool = false;
+                                              gun_use_anim_camera__inspect : bool = false;
                                               var gun_reload_camera_shake__smoothOffsetX  : float&;
                                               var gun_reload_camera_shake__smoothOffsetY  : float&;
                                               var gun_reload_camera_shake__relaxTime : float&)
@@ -112,6 +132,11 @@ def camera_shake_on_reload_update(info : UpdateStageInfoAct;
       needUpdate = false
 
     if (gun_anim__reloadProgress <= 0.0 && gun_reload_camera_shake__relaxTime <= 0.0) || gun_reload_camera_shake__node1Index == -1 || gun_reload_camera_shake__node2Index == -1
+      needUpdate = false
+
+    let reloadStyle = hero != null ? gun_anim__heroReloadStyle : gun_anim__reloadStyle
+    if use_anim_camera_shake(reloadStyle, gun_use_anim_camera__reload, gun_use_anim_camera__reloadAlt,
+                             gun_use_anim_camera__reloadFast, gun_use_anim_camera__inspect)
       needUpdate = false
 
     

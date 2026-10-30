@@ -1,12 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/measureType.nut" import getMeasureTypeByName
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/math.nut" import lerp, sqrt
 from "%sqstd/datablock.nut" import isDataBlock, eachBlock
 from "dagor.math" import Point2
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
 let RICOCHET_PROBABILITIES = [0.0, 0.5, 1.0]
@@ -25,7 +24,7 @@ function getDmgModelBlk() {
 
 function getExplosiveBlk() {
   let blk = DataBlock()
-  blk.load("gameData/damage_model/explosive.blk")
+  blk.load("gamedata/damage_model/explosive.blk")
   return blk
 }
 
@@ -381,7 +380,7 @@ addListenersWithoutEnv({
   SignOut = @(_p) resetData()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getRicochetData
   getMeasuredExplosionText
   getTntEquivalentDmg
@@ -393,4 +392,4 @@ return {
   getMaxArmorPiercing
   getShipDamageControl
   getNuclearWeaponAdditionalInfo
-}
+})

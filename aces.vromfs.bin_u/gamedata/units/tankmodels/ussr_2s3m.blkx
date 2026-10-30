@@ -1930,7 +1930,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_2A33_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_2A33_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.5,
@@ -1974,7 +1974,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2028,7 +2028,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2058,8 +2058,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_2s3m_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_2s3m_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2110,7 +2110,10 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.28,
       "mainGearRatio": 4.24,
@@ -2145,7 +2148,18 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.31,
-      "wheel_l_drive": 0.31
+      "wheel_l_drive": 0.31,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {

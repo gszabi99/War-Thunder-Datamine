@@ -1,6 +1,16 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/hud/hudActionBarInfo.nut" import getActionDesc, curHeroTemplates
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/options/optionsExtNames.nut" import USEROPT_WHEEL_CONTROL_SHIP
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/unit/supportUnits.nut" import getSupportUnits, getBaseUnit, getSupportUnitImage
+from "%scripts/hud/humanWeaponSlots.nut" import weaponSlotsKeys
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "controls" import isXInputDevice, hasXInputDevice
 from "weaponUtils" import NONE_FUSE_MODE, CONTACT_FUSE_MODE, NON_CONTACT_FUSE_MODE, DISTANCE_FUSE_MODE
@@ -11,20 +21,10 @@ from "radarGuiControls" import AirRadarGuiControlMode, getNextAirRadarGuiControl
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/weaponConsts.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let time = require("%scripts/time.nut")
-let { getActionDesc, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER, EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT, EII_MEDICALKIT, EII_TORPEDO, EII_TORPEDO_SIGHT, EII_HULL_AIMING, EII_DEPTH_CHARGE, EII_MINE, EII_MORTAR, EII_ROCKET, EII_GRENADE, EII_SMOKE_GRENADE, EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER, EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE, EII_SUPPORT_PLANE_GROUP_FLY_TO, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_SUPPORT_PLANE_GROUP_HUNT, EII_SUPPORT_PLANE_GROUP_DEFEND, EII_SUPPORT_PLANE_GROUP_RETURN, EII_SUPPORT_PLANE_GROUP_ADD_FLY_TO, EII_SUPPORT_PLANE_GROUP_ADD_ATTACK, EII_SUPPORT_PLANE_GROUP_CANCEL, EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN, EII_AGM_RELEASE_LOCKED_TARGET, WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS, AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK, EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET, EII_HUMAN_WEAPON, EII_HUMAN_MEDKIT, EII_HUMAN_NEXT_SQUADMATE, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON, EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_THRUST_VECTORING_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89, EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_HOVER_MODE, EII_FBW_MODE, EII_MOUSE_AIM_OVERRIDE_ROLL, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE, EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE, EII_FUSE_MODE, EII_FPV_SHELL_ACTIVATE, EII_SENSOR_MODES_SWITCH, EII_CARRIER_MENU } = require("hudActionBarConst")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getSupportUnits, getBaseUnit, getSupportUnitImage } = require("%scripts/unit/supportUnits.nut")
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER, EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT, EII_MEDICALKIT, EII_TORPEDO, EII_TORPEDO_SIGHT, EII_HULL_AIMING, EII_DEPTH_CHARGE, EII_MINE, EII_MORTAR, EII_ROCKET, EII_GRENADE, EII_SMOKE_GRENADE, EII_REPAIR_BREACHES, EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER, EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2, EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE, EII_SUPPORT_PLANE_GROUP_FLY_TO, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_SUPPORT_PLANE_GROUP_HUNT, EII_SUPPORT_PLANE_GROUP_DEFEND, EII_SUPPORT_PLANE_GROUP_RETURN, EII_SUPPORT_PLANE_GROUP_ADD_FLY_TO, EII_SUPPORT_PLANE_GROUP_ADD_ATTACK, EII_SUPPORT_PLANE_GROUP_CANCEL, EII_STEALTH, EII_LOCK, EII_GUIDANCE_MODE, EII_FORCED_GUN, EII_AGM_RELEASE_LOCKED_TARGET, WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS, AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK, EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET, EII_HUMAN_WEAPON, EII_HUMAN_MEDKIT, EII_HUMAN_NEXT_SQUADMATE, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON, EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_THRUST_VECTORING_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89, EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_HOVER_MODE, EII_FBW_MODE, EII_MOUSE_AIM_OVERRIDE_ROLL, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS, EII_AIR_RADAR_GUI_CONTROL_MODE, EII_RADAR_SWITCH_TARGET, EII_SENSORS_GROUP_MODE, EII_RADAR_GUI_NAVIGATION, EII_SHIP_SONAR, EII_HUMAN_ORDERS_MENU, EII_SUB_HYDROPHONE, EII_FUSE_MODE, EII_FPV_SHELL_ACTIVATE, EII_SENSOR_MODES_SWITCH, EII_CARRIER_MENU, EII_BOMBS_AUTO_RELEASE, EII_SUPPLY_TRANSPORT_CARGO, EII_SUPPLY_LOAD, EII_SUPPLY_UNLOAD } = require("hudActionBarConst")
 let { AIR_RADAR_GUI_CONTROL_BUTTONS, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
 
-let { weaponSlotsKeys } = require("%scripts/hud/humanWeaponSlots.nut")
 
 let actionBarIconHeight = @() to_pixels("@hudActionBarItemSize")
 
@@ -459,17 +459,15 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_SWITCH_ACTIVE_SONAR"
   }
 
-
-
-
-
-
-
-
-
-
-
-
+  SUB_HYDROPHONE = {
+    code = EII_SUB_HYDROPHONE
+    isForWheelMenu = @() true
+    _name = "sub_hydrophone"
+    _icon = "#ui/gameuiskin#ship_hydrophone"
+    _title = loc("hotkeys/ID_SUBMARINE_SWITCH_ACTIVE_SONAR")
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
+  }
 
   TORPEDO_SENSOR = {
     code = EII_TORPEDO_SENSOR
@@ -686,7 +684,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "ship_current_trigger_group"
     getShortcut = @(_actionItem, _hudUnitType = null)
       get_option(USEROPT_WHEEL_CONTROL_SHIP)?.value
-        && (isXInputDevice() || isPlatformSony || isPlatformXbox)
+        && (isXInputDevice() || isSony || isXbox)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : "ID_SHIP_SWITCH_TRIGGER_GROUP"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
@@ -1264,6 +1262,40 @@ enumsAddTypes(g_hud_action_bar_type, {
       : "#ui/gameuiskin#maneuverability"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_MANEUVERABILITY_MODE"
     getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MANEUVERABILITY_MODE")
+  }
+
+  BOMBS_AUTO_RELEASE = {
+    code = EII_BOMBS_AUTO_RELEASE
+    _name = "bombs_auto_release"
+    _title = loc("hotkeys/ID_TOGGLE_BOMBS_AUTO_RELEASE")
+    getIcon = @(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) actionItem?.active
+      ? "#ui/gameuiskin#bombs_auto_release_active"
+      : "#ui/gameuiskin#bombs_auto_release"
+    getShortcut = @(_actionItem, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+      ? "ID_TOGGLE_BOMBS_AUTO_RELEASE_HELICOPTER"
+      : "ID_TOGGLE_BOMBS_AUTO_RELEASE"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_TOGGLE_BOMBS_AUTO_RELEASE")
+  }
+
+  SUPPLY_TRANSPORT_CARGO = {
+    code = EII_SUPPLY_TRANSPORT_CARGO
+    _name = "supply_transport_cargo"
+    _icon = "!ui/gameuiskin#confrontation_supplies_icon.svg"
+    _title = loc("actionBarItem/supply_transport_cargo")
+  }
+
+  SUPPLY_LOAD = {
+    code = EII_SUPPLY_LOAD
+    _name = "supply_load"
+    _icon = "!ui/gameuiskin#confrontation_supplies_loading_icon_bw.svg"
+    _title = loc("actionBarItem/supply_load")
+  }
+
+  SUPPLY_UNLOAD = {
+    code = EII_SUPPLY_UNLOAD
+    _name = "supply_unload"
+    _icon = "!ui/gameuiskin#confrontation_supplies_unloading_icon_bw.svg"
+    _title = loc("actionBarItem/supply_unload")
   }
 
   THRUST_VECTORING_MODE = {

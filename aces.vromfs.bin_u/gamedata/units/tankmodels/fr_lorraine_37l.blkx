@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "french_gunner_char",
@@ -2267,7 +2273,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/47mm_SA_37_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/47mm_SA_37_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame_01",
       "shellCasingEmitter": "emtr_shell",
@@ -2325,8 +2331,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_lorraine_37l_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_lorraine_37l_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

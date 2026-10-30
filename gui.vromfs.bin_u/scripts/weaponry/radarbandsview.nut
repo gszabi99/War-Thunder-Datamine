@@ -1,12 +1,11 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%sqstd/datablock.nut" import eachBlock, blkOptFromPath
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const RADAR_TYPE_DEFAULT = "all_purpose"
 
@@ -152,6 +151,6 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   mkRadarBandsListMarkup
-}
+})

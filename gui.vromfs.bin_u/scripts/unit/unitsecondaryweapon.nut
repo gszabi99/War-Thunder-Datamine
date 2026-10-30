@@ -1,11 +1,10 @@
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getSinglePresetView
+from "%scripts/weaponry/weaponryVisual.nut" import getWeaponItemViewParams
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, getPresetsList
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT
-
-let { getSinglePresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, getPresetsList } = require("%scripts/weaponry/weaponryInfo.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function getSelectedPresetMarkup(unit) {
   let selectedPresetName = getLastWeapon(unit.name)
@@ -34,6 +33,6 @@ function getSelectedPresetMarkup(unit) {
     { weaponryItem, tiersCount, slotScale, isTooltipByHold = showConsoleButtons.get() })
 }
 
-return {
+return freeze({
   getSelectedPresetMarkup
-}
+})

@@ -1,12 +1,12 @@
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/items/workshop/workshop.nut" import shouldDisguiseItem
+from "%scripts/items/itemsManagerModule.nut" import findItemById, findItemByUid
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
 
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
-let { findItemById, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")

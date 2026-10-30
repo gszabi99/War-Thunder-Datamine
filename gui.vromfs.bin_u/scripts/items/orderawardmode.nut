@@ -1,8 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/money.nut" import Cost
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%scripts/dagui_library.nut" import *
-
-let { Cost } = require("%scripts/money.nut")
 
 let g_order_award_mode = {
   types = []

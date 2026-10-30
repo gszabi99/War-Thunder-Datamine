@@ -1,4 +1,15 @@
+import "%scripts/time.nut" as time
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "statsd" as statsd
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/login/loginState.nut" import set_disable_autorelogin_once
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox, getObjValue
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/login/loginManager.nut" import addLoginState
+from "%scripts/utils/errorMsgBox.nut" import showErrorMessageBox
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "chard" import get_charserver_time_sec
 from "auth_wt" import isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, checkLoginPass
@@ -6,18 +17,7 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { select_editbox, getObjValue } = require("%scripts/sqDagui/daguiUtil.nut")
-let time = require("%scripts/time.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { addLoginState } = require("%scripts/login/loginManager.nut")
-let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 local authDataByTypes = {
   mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
@@ -32,7 +32,7 @@ local authDataByTypes = {
 let twoStepModal = class (BaseGuiHandler) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/login/twoStepModal.tpl"
-  loginScene           = null
+  getLoginFormValue    = null
   continueLogin        = null
   curTimeTimer         = null
 
@@ -48,8 +48,8 @@ let twoStepModal = class (BaseGuiHandler) {
       authTypeImg = data.img
       backgroundImg = "#ui/images/two_step_form_bg"
       isShowRestoreLink = isExt2StepAllowed
-      isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
-      timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
+      isRememberDevice = this.getLoginFormValue("loginbox_code_remember_this_device", false)
+      timerWidth = getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
       signInTroublesURL = getCurCircuitOverride("signInTroublesURL", "#url/2step/signInTroubles")
       restoreProfileURL = "".concat(getCurCircuitOverride("restoreProfileURL", loc("url/2step/restoreProfile")), "?from=warthunder")
     }
@@ -79,8 +79,8 @@ let twoStepModal = class (BaseGuiHandler) {
     log("Login: checkLoginPass")
     addLoginState(LOGIN_STATE.LOGIN_STARTED)
     let result = checkLoginPass(
-      getObjValue(this.loginScene, "loginbox_username", ""),
-      getObjValue(this.loginScene, "loginbox_password", ""), "",
+      this.getLoginFormValue("loginbox_username", ""),
+      this.getLoginFormValue("loginbox_password", ""), "",
       getObjValue(this.scene, "loginbox_code", ""),
       getObjValue(this.scene, "loginbox_code_remember_this_device", false),
       true)
@@ -108,7 +108,7 @@ let twoStepModal = class (BaseGuiHandler) {
 
   function proceedAuth(result) {
     if (YU2_OK == result) {
-      this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
+      this.continueLogin(this.getLoginFormValue("loginbox_username", ""))
     }
 
     else if ( result == YU2_2STEP_AUTH || result == YU2_WRONG_2STEP_CODE) {
@@ -126,6 +126,6 @@ let twoStepModal = class (BaseGuiHandler) {
 }
 register_gui_handler("twoStepModal", twoStepModal)
 
-return {
+return freeze({
   open = @(p) handlersManager.loadHandler(twoStepModal, p)
-}
+})

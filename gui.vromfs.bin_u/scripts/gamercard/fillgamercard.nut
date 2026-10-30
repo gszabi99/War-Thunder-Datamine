@@ -1,43 +1,49 @@
+import "%scripts/time.nut" as time
+import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+import "%scripts/discounts/updateDiscountNotifications.nut" as updateDiscountNotifications
+from "%scripts/gamercard/gamercardHelpers.nut" import getLastGamercardScene, addGamercardScene, updateGcInvites, updateGamercardsChatInfo, updateGcButton
+from "%scripts/user/userInfoStats.nut" import getProfileInfo, getCurExpTable
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/clans/clanTextInfo.nut" import checkClanTagForDirtyWords
+from "%scripts/money.nut" import Balance, Cost
+from "%scripts/items/boosterEffect.nut" import haveActiveBonusesByEffectType, getCurrentBonusesText
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/userLog/userlogUtils.nut" import check_new_user_logs
+from "%scripts/contacts/contactsInfo.nut" import getFriendsOnlineNum
+from "%scripts/user/premium.nut" import getRemainingPremiumTime, havePremium
+from "%scripts/queue/queueInfo/qiViewUtils.nut" import updateShortQueueInfo
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/chat/chatStates.nut" import isChatEnabled, hasMenuChat
+from "%scripts/items/itemsManager.nut" import isItemsManagerEnabled
+from "%scripts/clans/clanCandidates.nut" import getUnseenCandidatesCount
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%scripts/hud/serverMessages.nut" import serverMessageUpdateScene
+from "%scripts/battlePass/unlocksRewardsState.nut" import hasBattlePass
 from "%sqStdLibs/helpers/u.nut" import isEmpty
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/platform.nut" import is_gdk
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "string" import format
 from "%scripts/dagui_natives.nut" import entitlement_expires_in
 from "%scripts/dagui_library.nut" import *
 
-let time = require("%scripts/time.nut")
-let { getLastGamercardScene, addGamercardScene, updateGcInvites, updateGamercardsChatInfo, updateGcButton } = require("%scripts/gamercard/gamercardHelpers.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { checkClanTagForDirtyWords } = require("%scripts/clans/clanTextInfo.nut")
-let { Balance, Cost } = require("%scripts/money.nut")
-let { haveActiveBonusesByEffectType, getCurrentBonusesText } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { check_new_user_logs } = require("%scripts/userLog/userlogUtils.nut")
-let { getFriendsOnlineNum } = require("%scripts/contacts/contactsInfo.nut")
-let { getRemainingPremiumTime, havePremium } = require("%scripts/user/premium.nut")
-let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
-let { getUnseenCandidatesCount } = require("%scripts/clans/clanCandidates.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
-let updateDiscountNotifications = require("%scripts/discounts/updateDiscountNotifications.nut")
-let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 
 let defaultFillGamercardObj = @(obj, val, _params) obj.setValue((val ?? "").tostring())
 
 let fillGamercardObjByKey = {
   function frame(obj, val, _params) {
-    obj.show(val != "")
-    if (val != "")
-      obj["background-image"] = $"!ui/images/avatar_frames/{val}.avif"
+    let { frameImagePath, framesCount } = val
+    let hasAvatarFrame = frameImagePath != null
+    obj.show(hasAvatarFrame)
+    if (!hasAvatarFrame)
+      return
+
+    obj["background-frames"] = framesCount
+    obj["background-image"] = frameImagePath
   }
 
   country = @(obj, val, _params) obj["background-image"] = getCountryIcon(val)
@@ -141,7 +147,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
       return
   }
   let isGamercard = prefix == "gc_"
-  let isShowGamercard = isLoggedIn.get()
+  let isShowGamercard = hasFullLoginState.get()
   let div = showObjById("gamercard_div", isShowGamercard, scene)
   let isValidGamercard = checkObj(div)
   if (isGamercard && !isValidGamercard)
@@ -160,6 +166,9 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
     cfg = getProfileInfo()
 
   let getObj = @(id) scene.findObject(id)
+  let profileBtn = getObj($"{prefix}profile")
+  if (profileBtn?.isValid())
+    profileBtn.tooltip = locByVendor("mainmenu/btnProfile")
   let params = { cfg, isGamercard, prefix, getObj }
   foreach (name, val in cfg) {
     let obj = getObj($"{prefix}{name}")
@@ -174,29 +183,25 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
     return
 
   
-  if (hasFeature("UserLog")) {
-    let objBtn = getObj($"{prefix}userlog_btn")
-    if (checkObj(objBtn)) {
-      let newLogsCount = check_new_user_logs().len()
-      let haveNew = newLogsCount > 0
-      let tooltip = haveNew ?
-        format(loc("userlog/new_messages"), newLogsCount) : loc("userlog/no_new_messages")
-      updateGcButton(objBtn, haveNew, tooltip)
-    }
+  let objBtn = getObj($"{prefix}userlog_btn")
+  if (checkObj(objBtn)) {
+    let newLogsCount = check_new_user_logs().len()
+    let haveNew = newLogsCount > 0
+    let tooltip = haveNew ?
+      format(loc("userlog/new_messages"), newLogsCount) : loc("userlog/no_new_messages")
+    updateGcButton(objBtn, haveNew, tooltip)
   }
 
   updateGamercardsChatInfo(prefix)
 
-  if (hasFeature("Friends")) {
-    let friendsOnline = getFriendsOnlineNum()
-    let cObj = getObj($"{prefix}contacts")
-    if (checkObj(cObj))
-      cObj.tooltip = format(loc("contacts/friends_online"), friendsOnline)
+  let friendsOnline = getFriendsOnlineNum()
+  let cObj = getObj($"{prefix}contacts")
+  if (checkObj(cObj))
+    cObj.tooltip = format(locByVendor("contacts/friends_online"), friendsOnline)
 
-    let fObj = getObj($"{prefix}friends_online")
-    if (checkObj(fObj))
-      fObj.setValue(friendsOnline > 0 ? friendsOnline.tostring() : "")
-  }
+  let fObj = getObj($"{prefix}friends_online")
+  if (checkObj(fObj))
+    fObj.setValue(friendsOnline > 0 ? friendsOnline.tostring() : "")
 
   let totalText = []
   foreach (name in ["PremiumAccount", "RateWeek"]) {
@@ -237,31 +242,30 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
 
   let canSpendGold = hasFeature("SpendGold")
   let featureEnablePremiumPurchase = hasFeature("EnablePremiumPurchase")
-  let canHaveFriends = hasFeature("Friends")
   let is_in_menu = isInMenu.get()
   let skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] ?? "no"
-  let showClanTag = hasFeature("Clans") && (cfg?.clanTag ?? "") != ""
+  let showClanTag = (cfg?.clanTag ?? "") != ""
 
   let buttonsShowTable = {
     gc_clanTag = showClanTag
     gc_profile = true
-    gc_contacts = canHaveFriends
+    gc_contacts = true
     gc_chat_btn = hasMenuChat.get()
     gc_shop = is_in_menu && canSpendGold
     gc_eagles = canSpendGold
-    gc_warpoints = hasFeature("WarpointsInMenu")
+    gc_warpoints = true
     gc_PremiumAccount = hasFeature("showPremiumAccount")
       && ((canSpendGold && featureEnablePremiumPurchase) || havePremium.get())
     gc_BattlePassProgress = true
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
-    gc_free_exp = hasFeature("SpendGold")
+    gc_free_exp = canSpendGold
     gc_items_shop_button = isItemsManagerEnabled() && isInMenu.get()
       && hasFeature("ItemsShop")
     gc_online_shop_button = hasFeature("OnlineShopPacks")
-    gc_clanAlert = hasFeature("Clans") && getUnseenCandidatesCount() > 0
+    gc_clanAlert = getUnseenCandidatesCount() > 0
     gc_invites_btn = !is_gdk || hasFeature("XboxCrossConsoleInteraction")
-    gc_userlog_btn = hasFeature("UserLog")
+    gc_userlog_btn = true
     gc_manual_unlocks_unseen = is_in_menu
   }
 
@@ -278,7 +282,6 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
 
   let buttonsEnableTable = {
     gc_clanTag = showClanTag && is_in_menu
-    gc_contacts = canHaveFriends
     gc_chat_btn = hasMenuChat.get() && isChatEnabled()
     gc_free_exp = canSpendGold && is_in_menu
     gc_warpoints = canSpendGold && is_in_menu
@@ -304,6 +307,6 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
   updateGcInvites(scene)
 }
 
-return {
+return freeze({
  fillGamercard
-}
+})

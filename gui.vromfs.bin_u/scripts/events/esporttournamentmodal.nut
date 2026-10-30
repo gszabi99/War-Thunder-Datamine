@@ -1,40 +1,43 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/events/eventRewardsWnd.nut" import EventRewardsWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/events/eSport.nut" import getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged, getTourActiveTicket, getEventByDay, getEventMission
+  , isRewardsAvailable, setSchedulerTimeColor, getMatchingEventId, fetchLbData
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/slotbar/slotbarOverride.nut" import resetSlotbarOverrided, updateOverrideSlotbar
+from "%scripts/events/eventInfo.nut" import needShowOverrideSlotbar, isLeaderboardsAvailable, getEventEconomicName
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/breadcrumb.nut" import setModalBreadcrumbGoBackParams
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/missions/missionsText.nut" import getCombineLocNameMission
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/tasker.nut" import addTask
+from "%scripts/myStats.nut" import getMissionsComplete
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/queue/queueInfo/qiViewUtils.nut" import updateShortQueueInfo
+from "%scripts/queue/queueManager.nut" import leaveQueue
+from "%scripts/events/eventJoinProcess.nut" import EventJoinProcess
+from "%scripts/leaderboard/leaderboard.nut" import gui_modal_event_leaderboards
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue, isEventQueue
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "packed" import is_view
 from "guiMission" import get_meta_mission_info_by_name
 from "%sqstd/string.nut" import trim, utf8ToUpper
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { EventRewardsWnd } = require("%scripts/events/eventRewardsWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged, getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor, getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, isLeaderboardsAvailable, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getMissionsComplete } = require("%scripts/myStats.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { leaveQueue } = require("%scripts/queue/queueManager.nut")
-let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
-let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { DAY } = require("%scripts/events/eSport.nut")
 
 function getActiveTicketTxt(event) {
   if (!event)
@@ -123,8 +126,7 @@ local ESportTournament = class (BaseGuiHandlerWT) {
     let daysNum = this.tournament.tickets.len()
     for (local i = 0; i < daysNum ; i++) {
       let event = getEventByDay(this.tournament.id, i)
-      let countries = event?.mission_decl.editSlotbar.map(@(v)
-        v instanceof Table ? v : null).filter(@(v) v)
+      let countries = event?.mission_decl.editSlotbar.filter(@(v) v instanceof Table || is_view(v))
       if (countries == null)
         continue
 

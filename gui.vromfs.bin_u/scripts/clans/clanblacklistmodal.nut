@@ -1,22 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/clans/clanActions.nut" import blacklistAction
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/clanNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 from "types" import Table
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { blacklistAction } = require("%scripts/clans/clanActions.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 local clanBlackList = [
   { id = "nick", type = lbDataType.NICK },
@@ -174,7 +175,7 @@ let clanBlacklistModal = class (BaseGuiHandlerWT) {
         action = this.onDeleteFromBlacklist
       }
       {
-        text = loc("mainmenu/btnProfile")
+        text = locByVendor("mainmenu/btnProfile")
         action = @() gui_modal_userCard({ uid = this.curCandidate.uid })
       }
     ]
@@ -213,6 +214,6 @@ function openClanBlacklistWnd(clanData = null) {
   loadHandler(clanBlacklistModal, { clanData = clanData })
 }
 
-return {
+return freeze({
   openClanBlacklistWnd
-}
+})

@@ -13,10 +13,10 @@ let buccaneerSpeed = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, 0, 0, 0, 0],
-    [VECTOR_LINE, 33, 0, 33, 0],
-    [VECTOR_LINE, 66, 0, 66, 0],
-    [VECTOR_LINE, 100, 0, 100, 0],
+    const [VECTOR_LINE, 0, 0, 0, 0],
+    const [VECTOR_LINE, 33, 0, 33, 0],
+    const [VECTOR_LINE, 66, 0, 66, 0],
+    const [VECTOR_LINE, 100, 0, 100, 0],
     [VECTOR_LINE, buccaneerSpdVal.get(), 50, buccaneerSpdVal.get(), 100]
   ]
 }
@@ -33,8 +33,8 @@ let buccaneerCCRP = @() {
   lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
   commands = BucDistMarkVis.get() ? [
     [VECTOR_SECTOR, 0, 0, 80, 80, -90, DistToTargetBuc.get()],
-    [VECTOR_SECTOR, 0, 0, 30, 30, 50, 130],
-    (TimeBeforeBombRelease.get() < 3.0 ? [VECTOR_SECTOR, 0, 0, 30, 30, -130, -50] : [])
+    const [VECTOR_SECTOR, 0, 0, 30, 30, 50, 130],
+    (TimeBeforeBombRelease.get() < 3.0 ? const [VECTOR_SECTOR, 0, 0, 30, 30, -130, -50] : const [])
   ] : []
 }
 
@@ -50,7 +50,7 @@ function buccaneerAimMark(_width, _height) {
         color = IlsColor.get()
         lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
         fillColor = Color(0, 0, 0, 0)
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 15, 15],
           [VECTOR_LINE, -35, 0, -15, 0],
           [VECTOR_LINE, 15, 0, 35, 0],
@@ -68,7 +68,7 @@ function buccaneerAimMark(_width, _height) {
         color = IlsColor.get()
         lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
         fillColor = Color(0, 0, 0, 0)
-        commands = [
+        commands = const [
           [VECTOR_LINE, -100, 0, -80, 0],
           [VECTOR_LINE, 100, 0, 80, 0]
         ]
@@ -76,7 +76,7 @@ function buccaneerAimMark(_width, _height) {
         update = @() {
           transform = {
             rotate = -Roll.get()
-            pivot = [0, 0]
+            pivot = 0
           }
         }
       },
@@ -87,7 +87,7 @@ function buccaneerAimMark(_width, _height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = IlsColor.get()
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 100, 100]
         ]
         behavior = Behaviors.RtPropUpdate

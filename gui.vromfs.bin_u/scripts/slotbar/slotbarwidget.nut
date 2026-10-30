@@ -1,6 +1,63 @@
+import "%sqStdLibs/helpers/callback.nut" as callback
+import "%scripts/slotbar/selectUnitHandler.nut" as selectUnitHandler
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/slotbar/swapCrewHandler.nut" as swapCrewHandler
+import "%scripts/slotbar/swapCrewsDnDHandler.nut" as swapCrewsBegin
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/crew/crewWndHandler.nut" import CrewHandler, CrewWndModal
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import zero_money, Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponsStatusName, checkUnitWeapons
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import getNearestSelectableChildIndex
+from "%scripts/unit/unitStatus.nut" import isUnitElite, isRequireUnlockForUnit, isUnitUsable
+from "%scripts/unit/unitBitStatus.nut" import getBitStatus
+from "%scripts/unit/unitInfoTexts.nut" import getUnitItemStatusText
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnitRequireUnlockShortText
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/slotbar/slotbarStateData.nut" import isCountrySlotbarHasUnits, getSelectedCrews
+from "%scripts/slotbar/playerCurUnit.nut" import setShowUnit, getPlayerCurUnit
+from "%scripts/slotbar/slotbarPresetsList.nut" import setSlotbarPresetsListAvailable, getSlotbarPresetsList
+from "%scripts/shop/shopCountriesList.nut" import getShopVisibleCountries
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/unlocks/unlockMarkers.nut" import getUnlockIdsByCountry
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import bit_unit_status
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/slotbar/slotbarOverride.nut" import selectCountryForCurrentOverrideSlotbar
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/slotbar/slotbarView.nut" import fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText, isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth
+  , getSlotCrewHint, updateSlotData, getSlotPartIdFromSlotId
+from "%scripts/firstChoice/firstChoice.nut" import getUnlockedCountries, isCountryAvailable
+from "%scripts/bonusModule.nut" import showAirExpWpBonus, getBonus
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff, getGameModeById
+from "%scripts/crew/crew.nut" import getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsAvailable, isCrewNeedUnseenIcon, gui_modal_crew
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
+from "%scripts/slotbar/crewsList.nut" import isCrewListOverrided, getCrewsListVersion, getCrewsList, getCrewById
+from "%scripts/utils/genericTooltip.nut" import removeAllGenericTooltip
+from "%scripts/slotbar/slotbarUnitDnDHandler.nut" import startSlotbarUnitDnD
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/markers/markerUtils.nut" import getCountryMarkersWidth
+from "%scripts/guiBox.nut" import GuiBox
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/matchingRooms/sessionLobbyState.nut" import hasSessionInLobby, canChangeCrewUnits, canChangeCountry
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/slotbar/slotbarPresets.nut" import setCurrentGameModeByPreset
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride, getCountryStyle, isCountryOverrided
+from "%scripts/slotbar/slotbarPresetsState.nut" import isSlotbarPresetsLoading, getCurrentPresetIdx
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getCurrentSlotbarPreset, getPresetsListFromSlotbar
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut" import getGameModeIdByUnits
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import isLoggedIn, hasFullLoginState
 from "unit" import get_player_unit_name, is_player_unit_alive
 from "dagor.workcycle" import deferOnce
 from "string" import format
@@ -13,69 +70,11 @@ from "guiRespawn" import getAvailableRespawnBases, isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/seen/seenIds.nut" import SEEN
-from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { CrewHandler, CrewWndModal } = require("%scripts/crew/crewWndHandler.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let callback = require("%sqStdLibs/helpers/callback.nut")
-let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
-let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getNearestSelectableChildIndex } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let { isUnitElite, isRequireUnlockForUnit, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
-let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { initSelectedCrews, selectCrew, isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
-let { setShowUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { setSlotbarPresetsListAvailable, getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
-let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { getUnlockIdsByCountry } = require("%scripts/unlocks/unlockMarkers.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText, isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth, getSlotCrewHint } = require("%scripts/slotbar/slotbarView.nut")
-let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
-let { getCurrentGameModeEdiff, getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsAvailable, isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isCrewListOverrided, getCrewsListVersion, getCrewsList, getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nut")
-let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
-let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getCountryMarkersWidth } = require("%scripts/markers/markerUtils.nut")
-let { GuiBox } = require("%scripts/guiBox.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { setCurrentGameModeByPreset } = require("%scripts/slotbar/slotbarPresets.nut")
-let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrided } = require("%scripts/countries/countriesCustomization.nut")
-let { isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { getCurrentSlotbarPreset, getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { getGameModeIdByUnits } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
-
-const SLOT_NEST_TAG = "unitItemContainer { {0} }"
+let { countryDisplayStyle } = require("%scripts/countries/countriesCustomization.nut")
 
 let hasCrewModalWndInScene = @() isHandlerInScene(CrewWndModal)
   || isHandlerInScene(CrewHandler)
@@ -101,6 +100,44 @@ function initSlotbarTopBar(slotbarObj, boxesShow) {
     weapObj.setValue(get_auto_refill(1))
 }
 
+function generateSlotPartsIds(slotObj, newSlotId) {
+  let oldSlotFullId = slotObj["id"]
+  let isNewSlotObj = oldSlotFullId == "slotId"
+  let oldSlotId = isNewSlotObj ? "" : oldSlotFullId.split("td_")[1]
+
+  return [
+    {
+      from = isNewSlotObj ? "shopItemId" : getSlotPartIdFromSlotId(oldSlotId, "shopItem")
+      to = getSlotPartIdFromSlotId(newSlotId, "shopItem")
+    },
+    {
+      from = isNewSlotObj ? "discountId" : getSlotPartIdFromSlotId(oldSlotId, "discount")
+      to = getSlotPartIdFromSlotId(newSlotId, "discount")
+    },
+    {
+      from = isNewSlotObj ? "shopItemTextId" : getSlotPartIdFromSlotId(oldSlotId, "shopItemText")
+      to = getSlotPartIdFromSlotId(newSlotId, "shopItemText")
+    },
+    {
+      from = isNewSlotObj ? "bonusId" : getSlotPartIdFromSlotId(oldSlotId, "bonus")
+      to = getSlotPartIdFromSlotId(newSlotId, "bonus")
+    }
+  ]
+}
+
+function updateSlotPartsIds(slotObj, newSlotId) {
+  if (slotObj["id"] == $"td_{newSlotId}")
+    return
+
+  let slotPartsIds = generateSlotPartsIds(slotObj, newSlotId)
+  slotObj["id"] = $"td_{newSlotId}"
+  slotPartsIds.each(function(data) {
+    let obj = slotObj.findObject(data.from)
+    if (obj != null)
+      obj["id"] = data.to
+  })
+}
+
 let SlotbarWidget = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotbar/slotbar.blk"
@@ -119,7 +156,6 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   showRepairBox = true  
   hasResearchesBtn = false 
   hasActions = true
-  hasCrewHint = true
   missionRules = null
   showNewSlot = null 
   showEmptySlot = null 
@@ -195,7 +231,6 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   selectedCrewData = null
   customViewCountryData = null
   slotbarBehavior = null
-  needFullSlotBlock = false
   showAlwaysFullSlotbar = false
   needCheckUnitUnlock = false
   slotbarHintText = ""
@@ -542,7 +577,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   }
 
   function fillCountries(forceUpdateCountriesMarkup = false) {
-    if (!isLoggedIn.get())
+    if (!hasFullLoginState.get())
       return
     if (this.slotbarOninit) {
       script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
@@ -757,7 +792,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
       if (crewData.unit) {
         let id = getSlotObjId(countryData.id, crewData.idInCountry)
         fillUnitSlotTimers(tblObj.findObject(id), crewData.unit)
-        showAirExpWpBonus(tblObj.findObject($"{id}-bonus"), crewData.unit.name)
+        showAirExpWpBonus(tblObj.findObject(getSlotPartIdFromSlotId(id, "bonus")), crewData.unit.name)
       }
 
     tblObj["noHoverHighlight"] = this.previewPresetIdx != null ? "yes" : "no"
@@ -1013,9 +1048,12 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
     }
     let prefix = $"td_slot_{this.curSlotCountryId}_"
     for (local i = 0; i < tblObj.childrenCount(); i++) {
-      let id = getObjIdByPrefix(tblObj.getChild(i), prefix)
+      let slotObj = tblObj.getChild(i)
+      if (!slotObj.isVisible())
+        continue
+      let id = getObjIdByPrefix(slotObj, prefix)
       if (!id) {
-        let objId = tblObj.getChild(i).id
+        let objId = slotObj.id
         script_net_assert_once("bad slot id", $"Error: Bad slotbar slot id /*objId = {objId}*/")
         continue
       }
@@ -1624,58 +1662,54 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
     })
   }
 
-  function updateSlotRowView(countryData, tblObj, presetIdx) {
-    if (!countryData)
-      return
-
-    local countryDataCrews = countryData.crews
-    let curPreset = presetIdx != null ? getPresetsListFromSlotbar(countryData.country)?[presetIdx] : getCurrentSlotbarPreset(countryData.country)
-    let crewInSlots = curPreset?.crewInSlots
-    if(crewInSlots != null) {
-      countryDataCrews = countryData.crews.map(function(c, idx) {
-          c.slotIndex <- crewInSlots.indexof(c?.crew.id) ?? idx
-          return c
-        })
-      countryDataCrews.sort(@(c1, c2) c1.slotIndex <=> c2.slotIndex)
+  function updateSlots(tblObj, countryData, countryDataCrews) {
+    this.guiScene.setUpdatesEnabled(false, false)
+    let needSlotsCount = countryDataCrews.len()
+    local currentSlotsCount = tblObj.childrenCount()
+    if (currentSlotsCount < needSlotsCount) {
+      this.guiScene.createMultiElementsByObject(tblObj, "%gui/slotbar/slotbarSlot.blk",
+        "unitItemContainer", needSlotsCount - currentSlotsCount, this)
+      currentSlotsCount = needSlotsCount
     }
 
-    let slotsData = []
-    foreach (crewData in countryDataCrews) {
-      let id = getSlotObjId(countryData.id, crewData.idInCountry)
-      let crew = crewData.crew
-      if (!crew) {
-        let unitItem = buildUnitSlot(
-          id,
-          null,
-          {
-            emptyText = "#shop/recruitCrew",
-            crewImage = $"#ui/gameuiskin#slotbar_crew_recruit_{countryData.country.slice(8)}"
-            isCrewRecruit = true
-            emptyCost = crewData.cost
-            isSlotbarItem = true
-            fullBlock     = this.needFullSlotBlock
-            selectOnHover = this.selectOnHover
-          })
+    for (local i = 0; i < currentSlotsCount; i++) {
+      let isSlotVisible = i < needSlotsCount
+      let slotObj = tblObj.getChild(i)
+      slotObj.show(isSlotVisible)
 
-        slotsData.append(this.needFullSlotBlock ? unitItem : SLOT_NEST_TAG.subst(unitItem))
+      if (!isSlotVisible)
         continue
-      }
 
+      let crewData = countryDataCrews[i]
+      let slotObjId = getSlotObjId(countryData.id, crewData.idInCountry)
+      updateSlotPartsIds(slotObj, slotObjId)
+
+      let crew = crewData.crew
       let isVisualDisabled = crewData?.isVisualDisabled ?? false
       let isLocalState = !isCrewListOverrided.get() && (crewData?.isLocalState ?? true)
       let isUnitOverrided = (crew?.isUnitOverrided ?? false) || isCrewListOverrided.get()
-      let airParams = {
+
+      let params = (!crew) ? {
+        slotObjId
+        unit = null
+        emptyText = "#shop/recruitCrew"
+        crewImage = $"#ui/gameuiskin#slotbar_crew_recruit_{countryData.country.slice(8)}"
+        isCrewRecruit = true
+        emptyCost = crewData.cost
+        isSlotbarItem = true
+        selectOnHover = this.selectOnHover
+        slotbarWidgetHandler = this
+      } : {
+        slotObjId
+        unit = crewData.unit
         emptyText      = isVisualDisabled ? "" : this.emptyText,
         crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}"
         status         = !isInFlight() && isUnitOverrided ? "mounted"
           : getUnitItemStatusText(crewData.status),
         hasActions     = this.hasActions && !isCrewListOverrided.get()
-        hasCrewHint    = this.hasCrewHint
         toBattle       = this.toBattle
-        mainActionFunc = canChangeCrewUnits() ? "onSlotChangeAircraft" : ""
-        mainActionText = "" 
-        mainActionIcon = "#ui/gameuiskin#slot_change_aircraft.svg"
-        crewId         = crew?.id
+        crewId         = crew.id
+        crew
         isSlotbarItem  = true
         showBR         = hasFeature("SlotbarShowBattleRating")
         getEdiffFunc   = this.getCurrentEdiff.bindenv(this)
@@ -1686,8 +1720,6 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         haveSpawnDelay = this.haveSpawnDelay
         totalSpawnScore = this.totalSpawnScore
         sessionWpBalance = this.sessionWpBalance
-        curSlotIdInCountry = crew.idInCountry
-        curSlotCountryId = crew.idCountry
         unlocked = crewData.isUnlocked
         tooltipParams = {
           showLocalState = isLocalState
@@ -1701,7 +1733,6 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         missionRules = this.missionRules
         forceCrewInfoUnit = this.unitForSpecType
         isLocalState = isLocalState
-        fullBlock        = this.needFullSlotBlock
         bottomLineText = this.needCheckUnitUnlock && isRequireUnlockForUnit(crewData.unit)
           ? getUnitRequireUnlockShortText(crewData.unit)
           : null
@@ -1709,14 +1740,27 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         needDnD = this.draggableSlots && !isCrewListOverrided.get()
         showCrewUnseenIcon = this.showCrewUnseenIcon
         showCrewInfoTranslucent = this.showCrewInfoTranslucent
-      }
-      airParams.__update(this.getCrewDataParams(crewData))
-      let unitItem = buildUnitSlot(id, crewData.unit, airParams)
-      slotsData.append(this.needFullSlotBlock ? unitItem : SLOT_NEST_TAG.subst(unitItem))
+        slotbarWidgetHandler = this
+      }.__update(this.getCrewDataParams(crewData))
+
+      updateSlotData(slotObj, params)
+    }
+    this.guiScene.setUpdatesEnabled(true, true)
+  }
+
+  function updateSlotRowView(countryData, tblObj, presetIdx) {
+    local countryDataCrews = countryData.crews
+    let curPreset = presetIdx != null ? getPresetsListFromSlotbar(countryData.country)?[presetIdx] : getCurrentSlotbarPreset(countryData.country)
+    let crewInSlots = curPreset?.crewInSlots
+    if(crewInSlots != null) {
+      countryDataCrews = countryData.crews.map(function(c, idx) {
+          c.slotIndex <- crewInSlots.indexof(c?.crew.id) ?? idx
+          return c
+        })
+      countryDataCrews.sortby(@(c1) c1.slotIndex)
     }
 
-    let slotsDataString = "".join(slotsData)
-    this.guiScene.replaceContentFromText(tblObj, slotsDataString, slotsDataString.len(), this)
+    this.updateSlots(tblObj, countryData, countryDataCrews)
   }
 
   getCrewDataParams = @(_crewData) {}
@@ -1777,6 +1821,10 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
 
   function onEventUnitBulletsChanged(p) {
     this.updateWeaponryData(this.getSlotsData(p.unit.name))
+  }
+
+  function onEventUnitMrankSelectionChanged(p) {
+    this.updateDifficulty(this.getSlotsData(p.unitName))
   }
 
   function onEventUnitWeaponChanged(p) {
@@ -1981,4 +2029,4 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("SlotbarWidget", SlotbarWidget)
 
-return { SlotbarWidget }
+return freeze({ SlotbarWidget })

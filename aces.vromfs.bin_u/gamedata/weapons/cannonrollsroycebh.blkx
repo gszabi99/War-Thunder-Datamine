@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 3.33,
-  "traceFreq": 2,
-  "bullets": 30,
-  "reloadSpeedK": 1.5,
-  "soundLoop": false,
-  "dragCx": 0.002,
-  "mass": 152.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,48 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 3.33,
+  "bullets": 30,
+  "reloadSpeedK": 1.5,
+  "soundLoop": false,
+  "dragCx": 0.002,
+  "mass": 152.5,
+  "overheat": {
+    "overheat": [
+      [
+        6.0,
+        0.0
+      ],
+      [
+        12.0,
+        0.5
+      ],
+      [
+        15.5,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 1.134,
@@ -409,7 +441,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmRed",
-        "trail": "black"
+        "trail": "thick"
       }
     },
     {
@@ -848,7 +880,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   ],
@@ -1289,7 +1321,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   },
@@ -1678,48 +1710,9 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "vickers_s_gun_outside",
-    "cockpit": "vickers_s_gun_inside",
-    "ai": "vickers_s_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.0,
-        0.0
-      ],
-      [
-        12.0,
-        0.5
-      ],
-      [
-        15.5,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
   },
   "RollsRoyceBH_new_gun": {
     "maxDeltaAngle": 0.15,
@@ -1739,5 +1732,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "vickers_s_gun_outside",
+    "cockpit": "vickers_s_gun_inside",
+    "ai": "vickers_s_gun_ai"
   }
 }

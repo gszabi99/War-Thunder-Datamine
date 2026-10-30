@@ -4,6 +4,6 @@ function showNotAvailableMsgBox() {
   showInfoMsgBox(loc("msgbox/notAvailbleYet"), "not_available", true)
 }
 
-return {
+return freeze({
   showNotAvailableMsgBox
-}
+})

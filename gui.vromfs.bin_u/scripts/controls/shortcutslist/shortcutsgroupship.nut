@@ -1,13 +1,13 @@
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/controls/controlsUtils.nut" import checkOptionValue
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AxisDirection
+from "%scripts/options/optionsExtNames.nut" import USEROPT_WHEEL_CONTROL_SHIP, USEROPT_SINGLE_SHOT_BY_TURRET, USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS, USEROPT_INVERTY_SHIP
 from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SHIP, OPTION_MOUSE_Z_SHIP_MULT
 from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
 from "%scripts/dagui_library.nut" import *
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_WHEEL_CONTROL_SHIP, USEROPT_SINGLE_SHOT_BY_TURRET, USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS, USEROPT_INVERTY_SHIP } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -70,30 +70,28 @@ return [
     id = "ID_SHIP_WEAPON_ALL"
     needShowInHelp = true
   }
-  
-
-
-
-
-
-
-
-
-
-
-
+  {
+    id = "ID_SHIP_BOMB_CYCLE_DEPTH"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_SHIP_BOMB_CYCLE_DEPTH_BACK"
+    checkAssign = false
+    needShowInHelp = true
+  }
   {
     id = "selectWheelShipEnable"
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = USEROPT_WHEEL_CONTROL_SHIP
     onChangeValue = "doControlsGroupChangeDelayed"
-    showFunc = @() (isXInputDevice() || isPlatformSony || isPlatformXbox)
+    showFunc = @() (isXInputDevice() || isSony || isXbox)
   }
   {
     id = "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
     checkAssign = false
     showFunc = @() checkOptionValue(USEROPT_WHEEL_CONTROL_SHIP, true)
-      && (isXInputDevice() || isPlatformSony || isPlatformXbox)
+      && (isXInputDevice() || isSony || isXbox)
   }
   {
     id = "ID_SHIP_WEAPON_PRIMARY"
@@ -198,17 +196,15 @@ return [
     id = "ID_SENSORS_SHIP_HEADER"
     type = CONTROL_TYPE.SECTION
   }
-  
-
-
-
-
-
-
-
-
-
-
+  {
+    id = "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
+    needShowInHelp = true
+    checkAssign = false
+  }
+  {
+    id = "ID_SHIP_SWITCH_ACTIVE_SONAR"
+    checkAssign = false
+  }
   {
     id = "ID_SENSOR_MODES_SWITCH_SHIP"
     checkAssign = false

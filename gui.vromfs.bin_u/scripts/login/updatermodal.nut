@@ -1,18 +1,18 @@
+import "%scripts/time.nut" as time
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/login/loginManager.nut" import addLoginState
 from "string" import format
 from "math" import floor
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let time = require("%scripts/time.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { addLoginState } = require("%scripts/login/loginManager.nut")
 
 
 let contentUpdater = require_optional("contentUpdater")
@@ -221,4 +221,3 @@ let UpdaterModal = class (BaseGuiHandler) {
   }
 }
 register_gui_handler("UpdaterModal", UpdaterModal)
-

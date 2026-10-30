@@ -1,3 +1,11 @@
+import "%scripts/hud/mkKillerCardXray.nut" as mkKillerCardXray
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage, genUnitTooltipWeaponIcon
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagForUnitTooltip
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIconAndTypeCaption
+from "%scripts/weaponry/bulletsInfo.nut" import getProjectileNameLoc, getProjectileIconLayers
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
+from "%scripts/user/remapNick.nut" import getPlayerName
 from "mission" import get_local_mplayer, get_mplayer_by_id
 from "string" import format
 from "%sqstd/string.nut" import utf8Capitalize, cutPostfix
@@ -6,15 +14,9 @@ from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import UT_Unknown, UT_Human
 from "%globalScripts/templates.nut" import getTemplateCompValue
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getUnitTooltipImage, genUnitTooltipWeaponIcon } = require("%scripts/unit/unitInfoTexts.nut")
-let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
-let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let mkKillerCardXray = require("%scripts/hud/mkKillerCardXray.nut")
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyPlayerInfoByUid
 
 let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
 
@@ -68,7 +70,12 @@ function getKillerCardView(messageData, userInfo) {
   let rank = get_roman_numeral(unit.rank)
   let rankText = loc("ui/colon").concat(loc("sm_rank"), colorize("@white", rank))
 
-  let battleRating = unit.getBattleRating(events.getCurBattleEdiff())
+  let killerPlayer = get_mplayer_by_id(playerId)
+  let killerPlayerInfo = killerPlayer == null ? null : getSessionLobbyPlayerInfoByUid(killerPlayer.userId)
+  let killerCraftInfo = killerPlayerInfo?.crafts_info.findvalue(@(ci) ci.name == killerUnitName)
+  let killerEffectiveMrank = killerCraftInfo?.mrank ?? -1
+  let battleRating = killerEffectiveMrank >= 0 ? calcBattleRatingFromRank(killerEffectiveMrank)
+    : unit.getBattleRating(events.getCurBattleEdiff())
   let battleRatingText = loc("ui/colon")
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
   let shellNameLoc = killerProjectileName == "" || killedByArtillery ? ""
@@ -84,11 +91,14 @@ function getKillerCardView(messageData, userInfo) {
   })
 
   let needShowXrayDoll = offenderHp >= 0 && offenderArmorSegmentsInfo != "" && unitType == UT_Human
+  let { frame = "" } = userInfo
+  let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(frame)
+
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
     pilotIcon = $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
-    hasAvatarFrame = (userInfo?.frame ?? "") != ""
-    frame = userInfo?.frame
+    frameImagePath
+    framesCount
     headerBackground = (userInfo?.background ?? "") != ""
       ? userInfo.background
       : "profile_header_default"
@@ -118,7 +128,7 @@ function getKillerCardView(messageData, userInfo) {
   }
 }
 
-return {
+return freeze({
   getKillerCardView
   isKillerCardData
-}
+})

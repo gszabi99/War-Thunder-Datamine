@@ -1,8 +1,7 @@
+import "%rGui/style/colors.nut" as colors
 import "%rGui/components/closeBtn.nut" as closeBtn
 from "%rGui/style/screenState.nut" import safeAreaSizeMenu
 from "%rGui/globals/ui_library.nut" import *
-
-let colors = require("%rGui/style/colors.nut")
 
 let frameHeaderPad = dp(2)
 let frameHeaderHeight = scrn_tgt(0.045)
@@ -15,7 +14,7 @@ let maxWindowHeight = Computed(@() safeAreaSizeMenu.get().size[1] - frameHeaderH
 let frameHeader = @(headerParams) {
   size = [FLEX, frameHeaderHeight]
   rendObj = ROBJ_SOLID
-  color = colors.menu.frameHeaderColor
+  color = colors.menu.frameHeaderBackgroundColor
   margin = frameHeaderPad
   valign = ALIGN_CENTER
   children = [
@@ -33,7 +32,7 @@ let frameHandler = kwarg(function(content, frameParams = {}, headerParams = {}) 
     children = {
       size = [srw.get(), maxWindowHeight.get()]
       rendObj = ROBJ_BOX
-      fillColor = colors.menu.frameBackgroundColor
+      fillColor = colors.menu.frameDarkTransparentBgColor
       borderColor = colors.menu.frameBorderColor
       borderWidth = borderWidth
       flow = FLOW_VERTICAL

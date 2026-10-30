@@ -1946,7 +1946,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1971,7 +1971,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_IRIS_T_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_IRIS_T_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2032,13 +2032,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2148,8 +2158,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_eldenhet_98_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_eldenhet_98_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3651,7 +3661,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_camera_gunner",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3676,7 +3686,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/127mm_IRIS_T_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/127mm_IRIS_T_user_cannon.blk",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
               "emitterGenRange": [
@@ -3737,13 +3747,23 @@
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3846,7 +3866,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/60mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/60mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3960,7 +3980,7 @@
   ],
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/sw_giraffe_1x.blk",
+      "blk": "gamedata/sensors/sw_giraffe_1x.blk",
       "turretIndex": -1,
       "designationFromBody": true,
       "designationTurretIndex": -1,

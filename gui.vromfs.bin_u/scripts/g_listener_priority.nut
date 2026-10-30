@@ -1,5 +1,5 @@
 
-return {
+return freeze({
   DEFAULT = 0
   DEFAULT_HANDLER = 1
   UNIT_CREW_CACHE_UPDATE = 2
@@ -7,4 +7,4 @@ return {
   CONFIG_VALIDATION = 2
   LOGIN_PROCESS = 3
   MEMOIZE_VALIDATION = 4
-}
+})

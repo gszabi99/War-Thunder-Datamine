@@ -1,5 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/tutorials/tutorialsData.nut" import tutorialRewardData, clearTutorialRewardData
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/customization/decoratorGetters.nut" import getDecoratorByResource
+from "%scripts/missions/missionsUtilsModule.nut" import getMissionRewardsMarkup
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene, getDecoratorDataToUse, useDecorator
+from "%scripts/debriefing/debriefingFull.nut" import getMoneyFromDebriefingResult, setDebriefingResult
+from "%scripts/debriefing/checkRankUpWindow.nut" import checkRankUpWindow
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/firstChoice/firstChoice.nut" import checkUnlockedCountries
+from "%scripts/unlocks/unlocksModule.nut" import isAnyAwardReceivedByModeType
+from "%scripts/user/userInfoStats.nut" import getPlayerRankByCountry
+from "%scripts/slotbar/crewsList.nut" import invalidateCrewsList
+from "%scripts/slotbar/slotbarState.nut" import reinitAllSlotbars
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList
+from "%scripts/user/newbieTutorialDisplay.nut" import needShowTutorial
 from "console" import register_command
 from "mission" import set_game_mode, get_game_mode
 from "blkGetters" import get_pve_awards_blk
@@ -8,26 +26,9 @@ from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progres
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { checkTutorialsList, tutorialRewardData, clearTutorialRewardData } = require("%scripts/tutorials/tutorialsData.nut")
+let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { reqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
-let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { getMoneyFromDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
-let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
-let { isAnyAwardReceivedByModeType } = require("%scripts/unlocks/unlocksModule.nut")
-let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
-let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
-let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 register_command(
   function (misName) {
@@ -217,6 +218,6 @@ function tryOpenTutorialRewardHandler() {
   return newCountries && newCountries.len() > 0 
 }
 
-return {
+return freeze({
   tryOpenTutorialRewardHandler = tryOpenTutorialRewardHandler
-}
+})

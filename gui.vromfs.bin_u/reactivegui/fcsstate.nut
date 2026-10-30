@@ -55,4 +55,4 @@ interopGen({
   postfix = "Update"
 })
 
-return fcsState
+return freeze(fcsState)

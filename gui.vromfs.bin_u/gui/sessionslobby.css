@@ -1,0 +1,88 @@
+sessionPanel {
+  flow:vertical;
+  background-color:@frameDarkTransparentBgColor;
+}
+
+sessionPanelHeader {
+  width:pw;
+  height:1@frameHeaderHeight;
+  padding:1@frameHeaderPadding, 0;
+  background-color:@frameHeaderBackgroundColor;
+}
+
+sessionPanelHeader[noPadding=yes] {
+  padding:0;
+}
+
+sessionPanelHeader > activeText {
+  top:(ph-h)/2;
+  position:relative;
+}
+
+sessionPanelFooter {
+  width:pw;
+  padding:1@frameHeaderPadding, 2@blockInterval;
+  flow:vertical;
+}
+
+sessionInfoList > ScrollBar[flow=vertical] {
+  pos:pw-w-1@dp, 50%ph-50%h;
+  position:absolute;
+}
+
+[sessionFlags=yes] > img {
+  size:40@sf/@pf, 28@sf/@pf;
+  background-svg-size:40@sf/@pf, 28@sf/@pf;
+  margin:0;
+  margin-right:5@sf/@pf;
+}
+
+sessionInfoRow {
+  width:pw;
+  margin-top:1@blockInterval;
+}
+
+sessionInfoRow > textareaNoTab {
+  font:@fontSmall;
+  color:@commonTextColor;
+}
+
+sessionInfoRow > textareaNoTab[isValue=yes] {
+  width:fw;
+  color:@activeTextColor;
+  margin-left:2@blockInterval;
+  text-align:right;
+}
+
+sessionTeamVehicles {
+  width:fw;
+  padding:1@frameHeaderPadding, 2@blockInterval;
+}
+
+sessionTeamVehicles[hasSeparator=yes] {
+  re-type:9rect;
+  background-color:@frameHeaderBackgroundColor;
+  background-position:0, 0, w-1@dp, 0;
+}
+
+sessionTeamVehicles > activeText {
+  pos:0, (1@cIco-h)/2;
+  position:relative;
+  margin-right:2@blockInterval;
+  font:@fontMedium;
+  color:@commonTextColor;
+}
+
+sessionVehicleRow {
+  width:pw;
+  min-height:1@cIco;
+  margin-bottom:1@blockInterval;
+}
+
+sessionVehicleRow > textareaNoTab {
+  width:fw;
+  top:(ph-h)/2;
+  position:relative;
+  font:@fontSmall;
+  color:@activeTextColor;
+}

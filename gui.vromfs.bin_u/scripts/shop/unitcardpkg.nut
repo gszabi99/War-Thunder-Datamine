@@ -1,14 +1,12 @@
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift
+from "%scripts/unit/unitStatus.nut" import isUnitUsable, isUnitResearched
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/unit/unitEvents.nut" import hasUnitEvent
+from "%scripts/money.nut" import Cost
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold, wp_get_cost
 from "%scripts/dagui_library.nut" import *
-
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitUsable, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
-
-let { Cost } = require("%scripts/money.nut")
 
 let getUnitShopPriceText = @(unit)
   hasUnitEvent(unit.name) ? ""
@@ -19,4 +17,4 @@ let getUnitShopPriceText = @(unit)
     ? Cost(wp_get_cost(unit.name), wp_get_cost_gold(unit.name)).getTextAccordingToBalance()
   : ""
 
-return { getUnitShopPriceText }
+return freeze({ getUnitShopPriceText })

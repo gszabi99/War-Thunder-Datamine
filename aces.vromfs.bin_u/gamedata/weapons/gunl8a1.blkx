@@ -1,10 +1,4 @@
 {
-  "weaponType": 1,
-  "maxDeltaAngle": 0.44,
-  "shotFreq": 10.0,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,12 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.44,
+  "shotFreq": 10.0,
+  "bullets": 250,
+  "shouldCollideWithRendinsts": true,
   "bullet": [
     {
       "mass": 0.01073718,
@@ -1244,17 +1244,10 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     }
   ],
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m1919_gun_outside",
-    "cockpit": "m1919_gun_inside",
-    "ai": "m1919_gun_ai"
-  },
   "L8A1_new_gun": {
     "maxDeltaAngle": 0.7,
     "overheat": {
@@ -1269,5 +1262,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m1919_gun_outside",
+    "cockpit": "m1919_gun_inside",
+    "ai": "m1919_gun_ai"
   }
 }

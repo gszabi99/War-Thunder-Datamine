@@ -122,7 +122,7 @@ let lineArmorRight = mkImgArmor(gradientLineArmor, 180, ANIM_TRIGGER_ARMOR)
 
 
 let hitMarkNormal = {
-  size = [ blockWidth, blockWidth ]
+  size = blockWidth
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   transform = { rotate = 45 }
@@ -143,7 +143,7 @@ let hitMarkNormal = {
 }
 
 let hitMarKill = {
-  size = [ blockWidth, blockWidth ]
+  size = blockWidth
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   transform = { rotate = 45 }
@@ -181,7 +181,7 @@ let lineHeadshotRightBlock = {
   }
 
 let hitMarkHeadshot = {
-  size = [ blockWidth, blockWidth ]
+  size = blockWidth
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   transform = { rotate = 45 }
@@ -277,7 +277,7 @@ register_command(@() anim_start(ANIM_TRIGGER_HEADSHOT), "ui.debug.play_anim_head
 register_command(@() anim_start(ANIM_TRIGGER_ARMOR), "ui.debug.play_anim_armor_hit")
 
 
-return {
+return freeze({
   hitMarks = mkHitMarks
   mkScreenHitMark
-}
+})

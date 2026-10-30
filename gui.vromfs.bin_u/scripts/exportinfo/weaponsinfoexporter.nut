@@ -1,3 +1,14 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/exportInfo/weaponsLocExporter.nut" as buildWeaponsLoc
+from "%scripts/unit/unitBlkCache.nut" import blkOptFromPathCachedByUnit
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/options/optionsStorage.nut" import get_bullets_locId_by_caliber
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeapons, getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletsSearchName, getModificationBulletsEffect
+from "%scripts/weaponry/bulletsVisual.nut" import buildBulletsData
+from "%scripts/weaponry/dmgModel.nut" import getMaxArmorPiercing
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponNameByBlkPath, isCaliberCannon
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, appendOnce
 from "dagor.workcycle" import resetTimeout
 from "dagor.time" import get_time_msec
@@ -8,23 +19,12 @@ from "%sqstd/datablock.nut" import copyParamsToTable
 from "dagor.fs" import mkpath
 from "console" import register_command
 from "unitCalculcation" import calculate_tank_bullet_parameters
-from "language" import getLocalLanguage
+from "%scripts/langUtils/langJobs.nut" import isLangJobRunning, setReloadUnsafeWork, isReloadUnsafeWork
 from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "%scripts/webRPC.nut" import webRpcRegister
 from "types" import Table, Array
 
-let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let buildWeaponsLoc = require("%scripts/exportInfo/weaponsLocExporter.nut")
-let { get_bullets_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
-let { getUnitWeapons, getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { buildBulletsData } = require("%scripts/weaponry/bulletsVisual.nut")
-let { getMaxArmorPiercing } = require("%scripts/weaponry/dmgModel.nut")
-let { getWeaponNameByBlkPath, isCaliberCannon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let RAW_FIELDS = [
@@ -425,7 +425,7 @@ function makeGuiArmorpowerPenetrationData(guiArmorpower) {
   if (rows.len() == 0)
     return null
 
-  rows.sort(@(a, b) a.distance <=> b.distance)
+  rows.sortby(@(a) a.distance)
 
   let distances = []
   let values = []
@@ -1337,14 +1337,16 @@ function debug_build_weapons_db_one(unitName) {
   log($"DONE one unit={unitName}: bullets={db.len()} projectileRefs={projectilesDb.len()} barrels={barrelsDb.len()} errors={errors.len()} -> {outPath}")
 }
 
-let exportRunningState = { running = false }
+const DB_EXPORT_WORK_ID = "exportInfo.weaponsInfoExporter"
+
+let setDbExportRunning = @(isRunning) setReloadUnsafeWork(DB_EXPORT_WORK_ID, isRunning)
 
 function startBuildWeaponsDbAsync(onlyUnitName, outPath, batchSize, delay, statusPath = null, onDone = null) {
-  if (exportRunningState.running) {
-    logerr("weapons DB export rejected: another weapons export (DB or loc) is already running")
+  if (isReloadUnsafeWork(DB_EXPORT_WORK_ID) || isLangJobRunning()) {
+    logerr("weapons DB export rejected: a weapons DB export or a language job is running")
     return false
   }
-  exportRunningState.running = true
+  setDbExportRunning(true)
 
   let db = {}
   let barrelsDb = {}
@@ -1397,7 +1399,7 @@ function startBuildWeaponsDbAsync(onlyUnitName, outPath, batchSize, delay, statu
     status.finishTarget(TARGET_WEAPONS_INFO, false)
     safeFlushStatus()
 
-    exportRunningState.running = false
+    setDbExportRunning(false)
     logerr(errText)
   }
 
@@ -1464,7 +1466,7 @@ function startBuildWeaponsDbAsync(onlyUnitName, outPath, batchSize, delay, statu
         status.finishTarget(TARGET_WEAPONS_INFO, errors.len() == 0)
         safeFlushStatus()
 
-        exportRunningState.running = false
+        setDbExportRunning(false)
 
         log($"DONE: bullets={db.len()} projectileRefs={projectilesDb.len()} barrels={exportBarrels.len()} munitions={exportMunitions.len()} errors={errors.len()} -> {outPath}")
 
@@ -1505,7 +1507,6 @@ function build_weapons_db_async(params) {
   let locFileName = params?.locFileName ?? "weapons_loc.json"
   let locStatusFileName = params?.locStatusFileName ?? "weapons_loc_status.json"
 
-  let curLang = getLocalLanguage()
   let onDone = (requestedLangs == null) ? null : function(exportDb) {
     buildWeaponsLoc({
       exportDb = exportDb
@@ -1513,13 +1514,11 @@ function build_weapons_db_async(params) {
       langs = requestedLangs
       locFileName = locFileName
       locStatusFileName = locStatusFileName
-      curLang = curLang
-      runningState = exportRunningState
     })
   }
 
   if (!startBuildWeaponsDbAsync(onlyUnitName, makePath(path, fileName), batchSize, delay, makePath(path, statusFileName), onDone))
-    return "error: weapons DB export already running"
+    return "error: a weapons DB export or a language job is running"
   return "ok"
 }
 

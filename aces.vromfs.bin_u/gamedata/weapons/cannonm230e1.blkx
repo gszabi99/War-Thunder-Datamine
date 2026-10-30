@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.08,
-  "shotFreq": 10.41,
-  "alternativeShotFreq": 4.0,
-  "traceFreq": 4,
-  "bullets": 1200,
-  "dragCx": 0.001,
-  "mass": 55.9,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,28 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.08,
+  "shotFreq": 10.41,
+  "alternativeShotFreq": 4.0,
+  "bullets": 1200,
+  "dragCx": 0.001,
+  "mass": 55.9,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        21.3,
+        0.0
+      ],
+      [
+        32.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": {
     "mass": 0.229,
     "caliber": 0.03,
@@ -455,25 +467,6 @@
       "trail": "noTrail"
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_M230E1_outside",
-    "cockpit": "cannon_M230E1_inside",
-    "ai": "cannon_M230E1_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        21.3,
-        0.0
-      ],
-      [
-        32.0,
-        0.05
-      ]
-    ]
-  },
   "aden_new_gun": {
     "maxDeltaAngle": 0.12,
     "overheat": {
@@ -488,5 +481,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_M230E1_outside",
+    "cockpit": "cannon_M230E1_inside",
+    "ai": "cannon_M230E1_ai"
   }
 }

@@ -17,7 +17,7 @@ enum LOGIN_STATE {
   LOGGED_IN                = 0x003F 
 }
 
-return {
+return freeze({
   LOGIN_STATE
   USE_STEAM_LOGIN_AUTO_SETTING_ID
-}
+})

@@ -1,8 +1,8 @@
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 
-let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 function requestInventoryUnlocks() {
@@ -14,4 +14,8 @@ function requestInventoryUnlocks() {
 
 addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) requestInventoryUnlocks()
+})
+
+return freeze({
+  requestInventoryUnlocks
 })

@@ -114,9 +114,9 @@ function getAxisStuck(watchAxis = []) {
   return res
 }
 
-return {
+return freeze({
   getMaxDeviatedAxisInfo
   getWheelMenuAxisWatch
   getAxisData
   getAxisStuck
-}
+})

@@ -1,3 +1,7 @@
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS
+from "%scripts/items/itemsManagerState.nut" import shopVisibleSeenIds
+from "%scripts/items/itemsChecks.nut" import checkItemsMaskFeatures
+from "%scripts/items/itemsManagerGetters.nut" import getShopList
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
@@ -6,10 +10,6 @@ from "%scripts/seen/seenIds.nut" import SEEN
 from "dagor.workcycle" import setTimeout, clearTimer, deferOnce
 
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
-let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
-let { shopVisibleSeenIds } = require("%scripts/items/itemsManagerState.nut")
-let { checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
-let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
 
 local trophies = []
 

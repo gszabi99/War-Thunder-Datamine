@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.08,
-  "shotFreq": 41.666,
-  "traceFreq": 4,
-  "bullets": 125,
-  "shouldCollideWithRendinsts": true,
-  "mass": 120.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,26 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.08,
+  "shotFreq": 41.666,
+  "bullets": 125,
+  "shouldCollideWithRendinsts": true,
+  "mass": 120.0,
+  "overheat": {
+    "overheat": [
+      [
+        21.3,
+        0.0
+      ],
+      [
+        32.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": {
     "mass": 0.275,
     "caliber": 0.03,
@@ -408,25 +420,6 @@
       "tracer": "noColor"
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_giat_m791_outside",
-    "cockpit": "cannon_giat_m791_inside",
-    "ai": "cannon_giat_m791_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        21.3,
-        0.0
-      ],
-      [
-        32.0,
-        0.05
-      ]
-    ]
-  },
   "aden_new_gun": {
     "maxDeltaAngle": 0.12,
     "overheat": {
@@ -441,5 +434,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_giat_m791_outside",
+    "cockpit": "cannon_giat_m791_inside",
+    "ai": "cannon_giat_m791_ai"
   }
 }

@@ -124,7 +124,7 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
   
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, info.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated)
 
-[es(tag=gameClient, REQUIRE_NOT=attachedToParent, parallel_for=4, after=(seated_human_bake_post_pausable_animchar_es, seated_human_bake_post_pausable_slot_attach_es))]
+[es(tag=gameClient, REQUIRE=seatedHuman, REQUIRE_NOT=attachedToParent, parallel_for=4, after=(seated_human_bake_post_pausable_animchar_es, seated_human_bake_post_pausable_slot_attach_es))]
 def seated_human_bake_post_pausable_attach_es(act : UpdateStageInfoAct;
                                               isInVehicle : bool;
                                               eid : EntityId;

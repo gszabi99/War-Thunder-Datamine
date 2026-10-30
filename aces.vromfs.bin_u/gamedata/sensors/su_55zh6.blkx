@@ -6,8 +6,8 @@
       "power": 35000.0,
       "band": 5,
       "rcs": 4.19,
-      "range": 2.0,
-      "rangeMax": 2.0,
+      "range": 150000.0,
+      "rangeMax": 200000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 8.0,
@@ -28,17 +28,17 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        10.0
+        0.0,
+        16.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 10.0,
-      "barHeight": 15.0,
+      "barHeight": 16.0,
       "barsCount": 1,
       "rowMajor": true,
-      "centerElevation": 15.0
+      "centerElevation": 8.0
     }
   },
   "signals": {
@@ -52,9 +52,9 @@
       "mainBeamDopplerSpeed": true,
       "distance": {
         "presents": true,
-        "minValue": 1.0,
-        "maxValue": 2.0,
-        "maxUnambiguousValue": 2.0
+        "minValue": 1500.0,
+        "maxValue": 200000.0,
+        "maxUnambiguousValue": 200000.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -72,9 +72,7 @@
   },
   "scopeRangeSets": {
     "search": {
-      "range3": 40000.0,
-      "range2": 80000.0,
-      "range1": 120000.0
+      "range1": 200000.0
     }
   },
   "fsms": {

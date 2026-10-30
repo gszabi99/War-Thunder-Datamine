@@ -1,10 +1,10 @@
+from "%scripts/worldWar/inOperation/handler/wwOperationLog.nut" import WwOperationLog
+from "%scripts/worldWar/inOperation/handler/wwObjective.nut" import wwObjective
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "worldwar" import wwGetPlayerSide
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { WwOperationLog } = require("%scripts/worldWar/inOperation/handler/wwOperationLog.nut")
-let { wwObjective } = require("%scripts/worldWar/inOperation/handler/wwObjective.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let g_ww_map_info_type = {

@@ -1,18 +1,17 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/items/itemRarity.nut" as itemRarity
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/customization/skinUtils.nut" import getSkinCost, getPlaneBySkinId
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitInfo.nut" import getUnitCountry
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "blkGetters" import get_skins_blk
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let itemRarity = require("%scripts/items/itemRarity.nut")
-
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getSkinCost, getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 let skinsCache = {}
@@ -127,7 +126,7 @@ eventbus_subscribe("update_unit_skins_list", function update_unit_skins_list(evt
 })
 
 
-return {
+return freeze({
   getSkinsCache
   isSkinVisible
-}
+})

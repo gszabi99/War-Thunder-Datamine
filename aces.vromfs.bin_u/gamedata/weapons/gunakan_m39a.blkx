@@ -1,13 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 18.0,
-  "shotFreqRndK": 0.14,
-  "traceFreq": 4,
-  "bullets": 500,
-  "dragCx": 0.013,
-  "mass": 24.3,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,6 +14,27 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 18.0,
+  "shotFreqRndK": 0.14,
+  "bullets": 500,
+  "dragCx": 0.013,
+  "mass": 24.3,
+  "overheat": {
+    "overheat": [
+      [
+        8.3,
+        0.0
+      ],
+      [
+        12.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.042,
@@ -4553,25 +4565,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m3_gun_outside",
-    "cockpit": "m3_gun_inside",
-    "ai": "m3_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        8.3,
-        0.0
-      ],
-      [
-        12.0,
-        0.05
-      ]
-    ]
-  },
   "13_2_akan_m39_new_gun": {
     "maxDeltaAngle": 0.4,
     "overheat": {
@@ -4586,5 +4579,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m3_gun_outside",
+    "cockpit": "m3_gun_inside",
+    "ai": "m3_gun_ai"
   }
 }

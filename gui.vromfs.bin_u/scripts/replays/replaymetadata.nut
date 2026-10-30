@@ -1,5 +1,9 @@
+import "%scripts/utils/datablockConverter.nut" as datablockConverter
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadState.nut" import isEqualSquadId
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyPlayersInfo
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setCustomPlayersInfo
 from "matching.errors" import INVALID_SQUAD_ID
 from "string" import split_by_chars
 from "replays" import get_replay_info, is_replay_playing
@@ -9,11 +13,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
-let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
-let { getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { setCustomPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 local curReplayPlayersMatchingInfo = null
 
@@ -126,9 +126,9 @@ function restoreReplayScriptCommentsBlk(replayPath, force = false) {
 
 registerForNativeCall("save_replay_script_comments_blk", @(blk) saveReplayScriptCommentsBlk(blk))
 
-return {
+return freeze({
   buildReplayMpTable
   saveReplayScriptCommentsBlk
   restoreReplayScriptCommentsBlk
   updateReplayMatchingPlayersInfoFromMplayerList
-}
+})

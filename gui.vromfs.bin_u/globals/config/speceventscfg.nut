@@ -17,57 +17,69 @@ const eventsFilters = [
 
 
 let eventsCfg = {
+  ["2026_10_tank/tasks"] = {
+    eventLocId = "unlocks/chapter/2026_10_tank"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/sw_patria_bmp_3_promo.avif"
+    groups = ["2026_10_tank/coupon_upgrade", "2026_10_tank/tasks"]
+    unitType = ES_UNIT_TYPE_TANK
+  },
+  ["2026_09_air/tasks"] = {
+    eventLocId = "unlocks/chapter/2026_09_air"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/f_16xl_promo.avif"
+    groups = ["2026_09_air/coupon_upgrade", "2026_09_air/tasks"]
+    unitType = ES_UNIT_TYPE_AIRCRAFT
+  },
   ["2026_08_ship/tasks"] = {
     eventLocId = "unlocks/chapter/2026_08_ship"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_battleship_oktyabrskaya_revolutsiya_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_battleship_oktyabrskaya_revolutsiya_promo.avif"
     groups = ["2026_08_ship/coupon_upgrade", "2026_08_ship/tasks"]
     unitType = ES_UNIT_TYPE_SHIP
   },
   ["2026_07_tank/tasks"] = {
     eventLocId = "unlocks/chapter/2026_07_tank"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/uk_fv107_scimitar_mk2_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/uk_fv107_scimitar_mk2_promo.avif"
     groups = ["2026_07_tank/coupon_upgrade", "2026_07_tank/tasks"]
     unitType = ES_UNIT_TYPE_TANK
   },
   ["2026_06_air/tasks"] = {
     eventLocId = "unlocks/chapter/2026_06_air"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/spitfire_mk5b_float_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/spitfire_mk5b_float_promo.avif"
     groups = ["2026_06_air/coupon_upgrade", "2026_06_air/tasks"]
     unitType = ES_UNIT_TYPE_AIRCRAFT
   },
   ["2026_05_ship/tasks"] = {
     eventLocId = "unlocks/chapter/2026_05_ship"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/fr_trident_class_glaive_p671_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/fr_trident_class_glaive_p671_promo.avif"
     groups = ["2026_05_ship/coupon_upgrade", "2026_05_ship/tasks"]
     unitType = ES_UNIT_TYPE_SHIP
   },
   ["2026_05_tank/tasks"] = {
     eventLocId = "unlocks/chapter/2026_05_tank"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_kv_8_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_kv_8_promo.avif"
     groups = ["2026_05_tank/coupon_upgrade", "2026_05_tank/tasks"]
     unitType = ES_UNIT_TYPE_TANK
   },
   ["2026_04_air/tasks"] = {
     eventLocId = "unlocks/chapter/2026_04_air"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/f_6c_pakistan_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/f_6c_pakistan_promo.avif"
     groups = ["2026_04_air/coupon_upgrade", "2026_04_air/tasks"]
     unitType = ES_UNIT_TYPE_AIRCRAFT
   },
   ["2026_03_ship/tasks"] = {
     eventLocId = "unlocks/chapter/2026_03_ship"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/us_battleship_oklahoma_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/us_battleship_oklahoma_promo.avif"
     groups = ["2026_03_ship/coupon_upgrade", "2026_03_ship/tasks"]
     unitType = ES_UNIT_TYPE_SHIP
   },
   ["2026_02_air/tasks"] = {
     eventLocId = "unlocks/chapter/2026_02_air"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/f_16a_block_5_netherlands_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/f_16a_block_5_netherlands_promo.avif"
     groups = ["2026_02_air/coupon_upgrade", "2026_02_air/tasks"]
     unitType = ES_UNIT_TYPE_AIRCRAFT
   },
   ["2026_01_tank/tasks"] = {
     eventLocId = "unlocks/chapter/2026_01_tank"
-    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_t_72b3_arena_promo.png"
+    bgImage = "!https://static-ggc.gaijin.net/event_promo/ussr_t_72b3_arena_promo.avif"
     groups = ["2026_01_tank/coupon_upgrade", "2026_01_tank/tasks"]
     unitType = ES_UNIT_TYPE_TANK
   },

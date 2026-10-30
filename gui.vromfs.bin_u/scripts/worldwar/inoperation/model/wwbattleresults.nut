@@ -1,15 +1,15 @@
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import WwArmy, getArmyByName
+from "%scripts/user/clanName.nut" import getMyClanTag
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSidesOrder
 from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
-let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getMyClanTag } = require("%scripts/user/clanName.nut")
-let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 let WwBattleResults = class {
@@ -129,7 +129,7 @@ let WwBattleResults = class {
         }
       }
 
-      teamArmiesList.sort(WwArmy.sortArmiesByUnitType)
+      teamArmiesList.sortby(WwArmy.sortArmiesByUnitType)
 
       let teamInfoBlk = teamsInfoBlk?[teamName]
       let unitsInitialBlk = teamInfoBlk?.units
@@ -300,7 +300,7 @@ let WwBattleResults = class {
           return res
         }, [])
 
-      teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
+      teamArmiesList.sortby(@(a) a.unitType)
 
       local teamCountry = ""
       let teamArmyStates = {}

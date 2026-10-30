@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "us_usmc_second_pattern_tanker_a_char",
@@ -2434,7 +2440,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/90mm_M54_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/90mm_M54_user_cannon.blk",
       "shotFreq": 0.1667,
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
@@ -2494,8 +2500,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_m56_scorpion_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m56_scorpion_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

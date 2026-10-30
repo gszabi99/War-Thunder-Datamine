@@ -1,51 +1,53 @@
+import "%scripts/items/itemInfoHandler.nut" as itemInfoHandler
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/items/workshop/workshopCraftTreeWnd.nut" as workshopCraftTreeWnd
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
+import "%scripts/sqDagui/timer/mkHoverHoldAction.nut" as mkHoverHoldAction
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndWidgets/navigationPanel.nut" import navigationPanel
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd
+from "%scripts/items/recycleCompleteWnd.nut" import recycleCompleteWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj, getObjValidIndex, enableObjsByTable, move_mouse_on_child_by_value, move_mouse_on_obj
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton, setColoredDoubleTextToButton
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/itemsMarketplace.nut" import goToMarketplace
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/items/itemVisual.nut" import fillDescTextAboutDiv, updateExpireAlarmIcon, fillItemDescUnderTable, setWidthAndPosForItemNameElements
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getItemsSortComparator
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%scripts/warbonds/warbondsManager.nut" import getWarbondsBalanceText
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/items/itemsRecycler.nut" import CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey, MAXIMUM_CRAFTS_AT_ONCE_TIME
+from "%scripts/items/itemLimits.nut" import enqueueItem, requestLimits
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "math" import ceil
 from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "dagor.localize" import doesLocTextExist
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
-let { recycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj, getObjValidIndex, enableObjsByTable, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
-let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let workshopCraftTreeWnd = require("%scripts/items/workshop/workshopCraftTreeWnd.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { fillDescTextAboutDiv, updateExpireAlarmIcon, fillItemDescUnderTable, setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { getWarbondsBalanceText } = require("%scripts/warbonds/warbondsManager.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey, MAXIMUM_CRAFTS_AT_ONCE_TIME } = require("%scripts/items/itemsRecycler.nut")
-let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { ItemsRecycler } = require("%scripts/items/itemsRecycler.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
@@ -200,7 +202,7 @@ let ItemsList = class (BaseGuiHandlerWT) {
         needShowCollapseButton = true
         headerHeight           = "1@buttonHeight"
       })
-    this.registerSubHandler(this.navigationHandlerWeak)
+    this.registerSubHandler(handler)
     this.navigationHandlerWeak = handler.weakref()
     this.headerOffsetX = handler.headerOffsetX
   }
@@ -535,7 +537,7 @@ let ItemsList = class (BaseGuiHandlerWT) {
         else {
           let { emptyTabLocId } = this.curSheet
           emptyListTextObj.setValue(" ".concat(
-            loc(doesLocTextExist(emptyTabLocId) ? emptyTabLocId : "items/shop/emptyTab/default"),
+            locByVendor(doesLocTextExist(emptyTabLocId) ? emptyTabLocId : "items/shop/emptyTab/default"),
             loc(adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
               : adviseShop ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
               : "items/shop/emptyTab/noItemsAdvice/shopDisabled")
@@ -1278,4 +1280,4 @@ function openItemsWndFromPromo(_owner, params = []) {
 
 addPromoAction("items", @(handler, params, _obj) openItemsWndFromPromo(handler, params))
 
-return { ItemsList }
+return freeze({ ItemsList })

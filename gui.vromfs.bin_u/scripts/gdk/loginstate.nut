@@ -29,7 +29,6 @@ function do_login(callback) {
   relationships.cleanup_relationships()
   update_relationships(false, function() {
     logX("Relationships updated")
-    relationships.subscribe_to_changes()
     callback?()
   })
 }
@@ -57,7 +56,7 @@ function login(callback) {
 }
 
 
-return {
+return freeze({
   native_login
   login
-}
+})

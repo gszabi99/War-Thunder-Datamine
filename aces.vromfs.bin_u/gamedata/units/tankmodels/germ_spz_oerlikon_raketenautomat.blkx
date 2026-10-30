@@ -1764,7 +1764,23 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm"
       ],
       "effect": [
         {
@@ -1786,7 +1802,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "recoilMultiplier": 0.01,
@@ -1880,7 +1896,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "recoilMultiplier": 0.01,
@@ -1972,8 +1988,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_spz_oerlikon_raketenautomat_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_spz_oerlikon_raketenautomat_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3627,5 +3643,29 @@
         "to": "ger_camo_modern_desert_threecolor*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.702,
+      1.0841,
+      1.1336
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

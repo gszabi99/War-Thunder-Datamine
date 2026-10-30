@@ -79,7 +79,7 @@ function mkTeamScoreComp(params) {
         fontSize = TEAM_SCORE_FONT_SIZE
         color = FONT_COLOR
         text = hudScoreW.get()
-        transform = {pivot = [0.5,0.5]}
+        transform = true
         animations = mkScoreTextAnim(mainAnimTrigger)
       }.__update(fontFx)
     ]
@@ -104,7 +104,7 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
         size = FLEX
         opacity = zoneStateW.get()?.watchedHeroInZone ? 1 : 0
         rendObj = ROBJ_VECTOR_CANVAS
-        commands = [
+        commands = const [
           [VECTOR_POLY, 14, 12, 26, 12, 14, 24],
           [VECTOR_POLY, 14, 76,  14, 88, 26, 88]
         ]
@@ -113,7 +113,6 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
         fillColor = 0xFFFFFFFF
         transform = {
           rotate = isRightPos ? 180 : 0
-          pivot = [0.5, 0.5]
         }
         transitions = [{ prop = AnimProp.opacity, duration = CAPTURE_POINT_ANIM_DURATION, easing = CAPTURE_POINT_ANIM_EASING }]
       }
@@ -138,11 +137,7 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
       }
     ]
 
-    transform = {
-      scale = zoneStateW.get()?.watchedHeroInZone
-       ? [CAPTURE_POINT_ACTIVE_SCALE, CAPTURE_POINT_ACTIVE_SCALE]
-       : [1.0, 1.0],
-    }
+    transform = zoneStateW.get()?.watchedHeroInZone ? const { scale = CAPTURE_POINT_ACTIVE_SCALE } : true
     transitions = [{ prop = AnimProp.scale, duration = CAPTURE_POINT_ANIM_DURATION, easing = CAPTURE_POINT_ANIM_EASING }]
   }
 }

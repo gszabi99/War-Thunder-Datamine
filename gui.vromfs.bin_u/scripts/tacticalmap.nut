@@ -1,4 +1,20 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler, has_gui_handler, is_gui_handler_instance
+from "%scripts/artilleryMap.nut" import ArtilleryMap
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponShortTypeFromWpName
+from "%scripts/controls/mousePointerInitialPos.nut" import setMousePointerInitialPos
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/missions/missionsUtils.nut" import setMissionEnviroment, getLevelMapBackgroundColors
+from "%scripts/missions/missionsText.nut" import locCurrentMissionName
+from "%scripts/misObjectives/misObjectivesView.nut" import gui_load_mission_objectives
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/hud/hudHintsManager.nut" import hudHintsManagerInit, hudHintsManagerReinit
+from "%scripts/tacticalMapUtils.nut" import fillSwitchMapTypeBtn
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
+from "%scripts/respawn/aimMemPointsSelector.nut" import MapAimPointWeaponSelector
 from "%appGlobals/ranks_common_shared.nut" import get_mission_mode
 from "unit" import get_player_unit_name, get_cur_unit_weapon_preset
 from "eventbus" import eventbus_send, eventbus_subscribe
@@ -9,8 +25,8 @@ from "mission" import get_game_type, get_cur_game_mode_name, get_game_mode
 from "guiMission" import get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active, is_aircraft_player, set_tactical_screen_player, get_player_group
   , get_current_mission_desc, is_allow_to_choose_hud_icon_preset, ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "scriptRespondent" import registerRespondent
-from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
-  , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset
+from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet
+  , setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset
 from "hudActionBar" import getActionBarUnitName
 from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
 from "vehicleModel" import hasSightStabilization
@@ -24,23 +40,7 @@ from "%scripts/options/optionsCtors.nut" import create_option_combobox
 from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY
 
-let { register_gui_handler, get_gui_handler, has_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ArtilleryMap } = require("%scripts/artilleryMap.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { setMissionEnviroment, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { hudHintsManagerInit, hudHintsManagerReinit } = require("%scripts/hud/hudHintsManager.nut")
-let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
 
 dagui_propid_add_name_id("permanentMapTool")
 
@@ -597,6 +597,6 @@ registerRespondent("is_tactical_map_active", function is_tactical_map_active() {
     || is_gui_handler_instance(curHandler, "RespawnHandler"))
 })
 
-return {
+return freeze({
   gui_start_tactical_map
-}
+})

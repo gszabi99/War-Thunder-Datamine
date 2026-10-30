@@ -1,18 +1,20 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/promo/promo.nut" import getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag, selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig
+  , enablePromoPlayMenuMusic, DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData, generatePromoBlockView, requestPromoUpdate
+  , togglePromoItem, performPromoAction, getPromoActionParamsKey, cutPromoActionParamsKey, getPromoVisibilityById, getPromoReturnCursorButtonId, setPromoReturnCursorButtonId
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/web/webpoll.nut" import clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl
+from "%scripts/promo/promoButtonsConfig.nut" import getPromoHandlerUpdateConfigs
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/langUtils/language.nut" import getCurLangShortName
 from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath
-from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, add_event_listener
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, add_event_listener, removeAllListenersByEnv
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag, selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig, enablePromoPlayMenuMusic, DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData, generatePromoBlockView, requestPromoUpdate, togglePromoItem, performPromoAction, getPromoActionParamsKey, cutPromoActionParamsKey, getPromoVisibilityById, getPromoReturnCursorButtonId, setPromoReturnCursorButtonId } = require("%scripts/promo/promo.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 let Promo = class {
   owner = null
@@ -27,6 +29,7 @@ let Promo = class {
   needUpdateByTimerArr = null
 
   updateFunctions = null
+  subHandlers = null
 
   isAutoSwitchLocked = false
 
@@ -34,6 +37,7 @@ let Promo = class {
     this.owner = handler
     this.guiScene = v_guiScene
     this.scene = v_scene
+    this.subHandlers = []
 
     this.updateFunctions = {}
     foreach (key, config in getPromoHandlerUpdateConfigs()) {
@@ -56,7 +60,12 @@ let Promo = class {
     }
     clearOldVotedPolls(pollsTable)
 
+    this.guiScene.setObjectOwner(this.scene, this)
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
+  }
+
+  function onSceneDetach() {
+    removeAllListenersByEnv(this)
   }
 
   function initScreen(forceReplaceContent = false) {
@@ -91,6 +100,8 @@ let Promo = class {
     if (show)
       this.updatePromoBlocks()
   }
+
+  function onDestroy() {}
 
   function toggleSceneVisibility(isShow) {
     this.scene.show(isShow)
@@ -362,4 +373,4 @@ function create_promo_blocks(handler) {
   return Promo(owner, guiScene, scene)
 }
 
-return { create_promo_blocks }
+return freeze({ create_promo_blocks })

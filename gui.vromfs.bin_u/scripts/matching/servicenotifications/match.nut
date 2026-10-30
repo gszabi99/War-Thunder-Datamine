@@ -1,16 +1,16 @@
+import "%scripts/social/crossplay.nut" as crossplayModule
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%scripts/matching/api.nut" import matchingApiFunc, matchingRpcSubscribe
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
 from "dagor.random" import rnd
 from "console" import register_command
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import is_online_available, get_forced_network_mission
 from "%scripts/dagui_library.nut" import *
 
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
-let changedGameModes = persist("changedGameModes", @() [])
+let changedGameModes = mkHardPersist("matching.serviceNotifications.match")("changedGameModes", [])
 
 let clearChangedGameModesParams = @() changedGameModes.clear()
 
@@ -58,11 +58,9 @@ function fetchGameModesDigest(params, cb) {
   matchingApiFunc("wtmm_static.fetch_game_modes_digest", cb, params)
 }
 
-let debug_mm = persist("debug_mm", @() {
-  enable = null
-})
+local debugMm = null
 
-register_command(@(enable) debug_mm.enable = enable, "matchmacking.set_debug_mm")
+register_command(@(enable) debugMm = enable, "matchmacking.set_debug_mm")
 
 function enqueueInSession(params, cb) {
   let missionName = get_forced_network_mission()
@@ -71,8 +69,8 @@ function enqueueInSession(params, cb) {
 
   if (!crossplayModule.isCrossPlayEnabled())
     params["crossplay_restricted"] <- true
-  if (debug_mm.enable != null)
-    params["debug_mm"] <- debug_mm.enable
+  if (debugMm != null)
+    params["debug_mm"] <- debugMm
 
   matchingApiFunc("match.enqueue", cb, params)
 }
@@ -94,9 +92,9 @@ subscriptions.addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   enqueueInSession
   fetchGameModesDigest
   fetchGameModesInfo
   fetchClustersList
-}
+})

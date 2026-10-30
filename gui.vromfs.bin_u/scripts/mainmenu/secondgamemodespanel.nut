@@ -1,14 +1,12 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/dagui_library.nut" import *
 from "string" import format
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%scripts/squads/squadState.nut" import isSquadMember, isSquadLeader, getSquadData
-
 from "%scripts/battleRating.nut" import recentBR
 from "%scripts/events/secondGameModesUtils.nut" import mainGameModes, secondGameModes, hasSecondGameModes
 from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentEvent
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 const UPDATE_SECOND_MODES_DELAY_ID = "update_second_modes_delay"
 const UPDATE_SECOND_MODES_DELAY = 0.2
@@ -159,8 +157,8 @@ addListenersWithoutEnv({
   SquadStatusChanged = @(data) onEventSquadStatusChanged(data)
 })
 
-return {
+return freeze({
   updateSecondGameModesPanel
   setSecondGameModeActive
   deferNotifySecondGameModesStateChanges
-}
+})

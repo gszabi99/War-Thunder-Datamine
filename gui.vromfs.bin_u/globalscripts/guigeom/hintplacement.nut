@@ -53,9 +53,9 @@ function findPlaceForHintByRect(itemRect, rects, hintSize, padding, safeAreaRect
   return null
 }
 
-return {
+return freeze({
   isIntersectRect
   isRectAInRectB
   hasFreePlace
   findPlaceForHintByRect
-}
+})

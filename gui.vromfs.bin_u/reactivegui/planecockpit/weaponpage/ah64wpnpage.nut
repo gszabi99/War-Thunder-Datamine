@@ -61,7 +61,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -78,7 +78,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -95,7 +95,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -112,7 +112,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -129,7 +129,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -202,7 +202,7 @@ let buttons = @(){
         arrow
         {
             size = SIZE_TO_CONTENT
-            pos = [pw(5), ph(1)]
+            pos = const [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
@@ -591,7 +591,7 @@ let gunArm = @(){
       color = LaunchImpossible.get() ? baseColor : Color(0, 0, 0, 255)
       fillColor = LaunchImpossible.get() ? baseColor : Color(0, 0, 0, 255)
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_RECTANGLE, 5, 25, 12, 15],
         [VECTOR_RECTANGLE, 5, 55, 12, 15],
         [VECTOR_RECTANGLE, 20, 5, 12, 15],
@@ -864,7 +864,7 @@ let pods = @(width, height, pos) function() {
           color = baseColor
           fillColor = SelectedWeapSlot.get() == slot ? baseColor : Color(0, 0, 0, 255)
           lineWidth = baseColor
-          commands = [
+          commands = const [
             [VECTOR_RECTANGLE, 0, 0, 100, 100],
             [VECTOR_SECTOR, 10, 0, 10, 5, -180, 0],
             [VECTOR_SECTOR, 30, 0, 10, 5, -180, 0],

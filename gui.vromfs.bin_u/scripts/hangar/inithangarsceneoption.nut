@@ -1,21 +1,15 @@
 import "%appGlobals/config/hangarScenes.nut" as hangarScenes
+from "%scripts/hangar/initHangar.nut" import selectedHangar, getCustomHangar, getRegularHangarPath
+from "%scripts/options/optionsExt.nut" import registerOption
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/time.nut" import getTimestampFromStringUtc, calculateCorrectTimePeriodYears
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "dagor.workcycle" import setTimeout, clearTimer
-from "blkGetters" import get_settings_blk
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HANGAR_SCENE
 
-let { selectedHangar } = require("%scripts/hangar/initHangar.nut")
-let { registerOption } = require("%scripts/options/optionsExt.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getTimestampFromStringUtc, calculateCorrectTimePeriodYears } = require("%scripts/time.nut")
-
 const DEFAULT_VALUE = "hangar_default"
-
-let getCustomHangar = @() get_settings_blk()?.hangarBlk
-
-let getRegularHangarPath = @() getCustomHangar() ?? "config/hangar.blk"
 
 let hangarSceneOptionList = [{ id = DEFAULT_VALUE }]
   .extend(hangarScenes.filter(@(v) (v?.isVisibleInOption ?? true) && v?.customPath != ""))
@@ -61,10 +55,6 @@ function calculateCurDefaultHangar(updFunc) {
 let getHangarSceneOptionValue = @() get_gui_option_in_mode(USEROPT_HANGAR_SCENE, OPTIONS_MODE_GAMEPLAY, DEFAULT_VALUE)
 
 function updateSelectedHangar() {
-  if (!hasFeature("HangarSceneOption")) {
-    selectedHangar.set("")
-    return
-  }
   let self = callee()
   clearTimer(self)
   let hangarId = getHangarSceneOptionValue()

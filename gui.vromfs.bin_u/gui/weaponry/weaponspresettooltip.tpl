@@ -2,6 +2,17 @@ tdiv {
   flow:t='vertical'
   width:t='pw'
 
+  <<#topReqBlock>>
+  weaponTooltipBlock {
+    width:t='pw'
+    margin-bottom:t='1/2@bulletTooltipPadding'
+    padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
+    tooltipDesc {
+      text:t='<<topReqBlock>>'
+    }
+  }
+  <</topReqBlock>>
+
   <<#reqText>>
   weaponTooltipBlock {
     width:t='pw'
@@ -38,6 +49,7 @@ tdiv {
       width:t='pw'
       flow:t='vertical'
 
+      <<#presetName>>
       weaponPresetTooltipHeader {
         width:t='pw'
         padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
@@ -45,6 +57,7 @@ tdiv {
 
         include "%gui/weaponry/weaponsPresetTooltipTitle.tpl"
       }
+      <</presetName>>
       weaponPresetTooltipParams {
         width:t='pw'
         <<^noInternalPadding>>
@@ -138,16 +151,6 @@ tdiv {
     }
     <</presetsWeapons>>
     <</presetsNames>>
-
-    <<#presetCompositionHint>>
-    textareaNoTab {
-      padding:t='1@bulletTooltipPadding, 1@bulletTooltipPadding'
-      width:t='pw'
-      text:t='* <<presetCompositionHint>>'
-      tinyFont:t='yes'
-      overlayTextColor:t='minor'
-    }
-    <</presetCompositionHint>>
 
     <<#gameModeRestrictions>>
     tdiv {

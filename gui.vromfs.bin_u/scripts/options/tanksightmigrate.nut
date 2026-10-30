@@ -2,8 +2,9 @@ from "eventbus" import eventbus_subscribe
 from "%sqstd/path.nut" import normalize
 from "%scripts/dagui_library.nut" import *
 
-let hasMigratedUserSights = mkWatched(persist, "hasMigratedUserSights", false)
-let userSightMigrationParam = mkWatched(persist, "userSightMigrationParam", {})
+let hardPersistWatched = mkHardPersistWatched("options.tankSightMigrate")
+let hasMigratedUserSights = hardPersistWatched("hasMigratedUserSights", false)
+let userSightMigrationParam = hardPersistWatched("userSightMigrationParam", {})
 
 function showUserSightMigrationPopupIfNeeded() {
   if (!hasMigratedUserSights.get())
@@ -24,4 +25,4 @@ eventbus_subscribe("OnTankSightMigrationFinished", function(p) {
   userSightMigrationParam.set(p)
 })
 
-return { showUserSightMigrationPopupIfNeeded }
+return freeze({ showUserSightMigrationPopupIfNeeded })

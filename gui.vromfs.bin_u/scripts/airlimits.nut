@@ -1,5 +1,5 @@
+from "%scripts/unit/unitParams.nut" import getFmFile
 from "%scripts/dagui_library.nut" import *
-let { getFmFile } = require("%scripts/unit/unitParams.nut")
 
 function getAirFmFile(unit) {
   if (unit.isAir())
@@ -78,8 +78,8 @@ function getWingPlaneStrength(unit) {
   return [res[0], res[res.len() - 1]]
 }
 
-return {
+return freeze({
   getFlapsDestructionIndSpeed
   getGearDestructionIndSpeed
   getWingPlaneStrength
-}
+})

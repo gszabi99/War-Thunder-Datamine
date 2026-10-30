@@ -1,13 +1,12 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList, getItemGenerator
+from "%scripts/items/exchangeRecipes.nut" import exchangeSeveralRecipes
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-
-let { addTask } = require("%scripts/tasker.nut")
-let { getInventoryList, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
-let { exchangeSeveralRecipes } = require("%scripts/items/exchangeRecipes.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const GENERIC_ITEM_GENERATOR_ID = 299030
 const SINGLE_GENERATOR_ID_OFFSET = 20

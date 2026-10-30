@@ -1,23 +1,23 @@
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/itemsMarketplace.nut" import goToMarketplace
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, findChild, getObjValidIndex
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/items/exchangeRecipes.nut" import getRecipesComponents
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "math" import abs
 from "dagor.math" import Point2
 from "%sqstd/functools.nut" import KWARG_NON_STRICT
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_child_by_value, findChild, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getRecipesComponents } = require("%scripts/items/exchangeRecipes.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 dagui_propid_add_name_id("itemId")
 
@@ -502,7 +502,7 @@ function getMaxBodyWidthConfig(craftTreeWidthStringByBodies, prefix) {
     .map(@(v, idx) {
       maxBodyWidth = to_pixels(v.subst(prefix)),
       maxBodyIdx = idx
-    }).sort(@(a, b) b.maxBodyWidth <=> a.maxBodyWidth)?[0]
+    }).sortby(@(a) -a.maxBodyWidth)?[0]
     ?? { maxBodyWidth = null, maxBodyIdx = -1 }
 }
 
@@ -756,7 +756,7 @@ local handlerClass = class (BaseGuiHandlerWT) {
 
       let textBlocks = bodiesConfig[idx].textBlocks
         .filter((@(b) !this.workshopSet.isRequireExistItemsForDisplaying(b, this.itemsList)).bindenv(this))
-        .sort(@(a, b) a.endPosY <=> b.endPosY)
+        .sortby(@(a) a.endPosY)
       visibleItemsCountY = max(visibleItemsCountY ?? lastFilled.reduce(@(res, value) max(res, value), 0),
         textBlocks.len() > 0 ? (textBlocks.top().endPosY + 1) : 0)
 
@@ -1210,7 +1210,7 @@ class CustomCraftTree(handlerClass) {
 
 register_gui_handler("CustomCraftTree", CustomCraftTree)
 
-return {
+return freeze({
   open = @(craftTreeParams) handlersManager.loadHandler(handlerClass, craftTreeParams)
   loadCustomCraftTree = @(craftTreeParams) handlersManager.loadHandler(CustomCraftTree, craftTreeParams)
-}
+})

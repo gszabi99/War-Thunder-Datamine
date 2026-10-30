@@ -42,6 +42,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1860,7 +1866,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Oerlikon_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Oerlikon_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1955,7 +1961,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Oerlikon_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Oerlikon_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2042,7 +2048,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_vickers_k_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_vickers_k_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "maxAdditionalPitch": 0.0,
@@ -2086,8 +2092,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_centaur_aa_mk_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_centaur_aa_mk_2_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

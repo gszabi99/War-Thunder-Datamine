@@ -1,6 +1,7 @@
+from "%scripts/langUtils/language.nut" import getCurLangShortName, currentLanguageW
 from "%sqstd/textFormatByLang.nut" import getDecimalFormat, getShortTextFromNum
 
-let { langWithCommaDelimiters, getCurLangShortName, currentLanguageW } = require("%scripts/langUtils/language.nut")
+let { langWithCommaDelimiters } = require("%scripts/langUtils/language.nut")
 
 let curLangFunctions = {}
 function updateByLang(lang) {
@@ -22,8 +23,8 @@ function floatToText(value, digits = 2) {
   return "".concat(value.tointeger(), delimiter, valueDecimals)
 }
 
-return {
+return freeze({
   decimalFormat = @(num) curLangFunctions.decimalFormat(num)
   shortTextFromNum = @(num) curLangFunctions.shortTextFromNum(num)
   floatToText
-}
+})

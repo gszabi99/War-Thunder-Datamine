@@ -1,3 +1,7 @@
+import "%rGui/planeCockpit/targetingPage/mfdTads.nut" as tads
+import "%rGui/planeCockpit/targetingPage/mfdLitening2.nut" as litening2
+import "%rGui/hudUnitType.nut" as hudUnitType
+import "%rGui/targetingPodSightLegacy.nut" as legacySight
 import "%rGui/missileSalvoTimer.nut" as missileSalvoTimer
 import "%rGui/agmAim.nut" as agmAim
 from "%rGui/style/screenState.nut" import bw, bh, rw, rh
@@ -15,11 +19,7 @@ from "%rGui/airHudComponents.nut" import twsElement
 from "%rGui/globals/ui_library.nut" import *
 
 let HudStyle = require("%rGui/style/airHudStyle.nut")
-let tads = require("%rGui/planeCockpit/targetingPage/mfdTads.nut")
-let litening2 = require("%rGui/planeCockpit/targetingPage/mfdLitening2.nut")
 let shkvalKa52 = require("%rGui/planeCockpit/targetingPage/mfdShkvalKa52.nut")
-let hudUnitType = require("%rGui/hudUnitType.nut")
-let legacySight = require("%rGui/targetingPodSightLegacy.nut")
 
 const useLegacyLayout = true
 
@@ -31,12 +31,10 @@ let reticle = @(pos_x, pos_y) function() {
   return {
     watch = [mfdCameraSetting, baseColor]
     size = FLEX
-    children = [
-      isTadsApache ? tads.losReticle([sh(100), sh(100)], baseColor.get(), 5) :
-      isLitening2 ? litening2.reticle(sh(100), sh(100), lineWidthScale, baseColor.get()):
-      isShkvalKa52 ? shkvalKa52.reticle :
-      sight(baseColor, pos_x, pos_y, hdpx(500))
-    ]
+    children = isTadsApache ? tads.losReticle(sh(100), baseColor.get(), 5) :
+    isLitening2 ? litening2.reticle(sh(100), sh(100), lineWidthScale, baseColor.get()):
+    isShkvalKa52 ? shkvalKa52.reticle :
+    sight(baseColor, pos_x, pos_y, hdpx(500))
   }
 }
 
@@ -46,10 +44,8 @@ let lockSightIndicator = function() {
   return {
     watch = mfdCameraSetting
     size = FLEX
-    children = [
-      isTadsApache ? null :
-      lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
-    ]
+    children = isTadsApache ? null :
+    lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
   }
 }
 
@@ -59,10 +55,8 @@ let targetSizeIndicator = @(color, width, height) function(){
   return {
     watch = mfdCameraSetting
     size = FLEX
-    children = [
-      isShkvalKa52 ? shkvalKa52.targetSize(true) :
-      targetSize(color, width, height)
-    ]
+    children = isShkvalKa52 ? shkvalKa52.targetSize(true) :
+    targetSize(color, width, height)
   }
 }
 

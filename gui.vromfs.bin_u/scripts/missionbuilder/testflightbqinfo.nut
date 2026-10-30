@@ -1,9 +1,8 @@
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "guiOptions" import get_gui_option
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 
 let testFlightData = {
   diff = ""
@@ -24,7 +23,7 @@ function sendFinishTestFlightToBq() {
   }))
 }
 
-return {
+return freeze({
   sendStartTestFlightToBq
   sendFinishTestFlightToBq
-}
+})

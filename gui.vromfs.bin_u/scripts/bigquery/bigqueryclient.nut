@@ -3,6 +3,7 @@
 #allow-root-table
 
 import "ww_leaderboard" as ww_leaderboard
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
 from "chard" import save_common_local_settings
 from "%sqstd/platform.nut" import platformId
 from "dagor.time" import get_local_unixtime, ref_time_ticks
@@ -18,9 +19,7 @@ from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 from "types" import String, Integer
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-
-local bqStat = persist("bqStat", @() { sendStartOnce = false })
+let bqStat = mkHardPersist("bigQuery.bigQueryClient")("bqStat", { sendStartOnce = false })
 
 
 function get_distr() {
@@ -178,10 +177,10 @@ function bqSendLoginState(table) {
 }
 
 
-return {
+return freeze({
   bqSendNoAuth,
   bqSendNoAuthStart,
   bqSendNoAuthWeb,
 
   bqSendLoginState
-}
+})

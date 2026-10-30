@@ -117,9 +117,9 @@ def init_hmd(var state : CommonState&; var canvas : Canvas&; var fmw : FlightMod
       spi.screenPosValid = true
       spi.screenPos = canvas.toRelPos(screenPos)
 
-    if get_aam_tracker_visible()
+    if get_hmd_aam_tracker_visible()
       aamSeeker.screenPosValid = true
-      aamSeeker.screenPos = get_screen_aam_tracker_pos()
+      aamSeeker.screenPos = get_hmd_aam_tracker_pos()
 
 
 def private init_common(var state : CommonState&; var fmw : FlightModelWrap?; hero : Unit const?; wc : WeaponController const?; app : AcesApp const?)

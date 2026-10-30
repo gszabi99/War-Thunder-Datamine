@@ -1,3 +1,12 @@
+from "%scripts/slotbar/slotbarStateData.nut" import getSelectedCrews
+from "%scripts/slotbar/slotbarState.nut" import initSelectedCrews, reinitAllSlotbars
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/shop/shopUnitsInfo.nut" import hasDefaultUnitsInCountry
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, invalidateCrewsList
+from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx, isSlotbarPresetsLoading
+from "%scripts/shop/shopCountriesList.nut" import updateShopCountriesList
+from "%scripts/g_listener_priority.nut" import CONFIG_VALIDATION, DEFAULT_HANDLER
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
@@ -6,15 +15,8 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/charActionConsts.nut" import *
 
-let { getSelectedCrews, ignoreTransactions } = require("%scripts/slotbar/slotbarStateData.nut")
-let { initSelectedCrews, reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getCrewsList, invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { slotbarPresetsByCountry, getCurrentPresetIdx, isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { CONFIG_VALIDATION, DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
+let { ignoreTransactions } = require("%scripts/slotbar/slotbarStateData.nut")
+let { slotbarPresetsByCountry } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 let getDefaultPresetName = @(presetIdx) loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
 
@@ -39,7 +41,7 @@ function reorderUnitsInPreset(preset) {
   let unitsOrder = preset.crews.map(@(c) preset.crewInSlots.indexof(c))
   preset.orderedUnits <- preset.units
     .map(@(unit, index) { unit, order = unitsOrder[index] })
-    .sort(@(u1, u2) u1.order <=> u2.order)
+    .sortby(@(u1) u1.order)
     .map(@(unit) unit.unit)
 }
 
@@ -210,7 +212,7 @@ addListenersWithoutEnv({
   InitConfigs = @(_) unitsStateCached = null
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   createPresetTemplate
   getDefaultPresetName
   checkCanHaveEmptyPresets
@@ -221,4 +223,4 @@ return {
   getPresetsListFromSlotbar
   getCurrentSlotbarPreset
   getMyCrewUnitsState
-}
+})

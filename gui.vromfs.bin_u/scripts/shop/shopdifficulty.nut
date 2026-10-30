@@ -1,9 +1,8 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 local shopDiffMode = null
 
@@ -39,9 +38,9 @@ addListenersWithoutEnv({
   SignOut = @(_p) shopDiffMode = null
 })
 
-return {
+return freeze({
   getShopDiffCode
   getShopDiffMode
   storeShopDiffMode
   isAutoDiff
-}
+})

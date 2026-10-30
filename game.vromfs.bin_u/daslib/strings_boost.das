@@ -10,6 +10,9 @@ module strings_boost shared public
 
 
 
+
+
+
 require math
 require strings public
 
@@ -61,11 +64,7 @@ def join(var it : iterator<auto(TT)>; separator : string implicit) {
             } else {
                 write(writer, separator)
             }
-            static_if (typeinfo is_numeric(type<TT>)) {
-                write_char(writer, elem)
-            } else {
-                write(writer, elem)
-            }
+            write(writer, elem)
         }
     }
     return st
@@ -87,8 +86,6 @@ def private join_implement(iterable; separator : string; blk) : string {
     }
     return st
 }
-
-
 
 [temp_string_result]
 def private join_implement_iterator(var iterable : iterator<auto(TT)>; separator : string; blk) : string {
@@ -168,7 +165,6 @@ def eq(b : das_string; a : string implicit) {
 }
 
 
-
 def levenshtein_distance(s, t : string implicit) : int {
     
     let sLen = length(s)
@@ -193,8 +189,6 @@ def levenshtein_distance(s, t : string implicit) : int {
 
     return d[sLen][tLen]
 }
-
-
 
 def levenshtein_distance_fast(s, t : string implicit) : int {
     
@@ -390,7 +384,6 @@ def public glob_match(pattern, text : string) : bool {
     
     if (empty(pattern)) return empty(text)
     if (empty(text)) {
-        
         unsafe {
             var pp = reinterpret<uint8?>(pattern)
             while (*pp == uint8('*')) {

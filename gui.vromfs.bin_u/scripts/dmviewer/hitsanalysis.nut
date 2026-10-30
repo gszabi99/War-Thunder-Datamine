@@ -1,4 +1,18 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unit/unitInfo.nut" import image_for_air, getUnitName, getUnitCountry, getUnitCountryIcon
+from "%scripts/time.nut" import secondsToTimeSimpleString
+from "%scripts/slotbar/playerCurUnit.nut" import setShowUnit, getShowedUnit
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect
+from "%scripts/weaponry/weaponryPresets.nut" import getWeaponParamsByWeaponBlkPath
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponNameByBlkPath
+from "%scripts/matchingRooms/sessionLobbyState.nut" import hasSessionInLobby
+from "%scripts/hangar/backgroundModelHint.nut" import initBackgroundModelHint, updateBackgroundModelHint
 from "string" import format
 from "math" import floor
 from "hangar" import hangar_set_dm_viewer_mode, DM_VIEWER_NONE
@@ -9,21 +23,7 @@ from "unitCalculcation" import calculate_tank_bullet_parameters
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { image_for_air, getUnitName, getUnitCountry, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { secondsToTimeSimpleString } = require("%scripts/time.nut")
-let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint } = require("%scripts/hangar/backgroundModelHint.nut")
 
 let bulletInfoCache = {}
 
@@ -385,7 +385,7 @@ function openHitsAnalysisWindow(path = null) {
   handlersManager.loadHandler(HitsAnalysis, { hitsData, ediff })
 }
 
-return {
+return freeze({
   canOpenHitsAnalysisWindow
   openHitsAnalysisWindow
-}
+})

@@ -34,7 +34,7 @@ let generateSpdMark = function(num) {
           rendObj = ROBJ_TEXT
           color = mfdWhite
           vplace = ALIGN_CENTER
-          fontsize = 20
+          fontSize = 20
           font = Fonts.hud
           text = num.tostring()
         }
@@ -91,7 +91,7 @@ function speedWrap(width, height, generateFunc) {
         pos = const [pw(75), ph(42)]
         rendObj = ROBJ_TEXT
         color = mfdWhite
-        fontsize = 20
+        fontSize = 20
         font = Fonts.hud
         text = "C"
       }
@@ -120,7 +120,7 @@ let speedVal = @() {
       padding = const [0, 20]
       rendObj = ROBJ_TEXT
       color = mfdWhite
-      fontsize = 20
+      fontSize = 20
       font = Fonts.hud
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -151,7 +151,7 @@ let AltVal = @() {
       padding = const [0, 5]
       rendObj = ROBJ_TEXT
       color = mfdWhite
-      fontsize = 18
+      fontSize = 18
       font = Fonts.hud
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -179,7 +179,7 @@ let generateAltMark = function(num) {
           rendObj = ROBJ_TEXT
           color = mfdWhite
           vplace = ALIGN_CENTER
-          fontsize = 20
+          fontSize = 20
           font = Fonts.hud
           text = string.format("%02d.%d", num / 10.0, num % 10)
         }
@@ -215,9 +215,7 @@ function altWrap(width, height, generateFunc) {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.75, height * 0.2]
     clipChildren = true
-    children = !isDGFTMode.get() ? [
-      altitude(height * 0.5, generateFunc)
-    ] : null
+    children = !isDGFTMode.get() ? altitude(height * 0.5, generateFunc) : null
   }
 }
 
@@ -228,7 +226,7 @@ let overload = @() {
   pos = const [pw(20), ph(17)]
   rendObj = ROBJ_TEXT
   color = mfdWhite
-  fontsize = 20
+  fontSize = 20
   font = Fonts.hud
   text = string.format("%.1f", OverloadWatch.get() / 10.0)
 }
@@ -240,7 +238,7 @@ let maxOverload = @() {
   pos = const [pw(10), ph(78)]
   rendObj = ROBJ_TEXT
   color = mfdWhite
-  fontsize = 20
+  fontSize = 20
   font = Fonts.hud
   text = string.format("%.1f", MaxOverloadWatch.get() / 10.0)
 }
@@ -252,7 +250,7 @@ let mach = @() {
   pos = const [pw(20), ph(74)]
   rendObj = ROBJ_TEXT
   color = mfdWhite
-  fontsize = 20
+  fontSize = 20
   font = Fonts.hud
   text = string.format("%.2f", MachWatch.get() / 100.0)
 }
@@ -275,7 +273,7 @@ let radioAlt = @() {
       pos = const [pw(-105), 0]
       rendObj = ROBJ_TEXT
       color = mfdWhite
-      fontsize = 20
+      fontSize = 20
       font = Fonts.hud
       text = "R"
     },
@@ -285,7 +283,7 @@ let radioAlt = @() {
       padding = const [0, 5]
       rendObj = ROBJ_TEXT
       color = mfdWhite
-      fontsize = 20
+      fontSize = 20
       font = Fonts.hud
       text = AltitudeValue.get() < 100 ? string.format(",%02d0", AltitudeValue.get() % 100) : string.format("%d,%02d0", AltitudeValue.get() / 100, AltitudeValue.get() % 100)
     }
@@ -328,24 +326,22 @@ let roll = @() {
     [VECTOR_LINE, 56.77, 88.41, 56.25, 85.45],
     [VECTOR_LINE, 63.34, 86.65, 62.31, 83.83]
   ]
-  children = [
-    @() {
-      size = FLEX
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = mfdWhite
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * mfdLineWidth * 0.7
-      commands = [
-        [VECTOR_POLY, 50, 90, 48.5, 93, 51.5, 93]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          rotate = clamp(Roll.get(), -45, 45)
-        }
+  children = @() {
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = mfdWhite
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * mfdLineWidth * 0.7
+    commands = [
+      [VECTOR_POLY, 50, 90, 48.5, 93, 51.5, 93]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        rotate = clamp(Roll.get(), -45, 45)
       }
     }
-  ]
+  }
 }
 
 let ilsMode = @() {
@@ -354,7 +350,7 @@ let ilsMode = @() {
   rendObj = ROBJ_TEXT
   pos = const [pw(10), ph(82)]
   color = mfdWhite
-  fontsize = 20
+  fontSize = 20
   font = Fonts.hud
   text = isDGFTMode.get() ? "DGFT" : isAAMMode.get() ? string.format("%d SRM", ShellCnt.get()) : (BombingMode.get() ? "CCRP" : (CannonMode.get() ? "STRF" : (CCIPMode.get() ? "CCIP" : "EEGS")))
 }
@@ -366,7 +362,7 @@ let dist = @() {
   pos = const [pw(90), ph(92)]
   rendObj = ROBJ_TEXT
   color = mfdWhite
-  fontsize = 20
+  fontSize = 20
   font = Fonts.hud
   text = isAAMMode.get() && TargetDist.get() <= 0 ? "XXX" : string.format("F%03d.%d", TargetDist.get() <= 607 ? (TargetDist.get() / 10) : (TargetDist.get() * 10.0 * feetToNavMile), TargetDist.get() <= 607 ? (TargetDist.get() % 10) : (TargetDist.get() * feetToNavMile * 100.0 % 10.0))
 }
@@ -376,31 +372,29 @@ let OrientationSector = Computed(@() cvt(Tangage.get(), -45.0, 45.0, 160, 20).to
 let orientation = @() {
   watch = [HasRadarTarget, CCIPMode, BombingMode]
   size = FLEX
-  children = HasRadarTarget.get() && !CCIPMode.get() && !BombingMode.get() ? [
-    @() {
-      watch = OrientationSector
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = const [pw(20), ph(20)]
-      pos = const [pw(50), ph(50)]
-      color = mfdWhite
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * mfdLineWidth
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, 90 - OrientationSector.get(), 90 + OrientationSector.get()],
-        [VECTOR_LINE, 100 * cos(degToRad(90 - OrientationSector.get())), 100 * sin(degToRad(90 - OrientationSector.get())),
-         110 * cos(degToRad(90 - OrientationSector.get())), 110 * sin(degToRad(90 - OrientationSector.get()))],
-        [VECTOR_LINE, 100 * cos(degToRad(90 + OrientationSector.get())), 100 * sin(degToRad(90 + OrientationSector.get())),
-         110 * cos(degToRad(90 + OrientationSector.get())), 110 * sin(degToRad(90 + OrientationSector.get()))]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          rotate = -Roll.get()
-          pivot = [0, 0]
-        }
+  children = HasRadarTarget.get() && !CCIPMode.get() && !BombingMode.get() ? @() {
+    watch = OrientationSector
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = const [pw(20), ph(20)]
+    pos = const [pw(50), ph(50)]
+    color = mfdWhite
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * mfdLineWidth
+    commands = [
+      [VECTOR_SECTOR, 0, 0, 100, 100, 90 - OrientationSector.get(), 90 + OrientationSector.get()],
+      [VECTOR_LINE, 100 * cos(degToRad(90 - OrientationSector.get())), 100 * sin(degToRad(90 - OrientationSector.get())),
+       110 * cos(degToRad(90 - OrientationSector.get())), 110 * sin(degToRad(90 - OrientationSector.get()))],
+      [VECTOR_LINE, 100 * cos(degToRad(90 + OrientationSector.get())), 100 * sin(degToRad(90 + OrientationSector.get())),
+       110 * cos(degToRad(90 + OrientationSector.get())), 110 * sin(degToRad(90 + OrientationSector.get()))]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        rotate = -Roll.get()
+        pivot = 0
       }
     }
-  ] : null
+  } : null
 }
 
 
@@ -413,7 +407,7 @@ function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
     vplace = (num * invVPlace) < 0 ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = mfdWhite
-    fontsize = 20
+    fontSize = 20
     font = Fonts.hud
     text = abs(num).tostring()
   }
@@ -428,26 +422,23 @@ function generatePitchLine(num) {
     size = const [pw(60), ph(50)]
     pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [] :
-    [
-      @() {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * mfdLineWidth
-        color = mfdWhite
-        commands = [
-          [VECTOR_LINE, 30, 10 * sign + offset, 30, offset],
-          [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, sin(lineAngle) * (num > 0 ? 30 : 5) ],
-          (num < 0 ? [VECTOR_LINE, 10, sin(lineAngle) * 10, 17, sin(lineAngle) * 17 ] : []),
-          (num < 0 ? [VECTOR_LINE, 23, sin(lineAngle) * 23, 30, sin(lineAngle) * 30 ] : []),
-          [VECTOR_LINE, 70, 10 * sign + offset, 70, offset],
-          [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, sin(lineAngle) * (num > 0 ? 30 : 5)],
-          (num < 0 ? [VECTOR_LINE, 90, sin(lineAngle) * 10, 83, sin(lineAngle) * 17] : []),
-          (num < 0 ? [VECTOR_LINE, 77, sin(lineAngle) * 23, 70, sin(lineAngle) * 30] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, 1, pw(-15)), angleTxt(newNum, false, 1, pw(15))] : null
-      }
-    ]
+    children = num == 0 ? null : @() {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * mfdLineWidth
+      color = mfdWhite
+      commands = [
+        [VECTOR_LINE, 30, 10 * sign + offset, 30, offset],
+        [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, sin(lineAngle) * (num > 0 ? 30 : 5) ],
+        (num < 0 ? [VECTOR_LINE, 10, sin(lineAngle) * 10, 17, sin(lineAngle) * 17 ] : []),
+        (num < 0 ? [VECTOR_LINE, 23, sin(lineAngle) * 23, 30, sin(lineAngle) * 30 ] : []),
+        [VECTOR_LINE, 70, 10 * sign + offset, 70, offset],
+        [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, sin(lineAngle) * (num > 0 ? 30 : 5)],
+        (num < 0 ? [VECTOR_LINE, 90, sin(lineAngle) * 10, 83, sin(lineAngle) * 17] : []),
+        (num < 0 ? [VECTOR_LINE, 77, sin(lineAngle) * 23, 70, sin(lineAngle) * 30] : [])
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, 1, pw(-15)), angleTxt(newNum, false, 1, pw(15))] : null
+    }
   }
 }
 
@@ -517,7 +508,7 @@ function pitchHorizon(width, height){
         commands = [[VECTOR_SECTOR, horizonX.get() * 100.0, horizonY.get() * 100.0, 150, 150, 0, 180]]
       }
       @() {
-        watch = [horizonY]
+        watch = horizonY
         size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = mfdWhite
@@ -588,7 +579,7 @@ let baroLabel = {
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = mfdWhite
-        fontsize = 20
+        fontSize = 20
         font = Fonts.hud
         hplace = ALIGN_CENTER
         text = ch
@@ -622,9 +613,7 @@ function ElbitMfd(pos, size) {
       {
         size = FLEX
         pos = const [pw(-50), ph(-50)]
-        children = [
-          TvvLinked(width, height),
-        ]
+        children = TvvLinked(width, height)
       },
       speedWrap(width, height, generateSpdMark),
       altWrap(width, height, generateAltMark),

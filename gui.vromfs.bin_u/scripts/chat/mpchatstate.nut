@@ -1,18 +1,19 @@
+from "%scripts/chat/chatStates.nut" import isChatEnabled
+from "%scripts/chat/chatStorage.nut" import getMaxRoomMsgAmount
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "chat" import CHAT_MODE_TEAM, chat_set_mode
 from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
-let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
-let { getMaxRoomMsgAmount } = require("%scripts/chat/chatStorage.nut")
 let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
 
-let mpChatState = persist("mpChatState", @() {
+let mpChatState = mkHardPersist("chat.mpChatState")("mpChatState", {
   log = [],
   currentModeId = CHAT_MODE_TEAM,
   maxLogSize = 20,
   isActive = false 
 })
+mpChatState.isActive = false 
 
 let scenes = [] 
 local hasEnableChatMode = false
@@ -139,7 +140,7 @@ addListenersWithoutEnv({
   LoadingStateChange = @(_) modeInited = false
 })
 
-return {
+return freeze({
   sceneIdxPID
   initMpChatStates
   getMpChatControlsAllowMask
@@ -150,7 +151,6 @@ return {
   onChatClear
   getCurrentModeId = @() mpChatState.currentModeId
   setCurrentModeId = @(modeId) mpChatState.currentModeId = modeId
-  getMaxLogSize = @() mpChatState.maxLogSize
   validateCurMode
   hasEnableChatMode = @() hasEnableChatMode
   setModeId
@@ -163,4 +163,4 @@ return {
   findSceneDataByScene
   findSceneDataByObj
   doForAllScenes
-}
+})

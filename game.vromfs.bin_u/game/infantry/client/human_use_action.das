@@ -103,6 +103,8 @@ def human_use_action_es(info : ParallelUpdateFrameDelayed;
         useActionAvailable = int(HumanAction.ACTION_USE)
       elif has(selectedObjectEid, "buildByPlayer")
         useActionAvailable = int(HumanAction.ACTION_NONE)
+      elif has(selectedObjectEid, "plantSite") || has(selectedObjectEid, "supplyLaptop")
+        useActionAvailable = int(HumanAction.ACTION_NONE)
       else
         useActionAvailable = int(HumanAction.ACTION_USE)
     useActionEid = selectedObjectEid

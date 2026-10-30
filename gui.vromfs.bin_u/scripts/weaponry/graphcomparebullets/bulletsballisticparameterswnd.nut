@@ -1,14 +1,15 @@
+from "%scripts/weaponry/weaponryInfo.nut" import isMissileWeapon, isMissileBullet, isGuidedBomb
+from "%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut" import getBulletCacheSaveId
+from "%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut" import GraphCompareBulletsWnd
+from "%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut" import mkSliderMarkup, mkModeButtonsMarkup
+from "%scripts/weaponry/graphCompareBullets/armorPenetrationDataRequest.nut" import requestArmorPenetrationData
 from "console" import register_command
-from "unitCalculcation" import buildBallisticTrajectoryAngleData, buildBallisticTrajectoryRangeData
+from "%scripts/unit/unitCalcRequests.nut" import buildBallisticTrajectoryAngleData, buildBallisticTrajectoryRangeData
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isMissileWeapon, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
-let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
-let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
-let { mkSliderMarkup, mkModeButtonsMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
-let { requestArmorPenetrationData } = require("%scripts/weaponry/graphCompareBullets/armorPenetrationDataRequest.nut")
+let { graphColorList } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 
 enum ShotMode {
   ANGLE
@@ -178,6 +179,6 @@ let openBulletsBallisticParametersWnd = @(p)
 
 register_command(@() openBulletsBallisticParametersWnd({ unit = getAircraftByName("us_mbt_70") }), "debug.open_bullets_ballistic_parameters_wnd")
 
-return {
+return freeze({
   openBulletsBallisticParametersWnd
-}
+})

@@ -21,9 +21,6 @@ def find_unique_function_ptr(mod : Module?; name : string; canfail : bool = fals
     return fn
 }
 
-
-
-
 struct public CaptureEntryInitData {
     
     name : string       
@@ -82,8 +79,6 @@ struct public EnumEntryInitData {
     
     name : string     
     cppName : string  
-    
-    
 }
 
 def public clone(var a : dasvector`EnumEntry; var b : array<EnumEntryInitData>) {
@@ -92,7 +87,6 @@ def public clone(var a : dasvector`EnumEntry; var b : array<EnumEntryInitData>) 
     for (e, i in b, count()) {
         a[i].name := e.name
         a[i].cppName := e.cppName
-        
     }
 }
 
@@ -104,7 +98,6 @@ struct public AnnotationArgumentInitData {
     bValue : bool     
     iValue : int      
     fValue : float    
-    
 }
 
 def public clone(var a : AnnotationArgumentList; b : array<AnnotationArgumentInitData>) {
@@ -121,7 +114,6 @@ def public clone(var a : AnnotationArgumentList; b : array<AnnotationArgumentIni
         } elif (e.basicType == Type.tFloat) {
             a[i].fValue := e.fValue
         }
-        
         a[i].basicType = e.basicType
     }
 }
@@ -162,16 +154,16 @@ def public resolve_file_info(b : FileInfoInitData) : FileInfo? {
 let blacklist = [
     ("ast_core::Function", "inferStack"),
     ("ast_core::Function", "annotations"),
-    ("ast_core::Function", "classParent"), 
-    ("ast_core::ExprReturn", "_block"), 
-    ("ast_core::ExprVar", "pBlock"), 
-    ("ast_core::EnumEntry", "value"), 
-    ("ast_core::EnumEntry", "at"), 
-    ("ast_core::ExprBlock", "stackCleanVars"), 
+    ("ast_core::Function", "classParent"),
+    ("ast_core::ExprReturn", "_block"),
+    ("ast_core::ExprVar", "pBlock"),
+    ("ast_core::EnumEntry", "value"),
+    ("ast_core::EnumEntry", "at"),
+    ("ast_core::ExprBlock", "stackCleanVars"),
     ("rtti_core::AnnotationArgument", "at"),
-    ("ast_core::CaptureEntry", "at"), 
-    ("ast_core::MakeFieldDecl", "at"), 
-    ("ast_core::Enumeration", "list"), 
+    ("ast_core::CaptureEntry", "at"),
+    ("ast_core::MakeFieldDecl", "at"),
+    ("ast_core::Enumeration", "list"),
 ]
 
 let managed_types = [
@@ -187,10 +179,10 @@ let managed_types = [
     "rtti_core::LineInfo",
 ];
 
-def private get_dst_type(src_tp : TypeDecl?) {
+def private get_dst_type(src_tp : TypeDecl?; at : LineInfo) {
     let tstr = describe(src_tp);
     if (tstr |> starts_with("$::das_string")) {
-        return new TypeDecl(baseType = Type.tString);
+        return new TypeDecl(at = at, baseType = Type.tString);
     } elif (tstr |> starts_with("ast_core::CaptureEntry")) {
         return typeinfo ast_typedecl(type<CaptureEntryInitData>);
     } elif (tstr |> starts_with("ast_core::EnumEntry")) {
@@ -207,8 +199,8 @@ def private get_dst_type(src_tp : TypeDecl?) {
 }
 
 
-def private create_string_expr(name) {
-    return new ExprConstString(value := name);
+def private create_string_expr(name; at : LineInfo) {
+    return new ExprConstString(value := name, at = at);
 }
 
 def private fix_path_spelling(p : string) : string {
@@ -225,7 +217,6 @@ def private fix_path_spelling(p : string) : string {
 }
 
 def private normalize_source_path(p : string) : string {
-    
     var root = fix_path_spelling(get_das_root())
     if (!(root |> ends_with("/"))) {
         root += "/"
@@ -253,16 +244,15 @@ def private to_arr_move_args(var args : array<Expression?>; var dst_tp : TypeDec
 def private convert_vec_expr(mod : Module?; field_values : uint8 const?; xtype : TypeDeclPtr, at : LineInfo) : Expression? {
     var src_tp = get_handled_type_index_type_declaration(xtype.annotation,
                              default<Expression?>, default<Expression?>);
-    src_tp.flags.ref = false; 
-    var dst_tp = get_dst_type(clone(src_tp));
+    src_tp.flags.ref = false;
+    var dst_tp = get_dst_type(clone(src_tp), at);
     var args : array<Expression?>;
 
-    if (get_vector_length(field_values, src_tp) == 0) return new ExprMakeStruct(at = at, makeType = new TypeDecl(baseType = Type.tArray, firstType = clone_type(dst_tp)),
+    if (get_vector_length(field_values, src_tp) == 0) return new ExprMakeStruct(at = at, makeType = new TypeDecl(at = at, baseType = Type.tArray, firstType = clone_type(dst_tp)),
                                      makeStructFlags = ExprMakeStructFlags.canShadowBlock);
     for (idx in range(get_vector_length(field_values, src_tp))) {
         {
             var arg_expr = convert_quote_expr(mod, unsafe(reinterpret<uint8?>(get_vector_ptr_at_index(field_values, src_tp, idx))), src_tp, at);
-            
             if (dst_tp.baseType != Type.tString && describe(dst_tp) != describe(src_tp) && arg_expr is ExprMakeStruct) {
                 var make_str = unsafe(reinterpret<ExprMakeStruct?>(arg_expr));
                 make_str.makeType = clone_type(dst_tp);
@@ -289,14 +279,14 @@ def private convert_vec_expr(mod : Module?; field_values : uint8 const?; xtype :
 
 def private find_module_expr(name, at) {
      return new ExprCall(at = at, name := "get_module",
-                            arguments := array<Expression?>(create_string_expr(name)))
+                            arguments := array<Expression?>(create_string_expr(name, at)))
 }
 
 def private get_find_in_module_expr(fn_name; module_name; obj_name; at) {
      return new ExprCall(at = at, name := fn_name,
          arguments := array<Expression?>(
             find_module_expr(module_name, at),
-            create_string_expr(obj_name)
+            create_string_expr(obj_name, at)
          )
      )
 }
@@ -352,7 +342,7 @@ def private convert_quote_structure(mod : Module?; data : uint8 const?;
             emplace(*mkS1, mkFld);
         }
     }
-    var mkStr = new ExprMakeStruct(makeType = get_dst_type(clone_type(info)), at = at)
+    var mkStr = new ExprMakeStruct(makeType = get_dst_type(clone_type(info), at), at = at)
     emplace(mkStr.structs, mkS1)
     mkStr.makeStructFlags |= ExprMakeStructFlags.useInitializer | ExprMakeStructFlags.canShadowBlock;
     if (describe(info) == "rtti_core::FileInfo") return new ExprCall(at = at, name := "resolve_file_info",
@@ -370,9 +360,6 @@ def private convert_pointer_expr(mod; data; info; at) : Expression? {
     if (pdata == null) return new ExprConstPtr(at = at);
     assume first_tstr = describe(info.firstType);
     if (first_tstr == "ast_core::TypeDecl") {
-        
-        
-        
         assume td = unsafe(reinterpret<TypeDecl?>(pdata));
         var aliasName = ""
         if (td.enumType != null && (td.enumType._module == null || empty(td.enumType._module.name))) {
@@ -382,18 +369,16 @@ def private convert_pointer_expr(mod; data; info; at) : Expression? {
         }
         if (!empty(aliasName)) {
             return new ExprCall(at = at, name := "make_alias_type_decl",
-                arguments := array<Expression?>(create_string_expr(aliasName)));
+                arguments := array<Expression?>(create_string_expr(aliasName, at)));
         }
     }
     var final_type = clone_type(info.firstType);
     if (first_tstr == "ast_core::Expression") {
         assume annotation = mod |> module_find_type_annotation(unsafe(reinterpret<Expression?>(pdata)).__rtti);
-        final_type = new TypeDecl(baseType = Type.tHandle, annotation = annotation)
+        final_type = new TypeDecl(at = at, baseType = Type.tHandle, annotation = annotation)
     }
     var subexpr = convert_quote_expr(mod, pdata, final_type, at);
 
-    
-    
     for (t in managed_types) {
         if (t == first_tstr) return subexpr
     }
@@ -406,7 +391,6 @@ def private convert_quote_expr(mod : Module?; var data : uint8 const?; info : Ty
     if (isYetAnotherVectorTemplate(info)) return convert_vec_expr(mod, data, info, at);
     let tstr = describe(info);
 
-    
     if (tstr == "rtti_core::Annotation") {
         assume pdata = unsafe(reinterpret<rtti::Annotation>(data));
         return get_find_in_module_expr("module_find_annotation", pdata._module.name, pdata.name, at);
@@ -418,9 +402,7 @@ def private convert_quote_expr(mod : Module?; var data : uint8 const?; info : Ty
          return get_find_in_module_expr("find_call_macro", pdata._module.name, pdata.name, at)
     } elif (tstr == "ast_core::Structure") {
          assume pdata = unsafe(reinterpret<Structure?>(data));
-         
-         if (pdata._module.name == "ast_boost") return null  
-         
+         if (pdata._module.name == "ast_boost") return null
          var tmp = get_find_in_module_expr("module_find_structure", pdata._module.name, pdata.name, at);
          return tmp;
     } elif (tstr == "ast_core::Function") {
@@ -428,19 +410,15 @@ def private convert_quote_expr(mod : Module?; var data : uint8 const?; info : Ty
          return get_find_in_module_expr("find_unique_function_ptr", pdata._module.name, pdata.name, at);
     } elif (tstr == "ast_core::Enumeration") {
          assume pdata = unsafe(reinterpret<Enumeration?>(data));
-         
          if (pdata._module == null || empty(pdata._module.name)) return null
          return get_find_in_module_expr("module_find_enumeration", pdata._module.name, pdata.name, at);
     } elif (tstr == "rtti_core::Module") {
          assume cur_mod = unsafe(reinterpret<Module?>(data));
          return find_module_expr(cur_mod.name, at);
-    } elif (tstr == "$::das_string") return create_string_expr(*unsafe(reinterpret<das_string?>(data)));
-    
+    } elif (tstr == "$::das_string") return create_string_expr(*unsafe(reinterpret<das_string?>(data)), at);
     if (info.baseType == Type.tPointer) return convert_pointer_expr(mod, data, info, at);
-    
     if (info.annotation != null && info.annotation.isBasicStructureAnnotation) {
         var field_loc = at;
-        
         if (isExpression(info)) {
             assume fval = unsafe(reinterpret<Expression?>(data));
             field_loc = fval.at;
@@ -454,9 +432,9 @@ def private convert_quote_expr(mod : Module?; var data : uint8 const?; info : Ty
 def convert_quote_to_expression(var arg_expr : Expression?; at : LineInfo) : Expression? {
     let mod = get_module("ast_core");
     assume annotation = mod |> module_find_type_annotation(arg_expr.__rtti);
-    var tp = new TypeDecl(baseType = Type.tHandle, annotation = annotation);
+    var tp = new TypeDecl(at = at, baseType = Type.tHandle, annotation = annotation);
     tp.flags.smartPtr = true;
-    return new ExprAscend(subexpr = convert_quote_expr(mod, unsafe(reinterpret<uint8 const?>(arg_expr)), tp, at));
+    return new ExprAscend(subexpr = convert_quote_expr(mod, unsafe(reinterpret<uint8 const?>(arg_expr)), tp, at), at = at);
 }
 
 class QuoteConverter : AstVisitor {
@@ -467,7 +445,6 @@ class QuoteConverter : AstVisitor {
     def override visitExprQuote(var expr : ExprQuote?) : Expression? {
         astChanged = true
         var conv = convert_quote_to_expression(expr.arguments[0], expr.at)
-        
         var fname = ""
         while (true) {
             fname = "`quote`lowered`{counter}"
@@ -476,8 +453,7 @@ class QuoteConverter : AstVisitor {
         }
         var fn = new Function(at = expr.at, atDecl = expr.at, name := fname,
             flags = FunctionFlags.generated | FunctionFlags.privateFunction)
-        
-        fn.result = expr._type != null ? clone_type(expr._type) : new TypeDecl(baseType = Type.autoinfer)
+        fn.result = expr._type != null ? clone_type(expr._type) : new TypeDecl(at = expr.at, baseType = Type.autoinfer)
         var blk = new ExprBlock(at = expr.at)
         emplace_new(blk.list) <| new ExprReturn(at = expr.at, subexpr = conv)
         fn.body = blk
@@ -490,11 +466,9 @@ class QuoteConverter : AstVisitor {
 class QuotePass : AstPassMacro {
     
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
-        
         let lower = (compiling_program().policies.aot_macros
-            || (compiling_program().policies.jit_enabled && !prog.flags.needMacroModule)
             || (prog._options |> find_arg("aot_macros") ?as tBool ?? false))
-        if (!lower) return false 
+        if (!lower) return false
         var astVisitor = new QuoteConverter(mod = compiling_module())
         make_visitor(*astVisitor) $(astVisitorAdapter) {
             visit(prog, astVisitorAdapter)

@@ -28,8 +28,8 @@ let findItemGeneratorByReceptUid = @(recipeUid)
     @(recipe) recipe.uid == recipeUid
      && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) 
 
-return {
+return freeze({
   registerItemGeneratorClass
   addItemGenerator
   findItemGeneratorByReceptUid
-}
+})

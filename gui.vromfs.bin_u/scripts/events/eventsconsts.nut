@@ -31,9 +31,9 @@ enum GAME_EVENT_TYPE {
 }
 
 
-return {
+return freeze({
   UnitRelevance
   EVENT_TYPE
   EVENTS_SHORT_LB_VISIBLE_ROWS = 3
   GAME_EVENT_TYPE
-}
+})

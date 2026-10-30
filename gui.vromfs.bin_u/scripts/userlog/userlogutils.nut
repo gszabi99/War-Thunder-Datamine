@@ -1,4 +1,9 @@
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/items/trophyMultiAward.nut" import isPrizeMultiAward
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/items/prizesUtils.nut" import hasKnowPrize
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%sqStdLibs/helpers/u.nut" import isTable, isEmpty, isString, appendOnce
 from "%sqstd/underscore.nut" import isArray
 from "%sqstd/datablock.nut" import convertBlk
@@ -8,17 +13,12 @@ from "%scripts/dagui_library.nut" import *
 from "types" import String, Array
 
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { hasKnowPrize } = require("%scripts/items/prizesUtils.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 let haveHiddenItem = @(itemDefId) findItemById(itemDefId)?.isHiddenItem()
 
-let shownUserlogNotifications = mkWatched(persist, "shownUserlogNotifications", [])
+let shownUserlogNotifications = mkHardPersistWatched("userLog.userlogUtils")("shownUserlogNotifications", [])
 
 let logNameByType = {
   [EULT_SESSION_START]                 = "session_start",
@@ -185,7 +185,7 @@ function getBattleRewardTable(containerValue) {
     containerValue.each(@(nestedTbl) rewardTbl.event.extend(
       (typeof(nestedTbl.event) == "table") ? [nestedTbl.event] : nestedTbl.event
     ))
-    rewardTbl.event.sort(@(a, b) (a?.timeFromMissionStart ?? 0) <=> (b?.timeFromMissionStart ?? 0))
+    rewardTbl.event.sortby(@(a) a?.timeFromMissionStart ?? 0)
   }
 
   return rewardTbl
@@ -414,7 +414,7 @@ function collectUserlogItemdefs() {
   inventoryClient.requestItemdefsByIds(res)
 }
 
-return {
+return freeze({
   disableSeenUserlogs
   saveOnlineJob
   getTournamentRewardData
@@ -429,4 +429,4 @@ return {
   isUserlogVisible
   check_new_user_logs
   collectUserlogItemdefs
-}
+})

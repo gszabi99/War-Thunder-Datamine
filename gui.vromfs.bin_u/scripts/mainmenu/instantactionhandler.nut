@@ -1,4 +1,76 @@
+import "%scripts/social/crossplay.nut" as crossplayModule
+import "%scripts/clans/clanVehiclesModal.nut" as clanVehiclesModal
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+import "%scripts/missions/changeStartMission.nut" as changeStartMission
+import "%scripts/gameModes/rbGmTypes.nut" as RB_GM_TYPE
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/time.nut" as time
+import "%scripts/captcha/captchaHandler.nut" as tryOpenCaptchaHandler
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/daguiFonts.nut" import getMaxFontTextByWidth
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/queue/queueTable.nut" import QueueTable
+from "%scripts/gamercard/gamercardDrawer.nut" import GamercardDrawer
+from "%scripts/changeCountry.nut" import ChangeCountry
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler, loadHandler
+from "%scripts/battleRating.nut" import recentBR
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%scripts/tutorials/tutorialsData.nut" import checkDiffTutorial
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/matching/serviceNotifications/nuclearEventHandler.nut" import checkNuclearEvent
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/viewUtils/interfaceCustomization.nut" import getToBattleLocIdShort
+from "%scripts/changelog/changeLogState.nut" import needShowChangelog, openChangelog, requestAllPatchnotes
+from "%scripts/slotbar/slotbarState.nut" import getSelAircraftByCountry, getCurSlotbarUnit
+from "%scripts/slotbar/slotbarStateData.nut" import isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnit
+from "%scripts/hangar/backgroundModelHint.nut" import initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/unit/squadronUnitAction.nut" import isHaveNonApprovedClanUnitResearches
+from "%scripts/user/viralAcquisition.nut" import showViralAcquisitionWnd
+from "%scripts/squads/leaderWwOperationStates.nut" import getLeaderOperationState
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION, USEROPT_COUNTRY
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/events/eventInfo.nut" import getEventEconomicName, isEventPlatformOnlyAllowed
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox, checkSquadMembersMrankDiff, checkCanChangeGameModeAndDo
+from "%scripts/firstChoice/firstChoice.nut" import isCountryAvailable
+from "%scripts/myStats.nut" import isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete, getTimePlayedOnUnitType
+from "%scripts/missions/startMissionsList.nut" import guiStartSessionList, guiStartFlight
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById, getCurrentGameMode, getCurrentEvent, getGameModeById
+  , getGameModeByUnitType, getUnseenGameModeCount, isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
+from "%scripts/gameModes/gameModeManagerView.nut" import getGameModeOnBattleButtonClick
+from "%scripts/crew/crew.nut" import getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit, gui_modal_crew
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
+from "%scripts/crew/crewActions.nut" import unlockCrew
+from "%scripts/missions/missionsStates.nut" import matchSearchGm, currentCampaignMission
+from "%scripts/globalWorldwarUtils.nut" import joinOperationById
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/instantAction.nut" import checkBrokenAirsAndDo
+from "%scripts/events/eventJoinProcess.nut" import EventJoinProcess
+from "%scripts/clans/clanCandidates.nut" import getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
+from "%scripts/chat/chatUtils.nut" import getChatObject
+from "%scripts/user/newbieTutorialDisplay.nut" import needShowTutorial, reqFirstCountryChoice, saveShowedTutorial
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue, isAnyQueuesActive, checkQueueType
+from "%scripts/queue/queueInfo.nut" import getQueueSlots
+from "%scripts/queue/queueManager.nut" import leaveQueue, joinQueue
+from "%scripts/slotbar/slotbarPresets.nut" import canEditCountryPreset
+from "%scripts/utils/popupMessages.nut" import showPopupWndIfNeed
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
@@ -10,6 +82,7 @@ from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb
   , get_invited_players_info, clan_get_my_clan_id
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 from "%scripts/mainmenu/secondGameModesPanel.nut" import setSecondGameModeActive, updateSecondGameModesPanel, deferNotifySecondGameModesStateChanges
@@ -17,83 +90,14 @@ from "%scripts/events/secondGameModesUtils.nut" import getJoinBlockReason, mainM
 from "%scripts/unlocks/personalUnlocks.nut" import getNightBattlesUnlocks
 from "%scripts/rewards/awardsListWnd.nut" import openAwardsListWnd
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { QueueTable } = require("%scripts/queue/queueTable.nut")
-let { GamercardDrawer } = require("%scripts/gamercard/gamercardDrawer.nut")
 let { GameModeSelect } = require("%scripts/gameModes/gameModeSelect.nut")
-let { ChangeCountry } = require("%scripts/changeCountry.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager, get_cur_base_gui_handler, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { recentBR } = require("%scripts/battleRating.nut")
-let clanVehiclesModal = require("%scripts/clans/clanVehiclesModal.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let changeStartMission = require("%scripts/missions/changeStartMission.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { needShowChangelog, openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
-let { getSelAircraftByCountry, getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell } = require("%scripts/hangar/backgroundModelHint.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUnitAction.nut")
-let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let time = require("%scripts/time.nut")
-let { LEADER_OPERATION_STATES, getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
-let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_MP_DOMINATION, USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { canJoinFlightMsgBox, checkSquadMembersMrankDiff, checkCanChangeGameModeAndDo } = require("%scripts/squads/squadUtils.nut")
+let { LEADER_OPERATION_STATES } = require("%scripts/squads/leaderWwOperationStates.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete, getTimePlayedOnUnitType } = require("%scripts/myStats.nut")
-let { guiStartSessionList, guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById, getCurrentGameMode, getCurrentEvent, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount, isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
-let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit, gui_modal_crew } = require("%scripts/crew/crew.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
-let { unlockCrew } = require("%scripts/crew/crewActions.nut")
-let { matchSearchGm, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
-let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd } = require("%scripts/clans/clanCandidates.nut")
-let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { needShowTutorial, reqFirstCountryChoice, saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
-let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
-let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
-let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
-let { canEditCountryPreset } = require("%scripts/slotbar/slotbarPresets.nut")
-let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 
 enum GM_CHANGED_STATUS {
   NONE              = 0,
@@ -400,6 +404,10 @@ let InstantDomination = class (BaseGuiHandlerWT) {
     this.refreshSecondGameModesPanel()
   }
 
+  function onEventUnitMrankSelectionChanged(_params) {
+    this.refreshSecondGameModesPanel()
+  }
+
   function onEventCrewChanged(_params) {
     this.doWhenActiveOnce("checkCountries")
     this.refreshSecondGameModesPanel()
@@ -619,7 +627,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
       return
 
     if (!this.isCrossPlayEventAvailable(event)) {
-      checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+      checkAndShowCrossplayWarning(@() showInfoMsgBox(locByVendor("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
 
@@ -894,7 +902,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
     this.toBattleButtonObj.findObject("to_battle_button_text").setValue(txt)
     this.toBattleButtonObj.isCancel = isCancel ? "yes" : "no"
 
-    this.toBattleButtonObj.fontOverride = daguiFonts.getMaxFontTextByWidth(txt,
+    this.toBattleButtonObj.fontOverride = getMaxFontTextByWidth(txt,
       to_pixels("1@maxToBattleButtonTextWidth"), "bold")
 
     topMenuHandler.get()?.onQueue.call(topMenuHandler.get(), inQueue)
@@ -1478,4 +1486,4 @@ let InstantDomination = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("InstantDomination", InstantDomination)
 
-return { InstantDomination }
+return freeze({ InstantDomination })

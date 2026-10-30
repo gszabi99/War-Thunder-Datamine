@@ -1,26 +1,26 @@
 {
   "model": "fr_1_fireball",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "fmFile": "fm/fr_1_fireball.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_high_common.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_high_common.blk",
   "gyroSight": false,
   "gearSinkRangeLR": 0.334,
   "gearSinkRangeC": 0.224,
   "type": "typeFighter",
   "paratrooper": "usa_para",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "700kph",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map_fr_1_fireball.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map_fr_1_fireball.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
     "armor10": {
       "mgun1_dm": {
@@ -802,57 +802,73 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
         "onKill": [
           {
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 6.0
+            "nothing": 9.0
           },
           {
             "damage": 3.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -2593,27 +2609,27 @@
     "preset": [
       {
         "name": "fr_1_fireball_default",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_default.blk"
       },
       {
         "name": "fr_1_fireball_drop_tanks",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_drop_tanks.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_drop_tanks.blk"
       },
       {
         "name": "fr_1_fireball_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_hvar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_hvar.blk"
       },
       {
         "name": "fr_1_fireball_500lb_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_500lb_hvar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_500lb_hvar.blk"
       },
       {
         "name": "fr_1_fireball_1000lb_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_1000lb_hvar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_1000lb_hvar.blk"
       },
       {
         "name": "fr_1_fireball_mk13_mine_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/fr_1_fireball_mk13_mine_hvar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fr_1_fireball_mk13_mine_hvar.blk"
       }
     ]
   },
@@ -2650,7 +2666,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2661,7 +2677,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2673,7 +2689,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection3",
@@ -2685,7 +2701,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "shell": "emtr_shellrejection4",
@@ -2711,7 +2727,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_5_in_hvar_a.blk",
             "emitter": "5_in_hvar_001",
             "bullets": 1,
             "external": true,
@@ -2732,7 +2748,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_5_in_hvar_a.blk",
             "emitter": "5_in_hvar_002",
             "bullets": 1,
             "external": true,
@@ -2758,7 +2774,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_500_001",
               "bullets": 1,
               "external": true,
@@ -2777,7 +2793,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_1000lb_anm65a1.blk",
               "emitter": "bomb_1000_001",
               "bullets": 1,
               "external": true,
@@ -2796,7 +2812,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "blk": "gamedata/weapons/mines/us_mine_mk13_mod0.blk",
               "emitter": "bomb_1000_001",
               "bullets": 1,
               "external": true,
@@ -2818,7 +2834,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_100gal_drop_tank_1.blk",
+              "blk": "gamedata/weapons/drop_tank/us_100gal_drop_tank_1.blk",
               "emitter": "us_130gal_drop_tank1",
               "bullets": 1,
               "external": true
@@ -2843,7 +2859,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_130gal_drop_tank_1.blk",
+              "blk": "gamedata/weapons/drop_tank/us_130gal_drop_tank_1.blk",
               "emitter": "us_130gal_drop_tank1",
               "bullets": 1,
               "external": true
@@ -2873,7 +2889,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_500_002",
               "bullets": 1,
               "external": true,
@@ -2892,7 +2908,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_1000lb_anm65a1.blk",
               "emitter": "bomb_1000_002",
               "bullets": 1,
               "external": true,
@@ -2911,7 +2927,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+              "blk": "gamedata/weapons/mines/us_mine_mk13_mod0.blk",
               "emitter": "bomb_1000_002",
               "bullets": 1,
               "external": true,
@@ -2933,7 +2949,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_100gal_drop_tank_2.blk",
+              "blk": "gamedata/weapons/drop_tank/us_100gal_drop_tank_2.blk",
               "emitter": "us_130gal_drop_tank2",
               "bullets": 1,
               "external": true
@@ -2958,7 +2974,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_130gal_drop_tank_2.blk",
+              "blk": "gamedata/weapons/drop_tank/us_130gal_drop_tank_2.blk",
               "emitter": "us_130gal_drop_tank2",
               "bullets": 1,
               "external": true
@@ -2983,7 +2999,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_5_in_hvar_a.blk",
             "emitter": "5_in_hvar_003",
             "bullets": 1,
             "external": true,
@@ -3004,7 +3020,7 @@
           },
           "Weapon": {
             "trigger": "rockets",
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_a.blk",
+            "blk": "gamedata/weapons/rocketGuns/us_5_in_hvar_a.blk",
             "emitter": "5_in_hvar_004",
             "bullets": 1,
             "external": true,

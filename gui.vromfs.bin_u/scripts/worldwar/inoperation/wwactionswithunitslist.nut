@@ -1,12 +1,11 @@
+import "%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut" as wwOperationUnitsGroups
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/worldWar/inOperation/model/wwUnit.nut" import WwUnit
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting, getWWConfigurableValue
 from "worldwar" import wwGetSpeedupFactor, wwGetOperationId
 from "%scripts/dagui_library.nut" import *
-
-let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let getForceControlledByAIUnitTypes = memoize(function() {
   let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
@@ -137,7 +136,7 @@ function getMaxFlyTime(unit) {
   return (maxFlyTime * 60 / wwGetSpeedupFactor()).tointeger()
 }
 
-return {
+return freeze({
   loadUnitsFromBlk
   loadUnitsFromNameCountTbl
   loadWWUnitsFromUnitsArray
@@ -146,4 +145,4 @@ return {
   sortUnitsBySortCodeAndCount
   getUnitsListViewParams = kwarg(getUnitsListViewParams)
   getMaxFlyTime
-}
+})

@@ -1,14 +1,14 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/worldWar/inOperation/handler/wwReinforcements.nut" import WwReinforcements
+from "%scripts/worldWar/inOperation/handler/wwCommanders.nut" import WwCommanders
+from "%scripts/worldWar/inOperation/handler/wwArmiesList.nut" import WwArmiesList
+from "%scripts/worldWar/inOperation/handler/wwAirfieldsList.nut" import WwAirfieldsList
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getArmiesCache
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_library.nut" import *
 
-let { WwReinforcements } = require("%scripts/worldWar/inOperation/handler/wwReinforcements.nut")
-let { WwCommanders } = require("%scripts/worldWar/inOperation/handler/wwCommanders.nut")
-let { WwArmiesList } = require("%scripts/worldWar/inOperation/handler/wwArmiesList.nut")
-let { WwAirfieldsList } = require("%scripts/worldWar/inOperation/handler/wwAirfieldsList.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getArmiesCache } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 let g_ww_map_reinforcement_tab_type = {
   types = []

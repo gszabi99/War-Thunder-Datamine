@@ -1,11 +1,11 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "auth_wt" import getCountryCode
 from "%scripts/dagui_library.nut" import *
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-
-let legalRestrictionsChecked = mkWatched(persist, "legalRestrictionsChecked", false)
-let isPurchaseAllowed = mkWatched(persist, "isPurchaseAllowed", true)
+let hardPersistWatched = mkHardPersistWatched("items.itemRestrictions")
+let legalRestrictionsChecked = hardPersistWatched("legalRestrictionsChecked", false)
+let isPurchaseAllowed = hardPersistWatched("isPurchaseAllowed", true)
 
 let countryCodeToLocId = {
   BE = "country_belgium",
@@ -86,7 +86,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) legalRestrictionsChecked.set(false)
 })
 
-return {
+return freeze({
   checkLegalRestrictions
   isHiddenByCountry
-}
+})

@@ -1,96 +1,5 @@
 
 
-@const buttonColor: #ff3a474f;
-@const buttonBorderColor: #ff3a474f;
-@const buttonFontColor: #e0e0e0;
-
-@const buttonColorDisabled: #7f0b0e10;
-@const buttonBorderColorDisabled: #19191919;
-@const buttonFontColorDisabled: #26212121;
-
-@const buttonColorFocus: #8C8C8C8C;
-@const buttonBorderColorFocus: #cccccccc;
-@const buttonFontColorFocus: #181818;
-
-@const buttonColorHover: #ffe0e0e0;
-@const buttonBorderColorHover: #ffe0e0e0;
-@const buttonFontColorHover: #181818;
-
-@const buttonColorPushed: #99020509;
-@const buttonBorderColorPushed: #9907090b;
-@const buttonFontColorPushed: #908f8f;
-
-@const buttonColorPurchase: #f6833a;
-@const buttonFontColorPurchase: #feebb3;
-@const buttonWinkColorPurchase: #00f29b4b;
-@const buttonGlanceColorPurchase: #002a2217;
-
-@const buttonColorSecondary: #bbbec8;
-@const buttonFontColorSecondary: #d0f2ff;
-@const buttonWinkColorSecondary: #000170a1;
-
-@const buttonColorTranslucent:       #2d051527;
-@const buttonColorTranslucentHover:  #8d051527;
-@const buttonColorTranslucentPushed: #d8051527;
-
-@const buttonHeaderTextColor: #e0e0e0;
-
-@const buttonCloseColorHover: #ffb2391d;
-@const buttonCloseColorPushed: #996a2211;
-
-@const goldButtonColor:         #4f312d;
-@const goldButtonHoverColor:    #7e592e;
-@const goldButtonPushedColor:   #33292e;
-
-@const buttonImageHoverColor:   #181818;
-
-@const eSBattleBtnColor:         #bc1313;   @const eSBattleBtnColorHover:    #ff3b00;   @const eSBattleBtnColorPushed:   #910b0b;   @const eSBattleBtnColorDisabled: #efbc1313; 
-
-
-
-@const nav_button_font:            @fontNormal;
-@const nav_button_accented_font:   @fontNormalBold;
-
-
-@const buttonTextPadding: 0.5*@scrn_tgt/100.0;
-@const bigButtonTextPadding: 0.01@sf;
-@const buttonImgPadding: (1@dp + 3*@sf/@pf)\1;
-@const smallButtonImgPadding: (1@dp + 2*@sf/@pf)\1;
-
-
-@const buttonWidth: 2 * (0.16*@sf\2);
-@const bigButtonWidth: 0.25*@sf\1;
-@const buttonHeight: @cIco + 2@buttonImgPadding;
-@const battleButtonHeight: 20*@sf/@pf_outdated + 3*@scrn_tgt/100.0;
-@const slotBattleButtonHeight: 3*@scrn_tgt/100.0;
-@const bigButtonHeight: 1@frameHeaderHeight - 2@frameHeaderPad;
-@const smallButtonHeight: 1@sIco + 2@smallButtonImgPadding;
-
-@const navBarBattleButtonHeight: (38@sf/@pf)\1 + 2@buttonImgPadding;
-@const navBarBattleButtonMinWidth: 1.3 * (2 * (0.16*@sf\2));
-
-@const buttonMargin: @blockInterval;
-@const smallButtonMargin: 1@dp;
-@const additionalButtonHeight: 0.7@buttonHeight;
-
-@const buttonIconHeight: @cIco + 5*@sf/@pf_outdated;
-
-@const topMenuButtonWidth: 0.15@sf;
-
-@const topMenuBattleButtonHeight: 0.055@sf;
-
-@const buttonCloseHeight: @bigButtonHeight;
-@const smallButtonCloseHeight: @smallButtonHeight;
-
-@const buttonImgMargin: 0.2*@scrn_tgt/100.0;
-
-@const buttonImgSvgHeight: 100@dp;
-
-@const trashButtonHeight: 28@sf/@pf;
-@const trashButtonHeight: 1@cIco;
-
-@const keyboardHintButtonHeight: 1@buttonHeight - 4@sf/@pf;
-
 ButtonImg
 {
   re-type:9rect;
@@ -212,12 +121,6 @@ Button_text[type=wwArmyFlyOut]
   position:relative;
   noMargin:yes;
   mouse-pointer-centering:10, 50;
-}
-
-tr[hotkeyOpt=yes] > td > Button_text {
-  max-width:0.5*(1@optContainerControlWidth-1@blockInterval);
-  margin-right:1@blockInterval;
-  mouse-pointer-centering:20, 50;
 }
 
 top_right_holder > Button_text {
@@ -1505,7 +1408,6 @@ Button_text.battle[inactiveColor=yes] > textarea
 }
 
 rightClickMenu > Button_text > ButtonImg,
-LoginCheckBoxesBlock CheckBox > ButtonImg,
 button > ButtonImg,
 ButtonImg[showOnSelect],
 selImg > Button_text[showOnSelect=yes] {
@@ -1518,8 +1420,6 @@ selImg > Button_text[showOnSelect=yes] {
 
 [selected=yes] > selImg > Button_text[showOnSelect=yes],
 rightClickMenu > Button_text:focus > ButtonImg[pc_style=no],
-[show_console_buttons=yes] LoginCheckBoxesBlock CheckBox:focus > ButtonImg,
-[show_console_buttons=yes] LoginCheckBoxesBlock CheckBox:hover > ButtonImg,
 [show_console_buttons=yes] button:focus > ButtonImg,
 [show_console_buttons=yes] button[selected=yes] > ButtonImg,
 [show_console_buttons=yes] button[showConsoleImg=yes][btnName] > ButtonImg,
@@ -2261,7 +2161,7 @@ Button_text[externalLink=yes]:hover > activeText > underline,
 Button_text[externalLink=yes]:focus > activeText > underline,
 Button_text[externalLink=yes]:hover > btnText > underline,
 Button_text[externalLink=yes]:focus > btnText > underline,
-Button_text[externalLink=yes]:[selected=yes] > btnText > underline {
+Button_text[externalLink=yes][selected=yes] > btnText > underline {
   background-color:@linkTextHoverColor;
 }
 
@@ -2497,12 +2397,6 @@ navMiddle > Button_text {
   margin-bottom:0;
 }
 
-.singleLine navLeft > Button_text,
-.singleLine navRight > Button_text,
-.singleLine navMiddle > Button_text {
-  pos:0, 0;
-}
-
 bottomNavPlace  Button_text,
 frame navLeft > Button_text,
 frame navRight > Button_text,
@@ -2514,17 +2408,6 @@ authorizationBlock > Button_text {
   margin:0, 1@buttonMargin;
   left:50%pw-50%w;
   position:relative;
-}
-
-.authorization > Button_text {
-  width: pw;
-  height: 1@navBarBattleButtonHeight;
-  margin:0;
-  left:50%pw-50%w;
-}
-
-.authorization > Button_text[position=absolute] {
-  width:pw - 2@framePadding;
 }
 
 Button_text[scaleble=yes] {
@@ -2865,10 +2748,6 @@ Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
 
 tr[optContainer=yes] Button_text {
   min-width:@optContainerControlWidth;
-}
-
-tr[optContainer=yes] Button_text.systemOption {
-  min-width:1@systemOptContainerControlWidth;
 }
 
 [disabled=yes] Button_text {

@@ -1,3 +1,15 @@
+import "%scripts/userLog/getUserLogBattleRewardsTable.nut" as getBattleRewards
+import "%scripts/userLog/getUserLogBattleRewardTooltip.nut" as getUserLogBattleRewardTooltip
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/money.nut" import Cost
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName
+from "%scripts/items/boosterEffect.nut" import getActiveBoostersDescription
+from "%scripts/userLog/unitNameSymbolRestrictions.nut" import getClearUnitName
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/missions/missionsText.nut" import getMissionName
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+from "%scripts/userLog/userlogUtils.nut" import getLogNameByType, updateRepairCost
 from "%sqStdLibs/helpers/toString.nut" import intToHexString
 from "%sqstd/math.nut" import roundToDigits
 from "string" import format
@@ -5,21 +17,9 @@ from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
-let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
-let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getMissionName } = require("%scripts/missions/missionsText.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { getLogNameByType, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 
 const tab = "    "
 
@@ -388,6 +388,6 @@ function get_userlog_plain_text(logObj) {
   return resultText
 }
 
-return {
+return freeze({
   get_userlog_plain_text
-}
+})

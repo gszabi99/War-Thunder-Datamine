@@ -2005,7 +2005,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_wa316ld.blk",
+        "blk": "gamedata/sensors/su_wa316ld.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -2015,7 +2015,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/su_wg_319.blk",
+        "blk": "gamedata/sensors/su_wg_319.blk",
         "turretIndex": 0,
         "dmPart": "optic_gun_dm"
       }
@@ -2026,7 +2026,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_type_76_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_type_76_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2078,13 +2078,18 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
-            "fire_control_system_01_dm"
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
-            "fire_control_system_01_dm"
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
           "shootingDmPart": [
             "fire_control_system_dm",
@@ -2323,7 +2328,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_type_76_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_type_76_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2380,13 +2385,18 @@
           ],
           "verDriveDm": [
             "drive_turret_v_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
-            "fire_control_system_01_dm"
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
-            "fire_control_system_01_dm"
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
           "shootingDmPart": [
             "fire_control_system_dm",
@@ -2621,8 +2631,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_pgz_88_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_pgz_88_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2686,7 +2696,10 @@
       "model": "12150L"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.42,
       "maxBrakeForce": 144000.0,
       "driveGearRadius": 0.28345,
       "mainGearRatio": 0.7,
@@ -2716,7 +2729,18 @@
         120000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -3603,7 +3627,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_wa316ld.blk",
+              "blk": "gamedata/sensors/su_wa316ld.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -3613,7 +3637,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/su_wg_319.blk",
+              "blk": "gamedata/sensors/su_wg_319.blk",
               "turretIndex": 0,
               "dmPart": "optic_gun_dm"
             }

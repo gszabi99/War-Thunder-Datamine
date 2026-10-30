@@ -2,6 +2,7 @@ from "%sqStdLibs/helpers/toString.nut" import toString
 from "types" import Table, Array, String, Function
 
 function isTable(v) {return v instanceof Table}
+function isInstance(v) {return type(v) == "instance"}
 function isArray(v) {return v instanceof Array}
 function isString(v) {return v instanceof String}
 function isFunction(v) {return v instanceof Function}
@@ -48,7 +49,7 @@ function getCachedType(propName, propValue, cacheTable, enumTable, defaultVal, c
   }
 
   foreach (typeTbl in enumTable.types) {
-    if (!isTable(typeTbl))
+    if (!isTable(typeTbl) && !isInstance(typeTbl))
       continue
 
     local valueArr = getPropValue(propName, typeTbl)
@@ -119,9 +120,48 @@ function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey 
   }
 }
 
+
+
+
+
+function addTypesAsInstances(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null) {
+  let { template = {}, types = null } = enumTable
+  if (!(types instanceof Array)) {
+    assertOnce(
+      "Not found types array",
+      $"Unable to find 'types' array in enum table /*typesToAdd = {toString(typesToAdd, 2)}*/")
+    return
+  }
+
+  let typeClass = class {}
+  foreach (key, value in template) {
+    typeClass[key] <- null 
+    typeClass[key] <- value
+  }
+  foreach (typeDefinition in typesToAdd)
+    foreach (key, _ in typeDefinition)
+      if (key not in typeClass)
+        typeClass[key] <- null
+  if (addTypeNameKey != null && addTypeNameKey not in typeClass)
+    typeClass[addTypeNameKey] <- null
+
+  foreach (typeName, typeDefinition in typesToAdd) {
+    let typeObj = typeClass()
+    foreach (key, value in typeDefinition)
+      typeObj[key] = value
+    enumTable[typeName] <- typeObj
+    types.append(typeObj)
+    if (addTypeNameKey)
+      typeObj[addTypeNameKey] = typeName
+    if (typeConstructor != null)
+      typeConstructor.call(typeObj)
+  }
+}
+
 return freeze({
   enumsGetCachedType = getCachedType
   enumsAddTypes = addTypes
+  enumsAddTypesAsInstances = addTypesAsInstances
 
   
   getCachedType

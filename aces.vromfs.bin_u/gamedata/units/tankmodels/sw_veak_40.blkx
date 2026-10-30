@@ -2058,7 +2058,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_Lva_kan_m48_VEAK_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_Lva_kan_m48_VEAK_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2309,7 +2309,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_Lva_kan_m48_VEAK_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_Lva_kan_m48_VEAK_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2563,7 +2563,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "aimingFromBoneGun": true,
@@ -2617,13 +2617,13 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_veak_40_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_veak_40_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/uk_marconi_s_400.blk",
+      "blk": "gamedata/sensors/uk_marconi_s_400.blk",
       "turretIndex": -1,
       "designationFromBody": true,
       "designationTurretIndex": -1,
@@ -3780,5 +3780,29 @@
     "hasTurretView": true,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 5.0
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.078,
+      1.1794,
+      1.3905
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

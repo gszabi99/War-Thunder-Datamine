@@ -1,15 +1,14 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/unit/unitClassType.nut" import getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode
 from "%sqStdLibs/helpers/u.nut" import isArray, isTable, isString
 from "string" import format
 from "%sqstd/math.nut" import number_of_set_bits, round
 from "mission" import get_mplayer_by_userid, get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-
-let time = require("%scripts/time.nut")
-let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let allEsUnitTypes = [
   ES_UNIT_TYPE_AIRCRAFT,

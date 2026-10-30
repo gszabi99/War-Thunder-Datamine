@@ -435,6 +435,12 @@
           {
             "value": "",
             "digits": 0,
+            "var": "air_target05",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
             "var": "bdt_balance_level_tmp",
             "input_var": "target_rank"
           }
@@ -2042,16 +2048,30 @@
         "wait": {
           "time": 0.2
         },
-        "varSetString": {
-          "value": "flight_way_points_04",
-          "var": "flight_way_name"
-        },
-        "varAddString": {
-          "value": "",
-          "digits": 0,
-          "var": "flight_way_name",
-          "input_var": "target_rank"
-        },
+        "varSetString": [
+          {
+            "value": "flight_way_points_04",
+            "var": "flight_way_name"
+          },
+          {
+            "value": "flight_point05",
+            "var": "flight_point_spawn_name"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "flight_way_name",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "flight_point_spawn_name",
+            "input_var": "target_rank"
+          }
+        ],
         "unitSetRoute": {
           "route": "@flight_way_name",
           "object_var_name": "",
@@ -2064,7 +2084,80 @@
           "target": "@air_target04"
         },
         "triggerEnable": {
-          "target": "respawn_plane4"
+          "target": [
+            "respawn_plane4",
+            "spawn_plane5"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "spawn_plane5": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@air_target05",
+            "type": "unit"
+          },
+          {
+            "target": "@flight_point_spawn_name",
+            "type": "area"
+          }
+        ]
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "@air_target05",
+          "cannotShoot": true
+        },
+        "unitRespawn": {
+          "delay": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@air_target05",
+          "target": "@flight_point_spawn_name"
+        },
+        "wait": {
+          "time": 0.2
+        },
+        "varSetString": {
+          "value": "flight_way_points_05",
+          "var": "flight_way_name"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 0,
+          "var": "flight_way_name",
+          "input_var": "target_rank"
+        },
+        "unitSetRoute": {
+          "route": "@flight_way_name",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "teleportToStart": false,
+          "object": "@air_target05"
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "@air_target05"
+        },
+        "triggerEnable": {
+          "target": "respawn_plane5"
         }
       },
       "else_actions": {}
@@ -2476,6 +2569,71 @@
       },
       "else_actions": {}
     },
+    "respawn_plane5": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "all",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "@air_target05"
+        }
+      },
+      "actions": {
+        "wait": [
+          {
+            "time": 5.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": "@air_target05"
+        },
+        "varSetString": {
+          "value": "flight_point05",
+          "var": "flight_point_spawn_name"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 0,
+          "var": "flight_point_spawn_name",
+          "input_var": "target_rank"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@air_target05",
+          "target": "@flight_point_spawn_name"
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "@air_target05"
+        }
+      },
+      "else_actions": {}
+    },
     "reload_missiles": {
       "is_enabled": true,
       "comments": "",
@@ -2641,6 +2799,7 @@
     "air_target02": "flight_target02_",
     "air_target03": "flight_target03_",
     "air_target04": "flight_target04_",
+    "air_target05": "flight_target05_",
     "target_tank_status": "",
     "name_assemble_trigger": "check_exist",
     "aircraft_ship_name": "",

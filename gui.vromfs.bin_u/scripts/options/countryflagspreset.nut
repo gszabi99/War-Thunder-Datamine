@@ -1,14 +1,14 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqstd/datablock.nut" import eachParam
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 let countryFlagsPreset = {}
 let getCountryFlagImg = @(id) countryFlagsPreset?[id] ?? ""
@@ -45,9 +45,9 @@ initCountryFlagsPreset()
 let getCountryFlagForUnitTooltip = @(id) countryFlagsPreset?[$"{id}_unit_tooltip"]
   ?? $"#ui/images/flags/unit_tooltip/{id}.avif:0:P"
 
-return {
+return freeze({
   getCountryFlagForUnitTooltip
   getCountryFlagImg
   getCountryIcon
   hasCountryIcon
-}
+})

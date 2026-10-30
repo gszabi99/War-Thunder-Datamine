@@ -1,3 +1,5 @@
+from "%scripts/controls/mousePointerVisibility.nut" import isMouseCursorVisible
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
@@ -13,8 +15,6 @@ from "%scripts/dagui_library.nut" import *
 
 
 
-let { isMouseCursorVisible } = require("%scripts/controls/mousePointerVisibility.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MOUSE_POINTER_SHOWN_RECENTLY_MS = 250
 
@@ -55,7 +55,7 @@ function setMousePointerInitialPosOnChildByValue(obj) {
   return setMousePointerInitialPos(obj.getChild(idx))
 }
 
-return {
+return freeze({
   setMousePointerInitialPos
   setMousePointerInitialPosOnChildByValue
-}
+})

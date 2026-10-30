@@ -8,9 +8,10 @@ require PhysMat
 require Dacoll
 require gameLibs.pufd_events.pufd_events
 require sound_utils.modules.sound_trace_common
+require sound_utils.modules.sound_control_common
 require gpuReadbackQuery
 require landMesh
-require puddleQueryManager
+require PuddleQueryManager
 require DagorSystem
 
 
@@ -31,9 +32,10 @@ def sound_biome_puddle_queries_appear(evt : Event;
   sound_biome_puddle_queries__puddleQueryId = invalid_query_id()
 
 
-[es(tag=sound, after=sound_begin_update_es, before=sound_end_update_es)]
+[es(tag=sound, after=(sound_begin_update_es, sound_control_update), before=sound_end_update_es)]
 def sound_biome_puddle_queries_update(info : ParallelUpdateFrameDelayed;
                                       is_watched_sound : bool = false;
+                                      sound_control__state : int = default_sound_control_state();
                                       transform : float3x4;
 
                                       sound_biome_puddle_queries_vars__speedSq : float;
@@ -91,7 +93,8 @@ def sound_biome_puddle_queries_update(info : ParallelUpdateFrameDelayed;
           sound_biome_puddle_queries__puddleQueryToDepth.x, sound_biome_puddle_queries__puddleQueryToDepth.y,
           sound_biome_puddle_queries__puddleQueryToDepth.z, sound_biome_puddle_queries__puddleQueryToDepth.w)
 
-  else
+  elif have_sound(sound_control__state)
+
     var interval = -1.
     if !isInAir
       if sound_biome_puddle_queries_vars__speedSq >= square(sound_biome_puddle_queries__zeroSpeedThreshold)
@@ -127,3 +130,7 @@ def sound_biome_puddle_queries_update(info : ParallelUpdateFrameDelayed;
       else
         sound_biome_puddle_queries__biomeId = -1
         sound_biome_puddle_queries__puddleDepth = 0.
+
+  else 
+    sound_biome_puddle_queries__biomeId = -1
+    sound_biome_puddle_queries__puddleDepth = 0.

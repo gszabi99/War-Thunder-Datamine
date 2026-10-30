@@ -154,7 +154,7 @@ function planeRwrSwitcher(posWatched, sizeWatched, colorWatched, scaleDef, backH
   }
 }
 
-return {
+return freeze({
   planeRwrSwitcher
   rwrSettingUpd
-}
+})

@@ -1,16 +1,15 @@
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/g_listener_priority.nut" as LISTENER_PRIORITY
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksWhereInBlkOrder, getUnlockById
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockMainCondDescByCfg, getUnlockCondsDescByCfg
+from "%scripts/unlocks/unlocksConditions.nut" import getProgressBarData
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened, canOpenUnlockManually
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode, getRequiredUnitTypes
+from "%scripts/seen/bhvUnseen.nut" import makeConfigStr
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
-import "%scripts/g_listener_priority.nut" as LISTENER_PRIORITY
-
-let { getAllUnlocksWithBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { buildConditionsConfig, getUnlockMainCondDescByCfg, getUnlockCondsDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
-let { getProgressBarData } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isUnlockOpened, canOpenUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
-let { getCurrentGameMode, getRequiredUnitTypes } = require("%scripts/gameModes/gameModeManagerState.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 
 const CMH_CHAPTER = "commanders_handbook"
 
@@ -28,7 +27,7 @@ local cmhGroupsCache = null
 
 function getAllCmhUnlocks() {
   if (cmhUnlocksCache == null)
-    cmhUnlocksCache = getAllUnlocksWithBlkOrder().filter(@(blk) blk?.chapter == CMH_CHAPTER)
+    cmhUnlocksCache = getUnlocksWhereInBlkOrder("chapter == $chapter", { chapter = CMH_CHAPTER })
   return cmhUnlocksCache
 }
 
@@ -152,7 +151,7 @@ addListenersWithoutEnv({
   }
 }, LISTENER_PRIORITY.CONFIG_VALIDATION)
 
-return {
+return freeze({
   CMH_CHAPTER
   getCurrentCmhGroup
   getAllCmhGroups
@@ -163,4 +162,4 @@ return {
   getCmhUnlockProgressData
   mkCmhUnseenCfg
   hasCmhUnclaimedReward
-}
+})

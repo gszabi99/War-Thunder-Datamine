@@ -1,22 +1,21 @@
+import "%scripts/weaponry/prepareUnitsForPurchaseMods.nut" as prepareUnitsForPurchaseMods
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/researches/finishedResearches.nut" import researchUnitNotification
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
 from "eventbus" import eventbus_subscribe
 from "console" import register_command
 from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, shop_get_units_list_with_autoset_modules, get_auto_buy_modifications, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { researchUnitNotification } = require("%scripts/researches/finishedResearches.nut")
-let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-
 let { RESEARCHED_MODE_FOR_CHECK, RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 
-let researched_items_table = persist("researched_items_table", @() [])
-let abandoned_researched_items_for_session = persist("abandoned_researched_items_for_session", @() [])
+let researched_items_table = []
+let abandoned_researched_items_for_session = mkHardPersist("researches.researchActions")("abandoned_researched_items_for_session", [])
 
 eventbus_subscribe("on_sign_out", @(...) abandoned_researched_items_for_session.clear())
 
@@ -149,6 +148,6 @@ register_command(
     name = "v_156_b1", prevMod = "new_radiator"}),
   "showModificationFinishedResearchWnd")
 
-return {
+return freeze({
   checkNonApprovedResearches
-}
+})

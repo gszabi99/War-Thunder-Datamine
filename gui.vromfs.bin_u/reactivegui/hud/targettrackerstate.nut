@@ -14,6 +14,11 @@ let TargetY = Watched(0.0)
 let TargetInZone = Watched(true)
 
 
+let HmdTargetX = Watched(0.0)
+let HmdTargetY = Watched(0.0)
+let HmdTargetVisible = Watched(false)
+
+
 let targetTrackerState = {
   HasTargetTracker
   IsSightLocked
@@ -26,6 +31,10 @@ let targetTrackerState = {
   TargetX
   TargetY
 
+  HmdTargetX
+  HmdTargetY
+  HmdTargetVisible
+
   TargetInZone
 }
 
@@ -35,4 +44,4 @@ interopGen({
   postfix = "Update"
 })
 
-return targetTrackerState
+return freeze(targetTrackerState)

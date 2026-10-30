@@ -1,5 +1,24 @@
+import "%scripts/time.nut" as time
+import "%scripts/utils/systemMsg.nut" as systemMsg
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+import "%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut" as wwOperationUnitsGroups
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import getCurPreset, getBestAvailableUnitByGroup, getWarningTextTbl
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/missions/missionsText.nut" import getMissionLocName
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/worldWar/inOperation/model/wwUnit.nut" import WwUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting, getWWConfigurableValue
+from "%scripts/squads/squadUtils.nut" import canJoinByMySquad, getMemberStatusLocId, getSquadMembersAvailableUnitsCheckingData
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getAllOperationUnitsBySide
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getOppositeSide, getOperationTimeSec
+from "%scripts/worldWar/worldWarState.nut" import registerWwBattleClass
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "math" import abs, floor
 from "dagor.math" import Point2
@@ -15,29 +34,10 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 from "%scripts/utils/systemMsg.nut" import COLOR_TAG
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let time = require("%scripts/time.nut")
-let systemMsg = require("%scripts/utils/systemMsg.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let { getCurPreset, getBestAvailableUnitByGroup, getWarningTextTbl } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleJoinProcess } = require("%scripts/worldWar/worldWarBattleJoinProcess.nut")
-let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { canJoinByMySquad, getMemberStatusLocId, getSquadMembersAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { getOppositeSide, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { registerWwBattleClass } = require("%scripts/worldWar/worldWarState.nut")
 
 
 const WW_BATTLES_SORT_TIME_STEP = 120
@@ -466,11 +466,7 @@ let WwBattle = class {
   }
 
   function checkAvailableSquadUnitsAdequacy(membersCheckingDatas, remainUnits) {
-    membersCheckingDatas.sort(function(a, b) {
-                                if (a.unitsCountUnderLimit != b.unitsCountUnderLimit)
-                                  return a.unitsCountUnderLimit > b.unitsCountUnderLimit ? -1 : 1
-                                return 0
-                              })
+    membersCheckingDatas.sortby(@(a) -a.unitsCountUnderLimit)
 
     for (local i = membersCheckingDatas.len() - 1; i >= 0; i--)
       if (membersCheckingDatas[i].unitsCountUnderLimit >= membersCheckingDatas.len())

@@ -4,8 +4,8 @@ from "%rGui/globals/ui_library.nut" import *
 let mkWatchedSetAndStorage = mkTriggerableLatestWatchedSetAndStorage(gui_scene.updateCounter)
 let mkFrameIncrementObservable = mkLatestByTriggerStream(gui_scene.updateCounter)
 
-return {
+return freeze({
   mkWatchedSetAndStorage
   mkFrameIncrementObservable
   MK_COMBINED_STATE
-}
+})

@@ -1,3 +1,12 @@
+import "%scripts/user/steamRateGameWnd.nut" as steamOpenReviewWnd
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/onlineShop/entitlementsShopData.nut" import getShopItem
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/myStats.nut" import isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/platform.nut" import is_gdk
@@ -11,25 +20,17 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec } = require("%scripts/myStats.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 let logP = log_with_prefix("[ShowRate] ")
-let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) 
+let hardPersistWatched = mkHardPersistWatched("user.suggestionRateGame")
+let needShowRateWnd = hardPersistWatched("needShowRateWnd", false) 
 
-let winsInARow = mkWatched(persist, "winsInARow", 0)
-let haveMadeKills = mkWatched(persist, "haveMadeKills", false)
-let havePurchasedSpecUnit = mkWatched(persist, "havePurchasedSpecUnit", false)
-let havePurchasedPremium = mkWatched(persist, "havePurchasedPremium", false)
+let winsInARow = hardPersistWatched("winsInARow", 0)
+let haveMadeKills = hardPersistWatched("haveMadeKills", false)
+let havePurchasedSpecUnit = hardPersistWatched("havePurchasedSpecUnit", false)
+let havePurchasedPremium = hardPersistWatched("havePurchasedPremium", false)
 
 const RATE_WND_SAVE_ID = "seen/rateWnd"
 const RATE_WND_TIME_SAVE_ID = "seen/rateWndTime"
@@ -336,8 +337,8 @@ addPromoAction("steam_popup",
   }
 )
 
-return {
+return freeze({
   setNeedShowRate
   checkShowRateWnd
   tryOpenSteamRateReview
-}
+})

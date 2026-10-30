@@ -15,10 +15,6 @@ require daslib/regex_boost
 
 let verbose = false 
 
-
-
-
-
 struct ExEnum {
     
     name : string
@@ -92,10 +88,6 @@ var all_keywords = fixed_array<string>(
     "int",      "int8",     "int16",    "int64",    "int2",     "int3",     "int4",
     "bool"
 );
-
-
-
-
 
 enum ScopeKind {
     
@@ -253,7 +245,7 @@ def onInner(var root) {
 }
 
 
-[sideeffects] 
+[sideeffects]
 def onLinkageSpec(var root) {
     
     if (!allow_extern_c || !root |> key_exists("inner")) return
@@ -324,7 +316,7 @@ def onVar(var root) {
     
     let name = root["name"] as _string
     let fullName = getCppName(name)
-    let mangledName = root["mangledName"] as _string 
+    let mangledName = root["mangledName"] as _string
     let qualType = getQualType(root)
     if (verbose) {
         print("global variable {name} // {fullName}\n// {mangledName}\n// {qualType}\n")
@@ -416,7 +408,7 @@ def onFunctionBody(var root; isMethod : bool; ofClass : string = "") : ClangFunc
     
     let name = root["name"] as _string
     let fullName = getCppName(name)
-    let mangledName = root["mangledName"] as _string 
+    let mangledName = root["mangledName"] as _string
     let qualType = getQualType(root)
     if (verbose) {
         print("function {name} // {fullName}\n// {mangledName}\n// {qualType}\n")
@@ -698,22 +690,7 @@ def genStructs(hf, mf, df : FILE const?) {
     }
     fprint(mf, "\n")
     for (st in values(ast.structs)) {
-        
-        
         if (!needToGenStruct(st) || alias_types |> key_exists(st.cppName)) continue
-        
-
-
-
-
-
-
-
-
-
-
-
-
         fprint(df, "#ifdef {getDefinePrefix(st.cppName)}\n")
         fprint(df, "auto ann_{st.name} = make_smart<{st.name}_GeneratedAnnotation>(lib);\n")
         fprint(df, "addAnnotation(ann_{st.name});\n")
@@ -729,7 +706,7 @@ def genStructs(hf, mf, df : FILE const?) {
         fprint(mf, "\t\}\n")
         fprint(mf, "\tvoid init () \{\n")
         for (fld in st.fields) {
-            if (!needToGenField(fld) || fld.isBitfield) continue  
+            if (!needToGenField(fld) || fld.isBitfield) continue
             var substType = ""
             substitute_field_types |> get("{st.cppName}::{fld.cppName}") $(val) {
                 substType = val
@@ -941,7 +918,7 @@ def getDefinePrefix(xname : string) {
 
 var gen_fn_callback : lambda<(fn : ClangFunc) : void> 
 
-def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {
+def genFunction(fn : ClangFunc; castbind : bool; df : FILE const?) {   
     
     var bind_enchantation = ""
     var cpp_enchantation = ""
@@ -1099,7 +1076,6 @@ def bindHeaders(fname, outprefix : string) {
                     var root & = unsafe(json as _object)
                     verify(root["kind"] |> is_str <| "TranslationUnitDecl")
                     onInner(root)
-                    
                     fopen("{outprefix}.h", "wb") $(hf) {
                         fwrite(hf, "#pragma once\n\n")
                         fopen("{outprefix}.inc", "wb") $(df) {
@@ -1135,21 +1111,19 @@ def getGenConstType(name, default_name : string) {
     return const_type_table?[name] ?? default_name
 }
 
-def searchAndGenConst(var regex_def : Regex; defTName, suffix : string; ofs : table<int; bool>; data : string; var dup : table<string; bool>; hf : FILE const?) {
+def searchAndGenConst(var regex_def : Regex; defTName, suffix : string; data : string; var dup : table<string; bool>; hf : FILE const?) {
     
-    regex_foreach(regex_def, data) $(r) {
-        if (!ofs |> key_exists(r.x)) {
-            let DEF = regex_group(regex_def, 1, data)
-            let VAL = regex_group(regex_def, 2, data)
-            if (!blocked_defines_table |> key_exists(DEF)) {
-                if (is_const_blocked == null || !invoke(is_const_blocked, DEF)) {
-                    let ctt = getGenConstType(DEF, defTName)
-                    if (!dup[DEF]) {
-                        fprint(hf, "addConstant<{ctt}>(*this,\"{DEF}\",{ctt}({VAL}{suffix}));\n")
-                        dup[DEF] = true
-                    } else {
-                        print("const: duplicate {DEF}\n")
-                    }
+    regex_foreach(regex_def, data) $(_r) {
+        let DEF = regex_group(regex_def, 1, data)
+        let VAL = regex_group(regex_def, 2, data)
+        if (!blocked_defines_table |> key_exists(DEF)) {
+            if (is_const_blocked == null || !invoke(is_const_blocked, DEF)) {
+                let ctt = getGenConstType(DEF, defTName)
+                if (!dup[DEF]) {
+                    fprint(hf, "addConstant<{ctt}>(*this,\"{DEF}\",{ctt}({VAL}{suffix}));\n")
+                    dup[DEF] = true
+                } else {
+                    print("const: duplicate {DEF}\n")
                 }
             }
         }
@@ -1178,15 +1152,14 @@ def genDefineConstants(fnames : array<string>; prefix : string) {
                 if (f == null) {
                     panic("can't open {fname}")
                 }
-                let ofs : table<int; bool>
                 let data = fread(f)
                 var dup : table<string; bool>
-                searchAndGenConst(reg_def_hex, "uint32_t", "u", ofs, data, dup, hf)
-                searchAndGenConst(reg_def_dec, "int32_t", "", ofs, data, dup, hf)
-                searchAndGenConst(reg_def_UINT8, const_uint8_type, "u", ofs, data, dup, hf)
-                searchAndGenConst(reg_def_UINT16, const_uint16_type, "u", ofs, data, dup, hf)
-                searchAndGenConst(reg_def_UINT32, "uint32_t", "u", ofs, data, dup, hf)
-                searchAndGenConst(reg_def_UINT64, "uint64_t", "ul", ofs, data, dup, hf)
+                searchAndGenConst(reg_def_hex, "uint32_t", "u", data, dup, hf)
+                searchAndGenConst(reg_def_dec, "int32_t", "", data, dup, hf)
+                searchAndGenConst(reg_def_UINT8, const_uint8_type, "u", data, dup, hf)
+                searchAndGenConst(reg_def_UINT16, const_uint16_type, "u", data, dup, hf)
+                searchAndGenConst(reg_def_UINT32, "uint32_t", "u", data, dup, hf)
+                searchAndGenConst(reg_def_UINT64, "uint64_t", "ul", data, dup, hf)
             }
         }
     }

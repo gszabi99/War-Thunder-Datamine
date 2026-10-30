@@ -42,7 +42,7 @@ function getTexSetString(item) {
   return "".join(list)
 }
 
-return {
+return freeze({
   getTexReplaceString
   getTexSetString
-}
+})

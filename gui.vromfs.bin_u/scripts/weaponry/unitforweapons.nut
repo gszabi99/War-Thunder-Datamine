@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
-let unitNameForWeapons = mkWatched(persist, "unitNameForWeapons", "")
+let unitNameForWeapons = mkHardPersistWatched("weaponry.unitForWeapons")("unitNameForWeapons", "")
 
-return {
+return freeze({
   unitNameForWeapons
-}
+})

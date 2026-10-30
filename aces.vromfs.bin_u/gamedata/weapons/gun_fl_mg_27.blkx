@@ -1,10 +1,4 @@
 {
-  "weaponType": 1,
-  "maxDeltaAngle": 0.044,
-  "shotFreq": 20.0,
-  "traceFreq": 4,
-  "bullets": 500,
-  "mass": 10.1,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.044,
+  "shotFreq": 20.0,
+  "bullets": 500,
+  "mass": 10.1,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        9.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0113,
@@ -425,7 +437,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -1648,7 +1660,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -2466,7 +2478,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     }
   },
@@ -2880,25 +2892,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "mg81_gun_outside",
-    "cockpit": "mg81_gun_inside",
-    "ai": "mg81_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        9.0,
-        0.05
-      ]
-    ]
-  },
   "fl_mg_27_new_gun": {
     "maxDeltaAngle": 0.075,
     "overheat": {
@@ -2913,5 +2906,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "mg81_gun_outside",
+    "cockpit": "mg81_gun_inside",
+    "ai": "mg81_gun_ai"
   }
 }

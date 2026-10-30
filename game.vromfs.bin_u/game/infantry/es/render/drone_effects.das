@@ -8,7 +8,7 @@ require %game.unit.unit_events
 require %appGame.infantry.es.drone_common
 
 
-[es(tag=render, no_order, REQUIRE=drone_camera_vhs_effect)]
+[es(tag=render, before=drone_white_noise_on_distance, REQUIRE=drone_camera_vhs_effect)]
 def white_noise_effect_timer_es(info : ParallelUpdateFrameDelayed;
                                 vhs_camera__resolutionDownscaleDefault : float;
                                 var vhs_camera__noiseEndTime : float&;

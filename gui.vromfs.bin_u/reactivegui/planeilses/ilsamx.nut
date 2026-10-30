@@ -24,18 +24,18 @@ let SUMAoa = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * 2 * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, 100, 0, 100, 0],
-    [VECTOR_LINE, 160, 20, 160, 20],
-    [VECTOR_LINE, 100, 20, 100, 20],
-    [VECTOR_LINE, 100, 40, 100, 40],
-    [VECTOR_LINE, 160, 60, 160, 60],
-    [VECTOR_LINE, 100, 60, 100, 60],
-    [VECTOR_LINE, 100, 80, 100, 80],
+    const [VECTOR_LINE, 100, 0, 100, 0],
+    const [VECTOR_LINE, 160, 20, 160, 20],
+    const [VECTOR_LINE, 100, 20, 100, 20],
+    const [VECTOR_LINE, 100, 40, 100, 40],
+    const [VECTOR_LINE, 160, 60, 160, 60],
+    const [VECTOR_LINE, 100, 60, 100, 60],
+    const [VECTOR_LINE, 100, 80, 100, 80],
     [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get()],
     [VECTOR_LINE, 95, SUMAoaMarkH.get(), 0, SUMAoaMarkH.get() - 5],
     [VECTOR_LINE, 95, SUMAoaMarkH.get(), 0, SUMAoaMarkH.get() + 5],
     (SUMAoaMarkH.get() < 96 ? [VECTOR_LINE, 20, 100, 20, SUMAoaMarkH.get() + (Aoa.get() > 0 ? 4 : -4)] : []),
-    [VECTOR_LINE, 20, 100, 80, 100],
+    const [VECTOR_LINE, 20, 100, 80, 100],
   ]
 }
 
@@ -48,18 +48,18 @@ let SUMVerticalSpeed = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * 2 * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, 0, 0, 0, 0],
-    [VECTOR_LINE, -60, 0, -60, 0],
-    [VECTOR_LINE, 0, 16, 0, 16],
-    [VECTOR_LINE, 0, 34, 0, 34],
-    [VECTOR_LINE, 0, 52, 0, 52],
-    [VECTOR_LINE, 0, 68, 0, 68],
-    [VECTOR_LINE, -60, 68, -60, 68],
-    [VECTOR_LINE, 0, 84, 0, 84],
-    [VECTOR_LINE, 0, 100, 0, 100],
-    [VECTOR_LINE, -60, 100, -60, 100],
+    const [VECTOR_LINE, 0, 0, 0, 0],
+    const [VECTOR_LINE, -60, 0, -60, 0],
+    const [VECTOR_LINE, 0, 16, 0, 16],
+    const [VECTOR_LINE, 0, 34, 0, 34],
+    const [VECTOR_LINE, 0, 52, 0, 52],
+    const [VECTOR_LINE, 0, 68, 0, 68],
+    const [VECTOR_LINE, -60, 68, -60, 68],
+    const [VECTOR_LINE, 0, 84, 0, 84],
+    const [VECTOR_LINE, 0, 100, 0, 100],
+    const [VECTOR_LINE, -60, 100, -60, 100],
     [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get()],
-    [VECTOR_LINE, 0, 34, 100, 34],
+    const [VECTOR_LINE, 0, 34, 100, 34],
     [VECTOR_LINE, 5, SUMVSMarkH.get(), 100, SUMVSMarkH.get() - 5],
     [VECTOR_LINE, 5, SUMVSMarkH.get(), 100, SUMVSMarkH.get() + 5],
     (SUMVSMarkH.get() < 30 || SUMVSMarkH.get() > 38 ? [VECTOR_LINE, 80, 34, 80, SUMVSMarkH.get() + (ClimbSpeed.get() > 0.0 ? 4 : -4)] : [])
@@ -105,7 +105,7 @@ let altCircle = @() {
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get() * 2
-    commands = [
+    commands = const [
       [VECTOR_LINE, 50, 0, 50, 0],
       [VECTOR_LINE, 50, 100, 50, 100],
       [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
@@ -125,7 +125,7 @@ let altCircle = @() {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_LINE, 90, 0, 60, 15],
           [VECTOR_LINE, 90, 0, 60, -15]
         ]
@@ -133,7 +133,7 @@ let altCircle = @() {
         update = @() {
           transform = {
             rotate = AltThousandAngle.get()
-            pivot = [0, 0]
+            pivot = 0
           }
         }
       }
@@ -243,43 +243,38 @@ function generatePitchLine(num) {
     size = const [pw(100), ph(60)]
     pos = const [0, 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, 0, 0, 25, 0],
-          [VECTOR_LINE, 75, 0, 100, 0],
-          [VECTOR_LINE, 75, 0, 75, 4],
-          [VECTOR_LINE, 25, 0, 25, 4]
-        ]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, 0, 4, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 21 : 3, 0],
-          (num < 0 ? [VECTOR_LINE, 6, 0, 9, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 12, 0, 15, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 18, 0, 21, 0] : []),
-          [VECTOR_LINE, 100, 4, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 79 : 97, 0],
-          (num < 0 ? [VECTOR_LINE, 94, 0, 91, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 88, 0, 85, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 82, 0, 79, 0] : [])
-        ]
-        children = newNum <= 90 && newNum != 0 ? [angleTxt(newNum, true, -1, 3, newNum > 0 ? 50 : 10)] : null
-      }
-    ]
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = const [
+        [VECTOR_LINE, 0, 0, 25, 0],
+        [VECTOR_LINE, 75, 0, 100, 0],
+        [VECTOR_LINE, 75, 0, 75, 4],
+        [VECTOR_LINE, 25, 0, 25, 4]
+      ]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        const [VECTOR_LINE, 0, 4, 0, 0],
+        [VECTOR_LINE, 0, 0, num > 0 ? 21 : 3, 0],
+        (num < 0 ? const [VECTOR_LINE, 6, 0, 9, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 12, 0, 15, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 18, 0, 21, 0] : const []),
+        const [VECTOR_LINE, 100, 4, 100, 0],
+        [VECTOR_LINE, 100, 0, num > 0 ? 79 : 97, 0],
+        (num < 0 ? const [VECTOR_LINE, 94, 0, 91, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 88, 0, 85, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 82, 0, 79, 0] : const [])
+      ]
+      children = newNum <= 90 && newNum != 0 ? angleTxt(newNum, true, -1, 3, newNum > 0 ? 50 : 10) : null
+    }
   }
 }
 
@@ -325,7 +320,7 @@ let gunReticle = @(){
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.7
       fillColor = Color(0, 0, 0, 0)
-      commands = [
+      commands = const [
         [VECTOR_ELLIPSE, 0, 0, 100, 100],
         [VECTOR_LINE, 0, 0, 0, 0]
       ]
@@ -342,8 +337,8 @@ let gunReticle = @(){
         fillColor = Color(0, 0, 0, 0)
         commands = [
           [VECTOR_SECTOR, 0, 0, 100, 100, distanceSector.get(), 180],
-          [VECTOR_LINE, -97, 25, -72.4, 19.4],
-          [VECTOR_LINE, 97, 25, 72.4, 19.4]
+          const [VECTOR_LINE, -97, 25, -72.4, 19.4],
+          const [VECTOR_LINE, 97, 25, 72.4, 19.4]
         ]
       } : null
     }
@@ -436,11 +431,11 @@ let aamReticle = @(){
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get() * 0.7
     commands = GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [
-      [VECTOR_POLY, 0, -100, 100, 0, 0, 100, -100, 0],
+      const [VECTOR_POLY, 0, -100, 100, 0, 0, 100, -100, 0],
       [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get()],
-      [VECTOR_LINE, 0, 0, 0, 0]
+      const [VECTOR_LINE, 0, 0, 0, 0]
     ] :
-    [
+    const [
       [VECTOR_LINE, 90, 0, 40, 0],
       [VECTOR_LINE, -90, 0, -40, 0],
       [VECTOR_LINE, 0, 90, 0, 40],
@@ -522,7 +517,7 @@ let aamLaunchZone = @(){
           lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
           commands = [
             [VECTOR_LINE, minDistMarkPos.get(), 0, minDistMarkPos.get(), 40],
-            [VECTOR_LINE, 0, 0, 100, 0]
+            const [VECTOR_LINE, 0, 0, 100, 0]
           ]
         }
       ] : null
@@ -557,16 +552,14 @@ function getBulletImpactLineCommand() {
 let bulletsImpactLine = @() {
   watch = [isAAMMode, isCCIPMode, BulletImpactLineEnable]
   size = FLEX
-  children = BulletImpactLineEnable.get() && !isCCIPMode.get() && !isAAMMode.get() ? [
-    @() {
-      watch = [BulletImpactPoints, IlsColor]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = FLEX
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = getBulletImpactLineCommand()
-    }
-  ] : null
+  children = BulletImpactLineEnable.get() && !isCCIPMode.get() && !isAAMMode.get() ? @() {
+    watch = [BulletImpactPoints, IlsColor]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = FLEX
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = getBulletImpactLineCommand()
+  } : null
 }
 
 let generateCompassMark = function(num) {
@@ -589,7 +582,7 @@ let generateCompassMark = function(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 2
-        commands = [
+        commands = const [
           [VECTOR_LINE, 50, 0, 50, 0]
         ]
       }
@@ -636,7 +629,7 @@ function compassWrap(width, height, generateFunc) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_LINE, 50, 80, 50, 100]
         ]
       }

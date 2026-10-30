@@ -30,18 +30,13 @@ def ship_engine_sound_seat_start_stop(evt : Event; seat__vehicleEid, seat__owner
     ship_engine_sound_seat_start_stop = seat__ownerEid != INVALID_ENTITY_ID
 
 
-[es(tag=sound, after=(vehicle_phys_es, sound_control_update, sound_begin_update_es), before=(vehicle_tracks_sound, vehicle_collision_sound, sound_end_update_es))]
+[es(tag=sound, after=(vehicle_phys_es, sound_control_update, sound_begin_update_es), before=(vehicle_tracks_sound, vehicle_collision_sound, vehicle_sound_phys_state_update_es, sound_end_update_es))]
 def ship_sound_update_state(info : ParallelUpdateFrameDelayed;
                             ship_net_phys : ShipActor;
                             var vehicle_tracks_sound_state__slip : float&;
-                            vehicle_sound_speed_state__speed : float;
                             var vehicle_sound_phys__prevSoundShockSummary : float&;
                             var vehicle_sound_phys_state__deltaShock : float&;
-                            vehicle_sound_phys__noiseReductionDecayPeriod : float;
-                            vehicle_sound_phys__noiseDeltaShockThreshold : float;
-                            vehicle_sound_phys__noiseSpeedThreshold : float;
-                            var vehicle_sound_phys__noiseReductionTimer : float&;
-                            var vehicle_sound_phys_state__noiseReduction : float&;
+                            vehicle_sound_speed_state__speed : float;
                             var ship_sound_phys_vars__waterTimer : float&;
                             var vehicle_tracks_sound_state__water : float&;
                             transform : float3x4)
@@ -50,9 +45,6 @@ def ship_sound_update_state(info : ParallelUpdateFrameDelayed;
 
   vehicle_sound_phys_state__deltaShock = vehicle_sound_phys__prevSoundShockSummary >= 0. && ship_net_phys.phys.soundShockImpulse > vehicle_sound_phys__prevSoundShockSummary ? ship_net_phys.phys.soundShockImpulse - vehicle_sound_phys__prevSoundShockSummary : 0.
   vehicle_sound_phys__prevSoundShockSummary = ship_net_phys.phys.soundShockImpulse
-  let loud = vehicle_sound_phys_state__deltaShock >= vehicle_sound_phys__noiseDeltaShockThreshold || vehicle_sound_speed_state__speed >= vehicle_sound_phys__noiseSpeedThreshold
-  vehicle_sound_phys__noiseReductionTimer = loud ? 0. : min(vehicle_sound_phys__noiseReductionTimer + info.dt, vehicle_sound_phys__noiseReductionDecayPeriod)
-  vehicle_sound_phys_state__noiseReduction = 1. - safediv(vehicle_sound_phys__noiseReductionTimer, vehicle_sound_phys__noiseReductionDecayPeriod)
 
   ship_sound_phys_vars__waterTimer += info.dt
   if ship_sound_phys_vars__waterTimer * (1. + vehicle_sound_speed_state__speed) > 1.

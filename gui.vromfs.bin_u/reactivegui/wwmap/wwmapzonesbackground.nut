@@ -23,8 +23,9 @@ function getBackgroundParams(zoneSide, rearForTeam, zoneConnectedToRear) {
   return { color, isRounded = zoneState == "Rounded" }
 }
 
+let isShowZoneBackground = Computed(@() zonesSides.get().len() > 0 && zonesConnectedToRear.get().len() > 0 && isShowZonesFilter.get())
+
 let mkMapZoneBackground = @(zoneData) function() {
-  let isShowZoneBackground = Computed(@() zonesSides.get().len() > 0 && zonesConnectedToRear.get().len() > 0 && isShowZonesFilter.get())
   if (!isShowZoneBackground.get())
     return {
       watch = [isShowZoneBackground, zonesSides, zonesConnectedToRear]

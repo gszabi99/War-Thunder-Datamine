@@ -1934,6 +1934,7 @@
     "engines": {
       "maxSpeed": 11.83,
       "maxReverseSpeed": 6.32,
+      "horsePowers": 3840.0,
       "speedToTime": {
         "row": [
           [
@@ -2023,6 +2024,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.3,
+        0.0
+      ],
+      [
+        6.6,
+        100.0
+      ],
+      [
+        9.9,
+        200.0
+      ],
+      [
+        13.2,
+        300.0
+      ],
+      [
+        16.4,
+        500.0
+      ],
+      [
+        19.7,
+        700.0
+      ],
+      [
+        23.0,
+        1000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        500.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -2032,7 +2091,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2166,7 +2225,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2312,7 +2371,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2414,7 +2473,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2498,7 +2557,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "rockets",
-        "blk": "gameData/Weapons/navalModels_weapons/rocket_ss11_naval_rocket_launcher.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_ss11_naval_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2593,7 +2652,7 @@
   "weapon_presets": {
     "preset": {
       "name": "p730_combattante_default",
-      "blk": "gameData/units/ships/weaponPresets/fr_p730_combattante_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/fr_p730_combattante_default.blk"
     }
   },
   "cockpit": {
@@ -3621,29 +3680,33 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -20000.0,
-    "waterMassMult": 300.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 800000.0,
+    "waterMassVel": -18321.0,
+    "waterMassMult": 115.0,
+    "additionalWaterDeathThreshold": 1218047.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 37.0,
+    "maxHeelingAngle": 30.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.8,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25
+    "sideCenterOfMassOffsetPercent": 0.188
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.15,
+        "weight": 0.62,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3654,43 +3717,45 @@
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.75,
+        "weight": 1.0,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_03_dm",
-        "weight": 1.0,
+        "weight": 0.72,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
-              "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.6
+              "partNo": "engine_01_dm",
+              "critWaterLevel": 0.39
             },
             {
-              "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.6
-            },
-            {
-              "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.8
-            },
-            {
-              "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.8
+              "partNo": "engine_02_dm",
+              "critWaterLevel": 0.39
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.65,
+        "weight": 0.87,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.8
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.8
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

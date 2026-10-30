@@ -1,6 +1,6 @@
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
+from "%scripts/viewUtils/getTitleLogo.nut" import getTitleLogo
 from "%scripts/dagui_library.nut" import *
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getTitleLogo } = require("%scripts/viewUtils/getTitleLogo.nut")
 
 return function(scene = null, logoHeight = -1) {
   let guiScene = get_cur_gui_scene()

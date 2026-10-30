@@ -1642,6 +1642,7 @@
     "engines": {
       "maxSpeed": 21.1,
       "maxReverseSpeed": 6.6,
+      "horsePowers": 7500.0,
       "speedToTime": {
         "row": [
           [
@@ -1808,6 +1809,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.9,
+        100.0
+      ],
+      [
+        11.7,
+        100.0
+      ],
+      [
+        17.6,
+        200.0
+      ],
+      [
+        23.5,
+        400.0
+      ],
+      [
+        29.3,
+        700.0
+      ],
+      [
+        35.2,
+        1000.0
+      ],
+      [
+        41.1,
+        1500.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        200.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -1816,7 +1875,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1902,7 +1961,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c30_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c30_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1988,7 +2047,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_92mm_mg34_1934_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_92mm_mg34_1934_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2085,7 +2144,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_92mm_mg34_1934_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_92mm_mg34_1934_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2174,22 +2233,22 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/germ_s38b_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/germ_s38b_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "wbd_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/germ_s38b_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/germ_s38b_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "wbd_depth_charges_G7e_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/germ_s38b_depth_charges_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/germ_s38b_depth_charges_torpedoes.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "germ_s38b_default",
-        "blk": "gameData/units/ships/weaponPresets/germ_s38b_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/germ_s38b_default.blk"
       }
     ]
   },
@@ -3169,29 +3228,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -17000.0,
-    "waterMassMult": 150.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 445000.0,
+    "waterMassVel": -13045.0,
+    "waterMassMult": 163.0,
+    "additionalWaterDeathThreshold": 490950.0,
     "additionalWaterShouldDiePercent": 0.46,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 34.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 9.4,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.4
+    "sideCenterOfMassOffsetPercent": 0.23
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.7,
+        "weight": 0.4,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -3214,28 +3277,42 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.41
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.41
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.41
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.7,
+        "weight": 0.5,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

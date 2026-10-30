@@ -32,7 +32,7 @@ function getErrorText(result) {
   return text
 }
 
-return {
+return freeze({
   serverMessageUpdateScene
   getErrorText
-}
+})

@@ -12,11 +12,15 @@ require PropsManager
 require DaWeaponProps
 require Weapon
 require WTDamageModel
+require WTInput
+require %game.input.input_events
+require DagorSystem
 
 
 [ecs_template]
 struct penetration_debug_draw
   penetration_debug__maxDist : float = 50.0
+  penetration_debug__resName : string
 
 
 [console_cmd(name="infantry.penetration_debug", hint="<dist 0=disable, default 50m>")]
@@ -34,9 +38,23 @@ def penetration_debug_cmd(dist = 50.0)
       init |> set("penetration_debug__maxDist", dist)
 
 
+[es(tag=(input, dev))]
+def penetration_debug_copy_resname_input(evt : EventOnKeyDown;
+                                         penetration_debug__resName : string)
+  if evt.eventId == int(ShortcutEventId.ID_HUMAN_AIM)
+    if empty(penetration_debug__resName)
+      console_print("no rendinst under aim")
+    elif set_clipboard_ansi_text(penetration_debug__resName)
+      console_print("copied {penetration_debug__resName}")
+    else
+      console_print("failed to copy {penetration_debug__resName}")
+
+
 [es(tag=(render, dev), no_order)]
 def penetration_debug_draw_es(evt : UpdateStageInfoRenderDebug;
-                              penetration_debug__maxDist : float)
+                              penetration_debug__maxDist : float;
+                              var penetration_debug__resName : das_string&)
+  penetration_debug__resName := ""
   var camPos : float3
   var camDir : float3
   var camValid = false
@@ -82,7 +100,7 @@ def penetration_debug_draw_es(evt : UpdateStageInfoRenderDebug;
   var hasGun = false
   var damageId = -1
   var pred = RiHitPrediction()
-  using() <| $(var ci : CollisionInfo)
+  using() <| $(var ci : CollisionInfo#)
     getRiGenDestrInfo(riDesc, ci)
     ciHp = ci.hp
     ciInitialHp = ci.initialHp
@@ -157,8 +175,15 @@ def penetration_debug_draw_es(evt : UpdateStageInfoRenderDebug;
   add_debug_text_mark_screen(scrX, scrY,
     "{resName}  d={fmt(":.3f", len)}m  shell #{damageId}",
     -1, curLine, E3DCOLOR(0xFFCCCCCC))
+  penetration_debug__resName := resName
   curLine += lineDelta
   if !pred.stopsBullets
     add_debug_text_mark_screen(scrX, scrY, "(does not stop bullets)", -1, curLine, E3DCOLOR(0xFFAAAAFF))
+    curLine += lineDelta
+  if pred.treeAccumulates
+    add_debug_text_mark_screen(scrX, scrY,
+      "tree accum={fmt(":.3f", pred.treeAccumulated)}/{fmt(":.3f", pred.hp)}  absorbed/hit={fmt(":.3f", pred.treeDamageAbsorbed)}  fells at dmg>{fmt(":.3f", pred.treeDamageToFell)}",
+      -1, curLine, E3DCOLOR(0xFFCCCCCC))
 
   end_draw_cached_debug_lines()
+

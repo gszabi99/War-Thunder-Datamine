@@ -1,7 +1,7 @@
-return {
+return freeze({
   PNL_ID_INVALID = -1
   PNL_ID_MFD = 0
   PNL_ID_ILS = 1
   PNL_ID_HMD = 2
   PNL_ID_BULLETS_PENETRATION = 3
-}
+})

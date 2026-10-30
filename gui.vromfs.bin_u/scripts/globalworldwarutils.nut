@@ -13,7 +13,7 @@ let {
   defaultDiffCode = DIFFICULTY_REALISTIC,
 } = require_optional("%scripts/worldWar/worldWarUtils.nut")
 
-return {
+return freeze({
   inviteToWwOperation
   updateOperationPreviewAndDo
   openOperationsOrQueues
@@ -23,4 +23,4 @@ return {
   joinOperationById
   checkPlayWorldwarAccess
   defaultDiffCode
-}
+})

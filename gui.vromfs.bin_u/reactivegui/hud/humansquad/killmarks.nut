@@ -3,7 +3,7 @@ import "wt.behaviors" as WTBhv
 from "%rGui/hud/state/hit_marks_es.nut" import killMarks
 from "%rGui/globals/ui_library.nut" import *
 
-let worldKillMarkSize = Watched([fsh(2.5),fsh(2.5)])
+let worldKillMarkSize = [fsh(2.5),fsh(2.5)]
 const worldKillMarkColor = 0xAAB41414
 const worldDownedMarkColor = 0xAAE6781E
 
@@ -12,7 +12,7 @@ let mkAnimations = @() [
   { prop=AnimProp.opacity, from=1, to=0, duration=2.7, delay = 0.3, play=true , easing=InCubic }
   {
     prop = AnimProp.translate,
-    from=[0, 0], to=[0, -hdpx(3 * worldKillMarkSize.get()[1])],
+    from=[0, 0], to=[0, -hdpx(3 * worldKillMarkSize[1])],
     duration=3.0,
     play=true,
     easing=OutCubic
@@ -26,27 +26,17 @@ let mkAnimations = @() [
   }
 ]
 
-local killMarkImage
-local downedMarkImage
-function updateCache(...){
-  killMarkImage = {
-    size = worldKillMarkSize.get()
-    rendObj = ROBJ_IMAGE
-    color = worldKillMarkColor
-    valign = ALIGN_CENTER
-    transform = {}
-    animations = mkAnimations()
-    image = Picture("!ui/gameuiskin#heartbeat.svg:{0}:{1}:K"
-      .subst(worldKillMarkSize.get()[0].tointeger(), worldKillMarkSize.get()[1].tointeger()))
-  }
-  downedMarkImage = killMarkImage.__merge({color=worldDownedMarkColor})
+let killMarkImage = {
+  size = worldKillMarkSize
+  rendObj = ROBJ_IMAGE
+  color = worldKillMarkColor
+  valign = ALIGN_CENTER
+  transform = {}
+  animations = mkAnimations()
+  image = Picture("!ui/gameuiskin#heartbeat.svg:{0}:{1}:K"
+    .subst(worldKillMarkSize[0].tointeger(), worldKillMarkSize[1].tointeger()))
 }
-
-{
-  [worldKillMarkSize]
-    .map(@(v) v.subscribe(updateCache))
-}
-updateCache()
+let downedMarkImage = killMarkImage.__merge({color=worldDownedMarkColor})
 
 function mkKillMark(mark){
   let pos = mark.killPos
@@ -64,7 +54,7 @@ function mkKillMark(mark){
 
 function killMarksComp() {
   return {
-    watch = [killMarks]
+    watch = killMarks
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = const [sw(100), sh(100)]

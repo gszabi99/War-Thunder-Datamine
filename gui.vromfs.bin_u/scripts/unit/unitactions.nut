@@ -1,25 +1,25 @@
 import "DataBlock" as DataBlock
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry, getUnitExp, getUnitCost
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/tasker.nut" import addTask, addBgTaskCb
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, canSpendGoldOnUnitWithPopup
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitInfoTexts.nut" import getCantBuyUnitReason
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%sqStdLibs/helpers/u.nut" import isEmpty, isEqual
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile
 from "%scripts/dagui_library.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getUnitName, getUnitCountry, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
-let { canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 
 enum CheckFeatureLockAction {
@@ -283,7 +283,7 @@ function flushExcessExpToModule(unit, module) {
   return char_send_blk("cln_move_exp_to_module", blk)
 }
 
-return {
+return freeze({
   CheckFeatureLockAction
   checkFeatureLock
   repairNoMsgBox
@@ -296,4 +296,4 @@ return {
   flushExcessExpToUnit
   flushExcessExpToModule
   showCantBuyOrResearchUnitMsgbox
-}
+})

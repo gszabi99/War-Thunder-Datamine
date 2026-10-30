@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -95,6 +101,9 @@
       },
       "turret_01_top_dm": {
         "armorThickness": 16.0
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 4.0
       }
     },
     "mask": {
@@ -1975,7 +1984,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_qf_6pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_qf_6pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "defaultYaw": 15.0,
@@ -2023,7 +2032,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_qf_6pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_qf_6pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": -15.0,
@@ -2072,7 +2081,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_gun_flame_03",
         "barrelDP": "gun_barrel_03_dm",
@@ -2115,7 +2124,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
         "emitter": "bone_mg_v_03",
         "flash": "emtr_gun_flame_05",
         "barrelDP": "gun_barrel_05_dm",
@@ -2158,7 +2167,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
         "emitter": "bone_mg_v_04",
         "flash": "emtr_gun_flame_06",
         "barrelDP": "gun_barrel_06_dm",
@@ -2201,7 +2210,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
         "emitter": "bone_mg_v_02",
         "flash": "emtr_gun_flame_04",
         "barrelDP": "gun_barrel_04_dm",
@@ -2245,8 +2254,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_mark_v_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_mark_v_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

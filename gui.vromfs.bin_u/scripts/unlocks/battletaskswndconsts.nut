@@ -4,4 +4,4 @@ enum BattleTasksWndTab {
   HISTORY
 }
 
-return { BattleTasksWndTab }
+return freeze({ BattleTasksWndTab })

@@ -732,7 +732,7 @@ function createAdiValues(gridStyle, params) {
         transform = {
           translate = [0, 50.0 * Tangage.get() * 0.0111],
           rotate = -Roll.get()
-          pivot = [0.0, 0.0]
+          pivot = 0.0
         },
         behavior = Behaviors.RtPropUpdate
         update = @() {
@@ -765,7 +765,7 @@ function createAdiValues(gridStyle, params) {
         ],
         transform = {
           rotate = -Roll.get(),
-          pivot = [0.0, 0.0]
+          pivot = 0.0
         },
         behavior = Behaviors.RtPropUpdate
         update = @() {
@@ -782,22 +782,20 @@ function createAdiGrid(gridStyle, params) {
   return {
     pos = const [pw(50), ph(50)],
     size = FLEX,
-    children = [
-      {
-        size = FLEX,
-        color = params.color,
-        fillColor = 0,
-        rendObj = ROBJ_VECTOR_CANVAS,
-        lineWidth = baseLineWidth * 4 * gridStyle.lineWidthScale,
-        commands = [
-          [VECTOR_LINE, 37, 50, 45, 50],
-          [VECTOR_LINE, 55, 50, 63, 50],
-          [VECTOR_LINE, 50, 45, 50, 37],
-          [VECTOR_ELLIPSE, 50, 50, 5, 5],
-          [VECTOR_POLY, 50, 10, 47, 20, 53, 20]
-        ]
-      },
-    ]
+    children = {
+      size = FLEX,
+      color = params.color,
+      fillColor = 0,
+      rendObj = ROBJ_VECTOR_CANVAS,
+      lineWidth = baseLineWidth * 4 * gridStyle.lineWidthScale,
+      commands = [
+        [VECTOR_LINE, 37, 50, 45, 50],
+        [VECTOR_LINE, 55, 50, 63, 50],
+        [VECTOR_LINE, 50, 45, 50, 37],
+        [VECTOR_ELLIPSE, 50, 50, 5, 5],
+        [VECTOR_POLY, 50, 10, 47, 20, 53, 20]
+      ]
+    }
   }
 }
 
@@ -918,9 +916,7 @@ function scope(scale, style, params) {
       {
         pos = const [pw(-75), ph(-100)],
         size = FLEX,
-        children = [
-          createTimeValue(style.grid, params)
-        ]
+        children = createTimeValue(style.grid, params)
       },
       {
         pos = const [pw(-12), ph(55)],
@@ -1096,7 +1092,7 @@ let tws = @(params) function(posWatched, sizeWatched, scale, style) {
 let rwrAr830Extra = tws(defautParams)
 let jas39ERwrScreen = tws(jas39EParams)
 
-return {
+return freeze({
   rwrAr830Extra
   jas39ERwrScreen
-}
+})

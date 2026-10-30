@@ -1,54 +1,83 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/events/eventTeamsInfo.nut" import getAlowedCrafts, getForbiddenCrafts, getRequiredCrafts
+from "%scripts/slotbar/slotbarOverride.nut" import isSlotbarOverrided
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/teams.nut" import g_team
+from "%scripts/options/optionsExtNames.nut" import USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS, USEROPT_CLUSTERS
+  , USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, USEROPT_CONTENT_ALLOWED_PRESET
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom
+from "%scripts/missions/missionsText.nut" import getMissionTimeText, getWeatherLocName
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import getCustomDifficultyOptions
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getSessionLobbyMissionNameText, getSessionLobbyTimeLimit, getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries
+  , getRoomTeamData
+from "%scripts/missions/missionsUtilsModule.nut" import getSessionLobbyMissionName
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/matchingRooms/fillCountriesList.nut" import fillCountriesList
 from "guiOptions" import get_cd_preset, set_cd_preset
 from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS, USEROPT_CLUSTERS, USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, USEROPT_CONTENT_ALLOWED_PRESET } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getSessionLobbyMissionNameText, getSessionLobbyTimeLimit, getRoomRequiredCrafts,
-  getRoomMGameMode, getRoomTeamsCountries } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-function clearInfo(scene) {
-  foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
-                    "session_environment", "session_difficulty", "session_timeLimit",
-                    "session_limits", "session_respawn", "session_takeoff",
-                    "session_allowbots", "session_allow_empty_teams", "session_jip",
-                    "limited_fuel", "limited_ammo", "session_teamLimit",
-                    "session_battleRating", "session_cluster", "disable_airfields",
-                    "session_laps", "session_winners", "session_can_shoot",
-                    "spawn_ai_tank_on_tank_maps", "content_allowed_preset"]) {
-    let obj = scene.findObject(name)
-    if (checkObj(obj))
-      obj.setValue("")
-  }
+const infoRowIds = [
+  "session_mapName"
+  "session_creator"
+  "session_difficulty"
+  "session_hasPassword"
+  "session_teamLimit"
+  "session_battleRating"
+  "session_environment"
+  "session_timeLimit"
+  "session_respawn"
+  "session_takeoff"
+  "limited_fuel"
+  "limited_ammo"
+  "session_allow_empty_teams"
+  "session_jip"
+  "session_cluster"
+  "session_allowbots"
+  "spawn_ai_tank_on_tank_maps"
+  "disable_airfields"
+  "session_laps"
+  "session_winners"
+  "session_can_shoot"
+  "content_allowed_preset"
+]
 
-  foreach (name in ["countries1", "vsText", "countries2"]) {
-    let obj = scene.findObject(name)
-    if (checkObj(obj))
-      obj.show(false)
-  }
+function createInfoRows(scene) {
+  let rowsObj = scene.findObject("session_info_rows")
+  if (!rowsObj?.isValid() || rowsObj.childrenCount() > 0)
+    return
+
+  let markup = handyman.renderCached("%gui/mpLobby/sessionInfoRows.tpl",
+    { rows = infoRowIds.map(@(id) { id }) })
+  scene.getScene().replaceContentFromText(rowsObj, markup, markup.len(), null)
 }
 
-local setTextToObj = function(obj, coloredText, value) {
-  if (!checkObj(obj))
+function clearInfo(scene) {
+  showObjById("session_info_list", false, scene)
+  showObjById("session_vehicles", false, scene)
+}
+
+function setTextToObj(obj, title, value) {
+  if (!obj?.isValid())
     return
 
   if (u.isBool(value))
     value = loc("options/{0}".subst(value ? "yes" : "no"))
 
-  obj.setValue((!u.isEmpty(value))
-    ? "{0}{1}".subst(coloredText, colorize("activeTextColor", value.tostring()))
-    : "")
+  let isVisible = !u.isEmpty(value)
+  obj.show(isVisible)
+  if (!isVisible)
+    return
+
+  obj.findObject("title").setValue(title)
+  obj.findObject("value").setValue(value.tostring())
 }
 
 let setTextToObjByOption = function(objId, optionId, value) {
@@ -79,12 +108,80 @@ function getCustomDifficultyTooltipText(custDifficulty) {
   return text
 }
 
+function getRuleBrText(rule) {
+  return loc("ui/parentheses", { text = events.generateEventRule({ mranks = rule?.mranks }, true) })
+}
+
+function getRuleSummaryIcon(rule) {
+  if ("class" not in rule || "name" in rule || "type" in rule || "ranks" in rule)
+    return null
+  let { fontIcon } = unitTypes.getByName(rule["class"], false)
+  return fontIcon != "" ? fontIcon : null
+}
+
+function appendRulesRow(rows, locId, rules) {
+  let rulesText = events.getRulesText(rules, ", ")
+  if (rulesText != "")
+    rows.append({ icon = null, text = " ".concat(loc(locId), rulesText) })
+}
+
+function getTeamVehiclesView(team, teamData) {
+  let rows = []
+  foreach (rule in getAlowedCrafts(teamData)) {
+    let icon = getRuleSummaryIcon(rule)
+    rows.append({
+      icon
+      text = icon != null ? getRuleBrText(rule) : events.generateEventRule(rule, true)
+    })
+  }
+  appendRulesRow(rows, "events/forbidden_crafts", getForbiddenCrafts(teamData))
+  appendRulesRow(rows, "events/required_crafts", getRequiredCrafts(teamData))
+  if (rows.len() == 0)
+    rows.append({ icon = null, text = loc("events/all_units_allowed") })
+
+  return {
+    teamName = team.getShortName()
+    rows
+  }
+}
+
+function fillSessionVehicles(scene, sessionInfo) {
+  let blockObj = scene.findObject("session_vehicles")
+  if (!blockObj?.isValid())
+    return
+
+  let isVisible = !isSlotbarOverrided(getSessionLobbyMissionName(true, sessionInfo))
+  blockObj.show(isVisible)
+  if (!isVisible)
+    return
+
+  let guiScene = scene.getScene()
+  local hasShownTeam = false
+  foreach (team in [g_team.A, g_team.B]) {
+    let teamObj = blockObj.findObject($"session_vehicles_{team.id}")
+    let teamData = getRoomTeamData(team.code, sessionInfo)
+    let isPlayable = events.isTeamDataPlayable(teamData)
+    teamObj.show(isPlayable)
+    if (!isPlayable)
+      continue
+
+    teamObj.hasSeparator = hasShownTeam ? "yes" : "no"
+    hasShownTeam = true
+    let view = getTeamVehiclesView(team, teamData)
+    let markup = handyman.renderCached("%gui/mpLobby/sessionTeamVehicles.tpl", view)
+    guiScene.replaceContentFromText(teamObj, markup, markup.len(), null)
+  }
+}
+
 return function(scene, sessionInfo) {
   if (!checkObj(scene))
     return
 
   if (!sessionInfo)
     return clearInfo(scene)
+
+  showObjById("session_info_list", true, scene)
+  createInfoRows(scene)
 
   let gt = getSessionLobbyGameType(sessionInfo)
   let missionInfo = ("mission" in sessionInfo) ? sessionInfo.mission : {}
@@ -168,7 +265,8 @@ return function(scene, sessionInfo) {
   setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, missionInfo?.isLimitedFuel)
   setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, missionInfo?.isLimitedAmmo)
 
-  setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN, (missionInfo?.maxRespawns ?? -1))
+  setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN,
+    (missionInfo?.maxRespawns ?? RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW))
 
   let tObj = scene.findObject("session_takeoff")
   setTextToObj(tObj, "".concat(loc("options/optional_takeoff"), loc("ui/colon")),
@@ -199,4 +297,6 @@ return function(scene, sessionInfo) {
 
     slObj.setValue(slotOverrideText)
   }
+
+  fillSessionVehicles(scene, sessionInfo)
 }

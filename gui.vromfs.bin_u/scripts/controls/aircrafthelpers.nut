@@ -1,5 +1,11 @@
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_HELPERS_MODE_GM, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%scripts/controls/controlsManager.nut" import commitControls
+from "%scripts/options/optionsExt.nut" import get_option, registerOption, get_option_in_mode
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/platform.nut" import is_android, isPC
 from "globalEnv" import ControlHelpersMode
 from "guiOptions" import set_gui_option
@@ -7,13 +13,6 @@ from "gameplayBinding" import isInFlight
 from "guiMission" import get_mission_difficulty_int
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
-
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_HELPERS_MODE_GM, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM } = require("%scripts/options/optionsExtNames.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { get_option, registerOption, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 local isAircraftHelpersOptionsInitialized = false
 local isHelpersChangePerformed = false
@@ -79,7 +78,7 @@ function updatePresetMouseUsage() {
 
 function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) {
   
-  if (!isLoggedIn.get() || isHelpersChangePerformed)
+  if (!hasFullLoginState.get() || isHelpersChangePerformed)
     return
   isHelpersChangePerformed = true
 

@@ -8,8 +8,8 @@ enum gunState {
   DEADZONE = 3
 }
 
-return {
+return freeze({
   FIRST_ROW_SIGNAL_TRIGGER,
   SECOND_ROW_SIGNAL_TRIGGER,
   gunState
-}
+})

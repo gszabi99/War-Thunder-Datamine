@@ -30,6 +30,6 @@ function setProjectAwards(handler) {
   guiScene.replaceContentFromText(awardsObj, data, data.len(), handler)
 }
 
-return {
+return freeze({
   setProjectAwards
-}
+})

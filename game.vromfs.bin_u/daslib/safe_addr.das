@@ -60,14 +60,12 @@ class SafeAddrMacro : AstFunctionAnnotation {
     }
 }
 
-
 def public temp_ptr(x : auto(T)? implicit ==const) : T? const# {
     
     unsafe {
         return reinterpret<T? const#>(x)
     }
 }
-
 
 def public temp_ptr(var x : auto(T)? implicit ==const) : T?# {
     
@@ -92,7 +90,7 @@ def public shared_addr(val : auto(VALUE)&) {
 class SharedAddrMacro : AstFunctionAnnotation {
     
     
-    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; var args : AnnotationArgumentList; progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_shared_expr(call.arguments[0])) return true
         compiling_program() |> macro_error(call.at, "{call.name} can only be used with shared global variables")
         return false
@@ -118,34 +116,10 @@ def public temp_value(var x : auto(T)& ==const) : T&# {
 [tag_function_macro(tag="temp_value_tag")]
 class TempValueMacro : AstFunctionAnnotation {
     
-    def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
+    def override verifyCall(var call : ExprCallFunc?; var args : AnnotationArgumentList; progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_temp_safe(call.arguments[0])) return true
         compiling_program() |> macro_error(call.at, "{describe(call.arguments[0])} can't be simply promoted to temp value")
         return false
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

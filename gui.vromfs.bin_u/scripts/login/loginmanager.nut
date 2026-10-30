@@ -1,11 +1,18 @@
 import "samsung" as samsung
 import "statsd" as statsd
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/login/waitForLoginWnd.nut" import WaitForLoginWnd
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%sqstd/platform.nut" import is_windows, platformId, is_gdk, isSony
+from "%scripts/bigQuery/bigQueryClient.nut" import bqSendLoginState
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/missions/missionsStates.nut" import is_user_mission
+from "%scripts/login/loginProcessState.nut" import destroyLoginProgress
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%appGlobals/login/loginState.nut" import loginState, isLoggedIn, isAuthorized
+from "%appGlobals/login/loginState.nut" import loginState, isLoggedIn, isAuthorized, hasFullLoginState
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
-from "%sqstd/platform.nut" import is_windows, platformId, is_gdk
 from "steam" import steam_is_running
 from "guiMission" import get_meta_missions_info
 from "blkGetters" import get_user_skins_blk, get_user_skins_profile_blk
@@ -18,27 +25,13 @@ from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 from "types" import String
 
 let gfn = require_optional("gfn")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WaitForLoginWnd } = require("%scripts/login/waitForLoginWnd.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
-let { destroyLoginProgress } = require("%scripts/login/loginStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let cachedLoginData = persist("cachedLoginData", @() { use_dmm_login = null })
-
-function useDmmLogin() {
-  if (cachedLoginData.use_dmm_login == null) {
-    cachedLoginData.use_dmm_login = dgs_get_argv("dmm_user_id") && dgs_get_argv("dmm_token")
-  }
-  return cachedLoginData.use_dmm_login
-}
+let useDmmLogin = @() dgs_get_argv("dmm_user_id") && dgs_get_argv("dmm_token")
 
 function loadLoginHandler() {
   local hClass = get_gui_handler("LoginWndHandler")
-  if (isPlatformSony)
+  if (isSony)
     hClass = get_gui_handler("LoginWndHandlerPs4")
   else if (is_gdk)
     hClass = get_gui_handler("LoginWndHandlerXboxOne")
@@ -98,7 +91,7 @@ function bigQueryOnLogin() {
 function statsdOnLogin() {
   statsd.send_counter("sq.game_start.login", 1)
 
-  if (isPlatformSony) {
+  if (isSony) {
     if (!ps4_is_chat_enabled())
       sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.chat", {})
     if (!ps4_is_ugc_enabled())
@@ -169,7 +162,7 @@ function statsdOnLogin() {
 }
 
 function onLoggedInChanged() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   statsdOnLogin()
@@ -183,13 +176,13 @@ function setLoginState(newState) {
     return
 
   let wasAuthorized = isAuthorized.get()
-  let wasLoggedIn   = isLoggedIn.get()
+  let wasLoggedIn   = hasFullLoginState.get()
 
   loginState.set(newState)
 
   if (wasAuthorized != isAuthorized.get())
     onAuthorizeChanged()
-  if (wasLoggedIn != isLoggedIn.get())
+  if (wasLoggedIn != hasFullLoginState.get())
     onLoggedInChanged()
 
   broadcastEvent("LoginStateChanged")
@@ -218,13 +211,13 @@ function onProfileReceived() {
 }
 
 registerRespondent("is_logged_in", function is_logged_in() {
-  return isLoggedIn.get()
+  return hasFullLoginState.get()
 })
 
-return {
+return freeze({
   loadLoginHandler
   setLoginState
   addLoginState
   resetLogin
   onProfileReceived
-}
+})

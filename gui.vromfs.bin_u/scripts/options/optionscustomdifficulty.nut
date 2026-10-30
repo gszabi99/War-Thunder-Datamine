@@ -1,3 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/genericOptions.nut" import GenericOptionsModal
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import getCustomDifficultyOptions
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExt.nut" import set_option, get_option
 from "guiOptions" import get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty
 from "guiMission" import reload_cd
 from "%scripts/dagui_library.nut" import *
@@ -6,12 +12,6 @@ from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 
 let OptionsCustomDifficultyModal = class (GenericOptionsModal) {
   wndType = handlerType.MODAL
@@ -95,7 +95,7 @@ let OptionsCustomDifficultyModal = class (GenericOptionsModal) {
     obj.setValue(text)
   }
 
-  function applyFunc() {
+  function applyFunc(_) {
     reload_cd()
     if (this.afterApplyFunc)
       this.afterApplyFunc()
@@ -151,4 +151,4 @@ let OptionsCustomDifficultyModal = class (GenericOptionsModal) {
 }
 register_gui_handler("OptionsCustomDifficultyModal", OptionsCustomDifficultyModal)
 
-return { OptionsCustomDifficultyModal }
+return freeze({ OptionsCustomDifficultyModal })

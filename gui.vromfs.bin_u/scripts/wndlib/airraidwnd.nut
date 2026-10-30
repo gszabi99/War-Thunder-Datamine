@@ -1,16 +1,16 @@
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/time.nut" import secondsToTime, millisecondsToSecondsInt
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
 from "%appGlobals/timeLoc.nut" import buildTimeStr
 from "hangarEventCommand" import set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event, point_camera_to_event, play_background_nuclear_explosion
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import start_dynamic_lut_texture
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000

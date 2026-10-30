@@ -6,6 +6,11 @@ avatarImg {
 
   img {
     background-image:t='<<frameImage>>'
+    <<#framesCount>>
+    re-type:t='animated'
+    background-frames:t='<<framesCount>>'
+    background-fps:t='30'
+    <</framesCount>>
     position:t='relative'
     pos:t='50%pw-50%w,50%ph-50%h'
 

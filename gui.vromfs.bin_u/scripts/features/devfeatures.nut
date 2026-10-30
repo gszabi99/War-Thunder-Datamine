@@ -19,6 +19,9 @@ let devFeatures = {
   HasTabsInGraphicsOption = {
     title = "Enable unit types tabs in graphics option groups"
   }
+  DmViewerXrayLoadedAmmo = {
+    title = "Enable the hangar x-ray option to show ammo by the current loadout"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures
@@ -95,9 +98,9 @@ register_command(function(featureName) {
   log($"feature: {featureName} is {newValue ? "ON" : "OFF"}")
 }, "debug.developer_feature_switch")
 
-return {
+return freeze({
   getDevFeatures
   getDevFeaturesList
   getDevFeaturesOptionsMap
   getDevFeaturesOptionsSetMap
-}
+})

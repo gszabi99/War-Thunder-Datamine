@@ -1888,7 +1888,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_OTO_Breda_76_62_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_OTO_Breda_76_62_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "shotFreq": 2.0,
@@ -2144,7 +2144,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2208,14 +2208,14 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_otomatic_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_otomatic_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/it_sma_vps-a05.blk",
+        "blk": "gamedata/sensors/it_sma_vps-a05.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -2223,7 +2223,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/it_sma_vps-a05_ai.blk",
+        "blk": "gamedata/sensors/it_sma_vps-a05_ai.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -2231,7 +2231,7 @@
         "human": false
       },
       {
-        "blk": "gameData/sensors/it_sma_vps-a06.blk",
+        "blk": "gamedata/sensors/it_sma_vps-a06.blk",
         "turretIndex": 0,
         "dmPart": "antenna_target_tagging_dm",
         "powerButtonIdx": -1
@@ -3277,7 +3277,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/it_sma_vps-a05.blk",
+              "blk": "gamedata/sensors/it_sma_vps-a05.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -3285,7 +3285,7 @@
               "ai": false
             },
             {
-              "blk": "gameData/sensors/it_sma_vps-a05_ai.blk",
+              "blk": "gamedata/sensors/it_sma_vps-a05_ai.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -3293,12 +3293,12 @@
               "human": false
             },
             {
-              "blk": "gameData/sensors/it_sma_vps-a06.blk",
+              "blk": "gamedata/sensors/it_sma_vps-a06.blk",
               "turretIndex": 0,
               "dmPart": "antenna_target_tagging_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }
@@ -3318,7 +3318,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_OTO_Breda_76_62_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_OTO_Breda_76_62_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame_01",
               "shotFreq": 2.0,
@@ -3574,7 +3574,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3628,7 +3628,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3748,6 +3748,7 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "removeLoadedAmmo": true,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -4086,5 +4087,29 @@
     "hasTargetList": true,
     "hasTurretView": true,
     "hasVerticalView": false
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.641,
+      1.1653,
+      1.53
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

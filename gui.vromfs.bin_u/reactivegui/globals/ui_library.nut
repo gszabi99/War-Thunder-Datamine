@@ -11,7 +11,7 @@ let notZero = @(basePx, resPx) resPx != 0 || basePx == 0 ? resPx
   : basePx > 0 ? 1
   : -1
 
-let evenPx = @[pure](px) notZero(px, hdpx(px / 2.0).tointeger() * 2)
+let evenPx = @[pure, nodiscard](px) notZero(px, hdpx(px / 2.0).tointeger() * 2)
 
 
 let fontsState = require("%rGui/style/fontsState.nut")

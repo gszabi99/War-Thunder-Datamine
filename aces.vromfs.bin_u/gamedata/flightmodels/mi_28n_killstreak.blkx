@@ -2,7 +2,7 @@
   "model": "mi_28n",
   "fmFile": "fm/mi_28n.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -31,17 +31,17 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects_helicoper.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects_helicoper.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "customClassIco": "!#ui/gameuiskin#mi_28n_ico.svg",
   "customImage": "!#ui/unitskin#mi_28n.ddsx",
   "customTooltipImage": "!ui/aircrafts/mi_28n.avif",
@@ -1974,15 +1974,15 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gamedata/sensors/ir_tracker.blk",
         "node": "optic1_gun",
         "powerButtonIdx": -1
       },
       {
-        "blk": "gameData/sensors/su_spo-150.blk"
+        "blk": "gamedata/sensors/su_spo-150.blk"
       },
       {
-        "blk": "gameData/sensors/su_l-140.blk"
+        "blk": "gamedata/sensors/su_l-140.blk"
       }
     ]
   },
@@ -1996,17 +1996,17 @@
   },
   "gunnerOpticFps": {
     "pos": [
-      0.3,
-      -0.2,
+      0.7,
+      0.2,
       0.0
     ],
     "head": "optic1_turret",
     "crosshairPreset": "test_crosshair",
     "angularLimits": [
-      -109.0,
-      109.0,
-      -39.0,
-      12.0
+      -110.0,
+      110.0,
+      -45.0,
+      30.0
     ]
   },
   "commonWeapons": {
@@ -3174,8 +3174,8 @@
       "reqModification": "il_28sh_upk23_gunpod",
       "tier": 4
     },
-    "ns23_air_targets": {},
     "ns23_armor_targets": {},
+    "ns23_air_targets": {},
     "ns23_stealth": {},
     "mi_28_C13": {
       "deactivationIsAllowed": false,
@@ -3211,15 +3211,15 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gamedata/sensors/ir_tracker.blk",
               "node": "optic1_gun",
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/su_spo-150.blk"
+              "blk": "gamedata/sensors/su_spo-150.blk"
             },
             {
-              "blk": "gameData/sensors/su_l-140.blk"
+              "blk": "gamedata/sensors/su_l-140.blk"
             }
           ]
         }
@@ -3314,22 +3314,22 @@
     "preset": [
       {
         "name": "mi_28n_killstreak_default",
-        "blk": "gameData/flightModels/weaponPresets/mi_28n_killstreak_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_28n_killstreak_default.blk"
       },
       {
         "name": "mi_28n_killstreak_atgm",
-        "blk": "gameData/flightModels/weaponPresets/mi_28n_killstreak_atgm.blk",
+        "blk": "gamedata/flightModels/weaponPresets/mi_28n_killstreak_atgm.blk",
         "weaponConfig": {
           "presetType": "ARMORED"
         }
       },
       {
         "name": "mi_28n_killstreak_combined",
-        "blk": "gameData/flightModels/weaponPresets/mi_28n_killstreak_combined.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_28n_killstreak_combined.blk"
       },
       {
         "name": "mi_28n_killstreak_mguns",
-        "blk": "gameData/flightModels/weaponPresets/mi_28n_killstreak_mguns.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_28n_killstreak_mguns.blk"
       }
     ]
   },
@@ -3364,7 +3364,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "optic1_gun",
               "parkInDeadzone": false,
               "defaultYaw": 0.0,
@@ -3383,14 +3383,14 @@
                   110.0
                 ],
                 "pitch": [
-                  -40.0,
-                  13.0
+                  -45.0,
+                  30.0
                 ]
               }
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/cannon2A42.blk",
+              "blk": "gamedata/weapons/cannon2A42.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "gunner1_dm",
@@ -3429,7 +3429,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 64,
               "bulletsCartridge": 1,
@@ -3438,7 +3438,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 64,
               "bulletsCartridge": 1,
@@ -3461,7 +3461,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/9m39_4x_igla.blk",
+              "blk": "gamedata/weapons/containers/9m39_4x_igla.blk",
               "emitter": "9m39_tpk_001"
             }
           },
@@ -3470,7 +3470,7 @@
             "name": "c8ko",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
+              "blk": "gamedata/weapons/containers/b8m_20.blk",
               "emitter": "b8_v20_b001",
               "external": true
             }
@@ -3482,7 +3482,7 @@
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/9m120_x4_left_ataka.blk",
+              "blk": "gamedata/weapons/containers/9m120_x4_left_ataka.blk",
               "emitter": "9m120_tpk_001",
               "external": true,
               "separate": true
@@ -3500,7 +3500,7 @@
             "name": "c8ko",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
+              "blk": "gamedata/weapons/containers/b8m_20.blk",
               "emitter": "b8_v20_b002",
               "external": true
             }
@@ -3514,7 +3514,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "bullets": 250,
@@ -3536,7 +3536,7 @@
             "name": "c8ko",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
+              "blk": "gamedata/weapons/containers/b8m_20.blk",
               "emitter": "b8_v20_b003",
               "external": true
             }
@@ -3550,7 +3550,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "bullets": 250,
@@ -3575,7 +3575,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/9m39_4x_igla.blk",
+              "blk": "gamedata/weapons/containers/9m39_4x_igla.blk",
               "emitter": "9m39_tpk_002"
             }
           },
@@ -3584,7 +3584,7 @@
             "name": "c8ko",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
+              "blk": "gamedata/weapons/containers/b8m_20.blk",
               "emitter": "b8_v20_b004",
               "external": true
             }
@@ -3595,7 +3595,7 @@
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/9m120_x4_right_ataka.blk",
+              "blk": "gamedata/weapons/containers/9m120_x4_right_ataka.blk",
               "emitter": "9m120_tpk_002",
               "external": true,
               "separate": true
@@ -3608,7 +3608,7 @@
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/9m120_x8_ataka.blk",
+              "blk": "gamedata/weapons/containers/9m120_x8_ataka.blk",
               "emitter": "9m120_tpk_002",
               "external": true,
               "separate": true

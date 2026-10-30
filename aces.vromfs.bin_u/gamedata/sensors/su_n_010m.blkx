@@ -84,10 +84,7 @@
           "resetScanPhase": {}
         },
         "setBvrLockMode": {
-          "setBvrLockModeCommon": {},
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          }
+          "setBvrLockModeCommon": {}
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
@@ -442,6 +439,9 @@
           },
           "setScanPattern": {
             "scanPattern": "radarBvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           }
         },
         "setMprfBvrLockMode": {
@@ -480,6 +480,9 @@
           },
           "setScanPattern": {
             "scanPattern": "irstBvrLock"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setModeName": {
             "name": "IRST acquisition"
@@ -1934,7 +1937,7 @@
               -85.0,
               85.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationRange": [
               -40.0,
               60.0
@@ -1953,7 +1956,7 @@
               -85.0,
               85.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationRange": [
               -40.0,
               60.0
@@ -2436,7 +2439,7 @@
               -60.0,
               60.0
             ],
-            "azmithWidth": 2.0,
+            "azimuthWidth": 2.0,
             "elevationRange": [
               -15.0,
               60.0
@@ -4379,6 +4382,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
@@ -4394,6 +4398,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,

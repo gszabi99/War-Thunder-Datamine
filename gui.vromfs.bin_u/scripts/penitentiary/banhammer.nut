@@ -1,7 +1,20 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/optionsExtNames.nut" import USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/complaints.nut" import cacheComplaintOnUser
+from "%scripts/contacts/contactsActions.nut" import find_contact_by_name_and_do
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
+from "%scripts/chat/chatLatestThreads.nut" import getChatThreadsList
+from "%scripts/chat/chatUtils.nut" import getPlayerTag
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
-from "%sqstd/string.nut" import clearBorderSymbolsMultiline
+from "%sqStdLibs/helpers/daguiString.nut" import clearBorderSymbolsMultiline
 from "guiOptions" import get_gui_option
 from "mission" import get_game_mode, get_local_mplayer
 from "multiplayer" import get_mp_session_id_str
@@ -12,21 +25,8 @@ from "%scripts/utils_sa.nut" import save_to_json
 from "%scripts/options/optionsCtors.nut" import create_option_list
 from "types" import Table
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let time = require("%scripts/time.nut")
-let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { cacheComplaintOnUser } = require("%scripts/user/complaints.nut")
-let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { getChatThreadsList } = require("%scripts/chat/chatLatestThreads.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { getPlayerTag } = require("%scripts/chat/chatUtils.nut")
 
 function gui_modal_ban(playerInfo, cLog = null) {
   handlersManager.loadHandler(get_gui_handler("BanHandler"), { player = playerInfo, chatLog = cLog })
@@ -356,7 +356,7 @@ let ComplainHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ComplainHandler", ComplainHandler)
 
-return {
+return freeze({
   gui_modal_ban
   gui_modal_complain
-}
+})

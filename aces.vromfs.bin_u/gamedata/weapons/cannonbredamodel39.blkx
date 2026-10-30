@@ -1,13 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 2.3,
-  "recoilMultiplier": 0.8,
-  "traceFreq": 2,
-  "bullets": 42,
-  "dragCx": 0.001,
-  "mass": 277.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,6 +14,27 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 2.3,
+  "recoilMultiplier": 0.8,
+  "bullets": 42,
+  "dragCx": 0.001,
+  "mass": 277.0,
+  "overheat": {
+    "overheat": [
+      [
+        20.0,
+        0.0
+      ],
+      [
+        30.0,
+        0.09
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.828,
@@ -560,7 +572,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmDarkRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1526,7 +1538,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmDarkRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     }
   },
@@ -1957,25 +1969,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bk37_gun_outside",
-    "cockpit": "bk37_gun_inside",
-    "ai": "bk37_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        20.0,
-        0.0
-      ],
-      [
-        30.0,
-        0.09
-      ]
-    ]
-  },
   "breda_model_39_new_gun": {
     "maxDeltaAngle": 0.15,
     "overheat": {
@@ -1990,5 +1983,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bk37_gun_outside",
+    "cockpit": "bk37_gun_inside",
+    "ai": "bk37_gun_ai"
   }
 }

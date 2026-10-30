@@ -1,15 +1,13 @@
 import "sony" as sony
+from "%sqstd/platform.nut" import is_xbox, isSony
+from "%appGlobals/options/screenInfo.nut" import getFinalSafearea, getHudWidthLimit
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA
+from "%scripts/options/options.nut" import set_gui_option_in_mode
 from "%appGlobals/login/loginState.nut" import isAuthorized
-from "%sqstd/platform.nut" import is_xbox
 from "vr" import is_stereo_mode
 from "%scripts/dagui_natives.nut" import set_option_hud_screen_safe_area, get_option_hud_screen_safe_area
 from "%scripts/dagui_library.nut" import *
-
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA } = require("%scripts/options/optionsExtNames.nut")
-let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
@@ -28,7 +26,7 @@ if (is_xbox) {
 
 let getFixedValue = @() 
   is_stereo_mode() ? 1.0
-  : isPlatformSony ? sony.getDisplaySafeArea()
+  : isSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9
   : -1
 
@@ -52,7 +50,7 @@ local setValue = function(value) {
   set_gui_option_in_mode(USEROPT_HUD_SCREEN_SAFE_AREA, value, OPTIONS_MODE_GAMEPLAY)
 }
 
-let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getHudWidthLimit())
+let getSafearea = @() getFinalSafearea(getValue(), getHudWidthLimit())
 
 return {
   getValue = getValue

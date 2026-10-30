@@ -1,7 +1,7 @@
 {
   "model": "marut_mk1",
   "fmFile": "fm/marut_mk1.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "gyroSight": true,
   "type": "typeFighter",
   "advancedInstructor": true,
@@ -12,17 +12,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "assault",
   "paratrooper": "usa_irvin_i_24_ejection_para",
@@ -640,15 +640,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -661,36 +665,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -723,15 +737,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -774,7 +792,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2410,31 +2430,31 @@
     "preset": [
       {
         "name": "marut_mk1_default",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_default.blk"
       },
       {
         "name": "marut_mk1_matra_t10_121",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_matra_t10_121.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_matra_t10_121.blk"
       },
       {
         "name": "marut_mk1_rocket_matra155",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_rocket_matra155.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_rocket_matra155.blk"
       },
       {
         "name": "marut_mk1_nasser_240",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_nasser_240.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_nasser_240.blk"
       },
       {
         "name": "marut_mk1_bomb_uk_540lbs_gp",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_bomb_uk_540lbs_gp.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_bomb_uk_540lbs_gp.blk"
       },
       {
         "name": "marut_mk1_bomb_uk_1000lbs_gp",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_bomb_uk_1000lbs_gp.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_bomb_uk_1000lbs_gp.blk"
       },
       {
         "name": "marut_mk1_bomb_uk_1000lbs_gp_n117",
-        "blk": "gameData/FlightModels/weaponPresets/marut_mk1_bomb_uk_1000lbs_gp_n117.blk"
+        "blk": "gamedata/flightModels/weaponPresets/marut_mk1_bomb_uk_1000lbs_gp_n117.blk"
       }
     ]
   },
@@ -2472,7 +2492,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN.blk",
+              "blk": "gamedata/weapons/cannonADEN.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2483,7 +2503,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN.blk",
+              "blk": "gamedata/weapons/cannonADEN.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2494,7 +2514,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN.blk",
+              "blk": "gamedata/weapons/cannonADEN.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection3",
@@ -2505,7 +2525,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonADEN.blk",
+              "blk": "gamedata/weapons/cannonADEN.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "shell": "emtr_shellrejection4",
@@ -2535,7 +2555,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket1_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2545,7 +2565,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket2_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2555,7 +2575,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket1_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2565,7 +2585,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket2_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2582,7 +2602,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_1"
             }
           },
@@ -2595,7 +2615,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/in_nasser_240.blk",
+              "blk": "gamedata/weapons/rocketGuns/in_nasser_240.blk",
               "emitter": "su_s_24_rocket_1",
               "bullets": 1,
               "external": true,
@@ -2608,7 +2628,7 @@
             "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_540lbs.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2622,7 +2642,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
               "emitter": "bomb1_offset",
               "bullets": 1,
               "external": true,
@@ -2636,7 +2656,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp_n117.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2656,7 +2676,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/in_100gal_marut_drop_tank_l_2.blk",
+              "blk": "gamedata/weapons/drop_tank/in_100gal_marut_drop_tank_l_2.blk",
               "emitter": "in_100gal_marut_drop_tank_l_2",
               "bullets": 1,
               "external": true
@@ -2686,7 +2706,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket5_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2696,7 +2716,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket6_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2706,7 +2726,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket5_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2716,7 +2736,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket6_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2733,7 +2753,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_2"
             }
           },
@@ -2746,7 +2766,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/in_nasser_240.blk",
+              "blk": "gamedata/weapons/rocketGuns/in_nasser_240.blk",
               "emitter": "su_s_24_rocket_3",
               "bullets": 1,
               "external": true,
@@ -2759,7 +2779,7 @@
             "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_540lbs.blk",
               "emitter": "bomb3",
               "bullets": 1,
               "external": true,
@@ -2773,7 +2793,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
               "emitter": "bomb3_offset",
               "bullets": 1,
               "external": true,
@@ -2787,7 +2807,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp_n117.blk",
               "emitter": "bomb3",
               "bullets": 1,
               "external": true,
@@ -2807,7 +2827,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/in_100gal_marut_drop_tank_l.blk",
+              "blk": "gamedata/weapons/drop_tank/in_100gal_marut_drop_tank_l.blk",
               "emitter": "in_100gal_marut_drop_tank_l_1",
               "bullets": 1,
               "external": true
@@ -2829,7 +2849,7 @@
           "Weapon": [
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2846,7 +2866,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2863,7 +2883,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2880,7 +2900,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2897,7 +2917,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2914,7 +2934,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2931,7 +2951,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2948,7 +2968,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2965,7 +2985,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2982,7 +3002,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -2999,7 +3019,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3016,7 +3036,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3033,7 +3053,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3050,7 +3070,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3067,7 +3087,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3084,7 +3104,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3101,7 +3121,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3118,7 +3138,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3135,7 +3155,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3152,7 +3172,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3170,7 +3190,7 @@
             {
               "trigger": "rockets",
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3186,7 +3206,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3203,7 +3223,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3220,7 +3240,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3237,7 +3257,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3254,7 +3274,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3271,7 +3291,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3288,7 +3308,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3305,7 +3325,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3322,7 +3342,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3339,7 +3359,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3356,7 +3376,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3373,7 +3393,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3390,7 +3410,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3407,7 +3427,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3424,7 +3444,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3441,7 +3461,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3458,7 +3478,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3475,7 +3495,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3492,7 +3512,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3510,7 +3530,7 @@
             {
               "trigger": "rockets",
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3526,7 +3546,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3543,7 +3563,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3560,7 +3580,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3577,7 +3597,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3594,7 +3614,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3611,7 +3631,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3628,7 +3648,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3645,7 +3665,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3662,7 +3682,7 @@
             },
             {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23s.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_sneb_type23s.blk",
               "gearLimit": [
                 0.0,
                 0.1
@@ -3698,7 +3718,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket8_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3708,7 +3728,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket7_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3718,7 +3738,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket8_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3728,7 +3748,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket7_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3745,7 +3765,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_3"
             }
           },
@@ -3758,7 +3778,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/in_nasser_240.blk",
+              "blk": "gamedata/weapons/rocketGuns/in_nasser_240.blk",
               "emitter": "su_s_24_rocket_4",
               "bullets": 1,
               "external": true,
@@ -3771,7 +3791,7 @@
             "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_540lbs.blk",
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,
@@ -3785,7 +3805,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
               "emitter": "bomb4_offset",
               "bullets": 1,
               "external": true,
@@ -3799,7 +3819,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp_n117.blk",
               "emitter": "bomb4",
               "bullets": 1,
               "external": true,
@@ -3819,7 +3839,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/in_100gal_marut_drop_tank_r.blk",
+              "blk": "gamedata/weapons/drop_tank/in_100gal_marut_drop_tank_r.blk",
               "emitter": "in_100gal_marut_drop_tank_r_1",
               "bullets": 1,
               "external": true
@@ -3849,7 +3869,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket4_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3859,7 +3879,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121b.blk",
                 "emitter": "rocket3_121b",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3869,7 +3889,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket4_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3879,7 +3899,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_121a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_121a.blk",
                 "emitter": "rocket3_121a",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3896,7 +3916,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_4"
             }
           },
@@ -3909,7 +3929,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/in_nasser_240.blk",
+              "blk": "gamedata/weapons/rocketGuns/in_nasser_240.blk",
               "emitter": "su_s_24_rocket_2",
               "bullets": 1,
               "external": true,
@@ -3922,7 +3942,7 @@
             "reqModification": "uk_mk_n1_540lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_540lbs.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
@@ -3936,7 +3956,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
               "emitter": "bomb2_offset",
               "bullets": 1,
               "external": true,
@@ -3950,7 +3970,7 @@
             "reqModification": "uk_mk_10_1000lb",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp_n117.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
@@ -3970,7 +3990,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/in_100gal_marut_drop_tank_r_2.blk",
+              "blk": "gamedata/weapons/drop_tank/in_100gal_marut_drop_tank_r_2.blk",
               "emitter": "in_100gal_marut_drop_tank_r_2",
               "bullets": 1,
               "external": true

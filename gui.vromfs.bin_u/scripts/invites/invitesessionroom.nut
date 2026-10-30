@@ -1,26 +1,27 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventRoomsHandler.nut" import EventRoomsHandler
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/user/antiAddictSystem.nut" import checkShowMultiplayerAasWarningMsg
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent, getSessionLobbyMissionNameText
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinSessionRoom
+from "%scripts/invites/invites.nut" import showExpiredInvitePopup
+from "%scripts/clientState/contentPacks.nut" import checkGamemodePkg
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "string" import format
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { EventRoomsHandler } = require("%scripts/events/eventRoomsHandler.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { getRoomEvent, getSessionLobbyMissionNameText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
-let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let SessionRoom = class (BaseInvite) {
   
@@ -117,7 +118,7 @@ let SessionRoom = class (BaseInvite) {
       if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       if (!this.isAvailableByCrossPlay())
-        return loc("xbox/crossPlayRequired")
+        return locByVendor("xbox/crossPlayRequired")
       if (!this.isMissionAvailable())
         return loc("invite/session/ugc_restriction")
       return loc("invite/session/cant_apply_in_flight")

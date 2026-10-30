@@ -1,5 +1,6 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/debugTools/dbgHud.nut" import hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug, hud_debug_streak
 from "dagor.random" import rnd, frnd
 from "hudMessages" import HUD_MSG_DEATH_REASON
 from "string" import format
@@ -9,7 +10,6 @@ from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug, hud_debug_streak } = require("%scripts/debugTools/dbgHud.nut")
 
 let getFakePlayer = @(id) {
   name = "somebodyName"

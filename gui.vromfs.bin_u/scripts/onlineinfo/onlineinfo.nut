@@ -2,10 +2,11 @@ from "dagor.time" import get_time_msec
 from "math" import abs
 from "%scripts/dagui_library.nut" import *
 
-let totalRooms = mkWatched(persist, "totalRooms", 0)
-let totalPlayers = mkWatched(persist, "totalPlayers", 0)
-let onlineInfoServerTimeParam = mkWatched(persist, "onlineInfoServerTimeParam", 0)
-let onlineInfoServerTimeReceivedMsec = mkWatched(persist, "onlineInfoServerTimeReceivedMsec", 0)
+let hardPersistWatched = mkHardPersistWatched("onlineInfo.onlineInfo")
+let totalRooms = hardPersistWatched("totalRooms", 0)
+let totalPlayers = hardPersistWatched("totalPlayers", 0)
+let onlineInfoServerTimeParam = hardPersistWatched("onlineInfoServerTimeParam", 0)
+let onlineInfoServerTimeReceivedMsec = hardPersistWatched("onlineInfoServerTimeReceivedMsec", 0)
 
 const SERVER_TIME_RESYNC_SEC = 2
 
@@ -28,9 +29,9 @@ function syncMatchingServerTime(serverTime) {
   onlineInfoServerTimeReceivedMsec.set(get_time_msec())
 }
 
-return {
+return freeze({
   totalRooms
   totalPlayers
   getMatchingServerTime
   syncMatchingServerTime
-}
+})

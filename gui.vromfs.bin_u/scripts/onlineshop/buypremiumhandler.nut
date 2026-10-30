@@ -1,3 +1,22 @@
+import "%scripts/time.nut" as time
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementDescription, getEntitlementName, getPricePerEntitlement, getEntitlementPriceFloat, getEntitlementAmount, getEntitlementFullTimeText, getEntitlementPrice
+from "%scripts/money.nut" import Cost
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsInfo.nut" import bundlesShopInfo
+from "%scripts/onlineShop/onlinePurchase.nut" import onOnlinePurchase
+from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
+from "%scripts/user/premium.nut" import getRemainingPremiumTime
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "math" import floor
 from "steam" import steam_is_overlay_active
@@ -5,26 +24,7 @@ from "%scripts/dagui_natives.nut" import get_entitlement_cost_gold, purchase_ent
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement, getEntitlementPriceFloat, getEntitlementAmount, getEntitlementFullTimeText, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
-let time = require("%scripts/time.nut")
-let { Cost } = require("%scripts/money.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-let { onOnlinePurchase } = require("%scripts/onlineShop/onlinePurchase.nut")
-let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 

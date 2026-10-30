@@ -1,15 +1,15 @@
+from "%scripts/unit/unitInfoRoles.nut" import getRoleText
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, makeWeaponInfoData
+from "%scripts/statistics/mpStatisticsInfo.nut" import getWeaponTypeIcoByWeapon
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
-let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let getUnitCustomParams = memoize(function(unitId) {
   return getWwSetting("unitCustomParams", null)?[unitId]
@@ -229,4 +229,4 @@ let WwUnit = class {
   }
 }
 
-return { WwUnit }
+return freeze({ WwUnit })

@@ -7,18 +7,20 @@ let mineIconNames = {
   tnt_exploder = "grenade_tnt_block.svg"
 }
 
-let mineIcon = @(gType, size) Picture("ui/gameuiskin#{0}:{1}:{2}:P"
-  .subst(mineIconNames?[gType] ?? mineIconNames.antitank_mine, size, size))
+let mineIconName = @(gType, size) "ui/gameuiskin#{0}:{1}:{2}:P"
+  .subst(mineIconNames?[gType] ?? mineIconNames.antitank_mine, size, size)
 
-let mkMineIcon = @(mineType, size, color = commonIconColor) mineType == null ? null
+let mineIcon = @(gType, size) Picture(mineIconName(gType, size))
+
+let mkMineIcon = @(mineType, size, getPicture, color = commonIconColor) mineType == null ? null
   : {
       rendObj = ROBJ_IMAGE
-      size = [size, size]
-      image = mineIcon(mineType, size)
+      size = size
+      image = getPicture(mineIconName(mineType, size))
       tint = color
     }
 
-return {
+return freeze({
   mineIcon
   mkMineIcon
-}
+})

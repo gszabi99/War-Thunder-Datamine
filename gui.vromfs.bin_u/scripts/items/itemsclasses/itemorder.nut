@@ -1,21 +1,21 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/orders.nut" import getOrderActivateInfoText, getTimesUsedOrderItem, isOrderItemActive, activateOrder, orderCanBeActivated, checkCurrentMission
 from "%sqstd/datablock.nut" import convertBlk
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { events } = require("%scripts/events/eventsManager.nut")
 let { g_order_award_mode } = require("%scripts/items/orderAwardMode.nut")
 let { orderUseResult } = require("%scripts/items/orderUseResult.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let time = require("%scripts/time.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { getOrderActivateInfoText, getTimesUsedOrderItem, isOrderItemActive, activateOrder, orderCanBeActivated, checkCurrentMission } = require("%scripts/items/orders.nut")
 
 let Order = class (BaseItem) {
   static iType = itemType.ORDER

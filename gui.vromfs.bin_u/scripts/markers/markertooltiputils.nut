@@ -1,7 +1,6 @@
+from "%scripts/shop/shopCountriesList.nut" import getShopVisibleCountries
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
-
-let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 
 const maxTooltipUnitsCount = 20
 
@@ -87,11 +86,11 @@ function createMoreText(count) {
   return loc("shop/moreVehicles", { num = count })
 }
 
-return {
+return freeze({
   getSortedUnits
   getSortedDiscountUnits
   prepareForTooltip
   createMoreText
   maxElementsInSimpleTooltip = 25
   maxTooltipUnitsCount
-}
+})

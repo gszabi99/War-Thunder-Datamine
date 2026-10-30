@@ -503,15 +503,15 @@ function validate_custom_mission(misblk) {
 
 
   let typeToPath = {
-    armada = "gameData/flightModels",
-    infantry = "gameData/units/infantry",
-    tracked_vehicles = "gameData/units/tracked_vehicles",
-    wheeled_vehicles = "gameData/units/wheeled_vehicles",
-    structures = "gameData/units/structures",
-    air_defence = "gameData/units/air_defence",
-    ships = "gameData/units/ships",
-    objectGroups = "gameData/objectGroups",
-    tankModels = "gameData/units/tankModels"
+    armada = "gamedata/flightModels",
+    infantry = "gamedata/units/infantry",
+    tracked_vehicles = "gamedata/units/tracked_vehicles",
+    wheeled_vehicles = "gamedata/units/wheeled_vehicles",
+    structures = "gamedata/units/structures",
+    air_defence = "gamedata/units/air_defence",
+    ships = "gamedata/units/ships",
+    objectGroups = "gamedata/objectGroups",
+    tankModels = "gamedata/units/tankModels"
   }
 
   if ("imports" in misblk && "import_record" in misblk.imports)

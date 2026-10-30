@@ -21,7 +21,7 @@ let adlMarker = @() {
   size = const [pw(3), ph(3)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, 100, 0],
     [VECTOR_LINE, 0, -100, 0, 100]
   ]
@@ -40,7 +40,7 @@ let planeMarker = @() {
   pos = const [pw(50), ph(70)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 40, 0, 100, 0],
     [VECTOR_LINE, -100, 0, -40, 0],
@@ -56,7 +56,7 @@ function targetMark(width, height, watchVar, is_radar) {
     size = const [pw(3), ph(3)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = watchVar.get() ? [
+    commands = watchVar.get() ? const [
       [VECTOR_LINE, -100, 0, 0, -100],
       [VECTOR_LINE, 0, -100, 100, 0],
       [VECTOR_LINE, 100, 0, 0, 100],
@@ -95,7 +95,7 @@ let targetDist = @() {
   pos = const [pw(80), ph(20)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
-  commands = RadarTargetPosValid.get() ? ([
+  commands = RadarTargetPosValid.get() ? (const [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 0, 20, 0, 20],
     [VECTOR_LINE, 0, 40, 0, 40],
@@ -135,7 +135,7 @@ let altmetr = @() {
   pos = const [pw(82), ph(40)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 12.5, 0, 12.5],
     [VECTOR_LINE, 0, 25, 0, 25],
     [VECTOR_LINE, 0, 37.5, 0, 37.5],
@@ -185,7 +185,7 @@ let closureRate = @() {
   pos = const [pw(20), ph(20)]
   color = IlsColor.get()
   lineWidth = 2 * baseLineWidth * IlsLineScale.get()
-  commands = RadarTargetPosValid.get() ? ([
+  commands = RadarTargetPosValid.get() ? (const [
     [VECTOR_LINE, 0, 0, 0, 0],
     [VECTOR_LINE, 0, 16.6, 0, 16.6],
     [VECTOR_LINE, 0, 33.3, 0, 33.3],
@@ -257,15 +257,15 @@ let aimMark = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, 0, 0, 0, 0],
-    [VECTOR_LINE, -100, 0, -40, 0],
-    [VECTOR_LINE, 100, 0, 40, 0],
-    [VECTOR_LINE, 0, -100, 0, -40],
-    [VECTOR_LINE, 0, 100, 0, 40],
-    (!TargetPosValid.get() ? [VECTOR_LINE, -40, 0, 0, -40] : []),
-    (!TargetPosValid.get() ? [VECTOR_LINE, 40, 0, 0, 40] : []),
-    (!TargetPosValid.get() ? [VECTOR_LINE, 0, -40, 40, 0] : []),
-    (!TargetPosValid.get() ? [VECTOR_LINE, 0, 40, -40, 0] : [])
+    const [VECTOR_LINE, 0, 0, 0, 0],
+    const [VECTOR_LINE, -100, 0, -40, 0],
+    const [VECTOR_LINE, 100, 0, 40, 0],
+    const [VECTOR_LINE, 0, -100, 0, -40],
+    const [VECTOR_LINE, 0, 100, 0, 40],
+    (!TargetPosValid.get() ? const [VECTOR_LINE, -40, 0, 0, -40] : const []),
+    (!TargetPosValid.get() ? const [VECTOR_LINE, 40, 0, 0, 40] : const []),
+    (!TargetPosValid.get() ? const [VECTOR_LINE, 0, -40, 40, 0] : const []),
+    (!TargetPosValid.get() ? const [VECTOR_LINE, 0, 40, -40, 0] : const [])
   ]
   behavior = Behaviors.RtPropUpdate
   update = @() {
@@ -289,7 +289,7 @@ let compass = function(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, -100, 100],
           [VECTOR_LINE, 0, 0, 100, 100]
         ]
@@ -303,58 +303,49 @@ function generatePitchLine(num) {
   return {
     size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
-    children = num >= 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
+    children = num >= 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [10, 0]
+      commands = const [
+        [VECTOR_LINE, 0, 0, 34, 0],
+        [VECTOR_LINE, 66, 0, 100, 0]
+      ]
+      children = num != 0 ? {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
         color = IlsColor.get()
-        padding = const [10, 0]
-        commands = [
-          [VECTOR_LINE, 0, 0, 34, 0],
-          [VECTOR_LINE, 66, 0, 100, 0]
-        ]
-        children = num != 0 ? [
-          {
-            rendObj = ROBJ_TEXT
-            size = SIZE_TO_CONTENT
-            color = IlsColor.get()
-            fontSize = 40
-            font = Fonts.f14_ils
-            text = num.tostring()
-          }
-        ] : null
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
+        fontSize = 40
+        font = Fonts.f14_ils
+        text = num.tostring()
+      } : null
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [10, 0]
+      commands = const [
+        [VECTOR_LINE, 0, 0, 7, 0],
+        [VECTOR_LINE, 15, 0, 21, 0],
+        [VECTOR_LINE, 28, 0, 34, 0],
+        [VECTOR_LINE, 100, 0, 93, 0],
+        [VECTOR_LINE, 85, 0, 79, 0],
+        [VECTOR_LINE, 72, 0, 66, 0]
+      ]
+      children = {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
         color = IlsColor.get()
-        padding = const [10, 0]
-        commands = [
-          [VECTOR_LINE, 0, 0, 7, 0],
-          [VECTOR_LINE, 15, 0, 21, 0],
-          [VECTOR_LINE, 28, 0, 34, 0],
-          [VECTOR_LINE, 100, 0, 93, 0],
-          [VECTOR_LINE, 85, 0, 79, 0],
-          [VECTOR_LINE, 72, 0, 66, 0]
-        ]
-        children = [
-          {
-            rendObj = ROBJ_TEXT
-            size = SIZE_TO_CONTENT
-            color = IlsColor.get()
-            fontSize = 40
-            font = Fonts.f14_ils
-            text = num.tostring()
-          }
-        ]
+        fontSize = 40
+        font = Fonts.f14_ils
+        text = num.tostring()
       }
-    ]
+    }
   }
 }
 
@@ -436,7 +427,7 @@ function ccrp(width, height) {
       flyDirection(width, height, false),
       targetMark(width, height, TargetPosValid, false),
       AVQ7CCRP(width, height)
-    ] : [aimMark]
+    ] : aimMark
   }
 }
 

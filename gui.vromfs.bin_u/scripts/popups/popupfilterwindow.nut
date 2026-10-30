@@ -1,11 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local PopupFilterWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -24,6 +23,7 @@ local PopupFilterWindow = class (BaseGuiHandlerWT) {
   visualStyle          = null
   closeAsPopup         = true
   isShowCountFilters   = true
+  hasBtnIcon           = true
 
   function getSceneTplView() {
     let maxTextWidths = {}
@@ -84,6 +84,7 @@ local PopupFilterWindow = class (BaseGuiHandlerWT) {
       btnTitle = this.btnTitle
       btnWidth = this.btnWidth
       visualStyle = this.visualStyle
+      hasBtnIcon = this.hasBtnIcon
       buttonPos = ", ".join(this.btnPosition)
       on_click = "close"
       closeAsPopup = this.closeAsPopup
@@ -134,7 +135,7 @@ local PopupFilterWindow = class (BaseGuiHandlerWT) {
       return
 
     let count = this.getSelectedFiltersCount()
-    setDoubleTextToButton(this.scene, "filter_button", this.btnTitle,
+    setDoubleTextToButton(this.scene, "filter_button", this.hasBtnIcon ? this.btnTitle : "",
       count == 0 ? ""
         : colorize("lbActiveColumnColor", loc("ui/parentheses", { text = $"+{count}" })))
   }
@@ -222,6 +223,6 @@ local PopupFilterWindow = class (BaseGuiHandlerWT) {
 
 register_gui_handler("PopupFilterWindow", PopupFilterWindow)
 
-return {
+return freeze({
   PopupFilterWindow
-}
+})

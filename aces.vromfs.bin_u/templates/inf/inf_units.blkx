@@ -2,22 +2,35 @@
   "base_trench_soldier": {
     "_use": [
       "human",
+      "base_human_weap",
       "base_soldier",
-      "trench_bot",
+      "human_nodes_disabler",
+      "base_human_anim",
+      "soldier_mm_component",
       "base_ai_soldiers",
+      "trench_bot",
       "trench_soldier_ai_aiming_errors",
       "trench_soldier_ai_walker_agent"
     ],
     "unit__className": "humans/trench_soldier",
+    "entity__deadSubTemplate": "dead_trench_soldier",
     "trenchBot:tag": {},
     "animchar__onlyServerUpdate:tag": {},
     "capsule_approximation": {},
+    "human_anim": {},
+    "human__gunObjTexReplace:object": {},
+    "human__gunObjTexSet:object": {},
+    "human__gunCamoParams:p4": {},
     "_group": {
       "_tags": "render",
       "animchar_node_collapser__nodes:object": {
         "Bip01 Head": "Bip01 Neck"
       }
     }
+  },
+  "dead_trench_soldier": {
+    "_use": "dead_entity",
+    "animchar__physSymDependence:tag": {}
   },
   "germ_inf_gw": {
     "_use": "base_trench_soldier",
@@ -99,9 +112,37 @@
       }
     }
   },
-  "browning_m1918_gun_equip": {
+  "browning_m1918a2_trench_gun": {
+    "_use": "browning_m1918a2_gun",
+    "gun_sound__prefix": "",
+    "_group": {
+      "_tags": "sound",
+      "gun_shot_dry_sound__path": "infantry/player/weapon/_common/shot_dry_pistol",
+      "gun_switch_firing_mode_sound__path": "infantry/player/weapon/_common/change_mode"
+    },
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "path": "event/soldier/weapon/mgun/m1918"
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "reload1:object": {
+        "path": "event/soldier/weapon/mgun/lewis/reload1/change_ammo"
+      },
+      "reload2:object": {
+        "path": "event/soldier/weapon/mgun/lewis/reload2/change_ammo"
+      },
+      "reload3:object": {
+        "path": "event/soldier/weapon/mgun/lewis/reload3/change_ammo"
+      },
+      "boltAction:object": {
+        "path": "event/soldier/weapon/mgun/lewis/reload4/change_ammo"
+      }
+    }
+  },
+  "browning_m1918a2_gun_equip": {
     "human_weap__weapTemplates:object": {
-      "primary": "browning_m1918_gun",
+      "primary": "browning_m1918a2_trench_gun",
       "secondary": "",
       "tertiary": "",
       "melee": "",
@@ -116,7 +157,7 @@
       "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
       "human_weap__template_deps_list:list<t>": {
         "tmpl": [
-          "browning_m1918_gun",
+          "browning_m1918a2_trench_gun",
           "grenade_thrower"
         ]
       }

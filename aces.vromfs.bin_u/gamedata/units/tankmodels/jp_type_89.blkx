@@ -1912,7 +1912,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDE_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_KDE_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.2,
@@ -2018,7 +2018,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type74_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type74_user_machinegun.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2062,7 +2062,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_Type_79_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_Type_79_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2118,7 +2118,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "speedYaw": 0.0,
         "speedPitch": 0.0,
@@ -2173,8 +2173,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_89_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_89_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3153,7 +3153,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDE_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_KDE_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.2,
@@ -3259,7 +3259,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type74_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type74_user_machinegun.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3303,7 +3303,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/152mm_Type_79_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/152mm_Type_79_launcher_user_cannon.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3359,7 +3359,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "speedYaw": 0.0,
               "speedPitch": 0.0,
@@ -3413,7 +3413,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3647,6 +3647,7 @@
     "ammo1": {
       "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,
@@ -3654,6 +3655,7 @@
       "shells": [
         {
           "autoLoad": true,
+          "index": 0,
           "ammo_body_01_dm": {
             "count": 1
           },
@@ -3759,6 +3761,7 @@
         },
         {
           "reloadTimeMult": 5.0,
+          "index": 1,
           "ammo_body_51_dm": {
             "count": 2
           },
@@ -3864,6 +3867,7 @@
         },
         {
           "reloadTimeMult": 10.0,
+          "index": 2,
           "ammo_turret_34_dm": {
             "count": 4
           },

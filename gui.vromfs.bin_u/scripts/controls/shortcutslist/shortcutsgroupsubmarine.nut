@@ -1,3 +1,6 @@
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AxisDirection
+from "%scripts/options/optionsExtNames.nut" import USEROPT_INVERTY_SUBMARINE
 from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_SUBMARINE, OPTION_AIM_ACCELERATION_DELAY_SUBMARINE, OPTION_MOUSE_Z_SUBMARINE_MULT
 from "controls" import ActionGroup, hasXInputDevice
 from "%scripts/dagui_natives.nut" import is_mouse_available
@@ -5,9 +8,6 @@ from "%scripts/dagui_library.nut" import *
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_INVERTY_SUBMARINE } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -77,13 +77,11 @@ return [
     type = CONTROL_TYPE.SECTION
     needShowInHelp = true
   }
-  
-
-
-
-
-
-
+  {
+    id = "ID_SUBMARINE_TORPEDO_COURSE_TOGGLE"
+    checkAssign = false
+    needShowInHelp = true
+  }
   {
     id = "ID_TOGGLE_VIEW_SUBMARINE"
     checkAssign = false

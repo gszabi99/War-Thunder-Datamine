@@ -1,3 +1,14 @@
+from "%scripts/chat/chatStates.nut" import isChatEnabled, checkChatEnableWithPlayer
+from "%scripts/user/nameMapping.nut" import getRealName
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/chat/mpChatState.nut" import getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
+from "%scripts/user/usersReputation.nut" import getUserReputation, updateUserReputationData
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
+from "%scripts/chat/chatUtils.nut" import filterMessageText
+from "%scripts/squads/squadManager.nut" import g_squad_manager
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%globalScripts/chatState.nut" import ReputationType
 from "eventbus" import eventbus_send
@@ -10,19 +21,8 @@ from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/mpTeamConsts.nut" import *
 
-let { isChatEnabled, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { getRealName } = require("%scripts/user/nameMapping.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId } = require("%scripts/chat/mpChatState.nut")
 let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { getUserReputation, updateUserReputationData } = require("%scripts/user/usersReputation.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -173,10 +173,10 @@ register_command(
 "mpChatModel.onIncomingMessage")
 
 set_chat_handler(mpChatModel)
-return {
+return freeze({
   getLogForBanhammer
   clearMpChatLog
   onIncomingMessage
   onInternalMessage
   chatSystemMessage = @(text) onIncomingMessage("", text, false, 0, true)
-}
+})

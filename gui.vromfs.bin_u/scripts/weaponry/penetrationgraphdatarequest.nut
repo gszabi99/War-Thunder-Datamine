@@ -1,8 +1,9 @@
+from "%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut" import getBulletCacheSaveId
+from "%scripts/weaponry/graphCompareBullets/armorPenetrationDataRequest.nut" import requestArmorPenetrationData
 from "eventbus" import eventbus_send
 from "math" import cos, PI
 
-let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
-let { requestArmorPenetrationData } = require("%scripts/weaponry/graphCompareBullets/armorPenetrationDataRequest.nut")
+let { graphColorList } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 
 let PENETRATION_ANGLES = [0, 30, 60]
 const DEG_TO_RAD = PI / 180.0
@@ -52,7 +53,7 @@ function clearActivePenetrationGraphRequest() {
   activeBulletId = null
 }
 
-return {
+return freeze({
   requestTooltipPenetrationGraphData
   clearActivePenetrationGraphRequest
-}
+})

@@ -24,7 +24,6 @@ def public macro_verify(expr : bool; prog : ProgramPtr; at : LineInfo; message :
 class MacroVerifyMacro : AstFunctionAnnotation {
     
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
-        
         var res = qmacro_block() {
             if (!$e(call.arguments[0])) {
                 macro_error($e(call.arguments[1]), $e(call.arguments[2]), $e(call.arguments[3]))
@@ -83,10 +82,11 @@ def public capture_block(expr : ExpressionPtr) : array<CapturedVariable> {
 }
 
 [macro]
-class ColletFinally : AstVisitor {
+class CollectFinally : AstVisitor {
     
     @do_not_delete blocks : table<ExprBlock?>
     alwaysFor : bool
+    skipTryCatch : bool = false
     def override preVisitExprBlock(blk : ExprBlock?) : void {
         unsafe {
             if (!empty(blk.finalList)) {
@@ -99,14 +99,17 @@ class ColletFinally : AstVisitor {
     def override canVisitMakeBlockBody(expr : ExprMakeBlock?) : bool {
         return false
     }
+    def override canVisitTryCatchBody(expr : ExprTryCatch?) : bool {
+        return !skipTryCatch
+    }
 }
 
 [macro_function]
-def public collect_finally(expr : ExpressionPtr; alwaysFor : bool = false) {
+def public collect_finally(expr : ExpressionPtr; alwaysFor : bool = false; skipTryCatch : bool = false) {
     
     
     
-    var astVisitor = new ColletFinally(alwaysFor = alwaysFor)
+    var astVisitor = new CollectFinally(alwaysFor = alwaysFor, skipTryCatch = skipTryCatch)
     make_visitor(*astVisitor) $(adapter) {
         visit(expr, adapter)
     }
@@ -118,22 +121,27 @@ def public collect_finally(expr : ExpressionPtr; alwaysFor : bool = false) {
 }
 
 [macro]
-class ColletLabels : AstVisitor {
+class CollectLabels : AstVisitor {
     
     labels : table<int>
+    skipTryCatch : bool = false
     def override preVisitExprLabel(expr : ExprLabel?) : void {
         labels |> insert(expr.labelName)
     }
     def override canVisitMakeBlockBody(expr : ExprMakeBlock?) : bool {
         return false
     }
+    def override canVisitTryCatchBody(expr : ExprTryCatch?) : bool {
+        return !skipTryCatch
+    }
 }
 
 [macro_function]
-def public collect_labels(expr : ExpressionPtr) {
+def public collect_labels(expr : ExpressionPtr; skipTryCatch : bool = false) {
     
     
-    var astVisitor = new ColletLabels()
+    
+    var astVisitor = new CollectLabels(skipTryCatch = skipTryCatch)
     make_visitor(*astVisitor) $(adapter) {
         visit(expr, adapter)
     }
@@ -145,7 +153,7 @@ def public collect_labels(expr : ExpressionPtr) {
 }
 
 [macro_function]
-def public has_sideeffects(expr : Expression?) : bool {
+def public has_sideeffects(expr : Expression?) : bool {  
     
     if (expr == null || expr.flags.noSideEffects
             || expr is ExprVar
@@ -157,28 +165,21 @@ def public has_sideeffects(expr : Expression?) : bool {
             || expr is ExprConstPtr || expr is ExprConstRange || expr is ExprConstURange
             || expr is ExprConstRange64 || expr is ExprConstURange64
             || expr is ExprConstEnumeration || expr is ExprConstBitfield) return false
-    
     if (expr is ExprField) return has_sideeffects((expr as ExprField).value)
     if (expr is ExprSafeField) return has_sideeffects((expr as ExprSafeField).value)
     if (expr is ExprSwizzle) return has_sideeffects((expr as ExprSwizzle).value)
-    
     if (expr is ExprRef2Value) return has_sideeffects((expr as ExprRef2Value).subexpr)
     if (expr is ExprRef2Ptr) return has_sideeffects((expr as ExprRef2Ptr).subexpr)
     if (expr is ExprPtr2Ref) return has_sideeffects((expr as ExprPtr2Ref).subexpr)
     if (expr is ExprAddr) return false
-    
     if (expr is ExprIs) return has_sideeffects((expr as ExprIs).subexpr)
     if (expr is ExprIsVariant) return has_sideeffects((expr as ExprIsVariant).value)
     if (expr is ExprAsVariant) return has_sideeffects((expr as ExprAsVariant).value)
     if (expr is ExprSafeAsVariant) return has_sideeffects((expr as ExprSafeAsVariant).value)
-    
     if (expr is ExprCast) return has_sideeffects((expr as ExprCast).subexpr)
-    
     if (expr is ExprTypeInfo || expr is ExprTypeDecl || expr is ExprTag) return false
-    
     if (expr is ExprAt) {
         let at_e = expr as ExprAt
-        
         if (at_e.subexpr == null || at_e.subexpr._type == null
                 || at_e.subexpr._type.isGoodTableType) return true
         return has_sideeffects(at_e.subexpr) || has_sideeffects(at_e.index)
@@ -187,12 +188,10 @@ def public has_sideeffects(expr : Expression?) : bool {
         let sat = expr as ExprSafeAt
         return has_sideeffects(sat.subexpr) || has_sideeffects(sat.index)
     }
-    
     if (expr is ExprNullCoalescing) {
         let nc = expr as ExprNullCoalescing
         return has_sideeffects(nc.subexpr) || has_sideeffects(nc.defaultValue)
     }
-    
     if (expr is ExprStringBuilder) {
         let sb = expr as ExprStringBuilder
         for (e in sb.elements) {
@@ -200,7 +199,6 @@ def public has_sideeffects(expr : Expression?) : bool {
         }
         return false
     }
-    
     if (expr is ExprKeyExists) {
         let ke = expr as ExprKeyExists
         for (a in ke.arguments) {
@@ -208,12 +206,8 @@ def public has_sideeffects(expr : Expression?) : bool {
         }
         return false
     }
-    
     if (expr is ExprOp1) {
         let e1 = expr as ExprOp1
-        
-        
-        
         if (is_mutation_op1(e1.op)
                 || (e1.func != null && func_has_sideeffects(e1.func))
                 || (e1.func == null && !is_safe_op1(e1.op))) return true
@@ -228,7 +222,6 @@ def public has_sideeffects(expr : Expression?) : bool {
     }
     if (expr is ExprOp3) {
         let e3 = expr as ExprOp3
-        
         return has_sideeffects(e3.subexpr) || has_sideeffects(e3.left) || has_sideeffects(e3.right)
     }
     if (expr is ExprCall) {
@@ -239,7 +232,6 @@ def public has_sideeffects(expr : Expression?) : bool {
         }
         return false
     }
-    
     return true
 }
 

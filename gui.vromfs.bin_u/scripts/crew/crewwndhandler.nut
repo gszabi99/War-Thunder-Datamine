@@ -1,4 +1,37 @@
+import "%scripts/crew/crewSkillsPageHandler.nut" as crewSkillsPageHandler
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmationHandler
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/crew/skillsPageStatus.nut" import getPageStatus
+from "%scripts/crew/crewWndRoleToXrayParts.nut" import getPartsListToHighlight
+from "%scripts/crew/crewPointsText.nut" import getCrewSpText
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/crew/crew.nut" import isAllCrewsMinLevel, getCrewName, getCrewLevel, getMaxCrewLevel, getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel
+  , isCrewMaxLevel, getCrewSkillPointsToMaxAllSkills, createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, loadCrewSkills
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton, setColoredDoubleTextToButton
+from "%scripts/money.nut" import Cost
+from "%scripts/tasker.nut" import addTask
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/slotbar/slotbarState.nut" import flushSlotbarUpdate, suspendSlotbarUpdates
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/crew/crewActions.nut" import buyAllCrewSkills
+from "%scripts/crew/crewDiscount.nut" import getCrewDiscountInfo
+from "%scripts/bonusModule.nut" import showCurBonus
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/crew/crewActionsWithMsgBox.nut" import upgradeUnitSpec
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/shop/shopCountryInfo.nut" import isCountryHaveUnitType
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/u.nut" import appendOnce
@@ -12,40 +45,10 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { purchaseConfirmationHandler } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
-let { getPartsListToHighlight } = require("%scripts/crew/crewWndRoleToXrayParts.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName } = require("%scripts/crew/crewSpecType.nut")
-let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isAllCrewsMinLevel, getCrewName, getCrewLevel, getMaxCrewLevel, getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel, getCrewSkillPointsToMaxAllSkills, createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages, loadCrewSkills } = require("%scripts/crew/crew.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { Cost } = require("%scripts/money.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { buyAllCrewSkills } = require("%scripts/crew/crewActions.nut")
-let { getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
-let { showCurBonus } = require("%scripts/bonusModule.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
+let { crewSkillPages } = require("%scripts/crew/crew.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
 
 const CREW_MAX_PROGRESS_BAR_VALUE = 1000
 
@@ -1116,7 +1119,7 @@ let CrewHandler = class (BaseGuiHandlerWT) {
         continue
       visibleUnitTypes.append(unitType)
     }
-    visibleUnitTypes.sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
+    visibleUnitTypes.sortby(@(a) a.visualSortOrder)
     let currentCrewTypes = []
     foreach (unitType in visibleUnitTypes)
       appendOnce(unitType.crewUnitType, currentCrewTypes)
@@ -1270,4 +1273,4 @@ let CrewWndModal = class (CrewHandler) {
 }
 register_gui_handler("CrewWndModal", CrewWndModal)
 
-return { CrewWndModal, CrewHandler }
+return freeze({ CrewWndModal, CrewHandler })

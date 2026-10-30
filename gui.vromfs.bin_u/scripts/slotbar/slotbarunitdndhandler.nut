@@ -1,18 +1,19 @@
+import "%scripts/slotbar/fillSlotbarLegend.nut" as fillSlotbarLegend
+import "%scripts/slotbar/selectCrewSlotbarBaseCfg.nut" as slotbarBaseCfg
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/shop/shopUnitsInfo.nut" import hasDefaultUnitsInCountry
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getCurrentSlotbarPreset
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_crew_count
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
-let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
+
 
 class SlotbarUnitDnD (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -49,7 +50,6 @@ class SlotbarUnitDnD (BaseGuiHandlerWT) {
         singleCountry = this.country
         unitForSpecType = this.unit
         selectOnHover = true
-        hasCrewHint = false
         applySlotSelectionOverride = @(_, __) this.onSlotSelection()
       }),"take-aircraft-slotbar")
     this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(-1))
@@ -62,7 +62,8 @@ class SlotbarUnitDnD (BaseGuiHandlerWT) {
     draggedClone["class"] = "slotbarClone"
     this.draggedObjParent["class"] = "slotbarCloneSource"
 
-    let shopItemObj = draggedClone.getChild()
+    let shopItemObjId = draggedClone.id.split("td_")[1]
+    let shopItemObj = draggedClone.findObject(shopItemObjId)
     shopItemObj.dragging = "yes"
 
     fillSlotbarLegend(this.scene.findObject("qualification_legend"), this.unit, this)
@@ -127,6 +128,6 @@ class SlotbarUnitDnD (BaseGuiHandlerWT) {
 
 register_gui_handler("SlotbarUnitDnD", SlotbarUnitDnD)
 
-return {
+return freeze({
   startSlotbarUnitDnD = @(params) handlersManager.loadHandler(SlotbarUnitDnD, params)
-}
+})

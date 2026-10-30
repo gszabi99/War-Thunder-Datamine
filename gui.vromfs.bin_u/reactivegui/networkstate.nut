@@ -5,6 +5,6 @@ let isMultiplayer = mkWatched(persist, "isMultiplayer", false)
 
 eventbus_subscribe("setIsMultiplayerState", @(v) isMultiplayer.set(v.isMultiplayer))
 
-return {
+return freeze({
   isMultiplayer
-}
+})

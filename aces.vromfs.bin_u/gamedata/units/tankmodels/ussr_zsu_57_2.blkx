@@ -2210,7 +2210,9 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm"
       ],
       "effect": [
         {
@@ -2231,7 +2233,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_S_68_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_S_68_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2334,7 +2336,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_S_68_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_S_68_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2384,8 +2386,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_zsu_57_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_zsu_57_2_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2448,7 +2450,10 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 120000.0,
       "driveGearRadius": 0.28345,
       "mainGearRatio": 0.7,
@@ -2480,7 +2485,18 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_front": 0.26,
-      "wheel_l_front": 0.26
+      "wheel_l_front": 0.26,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {

@@ -1,7 +1,7 @@
+from "%scripts/user/profileStates.nut" import userIdStr
 from "%scripts/dagui_library.nut" import *
 
-let captchaCache = persist("captchaCache", @() {})
-let { userIdStr } = require("%scripts/user/profileStates.nut")
+let captchaCache = mkHardPersist("captcha.captchaCache")("captchaCache", {})
 
 let userCache = {
   countTries = 0

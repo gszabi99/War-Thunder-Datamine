@@ -22,7 +22,7 @@ def suspension_sound_appear_hero_vehicle_es(evt : Event;
     return
   if has(eid, "suspension_sound__event")
     return
-  datablock_load_cached("gameData/units/" + unit__className + ".blk") <| $(modelBlk : DataBlock)
+  datablock_load_cached("gamedata/units/" + unit__className + ".blk") <| $(modelBlk : DataBlock)
     let soundBlk = modelBlk |> datablock_get_block_by_name("sound")
     if soundBlk == null
       return

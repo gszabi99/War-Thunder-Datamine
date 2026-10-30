@@ -1,5 +1,10 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/crossModuleEvents.nut" import INVENTORY_UPDATE
+from "%scripts/items/itemsManager.nut" import isInventoryFullUpdated
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "dagor.random" import frnd
 from "%sqstd/datablock.nut" import convertBlk
@@ -8,14 +13,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 from "types" import Array
 
-let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let Set = require("%scripts/items/workshop/workshopSet.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
-let { isInventoryFullUpdated } = require("%scripts/items/itemsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 const OUT_OF_DATE_DAYS_WORKSHOP = 28
 

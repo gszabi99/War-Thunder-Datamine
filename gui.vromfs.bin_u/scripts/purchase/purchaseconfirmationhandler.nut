@@ -1,14 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/user/balance.nut" import get_balance
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "blkGetters" import get_game_params_blk
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { get_balance } = require("%scripts/user/balance.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 local confirmationWpEdge = -1
 
@@ -26,7 +26,6 @@ local purchaseConfirmationHandler = class (BaseGuiHandlerWT) {
 
   function initScreen() {
     this.scene.findObject("msgText").setValue(this.text)
-    this.scene.findObject("gc_warpoints").show(hasFeature("WarpointsInMenu"))
     this.scene.findObject("gc_eagles").show(hasFeature("SpendGold"))
     let { wp, gold } = get_balance()
     this.scene.findObject("gc_balance").setValue(decimalFormat(wp))
@@ -146,8 +145,8 @@ function purchaseConfirmation(params, cost = null) {
   return handler != null
 }
 
-return {
+return freeze({
   purchaseConfirmationHandler
   needPurchaseConfirmation
   purchaseConfirmation
-}
+})

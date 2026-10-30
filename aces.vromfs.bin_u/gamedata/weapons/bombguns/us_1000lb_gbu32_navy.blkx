@@ -1,15 +1,11 @@
 {
   "bombGun": true,
-  "preset_cost": 300,
-  "bullets": 1,
-  "shotFreq": 10.0,
+  "preset_cost": 200,
   "external": true,
+  "shotFreq": 10.0,
   "sound": "weapon.bombgun",
   "mesh": "us_1000lb_gbu32_usaf",
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "tags": {},
   "bomb": {
     "mass": 446.8,
     "mass_lbs": 985.0,
@@ -132,14 +128,15 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
+      "allowCCRP": true,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
-      "positionError": 5.0,
+      "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": 5.0,

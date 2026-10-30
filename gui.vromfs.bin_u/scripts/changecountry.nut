@@ -1,16 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/firstChoice/firstChoice.nut" import isCountryUnlocked
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode
+from "%scripts/events/eventsManager.nut" import events
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { GameModeSelect } = require("%scripts/gameModes/gameModeSelect.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isCountryUnlocked } = require("%scripts/firstChoice/firstChoice.nut")
-let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
 
 
 
@@ -145,4 +145,4 @@ let ChangeCountry = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ChangeCountry", ChangeCountry)
 
-return { ChangeCountry }
+return freeze({ ChangeCountry })

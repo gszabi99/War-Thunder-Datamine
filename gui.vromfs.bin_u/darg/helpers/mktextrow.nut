@@ -19,10 +19,18 @@
 
 
 
+from "%darg/ui_imports.nut" import *
 from "types" import String, Array
+
 function mkTextRow(fullText, mkText, replaceTable): array {
+  let plainTextSubsts = replaceTable.filter(@(v) v instanceof String)
+  if (plainTextSubsts.len() > 0) {
+    fullText = fullText.subst(plainTextSubsts)
+    replaceTable = replaceTable.filter(@(v) !(v instanceof String))
+  }
   local res = [fullText]
-  foreach(key, comp in replaceTable) {
+  foreach(id, comp in replaceTable) {
+    let key = "".concat("{", id, "}")
     let curList = res
     res = []
     foreach(text in curList) {

@@ -985,7 +985,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/de_roland_sr.blk",
+        "blk": "gamedata/sensors/de_roland_sr.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -998,7 +998,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/de_roland_fr.blk",
+        "blk": "gamedata/sensors/de_roland_fr.blk",
         "turretIndex": 0,
         "radarParkingAzimuth": 0.0,
         "radarParkingPitch": 0.0,
@@ -2194,7 +2194,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_2_launcher_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_2_launcher_user_cannon.blk",
       "flash": "bone_rocket_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
@@ -2270,13 +2270,23 @@
         "gunnerDm": "gunner_dm",
         "verDriveDm": [
           "drive_turret_v_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_v_01_dm",
+          "drive_turret_v_02_dm"
         ],
         "horDriveDm": [
           "drive_turret_h_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_h_01_dm"
         ],
-        "shootingDmPart": "fire_control_system_dm",
+        "shootingDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
         "rotatedTurret": "bone_turret",
         "linkedAnimPart": {
           "verNode": "antenna_target_tagging",
@@ -2509,8 +2519,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_flarakpz_1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_flarakpz_1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3552,7 +3562,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_2_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_2_launcher_user_cannon.blk",
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3628,13 +3638,23 @@
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "rotatedTurret": "bone_turret",
                 "linkedAnimPart": {
                   "verNode": "antenna_target_tagging",
@@ -3858,7 +3878,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -1852,7 +1852,23 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm"
       ],
       "effect": [
         {
@@ -1891,7 +1907,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/106mm_M40A1_LGS_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/106mm_M40A1_LGS_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "recoilOffset": 0.0,
@@ -1988,7 +2004,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2031,7 +2047,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_MK_20_1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_MK_20_1_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.02,
@@ -2083,8 +2099,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_spz_12_3_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_spz_12_3_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3215,7 +3231,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/106mm_M40A1_LGS_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/106mm_M40A1_LGS_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "recoilOffset": 0.0,
@@ -3312,7 +3328,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3355,7 +3371,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_MK_20_1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/20mm_MK_20_1_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.02,
@@ -3403,7 +3419,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3519,5 +3535,29 @@
         "to": "ger_camo_modern_desert_threecolor*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.702,
+      1.0881,
+      1.1586
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

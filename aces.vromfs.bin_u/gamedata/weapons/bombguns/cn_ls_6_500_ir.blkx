@@ -1,6 +1,7 @@
 {
   "bombGun": true,
   "preset_cost": 200,
+  "external": true,
   "shotFreq": 10.0,
   "sound": "weapon.bombgun",
   "mesh": "ch_lgb_ls_6_500_ir_na",
@@ -12,10 +13,7 @@
     0.12,
     0.0
   ],
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "tags": {},
   "bomb": {
     "mass": 640.0,
     "caliber": 0.377,
@@ -159,13 +157,15 @@
       "applyExtraDifficultyParameters": true,
       "uncageBeforeLaunch": true,
       "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
+      "inertialNavigationMandatory": true,
+      "lockMode": "LOAL+LOBL",
       "indicateOnHud": false,
       "launchDistanceRange": [
         1000.0,
         50000.0
       ],
-      "designationError": 7.0,
+      "inertialNavigationDriftSpeed": 0.0,
+      "designationError": 5.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": -2.5,
@@ -200,26 +200,22 @@
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0,
-        "rangeMax": 40000.0,
-        "rangeSurface": 40000.0,
-        "fov": 0.1,
-        "minAngleToSun": 0.0,
-        "lockAngleMax": 40.0,
-        "angleMax": 40.0,
-        "rateMax": 10.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceType": "camera",
-        "constantDesignationSourceType": "",
+        "rangeBand8": 1000.0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
-        "targetRadiusMin": 1.5
+        "constantDesignationSourceType": "",
+        "fov": 0.1,
+        "minAngleToSun": 1.0,
+        "targetRadiusMin": 1.5,
+        "prolongationTimeMax": 1.0,
+        "rangeMax": 40000.0,
+        "rangeSurface": 40000.0,
+        "lockAngleMax": 40.0,
+        "angleMax": 40.0,
+        "rateMax": 10.0,
+        "designationSourceType": "camera"
       }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.35,
-      "finsAoaVer": 0.35
     },
     "collisions": {
       "default": {

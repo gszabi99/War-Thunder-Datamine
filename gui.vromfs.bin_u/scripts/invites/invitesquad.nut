@@ -1,23 +1,24 @@
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/usersInfoManager.nut" import requestUsersInfo
+from "%scripts/social/xboxSquadManager/xboxSquadManager.nut" import needProceedSquadInvitesAccept, isPlayerFromXboxSquadList
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart, leaveAllQueues
+from "%scripts/invites/invites.nut" import showExpiredInvitePopup, removeInviteToSquad
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox, canSquad
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqstd/platform.nut" import is_gdk
 from "string" import format
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { needProceedSquadInvitesAccept, isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { checkQueueAndStart, leaveAllQueues } = require("%scripts/queue/queueManager.nut")
-let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
-let { canJoinFlightMsgBox, canSquad } = require("%scripts/squads/squadUtils.nut")
 
 let Squad = class (BaseInvite) {
   
@@ -69,8 +70,9 @@ let Squad = class (BaseInvite) {
   function updateCanChatWithPlayerAndCheckAutoAccept() {
     let cb = Callback(function() {
       
-      log($"InviteSquad: invitername != 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
-      if (platformModule.isPlayerFromXboxOne(this.inviterName)) {
+      let isFromXbox = isPlayerFromXboxOne(this.inviterName)
+      log($"InviteSquad: invitername != 0 {isFromXbox}")
+      if (isFromXbox) {
         this.setDelayed(true)
         this.checkAutoAcceptXboxInvite()
       } else
@@ -169,9 +171,9 @@ let Squad = class (BaseInvite) {
     if (!isMultiplayerPrivilegeAvailable.get())
       return loc("xbox/noMultiplayer")
     if (!this.isAvailableByCrossPlay())
-      return loc("xbox/crossPlayRequired")
+      return locByVendor("xbox/crossPlayRequired")
     if (!this.isAvailableByChatRestriction())
-      return loc("xbox/actionNotAvailableLiveCommunications")
+      return locByVendor("xbox/actionNotAvailableLiveCommunications")
     if (this.haveRestrictions())
       return loc("squad/cant_join_in_flight")
     return ""

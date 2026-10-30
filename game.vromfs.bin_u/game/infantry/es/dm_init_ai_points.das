@@ -182,7 +182,7 @@ def dm_init_ai_points(evt : Event;
     let localPos = bbox.center
 
     var nodeTm : float3x4
-    *collres |> collres_get_collision_node_tm(collNodeId, transform, unit.collNodeTree, nodeTm)
+    *collres |> collres_get_collision_node_tm(collNodeId, transform, unit.visual.collNodeTree, nodeTm)
     let localTmPos = inverseTm * nodeTm * localPos
 
     if fidx < 0

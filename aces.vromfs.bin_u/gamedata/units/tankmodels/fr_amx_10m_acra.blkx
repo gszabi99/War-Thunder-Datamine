@@ -1946,7 +1946,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/142mm_ACRA_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/142mm_ACRA_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.1,
@@ -2002,7 +2002,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_mg_aa_flame_01",
         "recoilOffset": 0.02,
@@ -2077,7 +2077,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2107,13 +2107,13 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_amx_10m_acra_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_amx_10m_acra_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+      "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
     }
   },
   "VehiclePhys": {
@@ -2155,6 +2155,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 80000.0,
       "driveGearRadius": 0.2,
       "mainGearRatio": 4.05,
@@ -3433,5 +3434,29 @@
         "to": "fr_camo_winter_base*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.867,
+      1.7248,
+      1.267
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

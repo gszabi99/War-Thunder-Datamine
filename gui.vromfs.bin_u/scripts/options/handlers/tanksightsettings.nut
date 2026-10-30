@@ -1,3 +1,11 @@
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/options/tankSightOptions.nut" import getSightOptionValueIdx, initTankSightOptions, updateTankSightCrosshairOpts
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "tankSightSettings" import set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings, save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset
   , switch_tank_sight_settings_mode, TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings
@@ -6,16 +14,9 @@ from "dagor.localize" import doesLocTextExist
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { tankSightOptionsMap, tankSightOptionsSections, getSightOptionValueIdx, initTankSightOptions, updateTankSightCrosshairOpts } = require("%scripts/options/tankSightOptions.nut")
+let { tankSightOptionsMap, tankSightOptionsSections } = require("%scripts/options/tankSightOptions.nut")
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
-let { create_option_combobox } = require("%scripts/options/optionsCtors.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox"
 
@@ -58,7 +59,7 @@ local class TankSightSettings (BaseGuiHandlerWT) {
 
   isSightPreviewMode = false
   isSettingsApplying = false
-  sightMode = persist("tankSightSettingsMode", @() { value = TSM_SIMPLE })
+  sightMode = mkHardPersist("options.handlers.tankSightSettings")("tankSightSettingsMode", { value = TSM_SIMPLE })
   tankSightPresets = []
 
   getSceneTplView = @() {

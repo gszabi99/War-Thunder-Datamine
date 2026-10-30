@@ -2120,7 +2120,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun",
         "circleAim": true,
         "aimForOperatedShell": true,
@@ -2135,13 +2135,23 @@
           "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2190,7 +2200,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/163mm_vt_1_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/163mm_vt_1_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2476,8 +2486,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_crotale_ng_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_crotale_ng_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "attachables": {
@@ -4215,7 +4225,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/fr_crotale_search.blk",
+        "blk": "gamedata/sensors/fr_crotale_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -4226,7 +4236,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/fr_crotale_search_ai.blk",
+        "blk": "gamedata/sensors/fr_crotale_search_ai.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -4237,7 +4247,7 @@
         "human": false
       },
       {
-        "blk": "gameData/sensors/fr_crotale_track.blk",
+        "blk": "gamedata/sensors/fr_crotale_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",
@@ -4247,7 +4257,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/fr_crotale_track_ai.blk",
+        "blk": "gamedata/sensors/fr_crotale_track_ai.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",
@@ -4281,5 +4291,29 @@
     "hasTargetList": true,
     "hasTurretView": true,
     "hasVerticalView": false
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.68,
+      2.3,
+      1.33
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

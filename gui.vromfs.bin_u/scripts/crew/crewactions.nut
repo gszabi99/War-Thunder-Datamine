@@ -1,14 +1,12 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
+from "%scripts/crew/crewPointsBuyActions.nut" import buySkillPointsPack
+from "%scripts/crew/crewPoints.nut" import getPacksToBuyAmount
+from "%scripts/crew/crew.nut" import doWithAllSkills, getCrewMaxSkillValue, getCrewSkillValue, getCrewSkillPointsToMaxAllSkills, getCrewCountry
+from "%scripts/slotbar/slotbarState.nut" import flushSlotbarUpdate, suspendSlotbarUpdates
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
-let { buySkillPointsPack } = require("%scripts/crew/crewPointsBuyActions.nut")
-let { getPacksToBuyAmount } = require("%scripts/crew/crewPoints.nut")
-let { doWithAllSkills, getCrewMaxSkillValue, getCrewSkillValue, getCrewSkillPointsToMaxAllSkills, getCrewCountry } = require("%scripts/crew/crew.nut")
-let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
-
 
 function unlockCrew(crewId, byGold, cost) {
   let blk = DataBlock()
@@ -61,7 +59,7 @@ function buyAllCrewSkills(crew, unit, crewUnitType) {
   buySkillPointsPack(crew, packs, @() maximazeAllSkillsImpl(crew, unit, crewUnitType))
 }
 
-return {
+return freeze({
   unlockCrew
   buyAllCrewSkills
-}
+})

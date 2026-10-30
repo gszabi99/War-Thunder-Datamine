@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1887,7 +1893,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/114mm_Psv_H_18_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/114mm_Psv_H_18_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "maxAdditionalPitch": 0.0,
@@ -1950,8 +1956,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_bt_42_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_bt_42_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

@@ -1,7 +1,5 @@
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId, getGameModeById, getUnitTypesByGameMode
 from "%scripts/dagui_library.nut" import *
-
-let { getCurrentGameModeId, getGameModeById, getUnitTypesByGameMode
-} = require("%scripts/gameModes/gameModeManagerState.nut")
 
 function getCurEsUnitTypesList(needRequiredOnly = false) {
   let gameModeId = getCurrentGameModeId()
@@ -21,7 +19,7 @@ function getCurEsUnitTypesMask() {
   return mask
 }
 
-return {
+return freeze({
   getCurEsUnitTypesMask
   getCurEsUnitTypesList
-}
+})

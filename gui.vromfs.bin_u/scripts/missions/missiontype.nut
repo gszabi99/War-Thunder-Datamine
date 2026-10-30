@@ -1,5 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo
+from "%scripts/missions/missionsUtils.nut" import isMissionForUnitType
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%sqstd/datablock.nut" import blkOptFromPath
 from "mission" import get_current_mission_name, get_game_mode
@@ -8,8 +10,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
 let { MISSION_GROUP, chapterToGroup, missionGroupToLocKey } = require("%scripts/missions/missionsFilterData.nut")
-let { MISSION_OBJECTIVE, getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { isMissionForUnitType } = require("%scripts/missions/missionsUtils.nut")
+let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let g_mission_type = {
   types = []
@@ -182,6 +183,13 @@ enumsAddTypes(g_mission_type, {
 
   INF_DOM = {  
     reMisName = regexp2(@"_infdom$")
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_HUMAN | MISSION_OBJECTIVE.ZONE_CAPTURE
+    helpBlkPath = "%gui/help/missionGroundCapture.blk"
+    filterGroup = MISSION_GROUP.DOMINATION
+  }
+
+  INF_CTR = {  
+    reMisName = regexp2(@"_infctr$")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_HUMAN | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionGroundCapture.blk"
     filterGroup = MISSION_GROUP.DOMINATION

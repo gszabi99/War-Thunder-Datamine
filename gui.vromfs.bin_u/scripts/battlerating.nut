@@ -1,26 +1,28 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/matching/api.nut" import request_matching
+from "%scripts/user/userUtils.nut" import getMyStateData
+from "%scripts/firstChoice/firstChoice.nut" import reqFirstUnitTypeChoice
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/squads/squadState.nut" import getMembers, isInSquad, isSquadLeader
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/events/eventUnitsAvail.nut" import getAvailableTeams, getMembersInfo, getMembersTeamsData
+from "%scripts/battleRatingState.nut" import brInfoByGamemodeId, recentBrGameModeId, recentBrSourceGameModeId, recentBR, recentBRData
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode, getCurrentGameModeEdiff
+from "%scripts/options/initOptionsState.nut" import hasOptionsInitialized
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
 from "dagor.time" import get_time_msec
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 
-let { request_matching } = require("%scripts/matching/api.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getMyStateData } = require("%scripts/user/userUtils.nut")
-let { reqFirstUnitTypeChoice } = require("%scripts/firstChoice/firstChoice.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
-let { getMembers, isInSquad, isSquadLeader } = require("%scripts/squads/squadState.nut")
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { getAvailableTeams, getMembersInfo, getMembersTeamsData } = require("%scripts/events/eventUnitsAvail.nut")
-let { brInfoByGamemodeId, recentBrGameModeId, recentBrSourceGameModeId, recentBR, recentBRData } = require("%scripts/battleRatingState.nut")
-let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { hasOptionsInitialized } = require("%scripts/options/initOptionsState.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
+let brRespCache = {}
 
 function calcSquadMrank(brData) {
   if (!brData)
@@ -80,7 +82,7 @@ function getCrafts(data, country = null, ediff = null) {
       name = name
       craftType = craft.expClass.expClassName
       unitTypeCode = craft.expClass.unitTypeCode
-      mrank = craft.getEconomicRank(ediff ?? getCurrentGameModeEdiff())
+      mrank = getEffectiveMrank(craft, ediff ?? getCurrentGameModeEdiff(), data?.mrankDeltaByUnit?[name] ?? 0)
       rank = craft?.rank ?? -1
     })
   }
@@ -92,6 +94,16 @@ function isBRKnown(recentUserData) {
   let id = recentUserData?.gameModeId
   return id in brInfoByGamemodeId.get()
     && u.isEqual(recentUserData.players, brInfoByGamemodeId.get()[id].players)
+}
+
+function getBrReqKey(reqData) {
+  let parts = [reqData.gameModeId]
+  foreach (p in reqData.players) {
+    parts.append(p.name, p.country, p.slot)
+    foreach (c in p.crafts)
+      parts.append(c.name, c.mrank)
+  }
+  return "|".join(parts)
 }
 
 function setBattleRating(recentUserData, brData) {
@@ -193,11 +205,18 @@ updateBattleRating = function(gameMode = null, brData = null) {
     return
   }
 
-  if (isBRKnown(recentUserData)) 
+  if (isBRKnown(recentUserData))
     return
+
+  let reqKey = getBrReqKey(recentUserData)
+  if (reqKey in brRespCache) {
+    setBattleRating(recentUserData, brRespCache[reqKey])
+    return
+  }
 
   let callback = function(resp) {
     isUpdating = false 
+    brRespCache[reqKey] <- resp
     updateBattleRating(gameMode, resp)
   }
 
@@ -228,16 +247,17 @@ addListenersWithoutEnv({
   EventsDataUpdated          = @(_p) updateBattleRatingDelayed()
   LoadingStateChange         = @(_p) updateBattleRatingDelayed()
   InitConfigs                = @(_p) updateBattleRatingDelayed()
+  SignOut                    = @(_p) brRespCache.clear()
 
   SquadStatusChanged         = updateLeaderRatingDelayed
   SquadOnlineChanged         = updateLeaderRatingDelayed
   SquadMemberVehiclesChanged = updateLeaderRatingDelayed
 })
 
-return {
+return freeze({
   getCrafts
   recentBrGameModeId
   recentBR
   getBRDataByMrankDiff
   getRecentSquadMrank
-}
+})

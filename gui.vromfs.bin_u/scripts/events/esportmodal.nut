@@ -1,25 +1,28 @@
+import "%scripts/events/eSportTournamentModal.nut" as eSportTournamentModal
 import "DataBlock" as DataBlock
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%scripts/time.nut" import buildDateTimeStr, getTimestampFromStringUtc
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID, openPopupFilter
+from "%scripts/events/eSport.nut" import getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData, getTourListViewData, getTourById, removeItemFromList
+  , getEventByDay, getOverlayTextColor, isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable, setSchedulerTimeColor
+  , hasAnyTickets, getTourDay
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/leaderboard/leaderboard.nut" import gui_modal_event_leaderboards
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqstd/string.nut" import utf8ToUpper
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
-let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData, getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor, isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable, setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
+let { TOURNAMENT_TYPES } = require("%scripts/events/eSport.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -222,7 +225,7 @@ local ESportList = class (BaseGuiHandlerWT) {
           value     = !inst.isDisable && selectedArr.findindex(@(v) v == idx) != null
         })
 
-      view.checkbox.sort(@(a, b) a.sortId <=> b.sortId)
+      view.checkbox.sortby(@(a) a.sortId)
       res.append(view)
     }
 
@@ -321,6 +324,6 @@ let openESportListWnd = @() handlersManager.loadHandler(ESportList)
 
 addPromoAction("open_rating_battles", @(_handler, _params, _obj) openESportListWnd())
 
-return {
+return freeze({
   openESportListWnd
-}
+})

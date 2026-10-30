@@ -77,13 +77,11 @@ function createRwrTarget(index, settings, objectStyle) {
 
   return @() {
     size = FLEX
-    children = [
-      {
-        pos = const [pw(50), ph(50)]
-        size = FLEX
-        children = azimuth
-      }
-    ]
+    children = {
+      pos = const [pw(50), ph(50)]
+      size = FLEX
+      children = azimuth
+    }
   }
 }
 

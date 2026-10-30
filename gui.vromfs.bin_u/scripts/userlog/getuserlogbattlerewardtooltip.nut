@@ -1,21 +1,20 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/time.nut" import secondsToString
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
+from "%scripts/debriefing/rewardSources.nut" import getRewardSources
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText
+from "%scripts/userLog/unitNameSymbolRestrictions.nut" import getClearUnitName
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/userLog/userlogUtils.nut" import getBattleRewardDetails, getBattleRewardTable
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitInfo.nut" import getRomanNumeralRankByUnitName
+from "%scripts/weaponry/weaponryInfo.nut" import getBulletBeltShortLocId
 from "%sqstd/platform.nut" import isPC
 from "math" import floor
 from "%sqstd/math.nut" import round_by_value
 from "dagor.localize" import doesLocTextExist
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getBulletBeltShortLocId } = require("%scripts/weaponry/weaponryInfo.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1

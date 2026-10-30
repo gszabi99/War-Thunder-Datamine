@@ -1,3 +1,17 @@
+import "%scripts/contacts/contactsClient.nut" as contactsClient
+from "%scripts/contacts/contactsManager.nut" import updateContactsGroups
+from "%scripts/contacts/contactsListState.nut" import updateContactsListFromContactsServer
+from "%scripts/matching/api.nut" import matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
+from "%scripts/invites/invites.nut" import addFriendInvite, addFriendsInvites
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME, getMaxContactsByGroup
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInContacts, isMaxPlayersInContactList
+from "%scripts/contacts/contactsActions.nut" import find_contact_by_name_and_do, update_contacts_by_list
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/options/optionsExtNames.nut" import USEROPT_ALLOW_ADDED_TO_CONTACTS
+from "%scripts/options/optionsExt.nut" import registerOption
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "app" import APP_ID
@@ -6,34 +20,23 @@ from "console" import register_command
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import setInterval, clearTimer
 from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 from "%scripts/controls/controlsConsts.nut" import optionControlType
-from "%scripts/contacts/contactsConsts.nut" import getMaxContactsByGroup
 from "types" import String
 
-let contactsClient = require("%scripts/contacts/contactsClient.nut")
-let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
-let { predefinedContactsGroupToWtGroup, updateContactsListFromContactsServer } = require("%scripts/contacts/contactsListState.nut")
-let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { predefinedContactsGroupToWtGroup } = require("%scripts/contacts/contactsListState.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { addFriendInvite, addFriendsInvites } = require("%scripts/invites/invites.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { isPlayerInContacts, isMaxPlayersInContactList } = require("%scripts/contacts/contactsChecks.nut")
-let { find_contact_by_name_and_do, update_contacts_by_list } = require("%scripts/contacts/contactsActions.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { USEROPT_ALLOW_ADDED_TO_CONTACTS } = require("%scripts/options/optionsExtNames.nut")
-let { registerOption } = require("%scripts/options/optionsExt.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
+let { statusGroupsToRequest } = require("%scripts/contacts/contactsConsts.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
 let appIdsList = [APP_ID]
 let searchContactsResults = Watched({})
 
-let isMeAllowedToBeAddedToContacts = mkWatched(persist, "isMeAllowedToBeAddedToContacts", false)
+let isMeAllowedToBeAddedToContacts = mkHardPersistWatched("contacts.contactsState")("isMeAllowedToBeAddedToContacts", false)
 
 function setAbilityToBeAddedToContacts(isAvailable) {
   if (isAvailable == isMeAllowedToBeAddedToContacts.get())
@@ -237,7 +240,7 @@ function addContactImpl(contact, groupName) {
 
   function successCb() {
     sendFriendChangedEvent(contact.uidInt64)
-    addPopup(null, format(loc($"msg/added_to_{groupName}"), contact.getName()))
+    addPopup(null, format(locByVendor($"msg/added_to_{groupName}"), contact.getName()))
   }
   execContactsCharAction(contact.uid, action, successCb)
 }
@@ -275,7 +278,7 @@ function removeContactImpl(contact, groupName) {
   scene_msg_box(
     "remove_from_list",
     null,
-    format(loc($"msg/ask_remove_from_{groupName}"), contact.getName()),
+    format(locByVendor($"msg/ask_remove_from_{groupName}"), contact.getName()),
     [
       ["ok", @() execContactsCharAction(contact.uid, action, @() sendFriendChangedEvent(contact.uidInt64))],
       ["cancel", @() null ]
@@ -343,6 +346,10 @@ matchingRpcSubscribe("mpresence.on_added_to_contact_list", function(p) {
   }
   fetchContacts()
 })
+
+
+if (isLoggedIn.get())
+  fetchContacts()
 
 
 let fakeFriendsList = Watched([])
@@ -415,7 +422,7 @@ register_command(function(count) {
   "contacts.update_fake_blocked_me_list")
 
 
-return {
+return freeze({
   searchContactsResults
   searchContacts = @(nick, callback = null) searchContactsOnline({ nick }, callback)
   searchOneContact = @(nick, callback = null)
@@ -427,4 +434,4 @@ return {
   rejectContact
   updatePresencesByList
   execContactsCharAction
-}
+})

@@ -140,7 +140,7 @@ let changeLeadership = function(sessionId, accountId, platform, onFinishCb = psn
   )
 }
 
-return {
+return freeze({
   create
   updateInfo
   destroy
@@ -149,4 +149,4 @@ return {
   invite
   list
   changeLeadership
-}
+})

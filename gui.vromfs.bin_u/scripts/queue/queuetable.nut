@@ -1,31 +1,31 @@
+import "%scripts/time.nut" as time
+import "%scripts/social/crossplay.nut" as crossplayModule
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/queue/waitIconImage.nut" import getQueueWaitIconImageMarkup
+from "%scripts/queue/curEsUnitTypesMask.nut" import getCurEsUnitTypesMask
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/onlineInfo/clustersManagement.nut" import getClusterShortName, isClusterUnstable
+from "%scripts/events/eventInfo.nut" import isEventForClan, getCustomViewCountryData
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/queue/queueInfo/qiViewUtils.nut" import createQueueViewByCountries, updateQueueViewByCountries
+from "%scripts/matchingRooms/fillCountriesList.nut" import fillCountriesList
+from "%scripts/queue/queueState.nut" import isQueueActive, isQueuesEqual, findQueue, checkQueueType
+from "%scripts/queue/queueInfo.nut" import getQueueEvent, isClanQueue, getQueueCountry, getQueueClusters, getMyRankInQueue
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import buildTableRow
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
-let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterShortName, isClusterUnstable } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { isEventForClan, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
-let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, isClanQueue, getQueueCountry, getQueueClusters, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
+from "%globalScripts/loc_helpers.nut" import locByVendor
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -42,6 +42,7 @@ let QueueTable = class (BaseGuiHandlerWT) {
   build_IA_shop_filters = false
 
   function initScreen() {
+    this.scene.findObject("queue_crossplay_text").setValue(locByVendor("queue/crossPlay"))
     this.setCurQueue(findQueue({}, this.queueMask))
     this.updateWaitTime()
 
@@ -479,4 +480,4 @@ let QueueTable = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("QueueTable", QueueTable)
 
-return { QueueTable }
+return freeze({ QueueTable })

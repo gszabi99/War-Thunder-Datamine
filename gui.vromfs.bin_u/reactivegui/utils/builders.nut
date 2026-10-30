@@ -22,7 +22,7 @@ function createScriptComponentWithPos(scriptPath, props = {}) {
   }.__update(props)
 }
 
-return {
+return freeze({
   createScriptComponent,
   createScriptComponentWithPos
-}
+})

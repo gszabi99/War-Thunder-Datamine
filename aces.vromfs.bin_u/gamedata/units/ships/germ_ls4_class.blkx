@@ -1405,6 +1405,7 @@
     "engines": {
       "maxSpeed": 20.6,
       "maxReverseSpeed": 6.0,
+      "horsePowers": 1700.0,
       "waterResistanceAtStopK": 0.4,
       "speedToTime": {
         "row": [
@@ -1549,6 +1550,64 @@
         ]
       }
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.7,
+        0.0
+      ],
+      [
+        11.5,
+        100.0
+      ],
+      [
+        17.2,
+        200.0
+      ],
+      [
+        22.9,
+        300.0
+      ],
+      [
+        28.6,
+        500.0
+      ],
+      [
+        34.4,
+        800.0
+      ],
+      [
+        40.1,
+        1100.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        200.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
@@ -2528,29 +2587,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -3500.0,
-    "waterMassMult": 40.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 80000.0,
+    "waterMassVel": -2013.0,
+    "waterMassMult": 25.0,
+    "additionalWaterDeathThreshold": 85161.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 41.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 13.4,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.76
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.6,
+        "weight": 0.51,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -2567,19 +2630,31 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.56
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.56
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.9,
-        "maxWaterAlive": 1.0
+        "weight": 0.72,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.04
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.04
+            }
+          ]
+        }
       }
     ]
   },
@@ -2724,7 +2799,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
+      "blk": "gamedata/weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
       "emitter": "emtr_gun_flame_01",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
@@ -2811,12 +2886,12 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/germ_ls_class_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/germ_ls_class_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "germ_ls4_class_default",
-        "blk": "gameData/units/ships/weaponPresets/germ_ls4_class_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/germ_ls4_class_default.blk"
       }
     ]
   },

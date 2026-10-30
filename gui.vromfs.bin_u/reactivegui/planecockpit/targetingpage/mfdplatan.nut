@@ -19,7 +19,7 @@ let crosshair = @(){
   rendObj = ROBJ_VECTOR_CANVAS
   color = whiteColor
   lineWidth = baseLineWidth
-  commands = [
+  commands = const [
     [VECTOR_LINE, 50, 50, 50, 50],
     [VECTOR_LINE, 35, 40, 37, 40],
     [VECTOR_LINE, 35, 40, 35, 42],
@@ -35,7 +35,7 @@ let crosshair = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     color = whiteColor
     lineWidth = baseLineWidth
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 50, 47, 50],
       [VECTOR_LINE, 53, 50, 100, 50],
       [VECTOR_LINE, 50, 0, 50, 47],
@@ -47,7 +47,7 @@ let crosshair = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     color = whiteColor
     lineWidth = baseLineWidth
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 50, 30, 50],
       [VECTOR_LINE, 70, 50, 100, 50],
       [VECTOR_LINE, 50, 0, 50, 30],
@@ -254,7 +254,7 @@ let targetDistance = {
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 30, 0],
         [VECTOR_POLY, 30, 0, 60, -100, 60, -40, 100, -40, 100, 40, 60, 40, 60, 100]
       ]
@@ -533,7 +533,7 @@ let timerCCRP = @(){
     lineWidth = baseLineWidth
     commands = [
       [VECTOR_SECTOR, 0, 0, 100, 100, -90, timerSector.get()],
-      [VECTOR_LINE, 0, -100, 0, -110]
+      const [VECTOR_LINE, 0, -100, 0, -110]
     ]
     children = @(){
       watch = timerValue

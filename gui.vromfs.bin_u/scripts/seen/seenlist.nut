@@ -1,15 +1,14 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/time.nut" as time
+import "%scripts/seen/seenListEvents.nut" as seenListEvents
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let time = require("%scripts/time.nut")
-let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 let activeSeenLists = {}
 
@@ -245,7 +244,7 @@ function clearAllSeenData() {
 
 register_command(clearAllSeenData, "debug.reset_unseen")
 
-return {
+return freeze({
   get = @(id) activeSeenLists?[id] ?? SeenList(id)
   isSeenList = @(id) activeSeenLists?[id] != null
-}
+})

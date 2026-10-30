@@ -50,18 +50,24 @@ weaponryPreset {
           bgcolor:t='#FFFFFF'
         }
         <</hideWarningIcon>>
-        textareaNoTab {
-          id:t='header_name_txt'
+        presetHeaderTextNest {
           width:t='pw<<^hideWarningIcon>>-1@cIco<</hideWarningIcon>>'
           position:t='relative'
-          pos:t='0, 30@sf/@pf-0.5h'
-          text:t='<<nameTextWithPrice>>'
-          text-align:t='left'
-          style:t='color:@<<itemTextColor>>;'
-          smallFont:t='yes'
+          pos:t='0, 0.5ph-0.5h'
+          max-height:t='ph'
           <<#hideWarningIcon>>
           padding:t='1@blockInterval, 0'
           <</hideWarningIcon>>
+          css-hier-invalidate:t='yes'
+          overflow:t='hidden'
+          textareaNoTab {
+            id:t='header_name_txt'
+            width:t='pw'
+            text:t='<<nameTextWithPrice>>'
+            text-align:t='left'
+            style:t='color:@<<itemTextColor>>;'
+            smallFont:t='yes'
+          }
         }
         img{
           id:t='image'

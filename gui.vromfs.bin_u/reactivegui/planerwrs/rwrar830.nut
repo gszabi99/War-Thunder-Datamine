@@ -338,25 +338,23 @@ function scope(scale, style) {
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      {
-        pos = const [pw(-20), ph(-25)],
-        size = [pw(150 * style.grid.scale), ph(150 * style.grid.scale)],
-        children = [
-          {
-            pos = const [pw(10), ph(10)],
-            size = const [pw(80), ph(80)],
-            clipChildren = true,
-            children = [
-              rwrTargetsComponent(style.object),
-              createRwrGrid(style.grid, color, backGroundColor),
-              rwrGridMarksComponent(style.grid)
-            ]
-          },
-          createCompass(style.grid, color, backGroundColor, styleText)
-        ]
-      }
-    ]
+    children = {
+      pos = const [pw(-20), ph(-25)],
+      size = [pw(150 * style.grid.scale), ph(150 * style.grid.scale)],
+      children = [
+        {
+          pos = const [pw(10), ph(10)],
+          size = const [pw(80), ph(80)],
+          clipChildren = true,
+          children = [
+            rwrTargetsComponent(style.object),
+            createRwrGrid(style.grid, color, backGroundColor),
+            rwrGridMarksComponent(style.grid)
+          ]
+        },
+        createCompass(style.grid, color, backGroundColor, styleText)
+      ]
+    }
   }
 }
 

@@ -3,6 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let needUseHangarDof = @() is_stereo_mode()
 
-return {
+return freeze({
   needUseHangarDof
-}
+})

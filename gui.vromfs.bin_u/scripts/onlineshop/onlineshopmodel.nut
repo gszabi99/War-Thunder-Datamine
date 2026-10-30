@@ -1,5 +1,21 @@
+import "%scripts/clientState/callbackWhenAppWillActive.nut" as callbackWhenAppWillActive
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/onlineShop/entitlementsShopData.nut" import getShopItem, canUseIngameShop
+from "%scripts/onlineShop/entitlementsShop.nut" import openIngameStore
+from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/user/suggestionEmailRegistration.nut" import showGuestEmailRegistration, needShowGuestEmailRegistration
+from "%scripts/user/profileStates.nut" import userIdStr, havePlayerTag
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/onlineShopState.nut" import searchEntitlementsByUnit, getGoodsChapter, getPurchaseData, getUnitsSharedEntitlements
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/onlineShop/entitlementsUpdate.nut" import getUpdateEntitlementsTimeoutMsec, updateEntitlementsLimited
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%sqstd/platform.nut" import is_gdk
 from "string" import format
 from "math" import ceil
 from "url" import get_url_for_purchase
@@ -9,23 +25,8 @@ from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_na
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
-let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData, getUnitsSharedEntitlements } = require("%scripts/onlineShop/onlineShopState.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getUpdateEntitlementsTimeoutMsec, updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
@@ -44,7 +45,7 @@ function startEntitlementsUpdater() {
 
 
 function getCustomPurchaseUrl(chapter) {
-  if (isPlatformSony || is_gdk)
+  if (isSony || is_gdk)
     return ""
 
   let circuit = get_cur_circuit_name()
@@ -153,7 +154,7 @@ function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
 }
 
 function doBrowserPurchase(goodsName) {
-  if (isPlatformSony || is_gdk)
+  if (isSony || is_gdk)
     return openIngameStore()
   
   
@@ -207,7 +208,7 @@ function showGoodsImpl(getEntitlements, requestOrigin, unitName) {
     foreach (goodsName in getEntitlements()) {
       let bundleId = getBundleId(goodsName)
       if (bundleId != "") {
-        if (isPlatformSony || is_gdk) {
+        if (isSony || is_gdk) {
           if (getShopItem(bundleId) != null) {
             openIngameStore({ curItemId = bundleId, statsdMetric = requestOrigin, unitName })
             return
@@ -220,7 +221,7 @@ function showGoodsImpl(getEntitlements, requestOrigin, unitName) {
       }
     }
 
-    if (isPlatformSony || is_gdk)
+    if (isSony || is_gdk)
       return openIngameStore({ statsdMetric = requestOrigin })
 
     return openModalOnlineShop()
@@ -253,7 +254,7 @@ function openBrowserByPurchaseData(purchaseData) {
   if (!purchaseData.canBePurchased)
     return false
 
-  if (isPlatformSony || is_gdk)
+  if (isSony || is_gdk)
     return openIngameStore()
 
   if (purchaseData.customPurchaseLink) {
@@ -298,7 +299,7 @@ function openOnlineShopFromPromo(handler, params) {
     || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop())) {
     let bundleId = getBundleId(params?[1])
     if (bundleId != "") {
-      if (isPlatformSony || is_gdk)
+      if (isSony || is_gdk)
         openIngameStore({
           curItemId = bundleId,
           statsdMetric = "promo",
@@ -319,11 +320,11 @@ eventbus_subscribe("update_purch", function(_) {
   updateEntitlementsLimited()
 })
 
-return {
+return freeze({
   showUnitGoods
   showUnitsSharedGoods
   doBrowserPurchase
   openBrowserForFirstFoundEntitlement
   openBrowserByPurchaseData
   launchOnlineShop
-}
+})

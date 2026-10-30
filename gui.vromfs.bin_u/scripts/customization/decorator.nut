@@ -1,4 +1,19 @@
+import "%scripts/guidParser.nut" as guidParser
+import "%scripts/items/itemRarity.nut" as itemRarity
+import "%scripts/customization/skinLocations.nut" as skinLocations
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/unit/unitClassType.nut" import processUnitTypeArray
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByUnlockedItemType
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride
+from "%scripts/inventory/inventoryItemdefs.nut" import getItemdefTagsTable, getSharedItemdefTags
 from "string" import format, split_by_chars
 from "%sqstd/datablock.nut" import copyParamsToTable, eachParam
 from "unitCustomization" import get_decal_tex
@@ -6,29 +21,30 @@ from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 
-let guidParser = require("%scripts/guidParser.nut")
-let itemRarity = require("%scripts/items/itemRarity.nut")
-let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
+
+let emptyArray = freeze([])
 
 
 
 
 local doPreviewImpl = @(_id, _resourceType) null
 function setDecoratorPreviewer(fn) { doPreviewImpl = fn }
+
+function getUnlockIdByBlk(blk) { return blk?.unlock ?? blk?.unlockId ?? "" }
+
+function getCouponItemdefIdByBlk(blk) {
+  let marketplaceItemdefId = blk?.marketplaceItemdefId
+  return marketplaceItemdefId != null && isMarketplaceEnabled() ? marketplaceItemdefId : null
+}
+
+function getAllowedUnitTypesByBlk(blk) {
+  let allowedUnitTypes = blk != null ? (blk % "unitType") : emptyArray
+  return allowedUnitTypes.len() > 0 ? allowedUnitTypes : emptyArray
+}
 
 let Decorator = class {
   id = ""
@@ -42,7 +58,6 @@ let Decorator = class {
   group = ""
 
   category = ""
-  catIndex = 0
 
   limit = -1
 
@@ -70,7 +85,7 @@ let Decorator = class {
       this.blk = blkOrId
       this.id = this.blk.getBlockName()
     }
-    this.unlockId = this.blk?.unlock ?? this.blk?.unlockId ?? ""
+    this.unlockId = getUnlockIdByBlk(this.blk)
     this.unlockBlk = getUnlockById(this.unlockId)
     this.limit = this.blk?.limit ?? this.decoratorType.defaultLimitUsage
     this.category = this.blk?.category ?? ""
@@ -91,10 +106,10 @@ let Decorator = class {
     }
 
     let unitsStr = this.blk?.units
-    this.units = unitsStr == null ? []
+    this.units = unitsStr == null ? emptyArray
       : split_by_chars(unitsStr, "; ")
 
-    this.allowedUnitTypes = this.blk != null ? (this.blk % "unitType") : []
+    this.allowedUnitTypes = getAllowedUnitTypesByBlk(this.blk)
 
     let tagsBlk = this.blk?.tags
     if (tagsBlk != null)
@@ -102,10 +117,9 @@ let Decorator = class {
 
     this.rarity  = itemRarity.get(this.blk?.item_quality, this.blk?.name_color)
 
-    let marketplaceItemdefId = this.blk?.marketplaceItemdefId
-    if (marketplaceItemdefId != null && isMarketplaceEnabled()) {
-      this.couponItemdefId = marketplaceItemdefId
-      let couponItem = findItemById(marketplaceItemdefId)
+    this.couponItemdefId = getCouponItemdefIdByBlk(this.blk)
+    if (this.couponItemdefId != null) {
+      let couponItem = findItemById(this.couponItemdefId)
       if (couponItem)
         this.updateFromItemdef(couponItem.itemDef)
     }
@@ -320,8 +334,8 @@ let Decorator = class {
   function updateFromItemdef(itemDef) {
     this.rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
     
-    this.tags = this.getIsLive() ? copyParamsToTable(itemDef?.tags, { usergenerated = true })
-      : itemDef?.tags
+    this.tags = this.getIsLive() ? getItemdefTagsTable(itemDef, { usergenerated = true })
+      : getSharedItemdefTags(itemDef)
   }
 
   function setCouponItemdefId(itemdefId) {
@@ -401,7 +415,37 @@ let Decorator = class {
   }
 }
 
-return {
-  Decorator
-  setDecoratorPreviewer
+let DecoratorProbe = class(Decorator) {
+  blkIdx = -1
+  canReceiveByBlkIdx = null
+
+  constructor(blk, decType, blkIdx, canReceiveByBlkIdx) {
+    this.decoratorType = getTypeByUnlockedItemType(decType.unlockedItemType)
+    this.blk = blk
+    this.id = blk.getBlockName()
+    this.blkIdx = blkIdx
+    this.canReceiveByBlkIdx = canReceiveByBlkIdx
+  }
+
+  function canReceive() {
+    let known = this.canReceiveByBlkIdx[this.blkIdx]
+    if (known != null)
+      return known
+    this.unlockBlk = getUnlockById(getUnlockIdByBlk(this.blk))
+    this.couponItemdefId = getCouponItemdefIdByBlk(this.blk)
+    let res = base.canReceive()
+    this.canReceiveByBlkIdx[this.blkIdx] = res
+    return res
+  }
+
+  function isAllowedByUnitTypes(unitType) {
+    this.allowedUnitTypes = getAllowedUnitTypesByBlk(this.blk)
+    return base.isAllowedByUnitTypes(unitType)
+  }
 }
+
+return freeze({
+  Decorator
+  DecoratorProbe
+  setDecoratorPreviewer
+})

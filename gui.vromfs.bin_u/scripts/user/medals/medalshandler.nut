@@ -1,3 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocksWithBlkOrder
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavButton, initUnlockFavInContainer
+from "%scripts/unlocks/unlocksState.nut" import getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig, getUnlockableMedalImage
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible, isUnlockOpened, getUnlockRewardText
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "string" import format
 from "dagor.workcycle" import setTimeout, clearTimer
@@ -8,20 +21,7 @@ from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig, getUnlockableMedalImage } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { isUnlockVisible, isUnlockOpened, getUnlockRewardText } = require("%scripts/unlocks/unlocksModule.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 const SELECTED_MEDAL_SAVE_ID = "wnd/selectedMedal"
 
@@ -290,6 +290,6 @@ let MedalsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("MedalsHandler", MedalsHandler)
 
-return {
+return freeze({
   openMedalsPage = @(params = {}) handlersManager.loadHandler(MedalsHandler, params)
-}
+})

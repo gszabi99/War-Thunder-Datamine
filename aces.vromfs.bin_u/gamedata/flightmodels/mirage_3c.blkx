@@ -1,7 +1,7 @@
 {
   "model": "mirage_3c",
   "fmFile": "fm/mirage_3c.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.186,
   "gearSinkRangeC": 0.16,
   "jetEnginePowerFullScale": true,
@@ -33,16 +33,16 @@
     0.85,
     0.92
   ],
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map_tailless.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
@@ -663,15 +663,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -684,36 +688,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -746,15 +760,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -797,7 +815,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2597,7 +2617,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/fr_cyrano.blk",
+      "blk": "gamedata/sensors/fr_cyrano.blk",
       "dmPart": "radar_dm"
     }
   },
@@ -2606,59 +2626,59 @@
     "preset": [
       {
         "name": "mirage_3c_default",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_default.blk"
       },
       {
         "name": "mirage_3c_sepr_841",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_sepr_841.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_sepr_841.blk"
       },
       {
         "name": "mirage_3c_2xaim9b",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2xaim9b.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2xaim9b.blk"
       },
       {
         "name": "mirage_3c_2xr550_magic",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2xr550_magic.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2xr550_magic.blk"
       },
       {
         "name": "mirage_3c_1xr530",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_1xr530.blk"
       },
       {
         "name": "mirage_3c_r511",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_r511.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_r511.blk"
       },
       {
         "name": "mirage_3c_1xr530e",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530e.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_1xr530e.blk"
       },
       {
         "name": "mirage_3c_2x250kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x250kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2x250kg.blk"
       },
       {
         "name": "mirage_3c_2x400kg",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x400kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2x400kg.blk"
       },
       {
         "name": "mirage_3c_2x250kg_200",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x250kg_200.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2x250kg_200.blk"
       },
       {
         "name": "mirage_3c_2x400kg_200",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x400kg_200.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_2x400kg_200.blk"
       },
       {
         "name": "mirage_3c_lau_32",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_lau_32.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_lau_32.blk"
       },
       {
         "name": "mirage_3c_jl100r",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_jl100r.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_jl100r.blk"
       },
       {
         "name": "mirage_3c_as30",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_as30.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mirage_3c_as30.blk"
       }
     ]
   },
@@ -2719,7 +2739,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
               "emitter": "rocket_aim9b_001",
               "bullets": 1,
               "external": true,
@@ -2740,7 +2760,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_r_550_magic.blk",
               "emitter": "rocket_r550_magic_001",
               "bullets": 1
             }
@@ -2757,7 +2777,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_32_fz.blk",
+              "blk": "gamedata/weapons/containers/lau_32_fz.blk",
               "emitter": "matra_lr_f1_001",
               "external": true
             }
@@ -2778,7 +2798,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
               "emitter": "matra_jl100r_001",
               "external": true
             }
@@ -2795,7 +2815,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/il_1300l_rp62_drop_tank_ghost_grey_1.blk",
+              "blk": "gamedata/weapons/drop_tank/il_1300l_rp62_drop_tank_ghost_grey_1.blk",
               "emitter": "1300l_rp62_drop_tank_001",
               "bullets": 1,
               "external": true
@@ -2831,7 +2851,7 @@
             "Weapon": [
               {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
+                "blk": "gamedata/weapons/cannonDEFA552A.blk",
                 "emitter": "flare1",
                 "flash": "flare1",
                 "dm": "cannon1_dm",
@@ -2842,7 +2862,7 @@
               },
               {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
+                "blk": "gamedata/weapons/cannonDEFA552A.blk",
                 "emitter": "flare2",
                 "flash": "flare2",
                 "dm": "cannon2_dm",
@@ -2861,7 +2881,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/payloadguns/mirage_3c_fuel_tank_7_8.blk",
+              "blk": "gamedata/weapons/payloadguns/mirage_3c_fuel_tank_7_8.blk",
               "emitter": "rocket_as30",
               "bullets": 1,
               "external": false,
@@ -2893,7 +2913,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25.blk",
+              "blk": "gamedata/weapons/containers/pm3_fr_250_samp_type_25.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true,
@@ -2909,7 +2929,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
+              "blk": "gamedata/weapons/containers/pm3_fr_400_samp_type_21.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true,
@@ -2925,7 +2945,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25_200.blk",
+              "blk": "gamedata/weapons/containers/pm3_fr_250_samp_type_25_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true,
@@ -2941,7 +2961,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21_200.blk",
+              "blk": "gamedata/weapons/containers/pm3_fr_400_samp_type_21_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true,
@@ -2960,7 +2980,7 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_as30.blk",
               "emitter": "rocket_as30",
               "bullets": 1,
               "external": true,
@@ -2979,7 +2999,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/fr_r_511_matra.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_r_511_matra.blk",
               "emitter": "rocket_r530e",
               "bullets": 1,
               "external": true,
@@ -2999,7 +3019,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_r_530_matra_radar.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_r_530_matra_radar.blk",
               "emitter": "rocket_r530e",
               "bullets": 1
             }
@@ -3018,7 +3038,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_r_530_matra_ir.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_r_530_matra_ir.blk",
               "emitter": "rocket_r530e",
               "bullets": 1
             }
@@ -3044,7 +3064,7 @@
           },
           "Weapon": {
             "trigger": "boosters",
-            "blk": "gameData/Weapons/payloadguns/mirage_3c_sepr_841_rocket.blk",
+            "blk": "gamedata/weapons/payloadguns/mirage_3c_sepr_841_rocket.blk",
             "emitter": "rocket_as30",
             "bullets": 1,
             "external": true,
@@ -3073,7 +3093,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
+              "blk": "gamedata/weapons/containers/jl_100r_fr_matra_sneb_type23.blk",
               "emitter": "matra_jl100r_002",
               "external": true
             }
@@ -3090,7 +3110,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/il_1300l_rp62_drop_tank_ghost_grey_2.blk",
+              "blk": "gamedata/weapons/drop_tank/il_1300l_rp62_drop_tank_ghost_grey_2.blk",
               "emitter": "1300l_rp62_drop_tank_002",
               "bullets": 1,
               "external": true
@@ -3118,7 +3138,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
               "emitter": "rocket_aim9b_002",
               "bullets": 1,
               "external": true,
@@ -3139,7 +3159,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_r_550_magic.blk",
               "emitter": "rocket_r550_magic_002",
               "bullets": 1
             }
@@ -3156,7 +3176,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_32_fz.blk",
+              "blk": "gamedata/weapons/containers/lau_32_fz.blk",
               "emitter": "matra_lr_f1_002",
               "external": true
             }
@@ -3872,6 +3892,972 @@
         "endPositionNoiseStrength": 0.3,
         "endPositionNoiseSpeed": 6.0,
         "fmPart": "spar1_r_dm"
+      }
+    ]
+  },
+  "wingVapors": {
+    "wingVapor": [
+      {
+        "name": "_wingvapor_mirage3_0",
+        "wingsCriticalAOA": [
+          15.0,
+          22.0,
+          45.0,
+          90.0
+        ],
+        "vorticesCriticalAOA": [
+          15.0,
+          25.0,
+          30.0,
+          50.0
+        ],
+        "minSpeedForCriticalAOA": 300.0,
+        "maxSpeedForCriticalAOA": 1300.0,
+        "wingCriticalAOAOffsetAtMaxSpeed": -8.0,
+        "vorticesCriticalAOAOffsetAtMaxSpeed": -3.0,
+        "wingCompressionAtMaxSpeed": 0.3,
+        "vorticesCompressionAtMaxSpeed": 0.3,
+        "minMaxIntensityForWingVapor": [
+          0.0,
+          1.0
+        ],
+        "minMaxIntensityForVorticesVapor": [
+          0.0,
+          1.0
+        ],
+        "vorticesIntensityMult": 0.0,
+        "wingIntensityMult": 1.0,
+        "animationViscosity": 100.0,
+        "vaporVorticesMinMaxFrequency": [
+          8.0,
+          8.0
+        ],
+        "vaporVorticesMinMaxNoise": [
+          1.0,
+          1.0
+        ],
+        "vaporVorticesMinMaxAngles": [
+          0.0,
+          0.0
+        ],
+        "vaporVorticesMinMaxSurfaceNoise": [
+          0.5,
+          0.5
+        ],
+        "vaporVorticesMinMaxAttenUp": [
+          0.5,
+          0.5
+        ],
+        "wingsVaporMinMaxNoiseSpeed": [
+          5.0,
+          5.0
+        ],
+        "vorticesVaporMinMaxNoiseSpeed": [
+          5.0,
+          5.0
+        ],
+        "wingsVaporMinMaxDeltaBack": [
+          0.5,
+          0.7
+        ],
+        "wingsVaporMinMaxDeltaFront": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxDeltaRight": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxDeltaUp": [
+          1.5,
+          1.0
+        ],
+        "wingsVaporMinMaxBackFade": [
+          0.4,
+          0.4
+        ],
+        "wingsVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "vorticesVaporMinMaxDeltaBack": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaFront": [
+          0.85,
+          0.85
+        ],
+        "vorticesVaporMinMaxDeltaRight": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "vorticesVaporMinMaxBackFade": [
+          0.4,
+          0.4
+        ],
+        "vorticesVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxMult": [
+          0.2,
+          0.2
+        ],
+        "wingsVaporMinMaxScale": [
+          0.2,
+          0.2
+        ],
+        "vorticesVaporMinMaxMult": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxScale": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporHumidityPlateaus": [
+          4.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "wingsVaporHumidityMult": [
+          0.7,
+          1.3,
+          2.0
+        ],
+        "aoaNoiseStrength": 15.0,
+        "aoaNoiseSpeed": 5.0,
+        "minSpeedForVapor": [
+          300.0,
+          500.0
+        ],
+        "maxSpeedForVapor": [
+          1000.0,
+          1900.0
+        ],
+        "Vertex": {
+          "vertex": [
+            [
+              -4.1512,
+              -0.36699,
+              -0.91295
+            ],
+            [
+              2.48006,
+              -0.41997,
+              -0.88872
+            ],
+            [
+              -2.80108,
+              -0.50826,
+              -3.87463
+            ],
+            [
+              -3.69459,
+              -0.50826,
+              -3.87463
+            ],
+            [
+              -3.76141,
+              0.32561,
+              -1.52965
+            ],
+            [
+              -0.84699,
+              -0.03812,
+              -1.17806
+            ],
+            [
+              -2.1929,
+              0.30029,
+              -2.67053
+            ],
+            [
+              -3.38788,
+              0.36601,
+              -2.96911
+            ],
+            [
+              -1.59246,
+              0.39247,
+              -2.05428
+            ],
+            [
+              -3.56927,
+              0.59431,
+              -2.21832
+            ],
+            [
+              -3.99426,
+              -0.4333,
+              -2.39865
+            ],
+            [
+              -0.14665,
+              -0.45979,
+              -2.34567
+            ],
+            [
+              -4.1512,
+              -0.36699,
+              0.91295
+            ],
+            [
+              2.48006,
+              -0.41997,
+              0.88872
+            ],
+            [
+              -2.80108,
+              -0.50826,
+              3.87463
+            ],
+            [
+              -3.69459,
+              -0.50826,
+              3.87463
+            ],
+            [
+              -3.76141,
+              0.32561,
+              1.52965
+            ],
+            [
+              -0.84699,
+              -0.03812,
+              1.17806
+            ],
+            [
+              -2.1929,
+              0.30029,
+              2.67053
+            ],
+            [
+              -3.38788,
+              0.36601,
+              2.96911
+            ],
+            [
+              -1.59246,
+              0.39247,
+              2.05428
+            ],
+            [
+              -3.56927,
+              0.59431,
+              2.21832
+            ],
+            [
+              -3.99426,
+              -0.4333,
+              2.39865
+            ],
+            [
+              -0.14665,
+              -0.45979,
+              2.34567
+            ]
+          ]
+        },
+        "Indices": {
+          "index": [
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              8,
+              11,
+              6
+            ],
+            [
+              11,
+              2,
+              6
+            ],
+            [
+              5,
+              1,
+              8
+            ],
+            [
+              11,
+              8,
+              1
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              9,
+              10,
+              4
+            ],
+            [
+              10,
+              0,
+              4
+            ],
+            [
+              9,
+              7,
+              10
+            ],
+            [
+              3,
+              10,
+              7
+            ],
+            [
+              5,
+              8,
+              4
+            ],
+            [
+              9,
+              8,
+              6
+            ],
+            [
+              7,
+              9,
+              6
+            ],
+            [
+              8,
+              9,
+              4
+            ],
+            [
+              10,
+              11,
+              0
+            ],
+            [
+              11,
+              1,
+              0
+            ],
+            [
+              11,
+              10,
+              2
+            ],
+            [
+              10,
+              3,
+              2
+            ],
+            [
+              12,
+              17,
+              13
+            ],
+            [
+              12,
+              16,
+              17
+            ],
+            [
+              18,
+              23,
+              20
+            ],
+            [
+              23,
+              18,
+              14
+            ],
+            [
+              17,
+              20,
+              13
+            ],
+            [
+              23,
+              13,
+              20
+            ],
+            [
+              14,
+              19,
+              15
+            ],
+            [
+              14,
+              18,
+              19
+            ],
+            [
+              16,
+              22,
+              21
+            ],
+            [
+              16,
+              12,
+              22
+            ],
+            [
+              22,
+              19,
+              21
+            ],
+            [
+              19,
+              22,
+              15
+            ],
+            [
+              17,
+              16,
+              20
+            ],
+            [
+              18,
+              20,
+              21
+            ],
+            [
+              19,
+              18,
+              21
+            ],
+            [
+              20,
+              16,
+              21
+            ],
+            [
+              12,
+              23,
+              22
+            ],
+            [
+              23,
+              12,
+              13
+            ],
+            [
+              23,
+              14,
+              22
+            ],
+            [
+              22,
+              14,
+              15
+            ]
+          ]
+        }
+      },
+      {
+        "name": "_wingvapor_mirage3_1",
+        "wingsCriticalAOA": [
+          5.0,
+          20.0,
+          40.0,
+          90.0
+        ],
+        "vorticesCriticalAOA": [
+          5.0,
+          25.0,
+          30.0,
+          50.0
+        ],
+        "minSpeedForCriticalAOA": 300.0,
+        "maxSpeedForCriticalAOA": 1300.0,
+        "wingCriticalAOAOffsetAtMaxSpeed": -4.0,
+        "vorticesCriticalAOAOffsetAtMaxSpeed": -4.0,
+        "wingCompressionAtMaxSpeed": 0.3,
+        "vorticesCompressionAtMaxSpeed": 0.3,
+        "minMaxIntensityForWingVapor": [
+          0.1,
+          1.0
+        ],
+        "minMaxIntensityForVorticesVapor": [
+          0.1,
+          1.5
+        ],
+        "vorticesIntensityMult": 3.0,
+        "wingIntensityMult": 1.0,
+        "animationViscosity": 100.0,
+        "vaporVorticesMinMaxFrequency": [
+          14.0,
+          11.0
+        ],
+        "vaporVorticesMinMaxNoise": [
+          0.0,
+          0.1
+        ],
+        "vaporVorticesMinMaxAngles": [
+          0.05,
+          0.05
+        ],
+        "vaporVorticesMinMaxSurfaceNoise": [
+          0.4,
+          0.5
+        ],
+        "vaporVorticesMinMaxAttenUp": [
+          0.65,
+          0.5
+        ],
+        "wingsVaporMinMaxNoiseSpeed": [
+          4.0,
+          4.0
+        ],
+        "vorticesVaporMinMaxNoiseSpeed": [
+          4.0,
+          4.0
+        ],
+        "wingsVaporMinMaxDeltaBack": [
+          1.0,
+          1.5
+        ],
+        "wingsVaporMinMaxDeltaFront": [
+          0.85,
+          0.85
+        ],
+        "wingsVaporMinMaxDeltaRight": [
+          0.4,
+          0.4
+        ],
+        "wingsVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "wingsVaporMinMaxBackFade": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "wingsVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "vorticesVaporMinMaxDeltaBack": [
+          0.7,
+          0.7
+        ],
+        "vorticesVaporMinMaxDeltaFront": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxDeltaRight": [
+          0.2,
+          0.2
+        ],
+        "vorticesVaporMinMaxDeltaUp": [
+          1.2,
+          1.2
+        ],
+        "vorticesVaporMinMaxBackFade": [
+          0.5,
+          0.5
+        ],
+        "vorticesVaporMinMaxBackFadeStart": [
+          0.0,
+          0.0
+        ],
+        "vorticesVaporMinMaxBackFadeStrength": [
+          1.0,
+          1.0
+        ],
+        "wingsVaporMinMaxMult": [
+          0.1,
+          0.25
+        ],
+        "wingsVaporMinMaxScale": [
+          0.1,
+          0.25
+        ],
+        "vorticesVaporMinMaxMult": [
+          0.1,
+          0.25
+        ],
+        "vorticesVaporMinMaxScale": [
+          0.1,
+          0.25
+        ],
+        "wingsVaporHumidityPlateaus": [
+          4.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "wingsVaporHumidityMult": [
+          0.7,
+          1.3,
+          2.0
+        ],
+        "aoaNoiseStrength": 4.0,
+        "aoaNoiseSpeed": 3.0,
+        "minSpeedForVapor": [
+          250.0,
+          450.0
+        ],
+        "maxSpeedForVapor": [
+          1400.0,
+          2000.0
+        ],
+        "Vertex": {
+          "vertex": [
+            [
+              -4.21824,
+              -0.3252,
+              -0.76957
+            ],
+            [
+              2.38668,
+              -0.39383,
+              -0.89181
+            ],
+            [
+              -2.85494,
+              -0.47058,
+              -3.77009
+            ],
+            [
+              -3.73591,
+              -0.49926,
+              -3.83317
+            ],
+            [
+              -2.98357,
+              -0.12905,
+              -1.28386
+            ],
+            [
+              -0.57966,
+              -0.20119,
+              -1.28075
+            ],
+            [
+              -2.00672,
+              -0.25027,
+              -2.69115
+            ],
+            [
+              -2.99497,
+              -0.17812,
+              -2.76199
+            ],
+            [
+              -1.30584,
+              -0.15022,
+              -2.01424
+            ],
+            [
+              -3.02018,
+              -0.05228,
+              -2.01728
+            ],
+            [
+              0.0241,
+              -0.43406,
+              -2.14092
+            ],
+            [
+              -4.04805,
+              -0.43117,
+              -2.08453
+            ],
+            [
+              -4.21824,
+              -0.3252,
+              0.76957
+            ],
+            [
+              2.38668,
+              -0.39383,
+              0.89181
+            ],
+            [
+              -2.85494,
+              -0.47058,
+              3.77009
+            ],
+            [
+              -3.73591,
+              -0.49926,
+              3.83317
+            ],
+            [
+              -2.98357,
+              -0.12905,
+              1.28386
+            ],
+            [
+              -0.57966,
+              -0.20119,
+              1.28075
+            ],
+            [
+              -2.00672,
+              -0.25027,
+              2.69115
+            ],
+            [
+              -2.99497,
+              -0.17812,
+              2.76199
+            ],
+            [
+              -1.30584,
+              -0.15022,
+              2.01424
+            ],
+            [
+              -3.02018,
+              -0.05228,
+              2.01728
+            ],
+            [
+              0.0241,
+              -0.43406,
+              2.14092
+            ],
+            [
+              -4.04805,
+              -0.43117,
+              2.08453
+            ]
+          ]
+        },
+        "Indices": {
+          "index": [
+            [
+              0,
+              1,
+              5
+            ],
+            [
+              0,
+              5,
+              4
+            ],
+            [
+              8,
+              10,
+              6
+            ],
+            [
+              10,
+              2,
+              6
+            ],
+            [
+              10,
+              8,
+              1
+            ],
+            [
+              8,
+              5,
+              1
+            ],
+            [
+              2,
+              3,
+              7
+            ],
+            [
+              2,
+              7,
+              6
+            ],
+            [
+              9,
+              11,
+              4
+            ],
+            [
+              11,
+              0,
+              4
+            ],
+            [
+              11,
+              9,
+              3
+            ],
+            [
+              9,
+              7,
+              3
+            ],
+            [
+              5,
+              8,
+              4
+            ],
+            [
+              9,
+              8,
+              6
+            ],
+            [
+              7,
+              9,
+              6
+            ],
+            [
+              8,
+              9,
+              4
+            ],
+            [
+              11,
+              10,
+              0
+            ],
+            [
+              10,
+              1,
+              0
+            ],
+            [
+              10,
+              11,
+              2
+            ],
+            [
+              11,
+              3,
+              2
+            ],
+            [
+              12,
+              17,
+              13
+            ],
+            [
+              12,
+              16,
+              17
+            ],
+            [
+              18,
+              22,
+              20
+            ],
+            [
+              22,
+              18,
+              14
+            ],
+            [
+              22,
+              13,
+              20
+            ],
+            [
+              13,
+              17,
+              20
+            ],
+            [
+              14,
+              19,
+              15
+            ],
+            [
+              14,
+              18,
+              19
+            ],
+            [
+              16,
+              23,
+              21
+            ],
+            [
+              16,
+              12,
+              23
+            ],
+            [
+              23,
+              15,
+              21
+            ],
+            [
+              15,
+              19,
+              21
+            ],
+            [
+              17,
+              16,
+              20
+            ],
+            [
+              18,
+              20,
+              21
+            ],
+            [
+              19,
+              18,
+              21
+            ],
+            [
+              20,
+              16,
+              21
+            ],
+            [
+              12,
+              22,
+              23
+            ],
+            [
+              22,
+              12,
+              13
+            ],
+            [
+              22,
+              14,
+              23
+            ],
+            [
+              23,
+              14,
+              15
+            ]
+          ]
+        }
       }
     ]
   },

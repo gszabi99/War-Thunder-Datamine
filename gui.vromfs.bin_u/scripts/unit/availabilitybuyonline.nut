@@ -1,9 +1,8 @@
+from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
+from "%scripts/onlineShop/entitlementsShopData.nut" import getShopItem
+from "%sqstd/platform.nut" import isPC
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
 from "%scripts/dagui_library.nut" import *
-
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
 let isEventUnit = @(unit) unit.event != null
 
@@ -16,7 +15,7 @@ function isAvailableBuyUnitOnline(unit) {
   let canBuy = (unit.gift != null) && !isEventUnit(unit) && unit.isVisibleInShop()
   && !canBuyUnitOnMarketplace(unit) && !unit.isCrossPromo
 
-  if (isPlatformPC || !canBuy)
+  if (isPC || !canBuy)
     return canBuy
 
   return hasShopItem(unit)
@@ -30,7 +29,7 @@ function canBuyUnitOnline(unit) {
   return isAvailableBuyUnitOnline(unit)
 }
 
-return {
+return freeze({
   isAvailableBuyUnitOnline
   canBuyUnitOnline
-}
+})

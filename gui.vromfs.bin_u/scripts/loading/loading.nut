@@ -1,25 +1,25 @@
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/loading/loadingHangar.nut" import LoadingHangarHandler
+from "%scripts/loading/loadingBrief.nut" import LoadingBrief
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setHelpTextOnLoading, setVersionText
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "loading" import loading_is_finished, loading_press_apply, loading_get_briefing
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LoadingHangarHandler } = require("%scripts/loading/loadingHangar.nut")
-let { LoadingBrief } = require("%scripts/loading/loadingBrief.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 eventbus_subscribe("gui_start_loading", function gui_start_loading(payload) {
   let isMissionLoading = payload?["showBriefing"] ?? false
   let briefing = loading_get_briefing()
-  if (isLoggedIn.get() && isMissionLoading && (briefing.blockCount() > 0)) {
+  if (hasFullLoginState.get() && isMissionLoading && (briefing.blockCount() > 0)) {
     log("briefing loaded, place =", briefing.getStr("place_loc", ""))
     handlersManager.loadHandler(LoadingBrief, { briefing })
   }
-  else if (isLoggedIn.get())
+  else if (hasFullLoginState.get())
     handlersManager.loadHandler(LoadingHangarHandler, { isEnteringMission = isMissionLoading })
   else
     handlersManager.loadHandler(get_gui_handler("LoadingHandler"))

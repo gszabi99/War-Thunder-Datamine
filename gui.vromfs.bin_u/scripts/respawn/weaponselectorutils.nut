@@ -214,9 +214,9 @@ function updateTierStats(data, slotIdToTiersId) {
 }
 
 
-return {
+return freeze({
   getTierData
   updateTierStatsNoSlots
   updateTierStats
   preparePresetData
-}
+})

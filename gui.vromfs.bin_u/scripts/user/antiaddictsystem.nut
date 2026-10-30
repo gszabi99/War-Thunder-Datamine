@@ -1,28 +1,28 @@
+from "%scripts/time.nut" import getExpireText
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/queue/queueBattleData.nut" import isDeniedProfileJwtDueToAasLimits
 from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
 from "eventbus" import eventbus_subscribe
 from "dagor.workcycle" import resetTimeout, setTimeout, clearTimer, deferOnce
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { getExpireText } = require("%scripts/time.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { isDeniedProfileJwtDueToAasLimits } = require("%scripts/queue/queueBattleData.nut")
-
 const SKIPPED_AAS_WARNING_MSG = "skipped_msg/aasWarningMessage"
 
 local showMultiplayerAvailableMsgTimer = null
 
-let antiAddictSystemVariable = mkWatched(persist, "antiAddictSystemVariable", {
+let hardPersistWatched = mkHardPersistWatched("user.antiAddictSystem")
+let antiAddictSystemVariable = hardPersistWatched("antiAddictSystemVariable", {
   curMin = 0         
   warnMin = 120      
   limitMin = 300     
   nextCanPlayTs = 0  
 })
 
-let needCheckShowAasLimitMessage = mkWatched(persist, "needCheckShowAasLimitMessage", false)
+let needCheckShowAasLimitMessage = hardPersistWatched("needCheckShowAasLimitMessage", false)
 
 let hasMultiplayerLimitByAas = keepref(Computed(function() {
   let { curMin, limitMin, nextCanPlayTs } = antiAddictSystemVariable.get()
@@ -32,7 +32,7 @@ let hasMultiplayerLimitByAas = keepref(Computed(function() {
 let needShowAasMessageLimit = keepref(Computed(@() isInMenu.get()
   && hasMultiplayerLimitByAas.get() && needCheckShowAasLimitMessage.get()))
 
-let canShowMultiplayerAvailableMsg = mkWatched(persist, "canShowMultiplayerAvailableMsg", false)
+let canShowMultiplayerAvailableMsg = Watched(false)
 let needShowMultiplayerAvailableMsg = keepref(Computed(@() canShowMultiplayerAvailableMsg.get() && isInMenu.get()))
 
 function clearCache() {
@@ -127,7 +127,7 @@ function onAntiAddictSystemVariableChange() {
 
 antiAddictSystemVariable.subscribe(@(_v) deferOnce(onAntiAddictSystemVariableChange))
 
-return {
+return freeze({
   markToShowMultiplayerLimitByAasMsg
   checkShowMultiplayerAasWarningMsg
-}
+})

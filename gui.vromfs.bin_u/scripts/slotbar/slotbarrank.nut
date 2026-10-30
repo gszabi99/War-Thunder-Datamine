@@ -1,10 +1,9 @@
+from "%scripts/events/eventsState.nut" import isEventMultiSlotEnabled
+from "%scripts/events/eventTeamsInfo.nut" import isUnitAllowedForEvent
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/unit/unitStatus.nut" import isUnitBroken
 from "%scripts/dagui_library.nut" import *
-
-let { isEventMultiSlotEnabled } = require("%scripts/events/eventsState.nut")
-let { isUnitAllowedForEvent } = require("%scripts/events/eventTeamsInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { isUnitBroken } = require("%scripts/unit/unitStatus.nut")
 
 
 
@@ -30,6 +29,6 @@ function getSlotbarRank(event, country, idInCountry) {
   return res
 }
 
-return {
+return freeze({
   getSlotbarRank
-}
+})

@@ -1,25 +1,25 @@
 {
   "model": "ba_65_k14_l",
   "fmFile": "fm/ba_65_k14_l.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.13,
   "gearSinkRangeC": 0.03,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "raf_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "500kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
@@ -549,15 +549,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -570,35 +574,45 @@
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 50.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 70.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -623,15 +637,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -644,35 +662,45 @@
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 50.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 70.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -2179,7 +2207,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/weapons/gunBredaSAFAT77.blk",
+        "blk": "gamedata/weapons/gunBredaSAFAT77.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2190,7 +2218,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "blk": "gamedata/weapons/gunBredaSAFAT127.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "shell": "emtr_shellrejection2",
@@ -2200,7 +2228,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "blk": "gamedata/weapons/gunBredaSAFAT127.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2210,7 +2238,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/weapons/gunBredaSAFAT77.blk",
+        "blk": "gamedata/weapons/gunBredaSAFAT77.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection4",
@@ -2220,7 +2248,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunBredaSAFAT77_turret.blk",
+        "blk": "gamedata/weapons/gunBredaSAFAT77_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun1",
         "flash": "flare5",
@@ -2288,21 +2316,21 @@
     "preset": [
       {
         "name": "ba_65_k14_l_default",
-        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+        "blk": "gamedata/flightModels/weaponPresets/empty.blk"
       },
       {
         "name": "ba_65_k14_l_4x50kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/ba_65_k14_l_4x50kg_t.blk",
+        "blk": "gamedata/flightModels/weaponPresets/ba_65_k14_l_4x50kg_t.blk",
         "reqModification": "it50_mod"
       },
       {
         "name": "ba_65_k14_l_2x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/ba_65_k14_l_2x100kg_t.blk",
+        "blk": "gamedata/flightModels/weaponPresets/ba_65_k14_l_2x100kg_t.blk",
         "reqModification": "it100_mod"
       },
       {
         "name": "ba_65_k14_l_4x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/ba_65_k14_l_4x100kg_t.blk",
+        "blk": "gamedata/flightModels/weaponPresets/ba_65_k14_l_4x100kg_t.blk",
         "reqModification": "it100_mod"
       }
     ]

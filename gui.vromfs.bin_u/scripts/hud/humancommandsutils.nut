@@ -51,7 +51,7 @@ let canCancelMateOrder = Computed(@() selectedBotForOrder.get() != null
   && selectedBotForOrder.get().isAlive && selectedBotForOrder.get().isPersonalOrder)
 canCancelMateOrder.subscribe(@(_v) eventbus_send("onCanCancelMateOrderStateChange"))
 
-return {
+return freeze({
   commandSmokeGrenade
   commandFlashGrenade
   commandFragGrenade
@@ -68,4 +68,4 @@ return {
   isAnyPersonalOrderSet
   canCancelMateOrder
 
-}
+})

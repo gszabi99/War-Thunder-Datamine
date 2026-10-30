@@ -1,3 +1,4 @@
+from "%scripts/dynamic/misGenFuncTools.nut" import getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
 from "dagor.math" import Point3
 from "dagor.debug" import debug_dump_stack
 from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt, mgSetBool
@@ -6,11 +7,9 @@ from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, m
   , getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
 from "math" import min, sqrt, clamp
 
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
-
 function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
   const mission_preset_name = "ground_attack_preset01"
-  mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
+  mgBeginMission($"gamedata/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
   let bombtargets = createGroundUnitsProc(enemySide)
@@ -251,8 +250,8 @@ function genAssaultThirdMission(isFreeFlight) {
   )
 }
 
-return {
+return freeze({
   genAssaultFirstMission
   genAssaultSecondMission
   genAssaultThirdMission
-}
+})

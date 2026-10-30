@@ -1,18 +1,16 @@
+import "%scripts/unit/vehiclesModal.nut" as vehiclesModal
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/money.nut" import Cost, Balance
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitActions.nut" import setResearchClanVehicleWithAutoFlush, flushSquadronExp, buy, buyUnit
+from "%scripts/unit/squadronUnitAction.nut" import isAllClanUnitsResearched
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton, placePriceTextToButton
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitReqExp, getUnitExp, getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, isUnitInResearch
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Cost, Balance } = require("%scripts/money.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
-let { setResearchClanVehicleWithAutoFlush, flushSquadronExp, buy, buyUnit } = require("%scripts/unit/unitActions.nut")
-let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitName, getUnitReqExp, getUnitExp, getUnitCost
-} = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 local handlerClass = class (vehiclesModal.handlerClass) {
   canQuitByGoBack       = false
@@ -184,7 +182,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
 register_gui_handler("clanVehiclesModal", handlerClass)
 
-return {
+return freeze({
   clanVehiclesModal = handlerClass
   open = @() loadHandler(handlerClass)
-}
+})

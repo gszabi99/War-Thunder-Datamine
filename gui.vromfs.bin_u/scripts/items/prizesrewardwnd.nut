@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 class PrizesRewardWnd (trophyRewardWnd) {

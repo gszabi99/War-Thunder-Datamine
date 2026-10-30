@@ -1,8 +1,7 @@
+from "%scripts/money.nut" import Cost
 from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import wp_get_skill_points_cost_gold
-
-let { Cost } = require("%scripts/money.nut")
 
 function getSkillPointsPacks(country) {
   let res = []
@@ -31,7 +30,7 @@ function getPacksToBuyAmount(country, skillPoints) {
   return array((skillPoints.tofloat() / bestPack.skills + 0.5).tointeger(), bestPack)
 }
 
-return {
+return freeze({
   getSkillPointsPacks
   getPacksToBuyAmount
-}
+})

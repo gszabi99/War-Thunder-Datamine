@@ -1,14 +1,14 @@
 import "DataBlock" as DataBlock
-from "dagor.workcycle" import defer
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocks
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob
 from "language" import getLocalLanguage
 from "%sqstd/json.nut" import saveJson
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
 from "%scripts/webRPC.nut" import webRpcRegister
-let { getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 function genHPLocksToBlkCurLang(path) {
   let fullPath = $"{path}/history_pages{getLocalLanguage()}.blk"
@@ -33,37 +33,34 @@ function genHPLocksToBlkCurLang(path) {
   res.saveToTextFile(fullPath)
 }
 
-function makeLoc(path, langsInfo, curLang, exportFileName, status = {}) {
-  status = clone status
-  let makeLocImp = callee()
-  let lang = langsInfo.pop()
-  setGameLocalization(lang.id, false, false)
+const LANG_JOB_ID = "exportInfo.historyPagesLocExporter"
 
+function makeLoc(lang, data, onDone) {
+  let { path, status } = data
   try {
     genHPLocksToBlkCurLang(path)
-    status[lang.id] <- {
+    status[lang] <- {
       success=true
     }
   } catch (e) {
     logerr($"Failed to get history pages localization blk for '{lang}' lang")
-    status[lang.id] <- {
+    status[lang] <- {
       success=false
     }
   }
-
-  if (!langsInfo.len()) {
-    saveJson($"{path}/{exportFileName}", status)
-    log($"GP: history pages localization parsing finished")
-    return setGameLocalization(curLang, false, false)
-  }
-
-  defer(@() makeLocImp(path, langsInfo, curLang, exportFileName, status))
+  onDone()
 }
 
+registerLangJob(LANG_JOB_ID, makeLoc, function(data) {
+  saveJson($"{data.path}/{data.exportFileName}", data.status)
+  log($"GP: history pages localization parsing finished")
+})
+
 function exportHPLocInfo(params) {
-  let info = getGameLocalizationInfo().filter(@(value) params.langs.contains(value.id))
-  makeLoc(params.path, info, getLocalLanguage(), params.fileName)
-  return "ok"
+  let langs = getGameLocalizationInfo().filter(@(value) params.langs.contains(value.id)).map(@(lang) lang.id)
+  return startLangJob(LANG_JOB_ID, langs, { path = params.path, exportFileName = params.fileName, status = {} })
+    ? "ok"
+    : "error: another language job or an export runs"
 }
 
 webRpcRegister("exportHPLocInfo", exportHPLocInfo)

@@ -1,7 +1,7 @@
 {
   "model": "fiat_g91_ps",
   "fmFile": "fm/fiat_g91_ps.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.202,
   "gearSinkRangeC": 0.101,
@@ -13,19 +13,18 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
     "armor10": {
       "mgun1_dm": {
@@ -49,6 +48,12 @@
         "hp": 35.0
       },
       "armor4_dm": {
+        "hp": 35.0
+      },
+      "armor5_dm": {
+        "hp": 35.0
+      },
+      "armor6_dm": {
         "hp": 35.0
       }
     },
@@ -93,6 +98,14 @@
       },
       "stab2_dm": {
         "hp": 14.5
+      }
+    },
+    "dural5": {
+      "cockpit_control1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block1_dm": {
+        "hp": 60.0
       }
     },
     "c_dural7": {
@@ -322,6 +335,12 @@
       },
       {
         "name": "armor4_dm"
+      },
+      {
+        "name": "armor5_dm"
+      },
+      {
+        "name": "armor6_dm"
       },
       {
         "name": "cover1_dm"
@@ -622,15 +641,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -673,7 +696,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -779,6 +804,56 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "cockpit_control1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",
@@ -2245,19 +2320,19 @@
     "preset": [
       {
         "name": "fiat_g91_default",
-        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fiat_g91_default.blk"
       },
       {
         "name": "fiat_g91_ps_2_75in_ffar_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_ps_2_75in_ffar_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fiat_g91_ps_2_75in_ffar_rockets.blk"
       },
       {
         "name": "fiat_g91_ps_2x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_ps_2x500lb_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fiat_g91_ps_2x500lb_bombs.blk"
       },
       {
         "name": "fiat_g91_ps_2x_aerea_559g1",
-        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_ps_2x_aerea_559g1.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fiat_g91_ps_2x_aerea_559g1.blk"
       }
     ]
   },
@@ -2292,7 +2367,7 @@
             "reqModification": "us_2_75_in_ffar",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_1",
               "external": true
             }
@@ -2303,7 +2378,7 @@
             "reqModification": "b-17_sbc",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2316,7 +2391,7 @@
             "reqModification": "aerea_559g",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "250kg_napalm_aerea_559g1_001",
               "bullets": 1,
               "external": true,
@@ -2342,7 +2417,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "mgun1_dm",
@@ -2353,7 +2428,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",
@@ -2382,7 +2457,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "mgun3_dm",
@@ -2393,7 +2468,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "mgun4_dm",
@@ -2416,7 +2491,7 @@
             "reqModification": "us_2_75_in_ffar",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/aero_7a_white_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "aero_7_2",
               "external": true
             }
@@ -2427,7 +2502,7 @@
             "reqModification": "b-17_sbc",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,
@@ -2440,7 +2515,7 @@
             "reqModification": "aerea_559g",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "250kg_napalm_aerea_559g1_002",
               "bullets": 1,
               "external": true,
@@ -2608,6 +2683,160 @@
       {
         "dm": "wing1_r_dm",
         "dp": "aero_7_r"
+      }
+    ]
+  },
+  "damagePartsToAvionicsPartsMap": {
+    "avionics": [
+      {
+        "avionics": "weaponControls",
+        "health": {
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "weaponControls",
+        "health": {
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
   },

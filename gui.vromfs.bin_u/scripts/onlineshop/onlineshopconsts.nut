@@ -11,7 +11,7 @@ enum xboxMediaItemType {
 }
 
 
-return {
+return freeze({
   ONLINE_SHOP_TYPES
   xboxMediaItemType
-}
+})

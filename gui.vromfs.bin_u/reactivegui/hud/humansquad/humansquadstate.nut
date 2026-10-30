@@ -194,8 +194,8 @@ ecs.register_es("hero_personal_bot_order_ui_es",
   }
 )
 
-return {
+return freeze({
   isPersonalContextCommandMode
   watchedHeroSquadMembersGetWatched
   watchedHeroSquadMembersOrderedSet
-}
+})

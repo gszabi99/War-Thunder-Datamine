@@ -1,15 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/countries/countriesCustomization.nut" import getCountries, getCountryOverride, getCountryStyle, setCountryOverride, setCountryStyle, getUseOperatorFlagsInBattle, setUseOperatorFlagsInBattle, resetCountriesStyles
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCountries, getCountryOverride, getCountryStyle, setCountryOverride, setCountryStyle, countryDisplayStyle, getUseOperatorFlagsInBattle, setUseOperatorFlagsInBattle, resetCountriesStyles } = require("%scripts/countries/countriesCustomization.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { countryDisplayStyle } = require("%scripts/countries/countriesCustomization.nut")
 
 let prohibitedForSelectionCountries = [
   "country_republic_china",

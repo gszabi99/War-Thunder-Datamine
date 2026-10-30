@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.24,
-  "shotFreq": 10.0,
-  "traceFreq": 4,
-  "bullets": 250,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 10.0,
+  "bullets": 250,
+  "overheat": {
+    "overheat": [
+      [
+        5.5,
+        0.0
+      ],
+      [
+        8.2,
+        0.03
+      ],
+      [
+        11.0,
+        0.1
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.13,
@@ -8603,29 +8619,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "hs_mk2_gun_outside",
-    "cockpit": "hs_mk2_gun_inside",
-    "ai": "hs_mk2_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        5.5,
-        0.0
-      ],
-      [
-        8.2,
-        0.03
-      ],
-      [
-        11.0,
-        0.1
-      ]
-    ]
-  },
   "mk2_1943_new_gun": {
     "maxDeltaAngle": 0.2,
     "overheat": {
@@ -8644,5 +8637,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "hs_mk2_gun_outside",
+    "cockpit": "hs_mk2_gun_inside",
+    "ai": "hs_mk2_gun_ai"
   }
 }

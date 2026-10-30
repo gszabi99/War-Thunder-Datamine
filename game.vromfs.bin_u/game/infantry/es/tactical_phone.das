@@ -40,13 +40,8 @@ def tactical_phone_on_mode_changed(evt : Event;
 def update_tactical_phone_state_on_equip(evt : Event;
                                          human_weap__currentGunEid : EntityId;
                                          var hero__isDrawAboveGeometry : bool&)
-  var isCurrentGunPhone = false
-  query(human_weap__currentGunEid) <| $ [es] (var tactical_phone__uiEnabled : bool&)
-    tactical_phone__uiEnabled = true
-    isCurrentGunPhone = true
-
   
-  hero__isDrawAboveGeometry = !isCurrentGunPhone
+  hero__isDrawAboveGeometry = !has(human_weap__currentGunEid, "tactical_phone")
 
 def has_drone_launcher_weapon(human_weap__weapTemplates : Object)
   for kv in human_weap__weapTemplates
@@ -91,13 +86,6 @@ def tactical_phone_on_owner_changed(evt : Event;
 def tactical_phone_appear(evt : Event;
                           var tactical_phone__mode : int&)
   tactical_phone__mode = int(TacticalPhoneMode.TPM_NONE)
-
-[es(tag=gameClient, REQUIRE=(watchedPlayerItem, tactical_phone), on_appear)]
-def tactical_phone_appear_client(evt : Event;
-                                 eid aka tactical_phone__eid : EntityId)
-  find_query() <| $ [es] (var video_feeder__tacticalPhone : EntityId&)
-    video_feeder__tacticalPhone = tactical_phone__eid
-    return true
 
 [es(tag=server)]
 def tactical_phone_set_mode(evt : EventSetTactialPhoneMode;

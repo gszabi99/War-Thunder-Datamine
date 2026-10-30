@@ -3,8 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 const MY_CLAN_UPDATE_DELAY_MSEC = 60000
 
-let lastUpdateMyClanTime = mkWatched(persist, "lastUpdateMyClanTime", -MY_CLAN_UPDATE_DELAY_MSEC)
-let myClanInfo = mkWatched(persist, "myClanInfo", null)
+let lastUpdateMyClanTime = Watched(-MY_CLAN_UPDATE_DELAY_MSEC)
+let myClanInfo = Watched(null)
 
 let is_in_clan = @() clan_get_my_clan_id() != "-1"
 
@@ -26,10 +26,10 @@ function is_in_my_clan(name = null, uid = null) {
   return false
 }
 
-return {
+return freeze({
   MY_CLAN_UPDATE_DELAY_MSEC
   lastUpdateMyClanTime
   is_in_clan
   is_in_my_clan
   myClanInfo
-}
+})

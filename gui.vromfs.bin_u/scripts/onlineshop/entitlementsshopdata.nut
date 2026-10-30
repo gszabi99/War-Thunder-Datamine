@@ -1,8 +1,6 @@
-from "%sqstd/platform.nut" import is_gdk
+from "%sqstd/platform.nut" import is_gdk, isSony
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let {
   needEntStoreDiscountIcon = false,
@@ -10,15 +8,15 @@ let {
   getShopItemsTable = @() {},
   haveDiscount = @() false,
   canUseIngameShop = @(...) false
-} = isPlatformSony ? require("%scripts/onlineShop/ps4ShopData.nut")
+} = isSony ? require("%scripts/onlineShop/ps4ShopData.nut")
   : is_gdk ? require("%scripts/onlineShop/xboxShopData.nut")
   : epic_is_running() ? require("%scripts/onlineShop/epicShopData.nut")
   : null
 
-return {
+return freeze({
   needEntStoreDiscountIcon
   getShopItem
   getShopItemsTable
   haveDiscount
   canUseIngameShop
-}
+})

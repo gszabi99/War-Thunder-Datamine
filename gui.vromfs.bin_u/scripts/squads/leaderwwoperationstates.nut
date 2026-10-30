@@ -1,8 +1,8 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let LEADER_OPERATION_STATES = {

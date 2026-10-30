@@ -4,10 +4,11 @@ require ecs
 def track_is_alive(evt : Event;
                    eid : EntityId;
                    isAlive : bool;
-                   reanimation__available : bool = false)
+                   reanimation__available : bool = false;
+                   entity__deadSubTemplate : string = "dead_entity")
   if !isAlive
     if has(eid, "entity__recreateToOnDeath") && !reanimation__available
       return
-    addSubTemplate(eid, "dead_entity")
+    addSubTemplate(eid, entity__deadSubTemplate)
   elif has(eid, "deadEntity")
-    removeSubTemplate(eid, "dead_entity")
+    removeSubTemplate(eid, entity__deadSubTemplate)

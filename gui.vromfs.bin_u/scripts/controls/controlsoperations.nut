@@ -1,9 +1,9 @@
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%scripts/controls/controlsManager.nut" import commitControls
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import AXIS
 
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 let Flags = {

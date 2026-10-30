@@ -1,8 +1,7 @@
+from "%scripts/matching/serviceNotifications/mrpc.nut" import mnSubscribe, mrSubscribe
 from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
-
-let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 
 let handlers = {}
 
@@ -43,6 +42,6 @@ mrSubscribe("web-service", function(params, cb) {
     cb({ result = res })
 })
 
-return {
+return freeze({
   webRpcRegister
-}
+})

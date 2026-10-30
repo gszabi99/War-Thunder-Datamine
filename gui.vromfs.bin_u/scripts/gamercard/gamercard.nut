@@ -1,13 +1,13 @@
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/gamercard/gamercardHelpers.nut" import doWithAllGamercards
+from "%scripts/gamercard/fillGamercard.nut" import fillGamercard
+from "%scripts/chat/chatStates.nut" import hasMenuChat
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { lastGamercardScenes } = require("%scripts/gamercard/gamercardState.nut")
-let { doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 
 function updateGamercards() {
   let info = getProfileInfo()
@@ -40,6 +40,6 @@ addListenersWithoutEnv({
   RequestUpdateGamercards = @(_) updateGamercards()
 })
 
-return {
+return freeze({
   updateGamercards
-}
+})

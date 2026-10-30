@@ -1,14 +1,12 @@
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let WwJoinBattleCondition = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -59,4 +57,4 @@ let WwJoinBattleCondition = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwJoinBattleCondition", WwJoinBattleCondition)
 
-return { WwJoinBattleCondition }
+return freeze({ WwJoinBattleCondition })

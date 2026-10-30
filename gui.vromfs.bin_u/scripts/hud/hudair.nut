@@ -1,3 +1,8 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/hud/hudActionBar.nut" import mkActionBarAir
+from "%scripts/hud/hudWithWeaponSelector.nut" import HudWithWeaponSelector
+from "%scripts/hud/hudDisplayTimers.nut" import hudDisplayTimersInit, hudDisplayTimersReInit
 from "hudActionBar" import getOwnerUnitName
 from "replays" import is_replay_playing
 from "mission" import get_game_type
@@ -7,14 +12,11 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
-let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
-let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 
 let HudAir = class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudAir.blk"
+  killFeedPlace = { height = "0.2@shHud", gap = "0.02@shHud", aboveId = "hud_tactical_map_bg" }
+  hasMpScore = true
   function initScreen() {
     base.initScreen()
     hudDisplayTimersInit(this.scene, ES_UNIT_TYPE_AIRCRAFT)
@@ -22,7 +24,6 @@ let HudAir = class (HudWithWeaponSelector) {
     this.actionBarWeak = actionBar.weakref()
 
     this.updateTacticalMapVisibility()
-    this.updatePosHudMultiplayerScore()
     this.createAirWeaponSelector(getPlayerCurUnit())
   }
 
@@ -48,6 +49,6 @@ let HudAir = class (HudWithWeaponSelector) {
 }
 register_gui_handler("HudAir", HudAir)
 
-return {
+return freeze({
   HudAir
-}
+})

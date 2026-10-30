@@ -6,6 +6,6 @@ function find_local_player(){
   return find_local_player_compsQuery.perform(@(eid, _comp) eid, "eq(base_player_id,{0})".subst(get_local_mplayer().id)) ?? INVALID_ENTITY_ID
 }
 
-return {
+return freeze({
   find_local_player
-}
+})

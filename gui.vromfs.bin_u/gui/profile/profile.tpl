@@ -33,7 +33,7 @@ root {
           img {}
           btnText { id:t='back_scene_name' }
           text { text:t=' | ' }
-          textareaNoTab { text:t='#mainmenu/btnProfile' }
+          textareaNoTab { text:t='#<<profileLocId>>' }
         }
       }
       Button_close {

@@ -3,7 +3,7 @@ from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import getProfileCountry, setProfileCountry
 from "%scripts/dagui_library.nut" import *
 
-let profileCountrySq = mkWatched(persist, "profileCountrySq", isProfileReceived.get()
+let profileCountrySq = Watched(isProfileReceived.get()
   ? (getProfileCountry() ?? "country_0")
   : "country_0")
 
@@ -20,7 +20,7 @@ addListenersWithoutEnv({
   ProfileUpdated = @(_) profileCountrySq.set(getProfileCountry() ?? "country_0")
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   profileCountrySq
   switchProfileCountry
-}
+})

@@ -14,34 +14,32 @@ require daslib/enum_trait public
 
 struct public CommandArgumentInfo {
     field_name : string
-    flag_name : string         
-    short_flag_name : string   
-    env_name : string          
+    flag_name : string
+    short_flag_name : string
+    env_name : string
     doc_string : string
-    default_doc : string       
+    default_doc : string
     value_type : Type
-    is_path : bool             
+    is_path : bool
     is_array : bool
     is_required : bool
-    is_positional : bool       
-    is_optional_wrap : bool    
-    is_count : bool            
-    mutex_group : string       
+    is_positional : bool
+    is_optional_wrap : bool
+    is_count : bool
+    mutex_group : string
     enum_values : array<string>
 }
 
 struct public CommandInfo {
     args : array<CommandArgumentInfo>
-    has_user_help : bool       
+    has_user_help : bool
 }
-
-
 
 def public get_cli_arguments(all_args : array<string>) : array<string> {
     var arg_index = find_index(all_args, "--")
     var result : array<string>
     if (arg_index == -1) return <- result
-    arg_index++ 
+    arg_index++
     while (arg_index < length(all_args)) {
         result |> push(all_args[arg_index])
         arg_index++
@@ -52,9 +50,6 @@ def public get_cli_arguments(all_args : array<string>) : array<string> {
 def public get_cli_arguments() : array<string> {
     return <- get_cli_arguments(get_command_line_arguments())
 }
-
-
-
 
 def public get_program_args(all_args : array<string>) : array<string> {
     var result : array<string>
@@ -70,7 +65,6 @@ def public get_program_args() : array<string> {
     return <- get_program_args(get_command_line_arguments())
 }
 
-
 def public get_user_args() : array<string> {
     let argv <- get_command_line_arguments()
     if (is_standalone_exe()) {
@@ -80,11 +74,20 @@ def public get_user_args() : array<string> {
     }
 }
 
+def public get_host_binary() : string {
+    
+    
+    
+    let arg0 = get_command_line_arguments()[0]
+    let full = get_full_file_name(arg0)
+    if (fexist(full)) return full
+    if (get_platform_name() == "windows" && fexist("{full}.exe")) return "{full}.exe"
+    return arg0
+}
+
 def clargs_flag_name(field_name : string) : string {
     return "--" + replace_multiple(field_name, [(text="_", replacement="-")])
 }
-
-
 
 def public find_bool_flag_raw_value(args : array<string>; flag_name : string) : Option<string> {
     let prefix = "{flag_name}="
@@ -108,13 +111,11 @@ def public find_flag_raw_value(args : array<string>; flag_name : string) : Optio
                 result = some(args[i + 1])
             }
         } elif (starts_with(args[i], prefix)) {
-            result = some(slice(args[i], length(prefix)))
+            result = some(slice(args[i], length(prefix)))   
         }
     }
     return result
 }
-
-
 
 def public flag_present(args : array<string>; flag_name : string) : bool {
     let prefix = "{flag_name}="
@@ -145,23 +146,15 @@ def public find_array_flag_raw_values(args : array<string>; flag_name : string) 
     return <- result
 }
 
-
-
-
-
-
 def env_text_is_true(v : string) : bool {
     let s = to_lower(v)
     return !(empty(s) || s == "0" || s == "false" || s == "off" || s == "no")
 }
 
-
-
 def public env_config_text(name : string) : Option<string> {
     if (empty(name) || !has_env_variable(name)) return none(type<string>)
     let v = get_env_variable(name)
     if (empty(v)) {
-        to_log(LOG_WARNING, "env {name} is set but empty - treated as unset (use {name}=0 to disable a flag)\n")
         return none(type<string>)
     }
     return some(v)
@@ -170,9 +163,6 @@ def public env_config_text(name : string) : Option<string> {
 def env_raw_value(arg_info : CommandArgumentInfo) : Option<string> {
     return env_config_text(arg_info.env_name)
 }
-
-
-
 
 def public env_config_flag(name : string; dflt : bool) : bool {
     let v = env_config_text(name)
@@ -226,10 +216,6 @@ def public env_config_int64(name : string; dflt : int64) : int64 {
     return parsed
 }
 
-
-
-
-
 def public env_config_opt_flag(name : string; dflt : Option<bool>) : Option<bool> {
     let v = env_config_text(name)
     return is_none(v) ? dflt : some(env_text_is_true(unwrap(v)))
@@ -282,16 +268,10 @@ def public env_config_opt_string(name : string; dflt : Option<string>) : Option<
     return is_none(v) ? dflt : v
 }
 
-
-
-def argv_present(args : array<string>; arg_info : CommandArgumentInfo) : bool {
+def present_in_argv(args : array<string>; arg_info : CommandArgumentInfo) : bool {
     if (flag_present(args, arg_info.flag_name)) return true
     return !empty(arg_info.short_flag_name) && flag_present(args, arg_info.short_flag_name)
 }
-
-
-
-
 
 def public find_flag_raw_value(args : array<string>; arg_info : CommandArgumentInfo) : Option<string> {
     if (arg_info.is_positional) return none(type<string>)
@@ -311,7 +291,7 @@ def public find_flag_raw_value(args : array<string>; arg_info : CommandArgumentI
             result = some(slice(arg, length(short_prefix)))
         }
     }
-    if (is_none(result) && !argv_present(args, arg_info)) {
+    if (is_none(result) && !present_in_argv(args, arg_info)) {
         result = env_raw_value(arg_info)
     }
     return result
@@ -335,15 +315,11 @@ def public find_bool_flag_raw_value(args : array<string>; arg_info : CommandArgu
     if (is_none(result)) {
         let env_v = env_raw_value(arg_info)
         if (is_some(env_v)) {
-            
             result = some(env_text_is_true(unwrap(env_v)) ? "true" : "false")
         }
     }
     return result
 }
-
-
-
 
 def public find_array_flag_raw_values(args : array<string>; arg_info : CommandArgumentInfo) : array<string> {
     var result : array<string>
@@ -374,12 +350,9 @@ def public find_array_flag_raw_values(args : array<string>; arg_info : CommandAr
 }
 
 def public flag_present(args : array<string>; arg_info : CommandArgumentInfo) : bool {
-    
-    if (argv_present(args, arg_info)) return true
+    if (present_in_argv(args, arg_info)) return true
     return is_some(env_raw_value(arg_info))
 }
-
-
 
 [unused_argument(t)]
 def public parse_argument(args : array<string>; arg_info : CommandArgumentInfo; t : type<string>) : Result<Option<string>; string> {
@@ -399,7 +372,6 @@ def public parse_argument(args : array<string>; arg_info : CommandArgumentInfo; 
     var result : ConversionResult
     var offset = 0
     let parsed = int(raw_value, result, offset)
-    
     if (result != ConversionResult.ok || offset != length(raw_value)) return err("invalid int value '{raw_value}'", type<Option<int>>)
     return ok(some(parsed), type<string>)
 }
@@ -445,8 +417,6 @@ def public parse_argument(args : array<string>; arg_info : CommandArgumentInfo; 
     }
 }
 
-
-
 def public collect_positional_args(args : array<string>; info : CommandInfo) : array<string> {
     var result : array<string>
     var i = 0
@@ -464,7 +434,6 @@ def public collect_positional_args(args : array<string>; info : CommandInfo) : a
             if (exact_long || exact_short || prefix_long || prefix_short) {
                 matched_flag = true
                 let is_bool_simple = (a.value_type == Type.tBool && !a.is_array)
-                
                 if (!is_bool_simple && !a.is_count && (exact_long || exact_short)) {
                     consumes_value = true
                 }
@@ -478,10 +447,7 @@ def public collect_positional_args(args : array<string>; info : CommandInfo) : a
             }
             continue
         }
-        
-        
-        
-        if (length(arg) >= 2 && first_character(arg) == int(0x2D) ) {
+        if (length(arg) >= 2 && first_character(arg) == int(0x2D)) {
             i++
             continue
         }
@@ -490,9 +456,6 @@ def public collect_positional_args(args : array<string>; info : CommandInfo) : a
     }
     return <- result
 }
-
-
-
 
 def public count_flag(args : array<string>; arg_info : CommandArgumentInfo) : int {
     if (arg_info.is_positional) return 0
@@ -508,8 +471,6 @@ def public count_flag(args : array<string>; arg_info : CommandArgumentInfo) : in
     return n
 }
 
-
-
 def public count_flag_value_violation(args : array<string>; arg_info : CommandArgumentInfo) : string {
     if (arg_info.is_positional || !arg_info.is_count) return ""
     let has_short = !empty(arg_info.short_flag_name)
@@ -522,13 +483,10 @@ def public count_flag_value_violation(args : array<string>; arg_info : CommandAr
     return ""
 }
 
-
-
 def public find_mutex_violation(args : array<string>; info : CommandInfo) : string {
     var groups : table<string; array<string>>
     for (a in info.args) {
-        
-        if (empty(a.mutex_group) || !argv_present(args, a)) continue
+        if (empty(a.mutex_group) || !present_in_argv(args, a)) continue
         if (!key_exists(groups, a.mutex_group)) {
             groups[a.mutex_group] <- [a.flag_name]
         } else {
@@ -551,8 +509,6 @@ def public find_mutex_violation(args : array<string>; info : CommandInfo) : stri
     return ""
 }
 
-
-
 def public make_auto_help_arg() : CommandArgumentInfo {
     return CommandArgumentInfo(
         field_name = "_auto_help",
@@ -563,8 +519,6 @@ def public make_auto_help_arg() : CommandArgumentInfo {
     )
 }
 
-
-
 def public format_help_with_auto_help(info : CommandInfo; prog_name : string) : string {
     if (info.has_user_help) return format_help(info, prog_name)
     var augmented : CommandInfo
@@ -573,8 +527,6 @@ def public format_help_with_auto_help(info : CommandInfo; prog_name : string) : 
     augmented.args |> push_clone(make_auto_help_arg())
     return format_help(augmented, prog_name)
 }
-
-
 
 def value_placeholder(arg : CommandArgumentInfo) : string {
     if (arg.is_positional || arg.is_count
@@ -586,7 +538,6 @@ def value_placeholder(arg : CommandArgumentInfo) : string {
 }
 
 def render_flag_spec(arg : CommandArgumentInfo) : string {
-    
     if (arg.is_positional) return arg.flag_name
     var spec = ""
     if (!empty(arg.short_flag_name)) {
@@ -656,8 +607,6 @@ def render_doc_column(arg : CommandArgumentInfo) : string {
         }
     }
 }
-
-
 
 def render_positional_usage_token(arg : CommandArgumentInfo) : string {
     if (arg.is_array) return "[{arg.flag_name}...]"
@@ -774,9 +723,6 @@ def find_string_annotation(args : AnnotationArgumentList; argn : string, default
     return default_value
 }
 
-
-
-
 def resolve_env_name(fannotations : AnnotationArgumentList; fname, raw_name, env_prefix : string;
                      is_positional, is_count, is_array : bool; var errors : das_string&) : string {
     let explicit_v = find_arg(fannotations, "clarg_env")
@@ -803,7 +749,7 @@ def resolve_env_name(fannotations : AnnotationArgumentList; fname, raw_name, env
 
 [structure_macro(name=CommandLineArgs)]
 class ArgsMacro : AstStructureAnnotation {
-    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+    def override apply(var st : StructurePtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {
         let command_info = collect_command_info(st, args, errors)
         if (!empty(errors)) return false
 
@@ -816,7 +762,6 @@ class ArgsMacro : AstStructureAnnotation {
         var parse_args_default_fn = make_parse_default_fn(st)
         compiling_module() |> add_function(parse_args_default_fn)
 
-        
         if (!command_info.has_user_help) {
             var parse_args_with_help_fn = make_parse_args_with_help_fn(st)
             compiling_module() |> add_function(parse_args_with_help_fn)
@@ -826,9 +771,6 @@ class ArgsMacro : AstStructureAnnotation {
     }
 
 
-    
-    
-    
     def resolve_short_flag(fannotations : AnnotationArgumentList; field_name : string; is_positional : bool;
                            var seen_short : table<string; string>; var errors : das_string&) : string {
         let short_char = find_string_annotation(fannotations, "clarg_short", "")
@@ -853,7 +795,6 @@ class ArgsMacro : AstStructureAnnotation {
         return "-{short_char}"
     }
 
-    
     def validate_positional(var arg : CommandArgumentInfo; fannotations : AnnotationArgumentList;
                             var has_array_tail, saw_optional_positional : bool&; var errors : das_string&) {
         if (arg.value_type != Type.tString) {
@@ -880,13 +821,12 @@ class ArgsMacro : AstStructureAnnotation {
         }
     }
 
-    
     def collect_command_info(st : StructurePtr; ann_args : AnnotationArgumentList; var errors : das_string&) : CommandInfo {
         let env_prefix = find_string_annotation(ann_args, "env_prefix", "")
         var result : CommandInfo
         result.args |> reserve(length(st.fields))
         var seen_short : table<string; string>
-        var has_array_tail = false       
+        var has_array_tail = false
         var saw_optional_positional = false
         for (field in st.fields) {
             if (find_bool_annotation(field.annotation, "clarg_skip", false)) continue
@@ -951,7 +891,6 @@ class ArgsMacro : AstStructureAnnotation {
             arg.env_name = resolve_env_name(field.annotation, "{field.name}", raw_name, env_prefix,
                 is_positional, is_count, arg.is_array, errors)
             if (!empty(errors)) return <- result
-            
             if (!is_positional && (arg.flag_name == "--help" || arg.short_flag_name == "-h")) {
                 result.has_user_help = true
             }
@@ -980,7 +919,6 @@ class ArgsMacro : AstStructureAnnotation {
     }
 
     def make_parse_args_with_help_fn(var st : StructurePtr) : FunctionPtr {
-        
         var fn = qmacro_function("parse_args_with_help") $(var dst : $t(st); prog_name : string) : int {
             let auto_args <- get_user_args()
             if (find_index(auto_args, "--help") != -1 || find_index(auto_args, "-h") != -1) {
@@ -1277,7 +1215,6 @@ class EnvConfigMacro : AstStructureAnnotation {
         }
     }
 
-    
     def field_default_doc(fannotations : AnnotationArgumentList; init : ExpressionPtr) : string {
         let explicit_v = find_string_annotation(fannotations, "clarg_default_doc", "")
         if (!empty(explicit_v)) return explicit_v
@@ -1290,12 +1227,12 @@ class EnvConfigMacro : AstStructureAnnotation {
         return ""
     }
 
-    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+    def override apply(var st : StructurePtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {
         let env_prefix = find_string_annotation(args, "env_prefix", "")
         var info : CommandInfo
         info.args |> reserve(length(st.fields))
         var load_exprs : array<ExpressionPtr>
-        var seen_env : table<string; string>   
+        var seen_env : table<string; string>
         for (field in st.fields) {
             if (find_bool_annotation(field.annotation, "clarg_skip", false)) continue
             if (find_bool_annotation(field.annotation, "clarg_positional", false)

@@ -1,7 +1,7 @@
 {
   "model": "sea_hawk_mk100",
   "fmFile": "fm/sea_hawk_fga6.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "numJetFlamesToEngine": 2,
   "gearSinkRangeLR": 0.209,
@@ -15,17 +15,17 @@
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
   "flapsIsAirbrakes": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "900kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -699,15 +699,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -720,36 +724,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -785,15 +799,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -806,36 +824,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -868,15 +896,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -919,7 +951,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2416,55 +2450,55 @@
     "preset": [
       {
         "name": "sea_hawk_mk100_default",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_mk100_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_mk100_default.blk"
       },
       {
         "name": "sea_hawk_2xAim9",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2xaim9.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2xaim9.blk"
       },
       {
         "name": "sea_hawk_30x25lb_mk2_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_30x25lb_mk2_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_30x25lb_mk2_rockets.blk"
       },
       {
         "name": "sea_hawk_hvar_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_hvar_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_hvar_rockets.blk"
       },
       {
         "name": "sea_hawk_16x60lb_sap_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_16x60lb_sap_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_16x60lb_sap_rockets.blk"
       },
       {
         "name": "sea_hawk_20x_t10_151_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_20x_t10_151_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_20x_t10_151_rockets.blk"
       },
       {
         "name": "sea_hawk_20x_t10_140_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_20x_t10_140_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_20x_t10_140_rockets.blk"
       },
       {
         "name": "sea_hawk_2x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2x500lb_bombs.blk"
       },
       {
         "name": "sea_hawk_2x500lb_bombs_2xaim9",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x500lb_bombs_2xaim9.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2x500lb_bombs_2xaim9.blk"
       },
       {
         "name": "sea_hawk_4x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_4x500lb_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_4x500lb_bombs.blk"
       },
       {
         "name": "sea_hawk_2x750b_m117_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x750b_m117_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2x750b_m117_bombs.blk"
       },
       {
         "name": "sea_hawk_2x1000lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x1000lb_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2x1000lb_bombs.blk"
       },
       {
         "name": "sea_hawk_2x1000lb_bombs_2xaim9",
-        "blk": "gameData/FlightModels/weaponPresets/sea_hawk_2x1000lb_bombs_2xaim9.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sea_hawk_2x1000lb_bombs_2xaim9.blk"
       }
     ]
   },
@@ -2541,7 +2575,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -2552,7 +2586,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2563,7 +2597,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection3",
@@ -2574,7 +2608,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "blk": "gamedata/weapons/cannonHispanoMkV.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "shell": "emtr_shellrejection4",
@@ -2600,7 +2634,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_21",
               "capName": "cord_21",
               "bullets": 1,
@@ -2618,7 +2652,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_1",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2628,7 +2662,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_11",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2639,7 +2673,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_21",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -2660,7 +2694,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_21",
               "bullets": 1
             }
@@ -2674,7 +2708,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_21",
               "bullets": 1,
               "external": true,
@@ -2691,7 +2725,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_1",
                 "emitterOffset": [
                   -0.23,
@@ -2704,7 +2738,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_21",
                 "bullets": 1,
                 "external": true,
@@ -2724,7 +2758,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_21",
               "bullets": 1
             }
@@ -2742,7 +2776,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_11",
                 "emitterOffset": [
                   -0.17,
@@ -2756,7 +2790,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_21",
                 "bullets": 1
               }
@@ -2774,7 +2808,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_21",
               "bullets": 1
             }
@@ -2792,7 +2826,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_11",
                 "emitterOffset": [
                   -0.17,
@@ -2806,7 +2840,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_21",
                 "bullets": 1
               }
@@ -2828,7 +2862,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_23",
               "capName": "uk_rp_3_cord1_2",
               "bullets": 1,
@@ -2846,7 +2880,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_3",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -2856,7 +2890,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_13",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -2867,7 +2901,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_23",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -2886,7 +2920,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_23",
               "bullets": 1,
               "external": true,
@@ -2903,7 +2937,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_3",
                 "emitterOffset": [
                   -0.23,
@@ -2916,7 +2950,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_23",
                 "bullets": 1,
                 "external": true,
@@ -2936,7 +2970,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_23",
               "bullets": 1
             }
@@ -2954,7 +2988,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_13",
                 "emitterOffset": [
                   -0.17,
@@ -2968,7 +3002,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_23",
                 "bullets": 1
               }
@@ -2986,7 +3020,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_23",
               "bullets": 1
             }
@@ -3004,7 +3038,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_13",
                 "emitterOffset": [
                   -0.17,
@@ -3018,7 +3052,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_23",
                 "bullets": 1
               }
@@ -3040,7 +3074,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_25",
               "capName": "uk_rp_3_cord1_3",
               "bullets": 1,
@@ -3058,7 +3092,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_5",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3068,7 +3102,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_15",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3079,7 +3113,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_25",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -3100,7 +3134,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_25",
               "bullets": 1
             }
@@ -3114,7 +3148,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_25",
               "bullets": 1,
               "external": true,
@@ -3131,7 +3165,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_5",
                 "emitterOffset": [
                   -0.23,
@@ -3144,7 +3178,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_25",
                 "bullets": 1,
                 "external": true,
@@ -3164,7 +3198,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_25",
               "bullets": 1
             }
@@ -3182,7 +3216,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_15",
                 "emitterOffset": [
                   -0.17,
@@ -3196,7 +3230,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_25",
                 "bullets": 1
               }
@@ -3214,7 +3248,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_25",
               "bullets": 1
             }
@@ -3232,7 +3266,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_15",
                 "emitterOffset": [
                   -0.17,
@@ -3246,7 +3280,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_25",
                 "bullets": 1
               }
@@ -3268,7 +3302,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_27",
               "capName": "uk_rp_3_cord1_4",
               "bullets": 1,
@@ -3290,7 +3324,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_7",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3300,7 +3334,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_17",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3311,7 +3345,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_27",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -3334,7 +3368,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_27",
               "bullets": 1,
               "external": true,
@@ -3355,7 +3389,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_7",
                 "emitterOffset": [
                   -0.23,
@@ -3368,7 +3402,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_27",
                 "bullets": 1,
                 "external": true,
@@ -3392,7 +3426,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_27",
               "bullets": 1
             },
@@ -3414,7 +3448,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_17",
                 "emitterOffset": [
                   -0.17,
@@ -3428,7 +3462,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_27",
                 "bullets": 1
               }
@@ -3450,7 +3484,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_27",
               "bullets": 1
             },
@@ -3472,7 +3506,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_17",
                 "emitterOffset": [
                   -0.17,
@@ -3486,7 +3520,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_27",
                 "bullets": 1
               }
@@ -3515,7 +3549,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
               "emitter": "us_aim_9b_sidewinder_l",
               "bullets": 1,
               "external": true,
@@ -3531,7 +3565,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_29",
               "capName": "uk_rp_3_cord1_5",
               "bullets": 1,
@@ -3549,7 +3583,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_9",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3559,7 +3593,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_19",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3570,7 +3604,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_29",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -3591,7 +3625,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_29",
               "bullets": 1
             }
@@ -3605,7 +3639,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_29",
               "bullets": 1,
               "external": true,
@@ -3622,7 +3656,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_9",
                 "emitterOffset": [
                   -0.23,
@@ -3635,7 +3669,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_29",
                 "bullets": 1,
                 "external": true,
@@ -3655,7 +3689,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_29",
               "bullets": 1
             }
@@ -3673,7 +3707,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_19",
                 "emitterOffset": [
                   -0.17,
@@ -3687,7 +3721,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_29",
                 "bullets": 1
               }
@@ -3705,7 +3739,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_29",
               "bullets": 1
             }
@@ -3723,7 +3757,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_19",
                 "emitterOffset": [
                   -0.17,
@@ -3737,7 +3771,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_29",
                 "bullets": 1
               }
@@ -3752,7 +3786,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lbs_43.blk",
               "emitter": "bomb_500gp_1",
               "bullets": 1,
               "external": true,
@@ -3809,7 +3843,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lbs_43_default.blk",
               "emitter": "bomb_500gp_3",
               "bullets": 1,
               "external": true,
@@ -3825,7 +3859,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "blk": "gamedata/weapons/bombguns/us_750lb_m117_cone_45.blk",
               "emitter": "bomb_500gp_3",
               "bullets": 1,
               "external": true,
@@ -3841,7 +3875,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_mc_mk1.blk",
               "emitter": "bomb_1000mc_1",
               "bullets": 1,
               "external": true,
@@ -3864,7 +3898,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lbs_43_default.blk",
               "emitter": "bomb_500gp_4",
               "bullets": 1,
               "external": true,
@@ -3880,7 +3914,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_750lb_m117_cone_45.blk",
+              "blk": "gamedata/weapons/bombguns/us_750lb_m117_cone_45.blk",
               "emitter": "bomb_500gp_4",
               "bullets": 1,
               "external": true,
@@ -3896,7 +3930,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_mc_mk1.blk",
               "emitter": "bomb_1000mc_2",
               "bullets": 1,
               "external": true,
@@ -3922,7 +3956,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
               "emitter": "us_aim_9b_sidewinder_r",
               "bullets": 1,
               "external": true,
@@ -3938,7 +3972,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_30",
               "capName": "uk_rp_3_cord1_6",
               "bullets": 1,
@@ -3956,7 +3990,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_10",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -3966,7 +4000,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_20",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -3977,7 +4011,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_30",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -3998,7 +4032,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_30",
               "bullets": 1
             }
@@ -4012,7 +4046,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_30",
               "bullets": 1,
               "external": true,
@@ -4029,7 +4063,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_10",
                 "emitterOffset": [
                   -0.23,
@@ -4042,7 +4076,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_30",
                 "bullets": 1,
                 "external": true,
@@ -4062,7 +4096,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_30",
               "bullets": 1
             }
@@ -4080,7 +4114,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_20",
                 "emitterOffset": [
                   -0.17,
@@ -4094,7 +4128,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_30",
                 "bullets": 1
               }
@@ -4112,7 +4146,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_30",
               "bullets": 1
             }
@@ -4130,7 +4164,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_20",
                 "emitterOffset": [
                   -0.17,
@@ -4144,7 +4178,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_30",
                 "bullets": 1
               }
@@ -4159,7 +4193,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lbs_43.blk",
               "emitter": "bomb_500gp_2",
               "bullets": 1,
               "external": true,
@@ -4216,7 +4250,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_28",
               "capName": "uk_rp_3_cord1_7",
               "bullets": 1,
@@ -4238,7 +4272,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_8",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -4248,7 +4282,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_18",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -4259,7 +4293,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_28",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -4282,7 +4316,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_28",
               "bullets": 1,
               "external": true,
@@ -4303,7 +4337,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_8",
                 "emitterOffset": [
                   -0.23,
@@ -4316,7 +4350,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_28",
                 "bullets": 1,
                 "external": true,
@@ -4340,7 +4374,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_28",
               "bullets": 1
             },
@@ -4362,7 +4396,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_18",
                 "emitterOffset": [
                   -0.17,
@@ -4376,7 +4410,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_28",
                 "bullets": 1
               }
@@ -4398,7 +4432,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_28",
               "bullets": 1
             },
@@ -4420,7 +4454,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_18",
                 "emitterOffset": [
                   -0.17,
@@ -4434,7 +4468,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_28",
                 "bullets": 1
               }
@@ -4460,7 +4494,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_26",
               "capName": "uk_rp_3_cord1_8",
               "bullets": 1,
@@ -4478,7 +4512,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_6",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -4488,7 +4522,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_16",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -4499,7 +4533,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_26",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -4520,7 +4554,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_26",
               "bullets": 1
             }
@@ -4534,7 +4568,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_26",
               "bullets": 1,
               "external": true,
@@ -4551,7 +4585,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_6",
                 "emitterOffset": [
                   -0.23,
@@ -4564,7 +4598,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_26",
                 "bullets": 1,
                 "external": true,
@@ -4584,7 +4618,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_26",
               "bullets": 1
             }
@@ -4602,7 +4636,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_16",
                 "emitterOffset": [
                   -0.17,
@@ -4616,7 +4650,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_26",
                 "bullets": 1
               }
@@ -4634,7 +4668,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_26",
               "bullets": 1
             }
@@ -4652,7 +4686,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_16",
                 "emitterOffset": [
                   -0.17,
@@ -4666,7 +4700,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_26",
                 "bullets": 1
               }
@@ -4688,7 +4722,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_24",
               "capName": "uk_rp_3_cord1_9",
               "bullets": 1,
@@ -4706,7 +4740,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_4",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -4716,7 +4750,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_14",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -4727,7 +4761,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_24",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -4746,7 +4780,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_24",
               "bullets": 1,
               "external": true,
@@ -4763,7 +4797,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_4",
                 "emitterOffset": [
                   -0.23,
@@ -4776,7 +4810,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_24",
                 "bullets": 1,
                 "external": true,
@@ -4796,7 +4830,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_24",
               "bullets": 1
             }
@@ -4814,7 +4848,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_14",
                 "emitterOffset": [
                   -0.17,
@@ -4828,7 +4862,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_24",
                 "bullets": 1
               }
@@ -4846,7 +4880,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_24",
               "bullets": 1
             }
@@ -4864,7 +4898,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_14",
                 "emitterOffset": [
                   -0.17,
@@ -4878,7 +4912,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_24",
                 "bullets": 1
               }
@@ -4900,7 +4934,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
               "emitter": "uk_rp_3_rocket_late_22",
               "capName": "uk_rp_3_cord1_10",
               "bullets": 1,
@@ -4918,7 +4952,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_2",
                 "bullets": 1,
                 "blockingGroupId": 0,
@@ -4928,7 +4962,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_12",
                 "bullets": 1,
                 "blockedByGroupId": 0,
@@ -4939,7 +4973,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_25lb_ap_mk2_late.blk",
                 "emitter": "uk_rp_3_rocket_late_22",
                 "bullets": 1,
                 "blockedByGroupId": 1,
@@ -4960,7 +4994,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_hvar.blk",
               "emitter": "uk_rp_3_rocket_late_22",
               "bullets": 1
             }
@@ -4974,7 +5008,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "emitter": "uk_rp_3_rocket_late_22",
               "bullets": 1,
               "external": true,
@@ -4991,7 +5025,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_4b.blk",
                 "emitter": "uk_rp_3_rocket_late_2",
                 "emitterOffset": [
                   -0.23,
@@ -5004,7 +5038,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+                "blk": "gamedata/weapons/rocketGuns/uk_rp3_3.blk",
                 "emitter": "uk_rp_3_rocket_late_22",
                 "bullets": 1,
                 "external": true,
@@ -5024,7 +5058,7 @@
               "external": true,
               "separate": true,
               "blockedByGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
               "emitter": "uk_rp_3_rocket_late_22",
               "bullets": 1
             }
@@ -5042,7 +5076,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140b.blk",
                 "emitter": "uk_rp_3_rocket_late_12",
                 "emitterOffset": [
                   -0.17,
@@ -5056,7 +5090,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_140a.blk",
                 "emitter": "uk_rp_3_rocket_late_22",
                 "bullets": 1
               }
@@ -5074,7 +5108,7 @@
               "external": true,
               "separate": true,
               "blockingGroupId": 0,
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+              "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
               "emitter": "uk_rp_3_rocket_late_22",
               "bullets": 1
             }
@@ -5092,7 +5126,7 @@
                 "external": true,
                 "separate": true,
                 "blockingGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151b.blk",
                 "emitter": "uk_rp_3_rocket_late_12",
                 "emitterOffset": [
                   -0.17,
@@ -5106,7 +5140,7 @@
                 "external": true,
                 "separate": true,
                 "blockedByGroupId": 0,
-                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "blk": "gamedata/weapons/rocketGuns/fr_matra_t_10_151a.blk",
                 "emitter": "uk_rp_3_rocket_late_22",
                 "bullets": 1
               }
@@ -5211,9 +5245,9 @@
       "prevModification": "g_suit"
     },
     "hispano_universal": {},
-    "hispano_ground_targets": {},
     "hispano_air_targets": {},
     "hispano_tracers": {},
+    "hispano_ground_targets": {},
     "hispano_stealth": {},
     "hispano_belt_pack": {
       "tier": 1

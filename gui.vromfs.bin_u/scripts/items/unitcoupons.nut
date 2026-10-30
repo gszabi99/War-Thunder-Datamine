@@ -1,11 +1,10 @@
+from "%scripts/crossModuleEvents.nut" import INVENTORY_UPDATE
+from "%scripts/items/itemsManagerModule.nut" import getInventoryListByShopMask
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
-let { getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
-
-let unitCoupons = persist("unitCoupons", @() { valid = false })
+let unitCoupons = { valid = false }
 
 function updateUnitCoupons() {
   unitCoupons.__update(getInventoryListByShopMask(itemType.VEHICLE)
@@ -40,7 +39,7 @@ addListenersWithoutEnv({
   }
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   getUnitCoupon
   hasUnitCoupon
-}
+})

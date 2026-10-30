@@ -1,4 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/matching/api.nut" import checkMatchingError
+from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
+from "%scripts/onlineInfo/defaultClusters.nut" import getClustersByCountry
+from "%scripts/onlineInfo/optimalClusters.nut" import optimalClusters
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/matching/serviceNotifications/match.nut" import fetchClustersList
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION, USEROPT_CLUSTERS, USEROPT_RANDB_CLUSTERS
+from "%scripts/options/optionsExt.nut" import get_option, registerOption
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyPublicParam
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/utils_sa.nut" import get_bit_value_by_array
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "string" import split_by_chars
@@ -10,18 +21,6 @@ from "%scripts/dagui_natives.nut" import get_cur_circuit_name, is_online_availab
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "app" import is_dev_version
-
-let { checkMatchingError } = require("%scripts/matching/api.nut")
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
-let { optimalClusters } = require("%scripts/onlineInfo/optimalClusters.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { fetchClustersList } = require("%scripts/matching/serviceNotifications/match.nut")
-let { OPTIONS_MODE_MP_DOMINATION, USEROPT_CLUSTERS, USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { get_bit_value_by_array } = require("%scripts/utils_sa.nut")
 
 const MAX_FETCH_RETRIES = 5
 
@@ -285,9 +284,9 @@ addListenersWithoutEnv({
   ClustersChanged = onClustersChanged
 }, DEFAULT_HANDLER)
 
-return {
+return freeze({
   getClustersList
   getClusterShortName
   getClusterFullName
   isClusterUnstable
-}
+})

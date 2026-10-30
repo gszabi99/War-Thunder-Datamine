@@ -1,6 +1,7 @@
 require ecs
 require ecs.common
 require ecs.safe
+require ecs.ecs_events
 require dm
 require WTDamageModel
 require Unit
@@ -267,6 +268,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
 
 [es(tag=server, no_order)]
 def equip_storage_repair_update_es(act : UpdateStageInfoAct;
+                                   eid : EntityId;
                                    var unit__ref aka storage_unit__ref : UnitRef&;
                                    equip_storage__repairTime : float;
                                    var equip_storage__current : float&;
@@ -280,10 +282,7 @@ def equip_storage_repair_update_es(act : UpdateStageInfoAct;
       *storage_unit__ref.unit |> repair()
       equip_storage__relHp = 1.
       if units_spawn_on_init__units != null
-        for unitEid in *units_spawn_on_init__units
-          query(unitEid) <| $ [es] (var unit__ref aka spawned_unit__ref : UnitRef)
-            if !spawned_unit__ref.unit.isDelayed
-              *spawned_unit__ref.unit |> sendRepair()
+        sendEvent(eid, EventReinitCoverUnits())
       return
   if storage_unit__ref.unit.isDelayed || storage_unit__ref.unit.isAlive
     return
@@ -609,10 +608,11 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
   units_column__captureCheckTimer = units_column__captureCheckInterval
   
   query() <| $ [es(REQUIRE=equip_factory__maxUnitsCount)] (var unit__ref aka target_unit__ref : UnitRef&;
+                                                           eid : EntityId;
+                                                           var team : int&;
                                                            equip_storage__ticketsByCapture : int;
                                                            var equip_storage__repairTimer : float&;
                                                            var equip_storage__relHp : float&;
-                                                           units_spawn_on_init__units : EidList;
                                                            tank_factory__fuelStorage : EntityId const?;
                                                            tank_factory__ammoStorage : EntityId const?)
     if target_unit__ref.unit.isDelayed
@@ -635,15 +635,12 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
       return
     change_mp_tickets_for_team(target_unit__ref.unit.army, -equip_storage__ticketsByCapture)
     *target_unit__ref.unit |> setArmy(newArmy)
+    team = newArmy
     if !target_unit__ref.unit.isAlive
       *target_unit__ref.unit |> repair()
       equip_storage__repairTimer = -1.
       equip_storage__relHp = 1.
-    for coverEid in units_spawn_on_init__units
-      query(coverEid) <| $ [es] (var unit__ref aka cover_unit__ref : UnitRef&)
-        if !cover_unit__ref.unit.isDelayed && !cover_unit__ref.unit.isAlive
-          *cover_unit__ref.unit |> setArmy(newArmy)
-          *cover_unit__ref.unit |> sendRepair()
+    sendEvent(eid, EventReinitCoverUnits())
     
     if tank_factory__fuelStorage != null && *tank_factory__fuelStorage != INVALID_ENTITY_ID
       query(*tank_factory__fuelStorage) <| $ [es] (var unit__ref aka fuel_unit__ref : UnitRef&;
@@ -764,7 +761,7 @@ def strongpoint_snap_to_ground_all_peers_es(evt : Event;
   pos.y = get_scene_height(pos, false)
   transform[3] = pos
 
-[es(tag=server, on_appear, on_event=EventUnitDelayedStatusChanged, after=unit_init_completed_es)]
+[es(tag=server, on_appear, on_event=(EventUnitDelayedStatusChanged, EventReinitCoverUnits), after=unit_init_completed_es)]
 def units_spawn_on_init_es(evt : Event;
                            team : int;
                            active : bool const?;
@@ -779,7 +776,8 @@ def units_spawn_on_init_es(evt : Event;
                            equip_storage : Tag const?)
   if active != null && *active == false
     return
-  if units_spawn_on_init__units |> length() > 0
+  let isReinit = evt.eventType == get_ecs_event_type(type<EventReinitCoverUnits>)
+  if !isReinit && units_spawn_on_init__units |> length() > 0
     return
   let unitSettingsAny = units_spawn_on_init__unitSettings
   let unitSettingsByTeam = team == 1 ? units_spawn_on_init__unitSettingsTeam1 : units_spawn_on_init__unitSettingsTeam2
@@ -788,6 +786,7 @@ def units_spawn_on_init_es(evt : Event;
     return
   let shouldRestoreSpawnedUnitsByTimer = equip_storage == null
   var nextNameSearchIndex : table<string; int>
+  var slotIdx = 0
   for unit in *unitSettings
     let obj = unit as Object
     if obj != null
@@ -808,9 +807,25 @@ def units_spawn_on_init_es(evt : Event;
           let posName = units_spawn_on_init__positionNames |> length() > startIdx ? "{units_spawn_on_init__positionNames[startIdx]}" : ""
           if !posName.empty()
             nextNameSearchIndex[posName] = startIdx + 1
+
+        let slot = slotIdx
+        slotIdx++
+        let hasSlot = slot < units_spawn_on_init__units |> length()
+        if hasSlot
+          var isAlive = false
+          query(units_spawn_on_init__units[slot]) <| $ [es] (var unit__ref : UnitRef&)
+            isAlive = !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
+            if isAlive
+              *unit__ref.unit |> setArmy(team)
+              *unit__ref.unit |> sendRepair()
+          if isAlive
+            continue
         let unitEid = create_unit(templateName, obj, transform * tm, team, true, 1., obj?.death_substract_tickets ?? 5,
           false, nuclear_escalation_target__tag, shouldRestoreSpawnedUnitsByTimer, false)
-        if unitEid != INVALID_ENTITY_ID
+        if hasSlot
+          destroyEntity(units_spawn_on_init__units[slot])
+          units_spawn_on_init__units[slot] = unitEid
+        elif unitEid != INVALID_ENTITY_ID
           units_spawn_on_init__units |> push(unitEid)
 
 let distSqToAlly = 300. * 300.
@@ -873,16 +888,13 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
     spg_units_column__readyToFire = false
   var deadUnit = INVALID_ENTITY_ID
   var blockedByAlly = false
-  var _isColumnFiring_ = false
+  var isColumnFiring = false
   for unitEid in units_column__units
-    
-    
-    static_if typeinfo has_field<isObstacle>(type<GroundMoveSystem>)
-      query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (unit__ref : UnitRef)
-        if !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
-          var gm = unit__ref.unit |> as_gm()
-          if gm.isShooting || gm.hasMissilesInFlight
-            _isColumnFiring_ = true
+    query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (unit__ref : UnitRef)
+      if !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
+        var gm = unit__ref.unit |> as_gm()
+        if gm.isShooting || gm.hasMissilesInFlight
+          isColumnFiring = true
   for unitEid, i in units_column__units, range(units_column__units |> length())
     query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (var unit__ref aka column_unit__ref : UnitRef&)
       if column_unit__ref.unit.isDelayed || !column_unit__ref.unit.isAlive
@@ -899,14 +911,11 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
         let isFinalApproach = length(column_unit__ref.unit.pos - targetPos) < finalApproachDist
         set_destination_way_point(column_unit__ref.unit, isFinalApproach ? "MOVE_TO_STRAIGHT" : "USE_SPLINE", targetTm, columnTanksSpeed)
       var gm = column_unit__ref.unit |> as_gm()
-      
-      
-      static_if typeinfo has_field<isObstacle>(type<GroundMoveSystem>)
-        if _isColumnFiring_
-          (*gm) |> set_move_speed_k_timer()
-        let isPassableWhileFiring = fireNow || state == int(MoveSysState.ST_HALT) || _isColumnFiring_
-        if gm.moveSys != null
-          gm.moveSys.isObstacle = !isPassableWhileFiring
+      if isColumnFiring
+        (*gm) |> set_move_speed_k_timer()
+      let isPassableWhileFiring = fireNow || state == int(MoveSysState.ST_HALT) || isColumnFiring
+      if gm.moveSys != null
+        gm.moveSys.isObstacle = !isPassableWhileFiring
       if spg_units_column__changeStateTimer < 0.
         if !blockedByAlly
           query() <| $ [es(REQUIRE=unit_tag__fortification)] (var unit__ref aka fort_unit__ref : UnitRef&)

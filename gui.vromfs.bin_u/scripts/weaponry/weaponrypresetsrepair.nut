@@ -1,13 +1,12 @@
+from "%scripts/weaponry/modificationInfo.nut" import isWeaponModsPurchasedOrAvailableForFree
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getWeaponryByPresetInfo, findAvailableWeapon
+from "%scripts/weaponry/fixWeaponryPreset.nut" import openFixWeaponryPresets
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getCurrentSlotbarPreset
+from "%scripts/weaponry/weaponryInfo.nut" import validateBadLastWeapons
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "chard" import getProfileCountry
 from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_library.nut" import *
-
-let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
-let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
-let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let { validateBadLastWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 
 
 const DBG_REPAIR_PRESET_MODE = {
@@ -143,7 +142,7 @@ addListenersWithoutEnv({
   PresetsByGroupsCountryChanged = @(p) searchAndRepairInvalidPresets(p.unitNames)
 })
 
-return {
+return freeze({
   searchAndRepairInvalidPresets
   DBG_REPAIR_PRESET_MODE
-}
+})

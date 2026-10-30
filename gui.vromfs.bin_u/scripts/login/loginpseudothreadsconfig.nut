@@ -1,3 +1,32 @@
+import "%scripts/unlocks/checkUnlocksByAbTest.nut" as checkUnlocksByAbTest
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/g_listener_priority.nut" import LOGIN_PROCESS
+from "%scripts/utils/pseudoThread.nut" import startPseudoThread
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/user/profileStates.nut" import userIdStr, havePlayerTag
+from "%appGlobals/login/loginState.nut" import hasLoginState
+from "%scripts/user/newbieTutorialDisplay.nut" import saveVersion
+from "%scripts/clientState/contentState.nut" import updateConsoleClientDownloadStatus
+from "%scripts/user/userInfoStats.nut" import getProfileInfo, updatePlayerRankByCountries
+from "%scripts/slotbar/slotbarState.nut" import initSelectedCrews
+from "%scripts/options/fontChoiceWnd.nut" import FontChoiceWnd
+from "%scripts/options/firstGpuBenchmarkWnd.nut" import FirstGpuBenchmarkWnd
+from "%scripts/firstChoice/unitTypeChoiceHandler.nut" import UnitTypeChoiceHandler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/userLog/userlogUtils.nut" import shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs
+from "%scripts/shop/shopTree.nut" import checkShopBlk
+from "%scripts/firstChoice/firstChoice.nut" import reqFirstUnitTypeChoice, clearUnlockedCountries, checkUnlockedCountries, checkUnlockedCountriesByAirs
+from "%scripts/eulaWnd.nut" import LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/fxOptions.nut" import needShowHdrSettingsOnStart, openHdrSettings
+from "%scripts/seen/markSeenResources.nut" import disableMarkSeenAllResourcesForNewUser
+from "%scripts/matching/matchingGameModes.nut" import forceUpdateGameModes
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/slotbar/slotbarPresets.nut" import initSlotbarPresets
+from "%scripts/discounts/discounts.nut" import updateDiscountData
+from "%scripts/loadScriptsAfterLogin.nut" import loadScriptsAfterLoginOnce
+from "%scripts/options/gpuBenchmarkUtils.nut" import needShowGpuBenchmark
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "steam" import steam_is_running
@@ -8,43 +37,25 @@ from "%scripts/dagui_natives.nut" import run_reactive_gui, get_player_user_id_st
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
-
-let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
-let { hasLoginState } = require("%scripts/login/loginStates.nut")
+from "%scripts/options/fonts.nut" import validateSavedConfigFonts
+let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { saveVersion } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { updateConsoleClientDownloadStatus } = require("%scripts/clientState/contentState.nut")
-let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
-let { getProfileInfo, updatePlayerRankByCountries } = require("%scripts/user/userInfoStats.nut")
-let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
-let g_font = require("%scripts/options/fonts.nut")
-let { FontChoiceWnd } = require("%scripts/options/fontChoiceWnd.nut")
-let { FirstGpuBenchmarkWnd } = require("%scripts/options/firstGpuBenchmarkWnd.nut")
-let { UnitTypeChoiceHandler } = require("%scripts/firstChoice/unitTypeChoiceHandler.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs } = require("%scripts/userLog/userlogUtils.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
-let { reqFirstUnitTypeChoice, clearUnlockedCountries, checkUnlockedCountries, checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
-let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { needShowHdrSettingsOnStart, openHdrSettings } = require("%scripts/options/fxOptions.nut")
-let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
-let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { initSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
-let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
-let { needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null })
 
 local isFirstLoginOnSystem = false
+
+function requestLoginItemdefs() {
+  collectUserlogItemdefs()
+  let arr = []
+  foreach (unit in getAllUnits())
+    if (unit.marketplaceItemdefId != null)
+      arr.append(unit.marketplaceItemdefId)
+
+  inventoryClient.requestItemdefsByIds(arr)
+}
 
 function initLoginPseudoThreadsConfig(cb) {
   broadcastEvent("AuthorizeComplete")
@@ -69,9 +80,9 @@ function initLoginPseudoThreadsConfig(cb) {
       updateConsoleClientDownloadStatus()
       getProfileInfo() 
       initSelectedCrews(true)
-      set_show_attachables(hasFeature("AttachablesUse"))
+      set_show_attachables(true)
 
-      g_font.validateSavedConfigFonts()
+      validateSavedConfigFonts()
       if (handlersManager.checkPostLoadCss(true))
         log("Login: forced to reload waitforLogin window.")
       return null
@@ -84,15 +95,7 @@ function initLoginPseudoThreadsConfig(cb) {
       collectOldNotifications()
       return null
     }
-    function() {
-      collectUserlogItemdefs()
-      let arr = []
-      foreach (unit in getAllUnits())
-        if (unit.marketplaceItemdefId != null)
-          arr.append(unit.marketplaceItemdefId)
-
-      inventoryClient.requestItemdefsByIds(arr)
-    }
+    requestLoginItemdefs
     function() {
       updateDiscountData(true)
     }
@@ -129,7 +132,7 @@ function initLoginPseudoThreadsConfig(cb) {
         if (localSharedAgreedEulaVersion < currentEulaVersion)
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
-        if ((isPlatformSony || isPlatformXbox || steam_is_running())
+        if ((isSony || isXbox || steam_is_running())
             && (agreedEulaVersion == 0 || localAgreedEulaVersion.get() >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion)
           if (agreedEulaVersion == 0)
@@ -205,6 +208,7 @@ addListenersWithoutEnv({
   SignOut = @(_) clearLoginPseudoThreads
 }, LOGIN_PROCESS)
 
-return {
+return freeze({
   initLoginPseudoThreadsConfig
-}
+  requestLoginItemdefs
+})

@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 1.0,
-  "traceFreq": 1,
-  "bullets": 30,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,12 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 1,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 1.0,
+  "bullets": 30,
   "bullet": {
     "mass": 2.86,
     "caliber": 0.057,
@@ -404,15 +404,8 @@
       ],
       "traceFreq": 1,
       "tracer": "50mmRed",
-      "trail": "black"
+      "trail": "thick"
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "mollins57_gun_outside",
-    "cockpit": "mollins57_gun_inside",
-    "ai": "mollins57_gun_ai"
   },
   "mollins_new_gun": {
     "maxDeltaAngle": 0.15,
@@ -428,5 +421,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "mollins57_gun_outside",
+    "cockpit": "mollins57_gun_inside",
+    "ai": "mollins57_gun_ai"
   }
 }

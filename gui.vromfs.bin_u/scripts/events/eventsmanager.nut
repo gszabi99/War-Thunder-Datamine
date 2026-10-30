@@ -1,6 +1,76 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/time.nut" as time
+import "%scripts/utils/systemMsg.nut" as systemMsg
+import "%scripts/social/crossplay.nut" as crossplayModule
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqstd/math.nut" as stdMath
 import "DataBlock" as DataBlock
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitTypeText
+from "%scripts/chat/squadChatRoom.nut" import sendLocalizedMessageToSquadRoom
+from "%scripts/teams.nut" import g_team
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%scripts/squads/squadState.nut" import getOnlineMembersCount, getSquadRoomName, isInSquad, isNotAloneOnline
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/onlineShop/reqPurchaseWnd.nut" import ReqPurchaseWnd
+from "%scripts/items/ticketBuyWindow.nut" import TicketBuyWindow
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%sqstd/platform.nut" import isSony, isPC
+from "%scripts/unit/unitInfoTexts.nut" import getCantBuyUnitReason, getUnitClassIco
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/user/features.nut" import getFeaturePack
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/onlineShop/onlineShopState.nut" import getFeaturePurchaseData
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/matching/matchingGameModes.nut" import getGameModesByEconomicName, getAllCountriesSets
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/unit/unitStatus.nut" import isUnitBroken, isUnitUsable, isUnitsEraUnlocked
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift
+from "%scripts/onlineInfo/clustersManagement.nut" import getClusterShortName
+from "%scripts/user/balance.nut" import get_gui_balance
+from "%scripts/langUtils/language.nut" import getLocTextFromConfig
+from "%scripts/events/eventsState.nut" import isEventsLoaded, setEventsLoaded, getEvent, getEventByEconomicName, getEventsList, getLastPlayedEvent, getEventMission
+  , isGameTypeOfEvent, isCustomGameMode, isEventMultiSlotEnabled, isMultiCluster, needRankInfoInQueue, isEventRandomBattlesById, getEventDifficulty
+  , getEventDiffCode
+from "%scripts/events/eventTeamsInfo.nut" import allUnitTypesMask, getTeamData, isTeamDataPlayable, getTeamName, getCountries, getAlowedCrafts, getForbiddenCrafts
+  , getRequiredCrafts, hasUnitRequirements, getMinCraftsToPlay, initSidesOnce, getSidesList, isEventSymmetricTeams, isEventFreeForAll
+  , getCountriesByTeams, isCountryAvailable, getAvailableCountriesByEvent, countAvailableUnitTypes, getUnitTypesByTeamDataAndName, getEventUnitTypesMask, getEventRequiredUnitTypesMask
+  , isUnitTypeAvailable, isUnitTypeRequired, getEDiffByEvent, isUnitMatchesRule, isUnitAllowedByTeamData, isAirRequiredAndAllowedByTeamData, isUnitAllowed
+  , isUnitAllowedForEvent, checkUnitRelevanceForEvent, getMaxBrText
+from "%scripts/events/eventUnitsAvail.nut" import getMGameMode, getTeamDataWithRoom, getAvailableTeams, checkRequiredUnits, getCountryRepairInfo, getMembersTeamsData, getMembersInfo
+from "%scripts/events/eventTexts.nut" import getTextsBlock, getEventNameText, getNameByEconomicName
+from "%scripts/events/eventAllowed.nut" import isEventAllowedByVrMode, isEventAllowedByComaptibilityMode
+from "%scripts/events/eventBrToTier.nut" import getTierByMaxBr
+from "%scripts/events/eventDisplay.nut" import countEventsList, getEventStartTime, getEventEndTime, isEventEnabled, isEventActive, isEventEnded, isEventEnableOnDebug
+  , isEventDisplayWide, diffCodeCompare, getEventDiffName, getEventTileImageName, getEventPreviewVideoName, getEventsForGcDrawer, getEventIsVisible
+  , isEventVisibleInEventsWindow, getEventsVisibleInEventsWindowCount, getEventsChapter
+from "%scripts/events/eventTickets.nut" import getEventTickets, eventRequiresTicket, getEventActiveTicket, hasEventTicket
+from "%scripts/events/eventInfo.nut" import getEventEconomicName, getEventTournamentMode, isEventForClan, hasEventFeature, getEventDisplayType, setEventDisplayType, isEventRandomBattles
+  , isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature, isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage
+  , getEventLeagueName
+from "%scripts/leaderboard/leaderboardCategoryType.nut" import getLbCategoryTypeByField
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle
+from "%scripts/misCustomRules/missionCustomState.nut" import findRulesClassByName
+from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/leaderboard/requestLeaderboardData.nut" import requestEventLeaderboardData, requestEventLeaderboardSelfRow, requestCustomEventLeaderboardData, convertLeaderboardData, requestContactLeaderboardData, convertContactLeaderboardData
+from "%scripts/user/profileStates.nut" import userIdInt64, userIdStr
+from "%scripts/userstat/userstat.nut" import getTableActiveIndex
+from "%scripts/user/myStatsState.nut" import isNewbieEventId
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/items/itemLimits.nut" import enqueueItem, requestLimits
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyClusterName, getSessionLobbyCurRoomEdiff
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomSpecialRules, getMembersCountByTeams, getRoomEvent
+from "%scripts/squads/squadUtils.nut" import getMemberStatusLocTag, getMemberStatusLocId
+from "%scripts/clientState/contentPacks.nut" import havePackage, getPkgLocName
+from "%scripts/crossModuleEvents.nut" import MATCHING_EVENTS_DATA_RECEIVED, EVENTS_DATA_UPDATED
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, removeEventListenersByEnv, subscribe_handler, broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank, calcBattleRatingFromRank, get_mission_mode, isUnitSpecial
 from "string" import format, split_by_chars
@@ -11,6 +81,7 @@ from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id, get_tournament_battle_cost, has_entitlement, get_tournaments_blk, get_tournament_info_blk
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, EVENT_TYPE, GAME_EVENT_TYPE
 from "%scripts/seen/seenIds.nut" import SEEN
@@ -18,80 +89,23 @@ from "%scripts/utils/systemMsg.nut" import COLOR_TAG
 from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 from "types" import Function, Table, String
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
-let { getUnitName, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
-let { sendLocalizedMessageToSquadRoom } = require("%scripts/chat/squadChatRoom.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getOnlineMembersCount, getSquadRoomName, isInSquad, isNotAloneOnline } = require("%scripts/squads/squadState.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ReqPurchaseWnd } = require("%scripts/onlineShop/reqPurchaseWnd.nut")
-let { TicketBuyWindow } = require("%scripts/items/ticketBuyWindow.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { getCantBuyUnitReason, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getFeaturePack } = require("%scripts/user/features.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { getGameModesByEconomicName, getAllCountriesSets } = require("%scripts/matching/matchingGameModes.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isUnitBroken, isUnitUsable, isUnitsEraUnlocked } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { gameEvents, isEventsLoaded, setEventsLoaded, getEvent, getEventByEconomicName, getEventsList, getLastPlayedEvent, getEventMission, isGameTypeOfEvent, isCustomGameMode, isEventMultiSlotEnabled, isMultiCluster, needRankInfoInQueue, isEventRandomBattlesById, getEventDifficulty, getEventDiffCode } = require("%scripts/events/eventsState.nut")
-let { allUnitTypesMask, getTeamData, isTeamDataPlayable, getTeamName, getCountries, getAlowedCrafts, getForbiddenCrafts, getRequiredCrafts, hasUnitRequirements, getMinCraftsToPlay, initSidesOnce, getSidesList, isEventSymmetricTeams, isEventFreeForAll, getCountriesByTeams, isCountryAvailable, getAvailableCountriesByEvent, countAvailableUnitTypes, getUnitTypesByTeamDataAndName, getEventUnitTypesMask, getEventRequiredUnitTypesMask, isUnitTypeAvailable, isUnitTypeRequired, getEDiffByEvent, isUnitMatchesRule, isUnitAllowedByTeamData, isAirRequiredAndAllowedByTeamData, isUnitAllowed, isUnitAllowedForEvent, checkUnitRelevanceForEvent, getMaxBrText } = require("%scripts/events/eventTeamsInfo.nut")
-let { getMGameMode, getTeamDataWithRoom, getAvailableTeams, checkRequiredUnits, getCountryRepairInfo, getMembersTeamsData, getMembersInfo } = require("%scripts/events/eventUnitsAvail.nut")
-let { getTextsBlock, getEventNameText, getNameByEconomicName } = require("%scripts/events/eventTexts.nut")
-let { isEventAllowedByVrMode, isEventAllowedByComaptibilityMode } = require("%scripts/events/eventAllowed.nut")
-let { getTierByMaxBr } = require("%scripts/events/eventBrToTier.nut")
-let { countEventsList, getEventStartTime, getEventEndTime, isEventEnabled, isEventActive, isEventEnded, isEventEnableOnDebug, isEventDisplayWide, diffCodeCompare, getEventDiffName, getEventTileImageName, getEventPreviewVideoName, getEventsForGcDrawer, getEventIsVisible, isEventVisibleInEventsWindow, getEventsVisibleInEventsWindowCount, getEventsChapter } = require("%scripts/events/eventDisplay.nut")
-let { getEventTickets, eventRequiresTicket, getEventActiveTicket, hasEventTicket } = require("%scripts/events/eventTickets.nut")
-let { getEventEconomicName, getEventTournamentMode, isEventForClan, hasEventFeature, getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles, isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature, isEventPlatformOnlyAllowed, canJoinWithoutRequireCrafts, isEventAllowedByPackage, getEventLeagueName } = require("%scripts/events/eventInfo.nut")
-let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { findRulesClassByName } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { requestEventLeaderboardData, requestEventLeaderboardSelfRow, requestCustomEventLeaderboardData, convertLeaderboardData, requestContactLeaderboardData, convertContactLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { userIdInt64, userIdStr } = require("%scripts/user/profileStates.nut")
-let { getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
-let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
+let { gameEvents } = require("%scripts/events/eventsState.nut")
+let { eventIdsForMainGameModeList } = require("%scripts/events/eventInfo.nut")
+let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
-let { getSessionLobbyClusterName, getSessionLobbyCurRoomEdiff } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getRoomSpecialRules, getMembersCountByTeams, getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getMemberStatusLocTag, getMemberStatusLocId } = require("%scripts/squads/squadUtils.nut")
-let { havePackage, getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 let { eventChaptersManager } = require("%scripts/events/eventsChapter.nut")
-let { MATCHING_EVENTS_DATA_RECEIVED, EVENTS_DATA_UPDATED } = require("%scripts/crossModuleEvents.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
 
 const SQUAD_NOT_READY_LOC_TAG = "#snr"
 const SQUAD_PROCEED_ANYWAY = "#spraw"
-const ES_UNIT_TYPE_TOTAL_RELEASED = 3
 
 let diffTable = {
   arcade    = 0
@@ -821,7 +835,7 @@ let Events = class {
 
     let { reqPack = null } = eventData
     if (reqPack != null)
-     eventData.reqPacks <- reqPack.replace(";", ",").split(",")
+      eventData.reqPacks <- reqPack.replace(";", ",").split(",")
 
     return eventData
   }
@@ -848,9 +862,9 @@ let Events = class {
       return true
     if (isInArray("AccessTest", eventData.event_access) && !has_entitlement("AccessTest"))
       return false
-    if (isInArray("ps4", eventData.event_access) && !isPlatformSony)
+    if (isInArray("ps4", eventData.event_access) && !isSony)
       return false
-    if (isInArray("pc", eventData.event_access) && !isPlatformPC)
+    if (isInArray("pc", eventData.event_access) && !isPC)
       return false
     return true
   }
@@ -1210,22 +1224,12 @@ let Events = class {
 
   hasUnitRequirements = hasUnitRequirements
 
-  function isRespawnAvail(event) {
-    if (event == null)
-      return true
-
-    if ("maxRespawns" in event.mission_decl &&
-        event.mission_decl.maxRespawns != 1)
-      return true
-    return false
-  }
-
   function getRespawnsText(event) {
     if (!this.isEventRespawnEnabled(event))
       return loc("template/noRespawns")
-    let availRespawns = events.getEventMaxRespawns(event)
-    if (availRespawns > 1)
-      return loc("template/limitedRespawns/num/plural", { num = availRespawns })
+    let respawnCountMode = events.getEventMaxRespawns(event)
+    if (respawnCountMode > RESPAWN_COUNT_MODE.SINGLE_SPAWN)
+      return loc("template/limitedRespawns/num/plural", { num = respawnCountMode })
     return ""
   }
 
@@ -1248,7 +1252,7 @@ let Events = class {
 
 
   function getEventMaxRespawns(event) {
-    return event?.mission_decl.maxRespawns ?? 0
+    return event?.mission_decl.maxRespawns ?? RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW
   }
 
   function getEventRewardMuls(eventId) {
@@ -1664,8 +1668,8 @@ let Events = class {
       data.checkXboxOverlayMessage = true
     }
     else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled()) {
-      data.reasonText = loc("xbox/crossPlayRequired")
-      data.msgboxReasonText = loc("xbox/actionNotAvailableCrossNetworkPlay")
+      data.reasonText = locByVendor("xbox/crossPlayRequired")
+      data.msgboxReasonText = locByVendor("xbox/actionNotAvailableCrossNetworkPlay")
       data.checkXboxOverlayMessage = true
     }
     else if (!this.checkSpecialRequirements(event)) {
@@ -1965,27 +1969,6 @@ let Events = class {
   getEventIsVisible = getEventIsVisible
 
   isEventVisibleInEventsWindow = isEventVisibleInEventsWindow
-  
-
-
-  function isEventAllUnitAllowed(teamDataByTeamName) {
-    foreach (team in events.getSidesList()) {
-      let teamName = this.getTeamName(team)
-      let teamData = teamDataByTeamName?[teamName]
-      if (!teamData || !this.isTeamDataPlayable(teamData))
-        continue
-      let types = this.getUnitTypesByTeamDataAndName(teamData, teamName)
-      if (stdMath.number_of_set_bits(types) < ES_UNIT_TYPE_TOTAL_RELEASED)
-        return false
-      if (this.getAlowedCrafts(teamData).len() > 0)
-        return false
-      if (this.getForbiddenCrafts(teamData).len() > 0)
-        return false
-      if (this.getRequiredCrafts(teamData).len() > 0)
-        return false
-    }
-    return true
-  }
 
   function descFormat(name, value) {
     if (u.isEmpty(value))
@@ -2124,7 +2107,7 @@ let Events = class {
       checkPackage = getFeaturePack(feature)
       header = this.getEventNameText(event)
       text = msg
-      btnStoreText = loc("msgbox/btn_onlineShop_unlockEvent")
+      btnStoreText = locByVendor("msgbox/btn_onlineShop_unlockEvent")
     })
     return false
   }

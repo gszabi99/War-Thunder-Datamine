@@ -1,9 +1,3 @@
-@const expandableFocusBorderColor: #54656e;
-@const selImgLeftPadding: 14*@sf/@pf;
-@const selImgRightPadding: 11*@sf/@pf;
-@const selImgBottomPadding: 8*@sf/@pf;
-@const unlockSimplifiedDescPadding: 1@sf/100.0;
-
 expandable {
   re-type:9rect;
   width:pw-10*@sf/@pf_outdated;
@@ -14,11 +8,6 @@ expandable {
   flow:vertical;
   margin-top:0.5*@scrn_tgt/100.0+2*@sf/@pf_outdated;
   total-input-transparent:yes;
-}
-
-expandable[isSpecEventSlot=yes] {
-  width: @specEventSlotWidth;
-  pos: 0, 0;
 }
 
 expandable > selImg {
@@ -91,8 +80,7 @@ expandable statusImg[background-image] {
   background-color:@commonTextColor;
 }
 
-expandable:hover,
-expandable[isSpecEventSlot=yes][hoverActive=yes] {
+expandable:hover {
   background-color:@buttonColor;
 }
 expandable:hover statusImg[background-image] {

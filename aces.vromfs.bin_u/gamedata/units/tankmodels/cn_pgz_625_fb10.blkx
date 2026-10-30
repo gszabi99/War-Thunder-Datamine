@@ -237,72 +237,72 @@
           ]
         }
       ]
+    },
+    {
+      "model": "chinese_gunner_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "4",
+      "dmName": "commander_dm",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
     }
   ],
-  "kGunner": {
-    "model": "chinese_gunner_char",
-    "maxHeadHorAngle": 60.0,
-    "maxHeadDownAngle": 60.0,
-    "maxHeadUpAngle": 10.0,
-    "headNode": "Bip01 Head",
-    "pelvisNode": "Bip01 Pelvis",
-    "pelvisTargetNode": "Bip01 Pelvis_",
-    "crouchDelta": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "suffix": "4",
-    "dmName": "commander_dm",
-    "deadHeadAttitudeMin": -55.0,
-    "deadHeadAttitudeMax": -40.0,
-    "ikNode": [
-      {
-        "downNode": "Bip01 L Hand",
-        "midNode": "Bip01 L Forearm",
-        "upNode": "Bip01 L UpperArm",
-        "targetNode": "lefthand_",
-        "flexionDir": [
-          0.5,
-          -0.5,
-          0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 R Hand",
-        "midNode": "Bip01 R Forearm",
-        "upNode": "Bip01 R UpperArm",
-        "targetNode": "righthand_",
-        "flexionDir": [
-          -0.5,
-          -0.5,
-          0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 L Foot",
-        "midNode": "Bip01 L Calf",
-        "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_",
-        "flexionDir": [
-          -0.2,
-          1.0,
-          -1.0
-        ]
-      },
-      {
-        "downNode": "Bip01 R Foot",
-        "midNode": "Bip01 R Calf",
-        "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_",
-        "flexionDir": [
-          -0.6,
-          1.0,
-          -1.0
-        ]
-      }
-    ]
-  },
   "controlDevices": {
     "device": [
       {
@@ -2201,7 +2201,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_pgz_625_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_pgz_625_user_cannon.blk",
         "emitter": "emtr_gun_flame",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -2256,13 +2256,23 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "rotatedTurret": "bone_turret",
           "barrel": "bone_gun_barrel",
           "linkedAnimPart": [
@@ -2471,7 +2481,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/130mm_FB_10_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/130mm_FB_10_rocket_launcher.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2527,13 +2537,21 @@
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm",
             "fire_control_system_dm",
-            "drive_turret_v_01_dm"
+            "fire_control_system_01_dm"
           ],
-          "horDriveDm": "fire_control_system_dm",
-          "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "horDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2629,8 +2647,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_pgz_625_fb10_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_pgz_625_fb10_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4183,7 +4201,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_pgz_625_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/30mm_pgz_625_user_cannon.blk",
               "emitter": "emtr_gun_flame",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -4238,13 +4256,23 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "rotatedTurret": "bone_turret",
                 "barrel": "bone_gun_barrel",
                 "linkedAnimPart": [
@@ -4453,7 +4481,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/130mm_FB_10_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/130mm_FB_10_rocket_launcher.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -4509,13 +4537,21 @@
                 "gun": "bone_gun_01",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "rotatedTurret": "bone_turret",
                 "verDriveDm": [
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm",
                   "fire_control_system_dm",
-                  "drive_turret_v_01_dm"
+                  "fire_control_system_01_dm"
                 ],
-                "horDriveDm": "fire_control_system_dm",
-                "shootingDmPart": "fire_control_system_dm",
-                "rotatedTurret": "bone_turret"
+                "horDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4598,7 +4634,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_cn_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_cn_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4745,7 +4781,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/cn_pgz_625_search.blk",
+              "blk": "gamedata/sensors/cn_pgz_625_search.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -4755,7 +4791,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/cn_pgz_625_track.blk",
+              "blk": "gamedata/sensors/cn_pgz_625_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "antenna_target_tagging_dm",
@@ -4948,7 +4984,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/cn_pgz_625_search.blk",
+        "blk": "gamedata/sensors/cn_pgz_625_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -4958,7 +4994,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/cn_pgz_625_track.blk",
+        "blk": "gamedata/sensors/cn_pgz_625_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",
@@ -4974,5 +5010,29 @@
     "hasTurretView": true,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 12.0
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.78,
+      1.09,
+      1.31
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

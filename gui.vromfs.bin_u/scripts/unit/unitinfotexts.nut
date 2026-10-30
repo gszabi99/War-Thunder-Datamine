@@ -1,5 +1,14 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%scripts/unit/unitInfo.nut" import bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitStatus.nut" import isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought, isRequireUnlockForUnit, canResearchUnit, isUnitInResearch
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift, isUnitBought
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnitRequireUnlockText
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/weaponry/infantryTemplates.nut" import getUnitTemplateNames
+from "%scripts/clientState/contentPacks.nut" import havePackage
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "math" import round, fabs
 from "%sqstd/string.nut" import utf8ToLower
@@ -9,18 +18,6 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "types" import String
-
-let { bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought, isRequireUnlockForUnit, canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-
-let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
-
-let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
 local tooltipSize = []
 function getTooltipSize() {
@@ -244,12 +241,10 @@ function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, 
   let modificators = showLocalState ? "modificators" : "modificatorsBase"
 
   local showReferenceText = false
-  if (!(characteristicName[0] in air.shop))
-    air.shop[characteristicName[0]] <- 0;
-
-  let value = air.shop[characteristicName[0]] + (air[modificators] ? air[modificators][modeName][characteristicName[1]] : 0)
-  let vMin = air.minChars ? air.shop[characteristicName[0]] + air.minChars[modeName][characteristicName[1]] : value
-  let vMax = air.maxChars ? air.shop[characteristicName[0]] + air.maxChars[modeName][characteristicName[1]] : value
+  let shopValue = air.shop?[characteristicName[0]] ?? 0
+  let value = shopValue + (air[modificators] ? air[modificators][modeName][characteristicName[1]] : 0)
+  let vMin = air.minChars ? shopValue + air.minChars[modeName][characteristicName[1]] : value
+  let vMax = air.maxChars ? shopValue + air.maxChars[modeName][characteristicName[1]] : value
   local text = prepareTextFunc(value)
   if (air[modificators] && air[modificators][modeName][characteristicName[1]] == 0) {
     text = $"<color=@goodTextColor>{text}</color>*"
@@ -260,7 +255,7 @@ function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, 
   local weaponModText = ""
   if (weaponModValue != 0)
     weaponModText = "".concat("<color=@badTextColor>", (weaponModValue > 0 ? " + " : " - "), prepareTextFunc(fabs(weaponModValue)), "</color>")
-  return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
+  return [text, weaponModText, vMin, vMax, value, shopValue, showReferenceText]
 }
 
 function getFontIconByBattleType(battleType) {
@@ -271,7 +266,7 @@ function getFontIconByBattleType(battleType) {
   return loc("icon/unittype/aircraft")
 }
 
-return {
+return freeze({
   getUnitTooltipImage
   getChanceToMeetText
   getShipMaterialTexts
@@ -282,4 +277,4 @@ return {
   getCharacteristicActualValue
   getFontIconByBattleType
   genUnitTooltipWeaponIcon
-}
+})

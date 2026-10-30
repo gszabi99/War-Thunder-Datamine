@@ -1,9 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 
 const ITEM_RARITY_DEFAULT = 1
 const ITEM_RARITY_COLOR_DEFAULT = "f1f1d6"
@@ -48,6 +47,6 @@ let onGameLocalizationChanged = function() {
 add_event_listener(GAME_LOCALIZATION_CHANGED, @(_p) onGameLocalizationChanged(),
   null, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   get = get
-}
+})

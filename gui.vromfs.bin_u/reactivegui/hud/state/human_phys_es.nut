@@ -43,9 +43,9 @@ ecs.register_es("script_hold_breath_state_es",
   }
 )
 
-return {
+return freeze({
   isHumanAiming
   isHumanHoldingBreath
   isHumanHoldBreathAvailable
   isHumanHoldBreathShowHint
-}
+})

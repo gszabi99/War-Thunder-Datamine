@@ -1,3 +1,15 @@
+import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+from "%scripts/login/loginState.nut" import set_disable_autorelogin_once
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/login/loginWnd.nut" import LoginWndHandler
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings, loadLocalSharedSettings
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%scripts/eulaWnd.nut" import openEulaWnd
+from "%scripts/options/optionsBeforeLogin.nut" import is_autologin_enabled
+from "%scripts/viewUtils/projectAwards.nut" import setProjectAwards
 from "%appGlobals/login/loginState.nut" import isAuthorized
 from "auth_wt" import getLoginPass
 from "guiOptions" import setGuiOptionsMode
@@ -6,26 +18,14 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
-let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LoginWndHandler } = require("%scripts/login/loginWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { saveLocalSharedSettings, loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
-let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 register_gui_handler("LoginWndHandlerSteam", class (LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
     animBgLoad()
-    setVersionText()
+    setVersionText(this.scene)
     setProjectAwards(this)
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)

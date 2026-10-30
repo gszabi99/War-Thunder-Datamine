@@ -1,12 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/items/itemLimits.nut" import enqueueItem, requestLimits
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 
 let TicketBuyWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -171,4 +170,4 @@ let TicketBuyWindow = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("TicketBuyWindow", TicketBuyWindow)
 
-return { TicketBuyWindow }
+return freeze({ TicketBuyWindow })

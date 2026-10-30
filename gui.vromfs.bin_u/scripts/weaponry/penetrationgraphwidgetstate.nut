@@ -1,3 +1,4 @@
+from "%scripts/weaponry/penetrationGraphDataRequest.nut" import clearActivePenetrationGraphRequest
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "eventbus" import eventbus_send
 from "gameplayBinding" import isInFlight
@@ -5,7 +6,6 @@ from "%globalScripts/panelIds.nut" import PNL_ID_BULLETS_PENETRATION
 from "%scripts/dagui_library.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { clearActivePenetrationGraphRequest } = require("%scripts/weaponry/penetrationGraphDataRequest.nut")
 
 const PENETRATION_GRAPH_NEST_ID = "graph_nest"
 
@@ -89,8 +89,8 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   getPenetrationGraphPanelId
   setPendingPenetrationGraph
   clearPenetrationGraphWidget
-}
+})

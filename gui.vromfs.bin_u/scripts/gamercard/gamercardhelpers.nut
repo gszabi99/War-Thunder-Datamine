@@ -1,9 +1,9 @@
+from "%scripts/invites/invitesState.nut" import invitesAmount
+from "%scripts/chat/chatStates.nut" import hasMenuChat
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
 let { lastGamercardScenes } = require("%scripts/gamercard/gamercardState.nut")
-let { invitesAmount } = require("%scripts/invites/invitesState.nut")
-let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 
 function doWithAllGamercards(func) {
@@ -112,7 +112,7 @@ function setLastGamercardSceneIfExist(scene) {
     }
 }
 
-return {
+return freeze({
   doWithAllGamercards
   getLastGamercardScene
   addGamercardScene
@@ -121,4 +121,4 @@ return {
   updateGamercardsChatInfo
   getActiveGamercardPopupNestObj
   setLastGamercardSceneIfExist
-}
+})

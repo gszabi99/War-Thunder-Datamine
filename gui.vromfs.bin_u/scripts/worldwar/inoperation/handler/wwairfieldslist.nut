@@ -1,22 +1,20 @@
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/worldWar/bhvWorldWarMap.nut" import worldWarMapControls
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getCurrentOperation, getAirArmiesNumberByGroupIdx
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
 from "%sqstd/string.nut" import cutPrefix
 from "worldwar" import wwGetAirfieldsCount, wwGetSelectedAirfield
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getCurrentOperation, getAirArmiesNumberByGroupIdx } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-
 
 let WwAirfieldsList = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -412,4 +410,4 @@ let WwAirfieldsList = class (BaseGuiHandler) {
 }
 register_gui_handler("WwAirfieldsList", WwAirfieldsList)
 
-return { WwAirfieldsList }
+return freeze({ WwAirfieldsList })

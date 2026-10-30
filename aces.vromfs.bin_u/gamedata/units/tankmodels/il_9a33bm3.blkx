@@ -2101,7 +2101,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2113,13 +2113,23 @@
           "gun": "bone_gun_01",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "rotatedTurret": "bone_turret",
           "gunnerDm": "gunner_dm"
         },
@@ -2170,7 +2180,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/209mm_9M33A3_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/209mm_9M33A3_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2459,8 +2469,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_9a33bm3_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_9a33bm3_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4149,7 +4159,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_9k_33m3_search.blk",
+        "blk": "gamedata/sensors/su_9k_33m3_search.blk",
         "turretIndex": 1,
         "designationFromBody": true,
         "designationTurretIndex": 1,
@@ -4165,7 +4175,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/su_9k_33m3_search_ai.blk",
+        "blk": "gamedata/sensors/su_9k_33m3_search_ai.blk",
         "turretIndex": 1,
         "designationFromBody": true,
         "designationTurretIndex": 1,
@@ -4181,7 +4191,7 @@
         "human": false
       },
       {
-        "blk": "gameData/sensors/su_9k_33m3_track.blk",
+        "blk": "gamedata/sensors/su_9k_33m3_track.blk",
         "turretIndex": 1,
         "radarParkingAzimuth": 0.0,
         "radarParkingPitch": 0.0,
@@ -4194,7 +4204,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/su_9k_33m3_track_ai.blk",
+        "blk": "gamedata/sensors/su_9k_33m3_track_ai.blk",
         "turretIndex": 1,
         "radarParkingAzimuth": 0.0,
         "radarParkingPitch": 0.0,

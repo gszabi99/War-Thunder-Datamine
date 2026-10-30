@@ -1,5 +1,3 @@
-@const imgFrameSize: 1.45*@profileMedalSize;
-@const imgFramePad: 4@sf/@pf;
 imgFrame {
   re-type:9rect;
   background-repeat:expand;
@@ -152,13 +150,6 @@ LockedImg[statusLock=limit] {
   background-svg-size:@cIco, @cIco;
 }
 
-optionsList > tr[hasLockedSign=yes] > td > LockedImg {
-  pos: -4@blockInterval, (ph-h)/2;
-  size: @tIco, @sIco;
-  background-color: @disabledTextColor;
-  background-image: #ui/gameuiskin#locked_no_borders.svg;
-  background-svg-size: @tIco, @sIco;
-}
 
 LockedImg[statusLock=headerImage] {
   pos:pw-w, 0.5ph-0.5h;

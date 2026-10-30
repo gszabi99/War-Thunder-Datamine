@@ -1,19 +1,17 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/promo/promo.nut" import getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/commandersHandbookState.nut" import getCurrentCmhGroup, getCmhGroupUnlocks, getActiveCmhUnlock, getCmhChapterCompletedTotal, getCmhUnlockProgressData, hasCmhUnclaimedReward
+from "%scripts/unlocks/commandersHandbookWnd.nut" import openCommandersHandbookWnd
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction,
-  getPromoActionParamsKey } = require("%scripts/promo/promo.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getCurrentCmhGroup, getCmhGroupUnlocks, getActiveCmhUnlock, getCmhChapterCompletedTotal,
-  getCmhUnlockProgressData, hasCmhUnclaimedReward } = require("%scripts/unlocks/commandersHandbookState.nut")
-let { openCommandersHandbookWnd } = require("%scripts/unlocks/commandersHandbookWnd.nut")
 
 let CommandersHandbookPromoHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -24,7 +22,6 @@ let CommandersHandbookPromoHandler = class (BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    this.scene.setUserData(this)
     this.updateHandler()
   }
 

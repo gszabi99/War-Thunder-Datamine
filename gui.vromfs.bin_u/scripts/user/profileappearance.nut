@@ -1,4 +1,14 @@
+import "%scripts/user/avatars.nut" as avatars
 import "DataBlock" as DataBlock
+import "%appGlobals/config/animatedFrames.nut" as animatedFrames
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/tasker.nut" import addTask
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible, isUnlockOpened
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder
+from "%scripts/user/usersInfoManager.nut" import setUserInfoParams
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "string" import format
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
 from "%sqstd/string.nut" import utf8ToLower
 from "%globalScripts/unlockConsts.nut" import *
@@ -6,18 +16,14 @@ from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { setUserInfoParams } = require("%scripts/user/usersInfoManager.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let avatars = require("%scripts/user/avatars.nut")
+
+const ANIMATED_FRAME_PREFIX = "anim_frame_"
 
 local profileHeaderBackgrounds = null
 local profileAvatarFrames = null
+
+let avatarFramesPathCache = {}
 
 function getProfileHeaderBackgrounds() {
   if (profileHeaderBackgrounds != null)
@@ -37,6 +43,42 @@ function getProfileHeaderBackgrounds() {
   return profileHeaderBackgrounds
 }
 
+let mkAnimFrameImagePath = @(name) $"!#ui/images/avatar_frames/{name}/{name}_%03d.avif"
+
+let mkFrameImagePath = @(name) $"!ui/images/avatar_frames/{name}.avif"
+
+let emptyAvatarFrameCfg = {
+  frameImagePath = null
+  framesCount = null
+}
+
+function getProfileAvatarFrameCfg(frame) {
+  if (frame in avatarFramesPathCache)
+    return avatarFramesPathCache[frame]
+
+  if (frame == "")
+    return emptyAvatarFrameCfg
+
+  let pathConfig = {
+    frameImagePath = ""
+    framesCount = null
+  }
+  avatarFramesPathCache[frame] <- pathConfig
+  if (frame in animatedFrames) {
+    pathConfig.frameImagePath = mkAnimFrameImagePath(frame)
+    pathConfig.framesCount = animatedFrames[frame]
+    return pathConfig
+  }
+
+  let isAnimatedFrame = frame.startswith(ANIMATED_FRAME_PREFIX)
+  if (isAnimatedFrame)
+    logerr($"ANIMATED_FRAME: Frame config for /*frameId = {frame}*/ not found. Need add it to 'wt/globals/config/animatedFrames.nut' file")
+
+  pathConfig.frameImagePath = isAnimatedFrame ? format(mkAnimFrameImagePath(frame), 0) 
+    : mkFrameImagePath(frame)
+  return pathConfig
+}
+
 function getProfileAvatarFrames() {
   if (profileAvatarFrames != null)
     return profileAvatarFrames
@@ -48,11 +90,13 @@ function getProfileAvatarFrames() {
     let isOpened = isUnlockOpened(unlock.id)
     if (!isVisible && !isOpened)
       continue
+    let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(unlock.id)
     profileAvatarFrames.append({
       id = unlock.id
       unlockId = unlock.id
       enabled = isOpened
-      image = $"!ui/images/avatar_frames/{unlock.id}.avif"
+      image = frameImagePath
+      framesCount
       tooltipId = getTooltipType("UNLOCK").getTooltipId(unlock.id, { showProgress = true, tooltipImageSize = "1@avatarButtonSize, 1@avatarButtonSize" })
     })
   }
@@ -131,10 +175,11 @@ addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_) profileHeaderBackgrounds = null
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   getProfileHeaderBackgrounds
   getProfileAvatarFrames
   getProfileAvatars
+  getProfileAvatarFrameCfg
 
   saveProfileAppearance
-}
+})

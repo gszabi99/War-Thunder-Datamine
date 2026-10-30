@@ -1,10 +1,94 @@
+import "%scripts/time.nut" as time
+import "%scripts/customization/contentPreset.nut" as contentPreset
+import "%scripts/hud/hudActionBarInfo.nut" as actionBarInfo
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "%sqStdLibs/helpers/u.nut" as u
 import "statsd" as statsd
 import "DataBlock" as DataBlock
 import "%sqstd/math.nut" as stdMath
 import "%sqstd/ecs.nut" as ecs
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import get_current_base_gui_handler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/weaponry/weaponWarningHandler.nut" import WeaponWarningHandler
+from "%scripts/weaponry/unitWeaponsHandler.nut" import unitWeaponsHandler
+from "%scripts/respawn/teamUnitsLeftView.nut" import teamUnitsLeftView
+from "%scripts/statistics/mpStatistics.nut" import MPStatistics
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels, getObjValidIndex
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets, getWeaponByName, getWeaponBlockedByGameModeMinRank, getWeaponBlockedByGameModeText, getItemMrankReqAddMrank, isMrankAddLocked
+from "%scripts/unit/unitMrankSelectionState.nut" import getUnitSelectedBattleRating
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton
+from "%scripts/controls/mousePointerInitialPos.nut" import setMousePointerInitialPos
+from "%scripts/slotbar/slotbarOverride.nut" import getEventSlotbarHint, getOverridedSlotbarSkins
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/statistics/mpStatisticsUtil.nut" import guiStartMPStatScreenFromGame, getCurMpTitle, guiStartMPStatScreen
+from "%scripts/statistics/mplayersList.nut" import getMplayersList
+from "%scripts/customization/skins.nut" import setCurSkinToHangar, getRealSkin, getSkinsOption
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/unlocks/personalTasks.nut" import openPersonalTasks
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT
+  , USEROPT_SAVE_AIRCRAFT_SPAWN, USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY
+from "%appGlobals/clientState/localProfile.nut" import loadLocalUnitSettings, getRandUnitOptPath
+from "%scripts/clientState/localProfile.nut" import loadLocalByScreenSize, saveLocalByScreenSize
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/contacts/contactsHandlerState.nut" import getContactsHandler
+from "%scripts/respawn/respawnState.nut" import isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask, needToShowBadWeatherWarning, hasAirfieldRespawn
+  , hasDailyFreeSpares, canUseOnlyDailyFreeSpares
+from "%scripts/items/itemsManagerModule.nut" import getUniversalSparesForUnit
+from "%scripts/slotbar/slotbarState.nut" import isUnitUnlockedInSlotbar
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/respawn/respawnSpareWnd.nut" import openRespawnSpareWnd
+from "%scripts/items/usedItemsInBattle.nut" import markUsedItemCount
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText, getUnitSlotPriceText, getUnitSlotPriceHintText
+from "%scripts/flightMenu/flightMenu.nut" import gui_start_flight_menu
+from "%scripts/hud/startHud.nut" import quitMission
+from "%scripts/hud/dargHudLayers.nut" import mkMpScoreWidget
+from "%scripts/items/orders.nut" import collectOrdersToActivate, showActivateOrderButton, enableOrders
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/crew/crew.nut" import getCrewUnit, getCrew
+from "%scripts/respawn/additionalUnits.nut" import createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry
+from "%scripts/slotbar/hasAvailableSlots.nut" import hasAvailableSlots
+from "%scripts/chat/mpChat.nut" import loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/missions/missionType.nut" import isGroundAndAirMission, isShipBattle
+from "%scripts/streaks.nut" import clearStreaks
+from "%scripts/misObjectives/misObjectivesView.nut" import gui_load_mission_objectives
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/assistantMapQr.nut" import guiStartAssistantMapQrWindow, isAssistantMapEnabled, isAssistantMapAvailable
+from "%scripts/gameModes/gameModeManagerState.nut" import isGameModeWithSpendableWeapons
+from "%scripts/missions/missionsUtils.nut" import isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
+from "%scripts/chat/chatUtils.nut" import addTagsForMpPlayers
+from "%scripts/respawn/respawnDailyFreeSpare.nut" import DAILY_FREE_SPARE_UID
+from "%scripts/customization/infantryCamouflageStorage.nut" import getReleasedLocationSkin, getLocationInfantrySkins, getTierByMrank
+from "%scripts/customization/infantryCamouflageUtils.nut" import convertLevelNameToLocation
+from "%scripts/options/initOptions.nut" import initOptions
+from "%scripts/hud/hudUnitType.nut" import unitTypeByHudUnitType
+from "%scripts/unit/unitStatus.nut" import isUnitRandomUnit
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitRoleIcon
+from "%scripts/tacticalMapUtils.nut" import fillSwitchMapTypeBtn
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
+from "%scripts/respawn/mapMarkersFilter.nut" import getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange, getTacticalMapMarksSelectedFilters
+from "%scripts/respawn/aimMemPointsSelector.nut" import MapAimPointWeaponSelector
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%appGlobals/config/infantryCfg.nut" import speedGrades
-from "%appGlobals/missions/nuclearEscalationCfg.nut" import yieldLimitFromStage
+from "%appGlobals/missions/missionScore.nut" import getAllowedNuclearYield
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank, reset_cur_mission_mode
 from "eventbus" import eventbus_subscribe
@@ -14,13 +98,13 @@ from "guiOptions" import get_gui_option
 from "math" import ceil
 from "string" import format
 from "multiplayer" import is_has_multiplayer
-from "mission" import get_current_mission_name, get_mission_teams_tickets, get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team, get_mplayers_list
+from "mission" import get_current_mission_name, get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team, get_mplayers_list
 from "guiSpectator" import onSpectatorMode, switchSpectatorTarget, getSpectatorTargetId, getSpectatorTargetName, getSpectatorTargetTitle
 from "guiMission" import quit_to_debriefing, get_mission_difficulty_int, get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status, get_current_mission_desc, is_allow_to_choose_hud_icon_preset
   , MISSION_STATUS_RUNNING, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "console" import register_command
-from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
-  , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapIconsFilter
+from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet
+  , setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapIconsFilter
 from "hudActionBar" import getActionBarUnitName
 from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
 from "aimingMemPoints" import can_use_aiming_points, is_aiming_points_enabled
@@ -49,95 +133,18 @@ from "radarOptions" import set_option_radar_name, set_option_radar_scan_pattern_
 from "hudState" import getHudUnitType, show_hud
 from "%scripts/utils_sa.nut" import get_mplayer_color
 from "%sqstd/platform.nut" import isPC
+from "%globalScripts/loc_helpers.nut" import locByVendor
 
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
-let { get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { WeaponWarningHandler } = require("%scripts/weaponry/weaponWarningHandler.nut")
-let { unitWeaponsHandler } = require("%scripts/weaponry/unitWeaponsHandler.nut")
-let { teamUnitsLeftView } = require("%scripts/respawn/teamUnitsLeftView.nut")
-let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toPixels, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
 let respawnOptions = require("%scripts/respawn/respawnOptionsType.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let contentPreset = require("%scripts/customization/contentPreset.nut")
-let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets, getWeaponByName,
-  getWeaponBlockedByGameModeMinRank, getWeaponBlockedByGameModeText } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { getEventSlotbarHint, getOverridedSlotbarSkins } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { guiStartMPStatScreenFromGame, getCurMpTitle, guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { setCurSkinToHangar, getRealSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN, USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByScreenSize, saveLocalByScreenSize, loadLocalUnitSettings, getRandUnitOptPath } = require("%scripts/clientState/localProfile.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask, needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares, canUseOnlyDailyFreeSpares } = require("%scripts/respawn/respawnState.nut")
-let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
-let { markUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText, getUnitSlotPriceText, getUnitSlotPriceHintText } = require("%scripts/slotbar/slotbarView.nut")
-let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
-let { quitMission } = require("%scripts/hud/startHud.nut")
-let { collectOrdersToActivate, showActivateOrderButton, enableOrders } = require("%scripts/items/orders.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
-let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { hasAvailableSlots } = require("%scripts/slotbar/hasAvailableSlots.nut")
-let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput } = require("%scripts/chat/mpChat.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
-let { isGroundAndAirMission, g_mission_type, isShipBattle } = require("%scripts/missions/missionType.nut")
-let { clearStreaks } = require("%scripts/streaks.nut")
-let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { guiStartAssistantMapQrWindow, isAssistantMapEnabled, isAssistantMapAvailable } = require("%scripts/assistantMapQr.nut")
-let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { addTagsForMpPlayers } = require("%scripts/chat/chatUtils.nut")
-let { DAILY_FREE_SPARE_UID } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
-let { getReleasedLocationSkin, getLocationInfantrySkins, getTierByMrank } = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertLevelNameToLocation } = require("%scripts/customization/infantryCamouflageUtils.nut")
-let { initOptions } = require("%scripts/options/initOptions.nut")
-let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
-let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange, getTacticalMapMarksSelectedFilters } = require("%scripts/respawn/mapMarkersFilter.nut")
-let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 
 let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
@@ -159,6 +166,7 @@ let currentZoneSpawnsDataQuery = ecs.SqQuery("currentZoneSpawnsDataQuery", {
   comps_ro=[["capture_zone__zoneId", ecs.TYPE_INT],
             ["infantry_spawn__owningTeam", ecs.TYPE_INT],
             ["capzone__hasEnemyInside", ecs.TYPE_BOOL],
+            ["infantry_spawn__hasEnoughSuppliesForSpawn", ecs.TYPE_BOOL],
             ["infantry_spawn__zoneName", ecs.TYPE_STRING],
             ["dynamic_respawn__prevPositions", ecs.TYPE_POINT3_LIST]]
 })
@@ -229,14 +237,15 @@ function getMouseRelativeCoordsOnObj(obj) {
   return null
 }
 
-let respawnWndState = persist("respawnWndState", @() {
+let hardPersist = mkHardPersist("respawn.respawn")
+let respawnWndState = hardPersist("respawnWndState", {
   lastCaAircraft = null
   needRaceFinishResults = false
   beforeFirstFlightInSession = false
   selectedUnitIdInCountry = null
   firstSessionUnits = {}
 })
-let usedPlanes = persist("usedPlanes", @() {})
+let usedPlanes = hardPersist("usedPlanes", {})
 
 function onMissionStartedMp(_) {
   log("on_mission_started_mp - CLIENT")
@@ -267,13 +276,11 @@ function onTacticalMapMarksFilterChange(objId, tName, value) {
 
 eventbus_subscribe("gui_start_respawn", gui_start_respawn)
 
-let needSkipAvailableCrewToSelect = persist("needSkipAvailableCrewToSelect", @() {value = false})
+local needSkipAvailableCrewToSelect = false
 
 let RespawnHandler = class (MPStatistics) {
   sceneBlkName = "%gui/respawn/respawn.blk"
-  widgetsList = [
-    { widgetId = DargWidgets.RESPAWN }
-  ]
+  getWidgetsList = @() [{ widgetId = DargWidgets.RESPAWN }, mkMpScoreWidget("1@bh + 0.03@scrn_tgt")]
 
   shouldBlurSceneBg = true
   shouldOpenCenteredToCameraInVr = true
@@ -570,6 +577,9 @@ let RespawnHandler = class (MPStatistics) {
       navBarObj.show(true)
       navBarObj["id"] = "nav-help"
       this.guiScene.replaceContent(navBarObj, "%gui/navRespawn.blk", this)
+      let userCardBtn = navBarObj.findObject("btn_usercard")
+      if (userCardBtn?.isValid())
+        userCardBtn.setValue(locByVendor("mainmenu/btnProfile"))
     }
 
     this.includeMissionInfoBlocksToGamercard()
@@ -1204,7 +1214,7 @@ let RespawnHandler = class (MPStatistics) {
     }
 
     let unit = getCrewUnit(crew)
-    let isAvailable = needSkipAvailableCrewToSelect.value
+    let isAvailable = needSkipAvailableCrewToSelect
       || ((isCrewAvailableInSession(crew, unit))
         && this.missionRules.isUnitEnabledBySessionRank(unit))
     if (unit && (isAvailable || !this.slotbarInited)) {  
@@ -1293,6 +1303,7 @@ let RespawnHandler = class (MPStatistics) {
                                          unit = unit
                                          canShowPrice = true
                                          canChangeWeaponry = canChangeWeaponry
+                                         getCurrentEdiff = Callback(@() this.getCurrentEdiff(), this)
                                          enableLoneFightersMode = this.missionTable?.enableLoneFightersMode
                                        })
 
@@ -1578,7 +1589,7 @@ let RespawnHandler = class (MPStatistics) {
       let zoneBase = RespawnBase(comp.capture_zone__zoneId, false, false, true)
       zoneBase.fillRespawnBaseData({
         name = comp.infantry_spawn__zoneName
-        isAvailable = comp.infantry_spawn__owningTeam == localTeam && !comp.capzone__hasEnemyInside
+        isAvailable = comp.infantry_spawn__owningTeam == localTeam && !comp.capzone__hasEnemyInside && comp.infantry_spawn__hasEnoughSuppliesForSpawn
       })
       respawnZoneBases.append(zoneBase)
     })
@@ -1947,7 +1958,7 @@ let RespawnHandler = class (MPStatistics) {
     }
 
     let cantSpawnReason = this.getCantSpawnReason(crew, silent)
-    if (!needSkipAvailableCrewToSelect.value && cantSpawnReason) {
+    if (!needSkipAvailableCrewToSelect && cantSpawnReason) {
       if (!silent)
         showInfoMsgBox(cantSpawnReason.text, cantSpawnReason.id, true)
       return null
@@ -2075,6 +2086,32 @@ let RespawnHandler = class (MPStatistics) {
     if (blockedWeaponText != "")
       return { text = blockedWeaponText, id = "weapon_unavailable_in_mode" }
 
+    let overrideBullets = getOverrideBullets(unit)
+    local reqAddMrank = getItemMrankReqAddMrank(unit, getWeaponByName(unit, getLastWeapon(unit.name)))
+    if (overrideBullets != null)
+      for (local i = 0; i < BULLETS_SETS_QUANTITY; i++) {
+        let modName = overrideBullets?[$"bullets{i}"] ?? ""
+        if (modName != "")
+          reqAddMrank = max(reqAddMrank, getItemMrankReqAddMrank(unit, getModificationByName(unit, modName)))
+      }
+    else if (unit == this.getCurSlotUnit())
+      foreach (bulGroup in (this.weaponsSelectorWeak?.getBulletsGroups() ?? [])) {
+        let { active, bulletsCount, selectedName, maxCntPerPilon = 1 } = bulGroup
+        if (!active || selectedName == "")
+          continue
+        if (bulGroup.canChangeBulletsCount() && bulletsCount * maxCntPerPilon <= 0)
+          continue
+        reqAddMrank = max(reqAddMrank, getItemMrankReqAddMrank(unit, getModificationByName(unit, selectedName)))
+      }
+    if (isMrankAddLocked(unit, reqAddMrank)) {
+      let ediff = this.getCurrentEdiff()
+      let unlockRank = calcBattleRatingFromRank(unit.getEconomicRank(ediff) + reqAddMrank)
+      return { text = loc("multiplayer/mrankLoadoutBlocked", {
+        minRank = format("%.1f", unlockRank)
+        curRank = format("%.1f", getUnitSelectedBattleRating(unit, ediff))
+      }), id = "loadout_unavailable_by_mrank" }
+    }
+
     if (this.missionRules.isWarpointsRespawnEnabled && this.isRespawn) {
       let respawnPrice = this.getRespawnWpTotalCost()
       if (respawnPrice > 0 && respawnPrice > this.sessionWpBalance)
@@ -2128,18 +2165,7 @@ let RespawnHandler = class (MPStatistics) {
     if (totalNuclearYield == 0)
       return false
 
-    let teamsTickets = get_mission_teams_tickets()
-    let scoreTeamA = (teamsTickets.teamA > 0) ? (missionInfo.scoreLimit - teamsTickets.teamA) : 0
-    let scoreTeamB = (teamsTickets.teamB > 0) ? (missionInfo.scoreLimit - teamsTickets.teamB) : 0
-    let sumScore = scoreTeamA + scoreTeamB
-    local escalationStage = 0
-    for (local stage = 1; stage <= 3; stage++) {
-      let stageScore = missionInfo[$"nuclearEscalationStage{stage}"]
-      if (stageScore > 0 && sumScore >= stageScore)
-        escalationStage = stage
-    }
-    let allowedYield = yieldLimitFromStage?[escalationStage] ?? 0
-    return totalNuclearYield > allowedYield
+    return totalNuclearYield > getAllowedNuclearYield(missionInfo)
   }
 
   function requestAircraftAndWeapon(requestData) {
@@ -3541,8 +3567,8 @@ function respawnInfoUpdated(data) {
 eventbus_subscribe("respawnInfoUpdated", respawnInfoUpdated)
 
 register_command(function() {
-  needSkipAvailableCrewToSelect.value = !needSkipAvailableCrewToSelect.value
-  log($"needSkipAvailableCrewToSelect = {needSkipAvailableCrewToSelect.value ? "true" : "false"}")
+  needSkipAvailableCrewToSelect = !needSkipAvailableCrewToSelect
+  log($"needSkipAvailableCrewToSelect = {needSkipAvailableCrewToSelect ? "true" : "false"}")
 }, "respawn.toggle_to_select_not_available_unit")
 
 register_command(function(universalSpareName) {
@@ -3590,7 +3616,7 @@ ecs.register_es("zone_spawner_block_", {
   }
 }, {
   comps_ro = [["infantry_spawn__zoneName", ecs.TYPE_STRING]],
-  comps_track = [["infantry_spawn__owningTeam", ecs.TYPE_INT], ["capzone__hasEnemyInside", ecs.TYPE_BOOL]]
+  comps_track = [["infantry_spawn__owningTeam", ecs.TYPE_INT], ["capzone__hasEnemyInside", ecs.TYPE_BOOL], ["infantry_spawn__hasEnoughSuppliesForSpawn", ecs.TYPE_BOOL]]
 })
 
 ecs.register_es("selected_human_weight_es", {

@@ -1,12 +1,12 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/misCustomRules/missionCustomState.nut" import registerMissionRules
+from "%scripts/misCustomRules/unitLimit.nut" import UnitLimitByUnitName
 from "blkGetters" import get_current_mission_info_cached
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
-let { UnitLimitByUnitName } = require("%scripts/misCustomRules/unitLimit.nut")
 
 let UnitsDeck = class (RuleBase) {
   needLeftRespawnOnSlots = true

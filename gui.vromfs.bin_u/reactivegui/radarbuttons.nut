@@ -1,9 +1,10 @@
+import "%rGui/control/gui_buttons.nut" as JB
 import "%rGui/hints/hints.nut" as hints
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%rGui/radarState.nut" import Irst, HasIrst, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX, IsRadarHudVisible
   , IsRadarHasFilters, IsEsm, HasMultipleSensorModes, ScanPatternsMax, DistanceScalesMax, ScanElevationMin, ScanElevationMax
   , ElevationMin, ElevationMax, ElevationHalfWidth
-from "%rGui/ctrlsState.nut" import showConsoleButtons, cursorVisible
+from "%rGui/ctrlsState.nut" import showConsoleButtons, cursorVisible, isEnableInput
 from "%rGui/hudState.nut" import isPlayingReplay, isUnitAlive, unitType
 from "%rGui/airState.nut" import HudColor
 from "%rGui/style/airHudStyle.nut" import adjustColorBrightness
@@ -23,7 +24,6 @@ from "types" import String
 
 let { modeNames } = require("%rGui/radarState.nut")
 let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
-let JB = require("%rGui/control/gui_buttons.nut")
 let { IFFFilter, typeFilter, filterPresets, ESMModeTypeFilter } = require("%rGui/radarFilters.nut")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
@@ -571,18 +571,14 @@ let cornerButton = @() {
   children = IsRadarVisible.get() ? mkIFFFilterButton : null
 }
 
-local moveMouseTimer = null
-function moveMouseOnGamepadNavEnabled(isNavEnabled, btnIdsToTryFocus) {
-  if (!isNavEnabled)
-    return
-  clearTimer(moveMouseTimer)
-  moveMouseTimer = setTimeout(0.1, function() { 
-    foreach (id in btnIdsToTryFocus) {
-      let isSuccess = move_mouse_cursor(id, false)
-      if (isSuccess)
-        break
-    }
-  })
+let canFocusOnGamepadNav = Computed(@() isRadarGamepadNavEnabled.get() && isEnableInput.get())
+
+function focusFirstNavButton(btnIdsToTryFocus) {
+  foreach (id in btnIdsToTryFocus) {
+    let isSuccess = move_mouse_cursor(id, false)
+    if (isSuccess)
+      break
+  }
 }
 
 function mkExitGamepadNavBtn() {
@@ -655,8 +651,8 @@ function filtersButtons(offsets) {
   return function() {
     let btnsConfig = getFilterButtonsConfig()
     let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkBaseButtonMini(btnData, idx))
-    let navShortcut = isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
-    let applyShortcut= isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
+    let navShortcut = isAir() ? const ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : const ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
+    let applyShortcut= isAir() ? const ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : const ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
 
     children.append(
       { behavior = Behaviors.Button
@@ -692,7 +688,7 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}, param
     if (btn?.focusOnGamepadNav || btn?.isAlwaysVisible)
       btnIdsToTryFocus.append(btn.id)
 
-  let handleGamepadNavChange = @(isEnabled) moveMouseOnGamepadNavEnabled(isEnabled, btnIdsToTryFocus)
+  let handleCanFocusChange = @(canFocus) canFocus ? focusFirstNavButton(btnIdsToTryFocus) : null
   return {
     key = {}
     size = FLEX
@@ -705,16 +701,14 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}, param
     ]
 
     function onAttach() {
-      moveMouseOnGamepadNavEnabled(isRadarGamepadNavEnabled.get(), btnIdsToTryFocus) 
-
+      handleCanFocusChange(canFocusOnGamepadNav.get())
       cursorVisible.subscribe(cleanupTooltipOnCursorHide)
-      isRadarGamepadNavEnabled.subscribe(handleGamepadNavChange)
+      canFocusOnGamepadNav.subscribe(handleCanFocusChange)
     }
     function onDetach() {
       tooltipCleanup()
-      clearTimer(moveMouseTimer)
       cursorVisible.unsubscribe(cleanupTooltipOnCursorHide)
-      isRadarGamepadNavEnabled.unsubscribe(handleGamepadNavChange)
+      canFocusOnGamepadNav.unsubscribe(handleCanFocusChange)
     }
   }
 }

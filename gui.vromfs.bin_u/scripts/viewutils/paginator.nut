@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "string" import format
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false) {
   if (!checkObj(nest_obj))
@@ -84,8 +83,8 @@ function paginator_set_unseen(nestObj, prevUnseen, nextUnseen) {
     nextObj.setValue(nextUnseen ?? "")
 }
 
-return {
+return freeze({
   generatePaginator
   hidePaginator
   paginator_set_unseen
-}
+})

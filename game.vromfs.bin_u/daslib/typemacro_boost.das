@@ -153,13 +153,8 @@ class TypeMacroMacro : AstFunctionAnnotation {
         compiling_module() |> add_structure(cls)
         return true
     }
-    def override patch(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool&) : bool { 
-        for (ann in func.annotations) {
-            if (ann.annotation.name == "typemacro_function") {
-                if (!(find_arg(ann.arguments, "patched") is nothing)) return true
-            }
-        }
-        
+    def override patch(var func : FunctionPtr; var group : ModuleGroup; var args : AnnotationArgumentList; progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool&) : bool {
+        if (find_arg(args, "patched") is tBool) return true
         if (length(func.arguments) < 2) {
             errors := "expecting at least 2 argumentst (macroArgument: TypeDeclPtr, passArgument: TypeDeclPtr)"
             return false
@@ -173,7 +168,6 @@ class TypeMacroMacro : AstFunctionAnnotation {
         var body = cvtFn.body as ExprBlock
         body.list |> clear
         var retCall = qmacro($c(func.name)(td, passT))
-        
         for (ai in range(2, length(func.arguments))) {
             let macroArgIndex = ai - 1
             assume argType = func.arguments[ai]._type
@@ -216,12 +210,8 @@ class TypeMacroMacro : AstFunctionAnnotation {
             return <- $e(retCall)
         }
         append_expressions(body, retExpr)
-        for (ann in func.annotations) {
-            if (ann.annotation.name == "typemacro_function") {
-                astChanged = true
-                ann.arguments |> add_annotation_argument("patched", true)
-            }
-        }
+        args |> add_annotation_argument("patched", true)
+        astChanged = true
         return true
     }
 }
@@ -240,10 +230,8 @@ def public make_typemacro_template_instance(instance_type, template_type : Struc
     for (e in ex) {
         extra.emplace((argname = e._0, argvalue = RttiValue(tString = e._1)), 0)
     }
-    unsafe {
-        var append_structure <- reinterpret<Structure?>(instance_type)
-        append_structure.append_annotation("typemacro_boost", "typemacro_template", extra)
-    }
+    var append_structure <- unsafe(reinterpret<Structure?>(instance_type))
+    append_structure.append_annotation("typemacro_boost", "typemacro_template", extra)
 }
 
 [macro_function]
@@ -351,61 +339,26 @@ class TemplateTypeMacroMacro : AstFunctionAnnotation {
     
     
     
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
-        
         if (length(func.arguments) < 2) {
             errors := "expecting at least 2 arguments (macroArgument: TypeDeclPtr, passArgument: TypeDeclPtr)"
             return false
         }
-        
         if (length(args) != 1) {
             errors := "expecting [typemacro_template(TemplateTypeName)]"
             return false
         }
         return true
     }
-    def override patch(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool&) : bool { 
-        for (ann in func.annotations) {
-            if (ann.annotation.name == "typemacro_template_function") {
-                if (!(find_arg(ann.arguments, "patched") is nothing)) return true
-            }
-        }
-        
+    def override patch(var func : FunctionPtr; var group : ModuleGroup; var args : AnnotationArgumentList; progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool&) : bool {
+        if (find_arg(args, "patched") is tBool) return true
         let template_type_name = string(args[0].name)
-        
         var body = func.body as ExprBlock
         body.list.clear()
-        
-        var aliasT = new TypeDecl(baseType = Type.alias, alias := template_type_name)
+        var aliasT = new TypeDecl(at = func.at, baseType = Type.alias, alias := template_type_name)
         body.list |> emplace_new <| qmacro_expr() {
             var template_type = typeinfo ast_typedecl(type<$t(aliasT)>)
         }
-        
         var mk_array_expr = new ExprMakeArray(at = func.at, makeType = new TypeDecl(baseType = Type.autoinfer))
         for (i in range(2, length(func.arguments))) {
             assume argType = func.arguments[i]._type
@@ -421,7 +374,6 @@ class TemplateTypeMacroMacro : AstFunctionAnnotation {
         body.list |> emplace_new <| qmacro_expr() {
             var template_arguments <- to_array_move($e(mk_array_expr))
         }
-        
         var mk_extra_array_expr = new ExprMakeArray(at = func.at, makeType = new TypeDecl(baseType = Type.autoinfer))
         for (i in range(2, length(func.arguments))) {
             assume argType = func.arguments[i]._type
@@ -443,7 +395,6 @@ class TemplateTypeMacroMacro : AstFunctionAnnotation {
                 var inscope extra_template_arguments <- to_array_move($e(mk_extra_array_expr))
             }
         }
-        
         body.list |> emplace_new <| qmacro_block() {
             if (passArgument != null) {
                 return null if (!is_typemacro_template_instance(passArgument, template_type, extra_template_arguments))
@@ -460,14 +411,8 @@ class TemplateTypeMacroMacro : AstFunctionAnnotation {
                 return resType
             }
         }
-        
+        args |> add_annotation_argument("patched", true)
         astChanged = true
-        for (ann in func.annotations) {
-            if (ann.annotation.name == "typemacro_template_function") {
-                astChanged = true
-                ann.arguments |> add_annotation_argument("patched", true)
-            }
-        }
         return true
     }
 }
@@ -489,12 +434,12 @@ class TemplateStructure : AstStructureAnnotation {
                     at = st.at
                 )
                 if (arg.basicType == Type.tBool) {
-                    argVar._type  = new TypeDecl(baseType = Type.alias, alias := "TypeDeclPtr")
+                    argVar._type  = new TypeDecl(at = st.at, baseType = Type.alias, alias := "TypeDeclPtr")
                 } elif (arg.basicType == Type.tInt) {
-                    argVar._type  = new TypeDecl(baseType = Type.tInt)
+                    argVar._type  = new TypeDecl(at = st.at, baseType = Type.tInt)
                     argVar.init = qmacro($v(arg.iValue))
                 } elif (arg.basicType == Type.tString) {
-                    argVar._type  = new TypeDecl(baseType = Type.tString)
+                    argVar._type  = new TypeDecl(at = st.at, baseType = Type.tString)
                     argVar.init = qmacro($v(string(arg.sValue)))
                 } else {
                     errors := "unsupported template argument {arg.name} type {arg.basicType}"
@@ -545,14 +490,12 @@ class TemplateTuple : AstStructureAnnotation {
             }
             argNames |> push(string(arg.name))
             var argVar <- new Variable(name := string(arg.name), at = st.at)
-            argVar._type = new TypeDecl(baseType = Type.alias, alias := "TypeDeclPtr")
+            argVar._type = new TypeDecl(at = st.at, baseType = Type.alias, alias := "TypeDeclPtr")
             ctxFnArguments.emplace(argVar)
         }
         let typeMacroFunctionName = string(st.name)
         let nFields = length(st.fields)
-        
-        var aliasT = new TypeDecl(baseType = Type.alias, alias := string(st.name))
-        
+        var aliasT = new TypeDecl(at = st.at, baseType = Type.alias, alias := string(st.name))
         var perFieldArgNameChecks : array<ExpressionPtr>
         for (i, fld in iter_range(st.fields), st.fields) {
             let fname = string(fld.name)
@@ -562,7 +505,6 @@ class TemplateTuple : AstStructureAnnotation {
                 }
             })
         }
-        
         var rulesStmts <- [for (an in argNames); qmacro_expr() {
             rules |> replaceTypeWithTypeDecl($v(an), clone_type($i(an)));
         }]
@@ -578,7 +520,6 @@ class TemplateTuple : AstStructureAnnotation {
                     return null
                 }
                 $b(perFieldArgNameChecks)
-                
                 var src_type_g = typeinfo ast_typedecl(type<$t(aliasT)>)
                 var src_g = src_type_g.structType
                 var template_arguments : array<TypeMacroTemplateArgument>
@@ -594,7 +535,6 @@ class TemplateTuple : AstStructureAnnotation {
                 }
                 return <- infer_template_types(passArgument, template_arguments)
             }
-            
             var src_type = typeinfo ast_typedecl(type<$t(aliasT)>)
             var src = src_type.structType
             var tt = new TypeDecl(baseType = Type.tTuple, at = macroArgument.at)
@@ -628,7 +568,6 @@ def private tsi_method_name(func : FunctionPtr) : string {
 
 [macro_function]
 def private tsi_bind_aliases(st : StructurePtr; var rules : Template) {
-    
     st |> for_each_structure_alias() $(var td) {
         rules |> replaceTypeWithTypeDecl(string(td.alias)) <| clone_type(td)
     }
@@ -667,12 +606,11 @@ def private tsi_bind_calls(var st : StructurePtr; temMethods : array<FunctionPtr
         }
         var callee = ""
         if (!tsi_callee_name(f.init, callee, errors)) return false
-        
         rules |> renameCall(slot, callee)
         callIdx |> push(i)
     }
     for (i in range(length(callIdx))) {
-        st.fields |> erase(callIdx[length(callIdx) - 1 - i]) 
+        st.fields |> erase(callIdx[length(callIdx) - 1 - i])
     }
     return true
 }
@@ -680,7 +618,6 @@ def private tsi_bind_calls(var st : StructurePtr; temMethods : array<FunctionPtr
 [macro_function]
 def private tsi_is_const_init(e : ExpressionPtr) : bool {
     if (is_expr_const(e)) return true
-    
     if (e is ExprOp1) {
         let op1 = e as ExprOp1
         return (op1.op == "-" || op1.op == "+") && is_expr_const(op1.subexpr)
@@ -705,7 +642,7 @@ def private tsi_bind_constants(var st : StructurePtr; var rules : Template; var 
         constIdx |> push(i)
     }
     for (i in range(length(constIdx))) {
-        st.fields |> erase(constIdx[length(constIdx) - 1 - i]) 
+        st.fields |> erase(constIdx[length(constIdx) - 1 - i])
     }
     return true
 }
@@ -736,18 +673,25 @@ def private tsi_apply_gates(var st : StructurePtr; consts : table<string; bool>;
         }
     }
     for (i in range(length(gateIdx))) {
-        st.fields |> erase(gateIdx[length(gateIdx) - 1 - i]) 
+        st.fields |> erase(gateIdx[length(gateIdx) - 1 - i])
     }
     return true
 }
 
 [macro_function]
-def private tsi_stamp_methods(var st : StructurePtr; tem : StructurePtr; temMethods : array<FunctionPtr>; ownMethods : table<string>; var rules : Template; var errors : das_string) : bool {
+def private tsi_is_stampable(func : FunctionPtr; mname : string; ownMethods : table<string>) : bool {
+    let owner = string(func.classParent.name)
+    let isCtor = mname == owner
+    let isFinalizer = func.name == "{owner}'__finalize"
+    let isAbstract = func.body == null
+    return !isCtor && !isFinalizer && !isAbstract && !key_exists(ownMethods, mname)
+}
+
+[macro_function, arch(at="ARCHITECTURE.md#typemacro-boost")]
+def private tsi_stamp_methods(var st : StructurePtr; temMethods : array<FunctionPtr>; ownMethods : table<string>; var rules : Template; var errors : das_string) : bool {
     if (empty(temMethods)) return true
-    let temName = string(tem.name)
     let instName = string(st.name)
     var mod = compiling_module()
-    
     for (func in temMethods) {
         let fn = string(func.name)
         let mname = tsi_method_name(func)
@@ -756,8 +700,7 @@ def private tsi_stamp_methods(var st : StructurePtr; tem : StructurePtr; temMeth
     }
     for (func in temMethods) {
         let mname = tsi_method_name(func)
-        
-        if (mname == temName || func.name == "{temName}'__finalize" || key_exists(ownMethods, mname)) {
+        if (!tsi_is_stampable(func, mname, ownMethods)) {
             continue
         }
         var fc <- clone_function(func)
@@ -773,7 +716,6 @@ def private tsi_stamp_methods(var st : StructurePtr; tem : StructurePtr; temMeth
             errors := "[template_struct_instance] can't add method {instName}`{mname}"
             return false
         }
-        
         let nann = fc.annotations |> length()
         for (i in range(nann)) {
             fc |> add_function_annotation(fc.annotations[i])
@@ -785,16 +727,16 @@ def private tsi_stamp_methods(var st : StructurePtr; tem : StructurePtr; temMeth
     return true
 }
 
-[macro_function]
-def private tsi_normalize_fields(var st : StructurePtr; var rules : Template) {
+[macro_function, arch(at="ARCHITECTURE.md#typemacro-boost")]
+def private tsi_normalize_fields(var st : StructurePtr; var rules : Template; above : StructurePtr) {
     for (f in st.fields) {
         f._type = apply_template(rules, f.at, clone_type(f._type))
         if (f.init != null) {
             f.init = apply_template(rules, f.at, clone_expression(f.init))
         }
-        
+        if (above != null && find_structure_field(above, string(f.name)) != null) continue
         f.flags.parentType = false
-        if (f.name == "__finalize" && f.init != null && f.init is ExprCast) {
+        if (f.init != null && f.init is ExprCast) {
             let c = f.init as ExprCast
             if (c.castType != null && c.castType.baseType == Type.autoinfer) {
                 f.init = clone_expression(c.subexpr)
@@ -803,24 +745,49 @@ def private tsi_normalize_fields(var st : StructurePtr; var rules : Template) {
     }
 }
 
+[structure_macro(name = "tsi_reified")]
+class TsiReified : AstStructureAnnotation {
+    
+    
+}
+
 [structure_macro(name = "template_struct_instance")]
 class TemplateStructInstance : AstStructureAnnotation {
     
     
+    
+    [arch(at="ARCHITECTURE.md#typemacro-boost")]
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (st.flags.isTemplate) {
-            return true 
+            return true
+        }
+        for (ann in st.annotations) {
+            if (ann.annotation.name == "tsi_reified") {
+                return true
+            }
         }
         if (st.parent == null || !st.parent.flags.isTemplate) {
             errors := "[template_struct_instance] {st.name} must derive from a struct template or a class template"
             return false
         }
-        var tem = st.parent
+        var chain : array<StructurePtr>
+        var above = st.parent
+        while (above != null && above.flags.isTemplate) {
+            chain |> push(above)
+            above = above.parent
+        }
         var mod = compiling_module()
         var temMethods, instMethods : array<FunctionPtr>
-        for_each_function(tem._module, "") $(func) {
-            if (func.flags.isClassMethod && func.classParent == tem) {
-                temMethods |> push(func)
+        var temNames : table<string>
+        for (tem in chain) {
+            for_each_function(tem._module, "") $(func) {
+                if (func.flags.isClassMethod && func.classParent == tem) {
+                    let mname = tsi_method_name(func)
+                    if (!key_exists(temNames, mname)) {
+                        temNames |> insert(mname)
+                        temMethods |> push(func)
+                    }
+                }
             }
         }
         for_each_function(mod, "") $(func) {
@@ -832,25 +799,26 @@ class TemplateStructInstance : AstStructureAnnotation {
         for (func in instMethods) {
             ownMethods |> insert(tsi_method_name(func))
         }
-        
         var rules : Template
         var instType = new TypeDecl(at = st.at, baseType = Type.tStructure, structType = st)
-        rules |> replaceStructWithTypeDecl(tem) <| clone_type(instType)
-        rules |> replaceTypeWithTypeDecl(string(tem.name)) <| clone_type(instType)
+        for (tem in chain) {
+            rules |> replaceStructWithTypeDecl(tem) <| clone_type(instType)
+            rules |> replaceTypeWithTypeDecl(string(tem.name)) <| clone_type(instType)
+        }
         tsi_bind_aliases(st, rules)
         var consts : table<string; bool>
         if (!tsi_bind_constants(st, rules, consts, errors)
                 || !tsi_apply_gates(st, consts, errors)
                 || !tsi_bind_calls(st, temMethods, rules, errors)
-                || !tsi_stamp_methods(st, tem, temMethods, ownMethods, rules, errors)) {
+                || !tsi_stamp_methods(st, temMethods, ownMethods, rules, errors)) {
             return false
         }
         for (func in instMethods) {
-            
             func.body = apply_template(rules, func.at, func.body, false)
         }
-        tsi_normalize_fields(st, rules)
-        st.parent = tem.parent 
+        tsi_normalize_fields(st, rules, above)
+        st.parent = above
+        st |> append_annotation("typemacro_boost", "tsi_reified", [])
         return true
     }
 }
@@ -860,7 +828,7 @@ def public is_custom_work_done(structType : Structure?) : bool {
     
     for (ann in structType.annotations) {
         if (ann.annotation.name == "template_structure") {
-            if (!(find_arg(ann.arguments, "custom_work_done") is nothing)) return true
+            if (find_arg(ann.arguments, "custom_work_done") is tBool) return true
         }
     }
     return false

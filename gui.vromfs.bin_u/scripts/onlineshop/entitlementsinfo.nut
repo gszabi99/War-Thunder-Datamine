@@ -1,3 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/onlineShop/onlineBundles.nut" import getBundlesBlockName
+from "%scripts/onlineShop/shopItemInfo.nut" import requestMultipleItems
+from "%sqstd/platform.nut" import isPC
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "eventbus" import eventbus_subscribe
@@ -6,12 +11,7 @@ from "dagor.http" import HTTP_SUCCESS
 from "json" import parse_json
 from "dagor.workcycle" import resetTimeout, clearTimer
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
-let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let logE = log_with_prefix("[ENTITLEMENTS INFO] ")
 
@@ -56,7 +56,7 @@ function requestBundlesShopInfo() {
 }
 
 function updateBundlesShopInfo() {
-  if (!isLoggedIn.get() || !isPlatformPC)
+  if (!isLoggedIn.get() || !isPC)
     return
 
   let bundlesList = GUI.get()?.bundles[getBundlesBlockName()]
@@ -156,6 +156,6 @@ addListenersWithoutEnv({
   EntitlementsPriceUpdated = @(_p) updateBundlesShopInfo()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   bundlesShopInfo
-}
+})

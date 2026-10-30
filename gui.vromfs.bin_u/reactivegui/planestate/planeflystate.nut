@@ -81,4 +81,4 @@ interopGen({
   postfix = "Update"
 })
 
-return planeState
+return freeze(planeState)

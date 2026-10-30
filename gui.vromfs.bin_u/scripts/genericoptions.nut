@@ -1,4 +1,31 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndWidgets/navigationPanel.nut" import navigationPanel
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj, select_editbox
+from "%scripts/clientState/saveProfile.nut" import saveProfile, forceSaveProfile
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDesc, buildConditionsConfig
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo
+from "%scripts/options/optionsExt.nut" import set_option, create_options_container, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR, USEROPT_TANK_ALT_CROSSHAIR, USEROPT_PS4_ONLY_LEADERBOARD, USEROPT_DISPLAY_MY_REAL_NICK
+  , USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES, USEROPT_USE_KILLSTREAKS
+  , USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS, USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET
+  , USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_HANGAR_SCENE, USEROPT_VSYNC_MODE
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/controls/startControls.nut" import gui_start_controls
+from "%scripts/missions/missionsStates.nut" import get_current_campaign, get_mission_settings
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/missions/missionsUtils.nut" import getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/unit/unitInfo.nut" import getNumberOfUnitsByYears
+from "%scripts/dynCampaign/campaignHelpers.nut" import getMissionTeamCountries
+from "%scripts/options/consoleSettings.nut" import getVSyncMode, setVSyncMode
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
@@ -14,32 +41,8 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, TANK_ALT_CROSSHAIR_ADD_NEW
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR, USEROPT_TANK_ALT_CROSSHAIR, USEROPT_PS4_ONLY_LEADERBOARD, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES, USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS, USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_HANGAR_SCENE, USEROPT_VSYNC_MODE } = require("%scripts/options/optionsExtNames.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { get_current_campaign, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { getNumberOfUnitsByYears } = require("%scripts/unit/unitInfo.nut")
-let { getMissionTeamCountries } = require("%scripts/dynCampaign/campaignHelpers.nut")
-let { getVSyncMode, setVSyncMode } = require("%scripts/options/consoleSettings.nut")
 
 function get_country_by_team(team_index) {
   local countries = null
@@ -57,7 +60,7 @@ let GenericOptions = class (BaseGuiHandlerWT) {
   options = null
   optionsConfig = null 
   optionsContainers = null
-  applyFunc = null
+  applyFunc = null 
   cancelFunc = null
   forcedSave = false
 
@@ -110,15 +113,22 @@ let GenericOptions = class (BaseGuiHandlerWT) {
 
   function applyReturn() {
     if (this.applyFunc != null)
-      this.applyFunc()
+      this.applyFunc(this)
     else
       base.goBack()
   }
 
+  isOptionsContainerShown = @(container) this.getObj(container.name) != null
+
+  
+  function getOptionControlValue(option) {
+    let obj = this.getObj(option.id)
+    return checkObj(obj) ? obj.getValue() : null
+  }
+
   function doApply() {
     foreach (container in this.optionsContainers) {
-      let objTbl = this.getObj(container.name)
-      if (objTbl == null)
+      if (!this.isOptionsContainerShown(container))
         continue
 
       foreach (_idx, option in container.data) {
@@ -126,14 +136,14 @@ let GenericOptions = class (BaseGuiHandlerWT) {
            option.controlType == optionControlType.BUTTON)
           continue
 
-        let obj = this.getObj(option.id)
-        if (!checkObj(obj)) {
+        let value = this.getOptionControlValue(option)
+        if (value == null) {
           script_net_assert_once("Bad option",
             $"Error: not found obj for option {option.id}, type = {option.type}")
           continue
         }
 
-        if (!set_option(option.type, obj.getValue(), option))
+        if (!set_option(option.type, value, option))
           return false
       }
     }
@@ -256,15 +266,16 @@ let GenericOptions = class (BaseGuiHandlerWT) {
     return obj
   }
 
-  function showOptionRow(option, show) {
+  showOptionRow = @(option, show) this.setOptionRowShown(option, show)
+
+  function setOptionRowShown(option, show) {
     let obj = this.getOptionObj(option)
     if (obj == null)
-      return false
+      return
 
     let isInactive = !show || option.controlType == optionControlType.HEADER
     obj.show(show)
     obj.inactive = isInactive ? "yes" : null
-    return true
   }
 
   function enableOptionRow(option, status) {
@@ -273,6 +284,17 @@ let GenericOptions = class (BaseGuiHandlerWT) {
       return
 
     obj.enable(status)
+  }
+
+  showSceneItem = @(id, show) showObjById(id, show, this.scene)
+
+  function setOptionsGroupInactive(groupId, isInactive) {
+    let listObj = this.getObj("groups_list")
+    if (!checkObj(listObj))
+      return
+    let tabObj = listObj.findObject(groupId)
+    if (checkObj(tabObj))
+      tabObj.inactive = isInactive ? "yes" : "no"
   }
 
   function onNumPlayers(obj) {
@@ -341,7 +363,7 @@ let GenericOptions = class (BaseGuiHandlerWT) {
 
   function onPTTChange(obj) {
     set_option_ptt(get_option(USEROPT_PTT).value ? 0 : 1);
-    showObjById("ptt_buttons_block", obj.getValue(), this.scene)
+    this.showSceneItem("ptt_buttons_block", obj.getValue())
   }
 
   function onVoicechatChange(_obj) {
@@ -472,12 +494,7 @@ let GenericOptions = class (BaseGuiHandlerWT) {
           set_option(USEROPT_VOICE_CHAT, false)
       }
 
-      let listObj = this.scene.findObject("groups_list")
-      if (checkObj(listObj)) {
-        let voiceTabObj = listObj.findObject("voicechat")
-        if (checkObj(voiceTabObj))
-          voiceTabObj.inactive = value ? "no" : "yes"
-      }
+      this.setOptionsGroupInactive("voicechat", !value)
     }
   }
 
@@ -516,8 +533,7 @@ let GenericOptions = class (BaseGuiHandlerWT) {
     let option = this.get_option_by_id(optName) || get_option(optName)
     if (option.values.len() == 0)
       return null
-    let obj = this.isValid() ? this.scene.findObject(option.id) : null
-    let value = obj?.isValid() ? obj.getValue() : option.value
+    let value = (this.isValid() ? this.getOptionControlValue(option) : null) ?? option.value
     if (value in option.values)
       return option.values[value]
     return option.values[option.value]
@@ -714,7 +730,8 @@ let GenericOptions = class (BaseGuiHandlerWT) {
       this.showOptionRow(option, isBotsAllowed)
   }
 
-  function updateOptionValueCallback(obj) { 
+  
+  function updateOptionValueCallback(obj) {
     let option = this.get_option_by_id(obj?.id)
     if (option == null)
       return
@@ -792,7 +809,7 @@ let GenericOptionsModal = class (GenericOptions) {
         
         headerHeight      = "1@buttonHeight"
       })
-    this.registerSubHandler(this.navigationHandlerWeak)
+    this.registerSubHandler(handler)
     this.navigationHandlerWeak = handler.weakref()
   }
 
@@ -827,10 +844,10 @@ let GenericOptionsModal = class (GenericOptions) {
       rowObj.scrollToView(true)
   }
 
-  function resetNavigation() {
-    if (this.navigationHandlerWeak)
-      this.navigationHandlerWeak.setNavItems([])
-  }
+  getNavItems = @() this.navigationHandlerWeak?.getNavItems() ?? []
+  setNavItems = @(items) this.navigationHandlerWeak?.setNavItems(items)
+  getCurrentNavItem = @() this.navigationHandlerWeak?.getCurrentItem()
+  setCurrentNavItem = @(item) this.navigationHandlerWeak?.setCurrentItem(item)
 
   function onTblSelect(_obj) {
     this.checkCurrentNavigationSection()
@@ -846,7 +863,7 @@ let GenericOptionsModal = class (GenericOptions) {
   }
 
   function checkCurrentNavigationSection() {
-    let navItems = this.navigationHandlerWeak.getNavItems()
+    let navItems = this.getNavItems()
     if (navItems.len() < 2)
       return
 
@@ -860,7 +877,7 @@ let GenericOptionsModal = class (GenericOptions) {
 
     foreach (navItem in navItems) {
       if (navItem.id == currentHeader.id) {
-        this.navigationHandlerWeak.setCurrentItem(navItem)
+        this.setCurrentNavItem(navItem)
         return
       }
     }
@@ -907,10 +924,8 @@ let GenericOptionsModal = class (GenericOptions) {
         this.headersToOptionsList[lastHeader].append(option)
     }
 
-    if (this.navigationHandlerWeak) {
-      this.navigationHandlerWeak.setNavItems(headersItems)
-      this.checkCurrentNavigationSection()
-    }
+    this.setNavItems(headersItems)
+    this.checkCurrentNavigationSection()
   }
 
   function goBack() {
@@ -930,4 +945,4 @@ let GenericOptionsModal = class (GenericOptions) {
 }
 register_gui_handler("GenericOptionsModal", GenericOptionsModal)
 
-return { GenericOptions, GenericOptionsModal }
+return freeze({ GenericOptions, GenericOptionsModal })

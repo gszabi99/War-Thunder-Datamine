@@ -1,3 +1,26 @@
+import "%scripts/user/newbieTutorialDisplay.nut" as tutorialModule
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/researches/finishedResearches.nut" import researchUnitNotification
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/shop/shop.nut" import ShopMenuHandler
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unit/unitActions.nut" import research, flushExcessExpToUnit, CheckFeatureLockAction, checkFeatureLock
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton, placePriceTextToButton
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%appGlobals/clientState/touchScreen.nut" import isSmallScreen
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitReqExp, getUnitExp, getUnitCost
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched, isPrevUnitBought
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/guiBox.nut" import GuiBox
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_natives.nut" import shop_get_country_excess_exp, shop_get_researchable_unit_name, is_era_available, shop_reset_researchable_unit, set_char_cb
@@ -5,30 +28,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { researchUnitNotification } = require("%scripts/researches/finishedResearches.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let { research, flushExcessExpToUnit, CheckFeatureLockAction, checkFeatureLock } = require("%scripts/unit/unitActions.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitReqExp, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched, isPrevUnitBought } = require("%scripts/unit/unitStatus.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { GuiBox } = require("%scripts/guiBox.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let ShopCheckResearch = class (ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -493,4 +493,4 @@ let ShopCheckResearch = class (ShopMenuHandler) {
 }
 register_gui_handler("ShopCheckResearch", ShopCheckResearch)
 
-return { ShopCheckResearch }
+return freeze({ ShopCheckResearch })

@@ -1,20 +1,21 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
 import "DataBlock" as DataBlock
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/social/crossplay.nut" import getTextWithCrossplayIcon, needShowCrossPlayInfo
+from "%scripts/userLog/userlogUtils.nut" import saveOnlineJob
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/invites/invites.nut" import INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePopup, showLeaveSessionFirstPopup, addTournamentBattleInvite
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinBattle
 from "chard" import get_charserver_time_sec
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePopup, showLeaveSessionFirstPopup, addTournamentBattleInvite } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 
 let knownTournamentInvites = []
 
@@ -109,7 +110,7 @@ let TournamentBattle = class (BaseInvite) {
     if (!isMultiplayerPrivilegeAvailable.get())
       return loc("xbox/noMultiplayer")
     if (!this.isAvailableByCrossPlay())
-      return loc("xbox/crossPlayRequired")
+      return locByVendor("xbox/crossPlayRequired")
 
     return loc("invite/session/cant_apply_in_flight")
   }
@@ -133,7 +134,7 @@ let TournamentBattle = class (BaseInvite) {
       return
 
     if (!this.isAvailableByCrossPlay())
-      return addPopup(null, loc("xbox/crossPlayRequired"))
+      return addPopup(null, locByVendor("xbox/crossPlayRequired"))
 
     log($"Invites: Tournament: Going to join to battleId({this.battleId}) via accepted invite")
     joinBattle(this.battleId)

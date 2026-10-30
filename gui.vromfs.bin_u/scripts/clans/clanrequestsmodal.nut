@@ -1,22 +1,22 @@
+import "%scripts/clans/clanContextMenu.nut" as clanContextMenu
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/clans/clanActions.nut" import approvePlayerRequest, rejectPlayerRequest
+from "%scripts/clans/clanInfo.nut" import getMyClanRights
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
-let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { approvePlayerRequest, rejectPlayerRequest } = require("%scripts/clans/clanActions.nut")
-let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 let clan_candidate_list = [
   { id = "nick", type = lbDataType.NICK }

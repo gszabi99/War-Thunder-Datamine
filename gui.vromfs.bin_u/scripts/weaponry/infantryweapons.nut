@@ -1,3 +1,10 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import getWeaponryCustomPresets
+from "%scripts/weaponry/weaponryPresets.nut" import isCustomPreset, CUSTOM_PRESET_PREFIX, getUnitPresets, INF_MAX_SOLDIERS_COUNT, INF_ADD_SOLDIERS_COUNT, getUnitWeaponSlots
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%scripts/weaponry/infantryTemplates.nut" import getUnitTemplateNames
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%globalScripts/templates.nut" import getTemplateCompValue
 from "%sqstd/datablock.nut" import blkFromPath, convertBlk
@@ -6,15 +13,8 @@ from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
 
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { weaponsItem } = require("%scripts/weaponry/weaponryConsts.nut")
-let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { isCustomPreset, CUSTOM_PRESET_PREFIX, getUnitPresets, INF_MAX_SOLDIERS_COUNT, INF_ADD_SOLDIERS_COUNT, getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 
 let isEqualWeapon = @(a, b) a.name == b.name
 

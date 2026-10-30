@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let { getNumberOfRegisteredWindows } = require("%daeditor/components/window.nut")
+let { getModalZOrder } = require("%daeditor/components/window.nut")
 
 let WND_PARAMS = const {
   key = null 
@@ -36,11 +36,16 @@ function removeModalWindow(key): bool {
   return true
 }
 
+
+
+let getTopZOrder = @() modalWindows.len() > 0 ? modalWindows.top().zOrder : getModalZOrder() - 1
+let getPopupZOrder = @() getTopZOrder() + 1
+
 local lastWndIdx = 0
 function addModalWindow(wnd = null) {
   wnd = WND_PARAMS.__merge(wnd ?? {})
   if (wnd?.zOrder == null) {
-    wnd.zOrder <- getNumberOfRegisteredWindows() + 1
+    wnd.zOrder <- getTopZOrder() + 2
   }
   if (wnd.key != null)
     removeModalWindow(wnd.key)
@@ -69,6 +74,7 @@ let modalWindowsComponent = @() {
 
 return {
   addModalWindow
+  getPopupZOrder
   removeModalWindow
   hideAllModalWindows
   modalWindowsComponent

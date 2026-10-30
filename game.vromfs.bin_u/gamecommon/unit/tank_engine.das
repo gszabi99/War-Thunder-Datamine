@@ -22,9 +22,9 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
                            tank_engine__overheatDamageType : int;
                            tank_engine__overheatOffender : OffenderData;
                            tank_engine__brokenRadiatorFxEventId : int;
-                           repair_system_remaining_repair_time : float;
                            var tank_engine__overheat : bool&;
-                           var tank_engine__overheatDamageTime : float&)
+                           var tank_engine__overheatDamageTime : float&;
+                           repair_system_remaining_repair_time : float = -1.0f)
   let unit = unit__ref.unit
   if unit.isDelayed
     return

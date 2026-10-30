@@ -1,3 +1,4 @@
+import "%scripts/time.nut" as time
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/datablock.nut" import getBlkValueByPath
 from "dagor.time" import unixtime_to_utc_timetbl
@@ -6,8 +7,6 @@ from "blkGetters" import get_clan_rewards_blk
 from "%scripts/dagui_natives.nut" import clan_get_current_season_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
-
-let time = require("%scripts/time.nut")
 
 local rewardsBlk = null 
 
@@ -304,7 +303,7 @@ addListenersWithoutEnv({
   SignOut = @(_) rewardsBlk = null
 })
 
-return {
+return freeze({
   isClanSeasonsEnabled
   getShowInSquadronStatistics
   getClanCurrentSeasonName
@@ -313,4 +312,4 @@ return {
   getClanSeasonUniquePrizesCounts
   getClanSeasonFirstPrizePlacesRewards
   getClanSeasonRewardsList
-}
+})

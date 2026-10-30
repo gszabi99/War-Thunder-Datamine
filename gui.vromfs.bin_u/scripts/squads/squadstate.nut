@@ -1,12 +1,11 @@
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/user/nameMapping.nut" import getRealName
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isMpSquadChatAllowed
 from "matching.errors" import INVALID_SQUAD_ID
 from "%sqstd/platform.nut" import getPlatformAlias
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, get_cyber_cafe_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, squadMemberState, squadStatusUpdateState, SQUAD_REQEST_TIMEOUT
-
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getRealName } = require("%scripts/user/nameMapping.nut")
-let { isMpSquadChatAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 
 

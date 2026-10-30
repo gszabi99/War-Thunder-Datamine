@@ -1,4 +1,16 @@
 import "sony.social" as psnSocial
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne, isPlayerFromPS4
+from "%scripts/user/externalIdsService.nut" import reqPlayerExternalIDsByUserId
+from "%scripts/chat/chatStates.nut" import getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
+from "%scripts/user/xboxFeatures.nut" import isMultiplayerPrivilegeAvailable
+from "%scripts/contacts/contactsListState.nut" import blockedMeUids, cacheContactByName, clanUserTable
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/profileStates.nut" import userName, userIdStr, userIdInt64
+from "%scripts/gdk/permissions.nut" import can_we_text_user, CommunicationState
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/events/eventTexts.nut" import getEventNameText
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
+from "%scripts/chat/chatUtils.nut" import filterNameFromHtmlCodes
 from "%sqStdLibs/helpers/u.nut" import isEmpty, isInteger
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqstd/platform.nut" import is_gdk
@@ -9,19 +21,8 @@ from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS
 
-let { isPlayerFromXboxOne, isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
-let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { contactsByGroups, blockedMeUids, cacheContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { can_we_text_user, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { getEventNameText } = require("%scripts/events/eventTexts.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
 
 class Contact {
   name = ""

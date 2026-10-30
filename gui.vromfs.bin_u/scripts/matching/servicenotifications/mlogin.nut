@@ -1,10 +1,9 @@
+from "%scripts/matching/api.nut" import matchingRpcSubscribe
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/onlineInfo/onlineInfo.nut" import totalRooms, totalPlayers, syncMatchingServerTime
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
-
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { totalRooms, totalPlayers, syncMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 
 local lastShowUpdatePopupTime = -60000
 

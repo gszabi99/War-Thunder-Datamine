@@ -13,4 +13,4 @@ ecs.register_es("total_medkits_ui",{
   comps_rq=["controlledHero"]
 })
 
-return { selfHealMedkits }
+return freeze({ selfHealMedkits })

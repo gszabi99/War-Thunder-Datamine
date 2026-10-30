@@ -19,7 +19,7 @@ function flyDirectionAVQ7(width, height) {
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 0, 0, 20, 20],
       [VECTOR_LINE, -50, 0, -20, 0],
       [VECTOR_LINE, 20, 0, 50, 0]
@@ -35,7 +35,7 @@ function speedometer(width, height) {
     size = FLEX
     lineWidth = baseLineWidth * IlsLineScale.get()
     color = IlsColor.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, -35, -20, -33, -20],
       [VECTOR_LINE, -35, -16, -35, -16],
       [VECTOR_LINE, -35, -12, -35, -12],
@@ -83,7 +83,7 @@ let altmeterGrid = @() {
   size = FLEX
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 100, 0],
     [VECTOR_LINE, 40, 10, 40, 10],
     [VECTOR_LINE, 40, 20, 40, 20],
@@ -129,7 +129,7 @@ let climbMark = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * 0.5 * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 100, 50, 100, -50],
     [VECTOR_LINE, 100, 50, 0, 0],
     [VECTOR_LINE, 100, -50, 0, 0]
@@ -151,20 +151,18 @@ function altmeter(width, height) {
         size = const [pw(100), ph(20)]
         flow = FLOW_VERTICAL
         padding = const [10, 0]
-        children = [
-          @() {
-            size = FLEX
-            watch = IlsColor
-            rendObj = ROBJ_VECTOR_CANVAS
-            lineWidth = baseLineWidth * IlsLineScale.get()
-            color = IlsColor.get()
-            commands = [
-              [VECTOR_LINE, 0, 100, 100, 100],
-              [VECTOR_LINE, 100, 100, 100, 50]
-            ]
-            children = [thousands]
-          }
-        ]
+        children = @() {
+          size = FLEX
+          watch = IlsColor
+          rendObj = ROBJ_VECTOR_CANVAS
+          lineWidth = baseLineWidth * IlsLineScale.get()
+          color = IlsColor.get()
+          commands = const [
+            [VECTOR_LINE, 0, 100, 100, 100],
+            [VECTOR_LINE, 100, 100, 100, 50]
+          ]
+          children = thousands
+        }
       }
     ]
   }
@@ -176,42 +174,37 @@ function generatePitchLine(num) {
   return {
     size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, 0, 0, 34, 0],
-          [VECTOR_LINE, 66, 0, 100, 0]
-        ]
-        children = [angleTxt(-5, true, Fonts.usa_ils), angleTxt(-5, false, Fonts.usa_ils)]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = 10
-        commands = [
-          [VECTOR_LINE, 0, 5 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, 7, 0],
-          [VECTOR_LINE, 15, 0, 21, 0],
-          [VECTOR_LINE, 28, 0, 34, 0],
-          [VECTOR_LINE, 100, 5 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, 93, 0],
-          [VECTOR_LINE, 85, 0, 79, 0],
-          [VECTOR_LINE, 72, 0, 66, 0]
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, Fonts.usa_ils), angleTxt(newNum, false, Fonts.usa_ils)] : null
-      }
-    ]
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, 0, 0, 34, 0],
+        [VECTOR_LINE, 66, 0, 100, 0]
+      ]
+      children = [angleTxt(-5, true, Fonts.usa_ils), angleTxt(-5, false, Fonts.usa_ils)]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = 10
+      commands = [
+        [VECTOR_LINE, 0, 5 * sign, 0, 0],
+        const [VECTOR_LINE, 0, 0, 7, 0],
+        const [VECTOR_LINE, 15, 0, 21, 0],
+        const [VECTOR_LINE, 28, 0, 34, 0],
+        [VECTOR_LINE, 100, 5 * sign, 100, 0],
+        const [VECTOR_LINE, 100, 0, 93, 0],
+        const [VECTOR_LINE, 85, 0, 79, 0],
+        const [VECTOR_LINE, 72, 0, 66, 0]
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, Fonts.usa_ils), angleTxt(newNum, false, Fonts.usa_ils)] : null
+    }
   }
 }
 
@@ -249,12 +242,12 @@ let maverickAimMark = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, -100, -100, 100, -100],
-    [VECTOR_LINE, -100, -100, -100, 100],
-    [VECTOR_LINE, 100, 100, -100, 100],
-    [VECTOR_LINE, 100, 100, 100, -100],
-    (!IlsAtgmLocked.get() ? [VECTOR_LINE, 0, 0, 0, 0] : [VECTOR_LINE, -90, -90, 90, 90]),
-    (IlsAtgmLocked.get() ? [VECTOR_LINE, -90, 90, 90, -90] : [])
+    const [VECTOR_LINE, -100, -100, 100, -100],
+    const [VECTOR_LINE, -100, -100, -100, 100],
+    const [VECTOR_LINE, 100, 100, -100, 100],
+    const [VECTOR_LINE, 100, 100, 100, -100],
+    (!IlsAtgmLocked.get() ? const [VECTOR_LINE, 0, 0, 0, 0] : const [VECTOR_LINE, -90, -90, 90, 90]),
+    (IlsAtgmLocked.get() ? const [VECTOR_LINE, -90, 90, 90, -90] : const [])
   ]
   behavior = Behaviors.RtPropUpdate
   update = @() {
@@ -267,7 +260,7 @@ let maverickAimMark = @() {
 let maverickAim = @() {
   watch = IlsAtgmTrackerVisible
   size = FLEX
-  children = IlsAtgmTrackerVisible.get() ? [maverickAimMark] : []
+  children = IlsAtgmTrackerVisible.get() ? maverickAimMark : null
 }
 
 let adlMarker = @() {
@@ -276,7 +269,7 @@ let adlMarker = @() {
   size = const [pw(3), ph(3)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, -40, 0],
     [VECTOR_LINE, 0, -100, 0, -40],
     [VECTOR_LINE, 100, 0, 40, 0],
@@ -321,7 +314,7 @@ function pullupAnticipation(height) {
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, -100, 100, 100, 100],
       [VECTOR_LINE, -100, 100, -100, 0],
       [VECTOR_LINE, 100, 100, 100, 0]
@@ -398,7 +391,7 @@ function ilsAVQ7(width, height, have_bombing_mode, have_ccip_mode) {
   }
 }
 
-return {
+return freeze({
   ilsAVQ7
   AVQ7CCRP = rotatedBombReleaseReticle
-}
+})

@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "french_gunner_char",
@@ -2395,7 +2401,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_Bofors_L60_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_Bofors_L60_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2458,7 +2464,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2500,7 +2506,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_02",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_02_dm",
@@ -2543,8 +2549,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_lvt_bofors_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_lvt_bofors_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

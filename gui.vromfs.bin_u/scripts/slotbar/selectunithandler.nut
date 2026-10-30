@@ -1,38 +1,39 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/slotbar/guiStartSelectingCrew.nut" as guiStartSelectingCrew
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import setTranspRecursive
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj, toPixels
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import canAssignInSlot, setUnit
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/shop/shopUnitsInfo.nut" import hasDefaultUnitsInCountry
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK, USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, canChangeCrewUnits
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar
+from "%scripts/slotbar/slotbarStateData.nut" import getBestTrainedCrewIdxForUnit
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode, getCurrentGameModeEdiff
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getSessionLobbyMissionNameLoc
+from "%scripts/wndLib/nameFilterHandler.nut" import loadNameFilterHandler
+from "%scripts/shop/shopSearchCore.nut" import isUnitLocNameMatchSearchStr
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { setTranspRecursive } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_obj, toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
-let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK, USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST } = require("%scripts/options/optionsExtNames.nut")
-let { isInSessionRoom, canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarView.nut")
-let { getBestTrainedCrewIdxForUnit } = require("%scripts/slotbar/slotbarStateData.nut")
-let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
-let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { loadNameFilterHandler } = require("%scripts/wndLib/nameFilterHandler.nut")
-let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 
 function isUnitInCustomList(unit, params) {
@@ -742,7 +743,7 @@ local class SelectUnitHandler (BaseGuiHandlerWT) {
 
 register_gui_handler("SelectUnitHandler", SelectUnitHandler)
 
-return {
+return freeze({
   SelectUnitHandler
   open = @(crew, slotbar) get_cur_gui_scene().performDelayed({},
     function() {
@@ -753,4 +754,4 @@ return {
       handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
     })
   getParamsFromSlotbarConfig = getParamsFromSlotbarConfig
-}
+})

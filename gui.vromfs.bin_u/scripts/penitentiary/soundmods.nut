@@ -41,8 +41,8 @@ function showMsgboxIfSoundModsBanksCheckFailed() {
     ], null)
 }
 
-return {
+return freeze({
   showMsgboxIfSoundModsNotAllowed
   showMsgboxIfSoundModsForceDisabled
   showMsgboxIfSoundModsBanksCheckFailed
-}
+})

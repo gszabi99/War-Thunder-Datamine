@@ -9,14 +9,54 @@ from "dagor.localize" import loc
 from "%sqstd/string.nut" import isStringFloat
 from "math" import min, max, clamp
 from "scriptRespondent" import registerRespondent
-
-require("%sqstd/globalState.nut").setUniqueNestKey("dagui")
+from "modules" import on_module_unload
+from "nestdb" import ndbWrite, ndbTryRead, ndbDelete
+from "eventbus" import eventbus_subscribe
+from "dagor.system" import DBGLEVEL
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%sqstd/globalState.nut" import hardPersistWatched, hardPersist, setUniqueNestKey, setHardPersistPlainDataCheck
+setUniqueNestKey(require_optional("daRg") == null ? "dagui" : "darg")
+setHardPersistPlainDataCheck(DBGLEVEL > 0)
 let log = require("%globalScripts/logs.nut")
+
+
+
+
+let mkHardPersistWatched = @(moduleId) @(name, def = null) hardPersistWatched($"{moduleId}.{name}", def)
+let mkHardPersist = @(moduleId) @(name, def = null) hardPersist($"{moduleId}.{name}", def)
+
+local isAppExiting = false
+eventbus_subscribe("app.shutdown", @(_) isAppExiting = true)
+
+
+
+function hardPersistOnUnload(moduleId, name, getPlain) {
+  let key = ["daguiState", moduleId, name] 
+  let stored = ndbTryRead(key)
+  ndbDelete(key)
+  on_module_unload(function(is_closing) {
+    if (!is_closing || isAppExiting) 
+      return
+    try {
+      ndbWrite(key, getPlain())
+    }
+    catch (e) {
+      log.logerr($"{moduleId}.{name} is not stored for the hard reload: {e}")
+    }
+  })
+  return stored
+}
+
+function mkWatchedClearedOnReload(value = null) {
+  let res = Watched(value)
+  on_module_unload(@(is_closing) is_closing ? null : res.set(null))
+  return res
+}
+
 let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { toPixels, showObjById, showObjectsByTable, ALIGN } = require("%scripts/sqDagui/daguiUtil.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 let nativeApi = require("%scripts/sqDagui/daguiNativeApi.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
 let { scene_msg_box, destroyMsgBox, showInfoMsgBox } = require("%scripts/sqDagui/framework/msgBox.nut")
@@ -101,7 +141,7 @@ function registerForNativeCall(name, func){
  registerRespondent(name, func)
 }
 
-return log.__merge(nativeApi, sharedEnums, {
+return freeze(log.__merge(nativeApi, sharedEnums, {
   min
   max
   clamp
@@ -134,6 +174,10 @@ return log.__merge(nativeApi, sharedEnums, {
   Computed
   mkWatched
   WatchedRo
+  mkHardPersistWatched
+  mkHardPersist
+  hardPersistOnUnload
+  mkWatchedClearedOnReload
 
   
   kwarg
@@ -143,4 +187,4 @@ return log.__merge(nativeApi, sharedEnums, {
   getAircraftByName
 
   ALIGN
-})
+}))

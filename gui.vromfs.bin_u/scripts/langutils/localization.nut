@@ -1,16 +1,10 @@
 import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import isSony
 from "dagor.localize" import getLocTextForLang
 from "string" import split_by_chars
 from "%scripts/dagui_natives.nut" import get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let {
-  getPreferredVersion = @() -1
-} = isPlatformSony
-  ? require("%sonyLib/webApi.nut")
-  : null
 
 local unlocksPunctuationWithoutSpace = ","
 let setUnlocksPunctuationWithoutSpace = @(p)
@@ -49,7 +43,7 @@ function getLocIdsArray(keyValue) {
 }
 
 function getLocalizedTextWithAbbreviation(locId) {
-  if (!locId)
+  if (!locId || !isSony)
     return {}
 
   let locBlk = DataBlock()
@@ -58,7 +52,7 @@ function getLocalizedTextWithAbbreviation(locId) {
   if (!locBlk || ("abbreviation_languages_table" not in locBlk))
     return {}
 
-  let abbreviationsList = locBlk.abbreviation_languages_table?[getPreferredVersion().tostring()] ?? DataBlock()
+  let abbreviationsList = locBlk.abbreviation_languages_table
 
   let output = {}
   for (local i = 0; i < abbreviationsList.paramCount(); i++) {
@@ -67,8 +61,8 @@ function getLocalizedTextWithAbbreviation(locId) {
       continue
 
     let abbrevName = abbreviationsList.getParamName(i)
-    let text = locId.len() > 1 ? getLocTextForLang(locId, param) : locId
-    if (text == null) {
+    let text = locId.len() > 1 ? getLocTextForLang(locId, param, "") : locId
+    if (text == "") {
       log($"Error: not found localized text for locId = '{locId}', lang = '{param}'")
       continue
     }
@@ -79,12 +73,7 @@ function getLocalizedTextWithAbbreviation(locId) {
   return output
 }
 
-function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
-  let localizedKeyWords = {}
-  if ("requireLocalization" in customFeedParams)
-    foreach (name in customFeedParams.requireLocalization)
-      localizedKeyWords[name] <- getLocalizedTextWithAbbreviation(customFeedParams[name])
-
+function getFilledFeedTextByLang(locIdsArray) {
   let localizedTables = {}
   foreach (locId in locIdsArray) {
     let table = getLocalizedTextWithAbbreviation(locId)
@@ -95,25 +84,19 @@ function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
     }
   }
 
-  let activityFeedConfig = customFeedParams.__merge(activityFeedRequestLocParams)
   let captions = []
-  foreach (lang, string in localizedTables) {
-    let localizationTable = {}
-    foreach (name, value in activityFeedConfig)
-      localizationTable[name] <- localizedKeyWords?[name][lang] ?? value
-
+  foreach (lang, string in localizedTables)
     captions.append({
       abbreviation = lang
-      text = string.subst(localizationTable).replace("\t", "")
+      text = string.subst(activityFeedRequestLocParams).replace("\t", "")
     })
-  }
 
   return captions
 }
 
-return {
+return freeze({
   getLocIdsArray
   getLocalizedTextWithAbbreviation
   getFilledFeedTextByLang
   setUnlocksPunctuationWithoutSpace
-}
+})

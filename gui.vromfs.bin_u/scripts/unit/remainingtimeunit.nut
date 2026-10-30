@@ -1,13 +1,12 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS, buildDateStr
+from "%scripts/shop/shopUnitsInfo.nut" import shopPromoteUnits
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought, canBuyUnitEvenNotInShop
 from "%appGlobals/timeLoc.nut" import hoursToString
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import clearTimer, setTimeout, deferOnce
-
-let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
-let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
-let { isUnitBought, canBuyUnitEvenNotInShop } = require("%scripts/unit/unitShopInfo.nut")
 
 let promoteUnits = mkWatched(persist, "promoteUnits", {})
 let clearPromUnitListCache = @() promoteUnits.set({})
@@ -91,8 +90,8 @@ addListenersWithoutEnv({
   SignOut = @(_) clearPromUnitListCache()
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   fillPromUnitInfo
   promoteUnits
   isPromUnit
-}
+})

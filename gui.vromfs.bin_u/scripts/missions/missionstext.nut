@@ -1,4 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/langUtils/localization.nut" import getLocIdsArray
+from "%scripts/teams.nut" import g_team
 from "guiMission" import get_current_mission_desc, get_player_army_for_hud
 from "mission" import get_game_mode, get_game_type
 from "%sqstd/string.nut" import isStringInteger, isStringFloat, capitalize
@@ -6,9 +8,7 @@ from "string" import format
 from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
-
-let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { g_team } = require("%scripts/teams.nut")
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
 let customWeatherLocIds = {
   thin_clouds = "options/weatherthinclouds"
@@ -69,9 +69,9 @@ function locCurrentMissionName(needComment = true) {
   if (ret == "")
     ret = getCombineLocNameMission(misBlk)
   if (needComment && (get_game_type() & GT_VERSUS)) {
-    if (misBlk?.maxRespawns == 1)
+    if (misBlk.maxRespawns == RESPAWN_COUNT_MODE.SINGLE_SPAWN)
       ret = "".concat(ret, " ", loc("template/noRespawns"))
-    else if ((misBlk?.maxRespawns ?? 1) > 1)
+    else if (misBlk.maxRespawns > RESPAWN_COUNT_MODE.SINGLE_SPAWN)
       ret = "".concat(ret, " ",
         loc("template/limitedRespawns/num/plural", { num = misBlk.maxRespawns }))
   }
@@ -114,17 +114,17 @@ function loc_current_mission_desc() {
     locDesc = loc($"missions/{missionLocName}/desc", "")
   }
   if (get_game_type() & GT_VERSUS) {
-    if (misBlk.maxRespawns == 1) {
+    if (misBlk.maxRespawns == RESPAWN_COUNT_MODE.SINGLE_SPAWN) {
       if (get_game_mode() != GM_DOMINATION)
         locDesc = "".concat(locDesc, "\n\n", loc("template/noRespawns/desc"))
     }
-    else if ((misBlk.maxRespawns != null) && (misBlk.maxRespawns > 1))
+    else if (misBlk.maxRespawns > RESPAWN_COUNT_MODE.SINGLE_SPAWN)
       locDesc = "".concat(locDesc, "\n\n", loc("template/limitedRespawns/desc"))
   }
   return locDesc
 }
 
-return {
+return freeze({
   getWeatherLocName
   getMissionTimeText
   locCurrentMissionName
@@ -133,4 +133,4 @@ return {
   getCombineLocNameMission
   getMissionName
   loc_current_mission_desc
-}
+})

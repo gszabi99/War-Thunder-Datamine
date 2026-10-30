@@ -1,3 +1,32 @@
+import "%scripts/customization/shipFlags.nut" as getShipFlags
+from "%scripts/events/eventTexts.nut" import getNameByEconomicName
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unit/unitInfoRoles.nut" import getRoleText
+from "%scripts/langUtils/language.nut" import getLocTextFromConfig
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/clans/clanSeasonPlaceTitle.nut" import createSeasonRewardFromUnlockBlk
+from "%scripts/user/userInfoStats.nut" import getPlayerRankByCountry
+from "%scripts/ranks.nut" import maxCountryRank, getRankByExp
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask, getBattleTaskNameById
+from "%scripts/unlocks/regionalUnlocks.nut" import getRegionalUnlockProgress, isRegionalUnlock
+from "%scripts/money.nut" import zero_money
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId
+from "%scripts/time.nut" import buildDateStrShort
+from "%scripts/langUtils/localization.nut" import getLocIdsArray
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/unit/unitClassType.nut" import processUnitTypeArray
+from "%scripts/missions/missionsText.nut" import getMissionTimeText
+from "%scripts/battlePass/seasonState.nut" import season, seasonLevel, getLevelByExp
+from "%scripts/loading/loadingBgData.nut" import isLoadingBgUnlock, getLoadingBgName, getLoadingBgIdByUnlockId
+from "%scripts/items/itemsManager.nut" import getRawInventoryItemAmount, getItemOrRecipeBundleById
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByUnlockedItemType, getTypeByResourceType
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/customization/decoratorGetters.nut" import getDecorator, getDecoratorById
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened, getUnlockType, isUnlockExist, getUnlockRewardCost, isUnlockComplete
+from "%scripts/unlocks/unlocksConditions.nut" import loadMainProgressCondition, loadConditionsFromBlk, getMainProgressCondition, isNestedUnlockMode, isStreak, isBitModeType, getMultipliersTable
+  , isTimeRangeCondition, getProgressBarData, loadCondition, getUnlockConditions, getRangeString, getDiffNameByInt
 from "math" import ceil
 from "string" import format, split_by_chars
 from "unlocks" import getUnlockProgress
@@ -9,41 +38,17 @@ from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
 
-let getShipFlags = require("%scripts/customization/shipFlags.nut")
-let { getNameByEconomicName } = require("%scripts/events/eventTexts.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { createSeasonRewardFromUnlockBlk } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
-let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
-let { maxCountryRank, getRankByExp } = require("%scripts/ranks.nut")
-let { isBattleTask, getBattleTaskNameById } = require("%scripts/unlocks/battleTasksState.nut")
-let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { zero_money } = require("%scripts/money.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { buildDateStrShort } = require("%scripts/time.nut")
-let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
-let { getMissionTimeText } = require("%scripts/missions/missionsText.nut")
-let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
-let { isLoadingBgUnlock, getLoadingBgName, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
-let { getRawInventoryItemAmount, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getDecorator, getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
-let { isUnlockOpened, getUnlockType, isUnlockExist, getUnlockRewardCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
-let { loadMainProgressCondition, loadConditionsFromBlk, getMainProgressCondition, isNestedUnlockMode, isStreak, isBitModeType, getMultipliersTable, isTimeRangeCondition, getProgressBarData, loadCondition, getUnlockConditions, getRangeString, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 
 function getUnlockableMedalImage(id, big = false) {
   return big ? $"!@ui/medals/{id}_big.ddsx" : $"!@ui/medals/{id}.ddsx"
 }
+
+let getAnimFrameObjTextProps = @(framesCount) $"background-frames:t='{framesCount}'; re-type:t='animated'; background-fps:t='30';"
 
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
@@ -99,6 +104,7 @@ let getEmptyConditionsConfig = @() {
   id = ""
   unlockType = -1
   locId = ""
+  name = "" 
   locDescId = ""
   locStagesDescId = ""
   locMultDescId = ""
@@ -146,16 +152,21 @@ function setRewardDataCfg(cfg, blk, unlocked) {
   if (!blk?.userLogId)
     return
 
-  let item = findItemById(blk.userLogId)
-  if (item?.iType != itemType.TROPHY)
+  let item = cfg.unlockType == UNLOCKABLE_INVENTORY
+    ? getItemOrRecipeBundleById(to_integer_safe(blk.userLogId))
+    : findItemById(blk.userLogId)
+  if (item == null)
     return
 
-  let content = item.getContent()
-  let hasManyPrizes = content.len() > 1
+  let isChest = item.iType == itemType.CHEST || item.iType == itemType.RECIPES_BUNDLE
+  if (item.iType != itemType.TROPHY && !isChest)
+    return
+
+  let hasManyPrizes = item.getContent().len() > 1
   if (hasManyPrizes && !unlocked)
     cfg.trophyId <- item.id
 
-  if (cfg.image != "")
+  if (isChest || cfg.image != "")
     return
 
   if (hasManyPrizes) {
@@ -221,6 +232,12 @@ function setImageByUnlockType(config, unlockBlk) {
   }
   else if (unlockBlk?.battlePassSeason != null)
     config.image = "#ui/gameuiskin#item_challenge"
+  else if (unlockType == UNLOCKABLE_FRAME) {
+    let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(unlockBlk.id)
+    config.image <- frameImagePath
+    if (framesCount != null)
+      config.iconParams <- { imageProps = getAnimFrameObjTextProps(framesCount) }
+  }
 
   let decoratorType = getTypeByUnlockedItemType(unlockType)
   if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
@@ -420,8 +437,17 @@ function buildConditionsConfig(blk, showStage = -1) {
 
   if (config.unlockType == UNLOCKABLE_INVENTORY) {
     let item = getItemOrRecipeBundleById(config.userLogId.tointeger())
-    config.locId = item?.getName(false) ?? ""
-    config.locDescId = item?.getBaseDescription() ?? ""
+    config.name = item?.getName(false) ?? ""
+    if (config.name != "")
+      config.locId = ""
+    let itemDesc = item?.getBaseDescription() ?? ""
+    if (itemDesc != "") {
+      config.locDescId = ""
+      if (config.desc != "")
+        config.desc = "\n".concat(config.desc, itemDesc)
+      else
+        config.desc = itemDesc
+    }
     if (config.image == "")
       config.image = item?.getIconName() ?? ""
   }
@@ -500,7 +526,9 @@ function getUnlockBeginDateText(unlock) {
 }
 
 function getUnlockLocName(config, key = "locId") {
-  let isRawBlk = (config?.mode != null)
+  if (key == "locId" && (config?.name ?? "") != "")
+    return config.name
+  let isRawBlk = config?.mode != null
   local num = (isRawBlk ? config.mode?.num : config?.maxVal) ?? 0
   if (num > 0)
     num = isBitModeType(isRawBlk ? config.mode.type : config.type) ? number_of_set_bits(num) : num
@@ -530,6 +558,8 @@ function getSubunlockOrUnlockName(id) {
   if (unlockBlk?.useSubUnlockName)
     return getSubUnlockLocName(unlockBlk)
   let unlockCfg = buildConditionsConfig(unlockBlk)
+  if (unlockCfg.name != "")
+    return unlockCfg.name
   if (unlockCfg.locId != "")
     return getUnlockLocName(unlockCfg)
   return loc($"{id}/name")
@@ -1235,7 +1265,7 @@ function getFullUnlockDescByName(unlockName, forUnlockedStage = -1, params = {})
 }
 
 
-return {
+return freeze({
   buildConditionsConfig
   getUnlockStagesDesc
   getAdditionalStagesDesc
@@ -1255,4 +1285,5 @@ return {
   getDescriptionByUnlockType
   getIconByUnlockBlk
   getUnlockableMedalImage
-}
+  getAnimFrameObjTextProps
+})

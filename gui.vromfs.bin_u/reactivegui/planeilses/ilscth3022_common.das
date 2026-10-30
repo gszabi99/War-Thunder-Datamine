@@ -1061,9 +1061,10 @@ class Component : Canvas
       var machLimit, verAccelLimit = VERY_BIG_NUMBER
       var gearLim = float2(0.0)
       var bayDoorLim = float2(0.0)
+      var iasLim = float2(-VERY_BIG_NUMBER, VERY_BIG_NUMBER)
       var isBlocked = false
-      *wc->getNextGunLimits(secondaryWeapon.trigger_no, isBlocked, machLimit, verAccelLimit, gearLim, bayDoorLim)
-      if isBlocked || fmw.fm.cache.Mach > machLimit || float(fmw.fm.localAccel.y) > verAccelLimit
+      *wc->getNextGunLimits(secondaryWeapon.trigger_no, isBlocked, machLimit, verAccelLimit, gearLim, bayDoorLim, iasLim)
+      if isBlocked || fmw.fm.cache.Mach > machLimit || float(fmw.fm.localAccel.y) > verAccelLimit || fmw.ias < iasLim.x || fmw.ias > iasLim.y
         hasReleasePerm = false
 
     if isGroundGunMode

@@ -1,22 +1,20 @@
+import "%scripts/items/inventoryItemTypeByTag.nut" as inventoryItemTypeByTag
+from "%scripts/money.nut" import Cost
+from "%scripts/items/exchangeRecipes.nut" import getRequirementsMarkup, getRequirementsText, tryUseRecipes
+from "%scripts/items/prizeChance.nut" import getPrizeChanceLegendMarkup
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getItemGenerator
+from "%scripts/items/prizesView.nut" import getPrizesStacksViewByWeight, getPrizesStacksViewByCategory, getPrizesListText, getPrizesListView, getPrizesStacksView
+from "%scripts/inventory/inventoryItemdefs.nut" import getItemdefTagValues
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
-} = require("%scripts/items/exchangeRecipes.nut")
-let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
-let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemById, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
-let { getPrizesStacksViewByWeight, getPrizesStacksViewByCategory, getPrizesListText,
-  getPrizesListView, getPrizesStacksView
-} = require("%scripts/items/prizesView.nut")
 
 let Chest = class (ItemExternal) {
   static name = "Chest"
@@ -335,11 +333,7 @@ let Chest = class (ItemExternal) {
       return this.categoryWeight
 
     this.categoryWeight = []
-    if (this.itemDef?.tags.categoryWeight == null)
-      return this.categoryWeight
-
-    let cateoryWeightsArray = this.itemDef.tags % "categoryWeight"
-    foreach (category in cateoryWeightsArray) {
+    foreach (category in getItemdefTagValues(this.itemDef, "categoryWeight")) {
       let parsedCategory = this.parseCategory(category)
       if (parsedCategory == null)
         continue
@@ -369,10 +363,7 @@ let Chest = class (ItemExternal) {
       return this.categoryByItems
 
     this.categoryByItems = []
-    if (this.itemDef?.tags.category == null)
-      return this.categoryByItems
-
-    foreach (category in (this.itemDef.tags % "category")) {
+    foreach (category in getItemdefTagValues(this.itemDef, "category")) {
       local paramsArray = category.split("_")
       if (paramsArray.len() < 2)
         continue

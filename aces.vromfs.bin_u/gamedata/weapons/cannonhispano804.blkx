@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.155,
-  "maxDeltaAngleVertical": 0.14,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bullets": 250,
-  "mass": 41.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,13 +14,14 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "hs404_gun_outside",
-    "cockpit": "hs404_gun_inside",
-    "ai": "hs404_gun_ai"
-  },
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.155,
+  "maxDeltaAngleVertical": 0.14,
+  "shotFreq": 12.5,
+  "bullets": 250,
+  "mass": 41.0,
   "overheat": {
     "overheat": [
       [
@@ -60,6 +53,13 @@
         2.4
       ]
     ]
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "hs404_gun_outside",
+    "cockpit": "hs404_gun_inside",
+    "ai": "hs404_gun_ai"
   },
   "bullet": [
     {
@@ -944,7 +944,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmWhiteGreen",
-        "trail": "smallTrail"
+        "trail": "black"
       }
     },
     {
@@ -4586,7 +4586,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhiteGreen",
-          "trail": "smallTrail"
+          "trail": "black"
         }
       }
     ]

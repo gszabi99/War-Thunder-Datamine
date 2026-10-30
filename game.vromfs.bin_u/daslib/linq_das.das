@@ -53,8 +53,6 @@ def private is_ident_byte(c : int) : bool {
     return is_alnum(c) || c == '_'
 }
 
-
-
 def private strip_query_comments(query : string) : string {
     return modify_data(query) $(var arr) {
         let n = length(arr)
@@ -90,9 +88,6 @@ def private strip_query_comments(query : string) : string {
     }
 }
 
-
-
-
 def private find_kw_depth0(q : string; kw : string; from : int) : int {
     var found = -1
     let m = length(kw)
@@ -100,42 +95,39 @@ def private find_kw_depth0(q : string; kw : string; from : int) : int {
         let n = length(arr)
         var depth = 0
         var inStr = false
-        var prevSig = 0    
-        var prevSig2 = 0   
+        var lastNonWs = 0
+        var nonWsBeforeLast = 0
         var i = from
         while (i < n && found < 0) {
             let c = int(arr[i])
             if (inStr) {
                 if (c == '\\') { i += 2; continue }
-                if (c == '"') { inStr = false; prevSig2 = prevSig; prevSig = c }
+                if (c == '"') { inStr = false; nonWsBeforeLast = lastNonWs; lastNonWs = c }
                 i++
                 continue
             }
-            if (c == '"') { inStr = true; prevSig2 = prevSig; prevSig = c; i++; continue }
-            if (c == '(' || c == '[' || c == '{') { depth++; prevSig2 = prevSig; prevSig = c; i++; continue }
-            if (c == ')' || c == ']' || c == '}') { depth--; prevSig2 = prevSig; prevSig = c; i++; continue }
-            
-            let afterPipeTail = prevSig == '>' && (prevSig2 == '|' || prevSig2 == '=' || prevSig2 == '-')
-            let atWordStart = is_ident_byte(c) && ((i == 0) || !is_ident_byte(int(arr[i - 1]))) && prevSig != '.' && !afterPipeTail
-            if (depth == 0 && atWordStart && i + m <= n && slice(q, i, i + m) == kw) {
+            if (c == '"') { inStr = true; nonWsBeforeLast = lastNonWs; lastNonWs = c; i++; continue }
+            if (c == '(' || c == '[' || c == '{') { depth++; nonWsBeforeLast = lastNonWs; lastNonWs = c; i++; continue }
+            if (c == ')' || c == ']' || c == '}') { depth--; nonWsBeforeLast = lastNonWs; lastNonWs = c; i++; continue }
+            let afterPipeTail = lastNonWs == '>' && (nonWsBeforeLast == '|' || nonWsBeforeLast == '=' || nonWsBeforeLast == '-')
+            let atWordStart = is_ident_byte(c) && ((i == 0) || !is_ident_byte(int(arr[i - 1]))) && lastNonWs != '.' && !afterPipeTail
+            if (depth == 0 && atWordStart && i + m <= n && starts_with(arr, i, kw)) {
                 if (i + m == n || !is_ident_byte(int(arr[i + m]))) {
                     found = i
                 }
             }
-            if (!is_white_space(c)) { prevSig2 = prevSig; prevSig = c }
+            if (!is_white_space(c)) { nonWsBeforeLast = lastNonWs; lastNonWs = c }
             i++
         }
     }
     return found
 }
 
-
-
 def private split_depth0(text : string) : array<string> {
     var segs : array<string>
     peek_data(text) $(arr) {
         let n = length(arr)
-        segs |> reserve(4)   
+        segs |> reserve(4)
         var depth = 0
         var inStr = false
         var segStart = 0
@@ -152,22 +144,21 @@ def private split_depth0(text : string) : array<string> {
             if (c == '(' || c == '[' || c == '{') { depth++; i++; continue }
             if (c == ')' || c == ']' || c == '}') { depth--; i++; continue }
             if (depth == 0 && c == ',') {
-                segs |> push(strip(slice(text, segStart, i)))
+                segs |> push(strip(slice(arr, segStart, i)))
                 segStart = i + 1
             }
             i++
         }
-        segs |> push(strip(slice(text, segStart, n)))
+        segs |> push(strip(slice(arr, segStart, n)))
     }
     return <- segs
 }
 
 struct private OrderKeys {
     keys     : array<string>
-    descMask : uint           
-    ok       : bool           
+    descMask : uint
+    ok       : bool
 }
-
 
 def private parse_orderby(rawOrder : string) : OrderKeys {
     var r : OrderKeys
@@ -183,15 +174,12 @@ def private parse_orderby(rawOrder : string) : OrderKeys {
             return <- r
         }
         r.keys |> push(keyText)
-        
         if (dseg._1 && idx < 32u) { r.descMask = r.descMask | (1u << idx) }
         idx++
     }
     if (empty(r.keys)) { r.ok = false }
     return <- r
 }
-
-
 
 def private emit_order_op(keys : array<string>; descMask : uint; ti : string) : string {
     if (length(keys) == 1) {
@@ -200,8 +188,6 @@ def private emit_order_op(keys : array<string>; descMask : uint; ti : string) : 
     }
     return " |> _order_by_keys($({ti}) => ({join(keys, ", ")}), {descMask}u)"
 }
-
-
 
 def private read_ident(q : string; from : int) : tuple<string; int> {
     var s = -1
@@ -218,8 +204,6 @@ def private read_ident(q : string; from : int) : tuple<string; int> {
     return (slice(q, s, e), e)
 }
 
-
-
 def private strip_trailing_keyword(text : string; kw : string) : tuple<string; bool> {
     let p = strip(text)
     let m = length(kw)
@@ -233,54 +217,100 @@ def private strip_trailing_keyword(text : string; kw : string) : tuple<string; b
     return (p, false)
 }
 
-
 def private build_src(rowType : string; srcText : string; fused : bool) : string {
     if (rowType == "") return fused ? "from_in({srcText})" : "({srcText})"
     if (srcText == "decs") return "from_decs_template(type<{rowType}>)"
     return "from_in({srcText}, type<{rowType}>)"
 }
 
+def private strip_redundant_parens(s : string) : string {
+    let trimmed = strip(s)
+    var out = trimmed
+    peek_data(trimmed) $(arr) {
+        var lo = 0
+        var hi = length(arr)
+        var again = true
+        while (again) {
+            again = false
+            if (hi - lo >= 2 && int(arr[lo]) == '(' && int(arr[hi - 1]) == ')') {
+                var depth = 0
+                var matched = true
+                for (i in lo .. hi) {
+                    let c = int(arr[i])
+                    if (c == '(') {
+                        depth ++
+                    } elif (c == ')') {
+                        depth --
+                        if (depth == 0 && i != hi - 1) {
+                            matched = false
+                            break
+                        }
+                    }
+                }
+                if (matched) {
+                    lo ++
+                    hi --
+                    while (lo < hi && is_white_space(int(arr[lo]))) {
+                        lo ++
+                    }
+                    while (hi > lo && is_white_space(int(arr[hi - 1]))) {
+                        hi --
+                    }
+                    again = true
+                }
+            }
+        }
+        out = slice(arr, lo, hi)
+    }
+    return out
+}
+
+def private is_label_position(arr : auto; j, n : int) : bool {
+    var k = j
+    while (k < n && is_white_space(int(arr[k]))) {
+        k++
+    }
+    return k < n && int(arr[k]) == '=' && (k + 1 >= n || (int(arr[k + 1]) != '=' && int(arr[k + 1]) != '>'))
+}
 
 def private substitute_idents(text : string; subs : table<string; string>) : string {
     return build_string() $(var w) {
         peek_data(text) $(arr) {
             let n = length(arr)
             var i = 0
-            var inStr = false   
-            var interp = 0      
-            var prevSig = 0     
+            var inStr = false
+            var interpDepth = 0
+            var lastNonWs = 0
             while (i < n) {
                 let c = int(arr[i])
-                
-                if (inStr && interp == 0) {
-                    if (c == '\\' && i + 1 < n) { w |> write(slice(text, i, i + 2)); i += 2; continue }
-                    w |> write(slice(text, i, i + 1))
-                    if (c == '"') { inStr = false; prevSig = c }
-                    elif (c == '{') { interp = 1; prevSig = 0 }
+                if (inStr && interpDepth == 0) {
+                    if (c == '\\' && i + 1 < n) { w |> write_string(arr, i, i + 2); i += 2; continue }
+                    w |> write_string(arr, i, i + 1)
+                    if (c == '"') { inStr = false; lastNonWs = c }
+                    elif (c == '{') { interpDepth = 1; lastNonWs = 0 }
                     i++
                     continue
                 }
-                
                 if (c == '"') {
-                    if (interp > 0) {   
-                        w |> write(slice(text, i, i + 1)); i++
+                    if (interpDepth > 0) {
+                        w |> write_string(arr, i, i + 1); i++
                         while (i < n) {
                             let cc = int(arr[i])
-                            if (cc == '\\' && i + 1 < n) { w |> write(slice(text, i, i + 2)); i += 2; continue }
-                            w |> write(slice(text, i, i + 1)); i++
+                            if (cc == '\\' && i + 1 < n) { w |> write_string(arr, i, i + 2); i += 2; continue }
+                            w |> write_string(arr, i, i + 1); i++
                             if (cc == '"') break
                         }
-                        prevSig = '"'
+                        lastNonWs = '"'
                         continue
                     }
-                    inStr = true; prevSig = c; w |> write(slice(text, i, i + 1)); i++
+                    inStr = true; lastNonWs = c; w |> write_string(arr, i, i + 1); i++
                     continue
                 }
-                if (interp > 0 && c == '{') { interp ++; w |> write(slice(text, i, i + 1)); prevSig = c; i++; continue }
-                if (interp > 0 && c == '}') {
-                    interp --
-                    w |> write(slice(text, i, i + 1))
-                    prevSig = interp == 0 ? '"' : c   
+                if (interpDepth > 0 && c == '{') { interpDepth ++; w |> write_string(arr, i, i + 1); lastNonWs = c; i++; continue }
+                if (interpDepth > 0 && c == '}') {
+                    interpDepth --
+                    w |> write_string(arr, i, i + 1)
+                    lastNonWs = interpDepth == 0 ? '"' : c
                     i++
                     continue
                 }
@@ -288,27 +318,25 @@ def private substitute_idents(text : string; subs : table<string; string>) : str
                 if (atWordStart) {
                     var j = i
                     while (j < n && is_ident_byte(int(arr[j]))) { j++ }
-                    let word = slice(text, i, j)
-                    w |> write(prevSig != '.' ? (subs?[word] ?? word) : word)
-                    prevSig = int(arr[j - 1])
+                    let word = slice(arr, i, j)
+                    let isLabel = is_label_position(arr, j, n)
+                    w |> write((lastNonWs != '.' && !isLabel) ? (subs?[word] ?? word) : word)
+                    lastNonWs = int(arr[j - 1])
                     i = j
                     continue
                 }
-                w |> write(slice(text, i, i + 1))
-                if (!is_white_space(c)) { prevSig = c }
+                w |> write_string(arr, i, i + 1)
+                if (!is_white_space(c)) { lastNonWs = c }
                 i++
             }
         }
     }
 }
 
-
-
 def private rewrite_idents(text : string; names : array<string>; prefix : string) : string {
     let subs <- {for (nm in names); nm => "{prefix}.{nm}"}
     return substitute_idents(text, subs)
 }
-
 
 def private mentions_ident(text : string; name : string) : bool {
     var found = false
@@ -316,22 +344,20 @@ def private mentions_ident(text : string; name : string) : bool {
     peek_data(text) $(arr) {
         let n = length(arr)
         var i = 0
-        var inStr = false   
-        var interp = 0      
-        var prevSig = 0
+        var inStr = false
+        var interpDepth = 0
+        var lastNonWs = 0
         while (i < n && !found) {
             let c = int(arr[i])
-            
-            if (inStr && interp == 0) {
+            if (inStr && interpDepth == 0) {
                 if (c == '\\' && i + 1 < n) { i += 2; continue }
-                if (c == '"') { inStr = false; prevSig = c }
-                elif (c == '{') { interp = 1; prevSig = 0 }
+                if (c == '"') { inStr = false; lastNonWs = c }
+                elif (c == '{') { interpDepth = 1; lastNonWs = 0 }
                 i++
                 continue
             }
-            
             if (c == '"') {
-                if (interp > 0) {   
+                if (interpDepth > 0) {
                     i++
                     while (i < n) {
                         let cc = int(arr[i])
@@ -339,34 +365,33 @@ def private mentions_ident(text : string; name : string) : bool {
                         i++
                         if (cc == '"') break
                     }
-                    prevSig = '"'
+                    lastNonWs = '"'
                     continue
                 }
-                inStr = true; prevSig = c; i++
+                inStr = true; lastNonWs = c; i++
                 continue
             }
-            if (interp > 0 && c == '{') { interp++; prevSig = c; i++; continue }
-            if (interp > 0 && c == '}') {
-                interp--
-                prevSig = interp == 0 ? '"' : c
+            if (interpDepth > 0 && c == '{') { interpDepth++; lastNonWs = c; i++; continue }
+            if (interpDepth > 0 && c == '}') {
+                interpDepth--
+                lastNonWs = interpDepth == 0 ? '"' : c
                 i++
                 continue
             }
-            let atWordStart = is_ident_byte(c) && (i == 0 || !is_ident_byte(int(arr[i - 1]))) && prevSig != '.'
-            if (atWordStart && i + m <= n && slice(text, i, i + m) == name
-                    && (i + m == n || !is_ident_byte(int(arr[i + m])))) {
+            let atWordStart = is_ident_byte(c) && (i == 0 || !is_ident_byte(int(arr[i - 1]))) && lastNonWs != '.'
+            if (atWordStart && i + m <= n && starts_with(arr, i, name)
+                    && (i + m == n || !is_ident_byte(int(arr[i + m])))
+                    && !is_label_position(arr, i + m, n)) {
                 found = true
             }
-            if (!is_white_space(c)) { prevSig = c }
+            if (!is_white_space(c)) { lastNonWs = c }
             i++
         }
     }
     return found
 }
 
-
 let JOIN_TI = "linq_join_ti"
-
 
 def private emit_two_source(q : string; nq : int; varName : string; var2Name : string; srcA : string;   
                             isJoin : bool; keyA : string; srcBForJoin : string; rowType2 : string;
@@ -380,13 +405,12 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         macro_error(prog, at, "linq: second range variable '{var2Name}' must differ from '{varName}' and the reserved '{JOIN_TI}'")
         return "(0)"
     }
-    
     let intoPos = find_kw_depth0(q, "into", tailStart)
     if (intoPos >= 0 && !isJoin) {
         macro_error(prog, at, "linq: 'into' over a second 'from' is not supported - group-join 'into' works after a 'join ... on ... equals ...' clause; query-continuation 'into' works on single-source queries")
         return "(0)"
     }
-    let orderByPos = find_kw_depth0(q, "orderby", tailStart)
+    let rawOrderByPos = find_kw_depth0(q, "orderby", tailStart)
     let selectPos = find_kw_depth0(q, "select", tailStart)
     let groupPos = find_kw_depth0(q, "group", tailStart)
     if (selectPos < 0 && groupPos < 0) {
@@ -399,7 +423,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     }
     let isGroup = groupPos >= 0
     let termPos = isGroup ? groupPos : selectPos
-    
+    let orderByPos = (rawOrderByPos >= 0 && rawOrderByPos < termPos) ? rawOrderByPos : -1
     let postTermInto = find_kw_depth0(q, "into", isGroup ? groupPos + 5 : selectPos + 6)
     if (postTermInto >= 0) {
         macro_error(prog, at, "linq: query-continuation 'into' after the 'select'/'group' terminal is not supported on a 'join' or multiple-'from' query - it works on single-source queries; a group-join 'into' goes before the terminal (`join ... equals ... into g select ...`)")
@@ -409,7 +433,6 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         macro_error(prog, at, "linq: 'orderby' before 'group' is not supported - order the groups after a 'select', or drop the 'orderby'")
         return "(0)"
     }
-    
     var groupIntoVar = ""
     let groupInto = intoPos >= 0 && intoPos < termPos
     if (groupInto) {
@@ -436,7 +459,6 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         }
         groupIntoVar = iv._0
     }
-    
     if (isJoin) {
         let equals2 = find_kw_depth0(q, "equals", tailStart)
         if (equals2 >= 0 && equals2 < termPos) {
@@ -444,43 +466,46 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             return "(0)"
         }
     }
-    
     var preWheres : array<string>
     var postWheres : array<string>
     var firstPostWhere = -1
     var wp = firstWhere
-    while (wp >= 0 && wp < termPos) {
-        let wEnd = next_clause_kw(q, wp + 5)
-        let predText = strip(slice(q, wp + 5, wEnd))
-        if (predText == "") {
-            macro_error(prog, at, "linq: empty 'where' predicate")
-            return "(0)"
-        }
-        if (wp < secondIntroPos) {
-            preWheres |> push(predText)
-        } elif (wp < tailStart) {
-            if (isJoin) {
-                macro_error(prog, at, "linq: 'where' cannot appear inside the join clause (between 'join' and 'equals')")
-            } else {
-                macro_error(prog, at, "linq: 'where' cannot appear between the second range variable and 'in'")
+    var whereErr = ""
+    peek_data(q) $(qd) {
+        while (wp >= 0 && wp < termPos) {
+            let wEnd = next_clause_kw(q, wp + 5)
+            let predText = strip(slice(qd, wp + 5, wEnd))
+            if (predText == "") {
+                whereErr = "linq: empty 'where' predicate"
+                return
             }
-            return "(0)"
-        } else {
-            if (firstPostWhere < 0) { firstPostWhere = wp }
-            postWheres |> push(predText)
+            if (wp < secondIntroPos) {
+                preWheres |> push(predText)
+            } elif (wp < tailStart) {
+                whereErr = (isJoin
+                    ? "linq: 'where' cannot appear inside the join clause (between 'join' and 'equals')"
+                    : "linq: 'where' cannot appear between the second range variable and 'in'")
+                return
+            } else {
+                if (firstPostWhere < 0) { firstPostWhere = wp }
+                postWheres |> push(predText)
+            }
+            wp = find_kw_depth0(q, "where", wEnd)
         }
-        wp = find_kw_depth0(q, "where", wEnd)
+    }
+    if (whereErr != "") {
+        macro_error(prog, at, whereErr)
+        return "(0)"
     }
     let hasPostWhere = !empty(postWheres)
     if (groupInto && hasPostWhere) {
         macro_error(prog, at, "linq: a 'where' after 'join ... into g' is not yet supported - the (outer, g) pair can't be carried; filter with a pre-'join' 'where', or use the pipe form")
         return "(0)"
     }
-    
     var tailEnd = termPos
     if (orderByPos >= 0 && orderByPos < tailEnd) { tailEnd = orderByPos }
     if (firstPostWhere >= 0 && firstPostWhere < tailEnd) { tailEnd = firstPostWhere }
-    if (groupInto && intoPos < tailEnd) { tailEnd = intoPos }   
+    if (groupInto && intoPos < tailEnd) { tailEnd = intoPos }
     let tail = strip(slice(q, tailStart, tailEnd))
     var srcB = srcBForJoin
     var onLambda = ""
@@ -496,16 +521,14 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             macro_error(prog, at, "linq: empty source expression after the second 'in'")
             return "(0)"
         }
-        
         correlated = mentions_ident(tail, varName)
         if (!correlated) {
-            srcB = build_src(rowType2, tail, false)
+            srcB = build_src(rowType2, tail, true)
         }
     }
     var orderKeys : array<string>
     var orderDescMask = 0u
     if (orderByPos >= 0) {
-        
         let rawOrder = strip(slice(q, orderByPos + 7, next_clause_kw(q, orderByPos + 7)))
         var op <- parse_orderby(rawOrder)
         if (!op.ok) {
@@ -550,7 +573,6 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             return "(0)"
         }
     }
-    
     if (correlated) {
         if (orderByPos >= 0) {
             macro_error(prog, at, "linq: 'orderby' over a correlated 'from ... from' (flatten) is not supported - the outer row '{varName}' is non-copyable, so the ordered pairs can't be carried; materialize the result then sort, or restructure as a 'join'")
@@ -566,9 +588,12 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
                 return "(0)"
             }
         }
-        
         srcB = build_string() $(var sw) {
-            sw |> write("$({varName}) => unsafe(each({tail}))")
+            if (rowType2 != "") {
+                sw |> write("$({varName}) => from_in({tail}, type<{rowType2}>)")
+            } else {
+                sw |> write("$({varName}) => unsafe(each({tail}))")
+            }
             for (pred in postWheres) {
                 sw |> write(" |> _where($({var2Name}) => {pred})")
             }
@@ -577,9 +602,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     let carryLambda = "$({varName}, {var2Name}) => ({varName} = {varName}, {var2Name} = {var2Name})"
     let names <- [varName, var2Name]
     let hasOrderBy = orderByPos >= 0
-    
     let useTI = !correlated && (hasPostWhere || hasOrderBy || isGroup)
-    
     let opName = groupInto ? "_group_join" : (isJoin ? "_join" : (correlated ? "_select_many" : "_cross_join"))
     let onLambdaPart = isJoin ? "{onLambda}, " : ""
     return build_string() $(var w) {
@@ -588,13 +611,11 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             w |> write(" |> _where($({varName}) => {pred})")
         }
         if (!useTI) {
-            
             let rv2 = groupInto ? groupIntoVar : var2Name
             let p1 = mentions_ident(projText, varName) ? varName : "_{varName}"
             let p2 = mentions_ident(projText, rv2) ? rv2 : "_{rv2}"
             w |> write(" |> {opName}({srcB}, {onLambdaPart}$({p1}, {p2}) => {projText})")
         } else {
-            
             w |> write(" |> {opName}({srcB}, {onLambdaPart}{carryLambda})")
             for (pred in postWheres) {
                 w |> write(" |> _where($({JOIN_TI}) => {rewrite_idents(pred, names, JOIN_TI)})")
@@ -614,9 +635,6 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         w |> write(" )")
     }
 }
-
-
-
 
 def private transpile_join(q : string; nq : int; varName : string; rowType : string;
                            srcStart : int; joinPos : int; prog : ProgramPtr; at : LineInfo) : string {
@@ -677,7 +695,6 @@ def private transpile_join(q : string; nq : int; varName : string; rowType : str
                            joinPos, equalsPos + 6, firstWhere, prog, at)
 }
 
-
 def private transpile_cross(q : string; nq : int; varName : string; rowType : string;
                             srcStart : int; secondFromPos : int; prog : ProgramPtr; at : LineInfo) : string {
     if (find_kw_depth0(q, "from", secondFromPos + 4) >= 0) {
@@ -716,12 +733,9 @@ def private transpile_cross(q : string; nq : int; varName : string; rowType : st
         return "(0)"
     }
     let srcA = build_src(rowType, srcAText, false)
-    
     return emit_two_source(q, nq, varName, var2Name, srcA, false, "", "", rowType2,
                            secondFromPos, in2 + 2, firstWhere, prog, at)
 }
-
-
 
 def private next_clause_kw(q : string; from : int) : int {
     var best = length(q)
@@ -732,119 +746,119 @@ def private next_clause_kw(q : string; from : int) : int {
     return best
 }
 
-
 def private extract_lets(q : string; bodyStart : int; rangeVar : string;
                          prog : ProgramPtr; at : LineInfo) : tuple<bool; string> {
-    var subs : table<string; string>        
-    var cuts : array<tuple<int; int; string>>   
-    let srcEnd = next_clause_kw(q, bodyStart)   
-    
+    var subs : table<string; string>
+    var cuts : array<tuple<int; int; string>>
+    let srcEnd = next_clause_kw(q, bodyStart)
     let joinPos = find_kw_depth0(q, "join", bodyStart)
     let secondFromPos = find_kw_depth0(q, "from", bodyStart)
     let var2j = joinPos >= 0 ? read_ident(q, joinPos + 4)._0 : ""
     let var2f = secondFromPos >= 0 ? read_ident(q, secondFromPos + 4)._0 : ""
     var searchFrom = bodyStart
-    while (true) {
-        let lp = find_kw_depth0(q, "let", searchFrom)
-        if (lp < 0) break
-        let np = read_ident(q, lp + 3)
-        let name = np._0
-        if (name == "") {
-            macro_error(prog, at, "linq: 'let' requires a binding name (e.g. `let n = <expr>`)")
-            return (false, "")
+    var letErr = ""
+    peek_data(q) $(qd) {
+        let nq = length(qd)
+        while (true) {
+            let lp = find_kw_depth0(q, "let", searchFrom)
+            if (lp < 0) return
+            let np = read_ident(q, lp + 3)
+            let name = np._0
+            if (name == "") {
+                letErr = "linq: 'let' requires a binding name (e.g. `let n = <expr>`)"
+                return
+            }
+            if (name == rangeVar || name == var2j || name == var2f) {
+                letErr = "linq: 'let {name}' shadows the range variable '{name}'"
+                return
+            }
+            if (key_exists(subs, name)) {
+                letErr = "linq: 'let {name}' is already bound earlier in the query"
+                return
+            }
+            var eq = -1
+            let i = skip_white_space(qd, np._1)
+            if (i < nq && int(qd[i]) == '=' && (i + 1 >= nq || int(qd[i + 1]) != '=')) { eq = i }
+            if (eq < 0) {
+                letErr = "linq: expected '=' after 'let {name}'"
+                return
+            }
+            let rhsStart = eq + 1
+            let rhsEnd = next_clause_kw(q, rhsStart)
+            var rhs = strip(slice(qd, rhsStart, rhsEnd))
+            if (rhs == "") {
+                letErr = "linq: empty 'let {name}' expression"
+                return
+            }
+            if (rhsEnd >= nq) {
+                letErr = "linq: 'let {name}' has no following clause - a 'let' must precede the 'select'/'group' terminal"
+                return
+            }
+            if (!empty(subs)) { rhs = substitute_idents(rhs, subs) }
+            subs[name] = "({rhs})"
+            cuts |> push((lp, rhsEnd, name))
+            searchFrom = rhsEnd
         }
-        if (name == rangeVar || name == var2j || name == var2f) {
-            macro_error(prog, at, "linq: 'let {name}' shadows the range variable '{name}'")
-            return (false, "")
-        }
-        if (key_exists(subs, name)) {
-            macro_error(prog, at, "linq: 'let {name}' is already bound earlier in the query")
-            return (false, "")
-        }
-        
-        var eq = -1
-        peek_data(q) $(arr) {
-            let n2 = length(arr)
-            var i = np._1
-            while (i < n2 && is_white_space(int(arr[i]))) { i++ }
-            if (i < n2 && int(arr[i]) == '=' && (i + 1 >= n2 || int(arr[i + 1]) != '=')) { eq = i }
-        }
-        if (eq < 0) {
-            macro_error(prog, at, "linq: expected '=' after 'let {name}'")
-            return (false, "")
-        }
-        let rhsStart = eq + 1
-        let rhsEnd = next_clause_kw(q, rhsStart)   
-        var rhs = strip(slice(q, rhsStart, rhsEnd))
-        if (rhs == "") {
-            macro_error(prog, at, "linq: empty 'let {name}' expression")
-            return (false, "")
-        }
-        
-        if (rhsEnd >= length(q)) {
-            macro_error(prog, at, "linq: 'let {name}' has no following clause - a 'let' must precede the 'select'/'group' terminal")
-            return (false, "")
-        }
-        if (!empty(subs)) { rhs = substitute_idents(rhs, subs) }   
-        subs[name] = "({rhs})"
-        cuts |> push((lp, rhsEnd, name))
-        searchFrom = rhsEnd
+    }
+    if (letErr != "") {
+        macro_error(prog, at, letErr)
+        return (false, "")
     }
     if (empty(subs)) return (true, q)
-    
     let body = build_string() $(var w) {
-        var active : table<string; string>
-        var pos = srcEnd
-        for (c in cuts) {
-            w |> write(substitute_idents(slice(q, pos, c._0), active))
-            w |> write(" ")
-            active[c._2] = subs[c._2]
-            pos = c._1
+        peek_data(q) $(qd) {
+            var active : table<string; string>
+            var pos = srcEnd
+            for (c in cuts) {
+                w |> write(substitute_idents(slice(qd, pos, c._0), active))
+                w |> write(" ")
+                active[c._2] = subs[c._2]
+                pos = c._1
+            }
+            w |> write(substitute_idents(slice(qd, pos, length(qd)), active))
         }
-        w |> write(substitute_idents(slice(q, pos, length(q)), active))
     }
     return (true, "{slice(q, 0, srcEnd)}{body}")
 }
-
 
 def private rewrite_group_var(text : string; gname : string) : string {
     return build_string() $(var w) {
         peek_data(text) $(arr) {   
             let n = length(arr)
             var i = 0
-            var inStr = false   
-            var interp = 0      
-            var prevSig = 0     
+            var inStr = false
+            var interpDepth = 0
+            var lastNonWs = 0
             while (i < n) {
                 let c = int(arr[i])
-                if (inStr && interp == 0) {
-                    if (c == '\\' && i + 1 < n) { w |> write(slice(text, i, i + 2)); i += 2; continue }
-                    w |> write(slice(text, i, i + 1))
-                    if (c == '"') { inStr = false; prevSig = c }
-                    elif (c == '{') { interp = 1; prevSig = 0 }
+                if (inStr && interpDepth == 0) {
+                    if (c == '\\' && i + 1 < n) { w |> write_string(arr, i, i + 2); i += 2; continue }
+                    w |> write_string(arr, i, i + 1)
+                    if (c == '"') { inStr = false; lastNonWs = c }
+                    elif (c == '{') { interpDepth = 1; lastNonWs = 0 }
                     i++
                     continue
                 }
                 if (c == '"') {
-                    if (interp > 0) {
-                        w |> write(slice(text, i, i + 1)); i++
+                    if (interpDepth > 0) {
+                        w |> write_string(arr, i, i + 1); i++
                         while (i < n) {
                             let cc = int(arr[i])
-                            if (cc == '\\' && i + 1 < n) { w |> write(slice(text, i, i + 2)); i += 2; continue }
-                            w |> write(slice(text, i, i + 1)); i++
+                            if (cc == '\\' && i + 1 < n) { w |> write_string(arr, i, i + 2); i += 2; continue }
+                            w |> write_string(arr, i, i + 1); i++
                             if (cc == '"') break
                         }
-                        prevSig = '"'
+                        lastNonWs = '"'
                         continue
                     }
-                    inStr = true; prevSig = c; w |> write(slice(text, i, i + 1)); i++
+                    inStr = true; lastNonWs = c; w |> write_string(arr, i, i + 1); i++
                     continue
                 }
-                if (interp > 0 && c == '{') { interp ++; w |> write(slice(text, i, i + 1)); prevSig = c; i++; continue }
-                if (interp > 0 && c == '}') {
-                    interp --
-                    w |> write(slice(text, i, i + 1))
-                    prevSig = interp == 0 ? '"' : c
+                if (interpDepth > 0 && c == '{') { interpDepth ++; w |> write_string(arr, i, i + 1); lastNonWs = c; i++; continue }
+                if (interpDepth > 0 && c == '}') {
+                    interpDepth --
+                    w |> write_string(arr, i, i + 1)
+                    lastNonWs = interpDepth == 0 ? '"' : c
                     i++
                     continue
                 }
@@ -852,49 +866,44 @@ def private rewrite_group_var(text : string; gname : string) : string {
                 if (atWordStart) {
                     var j = i
                     while (j < n && is_ident_byte(int(arr[j]))) { j++ }
-                    let word = slice(text, i, j)
-                    if (prevSig != '.' && word == gname) {
-                        
+                    let word = slice(arr, i, j)
+                    if (lastNonWs != '.' && word == gname && !is_label_position(arr, j, n)) {
                         let dotFollows = j < n && int(arr[j]) == '.'
                         var keyEnd = -1
                         if (dotFollows) {
                             var k = j + 1
                             while (k < n && is_ident_byte(int(arr[k]))) { k++ }
-                            if (slice(text, j + 1, k) == "key") { keyEnd = k }
+                            if (slice(arr, j + 1, k) == "key") { keyEnd = k }
                         }
                         if (keyEnd >= 0) {
                             w |> write("{gname}._0")
                             i = keyEnd
-                            prevSig = '_'   
+                            lastNonWs = '_'
                             continue
                         } elif (!dotFollows) {
                             w |> write("{gname}._1")
                             i = j
-                            prevSig = '_'
+                            lastNonWs = '_'
                             continue
                         }
-                        
                     }
                     w |> write(word)
-                    prevSig = int(arr[j - 1])
+                    lastNonWs = int(arr[j - 1])
                     i = j
                     continue
                 }
-                w |> write(slice(text, i, i + 1))
-                if (!is_white_space(c)) { prevSig = c }
+                w |> write_string(arr, i, i + 1)
+                if (!is_white_space(c)) { lastNonWs = c }
                 i++
             }
         }
     }
 }
 
-
-
-
 struct private QueryStage {
     rangeVar : string = ""
     isGroupVar : bool = false
-    predicates : array<string>   
+    predicates : array<string>
     hasOrderBy : bool = false
     orderKeys : array<string>
     orderDescMask : uint = 0u
@@ -903,17 +912,14 @@ struct private QueryStage {
     projText : string = ""
     identitySelect : bool = false
     wantIterator : bool = false
-    intoVar : string = ""       
-    nextStart : int = 0         
+    intoVar : string = ""
+    nextStart : int = 0
 }
-
-
 
 def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string; isGroupVar : bool;   
                             prog : ProgramPtr; at : LineInfo; var stage : QueryStage) : bool {
     stage.rangeVar = rangeVar
     stage.isGroupVar = isGroupVar
-    
     let selectPos = find_kw_depth0(q, "select", start)
     let groupPos = find_kw_depth0(q, "group", start)
     if (selectPos < 0 && groupPos < 0) {
@@ -924,7 +930,6 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
     let termPos = isGroup ? groupPos : selectPos
     let otherPos = isGroup ? selectPos : groupPos
     let termKwEnd = isGroup ? termPos + 5 : termPos + 6
-    
     let intoPos = find_kw_depth0(q, "into", termKwEnd)
     let termEnd = intoPos >= 0 ? intoPos : nq
     if (otherPos >= 0 && otherPos < termEnd) {
@@ -932,17 +937,23 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
         return false
     }
     stage.isGroup = isGroup
-    
     var wherePos = find_kw_depth0(q, "where", start)
-    while (wherePos >= 0 && wherePos < termPos) {
-        let predEnd = next_clause_kw(q, wherePos + 5)
-        let predText = strip(slice(q, wherePos + 5, predEnd))
-        if (predText == "") {
-            macro_error(prog, at, "linq: empty 'where' predicate")
-            return false
+    var emptyWhere = false
+    peek_data(q) $(qd) {
+        while (wherePos >= 0 && wherePos < termPos) {
+            let predEnd = next_clause_kw(q, wherePos + 5)
+            let predText = strip(slice(qd, wherePos + 5, predEnd))
+            if (predText == "") {
+                emptyWhere = true
+                return
+            }
+            stage.predicates |> push(isGroupVar ? rewrite_group_var(predText, rangeVar) : predText)
+            wherePos = find_kw_depth0(q, "where", predEnd)
         }
-        stage.predicates |> push(isGroupVar ? rewrite_group_var(predText, rangeVar) : predText)
-        wherePos = find_kw_depth0(q, "where", predEnd)
+    }
+    if (emptyWhere) {
+        macro_error(prog, at, "linq: empty 'where' predicate")
+        return false
     }
     let orderByPos = find_kw_depth0(q, "orderby", start)
     stage.hasOrderBy = orderByPos >= 0 && orderByPos < termPos
@@ -951,7 +962,6 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
         return false
     }
     if (stage.hasOrderBy) {
-        
         let rawOrder = strip(slice(q, orderByPos + 7, next_clause_kw(q, orderByPos + 7)))
         var op <- parse_orderby(rawOrder)
         if (!op.ok) {
@@ -997,7 +1007,7 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
             macro_error(prog, at, "linq: empty 'select' projection")
             return false
         }
-        stage.identitySelect = (projText == rangeVar)
+        stage.identitySelect = (strip_redundant_parens(projText) == rangeVar)
         stage.projText = (isGroupVar && !stage.identitySelect) ? rewrite_group_var(projText, rangeVar) : projText
     }
     if (intoPos >= 0) {
@@ -1027,8 +1037,6 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
     return true
 }
 
-
-
 def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : string {   
     var q = strip(strip_query_comments(query))
     let fromWord = read_ident(q, 0)
@@ -1048,7 +1056,6 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
         macro_error(prog, at, "linq: expected 'in' after range variable '{varName}'")
         return "(0)"
     }
-    
     let between = strip(slice(q, afterVar, inPos))
     var rowType = ""
     if (starts_with(between, ":")) {
@@ -1061,14 +1068,11 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
         macro_error(prog, at, "linq: unexpected '{between}' between range variable and 'in'")
         return "(0)"
     }
-    
     let srcStart = inPos + 2
-    
     let lets = extract_lets(q, srcStart, varName, prog, at)
     if (!lets._0) return "(0)"
     q = lets._1
     let nq = length(q)
-    
     let joinPos = find_kw_depth0(q, "join", srcStart)
     let secondFromPos = find_kw_depth0(q, "from", srcStart)
     if (joinPos >= 0 && secondFromPos >= 0) {
@@ -1086,7 +1090,6 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
         return "(0)"
     }
     let srcBuild = build_src(rowType, srcText, true)
-    
     var stages : array<QueryStage>
     var curVar = varName
     var curIsGroup = false
@@ -1133,7 +1136,6 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
 class FromInMacro : AstCallMacro {
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : ExpressionPtr {
-        
         if (length(call.arguments) != 1 && length(call.arguments) != 2) {
             macro_error(prog, call.at, "from_in(src[, type<Row>]): expected 1 or 2 arguments")
             return null
@@ -1144,7 +1146,6 @@ class FromInMacro : AstCallMacro {
             return null
         }
         if (length(call.arguments) == 1) {
-            
             if (srcT.isGoodTableType) {
                 if (srcT.secondType == null || srcT.secondType.baseType == Type.tVoid)
                     return qmacro(unsafe($c("keys")($e(call.arguments[0]))))
@@ -1152,23 +1153,15 @@ class FromInMacro : AstCallMacro {
             }
             return qmacro(unsafe($c("each")($e(call.arguments[0]))))
         }
-        
-        
         if (srcT.isGoodTableType) {
             macro_error(prog, call.at, "linq: a table source takes no row-type annotation - write `from kv in <tab>` (kv.key / kv.value)")
             return null
         }
-        
         if (srcT.structType != null && srcT.structType.name == "SqlRunner"
                 && srcT.structType._module != null && srcT.structType._module.name == "sqlite_boost")
             return qmacro($c("select_from")($e(call.arguments[0]), $e(call.arguments[1])))
-        
-        
         if (srcT.isHandle && srcT.annotation != null && srcT.annotation.name == "xml_node")
             return qmacro(unsafe($c("from_xml_node")($e(call.arguments[0]), $e(call.arguments[1]))))
-        
-        
-        
         if (srcT.isPointer && srcT.firstType != null && srcT.firstType.structType != null
                 && srcT.firstType.structType.name == "JsonValue"
                 && srcT.firstType.structType._module != null && srcT.firstType.structType._module.name == "json")
@@ -1191,6 +1184,7 @@ class LinqDasReader : AstReaderMacro {
     }
     def override suffix(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; info : LineInfo;
                         var outLine : int&; var outFile : FileInfo?&) : string {
+        outLine = int(info.line)
         return transpile_query(string(expr.sequence), prog, info)
     }
 }

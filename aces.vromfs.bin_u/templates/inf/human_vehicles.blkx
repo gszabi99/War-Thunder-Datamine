@@ -67,6 +67,62 @@
       ]
     }
   },
+  "requested_vehicle": {
+    "_group": {
+      "_tags": "server",
+      "requested_vehicle__wreckLifetime": 20.0,
+      "requested_vehicle__destroyAtTime": -1.0
+    }
+  },
+  "supply_transport": {
+    "supply_transport__pointsCapacity": 100.0,
+    "supply_transport__loadRatePerSecond": 5.0,
+    "supply_transport__unloadRatePerSecond": 5.0,
+    "supply_transport__points": 0.0,
+    "supply_transport__state": 0,
+    "_tracked": [
+      "supply_transport__points",
+      "supply_transport__state"
+    ],
+    "_replicated": [
+      "supply_transport__points",
+      "supply_transport__state"
+    ],
+    "supply_transport__standStillSpeed": 0.5,
+    "supplyTransport:tag": {},
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "supply_transport__clientZoneCheckPeriod": 0.5,
+        "supply_transport__nextZoneCheckAt": 0.0,
+        "supply_transport__canLoad": false,
+        "supply_transport__canUnload": false
+      },
+      {
+        "_tags": "server",
+        "supply_transport__updatePeriod": 1.0,
+        "supply_transport__nextUpdateAt": -1.0,
+        "supply_transport__requestedState": 0,
+        "supply_transport__team": -1,
+        "supply_transport__returnRewardPending": false,
+        "supply_transport__rewardCarry": 0.0,
+        "supply_transport__sessionScore": 0,
+        "supply_transport__deliveryStartAt": -1.0,
+        "supply_reward__unloadPerPoint": 1.0,
+        "supply_reward__routeMultPerKm": 0.5,
+        "supply_reward__stolenMult": 2.0,
+        "supply_reward__returnEmpty": 30,
+        "supply_reward__destroyLoaded": 50,
+        "supply_reward__destroyPerPoint": 0.5,
+        "supply_reward__escortMult": 0.5,
+        "supply_transport__cargoSourceEids:list<eid>": {},
+        "supply_transport__cargoSourceTeams:list<i>": {},
+        "supply_transport__cargoPortions:list<r>": {},
+        "supply_transport__escortPlayerEids:list<eid>": {},
+        "supply_transport__escortTime:list<r>": {}
+      }
+    ]
+  },
   "hummer_h1": {
     "_use": [
       "tank",

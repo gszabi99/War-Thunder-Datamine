@@ -106,7 +106,7 @@ let timeOfFlight = @() {
 }
 
 let area = @() {
-  watch = [ShellFPVMaxZoom]
+  watch = ShellFPVMaxZoom
   size = [pw(100 * ShellFPVMaxZoom.get()), ph(100 * ShellFPVMaxZoom.get())]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
@@ -114,7 +114,7 @@ let area = @() {
   color = baseColor
   fillColor = 0
   lineWidth = 0.5 * baseLineWidth
-  commands = [
+  commands = const [
     [VECTOR_LINE, 100, 100, 85, 100],
     [VECTOR_LINE, 100, 100, 100, 80],
     [VECTOR_LINE, 0, 0, 0, 20],
@@ -135,14 +135,14 @@ let angleLimits = @() {
   fillColor = 0
   lineWidth = 0.5 * baseLineWidth
   commands = [
-    [VECTOR_LINE, 100, 100, 85, 100],
-    [VECTOR_LINE, 100, 100, 100, 80],
-    [VECTOR_LINE, 0, 0, 0, 20],
-    [VECTOR_LINE, 0, 0, 15, 0],
-    [VECTOR_LINE, 0, 100, 15, 100],
-    [VECTOR_LINE, 0, 100, 0, 80],
-    [VECTOR_LINE, 100, 0, 100, 20],
-    [VECTOR_LINE, 100, 0, 85, 0],
+    const [VECTOR_LINE, 100, 100, 85, 100],
+    const [VECTOR_LINE, 100, 100, 100, 80],
+    const [VECTOR_LINE, 0, 0, 0, 20],
+    const [VECTOR_LINE, 0, 0, 15, 0],
+    const [VECTOR_LINE, 0, 100, 15, 100],
+    const [VECTOR_LINE, 0, 100, 0, 80],
+    const [VECTOR_LINE, 100, 0, 100, 20],
+    const [VECTOR_LINE, 100, 0, 85, 0],
 
     [VECTOR_LINE, 50 * (1 + ShellFPVCameraLimX.get()) + 1, 50 * (1 - ShellFPVCameraLimY.get()), 50 * (1 + ShellFPVCameraLimX.get()) + 3, 50 * (1 - ShellFPVCameraLimY.get())],
     [VECTOR_LINE, 50 * (1 + ShellFPVCameraLimX.get()) - 1, 50 * (1 - ShellFPVCameraLimY.get()), 50 * (1 + ShellFPVCameraLimX.get()) - 3, 50 * (1 - ShellFPVCameraLimY.get())],

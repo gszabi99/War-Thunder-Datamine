@@ -1,3 +1,4 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import stat_get_value_time_played
@@ -5,7 +6,6 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let newPlayersBattles = {}
@@ -99,9 +99,9 @@ addListenersWithoutEnv({
   InitConfigs = @(_) initNewbieInfo()
 }, g_listener_priority.LOGIN_PROCESS)
 
-return {
+return freeze({
   getTimePlayed
   isNewbieEventId
   getUnitTypeByNewbieEventId
   getNewPlayersBattlesConfig = @() freeze(newPlayersBattles)
-}
+})

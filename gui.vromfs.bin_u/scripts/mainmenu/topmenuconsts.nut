@@ -5,4 +5,4 @@ enum TOP_MENU_ELEMENT_TYPE {
 }
 
 
-return { TOP_MENU_ELEMENT_TYPE }
+return freeze({ TOP_MENU_ELEMENT_TYPE })

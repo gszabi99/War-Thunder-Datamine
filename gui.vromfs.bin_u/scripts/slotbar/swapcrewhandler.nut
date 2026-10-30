@@ -1,14 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/slotbar/slotbarView.nut" import getSlotObj
+from "%scripts/crew/crew.nut" import getCrew
+from "%scripts/slotbar/slotbarPresets.nut" import swapCrewsInCurrentPreset
 from "math" import abs
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrew } = require("%scripts/crew/crew.nut")
-let { swapCrewsInCurrentPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
 local class SwapCrewHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -55,6 +55,9 @@ local class SwapCrewHandler (BaseGuiHandlerWT) {
 
     for (local i = 0; i < itemsCount; i++) {
       let item = this.airsTableSource.getChild(i)
+      if (!item.isVisible())
+        continue
+
       ActionsList.removeActionsListFromObject(item)
 
       let idParts = item.id.split("td_slot_")[1].split("_").map(@(part) part.tointeger())
@@ -127,6 +130,6 @@ local class SwapCrewHandler (BaseGuiHandlerWT) {
 
 register_gui_handler("SwapCrewHandler", SwapCrewHandler)
 
-return {
+return freeze({
   open = @(crew, airsTableSource, slotbarWeak) handlersManager.loadHandler(SwapCrewHandler, { crew, airsTableSource, slotbarWeak })
-}
+})

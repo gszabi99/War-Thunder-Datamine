@@ -18,9 +18,6 @@ const activeColor = Color(255, 255, 255)
 
 const barsCount = 20
 
-let coaxialGunIcon = Picture($"!ui/gameuiskin#coaxial_ammo_indicator.svg:{iconWidth}:{iconHeight}")
-let machineGunIcon = Picture($"!ui/gameuiskin#aa_ammo_indicator.svg:{iconWidth}:{iconHeight}")
-
 function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reloadEndTime) {
   let estimatedBarsCount = barsCount * bulletsCurrent / bulletsTotal
   let misTime = get_mission_time()
@@ -83,7 +80,7 @@ function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, re
       {
         rendObj = ROBJ_IMAGE
         size = [iconWidth, iconHeight]
-        image = triggerGroupIcon
+        image = Picture($"{triggerGroupIcon}:{iconWidth}:{iconHeight}")
         color = activeColor
       }
       {
@@ -121,9 +118,9 @@ function tankGunsAmmo() {
     hplace = ALIGN_CENTER
     gap = shHud(0.5)
     children = [
-      mkTankGun(coaxialGunIcon,
+      mkTankGun("!ui/gameuiskin#coaxial_ammo_indicator.svg",
         CoaxialCartridges, CoaxialBullets, CoaxialCartridgeSize.get(), CoaxialGunStartLoadAtTime, CoaxialGunNextShotAtTime),
-      mkTankGun(machineGunIcon,
+      mkTankGun("!ui/gameuiskin#aa_ammo_indicator.svg",
         MachineGunCartridges, MachineGunBullets, MachineGunCartridgeSize.get(), MachineGunStartLoadAtTime, MachineGunNextShotAtTime)
     ]
   }

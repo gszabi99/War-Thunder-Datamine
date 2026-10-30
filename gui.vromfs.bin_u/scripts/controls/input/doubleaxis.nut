@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/input/inputBase.nut" import InputBase
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 let DoubleAxis = class (InputBase) {
@@ -51,4 +51,4 @@ let DoubleAxis = class (InputBase) {
     }
   }
 }
-return {DoubleAxis}
+return freeze({DoubleAxis})

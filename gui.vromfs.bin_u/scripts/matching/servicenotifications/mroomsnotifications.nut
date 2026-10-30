@@ -1,14 +1,15 @@
+from "%scripts/matching/api.nut" import matchingRpcSubscribe
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/matching/serviceNotifications/mroomsState.nut" import cleanupRoomState, isNotifyForCurrentRoom, connectToHost, mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import onSettingsChanged, onMemberInfoUpdate, onMemberJoin
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinSessionRoom, onMemberLeave
+from "%scripts/invites/invites.nut" import addSessionRoomInvite
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost, mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
-let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { joinSessionRoom, onMemberLeave } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { addSessionRoomInvite } = require("%scripts/invites/invites.nut")
+let { roomState } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 
 
 function notify_room_invite(params) {

@@ -55,6 +55,12 @@ def operator ?[] (var a : json::JsonValue? ==const; idx : int) : JsonValue? {
     return a != null && a.value is _array ? (a.value as _array)?[idx] ?? json_null_sentinel() : json_null_sentinel()
 }
 
+def key_exists(a : json::JsonValue const?; key : string) : bool {
+    
+    
+    return a != null && a.value is _object && ((a.value as _object) |> key_exists(key))
+}
+
 def private null_coalescing(a : json::JsonValue const?; val : auto(TT)) : TT {
     
     if (a != null) {
@@ -154,9 +160,6 @@ def private is_json_ptr_value(td : TypeDeclPtr) {
     let st = td.firstType.structType
     return st.name == "JsonValue" && st._module.name == "json"
 }
-
-
-
 
 
 [variant_macro(name="better_json")]
@@ -400,8 +403,6 @@ def from_JV(v : JsonValue const explicit?; anything : table< auto(KT); auto(VT) 
     unsafe {
         let tab & = v.value as _object
         for (k, vv in keys(tab), values(tab)) {
-            
-            
             move_to_ref(ret[k], _::from_JV(vv, type<VT -&>))  
         }
     }
@@ -426,7 +427,7 @@ def public parse_json_annotation(name : string; annotation : array<tuple<name : 
             if (ann.data is tString) {
                 fieldState.argName = ann.data as tString
             } elif (ann.data is tBool && !empty(name) && first_character(name) == '_') {
-                fieldState.argName = slice(name, 1)
+                fieldState.argName = slice(name, 1)   
             }
         } elif (ann.name == "enum_as_int" && ann.data is tBool) {
             fieldState.enumAsInt = ann.data as tBool
@@ -446,7 +447,7 @@ def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
     
     
     static_if (typeinfo is_dim(anything)) {
-        var ret : TT -const -&   
+        var ret : TT -const -&
         if (v == null || !(v.value is _array)) return <- ret
         unsafe {
             let arr & = v.value as _array
@@ -515,7 +516,7 @@ def from_JV(v : JsonValue const explicit?; anything : auto(TT)) {
     }
 }
 
-def JV(value : auto(TT)) : JsonValue? {
+def JV(value : auto(TT)) : JsonValue? { 
     
     
     static_if (typeinfo is_dim(value)) {
@@ -525,11 +526,7 @@ def JV(value : auto(TT)) : JsonValue? {
             arr |> push(JV(t))
         }
         return _::JV(arr)
-    }
-    static_if (typeinfo typename(value) == "json::JsonValue?" || typeinfo typename(value) == "json::JsonValue? const") {
-        
-        
-        
+    } static_elif (typeinfo typename(value) == "json::JsonValue?" || typeinfo typename(value) == "json::JsonValue? const") {
         unsafe {
             return reinterpret<JsonValue?>(value)
         }
@@ -543,9 +540,9 @@ def JV(value : auto(TT)) : JsonValue? {
         var map : table<string; JsonValue?>
         apply(value) $(name : string; field; annotations) {
             static_if (typeinfo is_function(field)) {
-                pass 
+                pass
             } static_elif (typeinfo is_void_pointer(field)) {
-                pass 
+                pass
             } static_elif (typeinfo is_pointer(field)) {
                 if (field != null) {
                     static_let("{typeinfo typename(type<TT-const-&>)}`{name}") {
@@ -567,10 +564,8 @@ def JV(value : auto(TT)) : JsonValue? {
                     fieldState <- parse_json_annotation(name, annotations)
                     fieldStateParsed = true
                 }
-                
                 var skip = false   
                 if (fieldState.optional) {
-                    
                     static_if (typeinfo is_string(field)) {
                         skip = empty(field)
                     } static_elif (typeinfo is_array(field)) {
@@ -581,8 +576,6 @@ def JV(value : auto(TT)) : JsonValue? {
                         skip = field == null
                     } else {
                         static_if (typeinfo is_workhorse(field)) {
-                            
-                            
                             static_if (typeinfo stripped_typename(field) == "bool") {
                                 skip = !field
                             } else {
@@ -592,7 +585,7 @@ def JV(value : auto(TT)) : JsonValue? {
                     }
                 }
                 if (!skip) {
-                    if (fieldState.enumAsInt) {     
+                    if (fieldState.enumAsInt) {
                         static_if (typeinfo is_enum(field)) {
                             let fieldStateEnumValue : int = int(field)
                             map |> insert(fieldState.argName, _::JV(fieldStateEnumValue))
@@ -628,9 +621,9 @@ def JV(value : auto(TT)) : JsonValue? {
         var map : table<string; JsonValue?>
         apply(value) $(name : string; field) {
             static_if (typeinfo is_function(field)) {
-                pass 
+                pass
             } static_elif (typeinfo is_void_pointer(field)) {
-                pass 
+                pass
             } static_elif (typeinfo is_pointer(field)) {
                 if (field != null) {
                     map |> insert(name, _::JV(field))
@@ -650,8 +643,6 @@ def JV(value : auto(TT)) : JsonValue? {
         var arr : array<JsonValue?>
         static_if (typeinfo is_array(value)) {
             arr |> reserve(long_length(value))
-        } static_elif (typeinfo is_dim(value)) {
-            arr |> reserve(typeinfo dim(value))
         }
         for (x in value) {
             arr |> push <| _::JV(x)
@@ -716,9 +707,6 @@ def JV(val1; val2; val3; val4; val5; val6; val7; val8; val9; val10) : JsonValue?
     return _::JV([ _::JV(val1), _::JV(val2), _::JV(val3), _::JV(val4), _::JV(val5), _::JV(val6), _::JV(val7), _::JV(val8), _::JV(val9), _::JV(val10)])
 }
 
-
-
-
 [unused_argument(t)]
 def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
     
@@ -731,13 +719,12 @@ def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
         }
         return <- ret
     } static_elif (typeinfo is_string(type<TT>)) {
-        return jv.value ?as _string ?? default<TT -const>   
+        return jv.value ?as _string ?? default<TT -const>
     } static_elif (typeinfo stripped_typename(type<TT>) == "bool") {
         return jv.value ?as _bool ?? default<TT -const>
     } static_elif (typeinfo is_enum(type<TT>)) {
-        return from_JV(jv, type<TT>)   
+        return from_JV(jv, type<TT>)
     } static_elif (typeinfo is_numeric(type<TT>)) {
-        
         static_if (typeinfo is_float(type<TT>) || typeinfo is_double(type<TT>)) {
             if (jv.value is _number) return TT(jv.value as _number)    
             if (jv.value is _longint) return TT(jv.value as _longint)
@@ -745,12 +732,12 @@ def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
             if (jv.value is _longint) return TT(jv.value as _longint)  
             if (jv.value is _number) return TT(jv.value as _number)
             static_if (typeinfo stripped_typename(type<TT>) == "int64" || typeinfo stripped_typename(type<TT>) == "uint64") {
-                if (jv.value is _string) return TT(jv.value as _string)  
+                if (jv.value is _string) return TT(jv.value as _string)
             }
         }
         return default<TT -const>
     } else {
-        return from_JV(jv, type<TT>)   
+        return from_JV(jv, type<TT>)
     }
 }
 
@@ -770,7 +757,7 @@ def from_json(jv : JsonValue const?; t : type<auto(TT)>) : iterator<TT -const> {
 [constant_expression(key=false)]
 def read_json_field(jv : JsonValue const?; key : string; defv : auto(TT)) : TT {
     
-    let found = unsafe((unsafe(jv ?as _object))?[key])   
+    let found = unsafe((unsafe(jv ?as _object))?[key])
     if (found != null) return from_json_row(*found, type<TT>)
     return defv
 }

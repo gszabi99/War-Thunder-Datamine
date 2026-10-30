@@ -1,23 +1,26 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/weaponry/bulletsInfo.nut" import isAntiRadarGuidance
+from "%scripts/weaponry/weaponryInfo.nut" import TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry, isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath
+from "%scripts/weaponry/weaponryTooltipPkg.nut" import getTierTooltipParams
+from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX, getUnitPresets, isCustomPreset, getWeaponsByTypes
+  , getWeaponBlkParams, getSlotsWeaponsForEditPreset, getUnitWeaponSlots
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import getCustomPresetByPresetBlk, convertPresetToBlk
+from "%scripts/weaponry/restrictionsWeaponryPreset.nut" import openRestrictionsWeaponryPreset
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "math" import ceil, fabs
 from "%sqstd/string.nut" import cutPrefix
 from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { BULLET_TYPE, isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
-let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry, isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { MIN_TIERS_COUNT, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX, getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset, getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getCustomPresetByPresetBlk, convertPresetToBlk } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { CHAPTER_ORDER } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = u
-let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictionsWeaponryPreset.nut")
-let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
@@ -44,7 +47,7 @@ function getWeaponrySize(massKg) {
   if (blk == null)
     return ""
 
-  let sizes = (blk % "size").sort(@(a, b)a.max <=> b.max)
+  let sizes = (blk % "size").sortby(@(a) a.max)
   foreach (size in sizes)
     if (massKg > size.max)
       continue
@@ -54,6 +57,7 @@ function getWeaponrySize(massKg) {
 }
 
 let checkIsNotWeaponry = @(inst) inst?.trigger == "fuel tanks" || inst?.trigger == "boosters"
+  || inst?.trigger == "targetingPod"
 
 function getTypeByPurpose(weaponry) {
   if (u.isEmpty(weaponry))
@@ -326,7 +330,7 @@ function getTiers(unit, preset) {
           if (prop != "tierId")
             tier[prop] <- value
   }
-  res.sort(@(a, b) a.tierId  <=> b.tierId)
+  res.sortby(@(a) a.tierId)
 
   return res
 }
@@ -767,7 +771,7 @@ function getPresetWeightRestrictionText(preset, unitBlk) {
   return "\n".join(result, true)
 }
 
-return {
+return freeze({
   getWeaponryByPresetInfo
   setFavoritePresets
   sortPresetsList
@@ -779,4 +783,4 @@ return {
   getTierIcon
   findAvailableWeapon
   getSinglePresetView
-}
+})

@@ -59,7 +59,6 @@ foreach (fn in [
   "%scripts/events/eventRoomsHandler.nut"
   "%scripts/events/eventRewardsWnd.nut"
   "%scripts/events/eventDescriptionWindow.nut"
-  "%scripts/vehiclesWindow.nut"
 
   "%scripts/gameModes/gameModeSelect.nut"
   "%scripts/changeCountry.nut"
@@ -89,6 +88,7 @@ foreach (fn in [
   "%scripts/chat/modifyThreadWnd.nut"
   "%scripts/chat/mpChatMode.nut"
   "%scripts/chat/mpChat.nut"
+  "%scripts/chat/voiceDirectPeers.nut"
 
   "%scripts/invites/inviteChatRoom.nut"
   "%scripts/invites/inviteSessionRoom.nut"
@@ -107,7 +107,6 @@ foreach (fn in [
   "%scripts/help/rwrThreatTypesWnd.nut"
   "%scripts/controls/controlsWizard.nut"
   "%scripts/controls/controlsType.nut"
-  "%scripts/controls/AxisControls.nut"
   "%scripts/controls/aircraftHelpers.nut"
   "%scripts/controls/gamepadCursorControlsSplash.nut"
   "%scripts/help/helpInfoHandlerModal.nut"
@@ -281,6 +280,9 @@ foreach (fn in [
 }
 
 require("%scripts/hud/miningWallState.nut")
+require("%scripts/hud/plantSiteState.nut")
+require("%scripts/hud/supplyTransportState.nut")
+require("%scripts/hud/capzoneSectorState.nut")
 require("%scripts/hud/reanimationState.nut")
 require("%scripts/hud/medkitsUseState.nut")
 require("%scripts/hud/firePutOutState.nut")
@@ -333,6 +335,7 @@ require("%scripts/debugTools/dbgClans.nut")
 require("%scripts/debugTools/dbgHudObjects.nut")
 require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
+require("%scripts/debugTools/dbgUnitsDump.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
 require("%scripts/debugTools/dbgWeaponryPresetsRepair.nut")

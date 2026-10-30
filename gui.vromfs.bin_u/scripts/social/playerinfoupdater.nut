@@ -1,3 +1,5 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/myStats.nut" import getStats
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%sqstd/platform.nut" import is_xbox
 from "%gdkLib/impl/stats.nut" import write_number
@@ -5,11 +7,9 @@ from "%gdkLib/impl/presence.nut" import set_presence
 from "%gdkLib/impl/user.nut" import is_any_user_active
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getStats } = require("%scripts/myStats.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 
-let lastSendedData =  persist("lastSendedData", @() {})
+let lastSendedData = {}
 
 let playerInfoUpdater = freeze({
   xboxUserInfoStats = {

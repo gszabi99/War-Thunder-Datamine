@@ -1,3 +1,9 @@
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/controls/controlsUtils.nut" import getMouseUsageMask
+from "%scripts/options/optionsExtNames.nut" import USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER, USEROPT_INVERTY_HELICOPTER
+  , USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
+from "%scripts/controls/shortcutsUtils.nut" import hasMappedSecondaryWeaponSelector
+from "%scripts/controls/controlsManager.nut" import commitControls
 from "globalEnv" import ControlHelpersMode
 from "gameparams" import get_game_params
 from "gameOptions" import get_option_multiplier, set_option_multiplier, get_option_int, set_option_int, OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, OPTION_HELICOPTER_PEDALS_MULTIPLIER
@@ -11,11 +17,6 @@ from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
-let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER, USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY } = require("%scripts/options/optionsExtNames.nut")
-let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 return [
   {
@@ -527,7 +528,7 @@ return [
   {
     id = "ID_AIM_CAMERA_HELICOPTER"
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXbox
+    condition = @() isSony || isXbox
   }
   {
     id = "helicopter_zoom"
@@ -732,7 +733,7 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXbox || isXInputDevice())
+    showFunc = @() (isSony || isXbox || isXInputDevice())
     checkAssign = @() isXInputDevice()
   }
   {
@@ -740,7 +741,7 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXbox || isXInputDevice())
+    showFunc = @() (isSony || isXbox || isXInputDevice())
     checkAssign = @() isXInputDevice()
   }
 

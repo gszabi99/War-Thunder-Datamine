@@ -1,4 +1,6 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/worldWar/inOperation/model/wwOperationModel.nut" import WwOperationModel
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dagor.time" import get_time_msec
 from "worldwar" import wwGetOperationId
@@ -6,8 +8,6 @@ from "worldwarConst" import ArmyFlags
 from "%scripts/dagui_natives.nut" import ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { WwOperationModel } = require("%scripts/worldWar/inOperation/model/wwOperationModel.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 
 const UPDATE_REFRESH_DELAY = 1000
@@ -95,7 +95,7 @@ addListenersWithoutEnv({
   }
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   getCurrentOperation
   getArmiesByStatus
   getArmiesCache
@@ -103,4 +103,4 @@ return {
   forcedFullUpdateCurrentOperation
   getAirArmiesNumberByGroupIdx
   getAllOperationUnitsBySide
-}
+})

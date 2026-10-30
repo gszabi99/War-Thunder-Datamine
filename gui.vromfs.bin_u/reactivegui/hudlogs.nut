@@ -1,3 +1,5 @@
+import "%rGui/hudBattleLog.nut" as battleLog
+import "%rGui/hudKillLog.nut" as killLog
 import "%rGui/hudChat.nut" as chat
 import "%rGui/components/tabs.nut" as tabs
 from "%rGui/ctrlsState.nut" import cursorVisible
@@ -11,8 +13,6 @@ from "%rGui/style/screenState.nut" import bw
 from "chat" import get_option_auto_show_chat
 from "%rGui/globals/ui_library.nut" import *
 
-let battleLog = require("%rGui/hudBattleLog.nut")
-let killLog = require("%rGui/hudKillLog.nut")
 let { activeOrderLogContent } = require("%rGui/activeOrder.nut")
 
 let tabsList = [
@@ -116,13 +116,11 @@ let logsHeader = @() {
   watch = [cursorVisible, currentTab, isSpectatorMode]
   size = FLEX_H
   opacity = cursorVisible.get() ? 1 : 0
-  children = [
-    tabs({
-      tabs = isSpectatorMode.get() ? tabsList : tabsList.filter(@(a) !tabsVisibleInSpectatorOnly.contains(a.id))
-      currentTab = currentTab.get()
-      onChange = @(tab) currentTab.set(tab.id)
-    })
-  ]
+  children = tabs({
+    tabs = isSpectatorMode.get() ? tabsList : tabsList.filter(@(a) !tabsVisibleInSpectatorOnly.contains(a.id))
+    currentTab = currentTab.get()
+    onChange = @(tab) currentTab.set(tab.id)
+  })
   transitions = [{ prop = AnimProp.opacity, duration = fastDuration, easing = OutCubic }]
 }
 
@@ -145,7 +143,7 @@ return @() {
   size = [hudLogsWidth.get(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   watch = [isVisible, hudLogsWidth]
-  children = isVisible.get() ? [logsHeader, logsContainer] : []
+  children = isVisible.get() ? [logsHeader, logsContainer] : null
   onAttach = function() {
     
     

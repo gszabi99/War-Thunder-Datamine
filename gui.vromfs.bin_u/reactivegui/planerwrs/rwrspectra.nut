@@ -440,97 +440,95 @@ function scope(scale, style) {
     size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      {
-        pos = const [pw(7), ph(7)],
-        size = const [pw(80), ph(80)],
-        children = [
-          {
-            size = const [pw(100), ph(100)],
-            children = [
-              rwrTargetsComponent(style.object),
-              createRwrGrid(style.grid)
-            ]
-          },
-          createCompass(style.grid),
+    children = {
+      pos = const [pw(7), ph(7)],
+      size = const [pw(80), ph(80)],
+      children = [
+        {
+          size = const [pw(100), ph(100)],
+          children = [
+            rwrTargetsComponent(style.object),
+            createRwrGrid(style.grid)
+          ]
+        },
+        createCompass(style.grid),
 
-          styleText.__merge({
-            rendObj = ROBJ_TEXT
-            pos = const [pw(-120), ph(90)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = "EM"
-          }),
-          @() styleText.__merge({
-            watch = ChaffsCount
-            rendObj = ROBJ_TEXT
-            pos = const [pw(-100), ph(90)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = format("%d", ChaffsCount.get())
-          }),
-          styleText.__merge({
-            rendObj = ROBJ_TEXT
-            pos = const [pw(-120), ph(100)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = "IR"
-          }),
-          @() styleText.__merge({
-            watch = FlaresCount
-            rendObj = ROBJ_TEXT
-            pos = const [pw(-100), ph(100)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = format("%d", FlaresCount.get())
-          }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-120), ph(90)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = "EM"
+        }),
+        @() styleText.__merge({
+          watch = ChaffsCount
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-100), ph(90)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = format("%d", ChaffsCount.get())
+        }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-120), ph(100)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = "IR"
+        }),
+        @() styleText.__merge({
+          watch = FlaresCount
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-100), ph(100)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = format("%d", FlaresCount.get())
+        }),
 
-          styleText.__merge({
-            rendObj = ROBJ_TEXT
-            pos = const [pw(130), ph(-55)]
-            color = white
-            size = FLEX
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = "+"
-          }),
-          @() styleText.__merge({
-            watch = settings
-            rendObj = ROBJ_TEXT
-            pos = const [pw(130), ph(-40)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoLargeFontSizeMult
-            text = format("%d", settings.get().rangeMax * metrToNavMile)
-          }),
-          styleText.__merge({
-            rendObj = ROBJ_TEXT
-            pos = const [pw(130), ph(-25)]
-            size = FLEX
-            color = white
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
-            text = "-"
-          })
-        ]
-      }
-    ]
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(130), ph(-55)]
+          color = white
+          size = FLEX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = "+"
+        }),
+        @() styleText.__merge({
+          watch = settings
+          rendObj = ROBJ_TEXT
+          pos = const [pw(130), ph(-40)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoLargeFontSizeMult
+          text = format("%d", settings.get().rangeMax * metrToNavMile)
+        }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(130), ph(-25)]
+          size = FLEX
+          color = white
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
+          text = "-"
+        })
+      ]
+    }
   }
 }
 

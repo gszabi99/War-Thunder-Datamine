@@ -1,4 +1,18 @@
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/chat/chatStates.nut" import isCrossNetworkMessageAllowed
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/langUtils/language.nut" import getLangInfoByChatId, getEmptyLangInfo, getGameLocalizationInfo
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
+from "%scripts/chat/chatLatestThreads.nut" import canChooseThreadsLang
+from "%scripts/chat/chatHelper.nut" import checkChatConnected
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/chat/chatUtils.nut" import restoreReceivedThreadTitle, filterMessageText
+from "%scripts/chat/chatColors.nut" import getSenderColor
+from "%scripts/chat/chatRooms.nut" import joinThread
+from "%scripts/chat/chatStorage.nut" import isRoomJoined
+from "%scripts/user/clanName.nut" import getMyClanTag
 from "string" import split_by_chars
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import gchat_raw_command
@@ -6,21 +20,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getLangInfoByChatId, getEmptyLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
-let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { restoreReceivedThreadTitle, filterMessageText } = require("%scripts/chat/chatUtils.nut")
-let { getSenderColor } = require("%scripts/chat/chatColors.nut")
-let { joinThread } = require("%scripts/chat/chatRooms.nut")
-let { isRoomJoined } = require("%scripts/chat/chatStorage.nut")
-let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 const THREADS_INFO_TIMEOUT_MSEC = 300000
@@ -282,7 +282,7 @@ let ChatThreadInfo = class {
   }
 }
 
-return {
+return freeze({
   THREADS_INFO_CLEAN_PERIOD_MSEC
   ChatThreadInfo
-}
+})

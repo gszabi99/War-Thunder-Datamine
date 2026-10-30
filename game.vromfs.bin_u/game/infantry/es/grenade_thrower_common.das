@@ -21,6 +21,10 @@ def anim_detach(var slot_attach__slotId : int&;
   slot_attach__slotId = -1
 
 
+def is_grenade_thrower_in_hands(owner_eid : EntityId)
+  return (get_int(owner_eid, "human_weap__currentGunSlot") ?? -1) == int(HUWeaponSlots.EWS_GRENADE)
+
+
 def attach_projectile(owner_eid : EntityId;
                       gun_eid : EntityId;
                       projectile_entity : EntityId;
@@ -33,8 +37,7 @@ def attach_projectile(owner_eid : EntityId;
                                       var slot_attach__slotId : int&;
                                       var gun__visible : bool&)
     if attach
-      let isGrenadeThrowerInHands = (get_int(owner_eid, "human_weap__currentGunSlot") ?? -1) == int(HUWeaponSlots.EWS_GRENADE)
-      let useAltSlot = gun_attach__altSlotId >= 0 && !isGrenadeThrowerInHands
+      let useAltSlot = gun_attach__altSlotId >= 0 && !is_grenade_thrower_in_hands(owner_eid)
       anim_attach(slot_attach__slotId, owner_eid, useAltSlot ? gun_attach__altSlotId : gun_attach__mainSlotId, projectile_entity)
     elif have_ammo && gun_attach__holsterSlotsIds != null && (*gun_attach__holsterSlotsIds)[int(HUWeaponSlots.EWS_GRENADE)] >= 0
       anim_attach(slot_attach__slotId, owner_eid, (*gun_attach__holsterSlotsIds)[int(HUWeaponSlots.EWS_GRENADE)], projectile_entity)

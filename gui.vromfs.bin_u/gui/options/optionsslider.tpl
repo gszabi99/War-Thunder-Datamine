@@ -17,7 +17,6 @@ tdiv {
     max:t='<<maxVal>>'
     step:t='<<step>>'
     value:t='<<value>>'
-    <<@classProp>>
     clicks-by-points:t='<<clickByPoints>>'
     fullWidth:t='<<fullWidth>>'
     on_change_value:t='<<cb>>'

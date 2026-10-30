@@ -115,7 +115,6 @@ struct DataBreakpointInfoResponse {
     
     dataId : string 
     description : string 
-    
 }
 
 

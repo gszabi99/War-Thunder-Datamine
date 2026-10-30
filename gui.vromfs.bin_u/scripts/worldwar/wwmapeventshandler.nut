@@ -1,17 +1,15 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/inOperation/wwActionModesManager.nut" as actionModesManager
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/worldWar/handler/wwBattleDescription.nut" import WwBattleDescription
+from "%scripts/worldWar/handler/wwAirfieldFlyOut.nut" import WwAirfieldFlyOut
+from "%scripts/worldWar/worldWarConst.nut" import mapObjectSelect
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/worldWar/worldWarState.nut" import getBattleById
 from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
 from "worldwar" import wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable
 from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
-
-let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
-let { WwAirfieldFlyOut } = require("%scripts/worldWar/handler/wwAirfieldFlyOut.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { mapObjectSelect } = require("%scripts/worldWar/worldWarConst.nut")
-let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-
 
 let sendMapEvent = @(eventName, params = {}) wwEvent($"Map{eventName}", params)
 
@@ -92,7 +90,7 @@ function showAirfieldTooltip(params) {
   sendMapEvent("UpdateCursorByTimer", params)
 }
 
-return {
+return freeze({
   selectAirfield
   selectArmy
   hoverArmy
@@ -104,4 +102,4 @@ return {
   moveArmy
   sendAircraft
   showAirfieldTooltip
-}
+})

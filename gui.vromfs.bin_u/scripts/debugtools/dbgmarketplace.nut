@@ -1,8 +1,9 @@
+from "%scripts/items/workshop/workshopPreview.nut" import WorkshopPreview
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { WorkshopPreview } = require("%scripts/items/workshop/workshopPreview.nut")
-let { handlersManager, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
 

@@ -1,18 +1,18 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "userstat" as userstat
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 const USERSTAT_REQUEST_TIMEOUT = 600
 
@@ -222,11 +222,11 @@ let WwRewards = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwRewards", WwRewards)
 
-return {
+return freeze({
   open = function(params) {
     if (!params?.rewardsBlk)
       return
 
     handlersManager.loadHandler(WwRewards, params)
   }
-}
+})

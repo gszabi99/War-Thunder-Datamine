@@ -1,13 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const ITEM_IMAGE_SIZE = "150@sf/@pf"
 const ITEM_IMAGE_MARGIN = "20@sf/@pf"
@@ -106,7 +107,7 @@ function showDebugItems(count) {
 
 register_command(showDebugItems, "debug.recycledWindow")
 
-return {
+return freeze({
   recycleCompleteWnd
   openOrUpdateRecycleCompleteWnd
-}
+})

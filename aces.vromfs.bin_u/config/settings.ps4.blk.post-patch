@@ -36,6 +36,10 @@
   "@override:voxelShadows" {
     "@override:cascadeCount":i = 0
   }
+  "@override:swrtShadows" { // weak GPU: both SWRT shadow approximations
+    boxDistRef:r = 100
+    blasLeafSkipDist:r = 6
+  }
   "@override:ps4shadows" {
     "@override:dynamicLightsShadows" {
       "@override:infantry" {

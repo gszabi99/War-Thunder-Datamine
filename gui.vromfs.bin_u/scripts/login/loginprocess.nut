@@ -1,17 +1,18 @@
+from "%scripts/g_listener_priority.nut" import LOGIN_PROCESS
+from "%scripts/matching/matchingOnline.nut" import checkShowMatchingConnect
+from "%scripts/login/loginProcessState.nut" import setCurLoginProcess, getCurLoginProcess
+from "%scripts/login/loginManager.nut" import loadLoginHandler, addLoginState, onProfileReceived
+from "%scripts/login/loginPseudoThreadsConfig.nut" import initLoginPseudoThreadsConfig
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted, isProfileReceived
+from "%appGlobals/login/loginState.nut" import isReadyToFullLoad, isAuthorized, isLoginStarted,
+  isProfileReceived, isLoginRequired, hasFullLoginState
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/onlineStageConsts.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 from "dagor.workcycle" import deferOnce
-
-let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
-let { setCurLoginProcess, getCurLoginProcess } = require("%scripts/login/loginStates.nut")
-let { loadLoginHandler, addLoginState, onProfileReceived } = require("%scripts/login/loginManager.nut")
-let { initLoginPseudoThreadsConfig } = require("%scripts/login/loginPseudoThreadsConfig.nut")
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
 
 enum LOGIN_PROGRESS {
   NOT_STARTED
@@ -38,11 +39,16 @@ class LoginProcess {
   constructor(shouldCheckScriptsReload) {
     if (shouldCheckScriptsReload)
       this.restoreStateAfterScriptsReload()
-    if (isAuthorized.get() || isLoginStarted.get())
+    subscribe_handler(this, LOGIN_PROCESS)
+    
+    
+    if (isAuthorized.get() || isLoginStarted.get() || shouldCheckScriptsReload)
       this.curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
 
-    subscribe_handler(this, LOGIN_PROCESS)
-    this.nextStep()
+    if (shouldCheckScriptsReload)
+      this.checkNextStep()
+    else
+      this.nextStep()
   }
 
   function restoreStateAfterScriptsReload() {
@@ -94,7 +100,7 @@ class LoginProcess {
         this.nextStep()
     }
     else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS) {
-      if (isLoggedIn.get())
+      if (hasFullLoginState.get())
         this.nextStep()
     }
   }
@@ -116,7 +122,9 @@ function startLoginProcess(shouldCheckScriptsReload = false) {
 }
 
 function startLoginProcessOnScriptsLoad() {
-  if (!isLoggedIn.get() && isAuthorized.get())
+  let needStartLoginProcess = isAuthorized.get() ? !hasFullLoginState.get()
+    : isLoginRequired.get() && !is_in_loading_screen()
+  if (needStartLoginProcess)
     startLoginProcess(true)
 }
 deferOnce(startLoginProcessOnScriptsLoad)
@@ -129,6 +137,6 @@ addListenersWithoutEnv({
   }
 }, LOGIN_PROCESS)
 
-return {
+return freeze({
   startLoginProcess
-}
+})

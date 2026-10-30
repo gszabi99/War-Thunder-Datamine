@@ -1,23 +1,23 @@
+import "%scripts/shop/shopSearchCore.nut" as shopSearchCore
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "string" import format
 from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let ShopSearchWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -65,7 +65,7 @@ let ShopSearchWnd = class (BaseGuiHandlerWT) {
         if (!armyUnits.len())
           continue
 
-        armyUnits.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
+        armyUnits.sortby(@(a) a.getBattleRating(ediff))
         data[countryId][unitType.armyId] <- armyUnits
       }
     }
@@ -158,7 +158,7 @@ let ShopSearchWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ShopSearchWnd", ShopSearchWnd)
 
-return {
+return freeze({
   open = function(searchString, cbOwnerShowUnit, getEdiffFunc) {
     let units = shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
@@ -171,4 +171,4 @@ return {
     })
     return true
   }
-}
+})

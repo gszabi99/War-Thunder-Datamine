@@ -1,10 +1,18 @@
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/crew/crewSkillParameters.nut" import getParametersByCrewId
+from "%scripts/weaponry/weaponryInfo.nut" import isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff
+from "%scripts/weaponry/modificationInfo.nut" import isModAvailableOrFree
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData
+from "%scripts/unit/unitParams.nut" import getFmFile
 from "%sqStdLibs/helpers/u.nut" import appendOnce, copy
-from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeaponFunc
-  , mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc, mkAircraftFuelTankDesc
-  , mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc, mkCountermeasureDesc, mkApsSensorDesc
-  , mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc, mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc
-  , mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkSupportPlaneDesc, mkOpticBodyDesc
-  , getPartPressureCompartmentDesc
+from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK,
+  S_SHIP, S_BOAT, compareWeaponFunc, mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc,
+  mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc, mkAircraftFuelTankDesc, mkWeaponDesc,
+  mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc, mkCountermeasureDesc,
+  mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
+  mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc,
+  mkFireControlSystemDesc, mkHydraulicsSystemDesc, mkElectronicEquipmentDesc,
+  mkSimpleDescByPartType, mkSupportPlaneDesc, mkOpticBodyDesc, getPartPressureCompartmentDesc
 from "blkGetters" import get_modifications_blk, get_wpcost_blk
 from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
@@ -13,13 +21,7 @@ from "%scripts/debugTools/dbgXrayMode.nut" import isDebugXrayModeActive
 from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeapons, getPresetWeapons
 
 let { measureType } = require("%scripts/measureType.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
-let { getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getFmFile } = require("%scripts/unit/unitParams.nut")
 
 let unitTypeToSimpleUnitTypeMap = {
   [ES_UNIT_TYPE_AIRCRAFT] = S_AIRCRAFT,
@@ -113,6 +115,7 @@ let xrayDescCtorsMap = {
   gun_trunnion = mkSimpleDescByPartType
   fuel_tank_exterior = mkSimpleDescByPartType
   aircraft = mkSupportPlaneDesc
+  auxiliary_power_unit = mkSimpleDescByPartType
 }
 
 let getModEffectMul = @(commonData, modId, effectId)

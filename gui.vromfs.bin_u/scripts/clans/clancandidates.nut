@@ -1,15 +1,14 @@
 import "DataBlock" as DataBlock
+from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/popups/popups.nut" import addPopup, removePopupByHandler
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/gamercard/gamercardHelpers.nut" import doWithAllGamercards
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
-
-let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
 
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
 const MAX_CANDIDATES_NICKNAMES_IN_POPUP = 5
@@ -23,7 +22,7 @@ let setSeenCandidatesBlk = @(val) seenCandidatesBlk = val
 let getMyClanCandidates = @() myClanInfo.get()?.candidates ?? []
 
 function isHaveRightsToReviewCandidates() {
-  if (!is_in_clan() || !hasFeature("Clans"))
+  if (!is_in_clan())
     return false
   let rights = clan_get_role_rights(clan_get_my_role())
   return isInArray("MEMBER_ADDING", rights) || isInArray("MEMBER_REJECT", rights)
@@ -61,7 +60,7 @@ function loadSeenCandidates() {
 }
 
 function updateClanAlertIcon() {
-  let needAlert = hasFeature("Clans") && getUnseenCandidatesCount() > 0
+  let needAlert = getUnseenCandidatesCount() > 0
   doWithAllGamercards(function(scene) {
       showObjById("gc_clanAlert", needAlert, scene)
     })
@@ -103,9 +102,6 @@ function openClanRequestsWnd(candidatesData, clanId, owner) {
 }
 
 function parseSeenCandidates() {
-  if (!hasFeature("Clans"))
-    return
-
   if (!seenCandidatesBlk)
     seenCandidatesBlk = loadSeenCandidates()
 
@@ -155,7 +151,7 @@ function parseSeenCandidates() {
   onClanCandidatesChanged()
 }
 
-return {
+return freeze({
   setSeenCandidatesBlk
 
   getMyClanCandidates
@@ -164,4 +160,4 @@ return {
   markClanCandidatesAsViewed
   parseSeenCandidates
   openClanRequestsWnd
-}
+})

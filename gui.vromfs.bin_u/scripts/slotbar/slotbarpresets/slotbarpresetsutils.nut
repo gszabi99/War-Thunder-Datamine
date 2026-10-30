@@ -1,3 +1,10 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/slotbar/slotbarPresets/calcRanks.nut" import calculateBR
+from "%scripts/gameModes/gameModeManagerState.nut" import getGameModeById, getCurrentGameModeId, getGameModeByUnitType
+from "%scripts/battleRating.nut" import getCrafts
+from "%scripts/unit/unitMrankSelectionState.nut" import getMrankDeltaByUnit
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getMyCrewUnitsState, getPresetsListFromSlotbar
+from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx
 from "%sqStdLibs/helpers/u.nut" import mapAdvanced
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
@@ -6,13 +13,6 @@ from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "dagor.localize" import doesLocTextExist
 from "%sqstd/underscore.nut" import deep_clone
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { calculateBR } = require("%scripts/slotbar/slotbarPresets/calcRanks.nut")
-let { getGameModeById, getCurrentGameModeId, getGameModeByUnitType } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrafts } = require("%scripts/battleRating.nut")
-let { getMyCrewUnitsState, getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 let initSettings = freeze([
   { id = "enable_auto_abbreviation" }
@@ -43,12 +43,15 @@ function setPresetsSetting(id, value) {
 }
 
 function getPresetData(country, presetData, ediff) {
+  let mrankDeltaByUnit = getMrankDeltaByUnit(presetData.units)
+
   return {
     country
     crafts = getCrafts({
       country
       crewAirs = { [country] = presetData.units }
       brokenAirs = getMyCrewUnitsState(country).brokenAirs
+      mrankDeltaByUnit
     }, country, ediff)
   }
 }
@@ -118,7 +121,7 @@ addListenersWithoutEnv({
   LoginComplete = @(_p) settings = null
 })
 
-return {
+return freeze({
   getPresetsSettings
   setPresetsSetting
   getCountryPresetsBRs
@@ -132,4 +135,4 @@ return {
   getPresetsDataByCountry
   getGameModeIdByUnits
   getAbbreviationModeName
-}
+})

@@ -1,3 +1,6 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/control/gui_buttons.nut" as JB
 import "%rGui/globals/extWatched.nut" as extWatched
 import "%rGui/components/modalWindow.nut" as modalWindow
 import "%rGui/components/focusBorder.nut" as focusBorder
@@ -16,19 +19,16 @@ from "%rGui/globals/ui_library.nut" import *
 from "types" import Array
 
 let scrollbar = require("%rGui/components/scrollbar.nut")
-let colors = require("%rGui/style/colors.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
 
 
 let featureAllowExternalLink = extWatched("featureAllowExternalLink", false)
-let JB = require("%rGui/control/gui_buttons.nut")
 let { blurPanel } = require("%rGui/components/blurPanel.nut")
 
 let tabStyle = {
   fillColor = {
     normal   = colors.transparent
     hover    = colors.menu.menuButtonColorHover
-    active   = colors.menu.frameBackgroundColor
+    active   = colors.menu.frameDarkTransparentBgColor
     current  = colors.menu.higlightFrameBgColor
   }
   textColor = {
@@ -236,7 +236,7 @@ let nextButton = @() {
 }
 
 let steamReviewButton = @() {
-  watch = [needShowSteamReviewBtn]
+  watch = needShowSteamReviewBtn
   size = SIZE_TO_CONTENT
   children = needShowSteamReviewBtn.get() ? btnSteamReview : null
 }

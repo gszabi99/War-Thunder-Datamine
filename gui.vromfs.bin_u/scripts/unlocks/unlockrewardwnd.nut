@@ -1,27 +1,28 @@
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/customization/contentPreview.nut" import getDecoratorDataToUse, useDecorator
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTypeText, getUnlockTypeFromConfig
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/items/trophyReward.nut" import MAX_REWARDS_SHOW_IN_TROPHY
+from "%scripts/items/prizesView.nut" import getPrizeTooltipConfig, getRewardsListViewData
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
 from "console" import register_command
 from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTypeText, getUnlockTypeFromConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
-let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 
 
 let delayedUnlocksQueue = {}
@@ -41,6 +42,7 @@ register_command(
       title_combat_proven = true
       title_brother_in_arms = true
       simple_01 = true
+      anim_frame_lightning_blue = true
     }
     handlersManager.loadHandler(get_gui_handler("UnlockRewardWnd"), { unlocksRewards })
     return
@@ -97,7 +99,7 @@ let UnlockRewardWnd = class (BaseGuiHandlerWT) {
     if (this.unlocks.len() == 1)
       return getUnlockTypeText(this.unlocks[0].type, this.unlocks[0].id)
 
-    return loc("unlocks/achievement")
+    return locByVendor("unlocks/achievement")
   }
 
   function updateRewardItem() {
@@ -180,7 +182,7 @@ let UnlockRewardWnd = class (BaseGuiHandlerWT) {
 
     let titleObj = this.scene.findObject("reward_title")
     titleObj.setValue(title)
-    if (daguiFonts.getStringWidthPx(title, "fontMedium", this.guiScene) >
+    if (getStringWidthPx(title, "fontMedium", this.guiScene) >
       to_pixels("1@trophyWndWidth - 1@buttonCloseHeight"))
       titleObj.caption = "no"
   }
@@ -309,7 +311,7 @@ let UnlockRewardWnd = class (BaseGuiHandlerWT) {
     let { unlockCfg = null } = unlock
     let iconStyle = unlockCfg?.iconStyle ?? unlock?.iconStyle ?? ""
     let unlockImg = (unlockCfg == null ? unlock?.descrImage : unlockCfg?.image) ?? ""
-    let imageLayer = LayersIcon.getIconData(iconStyle, unlockImg)
+    let imageLayer = LayersIcon.getIconData(iconStyle, unlockImg, null, null, unlock?.iconParams)
     let tooltipConfig = getPrizeTooltipConfig(config)
     let isFullSizeImage = this.unlocks.len() == 1 && !!unlockTypesWithFullSizedImage?[unlock.type]
     return handyman.renderCached(("%gui/items/item.tpl"), {
@@ -341,6 +343,6 @@ let UnlockRewardWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("UnlockRewardWnd", UnlockRewardWnd)
 
-return {
+return freeze({
   showUnlocks
-}
+})

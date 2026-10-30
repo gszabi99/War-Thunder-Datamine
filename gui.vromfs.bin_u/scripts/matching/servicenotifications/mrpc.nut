@@ -1,6 +1,5 @@
+from "%scripts/matching/api.nut" import matchingRpcSubscribe
 from "%scripts/dagui_library.nut" import *
-
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 let notify_subscriptions = {}
 let rpc_subscriptions = {}
@@ -46,9 +45,9 @@ function mrUnsubscribe(from, handler) {
     rpc_subscriptions[from].remove(idx)
 }
 
-return {
+return freeze({
   mnSubscribe
   mnUnsubscribe
   mrSubscribe
   mrUnsubscribe
-}
+})

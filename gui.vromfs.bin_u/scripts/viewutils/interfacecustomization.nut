@@ -1,9 +1,8 @@
+from "%scripts/time.nut" import getTimestampFromStringUtc
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
-
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
 let activeConfig = Watched(null)
 let toBattleLocId = Computed(@() activeConfig.get()?.toBattleLocId ?? "mainmenu/toBattle")
@@ -75,7 +74,7 @@ function getToBattleLocIdShort() {
   return toBattleLocIdShort.get()
 }
 
-return {
+return freeze({
   getToBattleLocId
   getToBattleLocIdShort
-}
+})

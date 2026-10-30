@@ -2148,6 +2148,7 @@
     "engines": {
       "maxSpeed": 17.49,
       "maxReverseSpeed": 5.3,
+      "horsePowers": 27000.0,
       "speedToTime": {
         "row": [
           [
@@ -2242,6 +2243,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.9,
+        500.0
+      ],
+      [
+        9.7,
+        1100.0
+      ],
+      [
+        14.6,
+        2200.0
+      ],
+      [
+        19.4,
+        4100.0
+      ],
+      [
+        24.3,
+        6700.0
+      ],
+      [
+        29.2,
+        8300.0
+      ],
+      [
+        34.0,
+        10000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        2300.0
+      ],
+      [
+        -2.0,
+        1400.0
+      ],
+      [
+        -1.0,
+        600.0
+      ],
+      [
+        0.0,
+        200.0
+      ],
+      [
+        5.0,
+        200.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
@@ -2287,7 +2346,7 @@
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.38
+    "shipDamageControlCoeff": 0.32
   },
   "commonWeapons": {
     "animatedBones": {
@@ -2297,7 +2356,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2419,7 +2478,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2530,7 +2589,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -2688,7 +2747,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/102mm_45_4in_qf_mark16_21_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
@@ -2835,7 +2894,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2900,7 +2959,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2965,7 +3024,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -3086,7 +3145,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -3210,12 +3269,12 @@
     "preset": [
       {
         "name": "mk_vii_bomb_mortar",
-        "blk": "gameData/units/ships/weaponPresets/uk_destroyer_v_class_vega_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_destroyer_v_class_vega_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "uk_destroyer_v_class_valhalla_default",
-        "blk": "gameData/units/ships/weaponPresets/uk_destroyer_v_class_vega_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/uk_destroyer_v_class_vega_default.blk"
       }
     ]
   },
@@ -4967,23 +5026,27 @@
   },
   "breaches": {
     "repairSpeed": 27.0,
-    "waterMassVel": -60000.0,
-    "waterMassMult": 100.0,
     "sizeToRepair": [
       0.01,
-      15.0,
-      140.0,
-      1200.0
+      7.5,
+      135.0,
+      610.2
     ],
-    "additionalWaterDeathThreshold": 7000000.0,
+    "waterMassVel": -46842.0,
+    "waterMassMult": 156.0,
+    "additionalWaterDeathThreshold": 7148535.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 29.0,
+    "maxHeelingAngle": 35.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 3.0,
+    "maxTrimmingAngle": 5.6,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.48,
+    "sideCenterOfMassOffsetPercent": 0.381,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.4,
     "deadCoverCounterfloodingRel": 0.5,
@@ -4993,28 +5056,34 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.2,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_01_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_01_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "fire_control_room_01_dm",
+              "critWaterLevel": 0.9
+            }
+          ]
         }
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.75,
+        "weight": 0.98,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "engine_room_01_dm",
-            "critWaterLevel": 0.75
+            "critWaterLevel": 0.4
           }
         }
       },
@@ -5025,30 +5094,30 @@
         "innerParts": {
           "part": {
             "partNo": "engine_room_02_dm",
-            "critWaterLevel": 0.75
+            "critWaterLevel": 0.4
           }
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.85,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.48
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.48
             }
           ]
         }
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.3,
+        "weight": 0.15,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {

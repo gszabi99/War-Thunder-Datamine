@@ -4,8 +4,8 @@ let { mkPanelElemsButton } = require("panelElem.nut")
 
 let makeToolBox = require("%daeditor/components/toolBox.nut")
 
-let { showPointAction, namePointAction, propPanelVisible } = require("%daeditor/state.nut")
-let {getEditMode=@() null, DE4_MODE_POINT_ACTION=null} = require_optional("daEditorEmbedded")
+let { showPointAction, namePointAction, propPanelVisible, de4editMode } = require("%daeditor/state.nut")
+let { DE4_MODE_POINT_ACTION=null } = require_optional("daEditorEmbedded")
 
 let toolboxShown = Watched(false)
 let toolboxStates = Watched({})
@@ -67,7 +67,7 @@ showPointAction.subscribe(@(_) toolBoxComponent.redraw())
 namePointAction.subscribe(@(_) toolBoxComponent.redraw())
 
 propPanelVisible.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  if (v && getEditMode() != DE4_MODE_POINT_ACTION)
+  if (v && de4editMode.get() != DE4_MODE_POINT_ACTION)
     toolboxShown.set(false)
 })
 

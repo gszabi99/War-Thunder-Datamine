@@ -43,6 +43,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "additionalEcsTemplate": "cloth_wind",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "class_tags": {},
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
@@ -3280,7 +3286,7 @@
   "weapon_presets": {
     "preset": {
       "name": "germ_flakpanzer_IV_Ostwind_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_flakpanzer_IV_Ostwind_2_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/germ_flakpanzer_IV_Ostwind_2_default.blk"
     }
   },
   "user_skin": {
@@ -3414,7 +3420,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_FlaK44_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_FlaK44_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3483,7 +3489,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_FlaK44_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_FlaK44_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3539,7 +3545,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_body_v",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_03_dm",

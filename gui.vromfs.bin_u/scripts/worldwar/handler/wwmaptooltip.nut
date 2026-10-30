@@ -1,18 +1,18 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import setObjPosition
+from "%scripts/worldWar/wwGenericTooltipTypes.nut" import getWwTooltipType
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/worldWarState.nut" import getBattleById
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
+from "%scripts/worldWar/inOperation/model/wwBattlesState.nut" import getBattleStatusWithCanJoinText
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { setObjPosition } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let wwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { getBattleStatusWithCanJoinText } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
@@ -268,4 +268,4 @@ let wwMapTooltip = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("wwMapTooltip", wwMapTooltip)
 
-return { wwMapTooltip }
+return freeze({ wwMapTooltip })

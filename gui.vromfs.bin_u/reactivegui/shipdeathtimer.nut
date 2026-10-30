@@ -1,9 +1,9 @@
+import "%rGui/timeLocTable.nut" as timeLocTable
 from "%rGui/shipState.nut" import timeToDeath
 from "%sqstd/time.nut" import secondsToTimeFormatString
 from "%rGui/globals/ui_library.nut" import *
 
 let { alert } = require("%rGui/style/colors.nut").hud.damageModule
-let timeLocTable = require("%rGui/timeLocTable.nut")
 
 let showTimeToDeath = Computed(@() timeToDeath.get() > 0)
 

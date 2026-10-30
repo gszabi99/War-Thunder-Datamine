@@ -1,6 +1,5 @@
+import "%scripts/profileJwt/profilePublicKey.nut" as profilePublicKey
 from "jwt" import decode
-
-let profilePublicKey = require("%scripts/profileJwt/profilePublicKey.nut")
 
 function decodeJwtAndHandleErrors(jwt) {
   if (jwt == null)
@@ -15,6 +14,6 @@ function decodeJwtAndHandleErrors(jwt) {
   return { decodError = jwtError }
 }
 
-return {
+return freeze({
   decodeJwtAndHandleErrors
-}
+})

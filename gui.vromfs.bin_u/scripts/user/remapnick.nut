@@ -1,14 +1,13 @@
+from "%appGlobals/user/nickTools.nut" import xboxPrefixNameRegexp, psnPrefixNameRegexp,
+  xboxPostfixNameRegexp, psnPostfixNameRegexp, steamPostfixNameRegexp, epicPostfixNameRegexp,
+  cutPlayerNamePrefix, cutPlayerNamePostfix, PSN_ICON
+from "%scripts/user/nameMapping.nut" import getRealName, getFakeName
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/options/options.nut" import get_gui_option_in_mode
 from "%sqstd/platform.nut" import isXbox, isSony, isPC
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp, psnPostfixNameRegexp,
-  steamPostfixNameRegexp, epicPostfixNameRegexp, cutPlayerNamePrefix, cutPlayerNamePostfix, PSN_ICON
-} = require("%scripts/user/nickTools.nut")
-let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/options/optionsExtNames.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const PC_ICON = "⋆"
 const TV_ICON = "⋇"
@@ -60,6 +59,6 @@ function getPlayerName(name) {
   return getFakeName(name) ?? remapNick(name)
 }
 
-return {
+return freeze({
   getPlayerName
-}
+})

@@ -1,8 +1,7 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-
-let { USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B } = require("%scripts/options/optionsExtNames.nut")
 
 let cache = {
   byCode = {}

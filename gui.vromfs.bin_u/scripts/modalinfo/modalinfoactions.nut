@@ -1,13 +1,13 @@
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnit
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.workcycle" import defer
 from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
-let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 
 function doAction(obj, curEdiff) {
@@ -41,6 +41,6 @@ function doAction(obj, curEdiff) {
   destroyModalInfo()
 }
 
-return {
+return freeze({
   doAction
-}
+})

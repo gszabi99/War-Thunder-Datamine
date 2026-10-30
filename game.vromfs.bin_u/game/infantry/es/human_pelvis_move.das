@@ -5,6 +5,7 @@ require math
 require math.base
 require DagorMath
 require %game.events
+require %appGame.infantry.es.animchar.anim_phys_update_common
 
 
 [es(tag=gameClient, on_appear, before=anim_phys_init_es)]
@@ -27,7 +28,14 @@ def human_pelvis_move_compensation(info : ParallelUpdateFrameDelayed;
                                    isTpsView : bool = false;
                                    hero : Tag const?;
                                    human_net_phys : HumanActor;
+                                   animchar__updatable : bool = true;
+                                   animchar__visible : bool = false;
+                                   animchar__accumDt = -1.f;
+                                   animchar__dtThreshold = 0.f;
+                                   phys_vars__skipVisibilityCheck : Tag const?;
                                    var phys_vars : PhysVars&)
+  if !is_anim_phys_update_frame(info.dt, animchar__updatable, animchar__visible, animchar__accumDt, animchar__dtThreshold, phys_vars__skipVisibilityCheck)
+    return
   
   
   

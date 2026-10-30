@@ -12,7 +12,7 @@ Button_text {
   on_click:t='<<toBattleButtonAction>>'
   navButtonFont:t='yes'
   showConsoleImage:t='no'
-
+  hasToBattleButton:t='yes'
   buttonWink {
     _transp-timer:t='0'
   }

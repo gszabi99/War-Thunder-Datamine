@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "controlDevices": {
     "device": [
       {
@@ -3066,7 +3072,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_M2_howitzer_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_M2_howitzer_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -3129,7 +3135,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": 0.0,
@@ -3173,7 +3179,7 @@
   "weapon_presets": {
     "preset": {
       "name": "us_m8_scott_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m8_scott_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/us_m8_scott_default.blk"
     }
   },
   "ammoStowages": {

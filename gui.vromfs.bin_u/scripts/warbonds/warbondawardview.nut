@@ -1,6 +1,5 @@
+from "%scripts/items/itemVisual.nut" import fillItemDescr
 from "%scripts/dagui_library.nut" import *
-
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 
 function fillWarbondAwardDesc(descObj, handler, award) {
   let item = award.awardType.getDescItem(award.blk)
@@ -13,4 +12,4 @@ function fillWarbondAwardDesc(descObj, handler, award) {
   return true
 }
 
-return { fillWarbondAwardDesc }
+return freeze({ fillWarbondAwardDesc })

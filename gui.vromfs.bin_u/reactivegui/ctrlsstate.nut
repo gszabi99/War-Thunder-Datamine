@@ -32,7 +32,8 @@ isEnableInput.subscribe(@(v) gui_scene.enableInput(v))
 enabledGamepadCursorControlInScene.subscribe(updateSceneGamepadCursorControl)
 enabledKBCursorControlInScene.subscribe(updateSceneKBCursorControl)
 
-return {
+return freeze({
   showConsoleButtons
   cursorVisible
-}
+  isEnableInput
+})

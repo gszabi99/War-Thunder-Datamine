@@ -1,10 +1,9 @@
+import "%scripts/items/inventoryItemTypeByTag.nut" as inventoryItemTypeByTag
+from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/dagui_natives.nut" import item_get_type_id_by_type_name
 from "types" import String
-
-let { itemType } = require("%scripts/items/itemsConsts.nut")
-let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 
 let itemTypeByBlkType = {
   [EIT_BOOSTER]             = itemType.BOOSTER,

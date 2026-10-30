@@ -26,4 +26,4 @@ enum SEEN {
   S_EVENTS_WINDOW = "##events_window##"
 }
 
-return { SEEN }
+return freeze({ SEEN })

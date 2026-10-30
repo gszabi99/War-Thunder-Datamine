@@ -1,5 +1,12 @@
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletsList, getLastFakeBulletsIndex
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%globalScripts/modeXrayLib.nut" import getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue, mkRwrTexts, mkMlwsTexts, findParamValue, getUnitSensorsList, isHumanPlayerSensor
+from "%globalScripts/modeXrayLib.nut" import getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue, mkRwrTexts, mkMlwsTexts, findParamValue
+  , getUnitSensorsList, isHumanPlayerSensor
 from "math" import abs, sin, PI
 from "string" import format
 from "%sqstd/datablock.nut" import blkOptFromPath
@@ -7,12 +14,6 @@ from "blkGetters" import get_modifications_blk
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBulletsList, getLastFakeBulletsIndex } = require("%scripts/weaponry/bulletsInfo.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { xrayCommonGetters } = require("%scripts/dmViewer/modeXrayUtils.nut")
 
 let notWaterVehicle = [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
@@ -433,7 +434,7 @@ addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_) unitSystemsCache.clear()
 })
 
-return {
+return freeze({
   hasUnitSystems
   getUnitSystemsMarkup
-}
+})

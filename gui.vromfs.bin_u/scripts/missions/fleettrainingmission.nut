@@ -1,3 +1,16 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/myStats.nut" import getPvpRespawnsOnUnitType, isStatsLoaded
+from "%scripts/missions/startMissionsList.nut" import guiStartFlight
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/weaponry/weaponryActions.nut" import enable_current_modifications, updateBulletCountOptions
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import save_profile
 from "guiMission" import get_meta_mission_info_by_name, select_training_mission
@@ -7,20 +20,6 @@ from "%scripts/dagui_natives.nut" import enable_bullets_modifications
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut")
-let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 

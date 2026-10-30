@@ -1,3 +1,4 @@
+from "%scripts/sqDagui/daguiUtil.nut" import color4ToDaguiString
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "tankSightSettings" import TSI_RANGE_TEXT_COLOR, TSI_RANGE_BACK_COLOR, TSI_RANGE_NV_TEXT_COLOR, TSI_RANGE_NV_BACK_COLOR, TSI_RANGE_LTEXT_COLOR, TSI_RANGE_LBACK_COLOR, TSI_RANGE_TEXT_SIZE
   , TSI_TURRET_VISIBLE, TSI_TURRET_COLOR, TSI_TURRET_LIGHT_COLOR, TSI_TURRET_NV_COLOR, TSI_FOV_VISIBLE, TSI_FOV_COLOR, TSI_FOV_LIGHT_COLOR
@@ -13,7 +14,6 @@ from "dagor.localize" import doesLocTextExist
 from "dagor.math" import Color4
 from "%scripts/dagui_library.nut" import *
 
-let { color4ToDaguiString } = require("%scripts/sqDagui/daguiUtil.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
 
@@ -127,8 +127,8 @@ let mkTextFontOpts = @() ["hud", "tiny_text_hud"]
     }
   })
 
-let colorOpts = persist("tankSightColorOpts", @() [])
-let tankSightOptionsMap = persist("tankSightOptionsMap", @() {})
+let colorOpts = []
+let tankSightOptionsMap = {}
 
 function getCrosshairOpts() {
   let options = get_user_alt_crosshairs(unitOptions.UNIT.value ?? "", unitOptions.COUNTRY.value ?? "")

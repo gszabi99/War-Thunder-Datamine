@@ -723,6 +723,9 @@
         "armorThrough": 15.0,
         "fireParamsPreset": "hydraulic_internal"
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -796,6 +799,10 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "electronic_equipment_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -807,6 +814,10 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       },
       "power_system_01_dm": {
         "hp": 60.0,
@@ -1304,10 +1315,6 @@
   "xrayOverride": {
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
-      "hideDescription": true
-    },
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
       "hideDescription": true
     }
   },
@@ -2361,7 +2368,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_M256_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_M256_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.2,
@@ -2371,6 +2378,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 40.0,
         "speedPitch": 24.0,
         "fireConeAngle": 1.0,
@@ -2461,7 +2472,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "emtr_mg_aa_flame_01",
         "flash": "emtr_mg_aa_flame_01",
         "useEmitter": true,
@@ -2543,7 +2554,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_aa_flame",
         "defaultYaw": 0.0,
@@ -2601,7 +2612,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_twin_flame",
         "defaultYaw": 0.0,
@@ -2647,8 +2658,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_m1a1_abrams_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m1a1_abrams_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2703,32 +2714,31 @@
       "minRPM": 700.0,
       "manufacturer": "honeywell",
       "model": "agt_1500",
-      "type": "gasturbine"
+      "type": "gasturbine",
+      "torqFormula": {
+        "a": -0.1444444,
+        "b": -0.8188888,
+        "c": 1.9633332
+      }
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.32,
-      "mainGearRatio": 0.888,
-      "sideGearRatio": 4.67,
-      "neutralGearRatio": 11.0,
+      "neutralGearRatio": 18.0,
       "manufacturer": "allison",
       "model": "x_1100_3b",
       "type": "auto",
+      "steerType": "clutch_braking",
+      "mainGearRatio": 0.888,
+      "sideGearRatio": 4.67,
       "gearRatios": {
         "ratio": [
-          -2.169,
-          -5.33,
+          -2.289,
           -8.305,
-          -16.61,
           0.0,
-          11.774,
           5.887,
-          4.454,
           3.021,
-          2.456,
           1.891,
-          1.585,
           1.278
         ]
       }
@@ -3655,7 +3665,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_M256_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_M256_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.2,
@@ -3665,6 +3675,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 40.0,
               "speedPitch": 24.0,
               "fireConeAngle": 1.0,
@@ -3755,7 +3769,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
               "emitter": "emtr_mg_aa_flame_01",
               "flash": "emtr_mg_aa_flame_01",
               "useEmitter": true,
@@ -3837,7 +3851,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_aa_flame",
               "defaultYaw": 0.0,
@@ -3895,7 +3909,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_twin_flame",
               "defaultYaw": 0.0,
@@ -3940,7 +3954,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4157,5 +4171,29 @@
       "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -4.309,
+      1.66,
+      1.612
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

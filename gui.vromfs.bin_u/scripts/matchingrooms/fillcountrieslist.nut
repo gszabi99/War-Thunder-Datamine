@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 function fillCountriesList(obj, countries, customViewCountryData = null) {
   if (!checkObj(obj))
@@ -28,6 +28,6 @@ function fillCountriesList(obj, countries, customViewCountryData = null) {
   }
 }
 
-return {
+return freeze({
   fillCountriesList
-}
+})

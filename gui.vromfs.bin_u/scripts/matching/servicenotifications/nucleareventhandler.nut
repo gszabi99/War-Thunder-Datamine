@@ -1,3 +1,7 @@
+import "%scripts/wndLib/airRaidWnd.nut" as airRaidWndScene
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/user/profileStates.nut" import userIdStr
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "hangarEventCommand" import is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
@@ -6,13 +10,9 @@ from "%scripts/dagui_library.nut" import *
 from "app" import get_base_game_version
 from "%scripts/webRPC.nut" import webRpcRegister
 
-let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
 let { Version } = require("%sqstd/version.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
 
-let newClientVersionEvent = persist("newClientVersionEvent ", @() {
+let newClientVersionEvent = mkHardPersist("matching.serviceNotifications.nuclearEventHandler")("newClientVersionEvent", {
   hasMessage = false
 })
 
@@ -75,6 +75,6 @@ addListenersWithoutEnv({
 
 webRpcRegister("new_client_version", onNewClientVersion)
 
-return {
+return freeze({
   checkNuclearEvent
-}
+})

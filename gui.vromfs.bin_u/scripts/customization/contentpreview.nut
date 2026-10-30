@@ -1,5 +1,24 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/guidParser.nut" as guidParser
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit, getPlayerCurUnit
+from "%scripts/collections/collections.nut" import isCollectionPrize, hasAvailableCollections
+from "%scripts/customization/decoratorGetters.nut" import getDecorator, getDecoratorByResource
+from "%scripts/customization/decorator.nut" import setDecoratorPreviewer
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId, getSkinNameBySkinId
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box
+from "%scripts/customization/contentPreviewState.nut" import getBestUnitForPreview
+from "%scripts/matchingRooms/sessionLobbyState.nut" import hasSessionInLobby
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "eventbus" import eventbus_subscribe
 from "string" import format
 from "hangar" import hangar_is_model_loaded, hangar_is_no_unit_mode
@@ -7,31 +26,15 @@ from "app" import APP_ID
 from "gameplayBinding" import isInHangar
 from "unitCustomization" import get_last_skin
 from "%scripts/dagui_natives.nut" import live_preview_resource, live_preview_resource_for_approve, live_preview_resource_by_guid
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
 from "%scripts/webRPC.nut" import webRpcRegister
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let guidParser = require("%scripts/guidParser.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { isCollectionPrize, hasAvailableCollections } = require("%scripts/collections/collections.nut")
-let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { setDecoratorPreviewer } = require("%scripts/customization/decorator.nut")
-let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
-let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 const downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -72,7 +75,7 @@ function guiStartInfantryCamouflage(params = null) {
 eventbus_subscribe("gui_start_decals", gui_start_decals)
 
 function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return "not_logged_in"
   if (!isInHangar())
     return "not_in_hangar"
@@ -388,9 +391,9 @@ function showDecoratorAccessRestriction(decorator, unit, needShowMessageBox = fa
   }
 
   if (needShowMessageBox)
-    showInfoMsgBox(loc("mainmenu/decalNoAchievement"))
+    showInfoMsgBox(locByVendor("mainmenu/decalNoAchievement"))
   else
-    addPopup("", loc("mainmenu/decalNoAchievement"))
+    addPopup("", locByVendor("mainmenu/decalNoAchievement"))
 
   return true
 }
@@ -454,7 +457,7 @@ subscriptions.addListenersWithoutEnv({
   ItemsShopUpdate = @(p) onEventItemsShopUpdate(p)
 })
 
-return {
+return freeze({
   showUnitSkin = showUnitSkin
   showResource = showResource
   canStartPreviewScene = canStartPreviewScene
@@ -464,4 +467,4 @@ return {
   showDecoratorAccessRestriction
   gui_start_decals
   guiStartInfantryCamouflage
-}
+})

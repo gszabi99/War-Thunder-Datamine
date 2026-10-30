@@ -1,5 +1,56 @@
+import "%scripts/shop/shopTree.nut" as shopTree
+import "%scripts/shop/shopSearchBox.nut" as shopSearchBox
+import "%scripts/slotbar/slotActions.nut" as slotActions
+import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
+import "%scripts/shop/getShopBlkData.nut" as getShopBlkData
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import findChildIndex, move_mouse_on_child, move_mouse_on_child_by_value
+from "%scripts/unit/unitActions.nut" import buy, research, buyUnit
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler, topMenuShopActive, unitToShowInShop
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/shop/shopUnitCellFill.nut" import getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount
+from "%scripts/shop/shopLines.nut" import ShopLines
+from "%scripts/utils/delayedTooltip.nut" import hideWaitIcon
+from "%appGlobals/clientState/touchScreen.nut" import isSmallScreen
+from "%scripts/unlocks/unlockMarkers.nut" import hasMarkerByUnitName, getUnlockIdByUnitName, getUnlockIdsByArmyId
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/debugTools/dbgShop.nut" import getShopDevMode, setShopDevMode, getShopDevModeOptions
+from "%scripts/unit/unitInfo.nut" import getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift, isUnitBought, canSpendGoldOnUnitWithPopup
+from "%scripts/unit/unitChecks.nut" import checkForResearch, updateUnitAfterSwitchMod
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods, showUnitsSharedGoods
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/user/profileHandler.nut" import guiStartProfile
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/time.nut" import buildTimeStr, getUtcMidnight
+from "%scripts/shop/shopCountriesList.nut" import getShopVisibleCountries
+from "%scripts/shop/shopCountryInfo.nut" import get_units_count_at_rank
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/nationBonuses/nationBonuses.nut" import setNationBonusMarkState, getNationBonusMarkState
+from "%scripts/guiBox.nut" import getBlockFromObjData, createHighlight
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/convertExp/convertExp.nut" import openConvertExpModalWnd
+from "%scripts/discounts/discountsState.nut" import haveAnyUnitDiscount, getUnitDiscount
+from "%scripts/discounts/discountUtils.nut" import generateDiscountInfo
+from "%scripts/changelog/changeLogState.nut" import unitNews, openUnitNews, openUnitEventNews
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
@@ -20,60 +71,9 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/charActionConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { findChildIndex, move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let shopTree = require("%scripts/shop/shopTree.nut")
-let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
-let slotActions = require("%scripts/slotbar/slotActions.nut")
-let { buy, research, buyUnit } = require("%scripts/unit/unitActions.nut")
-let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount } = require("%scripts/shop/shopUnitCellFill.nut")
-let { ShopLines } = require("%scripts/shop/shopLines.nut")
-let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
-let { hasMarkerByUnitName, getUnlockIdByUnitName, getUnlockIdsByArmyId } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
-let { getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
-let { isUnitGift, isUnitBought, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { checkForResearch, updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { showUnitGoods, showUnitsSharedGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
-let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
-let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
-let { haveAnyUnitDiscount, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
-let { generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
-let { unitNews, openUnitNews, openUnitEventNews } = require("%scripts/changelog/changeLogState.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const tabsWidthStyles = ["normal", "short"]
 
@@ -1610,60 +1610,70 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     if (isClear)
       return this.highlightUnitsClear()
     let slots = this.highlightUnitsInTree(units.map(@(unit) unit.name))
-    let tableObj = this.getTableObj()
-    if (!checkObj(tableObj))
-      return
-    foreach (value in [ slots.valueLast, slots.valueFirst ]) {
-      let cellObj = value != null ? this.getCellDataByThreeIdx(value)?.cellObj : null
+    foreach (cellObj in [ slots.cellLast, slots.cellFirst ])
       if (checkObj(cellObj))
         cellObj.scrollToView()
-    }
     this.selCellOnSearchQuit = slots.valueFirst
   }
 
-  function highlightUnitsInTree(units) {
+  function highlightUnitsInTree(unitNames) {
     let shadingObj = this.scene.findObject("shop_dark_screen")
     shadingObj.show(true)
     this.guiScene.applyPendingChanges(true)
 
-    let res = { valueFirst = null, valueLast = null }
-    let highlightList = []
-    let tree = this.getCurTreeData().tree
-    let tableObj = this.getTableObj()
+    let wantedNames = {}
+    foreach (name in unitNames)
+      wantedNames[name] <- true
+
+    let slotIdxs = []
     local slotIdx = -1
-    foreach (_row, rowArr in tree)
-      foreach (_col, cell in rowArr) {
+    foreach (rowArr in this.getCurTreeData().tree)
+      foreach (cell in rowArr) {
         if (!cell)
           continue
         slotIdx++
-        let isGroup = isUnitGroup(cell)
-        local isHighlight = !cell?.isFakeUnit && !isGroup && isInArray(cell?.name, units)
-        if (isGroup)
-          foreach (unit in cell.airsGroup)
-            isHighlight = isHighlight || isInArray(unit?.name, units)
-        if (!isHighlight)
-          continue
-        res.valueFirst = res.valueFirst ?? slotIdx
-        res.valueLast  = slotIdx
-
-        let cellData = this.getCellDataByThreeIdx(slotIdx)
-        if (cellData?.container) {
-          let collapseParams = {needCollapse = false, isInstant = true, containerIndex = cellData.containerIndex}
-          this.collapseCellsContainer(collapseParams, cellData.container)
-          this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{cellData.containerIndex}", false)
-          this.saveAllRankCollapsedStates()
-          this.updateExpandAllBtnsState()
-        }
-
-        let objData  = {
-          obj = cellData?.cellObj
-          id = $"high_{slotIdx}"
-          onClick = "onHighlightedCellClick"
-          onDragStart = "onHighlightedCellDragStart"
-          isNoDelayOnClick = true
-        }
-        highlightList.append(getBlockFromObjData(objData, tableObj))
+        let isHighlight = isUnitGroup(cell)
+          ? cell.airsGroup.findindex(@(unit) unit?.name in wantedNames) != null
+          : !cell?.isFakeUnit && cell?.name in wantedNames
+        if (isHighlight)
+          slotIdxs.append(slotIdx)
       }
+
+    let res = { valueFirst = slotIdxs?[0], valueLast = slotIdxs.len() > 0 ? slotIdxs.top() : null }
+    let cellDataByIdx = []
+    if (res.valueLast != null)
+      this.findTableCellData(function(data) {
+        cellDataByIdx.append(data)
+        return data.threeIndex >= res.valueLast
+      })
+    res.cellFirst <- cellDataByIdx?[res.valueFirst]?.cellObj
+    res.cellLast <- cellDataByIdx?[res.valueLast]?.cellObj
+
+    let highlightList = []
+    let tableObj = this.getTableObj()
+    let expandedRanks = {}
+    foreach (idx in slotIdxs) {
+      let cellData = cellDataByIdx?[idx]
+      if (cellData != null && cellData.containerIndex not in expandedRanks) {
+        let { containerIndex } = cellData
+        expandedRanks[containerIndex] <- true
+        this.collapseCellsContainer({ needCollapse = false, isInstant = true, containerIndex }, cellData.container)
+        this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{containerIndex}", false)
+      }
+
+      let objData = {
+        obj = cellData?.cellObj
+        id = $"high_{idx}"
+        onClick = "onHighlightedCellClick"
+        onDragStart = "onHighlightedCellDragStart"
+        isNoDelayOnClick = true
+      }
+      highlightList.append(getBlockFromObjData(objData, tableObj))
+    }
+    if (expandedRanks.len() > 0) {
+      this.saveAllRankCollapsedStates()
+      this.updateExpandAllBtnsState()
+    }
 
     createHighlight(shadingObj, highlightList, this, {
       onClick = "onShadedCellClick"
@@ -2018,6 +2028,10 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
       this.checkUnitItemAndUpdate(unit)
 
     this.updateRepairAllButton()
+  }
+
+  function onEventUnitMrankSelectionChanged(p) {
+    this.checkUnitItemAndUpdate(getAircraftByName(p.unitName))
   }
 
   function onEventSparePurchased(params) {
@@ -2567,6 +2581,7 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     rankTable.isCollapsed = needCollapse ? "yes" : "no"
     let expandBtn = rankTable.findObject($"expandbtn_{containerIndex}")
     expandBtn["tooltip"] = loc(needCollapse ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+    this.guiScene.updateTooltip(expandBtn)
 
     let collapseHeight = floor(this.animData.cellHeight*0.75).tostring()
 
@@ -2772,4 +2787,4 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ShopMenuHandler", ShopMenuHandler)
 
-return { ShopMenuHandler }
+return freeze({ ShopMenuHandler })

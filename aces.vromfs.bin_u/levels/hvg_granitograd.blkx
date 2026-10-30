@@ -12,6 +12,7 @@
   "lastclip_horizon": true,
   "occlusionFromCollision": true,
   "forcedRiDepthPrepass": true,
+  "useTreeLod0Offset": false,
   "useInfantryCharacterMicrodetails": true,
   "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
   "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
@@ -25,7 +26,7 @@
   "rendinst::tmInst12x32bit": true,
   "textures_size": 2500.0,
   "textures_count": 2200,
-  "weatherPreset": "gameData/environments/hvg_weather_preset_granitograd.blk",
+  "weatherPreset": "gamedata/environments/hvg_weather_preset_granitograd.blk",
   "soundAmbientPathStudio": "infantry/ambient",
   "soundAmbientEvent": "mc_city_battle",
   "forceMusic": "infantry_action",
@@ -164,6 +165,9 @@
   "clipmap": {
     "texelSize": 0.00625
   },
+  "treeDamageAccumulation": {
+    "enable": true
+  },
   "shader_vars": {
     "hmap_displacement_up": 0.1,
     "hmap_displacement_down": -0.1,
@@ -295,13 +299,7 @@
     "scn3.tileSize": 128.0
   },
   "stars": {
-    "year": 2005,
-    "month": 7,
-    "day": 10,
-    "latitude": 45.0,
-    "longtitude": 27.0,
-    "weatherSeed": -1,
-    "skyIsUnreachable": false
+    "initialAzimuthAngle": 0.0
   },
   "micro_details": {
     "micro_detail": [

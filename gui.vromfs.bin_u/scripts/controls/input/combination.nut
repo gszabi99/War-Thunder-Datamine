@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/input/inputBase.nut" import InputBase
+from "%scripts/controls/controlsVisual.nut" import getActivationTypeImg
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
-let { getActivationTypeImg } = require("%scripts/controls/controlsVisual.nut")
 
 
 
@@ -89,4 +89,4 @@ let Combination = class (InputBase) {
   }
 
 }
-return {Combination}
+return freeze({Combination})

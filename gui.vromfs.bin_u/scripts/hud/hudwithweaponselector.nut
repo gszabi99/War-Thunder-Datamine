@@ -1,8 +1,7 @@
+from "%scripts/hud/hudAirWeaponSelector.nut" import HudAirWeaponSelector
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/hud/baseUnitHud.nut" import BaseUnitHud
 from "%scripts/dagui_library.nut" import *
-
-let { HudAirWeaponSelector } = require("%scripts/hud/hudAirWeaponSelector.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
 
 let HudWithWeaponSelector = class (BaseUnitHud) {
   airWeaponSelector = null
@@ -25,6 +24,6 @@ let HudWithWeaponSelector = class (BaseUnitHud) {
 }
 register_gui_handler("HudWithWeaponSelector", HudWithWeaponSelector)
 
-return {
+return freeze({
   HudWithWeaponSelector
-}
+})

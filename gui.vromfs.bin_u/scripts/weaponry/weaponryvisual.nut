@@ -1,3 +1,26 @@
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/weaponry/itemInfo.nut" import getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch, getDiscountPath
+  , getItemStatusTbl, getItemUpgradesStatus
+from "%scripts/weaponry/bulletsInfo.nut" import isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer, isMrankLockCardType
+from "%scripts/weaponry/bulletsVisual.nut" import getBulletsIconView
+from "%scripts/weaponry/weaponryDescription.nut" import getModItemName, getFullItemCostText
+from "%scripts/weaponry/weaponryInfo.nut" import isWeaponAllowedByGameModeRestrictions, isItemMrankLocked
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/missions/modificationTutorial.nut" import needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/unit/unitMrankSelectionState.nut" import isMrankLockableItem
+from "%scripts/discounts/discountUtils.nut" import getDiscountByPath
+from "%scripts/weaponry/weaponryPresets.nut" import EMPTY_PRESET_NAME
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unit/unitWeaponryInfo.nut" import getModsListByType
+from "%scripts/weaponry/infantryWeapons.nut" import getPresetCompositionViewParams
+from "%scripts/weaponry/infantryArmor.nut" import getArmorIconViewData
+from "%scripts/weaponry/infantryBelts.nut" import getInfantryBeltBulletsSet
 from "string" import format
 from "dagor.debug" import debug_dump_stack
 from "gameplayBinding" import isInFlight
@@ -6,42 +29,21 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
 
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
-let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch, getDiscountPath, getItemStatusTbl, getItemUpgradesStatus } = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
-let { getModItemName, getFullItemCostText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { isWeaponAllowedByGameModeRestrictions } = require("%scripts/weaponry/weaponryInfo.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON, INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial } = require("%scripts/missions/modificationTutorial.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
-let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getModsListByType } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
-let { getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
-let { getInfantryBeltBulletsSet } = require("%scripts/weaponry/infantryBelts.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
-function getBulletsCountText(curVal, maxVal, unallocated, guns) {
+function getBulletsCountText(curVal, maxVal, unallocated, bulletsPerStep) {
   local restText = ""
   if (unallocated && curVal < maxVal)
     restText = colorize("userlogColoredText", format(" %s", loc("ui/parentheses",
-      { text = format("+%d", guns * min(unallocated, maxVal - curVal)) })))
+      { text = format("+%d", bulletsPerStep * min(unallocated, maxVal - curVal)) })))
   let valColor = (!curVal || maxVal == 0) ? "badTextColor"
     : (curVal == maxVal) ? "goodTextColor"
     : "activeTextColor"
-  let valText = colorize(valColor, guns * curVal)
-  return format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
+  let valText = colorize(valColor, bulletsPerStep * curVal)
+  return format("%s/%s%s", valText, (bulletsPerStep * maxVal).tostring(), restText)
 }
 
 function getPairSliderBulletsCountText(curVal, maxVal, valueMultiplier) {
@@ -117,6 +119,11 @@ function getBonusTierViewParams(item, params = {}) {
   })
 }
 
+function isMrankLockedCardItem(unit, item, curDelta = null) {
+  return isItemMrankLocked(unit,
+    item.type == weaponsItem.bundle ? (getBundleCurItem(unit, item) || item) : item, curDelta)
+}
+
 function getWeaponItemViewParams(id, unit, item, params = {}) {
   let res = {
     id                        = id
@@ -165,7 +172,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     progressPaused            = ""
     oldResearchProgress       = ""
     priceText                 = ""
-    isBlockedByGameModeRestrictions = false
+    isBlockedByRestrictions = false
     optEquipped               = ""
     optStatus                 = ""
     amountText                = ""
@@ -187,11 +194,13 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     altBtnBuyText             = ""
     itemTextColor             = ""
     isTooltipByHold           = params?.isTooltipByHold ?? showConsoleButtons.get()
+    isTooltipOnIcon           = params?.isTooltipOnIcon ?? false
     actionHoldDummyCanShow    = "yes"
     canShowGoToModTutorialBtn = ""
     hasUnseenTutorial         = false
     spawnScoreCost            = ""
     showSelectedBorder        = "no"
+    hasMrankLockIcon          = false
   }
   let isOwn = isUnitUsable(unit)
   local visualItem = item
@@ -201,6 +210,10 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     if (!("type" in visualItem))
       visualItem.type <- weaponsItem.bundle
   }
+  let isMrankLockCard = isMrankLockCardType(item)
+  let isMrankBlocked = isMrankLockCard
+    && isItemMrankLocked(unit, visualItem, params?.mrankDelta)
+  res.hasMrankLockIcon = isMrankLockCard || isMrankLockableItem(visualItem)
   let bulletsManager = params?.selectBulletsByManager
   let bulGroup = bulletsManager?.canChangeBulletsCount() ?
     bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
@@ -346,8 +359,10 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     }
   }
 
-  if (item.type == weaponsItem.weapon && !isWeaponAllowedByGameModeRestrictions(unit, item)) {
-    res.isBlockedByGameModeRestrictions = true
+  let isBlockedByGameMode = item.type == weaponsItem.weapon
+    && !isWeaponAllowedByGameModeRestrictions(unit, item)
+  if (isBlockedByGameMode || isMrankBlocked) {
+    res.isBlockedByRestrictions = true
     let notAvailableText = colorize("badTextColor", loc("leaderboards/notAvailable"))
     res.priceText = notAvailableText
     res.spawnScoreCost = notAvailableText
@@ -388,7 +403,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   local pairModName = null
   if (!hideBullets) {
     let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
-    let { cartridge } = gunInfo
+    let { cartridge, bulletsPerStep = 1 } = gunInfo
     let maxVal = maxBulletsCount * maxCntPerPilon
     let curVal = bulletsCount * maxCntPerPilon
     
@@ -396,7 +411,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
 
     res.bulletsCountText = !isPairBulletsGroup
-      ? getBulletsCountText(curVal, maxVal, unallocated, guns)
+      ? getBulletsCountText(curVal, maxVal, unallocated, bulletsPerStep)
       : canChangePairBulletsCount
         ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
         : getFixedBulletsCountText(curVal, guns * cartridge)
@@ -432,6 +447,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
         res.additionalWeaponryIcon = additionalBulletImageConfig.__update({
           itemImg = ""
           hideWarningIcon = true
+          hasMrankLockIcon = false
           amountText
           amountTextColor
         })
@@ -802,7 +818,7 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
     return
 
   let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
-  let { cartridge = 1 } = gunInfo
+  let { cartridge = 1, bulletsPerStep = 1 } = gunInfo
   let maxVal = maxBulletsCount * maxCntPerPilon
   let curVal = bulletsCount * maxCntPerPilon
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
@@ -812,7 +828,7 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   let textObj = holderObj.findObject("bulletsCountText")
   if (checkObj(textObj))
     textObj.setValue(!isPairBulletsGroup
-      ? getBulletsCountText(curVal, maxVal, unallocated * maxCntPerPilon, guns)
+      ? getBulletsCountText(curVal, maxVal, unallocated * maxCntPerPilon, bulletsPerStep)
       : canChangePairBulletsCount
         ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
         : getFixedBulletsCountText(curVal, guns * cartridge))
@@ -858,8 +874,9 @@ function getWeaponModsInfoIcons(unit, usedMods) {
 }
 
 
-return {
+return freeze({
   getWeaponItemViewParams
+  isMrankLockedCardItem
   updateModItem
   createModItemLayout
   createModItem
@@ -867,4 +884,4 @@ return {
   updateItemBulletsSlider
   getTooltipId
   getWeaponModsInfoIcons
-}
+})

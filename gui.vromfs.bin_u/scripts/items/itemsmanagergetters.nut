@@ -1,8 +1,9 @@
+from "%scripts/items/itemsManagerChecks.nut" import checkUpdateList, checkInventoryUpdate
+from "%scripts/items/itemsConsts.nut" import itemType, itemsTab
+from "%scripts/items/itemsChecks.nut" import isItemVisible, checkItemsMaskFeatures
 from "%scripts/dagui_library.nut" import *
-let { checkUpdateList, checkInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
+
 let { itemsList, inventoryItemById } = require("%scripts/items/itemsManagerState.nut")
-let { itemType, itemsTab } = require("%scripts/items/itemsConsts.nut")
-let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
 
 function getItemsFromList(list, typeMask, filterFunc = null, itemMaskProperty = "iType") {
   if (typeMask == itemType.ALL && !filterFunc)
@@ -35,9 +36,9 @@ function getInventoryItemById(id) {
   return inventoryItemById?[id]
 }
 
-return {
+return freeze({
   getItemsFromList
   getShopList
   getInventoryItemById
   canGetDecoratorFromTrophy
-}
+})

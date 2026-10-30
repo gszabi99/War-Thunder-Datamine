@@ -12,4 +12,4 @@ interopGen({
   postfix = "Update"
 })
 
-return compassState
+return freeze(compassState)

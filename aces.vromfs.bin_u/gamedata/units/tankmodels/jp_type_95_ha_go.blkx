@@ -46,6 +46,12 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 0.5,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1806,7 +1812,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_type_94_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_type_94_user_cannon.blk",
         "shotFreq": 0.35,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -1875,7 +1881,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1922,8 +1928,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_95_ha_go_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_95_ha_go_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

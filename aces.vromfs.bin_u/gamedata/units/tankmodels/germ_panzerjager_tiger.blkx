@@ -43,6 +43,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -844,7 +850,6 @@
         "drive_turret_h_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
-        "transmission_dm",
         "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
@@ -1066,7 +1071,10 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "transmission_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_l_03_dm"
       ],
       "effect": [
         {
@@ -1106,7 +1114,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/128mm_PaK44_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/128mm_PaK44_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "allowableDelta": 20.0,
@@ -1203,7 +1211,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_body_h_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1247,7 +1255,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1285,8 +1293,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_panzerjager_tiger_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_panzerjager_tiger_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "DamageEffects": {
@@ -3064,7 +3072,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/128mm_PaK44_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/128mm_PaK44_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "allowableDelta": 20.0,
@@ -3161,7 +3169,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
               "emitter": "bone_mg_body_h_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3205,7 +3213,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3233,7 +3241,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

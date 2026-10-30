@@ -43,6 +43,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "drowningCheckHeightMultiplier": 0.6,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "soviet_gunner_char",
@@ -1996,6 +2002,7 @@
       "part": [
         "gunner_dm",
         "commander_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "machine_gunner_dm"
@@ -2008,6 +2015,7 @@
       "part": [
         "gunner_dm",
         "commander_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "machine_gunner_dm",
@@ -2279,7 +2287,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/37mm_61_K_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/37mm_61_K_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "recoilOffset": 0.25,
@@ -2348,7 +2356,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_zsu_37_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_zsu_37_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_zsu_37_default.blk"
     }
   },
   "VehiclePhys": {

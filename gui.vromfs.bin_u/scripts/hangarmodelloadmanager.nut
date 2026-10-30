@@ -9,7 +9,7 @@ enum HangarModelLoadState {
   LOADED
 }
 
-let isLoading = mkWatched(persist, "isLoading", false)
+let isLoading = Watched(false)
 
 let hangarUnitName = Watched(hangar_get_current_unit_name())
 
@@ -52,9 +52,9 @@ function onHangarModelLoaded() {
 
 eventbus_subscribe("onHangarModelLoaded", @(_) onHangarModelLoaded())
 
-return {
+return freeze({
   loadModel
   loadFirearm
   hasLoadedModel = @() getLoadState() == HangarModelLoadState.LOADED
   hangarUnitName
-}
+})

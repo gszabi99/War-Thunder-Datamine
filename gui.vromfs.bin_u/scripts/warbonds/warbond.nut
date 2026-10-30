@@ -1,4 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/warbonds/warbondAward.nut" import WarbondAward
+from "%scripts/warbonds/warbondsState.nut" import FULL_ID_SEPARATOR, DEFAULT_WB_FONT_ICON, maxAllowedWarbondsBalance
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqstd/datablock.nut" import getBlkValueByPath
@@ -7,12 +12,7 @@ from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import get_warbond_balance, get_warbond_curr_stage_name, warbond_get_shop_levels
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
-let { FULL_ID_SEPARATOR, DEFAULT_WB_FONT_ICON, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 
 let Warbond = class {
   id = ""
@@ -245,4 +245,4 @@ let Warbond = class {
 
   getSeenId = @() this.listId
 }
-return {Warbond}
+return freeze({Warbond})

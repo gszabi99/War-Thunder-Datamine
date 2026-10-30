@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.25,
-  "shotFreq": 28.33,
-  "alternativeShotFreq": 16.66,
-  "traceFreq": 4,
-  "bullets": 180,
-  "dragCx": 0.001,
-  "mass": 102.0,
-  "recoilMultiplier": 0.25,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,16 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.25,
+  "shotFreq": 28.33,
+  "alternativeShotFreq": 16.66,
+  "bullets": 180,
+  "dragCx": 0.001,
+  "mass": 102.0,
+  "recoilMultiplier": 0.25,
   "bullet": [
     {
       "mass": 0.26,
@@ -448,7 +448,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmWhite",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1734,7 +1734,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmWhite",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2544,7 +2544,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhite",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -4199,7 +4199,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhite",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -6194,7 +6194,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhite",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -7058,7 +7058,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhite",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -7922,7 +7922,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhite",
-          "trail": "noTrail"
+          "trail": "black"
         }
       }
     ]
@@ -9172,13 +9172,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "mauser_27mm_outside",
-    "cockpit": "mauser_27mm_inside",
-    "ai": "mauser_27mm_ai"
-  },
   "akan_85_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -9193,5 +9186,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "mauser_27mm_outside",
+    "cockpit": "mauser_27mm_inside",
+    "ai": "mauser_27mm_ai"
   }
 }

@@ -1,0 +1,47 @@
+specEventCardSelectRect {
+  re-type:9rect;
+  position:absolute;
+  size:pw, ph;
+  left:(pw-w)/2;
+  background-image:#ui/gameuiskin#frame_selected_slot.svg;
+  background-position:4, 4;
+  background-svg-size:196, 75;
+  background-repeat:expand;
+  bgcolor:#FFFFFF;
+}
+
+specEventCard[isLockedCard=no] > img[isDeadCardOverlay=yes] {
+  background-color:#B20F1318;
+}
+
+specEventCard[isLockedCard=no]:hover > img[isDeadCardOverlay=yes] {
+  background-color:#7F0B0E11;
+}
+
+specEventCard[isLockedCard=no]:hover > hoverDiv {
+  display:show;
+}
+
+expandable[isSpecEventOrder=yes] {
+  pos:0, 0;
+  width:(pw - 3@blockInterval - 1@scrollBarSize)/2;
+  height: 207@sf/@pf;
+  margin:2@blockInterval, 0, 0, 2@blockInterval;
+  margin-top: 0;
+  foreground-image: #ui/gameuiskin#item_selection;
+  foreground-position: 8;
+  foreground-repeat: expand;
+  foreground-color: #2D3841;
+}
+
+expandable[isSpecEventOrder=yes][isLastRow=yes] {
+  margin-bottom: 0;
+}
+
+expandable[isSpecEventOrder=yes][hoverActive=yes] {
+  background-color:@buttonColor;
+}
+
+specEventsReward challengeDescriptionProgress {
+  height:6@sf/@pf;
+}

@@ -1,5 +1,23 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "chard" as chard
+from "%scripts/slotbar/playerCurUnit.nut" import setShowUnit
+from "%scripts/shop/shopUnitsInfo.nut" import hasDefaultUnitsInCountry
+from "%appGlobals/debugTools/dbgEnum.nut" import getEnumValName
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitStatus.nut" import isUnitBroken
+from "%scripts/tasker.nut" import addTask
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/slotbar/slotbarState.nut" import selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates
+from "%scripts/crew/crew.nut" import getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInvalidCrewsAllowed
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle, getCrewByAir
+from "%scripts/queue/queueManager.nut" import isCanModifyCrew, checkQueueAndStart
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
@@ -7,25 +25,6 @@ from "dagor.time" import get_time_msec
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { isUnitBroken } = require("%scripts/unit/unitStatus.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { isCanModifyCrew, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED

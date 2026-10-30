@@ -1,8 +1,7 @@
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "dagor.localize" import loc
 from "eventbus" import eventbus_send
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 function open_url_by_obj(obj) {
   if (!check_obj(obj) || obj?.link == null || obj?.link == "")
@@ -16,4 +15,4 @@ function open_url_by_obj(obj) {
   })
 }
 
-return { open_url_by_obj }
+return freeze({ open_url_by_obj })

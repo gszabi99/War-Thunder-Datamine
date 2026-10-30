@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.099999994,
-  "shotFreq": 6.66,
-  "traceFreq": 4,
-  "bullets": 15,
-  "preciseGun": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,13 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.099999994,
+  "shotFreq": 6.66,
+  "bullets": 15,
+  "preciseGun": true,
   "bullet": [
     {
       "mass": 0.127,
@@ -892,7 +892,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmBrightRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2985,7 +2985,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmBrightRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -3858,17 +3858,10 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmBrightRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       }
     ]
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "ho204_gun_outside",
-    "cockpit": "ho204_gun_inside",
-    "ai": "ho204_gun_ai"
   },
   "20mmtype97_turret_new_gun": {
     "maxDeltaAngle": 0.27,
@@ -3884,5 +3877,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "ho204_gun_outside",
+    "cockpit": "ho204_gun_inside",
+    "ai": "ho204_gun_ai"
   }
 }

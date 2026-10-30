@@ -1,4 +1,18 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/debriefing/debriefingFull.nut" import getDynamicResult
+from "%scripts/missions/mapPreview.nut" import setSummaryPreview
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isMeSessionLobbyRoomOwner
+from "%scripts/missions/missionsUtils.nut" import getDynamicLayouts
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/missions/startMissionsList.nut" import guiStartMislist
+from "%scripts/dynCampaign/campaignResults.nut" import guiStartDynamicResults
 from "string" import format
 from "dynamicMission" import isDynamicWonByPlayer
 from "mission" import get_game_mode, get_game_type
@@ -7,20 +21,6 @@ from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
-let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
-let { guiStartDynamicResults } = require("%scripts/dynCampaign/campaignResults.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 
 register_gui_handler("CampaignPreview", class (BaseGuiHandlerWT) {

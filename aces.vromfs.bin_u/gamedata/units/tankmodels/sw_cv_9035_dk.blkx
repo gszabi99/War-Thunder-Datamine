@@ -2279,7 +2279,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -2330,13 +2330,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2415,7 +2414,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2468,7 +2467,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2523,8 +2522,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_cv_9035_dk_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_cv_9035_dk_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3577,7 +3576,7 @@
         "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": {
-            "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+            "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
             "dmPart": "fire_control_system_dm"
           }
         }
@@ -3613,7 +3612,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -3664,13 +3663,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3749,7 +3747,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3802,7 +3800,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3856,7 +3854,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4012,5 +4010,29 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.465,
+      1.8918,
+      1.3973
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

@@ -69,13 +69,13 @@
   "bombSightBlockedWarningDuration": 5.0,
   "agmBlockedWarningEnabled": true,
   "agmBlockedWarningDuration": 5.0,
-  "helicopterWarningOverheatTimeToDie": 120.0,
+  "helicopterWarningOverheatTimeToDie": 180.0,
   "helicopterWarningOverheatFrequency0": [
     60.0,
     4.0
   ],
   "helicopterWarningOverheatFrequency1": [
-    120.0,
+    180.0,
     2.0
   ],
   "helicopterWarningOverheatFrequency2": [
@@ -396,6 +396,7 @@
     "maxZoomFactor": 10.0,
     "maxZoomFactorAirplane": 150.0,
     "captureZoneAlpha": 1.0,
+    "captureZoneSectorsShowRadius": 200.0,
     "textOffset": [
       3.0,
       3.0
@@ -599,6 +600,9 @@
         1.25,
         1.5
       ]
+    },
+    "satelliteMapTypes": {
+      "type": "infantry"
     },
     "iconTooltip": {
       "tooltipMouseOffset": [
@@ -2099,6 +2103,8 @@
     },
     "ship_bullet_fall_spot": {
       "enabled": true,
+      "bombEnabled": true,
+      "worldRadiusBombM": 5.0,
       "widthLimitsPx": [
         10.0,
         30.0
@@ -2761,6 +2767,7 @@
     "formatBasezoneSmall": "basezone_small_mark_%c.svg:21:21:K",
     "formatCapturezoneBig": "capturezone_big_mark_%c.svg:75:75:K",
     "formatCapturezoneSmall": "capturezone_small_mark_%c.svg:21:27:K",
+    "formatCapturezoneSectorSmall": "sector_map_icon_digit_%d.svg:18:18:K",
     "formatBasezoneSideBig": "basezone_big_%s_%d.svg:75:75:K",
     "formatBasezoneSideSmall": "basezone_small_side_%s.svg:21:27:K",
     "formatBombingzoneSideBig": "bombingzone_inner_%s.svg:75:75:K",
@@ -2827,6 +2834,9 @@
     "iconHumanAmmoBox": "human_ammo_box.svg:48:48:K",
     "iconHumanExplosiveBox": "human_explosives_box.svg:48:48:K",
     "iconHumanMedBox": "human_med_box.svg:48:48:K",
+    "iconSupplyLoading": "confrontation_supplies_loading_icon_bw.svg:48:48:K",
+    "iconSupply": "confrontation_supplies_icon_bw.svg:48:48:K",
+    "iconSupplyLaptop": "supply_laptop_icon_bw.svg:48:48:K",
     "iconKnockedDownTeammate": "medic_status_indicator.svg:48:48:K",
     "iconSquadMember0": "infantry_1.svg:24:24:K",
     "iconSquadMember1": "infantry_2.svg:24:24:K",
@@ -2896,6 +2906,12 @@
       70,
       70,
       255,
+      255
+    ],
+    "colorDiveBombFriend": [
+      255,
+      70,
+      70,
       255
     ],
     "iconMine": "naval_mine_mark.svg:38:38:K",
@@ -3557,15 +3573,6 @@
     "fontFxScale": 42
   },
   "multiplayer_score_digits": {
-    "position": [
-      72.0,
-      300.0
-    ],
-    "alignAnchor": "c",
-    "offsetToNext": [
-      0.0,
-      28.0
-    ],
     "textColor": [
       250,
       250,
@@ -3573,7 +3580,6 @@
       255
     ],
     "font": "medium_text_hud",
-    "fontFxType": 2,
     "fontFxOffset": 1,
     "fontFxColor": [
       0,
@@ -3581,41 +3587,7 @@
       0,
       200
     ],
-    "fontFxScale": 42,
-    "topTextPos": [
-      640.0,
-      32.0
-    ],
-    "topNumbersLeftOffset": [
-      -10.0,
-      0.0
-    ],
-    "topNumbersRightOffset": [
-      10.0,
-      0.0
-    ],
-    "canCaptureOffset": [
-      0.0,
-      50.0
-    ],
-    "topRedColor": [
-      140,
-      160,
-      255,
-      255
-    ],
-    "topBlueColor": [
-      255,
-      180,
-      160,
-      255
-    ],
-    "iconCanCaptureAlly": "ally_af",
-    "iconCanCaptureEnemy": "ally_over_enemy_af",
-    "iconCanCaptureNeutral": "ally_over_neutral_af",
-    "iconScoreLeader": "score_leader",
-    "iconScorePlayer": "score_player",
-    "dmIconYOffset": 0
+    "fontFxScale": 42
   },
   "hit_indicator": {
     "hit_fire": "hit_icon_fire.svg:50:50:K",
@@ -3889,28 +3861,11 @@
     "timeWpFadeOut": 1.0
   },
   "multiplayer_score": {
-    "alignAnchor": "ct",
-    "position": [
-      640.0,
-      25.0
-    ],
-    "colorProgress": [
-      0,
-      0,
-      0,
-      255
-    ],
     "colorProgressBgd": [
       255,
       255,
       255,
       255
-    ],
-    "colorProgressOutline": [
-      255,
-      255,
-      255,
-      100
     ],
     "colorFriend": [
       232,
@@ -3930,58 +3885,10 @@
       92,
       255
     ],
-    "colorTimerBgd": [
-      0,
-      0,
-      0,
-      255
-    ],
-    "colorCurrentBgd": [
-      255,
-      255,
-      255,
-      255
-    ],
-    "colorScore": [
-      255,
-      255,
-      255,
-      255
-    ],
-    "font": "small_text_hud",
-    "fontColor": [
-      255,
-      255,
-      255,
-      255
-    ],
-    "fontFxType": 2,
-    "fontFxOffset": 1,
-    "fontFxColor": [
-      0,
-      0,
-      0,
-      155
-    ],
-    "fontFxScale": 42,
-    "progressBgdWidth": 660.0,
-    "progressOffset": 10.0,
-    "timerWidth": 100.0,
-    "timerOffsetY": -15.0,
-    "scoreOffset": [
-      200.0,
-      25.0
-    ],
-    "timeToShow": 60,
     "airfieldsOffset": 4.0,
     "airfieldsOffsetY": 20.0,
     "respawnBasesOffset": 1.0,
     "respawnBasesOffsetY": 6.0,
-    "distanceToCurAirfield": [
-      2000.0,
-      2100.0
-    ],
-    "iconAirfield": "mp_airfield_color.svg:18:18:K",
     "iconAirfieldCur": "mp_airfield_current.svg:18:18:K",
     "iconAirfieldBgd": "mp_airfield_stroke.svg:18:18:K",
     "iconBasezoneBgd": "mp_basezone_stroke.svg:18:18:K",
@@ -4189,7 +4096,7 @@
     "measuresAlpha": 0.65,
     "offsetToNextLine": 22.0,
     "overheatMessageTimeToWork": 120.0,
-    "overheatTimeToDieMax": 120.0,
+    "overheatTimeToDieMax": 180.0,
     "color": [
       255,
       255,
@@ -4244,11 +4151,11 @@
       "temperatureBlinkFrequency": 1.0
     },
     "overheat1": {
-      "timeToOverheat": 120.0,
+      "timeToOverheat": 180.0,
       "temperatureColor": [
-        6,
-        22,
-        238,
+        0,
+        128,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0
@@ -4256,9 +4163,9 @@
     "overheat2": {
       "timeToOverheat": 300.0,
       "temperatureColor": [
-        24,
-        169,
-        237,
+        255,
+        255,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0
@@ -4266,9 +4173,9 @@
     "overheat3": {
       "timeToOverheat": 900.0,
       "temperatureColor": [
-        159,
-        230,
-        246,
+        255,
+        255,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0
@@ -4508,7 +4415,8 @@
         "shortcutIdx": -1
       },
       "torpedo_activate": {
-        "shortcutIdx": -1
+        "shortcutIdx": -1,
+        "expandableMenuName": "torpedo_menu"
       },
       "depth_charge_activate": {
         "shortcutIdx": -1
@@ -4739,11 +4647,26 @@
           "index": 1
         }
       ],
+      "sub_hydrophone": {
+        "shortcutIdx": -1
+      },
       "fpv_shell_activate": {
         "shortcutIdx": -1
       },
       "sensor_modes_switch": {
         "shortcutIdx": -1
+      },
+      "bombs_auto_release": {
+        "shortcutIdx": -1
+      },
+      "supply_transport_cargo": {
+        "shortcutIdx": -1
+      },
+      "supply_load": {
+        "shortcutIdx": 6
+      },
+      "supply_unload": {
+        "shortcutIdx": 7
       }
     },
     "wheelActions": {
@@ -5571,5 +5494,149 @@
     "JETS": "JET",
     "HELICOPTERS": "HELICOPTER",
     "ROCKETS": "ROCKET"
+  },
+  "activeSonar": {
+    "disabledTicksColor": [
+      192,
+      192,
+      192,
+      255
+    ],
+    "activeTicksColor": [
+      0,
+      127,
+      38,
+      255
+    ],
+    "minorTickLenPx": 3.0,
+    "majorTickLenPx": 9.0,
+    "ticksPerArc": 25,
+    "majorTickEvery": 4,
+    "tickLineWidth": 1.5,
+    "cooldownBarColor": [
+      0,
+      127,
+      38,
+      255
+    ],
+    "cooldownBarOffset": 5.0,
+    "cooldownBarWidth": 3.0,
+    "pulseRingColor": [
+      0,
+      127,
+      38,
+      255
+    ],
+    "pulseRingAlpha": 0.5,
+    "pulseRingMinSaturation": 0.0,
+    "pulseAnimationTime": 0.35,
+    "pulseRingWidth": 30.0,
+    "pulseFadeTime": 0.3,
+    "rangeTextColor": [
+      10,
+      202,
+      10,
+      250
+    ]
+  },
+  "passiveSonar": {
+    "color": [
+      192,
+      192,
+      192,
+      255
+    ],
+    "selectedColor": [
+      0,
+      127,
+      38,
+      255
+    ],
+    "bearingColor": [
+      250,
+      206,
+      135,
+      255
+    ],
+    "gainSearchColor": [
+      255,
+      110,
+      170,
+      255
+    ],
+    "gainCorrectColor": [
+      140,
+      230,
+      80,
+      255
+    ],
+    "confirmedColor": [
+      4,
+      164,
+      217,
+      255
+    ],
+    "failColor": [
+      40,
+      40,
+      230,
+      255
+    ],
+    "failFlashTime": 0.4,
+    "resultShowTime": 1.5,
+    "gainJitterRange": 2.5,
+    "measuredNoisePower": 0.02,
+    "gainMaxNoisePower": 0.6,
+    "gainShakePx": 4.0,
+    "measureFadeRangeT": 0.85,
+    "measureAcquiredFadeT": 0.85,
+    "measureOuterAlpha": 0.35,
+    "ringsCount": 3.0,
+    "lifetime": 2.0,
+    "defaultMaxRadius": 300.0,
+    "lineThicknessPx": 5.0,
+    "noiseFracLow": 0.05,
+    "noiseFracHigh": 0.3,
+    "minThrottle": 0.3,
+    "fovFadeRangeT": 0.85,
+    "fovBorderSaturation": 0.1,
+    "radiusGroup": [
+      {
+        "maxRadius": 50.0,
+        "unitTag": [
+          "type_armored_boat",
+          "type_gun_boat",
+          "type_minelayer",
+          "type_torpedo_gun_boat",
+          "type_torpedo_boat",
+          "type_naval_ferry_barge",
+          "type_naval_aa_ferry",
+          "type_submarine_chaser",
+          "type_heavy_gun_boat"
+        ]
+      },
+      {
+        "maxRadius": 100.0,
+        "unitTag": [
+          "type_frigate",
+          "type_destroyer",
+          "type_submarine"
+        ]
+      },
+      {
+        "maxRadius": 140.0,
+        "unitTag": [
+          "type_light_cruiser",
+          "type_heavy_cruiser"
+        ]
+      },
+      {
+        "maxRadius": 180.0,
+        "unitTag": [
+          "type_battlecruiser",
+          "type_battleship"
+        ]
+      }
+    ]
   }
 }

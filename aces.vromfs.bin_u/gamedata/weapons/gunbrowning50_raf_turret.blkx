@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.21,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bullets": 500,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.21,
+  "shotFreq": 12.5,
+  "bullets": 500,
+  "overheat": {
+    "overheat": [
+      [
+        8.3,
+        0.0
+      ],
+      [
+        12.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0444,
@@ -5588,25 +5600,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m2_gun_outside",
-    "cockpit": "m2_gun_inside",
-    "ai": "m2_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        8.3,
-        0.0
-      ],
-      [
-        12.0,
-        0.05
-      ]
-    ]
-  },
   "bmg50raf_turret_new_gun": {
     "maxDeltaAngle": 0.4,
     "overheat": {
@@ -5621,5 +5614,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m2_gun_outside",
+    "cockpit": "m2_gun_inside",
+    "ai": "m2_gun_ai"
   }
 }

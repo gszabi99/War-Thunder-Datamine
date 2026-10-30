@@ -1,9 +1,9 @@
+import "%sqstd/ecs.nut" as ecs
 from "ecs.netevent" import server_send_net_sqevent, server_broadcast_net_sqevent, client_request_unicast_net_sqevent, client_request_broadcast_net_sqevent
 
 
 
 
-let ecs = require("%sqstd/ecs.nut")
 
 let _get_msgSink = ecs.SqQuery("_get_msgSink", { comps_rq = ["msg_sink"] })
 function _get_msg_sink_eid() {
@@ -13,7 +13,7 @@ function _get_msg_sink_eid() {
 let client_msg_sink = @(evt) client_request_unicast_net_sqevent(_get_msg_sink_eid(), evt)
 let server_msg_sink = @(evt, connids = null) server_send_net_sqevent(_get_msg_sink_eid(), evt, connids)
 
-return ecs.__merge({
+return freeze(ecs.__merge({
   client_msg_sink
   client_request_unicast_net_sqevent
   client_request_broadcast_net_sqevent
@@ -21,4 +21,4 @@ return ecs.__merge({
   server_msg_sink
   server_send_net_sqevent
   server_broadcast_net_sqevent
-})
+}))

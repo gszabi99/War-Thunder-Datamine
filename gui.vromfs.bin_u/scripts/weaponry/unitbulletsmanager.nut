@@ -1,4 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/weaponry/guiStartWeaponrySelectModal.nut" as guiStartWeaponrySelectModal
 import "%sqstd/math.nut" as stdMath
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, bulletsAmountState, getAmmoWarningMinimum
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletsSetData, getLinkedGunIdx, getOptionsBulletsList, getBulletsGroupCount, getActiveBulletsGroupInt, getBulletsInfoForPrimaryGuns, calcBulletLimits
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS
+from "%scripts/unit/unitStatus.nut" import isUnitRandomUnit
+from "%scripts/weaponry/infantryBelts.nut" import getUnitAmmoBelts, InfantryBeltGroup
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "string" import format
@@ -7,14 +14,7 @@ from "chardResearch" import shopIsModificationPurchased
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { AMMO, bulletsAmountState, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getBulletsSetData, getLinkedGunIdx, getOptionsBulletsList, getBulletsGroupCount, getActiveBulletsGroupInt, getBulletsInfoForPrimaryGuns, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
-let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
-let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
-let { getUnitAmmoBelts, InfantryBeltGroup } = require("%scripts/weaponry/infantryBelts.nut")
 
 let UnitBulletsManager = class {
   unit = null  
@@ -188,7 +188,7 @@ let UnitBulletsManager = class {
 
       if (status == bulletsAmountState.LOW_AMOUNT) {
         let allocated = totalBullets - unallocated
-        let missing = (min(minBullets, totalBullets) - allocated) * gInfo.guns
+        let missing = (min(minBullets, totalBullets) - allocated) * gInfo.bulletsPerStep
         res.lowAmountWeapons.append({ weapName = gInfo.weapName, missing = missing })
       }
     }

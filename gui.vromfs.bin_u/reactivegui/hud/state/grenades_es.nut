@@ -36,7 +36,7 @@ ecs.register_es("inventory_grenades_ui_es",
   }
 )
 
-return {
+return freeze({
   grenades
   grenadesEids
-}
+})

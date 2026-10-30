@@ -1,3 +1,4 @@
+from "%scripts/matchingRooms/sessionDebugInfo.nut" import get_last_session_debug_info
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "matching.api" import matching_call, matching_listen_notify, matching_notify, matching_listen_rpc, matching_send_response
 from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
@@ -5,9 +6,6 @@ from "matching.errors" import OPERATION_COMPLETE, is_matching_error, matching_er
 from "%sqstd/string.nut" import replace
 from "%scripts/dagui_library.nut" import *
 from "types" import String, Table, Function
-
-let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-
 
  
 
@@ -125,7 +123,7 @@ function request_matching(functionName, onSuccess = null, onError = null, params
   matchingApiFunc(functionName, callback, params)
 }
 
-return {
+return freeze({
   matchingApiFunc
   matchingApiNotify
   request_matching
@@ -133,4 +131,4 @@ return {
   isMatchingError = is_matching_error
   matchingErrorString = matching_error_string
   matchingRpcSubscribe = matching_subscribe
-}
+})

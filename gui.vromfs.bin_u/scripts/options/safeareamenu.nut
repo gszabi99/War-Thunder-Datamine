@@ -1,17 +1,12 @@
-import "sony" as sony
-from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "%appGlobals/options/safeAreaMenuValue.nut" import defValue, values, getFixedValue, getConfigValue, getValueForFont, getSafeareaForFont
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%globalScripts/systemConfig.nut" import setSystemConfigOption
 from "%appGlobals/login/loginState.nut" import isAuthorized
-from "vr" import is_stereo_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/fonts.nut" import fontTypes
 
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA } = require("%scripts/options/optionsExtNames.nut")
-let g_font = require("%scripts/options/fonts.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-
-local currentFont = g_font.LARGE
+local currentFont = fontTypes.LARGE
 
 function is_low_width_screen() { 
   return currentFont.isLowWidthScreen()
@@ -19,35 +14,13 @@ function is_low_width_screen() {
 let getCurrentFont = @() currentFont
 let setCurrentFont = @(font) currentFont=font
 
-const defValue  = 1.0
-let values    = [ 1.0, 0.95, 0.9 ]
 let items     = ["100%", "95%", "90%"]
 
-let getFixedValue = @() 
-  is_stereo_mode() ? 0.8
-  : isPlatformSony ? sony.getDisplaySafeArea()
-  : useTouchscreen ? 0.9
-  : is_low_width_screen() ? 1.0
-  : -1
+let getSavedValue = @() !isAuthorized.get() ?
+  getConfigValue() :
+  get_gui_option_in_mode(USEROPT_MENU_SCREEN_SAFE_AREA, OPTIONS_MODE_GAMEPLAY, defValue)
 
-let compatibleGetValue = function() {
-  let value = !isAuthorized.get() ?
-    to_float_safe(getSystemConfigOption("video/safearea", defValue), defValue) :
-    get_gui_option_in_mode(USEROPT_MENU_SCREEN_SAFE_AREA, OPTIONS_MODE_GAMEPLAY, defValue)
-
-  if (value < 0.5)
-    return 1 - value
-  return value
-}
-
-let getValue = function() {
-  local value = getFixedValue()
-  if (value != -1)
-    return value
-
-  value = compatibleGetValue()
-  return isInArray(value, values) ? value : defValue
-}
+let getValue = @() getValueForFont(currentFont, getSavedValue)
 
 local setValue = function(value) {
   if (!isAuthorized.get())
@@ -60,9 +33,9 @@ local setValue = function(value) {
 
 let getValueOptionIndex = @() values.indexof(getValue())
 
-let canChangeValue = @() getFixedValue() == -1
+let canChangeValue = @() getFixedValue(currentFont) == -1
 
-let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getMenuWidthLimit())
+let getSafearea = @() getSafeareaForFont(currentFont, getSavedValue)
 
 let export = {
   is_low_width_screen

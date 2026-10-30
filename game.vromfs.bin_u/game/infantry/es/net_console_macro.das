@@ -38,7 +38,7 @@ class NetConsoleCommandAnnotation : AstFunctionAnnotation
     var netPlayerArgIdx = -1
     for arg, i in func.arguments, iter_range(func.arguments)
       serverCmdArguments.elements |> emplace_new(new ExprConstString(value := " "))
-      serverCmdArguments.elements |> emplace_new(new ExprVar(name := arg.name))
+      serverCmdArguments.elements |> emplace_new(new ExprVar(at = func.at, name := arg.name))
 
       
       let isHero = find_arg(arg.annotation, "net_hero")
@@ -66,7 +66,7 @@ class NetConsoleCommandAnnotation : AstFunctionAnnotation
 
       
       var ec = new ExprCall(at = func.at, name := "get_controlled_hero_eid")
-      ec.arguments |> emplace_new(new ExprVar(name := "_{heroEidArg.name}_"))
+      ec.arguments |> emplace_new(new ExprVar(at = func.at, name := "_{heroEidArg.name}_"))
 
       var el = new ExprLet(at = func.at, atInit = func.at)
       el.variables |> emplace_new() <| new Variable(at = func.at,
@@ -86,7 +86,7 @@ class NetConsoleCommandAnnotation : AstFunctionAnnotation
       assume playerEidArg = func.arguments[netPlayerArgIdx]
 
       var ec = new ExprCall(at = func.at, name := "get_controlled_player_eid")
-      ec.arguments |> emplace_new(new ExprVar(name := "_{playerEidArg.name}_"))
+      ec.arguments |> emplace_new(new ExprVar(at = func.at, name := "_{playerEidArg.name}_"))
 
       var el = new ExprLet(at = func.at, atInit = func.at)
       el.variables |> emplace_new() <| new Variable(at = func.at,

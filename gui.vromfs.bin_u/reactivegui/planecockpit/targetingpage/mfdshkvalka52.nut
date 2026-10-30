@@ -110,7 +110,7 @@ let airSymbolWrap = {
   update = @() {
     transform = {
       rotate = Roll.get()
-      pivot = [0, 0]
+      pivot = 0
     }
   }
 }
@@ -137,7 +137,7 @@ let targetMark = @(use_target_screen_pos = false) @() {
   color = Color(255, 255, 255)
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, -100, 100, -100],
     [VECTOR_LINE, 100, -100, 100, 100],
     [VECTOR_LINE, 100, 100, -100, 100],
@@ -182,17 +182,15 @@ let distToTarget = @(){
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
   padding = const [0, 5]
-  children = AimLockValid.get() ? [
-    @(){
-      watch = DistToTarget
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 35
-      text = string.format("%.2f", DistToTarget.get() / 100.0)
-    }
-  ] : null
+  children = AimLockValid.get() ? @(){
+    watch = DistToTarget
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    color = baseColor
+    font = Fonts.ils31
+    fontSize = 35
+    text = string.format("%.2f", DistToTarget.get() / 100.0)
+  } : null
 }
 
 let SpeedValue = Computed(@() round(Speed.get() * mpsToKmh).tointeger())
@@ -681,9 +679,7 @@ function pitchWrap(height) {
     size = const [pw(9), ph(40)]
     pos = const [pw(1), ph(30)]
     clipChildren = true
-    children = [
-      pitch(height, generatePitchLine)
-    ]
+    children = pitch(height, generatePitchLine)
   }
 }
 
@@ -715,18 +711,16 @@ let pitchLabels = {
       commands = [
         [VECTOR_RECTANGLE, 0, 0, 100, 100]
       ]
-      children = [
-        @(){
-          watch = TangageValue
-          size = SIZE_TO_CONTENT
-          pos = const [0, ph(5)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          fontSize = baseFontSize
-          font = Fonts.ils31
-          text = TangageValue.get().tostring()
-        }
-      ]
+      children = @(){
+        watch = TangageValue
+        size = SIZE_TO_CONTENT
+        pos = const [0, ph(5)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        fontSize = baseFontSize
+        font = Fonts.ils31
+        text = TangageValue.get().tostring()
+      }
     }
   ]
 }
@@ -741,7 +735,7 @@ let opticCompass = @(){
   fillColor = Color(0, 0, 0, 0)
   lineWidth = 1
   commands = [
-    [VECTOR_ELLIPSE, 50, 50, 50, 50],
+    const [VECTOR_ELLIPSE, 50, 50, 50, 50],
     [VECTOR_LINE, 50, 50, 50 + 50 * cos(optCompassVal.get() - PI * 0.25), 50 + 50 * sin(optCompassVal.get() - PI * 0.25)],
     [VECTOR_LINE, 50, 50, 50 + 50 * cos(optCompassVal.get() + PI * 0.25), 50 + 50 * sin(optCompassVal.get() + PI * 0.25)]
   ]
@@ -923,33 +917,29 @@ let turretYaw = {
 let TAMark = @(){
   watch = AimLockValid
   size = FLEX
-  children = AimLockValid.get() ? [
-    {
-      size = SIZE_TO_CONTENT
-      pos = const [pw(90), ph(17)]
-      rendObj = ROBJ_TEXT
-      color = Color(255, 255, 0)
-      font = Fonts.ils31
-      fontSize = baseFontSize
-      text = "ЛД"
-    }
-  ] : null
+  children = AimLockValid.get() ? {
+    size = SIZE_TO_CONTENT
+    pos = const [pw(90), ph(17)]
+    rendObj = ROBJ_TEXT
+    color = Color(255, 255, 0)
+    font = Fonts.ils31
+    fontSize = baseFontSize
+    text = "ЛД"
+  } : null
 }
 
 let operatedMark = @(){
   watch = HasOperatedShell
   size = FLEX
-  children = HasOperatedShell.get() ? [
-    {
-      size = SIZE_TO_CONTENT
-      pos = const [pw(89), ph(35)]
-      rendObj = ROBJ_TEXT
-      color = Color(255, 255, 0)
-      font = Fonts.ils31
-      fontSize = baseFontSize
-      text = "ЛЛКУ"
-    }
-  ] : null
+  children = HasOperatedShell.get() ? {
+    size = SIZE_TO_CONTENT
+    pos = const [pw(89), ph(35)]
+    rendObj = ROBJ_TEXT
+    color = Color(255, 255, 0)
+    font = Fonts.ils31
+    fontSize = baseFontSize
+    text = "ЛЛКУ"
+  } : null
 }
 
 let OverloadVal = Computed(@() (Overload.get() * 10.0).tointeger())
@@ -1023,14 +1013,12 @@ let zoom = {
   commands = [
     [VECTOR_RECTANGLE, 0, 0, 100, 100]
   ]
-  children = [
-    @(){
-      watch = MfdCameraZoom
-      rendObj = ROBJ_SOLID
-      size = [pw(MfdCameraZoom.get() * 100.0), 4]
-      color = baseColor
-    }
-  ]
+  children = @(){
+    watch = MfdCameraZoom
+    rendObj = ROBJ_SOLID
+    size = [pw(MfdCameraZoom.get() * 100.0), 4]
+    color = baseColor
+  }
 }
 
 let reticle = {

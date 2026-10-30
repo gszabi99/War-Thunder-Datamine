@@ -41,8 +41,10 @@ class Component : FA18CockpitElementBase
     isHMSMode = find(get_radar_hud_mode_name(), "HMD") >= 0
 
     setScale(float2(canvasSize.y))
+    defaultLineWidth = max(defaultLineWidth - 2.0, 1.0)
+    setLineWidth(defaultLineWidth)
 
-    let fontSize = 20
+    let fontSize = 18
     defaultFontSize = floori(float(fontSize) * rdata.size.y / 1080.0)
 
   def draw()

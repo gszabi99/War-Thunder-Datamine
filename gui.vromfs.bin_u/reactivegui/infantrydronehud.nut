@@ -48,11 +48,7 @@ return @() {
   size = [rw.get(), rh.get()]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  children = IsSightHudVisible.get() ? [
-    droneReconHud(rw.get(), rh.get())
-  ] : IsPilotHudVisible.get() && isUnitAlive.get() ? [
-    droneHud(rw.get(), rh.get())
-  ] : [
+  children = IsSightHudVisible.get() ? droneReconHud(rw.get(), rh.get()) : IsPilotHudVisible.get() && isUnitAlive.get() ? droneHud(rw.get(), rh.get()) : [
     mkInfantryDroneMainHud()
     killMarks
     infantryHudLeftPanel

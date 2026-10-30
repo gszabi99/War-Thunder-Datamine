@@ -1,8 +1,8 @@
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
 from "hudCompassState" import hasCompassObservable
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_messages } = require("%scripts/hud/hudMessages.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let DaguiSceneTimers = require("%scripts/sqDagui/timer/daguiSceneTimers.nut")
 

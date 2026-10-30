@@ -102,10 +102,10 @@ let joinAsSpectator = function(sessionId, sessionData, pushContextId, onFinishCb
   )
 }
 
-return {
+return freeze({
   create
   updateInfo
   destroy
   joinAsPlayer
   joinAsSpectator
-}
+})

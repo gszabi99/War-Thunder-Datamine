@@ -135,10 +135,8 @@ struct template TFlatHashTable {
         while (true) {
             let h = hashes[index]
             if (h == hash) {
-                
                 if (key_data[index] == key) return index
-            } elif (h == 0ul) break  
-            
+            } elif (h == 0ul) break
             index = (index + 1) & mask
         }
         return -1
@@ -180,7 +178,7 @@ struct template TFlatHashTable {
     def static erase(key : KeyType) : bool {
         let index = self |> key_index(key)
         if (index != -1) {
-            hashes[index] = 1ul   
+            hashes[index] = 1ul
             tombstones ++
             data_length --
             return true
@@ -269,7 +267,7 @@ struct template TFlatHashTable {
         while (true) {
             let h = hashes[index]
             if (h == hash) {
-                if (key_data[index] == key) {   
+                if (key_data[index] == key) {
                     unsafe {
                         return value_data[index]
                     }
@@ -283,7 +281,7 @@ struct template TFlatHashTable {
                     index = lastTombstone
                     tombstones --
                 }
-                key_data[index] := key
+                key_data[index] := key  
                 hashes[index] = hash
                 data_length ++
                 unsafe {
@@ -294,7 +292,7 @@ struct template TFlatHashTable {
         }
         panic("unreachable")
         unsafe {
-            return value_data[0] 
+            return value_data[0]
         }
     }
 
@@ -308,7 +306,7 @@ struct template TFlatHashTable {
         }
         panic("key not found")
         unsafe {
-            return value_data[0] 
+            return value_data[0]
         }
     }
 

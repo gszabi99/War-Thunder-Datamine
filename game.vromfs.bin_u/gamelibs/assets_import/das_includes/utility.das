@@ -10,9 +10,6 @@ require stddlg
 def get_base_name_with_ext(path : string)
   return path |> split_by_chars("/\\") |> back()
 
-def get_base_name_without_ext(path : string) : string
-  return (get_base_name_with_ext(path) |> split("."))[0]
-
 def local_path(folder_path, file_path : string)
 
   let prefixIdx = file_path |> find(folder_path)

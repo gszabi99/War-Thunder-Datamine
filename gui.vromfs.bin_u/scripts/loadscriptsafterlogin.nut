@@ -31,7 +31,6 @@ function loadScriptsAfterLoginOnce() {
   require("%scripts/matching/serviceNotifications/showInfo.nut")
   require("%scripts/unit/unitContextMenu.nut")
   require("%scripts/sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(script_net_assert_once)
-  require("%scripts/social/activityFeed/activityFeedModule.nut")
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
@@ -62,6 +61,6 @@ function loadScriptsAfterLoginOnce() {
   end_es_loading()
 }
 
-return {
+return freeze({
   loadScriptsAfterLoginOnce
-}
+})

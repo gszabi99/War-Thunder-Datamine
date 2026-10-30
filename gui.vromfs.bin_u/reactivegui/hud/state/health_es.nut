@@ -1,6 +1,5 @@
 import "%sqstd/ecs.nut" as ecs
 from "%rGui/globals/ec_to_watched.nut" import mkFrameIncrementObservable
-from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqstd/frp.nut" import watchedTable2TableOfWatched
 from "%rGui/globals/ui_library.nut" import *
 
@@ -66,10 +65,6 @@ ecs.register_es("health_state_ui_es", {
   comps_rq=[["watchedByPlr", ecs.TYPE_EID]]
 })
 
-add_event_listener("BattleEnded", @(_) healthStateSetValue(defState))
-add_event_listener("PlayerQuitMission", @(_) healthStateSetValue(defState))
-
-
 let needDisplayBleedingTip = Watched(false)
 
 ecs.register_es("track_is_need_heal_bleeding_ui_es", {
@@ -85,7 +80,7 @@ ecs.register_es("track_is_need_heal_bleeding_ui_es", {
 })
 
 
-return {
+return freeze({
   isAlive = isAliveState
   isDowned = isDownedState
   showHpUi = showHpUiState
@@ -98,4 +93,4 @@ return {
   revivingEndTime
   revivingUserName
   totalDotAmount
-}
+})

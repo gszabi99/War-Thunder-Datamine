@@ -43,6 +43,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "german_summer_1943_gunner_char",
@@ -2287,7 +2293,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_PaK36_R_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_PaK36_R_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.7,
@@ -2343,7 +2349,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
         "emitter": "bone_mg_body_h_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2386,8 +2392,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_pzkpfw_38t_Marder_III_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_pzkpfw_38t_Marder_III_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3406,7 +3412,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_PaK36_R_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_PaK36_R_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilMultiplier": 0.7,
@@ -3462,7 +3468,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
               "emitter": "bone_mg_body_h_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3504,7 +3510,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

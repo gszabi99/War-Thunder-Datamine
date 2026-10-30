@@ -1,21 +1,20 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/tasker.nut" import addTask
+from "%scripts/worldWar/bhvWorldWarMap.nut" import worldWarMapControls
+from "%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut" import WwReinforcementArmy
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
 from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
-let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwReinforcements = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -301,4 +300,4 @@ let WwReinforcements = class (BaseGuiHandler) {
 }
 register_gui_handler("WwReinforcements", WwReinforcements)
 
-return { WwReinforcements }
+return freeze({ WwReinforcements })

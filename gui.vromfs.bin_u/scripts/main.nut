@@ -4,20 +4,21 @@
 import "console" as console
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
-from "%appGlobals/login/loginState.nut" import isAuthorized
+from "%appGlobals/login/loginState.nut" import isAuthorized, hasFullLoginState
 from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 from "%sqstd/platform.nut" import isPC, is_gdk
 from "dagor.time" import ref_time_ticks
 from "dagor.random" import set_rnd_seed
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import run_reactive_gui
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
-from "dagor.system" import DBGLEVEL
-warn_on_deprecated_methods(DBGLEVEL > 0)
+from "frp" import set_slow_subscriber_threshold_usec
+
 set_slow_subscriber_threshold_usec(1000000) 
 
-clear_vm_entity_systems()
+if (require_optional("daRg") == null) 
+  clear_vm_entity_systems()
 start_es_loading()
 
 require("%scripts/worldWar/worldWarConst.nut")
@@ -37,9 +38,6 @@ require("%scripts/user/features.nut")
 set_rnd_seed(ref_time_ticks())
 
 
-
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-subscriptions.setDefaultPriority(require("%scripts/g_listener_priority.nut").DEFAULT)
 
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
@@ -145,12 +143,20 @@ if (isPC && getSystemConfigOption("debug/netLogerr") == null)
   setSystemConfigOption("debug/netLogerr", true)
 
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
-let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false))
+let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false)) 
 if (isAuthorized.get() || shouldDisableMenu) { 
   loadScriptsAfterLoginOnce()
   if (!isLoadedOnce.get()) {
     isLoadedOnce.set(true)
     run_reactive_gui()
+  }
+  
+  if (hasFullLoginState.get() || (shouldDisableMenu && isInFlight()))
+    require("%scripts/options/initOptions.nut").initOptions()
+  
+  if (hasFullLoginState.get()) {
+    require("%scripts/login/loginPseudoThreadsConfig.nut").requestLoginItemdefs()
+    require("%scripts/unlocks/requestInventoryUnlocks.nut").requestInventoryUnlocks()
   }
 }
 

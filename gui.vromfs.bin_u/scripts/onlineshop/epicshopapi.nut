@@ -1,15 +1,15 @@
 import "statsd" as statsd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/onlineShop/epicShopData.nut" import catalog, canUseIngameShop, getShopItem, requestData, isLoadingInProgress
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let seenEnumId = SEEN.EXT_EPIC_SHOP
 
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
-let { catalog, canUseIngameShop, getShopItem, requestData, isLoadingInProgress } = require("%scripts/onlineShop/epicShopData.nut")
 
 let sheetsArray = [
   {
@@ -75,11 +75,11 @@ let openIngameStore = kwarg(
   }
 )
 
-return {
+return freeze({
   openIngameStore
   getEntStoreLocId = @() canUseIngameShop() ? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
   getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu.get()
   getEntStoreUnseenIcon = @() seenEnumId
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
-}
+})

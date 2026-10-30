@@ -1,12 +1,11 @@
+import "%scripts/utils/datablockConverter.nut" as blkUtil
+import "%scripts/clientState/applyRendererSettingsChange.nut" as applyRendererSettingsChange
 from "graphicsOptions" import is_hfr_supported
 from "blkGetters" import get_settings_blk
 from "%sqstd/platform.nut" import platformAlias, platformId, isSony
 from "consoleUserConfig" import console_save_user_config
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-
-let blkUtil = require("%scripts/utils/datablockConverter.nut")
-let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 
 enum consoleGraphicsPreset {
   QUALITY, 

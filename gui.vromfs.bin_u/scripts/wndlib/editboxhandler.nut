@@ -1,12 +1,11 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
-
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let EditBoxHandler = class (BaseGuiHandler) {
   wndType = handlerType.MODAL

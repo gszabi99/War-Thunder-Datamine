@@ -1,19 +1,18 @@
+import "%scripts/time.nut" as time
 import "regexp2" as regexp2
 import "DataBlock" as DataBlock
-from "%sqstd/platform.nut" import is_gdk
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%scripts/dirtyWordsFilter.nut" import isNamePassing, checkName
+from "%scripts/gdk/permissions.nut" import check_ugc_privilege
 from "string" import format
 from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_rights, clan_get_my_clan_type, ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isNamePassing, checkName } = require("%scripts/dirtyWordsFilter.nut")
-let time = require("%scripts/time.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { check_ugc_privilege } = require("%scripts/gdk/permissions.nut")
 
 let getConditionTypeText = @(conditionType) conditionType == "or"
   ? loc("clan/rankReqInfoCondType_or")
@@ -69,7 +68,7 @@ function getClanRequirementsText(membershipRequirements) {
 }
 
 function checkClanTagForDirtyWords(clanTag, returnString = true) {
-  if (isPlatformSony)
+  if (isSony)
     return returnString ? checkName(clanTag) : isNamePassing(clanTag)
   return returnString ? clanTag : true
 }
@@ -139,7 +138,7 @@ function amendUGCText(text, replace) {
   return text
 }
 
-return {
+return freeze({
   getClanRequirementsText
   checkClanTagForDirtyWords
   getClanCreationDateText
@@ -152,4 +151,4 @@ return {
   getMyClanType
   checkUGCAllowed
   amendUGCText
-}
+})

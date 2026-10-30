@@ -1,11 +1,10 @@
+from "%sqstd/platform.nut" import isSony
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-
-let topMenuHandler = Watched(null)
-let topMenuShopActive = mkWatched(persist, "topMenuShopActive", false)
+let topMenuHandler = mkWatchedClearedOnReload(null)
+let topMenuShopActive = mkHardPersistWatched("mainmenu.topMenuStates")("topMenuShopActive", false)
 let unitToShowInShop = Watched(null)
-let topMenuBorders = isPlatformSony ? [[0.01, 0.99], [0.09, 0.86]] 
+let topMenuBorders = isSony ? [[0.01, 0.99], [0.09, 0.86]] 
   : [[0.01, 0.99], [0.05, 0.86]]
 
 return {

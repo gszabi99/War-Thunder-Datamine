@@ -1,11 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/clientState/saveProfile.nut" import saveProfile
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SKIP_WEAPON_WARNING
 from "guiOptions" import set_gui_option
 from "%scripts/dagui_natives.nut" import get_auto_refill
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
 let WeaponWarningHandler = class (SkipableMsgBox) {
   skipOption = USEROPT_SKIP_WEAPON_WARNING
@@ -30,4 +29,4 @@ let WeaponWarningHandler = class (SkipableMsgBox) {
 }
 register_gui_handler("WeaponWarningHandler", WeaponWarningHandler)
 
-return { WeaponWarningHandler }
+return freeze({ WeaponWarningHandler })

@@ -1,4 +1,10 @@
 import "DataBlock" as DataBlock
+from "%scripts/weaponry/modificationInfo.nut" import isModResearched
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINING
+from "%scripts/missionBuilder/testFlightState.nut" import set_last_called_gui_testflight
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/weaponry/weaponryActions.nut" import updateBulletCountOptions
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "guiMission" import get_meta_mission_info_by_gm_and_name, select_training_mission
 from "console" import register_command
@@ -7,14 +13,8 @@ from "mission" import set_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINING } = require("%scripts/options/optionsExtNames.nut")
-let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
-let { updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
 
 const SEEN_MOD_TUTORIAL_PREFIX = "seen/modification_tutorial"
 
@@ -87,10 +87,10 @@ addListenersWithoutEnv({
 
 register_command(saveSeenTutorialStatus, "debug.set_seen_mod_tutor")
 
-return {
+return freeze({
   hasAvailableModTutorial
   needShowUnseenModTutorialForUnit
   needShowUnseenModTutorialForUnitMod
   markSeenModTutorial = @(mod) saveSeenTutorialStatus(mod.tutorialMission, true)
   startModTutorialMission
-}
+})

@@ -29,7 +29,6 @@ def finalize_decs_emission(var emission : Expression?; at : LineInfo; wrapToIter
     return emission
 }
 
-
 struct DecsJoinShape {
     bridgeA, bridgeB : DecsBridgeShape?
     keyaLam, keybLam, resultLam : Expression?
@@ -40,9 +39,6 @@ struct DecsJoinShape {
 class DecsAdapter : SourceAdapter {
     bridge : DecsBridgeShape?
     tupName : string
-    
-    
-    
     chainInfo : DecsChainInfo?
     calls : array<tuple<ExprCall?; LinqCall?>>
     intermediateEnd : int
@@ -54,8 +50,6 @@ class DecsAdapter : SourceAdapter {
         return true
     }
     def override effective_dispatch(base : LoopDispatch) : LoopDispatch {
-        
-        
         if (rangeInfo != null && base is Each && (rangeInfo.takeExpr != null || rangeInfo.takeWhileCond != null)) {
             return LoopDispatch(Find = null)
         }
@@ -74,8 +68,7 @@ class DecsAdapter : SourceAdapter {
         return emit_decs_reverse_skip_into_tail(takeArg, bridge, tupName, isIter, termLam, termElemType, at)
     }
     def override emit_distinct_take_loop(bindName : string; takenName : string; takeLimName : string; var perElement : Expression?; at : LineInfo) : Expression? {
-        
-        if (bridge == null) return null   
+        if (bridge == null) return null
         let archName = bridge.archName
         var innerBody : Expression? = qmacro_block() {
             break if ($i(takenName) >= $i(takeLimName))
@@ -118,14 +111,10 @@ class DecsAdapter : SourceAdapter {
         return emit_decs_join_impl(bridge, c, ctx, at)
     }
     def override count_shortcut(opName : string; at : LineInfo) : Expression? {
-        
         if (opName != "count") return null
         return emit_decs_count_archsize(bridge, at)
     }
     def override bind_name(at : LineInfo) : string {
-        
-        
-        
         if (chainInfo != null) return chainInfo.finalBind
         return tupName
     }
@@ -137,9 +126,6 @@ class DecsAdapter : SourceAdapter {
         return clone_type(bridge.elementType)
     }
     def override wrap_source_loop(loopShape : LoopDispatch; var body : Expression?; at : LineInfo) : Expression? {
-        
-        
-        
         let archName = bridge.archName
         let br = bridge
         var inner = body
@@ -232,7 +218,7 @@ class DecsJoinAdapter : SourceAdapter {
         let keyType = shape.keyType
         let tupBType = shape.tupBType
         return <- qmacro_block() {
-            var $i(jhashName) : table<$t(keyType); array<$t(tupBType)>>
+            $e(join_hash_decl(jhashName, keyType, tupBType))
             for_each_archetype($e(bridgeB.reqHashExpr), $e(bridgeB.erqExpr), $($i(bridgeB.archName) : Archetype) {
                 $e(collectInner)
             })
@@ -260,7 +246,6 @@ class DecsJoinAdapter : SourceAdapter {
 def private make_decs_term_adapter(var bridge : DecsBridgeShape?; var chainInfo : DecsChainInfo?;
                                    var rangeInfo : DecsRangeInfo?; var calls : array<tuple<ExprCall?; LinqCall?>>;
                                    intermediateEnd : int) : SourceAdapter? {
-    
     return new DecsAdapter(bridge = bridge, tupName = chainInfo.tupName, chainInfo = chainInfo,
                            calls <- calls, intermediateEnd = intermediateEnd, rangeInfo = rangeInfo)
 }
@@ -274,14 +259,12 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
         termCall = c.single["term"]
         termName = c.single_name["term"]
     }
-    
     let noRangeOps = (!(c.single |> key_exists("skip")) && !(c.single |> key_exists("skip_while"))
         && !(c.single |> key_exists("take_while")) && !(c.single |> key_exists("take")))
     if (hasTerm && termName == "count" && length(termCall.arguments) == 1
             && (c.many["head"] |> empty) && noRangeOps) return ctx.src->count_shortcut("count", at)
-    
     var calls : array<tuple<ExprCall?; LinqCall?>>
-    calls |> reserve(length(c.many["head"]) + 5)        
+    calls |> reserve(length(c.many["head"]) + 5)
     for (call in c.many["head"]) {
         let nm = call_norm_name(call)
         if (!(linqCalls |> key_exists(nm))) return null
@@ -314,8 +297,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
         rangeInfo.postTakeWhereCond = peel_lambda_rename_var(ptwArg, chainInfo.finalBind)
         if (rangeInfo.postTakeWhereCond == null) return null
     }
-    
-    
     if (termName == "to_table") return null
     let isAccum = (termName == "count" || termName == "long_count" || termName == "sum"
         || termName == "min" || termName == "max" || termName == "average")
@@ -333,8 +314,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
         let names <- make_range_names(at)
         var adapter = make_decs_term_adapter(bridge, chainInfo, rangeInfo, calls, rangeInfo.chainEnd)
         if (termName == "count" || termName == "long_count") {
-            
-            
             var loopBody : Expression? = qmacro_expr() {
                 $i(accName) ++
             }
@@ -346,7 +325,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
             loopBody = wrap_with_condition(loopBody, clone_expression(rangeInfo.postTakeWhereCond))
             return emit_counter_lane(adapter, accName, finalBind, names, null, null, null, loopBody, at, termName == "long_count")
         }
-        
         if (chainInfo.selectCount == 0 || elementType == null) return null
         var noBinds : array<Expression?>
         var noPre : array<Expression?>
@@ -355,9 +333,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
     }
     if (isMinMaxBy) return emit_decs_min_max_by(bridge, termName, chainInfo, rangeInfo, calls, rangeInfo.chainEnd, termCall, at)
     if (isEarlyExit || isWalk || isElementAt) {
-        
-        
-        
         if ((termName == "last" || termName == "last_or_default")
                 && rangeInfo.chainEnd == 0
                 && rangeInfo.skipExpr == null && rangeInfo.takeExpr == null
@@ -368,9 +343,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
             var fast = emit_decs_last_random_index(bridge, termName, termCall, chainInfo.finalType, at)
             if (fast != null) return fast
         }
-        
-        
-        
         var elementType = clone_type(chainInfo.finalType)
         let names <- make_range_names(at)
         var adapter = make_decs_term_adapter(bridge, chainInfo, rangeInfo, calls, rangeInfo.chainEnd)
@@ -379,9 +351,8 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
         return emit_early_exit_lane(termName, adapter, null, null, clone_expression(rangeInfo.postTakeWhereCond),
             noBinds, noPre, elementType, termCall, chainInfo.finalBind, names, null, null, null, null, at)
     }
-    
-    if (ctx.expr_is_iterator) return null
-    
+    let unknownTerminator = hasTerm && termName != "to_array"
+    if (unknownTerminator || ctx.expr_is_iterator) return null
     let finalBind = chainInfo.finalBind
     var elemType = clone_type(chainInfo.finalType)
     let bufName = qn("decs_buf", at)
@@ -412,8 +383,6 @@ def emit_loop_or_count_lane_decs(var bridge : DecsBridgeShape?; tupName : string
         dispatch = adapter->effective_dispatch(LoopDispatch(Each = null))), adapter, at)
 }
 
-
-
 [macro_function]
 def emit_decs_reverse_skip_into_tail(var takeExpr : Expression?; bridge : DecsBridgeShape?; tupName : string; needIterWrap : bool; var terminalSelectLam : Expression?; terminalSelectElemType : TypeDeclPtr; at : LineInfo) : Expression? {
     let bufName = qn("buf", at)
@@ -435,9 +404,6 @@ def emit_decs_reverse_skip_into_tail(var takeExpr : Expression?; bridge : DecsBr
         projType = strip_const_ref(clone_type(terminalSelectElemType))
         if (projType == null) return null
     }
-    
-    
-    
     var collectExpr : Expression?
     if (decs_can_random_index(bridge)) {
         collectExpr = build_decs_index_collect(bridge, bufName, skipsLeftName, actualName, at)
@@ -529,7 +495,6 @@ def emit_decs_reverse_skip_into_tail(var takeExpr : Expression?; bridge : DecsBr
 
 [macro_function]
 def build_decs_tup_bind(bridge : DecsBridgeShape?; tupName : string; at : LineInfo) : Expression? {
-    
     var mkTup = new ExprMakeTuple(at = at)
     mkTup.recordNames |> resize(length(bridge.userNames))
     for (i in 0 .. length(bridge.userNames)) {
@@ -543,8 +508,6 @@ def build_decs_tup_bind(bridge : DecsBridgeShape?; tupName : string; at : LineIn
 
 [macro_function]
 def decs_can_random_index(bridge : DecsBridgeShape?) : bool {
-    
-    
     if (bridge == null || !(bridge.forExpr is ExprFor)) return false
     var fe = bridge.forExpr as ExprFor
     if (empty(fe.sources)) return false
@@ -556,9 +519,6 @@ def decs_can_random_index(bridge : DecsBridgeShape?) : bool {
 
 [macro_function]
 def build_decs_index_tup(bridge : DecsBridgeShape?; idxName : string; at : LineInfo) : Expression? {
-    
-    
-    
     var fe = bridge.forExpr as ExprFor
     var mkTup = new ExprMakeTuple(at = at)
     mkTup.recordNames |> resize(length(bridge.userNames))
@@ -580,8 +540,6 @@ def build_decs_index_tup(bridge : DecsBridgeShape?; idxName : string; at : LineI
 [macro_function]
 def build_decs_index_collect(bridge : DecsBridgeShape?; bufName : string; skipsLeftName : string;
                              actualName : string; at : LineInfo) : Expression? {
-    
-    
     let archName = bridge.archName
     let idxName = qn("decs_rix", at)
     var tup = build_decs_index_tup(bridge, idxName, at)
@@ -596,9 +554,6 @@ def build_decs_index_collect(bridge : DecsBridgeShape?; bufName : string; skipsL
 [macro_function]
 def emit_decs_last_random_index(bridge : DecsBridgeShape?; termName : string; var termCall : ExprCall?;
                                 elemType : TypeDeclPtr; at : LineInfo) : Expression? {
-    
-    
-    
     var bt = strip_const_ref(clone_type(elemType))
     if (bt == null) return null
     let archName = bridge.archName
@@ -607,7 +562,7 @@ def emit_decs_last_random_index(bridge : DecsBridgeShape?; termName : string; va
     let resName = qn("decs_rres", at)
     var tup = build_decs_index_tup(bridge, liName, at)
     var archBody = qmacro_block() {
-        let $i(liName) = $i(archName).size - 1_l   
+        let $i(liName) = $i(archName).size - 1_l
         $i(resName) := $e(tup)
         $i(foundName) = true
     }
@@ -625,9 +580,6 @@ def emit_decs_last_random_index(bridge : DecsBridgeShape?; termName : string; va
             return <- $i(resName)
         }))
     } else {
-        
-        
-        
         let dvalName = qn("decs_rdval", at)
         let dvCanCopy = (termCall.arguments[1]._type != null && termCall.arguments[1]._type.canCopy)
         var bindStmt = emit_default_bind(dvalName, termCall.arguments[1], dvCanCopy)
@@ -650,7 +602,6 @@ def emit_decs_last_random_index(bridge : DecsBridgeShape?; termName : string; va
 
 [macro_function]
 def build_decs_inner_for(bridge : DecsBridgeShape?; var tupBind : Expression?; var body : Expression?; at : LineInfo) : Expression? {
-    
     var forBodyStmts <- [tupBind, body]
     var forBody = stmts_to_expr(forBodyStmts)
     var clonedForExpr = clone_expression(bridge.forExpr)
@@ -660,7 +611,6 @@ def build_decs_inner_for(bridge : DecsBridgeShape?; var tupBind : Expression?; v
     clonedFor.body = newForBody
     return clonedForExpr
 }
-
 
 class DecsTupUsageScanner : AstVisitor {
     tupName       : string
@@ -700,7 +650,6 @@ class DecsTupUsageScanner : AstVisitor {
 
 [macro_function]
 def collect_decs_tup_usage(var e : Expression?; tupName : string; bridge : DecsBridgeShape?) : tuple<bool; array<string>> {
-    
     var allUsed = false
     var used : array<string>
     if (e == null) return (allUsed, used)
@@ -718,7 +667,6 @@ def collect_decs_tup_usage(var e : Expression?; tupName : string; bridge : DecsB
     }
     return (allUsed, used)
 }
-
 
 class DecsTupWholeRewriter : AstVisitor {
     tupName       : string
@@ -773,7 +721,6 @@ def rewrite_decs_tup_wholes(var body : Expression?; tupName : string; bridge : D
     return any
 }
 
-
 class DecsTupFieldFlattener : AstVisitor {
     tupName     : string
     fieldToIter : table<string; string>
@@ -811,15 +758,12 @@ def build_decs_inner_for_pruned(bridge : DecsBridgeShape?;
                                 tupName : string;
                                 var body : Expression?;
                                 at : LineInfo) : Expression? {
-    
     var (allUsed, usedNames) = collect_decs_tup_usage(body, tupName, bridge)
-    
     if (allUsed && rewrite_decs_tup_wholes(body, tupName, bridge)) {
         var (allUsed2, usedNames2) = collect_decs_tup_usage(body, tupName, bridge)
         allUsed = allUsed2
         usedNames <- usedNames2
     }
-    
     if (allUsed || empty(usedNames)) {
         var tupBind = build_decs_tup_bind(bridge, tupName, at)
         return build_decs_inner_for(bridge, tupBind, body, at)
@@ -831,14 +775,11 @@ def build_decs_inner_for_pruned(bridge : DecsBridgeShape?;
     var fieldToIter <- {for (i in 0 .. length(bridge.userNames));
         bridge.userNames[i] => bridge.iterNames[i];
         where key_exists(usedSet, bridge.userNames[i])}
-    
     if (length(fieldToIter) < length(usedSet)) {
         var tupBind = build_decs_tup_bind(bridge, tupName, at)
         return build_decs_inner_for(bridge, tupBind, body, at)
     }
-    
     flatten_decs_tup_to_iter(body, tupName, fieldToIter)
-    
     var clonedForExpr = clone_expression(bridge.forExpr)
     var clonedFor = clonedForExpr as ExprFor
     let nSlots = length(bridge.userNames)
@@ -853,7 +794,6 @@ def build_decs_inner_for_pruned(bridge : DecsBridgeShape?;
         }
     }
     clonedFor.iteratorVariables |> clear()
-    
     var newForBody = new ExprBlock(at = at)
     newForBody.list |> push(body)
     clonedFor.body = newForBody
@@ -861,12 +801,12 @@ def build_decs_inner_for_pruned(bridge : DecsBridgeShape?;
 }
 
 struct DecsChainInfo {
-    tupName     : string            
-    bindAt      : array<string>    
-    elidedAt    : array<bool>      
-    finalBind   : string            
-    finalType   : TypeDeclPtr       
-    selectCount : int               
+    tupName     : string
+    bindAt      : array<string>
+    elidedAt    : array<bool>
+    finalBind   : string
+    finalType   : TypeDeclPtr
+    selectCount : int
 }
 
 [macro_function]
@@ -875,7 +815,6 @@ def compute_decs_chain_info(var calls : array<tuple<ExprCall?; LinqCall?>>;
                             tupName : string;
                             bridge : DecsBridgeShape?;
                             at : LineInfo) : DecsChainInfo? {
-    
     var info = new DecsChainInfo(
         tupName := tupName,
         finalBind := tupName,
@@ -895,7 +834,6 @@ def compute_decs_chain_info(var calls : array<tuple<ExprCall?; LinqCall?>>;
             info.selectCount ++
             var peeled = peel_lambda_rename_var(cll._0.arguments[1], info.bindAt[i])
             if (peeled == null || peeled._type == null) return null
-            
             var elided = false
             if (curBind == tupName) {
                 var top = peeled
@@ -942,7 +880,6 @@ def wrap_decs_chain(var action : Expression?;
                     var calls : array<tuple<ExprCall?; LinqCall?>>;
                     intermediateEnd : int;
                     at : LineInfo) : Expression? {
-    
     var current = action
     for (rev in 0 .. intermediateEnd) {
         let i = intermediateEnd - 1 - rev
@@ -958,7 +895,6 @@ def wrap_decs_chain(var action : Expression?;
                 }
             }
         } elif (opName == "select") {
-            
             continue if (chainInfo.elidedAt[i])
             var proj = peel_lambda_rename_var(cll._0.arguments[1], bindHere)
             if (proj == null) return null
@@ -981,16 +917,16 @@ def wrap_decs_chain(var action : Expression?;
 struct DecsRangeInfo {
     skipExpr          : Expression?
     takeExpr          : Expression?
-    skipWhileCond     : Expression?    
-    takeWhileCond     : Expression?    
-    postTakeWhereCond : Expression?    
+    skipWhileCond     : Expression?
+    takeWhileCond     : Expression?
+    postTakeWhereCond : Expression?
     chainEnd          : int
 }
 
 struct DecsRangeStateNames {
     skipName      : string
     takeCountName : string
-    takeLimitName : string    
+    takeLimitName : string
     skippingName  : string
 }
 
@@ -1008,7 +944,6 @@ def extract_decs_ranges(var calls : array<tuple<ExprCall?; LinqCall?>>;
                         intermediateEnd : int;
                         tupName : string;
                         at : LineInfo) : DecsRangeInfo? {
-    
     var info = new DecsRangeInfo(chainEnd = intermediateEnd)
     var firstRangeIdx = intermediateEnd
     for (i in 0 .. intermediateEnd) {
@@ -1019,7 +954,6 @@ def extract_decs_ranges(var calls : array<tuple<ExprCall?; LinqCall?>>;
         }
     }
     if (firstRangeIdx == intermediateEnd) return info
-    
     var hasWhilePred = false
     for (i in firstRangeIdx .. intermediateEnd) {
         let nm = calls[i]._1.name
@@ -1068,7 +1002,6 @@ def extract_decs_ranges(var calls : array<tuple<ExprCall?; LinqCall?>>;
 def wrap_inner_for_with_decs_ranges(var body : Expression?;
                                     rangeInfo : DecsRangeInfo?;
                                     names : DecsRangeStateNames) : Expression? {
-    
     if (rangeInfo.skipExpr == null && rangeInfo.takeExpr == null && rangeInfo.skipWhileCond == null && rangeInfo.takeWhileCond == null) return body
     let skipName      = names.skipName
     let takeCountName = names.takeCountName
@@ -1077,7 +1010,6 @@ def wrap_inner_for_with_decs_ranges(var body : Expression?;
     var stmts : array<Expression?>
     stmts |> reserve(6)
     if (rangeInfo.takeExpr != null) {
-        
         stmts |> push <| qmacro_expr() {
             if ($i(takeCountName) >= $i(takeLimitName)) {
                 return true
@@ -1103,7 +1035,6 @@ def wrap_inner_for_with_decs_ranges(var body : Expression?;
         }
     }
     if (rangeInfo.takeWhileCond != null) {
-        
         stmts |> push <| qmacro_expr() {
             if (!($e(rangeInfo.takeWhileCond))) {
                 return true
@@ -1111,7 +1042,6 @@ def wrap_inner_for_with_decs_ranges(var body : Expression?;
         }
     }
     if (rangeInfo.takeExpr != null) {
-        
         stmts |> push <| qmacro_expr() {
             $i(takeCountName) ++
         }
@@ -1122,7 +1052,6 @@ def wrap_inner_for_with_decs_ranges(var body : Expression?;
 
 [macro_function]
 def decs_range_prelude(rangeInfo : DecsRangeInfo?; names : DecsRangeStateNames) : array<Expression?> {
-    
     let skipName      = names.skipName
     let takeCountName = names.takeCountName
     let takeLimitName = names.takeLimitName
@@ -1140,7 +1069,6 @@ def decs_range_prelude(rangeInfo : DecsRangeInfo?; names : DecsRangeStateNames) 
         }
     }
     if (rangeInfo.skipWhileCond != null) {
-        
         stmts |> push <| qmacro_expr() {
             var $i(skippingName) = true
         }
@@ -1150,10 +1078,8 @@ def decs_range_prelude(rangeInfo : DecsRangeInfo?; names : DecsRangeStateNames) 
 
 [macro_function]
 def emit_decs_count_archsize(bridge : DecsBridgeShape?; at : LineInfo) : Expression? {
-    
     let accName = qn("decs_acc", at)
     let archName = qn("decs_arch", at)
-    
     var emission : Expression? = qmacro(invoke($() : int {
         var $i(accName) = 0
         for_each_archetype($e(bridge.reqHashExpr), $e(bridge.erqExpr), $($i(archName) : Archetype) {
@@ -1175,7 +1101,6 @@ def emit_decs_min_max_by(var bridge : DecsBridgeShape?;
                          intermediateEnd : int;
                          terminatorCall : ExprCall?;
                          at : LineInfo) : Expression? {
-    
     let firstName = qn("decs_first", at)
     let bestKeyName = qn("decs_bkey", at)
     let bestElemName = qn("decs_belem", at)
@@ -1213,8 +1138,6 @@ def emit_decs_min_max_by(var bridge : DecsBridgeShape?;
     let dispatch : LoopDispatch = ((rangeInfo.takeExpr != null || rangeInfo.takeWhileCond != null)
         ? LoopDispatch(Find = null)
         : LoopDispatch(Each = null))
-    
-    
     var adapter = make_decs_term_adapter(bridge, chainInfo, rangeInfo, calls, intermediateEnd)
     var ptw : Expression?
     if (rangeInfo.postTakeWhereCond != null) {
@@ -1231,13 +1154,8 @@ def emit_decs_min_max_by(var bridge : DecsBridgeShape?;
         dispatch = dispatch), adapter, at)
 }
 
-
-
 [macro_function]
 def emit_decs_join_impl(bridgeA : DecsBridgeShape?; var c : Captures; ctx : EmitCtx; at : LineInfo) : Expression? {
-    
-    
-    
     if (bridgeA == null || (c.single_name |> key_exists("join") && c.single_name["join"] == "group_join")) return null
     var joinCall = c.single["join"]
     var whereLam : Expression?
@@ -1255,11 +1173,9 @@ def emit_decs_join_impl(bridgeA : DecsBridgeShape?; var c : Captures; ctx : Emit
     var leadWhereLam = extract_join_lead_where(c)
     if (c.single |> key_exists("lead_where") && leadWhereLam == null) return null
     let countOnly = c.single |> key_exists("term")
-    
     if (!countOnly && ctx.expr_is_iterator) return null
     var bridgeB = extract_decs_bridge(joinCall.arguments[1])
     if (bridgeB == null) return null
-    
     var keyaLam = joinCall.arguments[2]
     var keybLam = joinCall.arguments[3]
     if (keyaLam == null || keybLam == null || keyaLam._type == null) return null
@@ -1283,9 +1199,7 @@ def emit_decs_join_impl(bridgeA : DecsBridgeShape?; var c : Captures; ctx : Emit
     var collectInner = build_decs_inner_for(bridgeB, tupBindB, stmts_to_expr(collectBody), at)
     var probeInner = build_decs_inner_for(bridgeA, tupBindA, pieces.probeOuter, at)
     var allStmts := pieces.preludeStmts
-    allStmts |> push <| qmacro_expr() {
-        var $i(hashName) : table<$t(keyType); array<$t(tupBType)>>
-    }
+    allStmts |> push(join_hash_decl(hashName, keyType, tupBType))
     allStmts |> push <| qmacro_expr() {
         for_each_archetype($e(bridgeB.reqHashExpr), $e(bridgeB.erqExpr), $($i(bridgeB.archName) : Archetype) {
             $e(collectInner)
@@ -1303,6 +1217,4 @@ def emit_decs_join_impl(bridgeA : DecsBridgeShape?; var c : Captures; ctx : Emit
     }))
     return finalize_decs_emission(emission, at, false)
 }
-
-
 

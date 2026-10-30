@@ -1,7 +1,7 @@
 {
   "model": "mh_60l_dap",
   "fmFile": "fm/mh_60l_dap.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 6.0,
   "haveCCIPForRocket": true,
   "gyroSight": [
@@ -39,16 +39,16 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
@@ -476,7 +476,9 @@
             "damage": 200.0,
             "tail_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ],
@@ -2036,19 +2038,19 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gamedata/sensors/ir_tracker.blk",
         "node": "optic1_gun",
         "powerButtonIdx": -1
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+        "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
       },
       {
-        "blk": "gameData/sensors/us_flir.blk",
+        "blk": "gamedata/sensors/us_flir.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_avr-2.blk"
+        "blk": "gamedata/sensors/us_an_avr-2.blk"
       }
     ]
   },
@@ -2085,51 +2087,51 @@
     "preset": [
       {
         "name": "mh_60l_dap_default",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_default.blk"
       },
       {
         "name": "mh_60l_dap_stinger",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_stinger.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_stinger.blk"
       },
       {
         "name": "mh_60l_dap_hydra_70_m247",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_hydra_70_m247.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_hydra_70_m247.blk"
       },
       {
         "name": "mh_60l_dap_apkws_m151",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_apkws_m151.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_apkws_m151.blk"
       },
       {
         "name": "mh_60l_dap_apkws_m282",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_apkws_m282.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_apkws_m282.blk"
       },
       {
         "name": "mh_60l_dap_4_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_4_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_4_hellfire.blk"
       },
       {
         "name": "mh_60l_dap_rocket_4_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_rocket_4_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_rocket_4_hellfire.blk"
       },
       {
         "name": "mh_60l_dap_8_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_8_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_8_hellfire.blk"
       },
       {
         "name": "mh_60l_dap_16_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_16_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_16_hellfire.blk"
       },
       {
         "name": "mh_60l_dap_2_m134",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_m134.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_2_m134.blk"
       },
       {
         "name": "mh_60l_dap_2_lr30",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_lr30.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_2_lr30.blk"
       },
       {
         "name": "mh_60l_dap_2_gau19",
-        "blk": "gameData/flightModels/weaponPresets/mh_60l_dap_2_gau19.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mh_60l_dap_2_gau19.blk"
       }
     ]
   },
@@ -2203,7 +2205,7 @@
                 "dummy": true,
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -2229,7 +2231,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -2237,7 +2239,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
                 "external": true,
@@ -2245,7 +2247,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
                 "external": true,
@@ -2266,7 +2268,7 @@
                 "dummy": true,
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -2292,7 +2294,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -2300,7 +2302,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
                 "external": true,
@@ -2308,7 +2310,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
                 "external": true,
@@ -2329,7 +2331,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/lau_131a_olive_hydra_70_m247.blk",
               "emitter": "m261_lwl_b001",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2340,7 +2342,7 @@
             "name": "m247",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b001",
               "external": true
             }
@@ -2351,7 +2353,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "m261_lwl_b001",
               "external": true,
               "separate": true
@@ -2363,7 +2365,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "m261_lwl_b001",
               "external": true,
               "separate": true
@@ -2374,7 +2376,7 @@
             "name": "114b_x2_default",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2_default.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_x2_default.blk",
               "emitter": "pylon_m279_001",
               "external": true,
               "separate": true,
@@ -2387,7 +2389,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_x4.blk",
               "emitter": "pylon_m272_001",
               "external": true,
               "separate": true,
@@ -2400,7 +2402,7 @@
             "reqModification": "stinger_aam",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "blk": "gamedata/weapons/containers/atas_2x_stinger.blk",
               "emitter": "aim92_stinger_pod_001",
               "external": true,
               "separate": true
@@ -2419,7 +2421,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/lau_131a_olive_hydra_70_m247.blk",
               "emitter": "m261_lwl_b002",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2430,7 +2432,7 @@
             "name": "m247",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b002",
               "external": true
             }
@@ -2441,7 +2443,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "m261_lwl_b002",
               "external": true,
               "separate": true
@@ -2453,7 +2455,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "m261_lwl_b002",
               "external": true,
               "separate": true
@@ -2465,7 +2467,7 @@
             "reqModification": "ah_1_AGM_114_8",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_x2.blk",
               "emitter": "pylon_m279_002",
               "external": true,
               "separate": true,
@@ -2478,7 +2480,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_x4.blk",
               "emitter": "pylon_m272_002",
               "external": true,
               "separate": true,
@@ -2491,7 +2493,7 @@
             "reqModification": "stinger_aam",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "blk": "gamedata/weapons/containers/atas_2x_stinger.blk",
               "emitter": "aim92_stinger_pod_002",
               "external": true,
               "separate": true
@@ -2520,7 +2522,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunGAU_19.blk",
+              "blk": "gamedata/weapons/gunGAU_19.blk",
               "emitter": "flare6",
               "flash": "flare6",
               "shell": "emtr_shellrejection4",
@@ -2558,7 +2560,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonLR30.blk",
+              "blk": "gamedata/weapons/cannonLR30.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection6",
@@ -2599,7 +2601,7 @@
           },
           "Weapon": {
             "trigger": "additional gun",
-            "blk": "gameData/Weapons/gunM134_Minigun.blk",
+            "blk": "gamedata/weapons/gunM134_Minigun.blk",
             "emitter": "flare4",
             "flash": "flare4",
             "shell": "emtr_shellrejection8",
@@ -2643,7 +2645,7 @@
           },
           "Weapon": {
             "trigger": "additional gun",
-            "blk": "gameData/Weapons/gunM134_Minigun.blk",
+            "blk": "gamedata/weapons/gunM134_Minigun.blk",
             "emitter": "flare5",
             "flash": "flare5",
             "shell": "emtr_shellrejection3",
@@ -2670,7 +2672,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/lau_131a_olive_hydra_70_m247.blk",
               "emitter": "m261_lwl_b003",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2681,7 +2683,7 @@
             "name": "m247",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b003",
               "external": true
             }
@@ -2692,7 +2694,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "m261_lwl_b003",
               "external": true,
               "separate": true
@@ -2704,7 +2706,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "m261_lwl_b003",
               "external": true,
               "separate": true
@@ -2716,7 +2718,7 @@
             "reqModification": "ah_1_AGM_114_8",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_x2.blk",
               "emitter": "pylon_m279_003",
               "external": true,
               "separate": true,
@@ -2729,7 +2731,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_x4.blk",
               "emitter": "pylon_m272_003",
               "external": true,
               "separate": true,
@@ -2742,7 +2744,7 @@
             "reqModification": "stinger_aam",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "blk": "gamedata/weapons/containers/atas_2x_stinger.blk",
               "emitter": "aim92_stinger_pod_003",
               "external": true,
               "separate": true
@@ -2771,7 +2773,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunGAU_19.blk",
+              "blk": "gamedata/weapons/gunGAU_19.blk",
               "emitter": "flare7",
               "flash": "flare7",
               "shell": "emtr_shellrejection5",
@@ -2809,7 +2811,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonLR30.blk",
+              "blk": "gamedata/weapons/cannonLR30.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection7",
@@ -2833,7 +2835,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_131a_olive_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/lau_131a_olive_hydra_70_m247.blk",
               "emitter": "m261_lwl_b004",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2844,7 +2846,7 @@
             "name": "m247",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b004",
               "external": true
             }
@@ -2855,7 +2857,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "m261_lwl_b004",
               "external": true,
               "separate": true
@@ -2867,7 +2869,7 @@
             "reqModification": "us_apkws",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
+              "blk": "gamedata/weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "m261_lwl_b004",
               "external": true,
               "separate": true
@@ -2878,7 +2880,7 @@
             "name": "114b_x2_default",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_x2_default.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_x2_default.blk",
               "emitter": "pylon_m279_004",
               "external": true,
               "separate": true,
@@ -2891,7 +2893,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_x4.blk",
               "emitter": "pylon_m272_004",
               "external": true,
               "separate": true,
@@ -2904,7 +2906,7 @@
             "reqModification": "stinger_aam",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/atas_2x_stinger.blk",
+              "blk": "gamedata/weapons/containers/atas_2x_stinger.blk",
               "emitter": "aim92_stinger_pod_004",
               "external": true,
               "separate": true
@@ -4052,22 +4054,22 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gamedata/sensors/ir_tracker.blk",
               "node": "optic1_gun",
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+              "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
             },
             {
-              "blk": "gameData/sensors/us_flir.blk",
+              "blk": "gamedata/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
+              "blk": "gamedata/sensors/us_an_avr-2.blk"
             },
             {
-              "blk": "gameData/sensors/us_an_aar_54v.blk"
+              "blk": "gamedata/sensors/us_an_aar_54v.blk"
             }
           ]
         }
@@ -4090,28 +4092,28 @@
         },
         "counterMeasures": {
           "counterMeasure": {
-            "blk": "gameData/counterMeasures/an_alq_144.blk"
+            "blk": "gamedata/counterMeasures/an_alq_144.blk"
           }
         },
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/ir_tracker.blk",
+              "blk": "gamedata/sensors/ir_tracker.blk",
               "node": "optic1_gun",
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+              "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
             },
             {
-              "blk": "gameData/sensors/us_flir.blk",
+              "blk": "gamedata/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
+              "blk": "gamedata/sensors/us_an_avr-2.blk"
             },
             {
-              "blk": "gameData/sensors/us_an_aar_54v.blk"
+              "blk": "gamedata/sensors/us_an_aar_54v.blk"
             }
           ]
         }

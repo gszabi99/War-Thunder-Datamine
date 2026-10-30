@@ -1,10 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/clans/clanInfo.nut" import hasRightsToQueueWWar
 from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 function getNearestMap(mapsList) {

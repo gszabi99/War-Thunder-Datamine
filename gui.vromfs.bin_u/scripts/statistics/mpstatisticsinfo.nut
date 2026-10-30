@@ -1,8 +1,7 @@
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
-
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 
 let cachedBonusTooltips = {}
 
@@ -68,7 +67,7 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   getWeaponTypeIcoByWeapon
   getSkillBonusTooltipText
-}
+})

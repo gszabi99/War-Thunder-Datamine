@@ -24,7 +24,6 @@ def private clone_iterator_type(it : TypeDeclPtr) : TypeDeclPtr {
     return <- res
 }
 
-
 class private BucketLambdaStamper : AstVisitor {
     bindName : string
     elemT : TypeDeclPtr
@@ -98,9 +97,7 @@ class private AstCallMacro_LinqPred2 : AstCallMacro {
         macro_verify(arg0type != null, prog, call.at, "input argument is not inferred yet")
         macro_verify(arg0type.isIterator || arg0type.isGoodArrayType, prog, call.at, "expecting iterator or array")
         macro_verify(!arg0type.firstType.isAutoOrAlias, prog, call.at, "iterable type cannot be auto or alias")
-        
         var iterType = clone_iterator_type(arg0type)
-        
         var bucketBind = "_"
         if (call.arguments[1] is ExprMakeBlock) {
             var bblk = (call.arguments[1] as ExprMakeBlock)._block
@@ -111,7 +108,6 @@ class private AstCallMacro_LinqPred2 : AstCallMacro {
         stamp_bucket_reducer_lambdas(call.arguments[1], bucketBind, iterType)
         var res : ExpressionPtr
         if (call.arguments[1] is ExprMakeBlock) {
-            
             var blk = call.arguments[1] as ExprMakeBlock
             var inner = blk._block as ExprBlock
             macro_verify(length(inner.arguments) == 1, prog, call.at, "{predName}: block argument must take exactly one parameter")
@@ -122,7 +118,6 @@ class private AstCallMacro_LinqPred2 : AstCallMacro {
         } else {
             res = qmacro($c(predName)($e(arg0), $(_ : $t(iterType)) => $e(call.arguments[1])))
         }
-        
         (((res as ExprCall).arguments[1] as ExprMakeBlock)._block as ExprBlock).arguments[0].flags.can_shadow = true
         res.force_at(call.at)
         return res
@@ -281,7 +276,6 @@ class private AstCallMacro_LinqOrderByKeys : AstCallMacro {
         var iterType = clone_iterator_type(arg0type)
         var res : ExpressionPtr
         if (call.arguments[1] is ExprMakeBlock) {
-            
             var blk = call.arguments[1] as ExprMakeBlock
             var inner = blk._block as ExprBlock
             macro_verify(length(inner.arguments) == 1, prog, call.at, "{predName}: key block must take exactly one parameter")
@@ -290,7 +284,6 @@ class private AstCallMacro_LinqOrderByKeys : AstCallMacro {
             }
             res = qmacro($c(predName)($e(arg0), $e(call.arguments[1]), $e(call.arguments[2])))
         } else {
-            
             res = qmacro($c(predName)($e(arg0), $(_ : $t(iterType)) => $e(call.arguments[1]), $e(call.arguments[2])))
         }
         (((res as ExprCall).arguments[1] as ExprMakeBlock)._block as ExprBlock).arguments[0].flags.can_shadow = true
@@ -325,11 +318,9 @@ class private AstCallMacro_LinqPredII2 : AstCallMacro {
         macro_verify(call.arguments[1]._type != null, prog, call.at, "expecting iterator or array")
         macro_verify(call.arguments[1]._type.isIterator || call.arguments[1]._type.isGoodArrayType, prog, call.at, "expecting iterator or array")
         macro_verify(!call.arguments[0]._type.firstType.isAutoOrAlias, prog, call.at, "iterator or array type cannot be auto or alias")
-        
         var iterType = clone_iterator_type(call.arguments[0]._type)
         var res : ExpressionPtr
         if (call.arguments[2] is ExprMakeBlock) {
-            
             var blk = call.arguments[2] as ExprMakeBlock
             var inner = blk._block as ExprBlock
             macro_verify(length(inner.arguments) == 1, prog, call.at, "{predName}: block argument must take exactly one parameter")
@@ -340,7 +331,6 @@ class private AstCallMacro_LinqPredII2 : AstCallMacro {
         } else {
             res = qmacro($c(predName)($e(call.arguments[0]), $e(call.arguments[1]), $(_ : $t(iterType)) => $e(call.arguments[2])))
         }
-        
         (((res as ExprCall).arguments[2] as ExprMakeBlock)._block as ExprBlock).arguments[0].flags.can_shadow = true
         res.force_at(call.at)
         return res
@@ -463,11 +453,6 @@ def private parse_equi_join_on(var on_pred : Expression?; prog : ProgramPtr; at 
     return parts
 }
 
-def private rename_var_in_expr(var src : Expression?; from_name, to_name : string) : Expression? {
-    
-    return clone_and_rename_var(src, from_name, to_name)
-}
-
 class private AstCallMacro_LinqJoinBase : AstCallMacro {
     
     fnName = "join"
@@ -487,9 +472,8 @@ class private AstCallMacro_LinqJoinBase : AstCallMacro {
         var iterTypeB = clone_iterator_type(srcbType)
         let la_fresh = "__la__"
         let lb_fresh = "__lb__"
-        var keya_body = rename_var_in_expr(parts.keya_body, parts.larg_name, la_fresh)
-        var keyb_body = rename_var_in_expr(parts.keyb_body, parts.rarg_name, lb_fresh)
-        
+        var keya_body = clone_and_rename_var(parts.keya_body, parts.larg_name, la_fresh)
+        var keyb_body = clone_and_rename_var(parts.keyb_body, parts.rarg_name, lb_fresh)
         var p1type = self.result_param1_type(iterTypeB, call.at)
         if (p1type != null) {
             var resultArg = call.arguments[3]
@@ -516,8 +500,6 @@ class private AstCallMacro_LinqJoinBase : AstCallMacro {
         res.force_at(call.at)
         return res
     }
-    
-    
     def result_param1_type(iterTypeB : TypeDeclPtr; at : LineInfo) : TypeDeclPtr {
         return null
     }
@@ -537,7 +519,6 @@ class private LinqGroupJoin : AstCallMacro_LinqJoinBase {
     
     override fnName = "group_join"
     def override result_param1_type(iterTypeB : TypeDeclPtr; at : LineInfo) : TypeDeclPtr {
-        
         var elemB = clone_type(iterTypeB)
         elemB.flags.constant = false
         elemB.flags.ref = false
@@ -576,7 +557,6 @@ class private LinqCrossJoin : AstCallMacro {
         macro_verify(srcbType.isIterator || srcbType.isGoodArrayType, prog, call.at, "second argument must be an iterator or array")
         macro_verify(!srcaType.firstType.isAutoOrAlias, prog, call.at, "first argument element type cannot be auto or alias")
         macro_verify(!srcbType.firstType.isAutoOrAlias, prog, call.at, "second argument element type cannot be auto or alias")
-        
         var iterTypeA = clone_iterator_type(srcaType)
         var iterTypeB = clone_iterator_type(srcbType)
         var resultArg = call.arguments[2]
@@ -625,7 +605,6 @@ class private LinqSelectMany : AstCallMacro {
         var iterTypeA = clone_iterator_type(srcaType)
         inject_block_param_type(call.arguments[1], 0, iterTypeA)
         inject_block_param_type(call.arguments[2], 0, iterTypeA)
-        
         var res = make_call(call.at, "_select_many_2")
         var rc = res as ExprCallMacro
         rc.arguments |> emplace <| call.arguments[0]

@@ -1,6 +1,70 @@
+import "%scripts/time.nut" as time
+import "%scripts/customization/decorLayoutPresetsWnd.nut" as decorLayoutPresets
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+import "%scripts/customization/decorMenuHandler.nut" as decorMenuHandler
+import "%scripts/customization/modsSetupHandler.nut" as modsSetupHandler
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
 import "%sqStdLibs/helpers/u.nut" as u
 import "penalty" as penalty
 import "%sqstd/ecs.nut" as ecs
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal, updateHintPosition
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitActions.nut" import buy, buyUnit
+from "%scripts/customization/contentPreview.nut" import showResource, canStartPreviewScene, showDecoratorAccessRestriction
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton, warningIfGold
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, canShowUnitInfo, isTestFlightAvailable
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/customization/decorView.nut" import getDecorLockStatusText, getDecorButtonView
+from "%sqstd/platform.nut" import isPC
+from "%scripts/onlineShop/entitlementsShopData.nut" import canUseIngameShop, getShopItemsTable
+from "%scripts/weaponry/weaponryInfo.nut" import needSecondaryWeaponsWnd
+from "%scripts/collections/collections.nut" import isCollectionItem
+from "%scripts/hangarModelLoadManager.nut" import loadModel
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit, getShowedUnitName, setShowUnit
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/customization/suggestedSkins.nut" import needSuggestSkin, saveSeenSuggestedSkin
+from "%scripts/controls/controlsVisual.nut" import getAxisTextOrAxisName
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/skinUtils.nut" import getSkinId, getPlaneBySkinId, getSkinNameBySkinId, approversUnitToPreviewLiveResource, DEFAULT_SKIN_NAME
+from "%scripts/customization/skins.nut" import clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin, getSkinsOption, getCurUserSkin
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient, canDoUnlock
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/slotInfoPanel.nut" import createSlotInfoPanel
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/options/optionsExtNames.nut" import USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION, USEROPT_TANK_SKIN_CONDITION, OPTIONS_MODE_GAMEPLAY
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut" import tryShowPeriodicPopupDecalsOnOtherPlayers
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/customization/bannedSkins.nut" import saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned
+from "%scripts/sqDagui/daguiUtil.nut" import enableObjsByTable
+from "%scripts/missionBuilder/testFlightState.nut" import guiStartTestflight
+from "%scripts/user/profileHandler.nut" import guiStartProfile
+from "%scripts/customization/decoratorAcquire.nut" import getResourceBuyFunc
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/items/unitCoupons.nut" import getUnitCoupon, hasUnitCoupon
+from "%scripts/wishlist/addWishWnd.nut" import tryAddToWishlist, updateWishlistButton
+from "%scripts/unit/unitWikiInfo.nut" import openUnitWikiInfo
+from "%scripts/discounts/discountUtils.nut" import showUnitDiscount
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/hangar/backgroundModelHint.nut" import initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "dasevents" import EventUpdateDemonstratedShellVisible
@@ -24,73 +88,13 @@ from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_o
 from "chard" import save_profile
 from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { HelpInfoHandlerModal, updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
-let { buy, buyUnit } = require("%scripts/unit/unitActions.nut")
-let { showResource, canStartPreviewScene, showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { canBuyNotResearched, canShowUnitInfo, isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let modsSetupHandler = require("%scripts/customization/modsSetupHandler.nut")
 
-let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customization/decorView.nut")
-let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
-let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { needSuggestSkin, saveSeenSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
-let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId, approversUnitToPreviewLiveResource, DEFAULT_SKIN_NAME } = require("%scripts/customization/skinUtils.nut")
-let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin, previewedLiveSkinIds, getSkinsOption, getCurUserSkin } = require("%scripts/customization/skins.nut")
-let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION, USEROPT_TANK_SKIN_CONDITION, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { decoratorViewTypes, getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { tryShowPeriodicPopupDecalsOnOtherPlayers } = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
-let { enableObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
-let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { getResourceBuyFunc } = require("%scripts/customization/decoratorAcquire.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
-let { tryAddToWishlist, updateWishlistButton } = require("%scripts/wishlist/addWishWnd.nut")
-let { openUnitWikiInfo } = require("%scripts/unit/unitWikiInfo.nut")
-let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell } = require("%scripts/hangar/backgroundModelHint.nut")
+let { previewedLiveSkinIds } = require("%scripts/customization/skins.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
+let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
 let { isPrioritySkin, setPrioritySkin } = require("%scripts/customization/prioritySkins.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -212,7 +216,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     unitNameForWeapons.set(this.unit.name)
 
     this.access_WikiOnline = hasFeature("WikiUnitInfo") && !this.unit.isSlave()
-    this.access_UserSkins = isPlatformPC && hasFeature("UserSkins")
+    this.access_UserSkins = isPC && hasFeature("UserSkins")
     this.access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
     this.access_SkinsUnrestrictedExport  = this.access_UserSkins && this.access_SkinsUnrestrictedExport
 
@@ -363,7 +367,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
 
   function updateDecalActionsTexts() {
     local bObj = null
-    let hasKeyboard = isPlatformPC
+    let hasKeyboard = isPC
 
     
     let btn_toggle_mirror_text = "".concat(loc("decals/flip"), (hasKeyboard ? " (F)" : ""))
@@ -2122,7 +2126,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     if (needOppositeMirrored != isOppositeMirrored)
       set_hangar_opposite_mirrored(needOppositeMirrored)
 
-    let hasKeyboard = isPlatformPC
+    let hasKeyboard = isPC
     let text = $"{loc("decals/switch_mode")}{(hasKeyboard ? " (T)" : "")}{loc("ui/colon")}"
     let labelObj = this.scene.findObject("two_sided_label")
     if (labelObj?.isValid())

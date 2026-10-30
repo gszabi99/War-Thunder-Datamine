@@ -1,4 +1,34 @@
 import "%appGlobals/timeLoc.nut" as timeBase
+from "%scripts/langUtils/harmonized.nut" import is_harmonized_unit_image_required
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, isUnitElite, canResearchUnit, isUnitUsable, isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unit/unitBitStatus.nut" import getBitStatus
+from "%scripts/unit/unitInfoTexts.nut" import getUnitItemStatusText, getUnitRarity
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitRoleIcon
+from "%scripts/weaponry/weaponryInfo.nut" import checkUnitWeapons, getWeaponsStatusName
+from "%scripts/shop/unitCardPkg.nut" import getUnitShopPriceText
+from "%scripts/unlocks/unlockMarkers.nut" import hasMarkerByUnitName, getUnlockIdByUnitName
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/debugTools/dbgShop.nut" import getShopDevMode, getUnitDebugRankText, getUnitDebugCostText
+from "%scripts/unit/unitInfo.nut" import getUnitName, bit_unit_status, getUnitReqExp, getUnitExp, image_for_air
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/slotbar/slotbarView.nut" import isUnitPriceTextLong, getUnitSlotRankText
+from "%scripts/bonusModule.nut" import getBonusImage
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/time.nut" import getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText
+from "%scripts/shop/shopCountryInfo.nut" import get_units_count_at_rank
+from "%scripts/options/optionsExt.nut" import get_unit_preset_img
+from "%scripts/discounts/discountsState.nut" import getUnitDiscount, getGroupDiscount
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/unit/unitEvents.nut" import hasUnitEvent
+from "%scripts/onlineShop/onlineShopState.nut" import getUnitsSharedEntitlements
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "string" import format, split_by_chars
 from "math" import round
@@ -11,39 +41,9 @@ from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
-let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { canBuyNotResearched, isUnitElite, canResearchUnit, isUnitUsable, isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken } = require("%scripts/unit/unitStatus.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
-let { getUnitItemStatusText, getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
-let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { hasMarkerByUnitName, getUnlockIdByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getShopDevMode, getUnitDebugRankText, getUnitDebugCostText } = require("%scripts/debugTools/dbgShop.nut")
-let { getUnitName, bit_unit_status, getUnitReqExp, getUnitExp, image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { getBonusImage } = require("%scripts/bonusModule.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
-let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
-let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
-let { getUnitsSharedEntitlements } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -726,7 +726,7 @@ function updateCellTimedStatus(cell, getTimedStatus) {
   })
 }
 
-return {
+return freeze({
   getStatusTbl = getStatusTbl
   getTimedStatusTbl = getTimedStatusTbl
   updateCellStatus = updateCellStatus
@@ -734,4 +734,4 @@ return {
   initCell = initCell
   getUnitRankText = getUnitRankText
   expNewNationBonusDailyBattleCount
-}
+})

@@ -1,0 +1,196 @@
+{
+  "repeat": {
+    "name": "scripted_soldier",
+    "setDebugSym": {
+      "beh": "S0"
+    },
+    "copyEcsValue": {
+      "ecsName": "scripted_bot__combatMode",
+      "blackboardName": "combatMode"
+    },
+    "orderedSelector": {
+      "sequencer": [
+        {
+          "name": "scripted.combat",
+          "subTree": {
+            "treeName": "scripted.acquireTarget"
+          },
+          "orderedSelector": {
+            "sequencer": [
+              {
+                "isVarsIntEqual": {
+                  "lhs": "combatMode",
+                  "rhs_value": 1
+                },
+                "followScriptedRoute": {
+                  "outPosParam": "wishPos"
+                },
+                "setDebugSym": {
+                  "act": "C1"
+                },
+                "success": {
+                  "parallel": {
+                    "repeat": {
+                      "followScriptedRoute": {
+                        "outPosParam": "wishPos"
+                      }
+                    },
+                    "moveShoot": {
+                      "posParam": "wishPos",
+                      "targetUnitParam": "shootEnemy",
+                      "angleThreshold": 180.0,
+                      "onlyAliveTarget": true,
+                      "keepCrouch": false,
+                      "minStance": 2,
+                      "chooseStance": true,
+                      "forceStanceLimit": true,
+                      "alwaysAiming": true,
+                      "shootCyclesRange": [
+                        2,
+                        3
+                      ],
+                      "shootTime": [
+                        0.3,
+                        1.0
+                      ],
+                      "minAimTime": [
+                        0.15,
+                        0.2
+                      ],
+                      "cyclesSuccess": true,
+                      "closeShootRange": [
+                        1.0,
+                        25.0
+                      ],
+                      "closeShootAngles": [
+                        30.0,
+                        30.0
+                      ],
+                      "lostTargetCooldownRange": [
+                        0.0,
+                        1.0
+                      ],
+                      "checkFriendlyFireRadius": 0.05
+                    }
+                  }
+                }
+              },
+              {
+                "setDebugSym": {
+                  "act": "C0"
+                },
+                "shootAtUnit": {
+                  "targetUnitParam": "shootEnemy",
+                  "alwaysAiming": true,
+                  "minStance": 2,
+                  "chooseStance": true,
+                  "chooseWeapon": true,
+                  "forceStanceLimit": true,
+                  "shootCyclesRange": [
+                    2,
+                    3
+                  ],
+                  "shootTime": [
+                    0.3,
+                    1.0
+                  ],
+                  "minAimTime": [
+                    0.15,
+                    0.2
+                  ],
+                  "cyclesSuccess": true,
+                  "closeShootRange": [
+                    1.0,
+                    25.0
+                  ],
+                  "closeShootAngles": [
+                    30.0,
+                    30.0
+                  ],
+                  "lostTargetCooldownRange": [
+                    0.0,
+                    1.0
+                  ],
+                  "checkFriendlyFireRadius": 0.05
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "scripted.route",
+          "setDebugSym": {
+            "act": "R0"
+          },
+          "parallel": {
+            "repeat": [
+              {
+                "followScriptedRoute": {
+                  "outPosParam": "wishPos"
+                }
+              },
+              {
+                "checkReloadWeapon": {
+                  "waitReloadFinish": false,
+                  "enoughAmmoRatio": 0.5
+                }
+              },
+              {
+                "sequencer": {
+                  "subTree": {
+                    "treeName": "scripted.acquireTarget"
+                  },
+                  "recalculateTree": {}
+                }
+              }
+            ],
+            "moveToPos": {
+              "posParam": "wishPos",
+              "incLadders": true,
+              "jumpDownTraceCheck": [
+                0.4,
+                1.0,
+                0.15
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sequencer": {
+    "name": "scripted.acquireTarget",
+    "getUnitFireType": {
+      "outParam": "fireType"
+    },
+    "not": [
+      {
+        "isVarsIntEqual": {
+          "lhs": "fireType",
+          "rhs_value": 0
+        }
+      },
+      {
+        "isVarsIntEqual": {
+          "lhs": "fireType",
+          "rhs_value": 1
+        }
+      },
+      {
+        "checkReloadWeapon": {
+          "checkOnly": true,
+          "enoughAmmoRatio": 0.5
+        }
+      }
+    ],
+    "findDanger": {
+      "paramName": "shootEnemy",
+      "radiusParamName": "enemyRadius",
+      "minDanger": 0.1,
+      "tag": "human"
+    },
+    "checkTargetTraceable": {
+      "targetParam": "shootEnemy"
+    }
+  }
+}

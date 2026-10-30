@@ -1,6 +1,52 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "regexp2" as regexp2
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/chat/chatRoomType.nut" import isRoomWWOperation
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/penitentiary/penaltyMessages.nut" import getDevoiceMessage
+from "%scripts/chat/menuChatRoom.nut" import newRoom, newMessage, initChatMessageListOn
+from "%scripts/chat/chatStates.nut" import isChatEnabled, checkChatEnableWithPlayer, isCrossNetworkMessageAllowed, chatStatesCanUseVoice
+from "%scripts/user/matchingFeature.nut" import hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan
+from "%scripts/chat/xboxVoice.nut" import add_user, remove_user, is_muted
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_VOICE_CHAT, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/localProfile.nut" import loadLocalByScreenSize, saveLocalByScreenSize
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/contacts/contactsListState.nut" import getContactByName, clanUserTable
+from "%scripts/gamercard/gamercardHelpers.nut" import getLastGamercardScene
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/user/playerContextMenu.nut" import showChatPlayerRClickMenu
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/contacts/contactsActions.nut" import find_contact_by_name_and_do
+from "%scripts/contacts/contactsInfo.nut" import collectMissedContactData, getPlayerFullName
+from "%scripts/clans/clanState.nut" import is_in_my_clan
+from "%scripts/chat/chatLatestThreads.nut" import onChatThreadsListEnd
+from "%scripts/chat/chatHelper.nut" import checkChatConnected
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/chat/chatUtils.nut" import getChatObject, isUserBlockedByPrivateSetting, filterNameFromHtmlCodes, addTextToEditbox
+from "%scripts/chat/localizedMessages.nut" import validateChatMessage
+from "%sqstd/platform.nut" import isSony
+from "%scripts/invites/invites.nut" import acceptInviteByLink, addChatRoomInvite
+from "%scripts/chat/chatHandler.nut" import lastChatSceneShow, addChatScene, clearChatScenes, menuChatHandler, chatActiveSceneParam, hideChatHandlerScene
+from "%scripts/chat/chatStorage.nut" import getRoomById, getThreadInfo
+from "%scripts/user/usersReputation.nut" import updateUserReputationData
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived, isAuthorized
 from "blkGetters" import get_game_params_blk
@@ -8,7 +54,8 @@ from "string" import format
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import deferOnce
 from "json" import parse_json
-from "%sqstd/string.nut" import clearBorderSymbols, startsWith, stripTags
+from "%sqstd/string.nut" import clearBorderSymbols, startsWith
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "chat" import get_option_voicechat, set_gchat_event_cb, is_chat_message_empty, is_chat_message_allowed
 from "chard" import get_charserver_time_sec
@@ -25,57 +72,14 @@ from "%scripts/utils_sa.nut" import save_to_json, is_myself_anyof_moderators
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { g_chat } = require("%scripts/chat/chat.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { isRoomWWOperation, g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
-let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled, checkChatEnableWithPlayer, isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan } = require("%scripts/user/matchingFeature.nut")
-let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_VOICE_CHAT, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize, saveLocalByScreenSize } = require("%scripts/clientState/localProfile.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
-let { collectMissedContactData, getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { is_in_my_clan } = require("%scripts/clans/clanState.nut")
-let { onChatThreadsListEnd } = require("%scripts/chat/chatLatestThreads.nut")
-let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 let { globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getChatObject, isUserBlockedByPrivateSetting, filterNameFromHtmlCodes, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
-let { validateChatMessage } = require("%scripts/chat/localizedMessages.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
-let { lastChatSceneShow, chatPrevScenes, addChatScene, clearChatScenes, menuChatHandler, chatActiveSceneParam, hideChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
+let { chatPrevScenes } = require("%scripts/chat/chatHandler.nut")
 let { openChatRoom } = require("%scripts/chat/openChat.nut")
 let { joinThread, addRoom, isRoomSquad, isRoomClan, isNotUsersClanRoom } = require("%scripts/chat/chatRooms.nut")
-let { getRoomById, getThreadInfo } = require("%scripts/chat/chatStorage.nut")
-let { updateUserReputationData } = require("%scripts/user/usersReputation.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -114,7 +118,7 @@ let menu_chat_sizes = {}
 let last_send_messages = []
 let defaultChatRooms = ["general"]
 
-let sortChatUsers = @(a, b) a.name <=> b.name
+let sortChatUsers = @(a) a.name
 let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
 let MenuChatsPersistentData = persist("MenuChatsPersistentData", @() {roomsInited=false})
@@ -1210,7 +1214,7 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
             }
             roomData.users.append(utbl)
           }
-        roomData.users.sort(sortChatUsers)
+        roomData.users.sortby(sortChatUsers)
         this.updateUsersList()
       }
       if (isRoomClan(db.channel))
@@ -1254,7 +1258,7 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
           }
         if (!found) {
           roomData.users.append(this.createRoomUserInfo(db.nick))
-          roomData.users.sort(sortChatUsers)
+          roomData.users.sortby(sortChatUsers)
           if (isRoomSquad(roomData.id))
             this.onSquadListMember(db.nick, true)
 
@@ -1290,9 +1294,6 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
     if (startsWith(taskId, "join_#")) {
       let roomId = taskId.slice(5)
       if (g_chat.isSystemChatRoom(roomId))
-        return
-
-      if (isRoomClan(roomId) && !hasFeature("Clans"))
         return
 
       local room = getRoomById(roomId)
@@ -2044,11 +2045,6 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
   function inviteToSquadRoom(playerName, delayed = false) {
     if (!gchat_is_connected())
       return false
-
-    if (!hasFeature("Squad")) {
-      this.addRoomMsg(this.curRoom.id, "", loc("msgbox/notAvailbleYet"))
-      return false
-    }
 
     if (!g_squad_manager.isInSquad())
       return false
@@ -2885,7 +2881,7 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
   }
 
   function onEventChatSwitchObjectIfVisible(params) {
-    if (!lastChatSceneShow.get() || (isPlatformSony && is_in_loading_screen()))
+    if (!lastChatSceneShow.get() || (isSony && is_in_loading_screen()))
       return
     this.switchScene(params.obj, true)
   }

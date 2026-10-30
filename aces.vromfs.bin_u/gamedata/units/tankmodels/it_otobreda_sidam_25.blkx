@@ -1825,7 +1825,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2098,7 +2098,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2349,7 +2349,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
         "emitter": "bone_gun_barrel_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2598,7 +2598,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_Oerlikon_KBA_user_cannon.blk",
         "emitter": "bone_gun_barrel_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2852,7 +2852,7 @@
   "weapon_presets": {
     "preset": {
       "name": "it_otobreda_sidam_25_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_otobreda_sidam_25_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/it_otobreda_sidam_25_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3870,12 +3870,12 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/it_tv_tracker_3jb10.blk",
+              "blk": "gamedata/sensors/it_tv_tracker_3jb10.blk",
               "turretIndex": 0,
               "dmPart": "optic_gun_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }
@@ -3939,12 +3939,36 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/it_tv_tracker_3jb10.blk",
+      "blk": "gamedata/sensors/it_tv_tracker_3jb10.blk",
       "turretIndex": 0,
       "dmPart": "optic_gun_dm"
     }
   },
   "antiAirComplexMenu": {
     "available": false
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.827,
+      1.772,
+      0.9639
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

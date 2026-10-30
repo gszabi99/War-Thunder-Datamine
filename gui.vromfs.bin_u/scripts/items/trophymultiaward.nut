@@ -1,17 +1,16 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitInfoRoles.nut" import getRoleText
+from "%scripts/unit/unitClassType.nut" import processUnitTypeArray
 from "dagor.random" import rnd
 from "%sqstd/underscore.nut" import isDataBlock
 from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-let { Cost } = require("%scripts/money.nut")
 let { isIPoint2 } = u
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
 class TrophyMultiAward {
   blk = null
@@ -299,7 +298,7 @@ class TrophyMultiAward {
     if (!list.len())
       list = this.getSpareListFromOldUserlogFormat(spareBlk)
 
-    list.sort(function(a, b) { return a.spare > b.spare ? 1 : (a.spare < b.spare ? -1 : 0) })
+    list.sortby(@(a) a.spare)
     foreach (data in list)
       resList.append(DataBlockAdapter(data))
   }

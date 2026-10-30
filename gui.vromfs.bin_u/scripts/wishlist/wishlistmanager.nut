@@ -1,9 +1,8 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent
 from "chard" import getWishList, getMaxWishListSize, charSendBlk
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
 
 local wishlist = null
 
@@ -53,11 +52,11 @@ function requestRemoveFromWishlist(unitName) {
 
 addListenersWithoutEnv({ProfileUpdated = @(_p) invalidateWishList()}, CONFIG_VALIDATION)
 
-return {
+return freeze({
   hasInWishlist
   isWishlistFull
   canAddUnitToWishlist
   requestAddToWishlist
   requestRemoveFromWishlist
   getCurrentWishListSize
-}
+})

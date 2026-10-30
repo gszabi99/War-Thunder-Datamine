@@ -1,3 +1,5 @@
+import "%scripts/unlocks/unlockUnitListWnd.nut" as openUnlockUnitListWnd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_library.nut" import *
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
@@ -5,19 +7,17 @@ from "%sqStdLibs/helpers/u.nut" import isString, isEmpty
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getUnlockNameText
-from "%scripts/unlocks/unlocksViewModule.nut" import doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription, fillUnlockImage, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockManualOpenButton, updateLockStatus, updateUnseenIcon, buildUnlockDesc, fillUnlockConditions, fillUnlockStages
+from "%scripts/unlocks/unlocksViewModule.nut" import doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription, fillUnlockImage, fillReward, fillUnlockTitle, fillUnlockPurchaseButton
+  , fillUnlockManualOpenButton, updateLockStatus, updateUnseenIcon, buildUnlockDesc, fillUnlockConditions, fillUnlockStages
 from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer
 from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, findUnusableUnitForManualUnlock
 from "%scripts/unlocks/unlocksAction.nut" import openUnlockManually, buyUnlock
 from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
 from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
-from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/items/trophyRewardList.nut" import openUnlockPrizesList
 from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
-from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%scripts/unit/unitInfo.nut" import getUnitName
 
-let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 class AwardsListWnd (BaseGuiHandlerWT) {
@@ -103,8 +103,7 @@ class AwardsListWnd (BaseGuiHandlerWT) {
   }
 
   function showUnlockPrizes(obj) {
-    let trophy = findItemById(obj.trophyId)
-    openTrophyRewardsList({ trophy })
+    openUnlockPrizesList(obj.trophyId)
   }
 
   function showUnlockUnits(obj) {
@@ -194,6 +193,6 @@ function openAwardsListWnd(titleText, unlocksList) {
   handlersManager.loadHandler(AwardsListWnd, { titleText, unlocksList })
 }
 
-return {
+return freeze({
   openAwardsListWnd
-}
+})

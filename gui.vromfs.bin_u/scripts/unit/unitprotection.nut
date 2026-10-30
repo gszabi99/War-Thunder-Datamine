@@ -1,13 +1,12 @@
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/unit/statCardInfo.nut" import getStatCardInfo
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "blkGetters" import get_unittags_blk
 from "%scripts/dagui_library.nut" import *
-
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let protectionTypesByUnitClass = {
   type_light_tank = "bullet_proof_lite"
@@ -137,6 +136,6 @@ addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_) clearCaches()
 })
 
-return {
+return freeze({
   getUnitProtectionMarkup
-}
+})

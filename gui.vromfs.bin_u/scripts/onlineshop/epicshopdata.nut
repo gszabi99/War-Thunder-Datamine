@@ -1,25 +1,25 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "statsd" as statsd
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import epic_is_running, epic_update_purchases_on_auth, epic_get_shop_item_async, epic_get_shop_items_async
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 const LOG_PREFIX = "[EpicStore] "
 let logS = log_with_prefix(LOG_PREFIX)
 
 let canUseIngameShop = epic_is_running
 
-let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null)
+let shopItemsQueryResult = Watched(null)
 let isLoadingInProgress = Watched(false)
 let isInitedOnce = Watched(false)
 
@@ -152,7 +152,7 @@ eventbus_subscribe("epicShopItemPurchasedCallback", @(res) updateSpecificItemInf
 eventbus_subscribe("epicShopItemCallback", @(res) onUpdateItemCb(res))
 eventbus_subscribe("epicShopItemsCallback", @(res) shopItemsQueryResult.set(res))
 
-return {
+return freeze({
   canUseIngameShop
   requestData
   haveDiscount
@@ -161,4 +161,4 @@ return {
   catalog = epicCatalog
   isLoadingInProgress
   needEntStoreDiscountIcon = true
-}
+})

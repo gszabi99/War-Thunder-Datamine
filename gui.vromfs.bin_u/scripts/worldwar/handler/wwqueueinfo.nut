@@ -1,17 +1,15 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/worldWar/worldWarState.nut" import getBattleById
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive, getActiveQueueWithType
+from "%scripts/queue/queueInfo.nut" import updateQueueInfoByType
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueType.nut" import g_queue_type
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
-let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
-let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
 let WwQueueInfo = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

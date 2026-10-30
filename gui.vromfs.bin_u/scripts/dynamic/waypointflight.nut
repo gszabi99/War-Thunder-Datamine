@@ -1,3 +1,4 @@
+from "%scripts/dynamic/misGenFuncTools.nut" import slidesReplace
 from "dagor.math" import Point3
 from "dagor.debug" import debug_dump_stack
 from "dynamicMission" import mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt, mgCreateStartPoint, mgCreateStartLookAt, mgSetupArmada
@@ -5,8 +6,6 @@ from "dynamicMission" import mgBeginMission, mgAcceptMission, mgFullLogs, mgSetI
   , mgSetDistToAction, gmMarkCutsceneArmadaLooksLike, mgGetMissionSector, mgGetLevelName, mgEnsurePointsInMap, mgSetMinMaxAircrafts
 from "blkGetters" import get_warpoints_blk
 from "math" import clamp
-
-let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 local waypointFlightWpHeightNext = 0
 local waypointFlightWpHeight = 0
@@ -20,7 +19,7 @@ function genWayPointFlightMission(isFreeFlight) {
   if (!isFreeFlight)
     return
 
-  mgBeginMission("gameData/missions/dynamic_campaign/objectives/free_flight_preset01.blk")
+  mgBeginMission("gamedata/missions/dynamic_campaign/objectives/free_flight_preset01.blk")
   let startHeight = rndRange(1500, 3000)
   let startPos = mgCreateStartPoint(startHeight)
 
@@ -107,6 +106,6 @@ function genWayPointFlightMission(isFreeFlight) {
   mgAcceptMission()
 }
 
-return {
+return freeze({
   genWayPointFlightMission
-}
+})

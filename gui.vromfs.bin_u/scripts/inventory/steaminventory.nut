@@ -61,9 +61,9 @@ function grantPromoItems(cb = null) {
   grant_promo_items()
 }
 
-return {
+return freeze({
   requestAllItems
   addPromoItem
   generateItems
   grantPromoItems
-}
+})

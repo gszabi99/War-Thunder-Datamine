@@ -1,9 +1,8 @@
+import "%scripts/wndLib/emptySceneWithDarg.nut" as emptySceneWithDarg
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 
 eventbus_subscribe("hideMainMenuUi", function(params) {
   if (!isInMenu.get())

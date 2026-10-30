@@ -19,23 +19,21 @@ function createRwrGrid(gridStyle) {
   return {
     pos = const [pw(50), ph(50)],
     size = FLEX,
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS,
-        color = color,
-        lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
-        fillColor = 0,
-        commands = [
-          [VECTOR_ELLIPSE,  0,  0,  35,  35],
-          [VECTOR_ELLIPSE,  0,  0,  70,  70],
-          [VECTOR_LINE,     10 * ecmHalfSectorSin,  10 * ecmHalfSectorCos,  80 * ecmHalfSectorSin,  80 * ecmHalfSectorCos],
-          [VECTOR_LINE,     10 * ecmHalfSectorSin, -10 * ecmHalfSectorCos,  80 * ecmHalfSectorSin, -80 * ecmHalfSectorCos],
-          [VECTOR_LINE,    -10 * ecmHalfSectorSin,  10 * ecmHalfSectorCos, -80 * ecmHalfSectorSin,  80 * ecmHalfSectorCos],
-          [VECTOR_LINE,    -10 * ecmHalfSectorSin, -10 * ecmHalfSectorCos, -80 * ecmHalfSectorSin, -80 * ecmHalfSectorCos]
-        ]
-      }
-    ]
+    children = {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS,
+      color = color,
+      lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+      fillColor = 0,
+      commands = [
+        [VECTOR_ELLIPSE,  0,  0,  35,  35],
+        [VECTOR_ELLIPSE,  0,  0,  70,  70],
+        [VECTOR_LINE,     10 * ecmHalfSectorSin,  10 * ecmHalfSectorCos,  80 * ecmHalfSectorSin,  80 * ecmHalfSectorCos],
+        [VECTOR_LINE,     10 * ecmHalfSectorSin, -10 * ecmHalfSectorCos,  80 * ecmHalfSectorSin, -80 * ecmHalfSectorCos],
+        [VECTOR_LINE,    -10 * ecmHalfSectorSin,  10 * ecmHalfSectorCos, -80 * ecmHalfSectorSin,  80 * ecmHalfSectorCos],
+        [VECTOR_LINE,    -10 * ecmHalfSectorSin, -10 * ecmHalfSectorCos, -80 * ecmHalfSectorSin, -80 * ecmHalfSectorCos]
+      ]
+    }
   }
 }
 
@@ -258,18 +256,16 @@ function scope(scale, style) {
       {
         pos = const [pw(-20), ph(145)],
         size = FLEX,
-        children = [
-          {
-            size = FLEX
-            rendObj = ROBJ_VECTOR_CANVAS,
-            color = color,
-            lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
-            fillColor = color,
-            commands = [
-              [VECTOR_POLY,  -2,  0,  0,  5, 2, 0]
-            ]
-          }
-        ]
+        children = {
+          size = FLEX
+          rendObj = ROBJ_VECTOR_CANVAS,
+          color = color,
+          lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
+          fillColor = color,
+          commands = [
+            [VECTOR_POLY,  -2,  0,  0,  5, 2, 0]
+          ]
+        }
       },
       styleText.__merge({
         pos = const [pw(-10), ph(145)],
@@ -283,18 +279,16 @@ function scope(scale, style) {
       {
         pos = const [pw(10), ph(145)],
         size = FLEX,
-        children = [
-          {
-            size = FLEX
-            rendObj = ROBJ_VECTOR_CANVAS,
-            color = color,
-            lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
-            fillColor = color,
-            commands = [
-              [VECTOR_POLY,  -2,  5,  0,  0, 2, 5]
-            ]
-          }
-        ]
+        children = {
+          size = FLEX
+          rendObj = ROBJ_VECTOR_CANVAS,
+          color = color,
+          lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
+          fillColor = color,
+          commands = [
+            [VECTOR_POLY,  -2,  5,  0,  0, 2, 5]
+          ]
+        }
       },
       styleText.__merge({
         pos = const [pw(35), ph(145)]

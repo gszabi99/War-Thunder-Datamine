@@ -1,9 +1,8 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
 from "math" import ceil
 from "worldwar" import wwGetOperationTimeMillisec, wwGetSpeedupFactor, wwGetArtilleryStrikes
 from "%scripts/dagui_library.nut" import *
-
-let time = require("%scripts/time.nut")
 
 let WwArtilleryAmmo = class {
   hasArtilleryStrike = false
@@ -108,4 +107,4 @@ let WwArtilleryAmmo = class {
     this.strikeIntervalSec = (params?.strikeIntervalSec ?? 0)
   }
 }
-return { WwArtilleryAmmo }
+return freeze({ WwArtilleryAmmo })

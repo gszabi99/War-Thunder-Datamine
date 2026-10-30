@@ -1,3 +1,17 @@
+import "%scripts/time.nut" as time
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText, isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat, getEntitlementAmount
+  , getFirstPurchaseAdditionalAmount, getEntitlementPrice
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_child_by_value
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsInfo.nut" import bundlesShopInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "steam" import steam_is_overlay_active
@@ -6,20 +20,7 @@ from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_co
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText, isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat, getEntitlementAmount, getFirstPurchaseAdditionalAmount, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) 
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")

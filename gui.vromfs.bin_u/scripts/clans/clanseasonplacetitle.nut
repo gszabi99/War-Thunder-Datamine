@@ -1,3 +1,4 @@
+from "%scripts/user/clanName.nut" import getMyClanTag, getMyClanName
 from "string" import split_by_chars
 from "dagor.time" import unixtime_to_utc_timetbl
 from "%sqstd/string.nut" import startsWith, slice
@@ -7,7 +8,6 @@ from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
 from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 
 function getUpdatedClanInfo(unlockBlk) {
   local isMyClan = is_in_clan() && (unlockBlk?.clanId ?? "").tostring() == clan_get_my_clan_id()
@@ -179,7 +179,7 @@ function createSeasonRewardFromUnlockBlk(unlockBlk) {
   )
 }
 
-return {
+return freeze({
   createSeasonRewardFromClanReward
   createSeasonRewardFromUnlockBlk
-}
+})

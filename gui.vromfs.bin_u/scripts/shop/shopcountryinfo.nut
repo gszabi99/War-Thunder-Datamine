@@ -1,11 +1,9 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
 from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 function isCountryHaveUnitType(country, esUnitType) {
   if (esUnitType == ES_UNIT_TYPE_INVALID)
@@ -56,7 +54,7 @@ function getShopCountry(airName) {
 
 registerRespondent("get_units_count_at_rank", get_units_count_at_rank)
 
-return {
+return freeze({
   isCountryHaveUnitType
   getMaxUnitsRank
   isUnitAvailableForRank
@@ -64,4 +62,4 @@ return {
   get_units_count_at_rank
   get_units_list
   getShopCountry
-}
+})

@@ -1,17 +1,17 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/markers/markerTooltipUtils.nut" import getSortedDiscountUnits, prepareForTooltip, createMoreText
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/discounts/discountsState.nut" import haveAnyUnitDiscount, getUnitsDiscounts
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getSortedDiscountUnits, prepareForTooltip, createMoreText } = require("%scripts/markers/markerTooltipUtils.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { haveAnyUnitDiscount, getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function getMaxDiscount(countryId) {
   return getUnitsDiscounts(countryId).reduce(function(res, val) {
@@ -97,4 +97,4 @@ addTooltipTypes({
   }
 })
 
-return {}
+return freeze({})

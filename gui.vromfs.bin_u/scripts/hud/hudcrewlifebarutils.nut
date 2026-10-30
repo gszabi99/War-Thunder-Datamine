@@ -59,7 +59,7 @@ function setCrewLostText(nest, lostVal, leftPos, needAddCount = false) {
   })
 }
 
-return {
+return freeze({
   updateCrewLifebar
   setCrewLostText
-}
+})

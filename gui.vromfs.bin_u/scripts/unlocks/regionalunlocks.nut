@@ -1,17 +1,16 @@
 import "userstat" as userstat
 import "DataBlock" as DataBlock
+from "%scripts/utils/datablockConverter.nut" import dataToBlk
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks
+from "%scripts/userstat/userstat.nut" import userstatStats, refreshUserstatStats, toPlainData
+from "%scripts/langUtils/language.nut" import curLangShortName
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/time.nut" import getTimestampFromStringUtc
 from "app" import APP_ID
 from "chard" import get_charserver_time_sec
 from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
-
-let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
-let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
-let { curLangShortName } = require("%scripts/langUtils/language.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 
 let allRegionalUnlocks = Computed(@() activeUnlocks.get()
   .filter(@(u) u?.meta.langLimits != null))
@@ -61,7 +60,7 @@ let regionalPromos = Computed(@() allRegionalUnlocks.get()
       && (closestExpirationTime.get() <= unlockNameToEndTimestamp.get()[u.name])))
   .filter(@(u) u.meta.langLimits.split(";").contains(curLangShortName.get()))
   .filter(@(u) (userstatStats.get().stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 0)
-  .map(@(u, id) u.meta.popup.__merge({ id })).values().sort(@(a, b) a.id <=> b.id))
+  .map(@(u, id) u.meta.popup.__merge({ id })).values().sortby(@(a) a.id))
 
 let acceptedUnlocks = Computed(@() allRegionalUnlocks.get()
   .filter(@(u) (userstatStats.get().stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 1))
@@ -73,7 +72,7 @@ let acceptedUnlocksBlk = Computed(@() acceptedUnlocks.get()
     let mode = DataBlock()
     mode.loadFromText(unlock.meta.hostUnlockMode, unlock.meta.hostUnlockMode.len())
 
-    let unlockTable = unlock.meta.unlockView.__merge({
+    let unlockTable = toPlainData(unlock.meta.unlockView).__merge({
       id = unlock.name
       isRegional = true
       mode
@@ -127,7 +126,7 @@ function acceptRegionalUnlock(unlockName, callback) {
 }
 
 
-return {
+return freeze({
   regionalUnlocks = acceptedUnlocksBlk
   getRegionalUnlockProgress
   getRegionalUnlockTypeById
@@ -137,4 +136,4 @@ return {
   acceptRegionalUnlock
   regionalPromos
   unclaimedUnlocks
-}
+})

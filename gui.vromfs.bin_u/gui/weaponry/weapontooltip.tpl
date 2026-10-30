@@ -1,21 +1,16 @@
 tdiv {
   flow:t='vertical'
 
-  <<#topReqBlock>>
-  weaponTooltipBlock {
-    min-width:t='1@bulletTooltipCardWidthNarrow'
-    max-width:t='1@bulletTooltipCardWidth'
-    margin-bottom:t='0.5*@bulletTooltipPadding'
-    padding:t='@bulletTooltipPadding, 0.5*@bulletTooltipPadding'
-    tooltipDesc {
-      text:t='<<topReqBlock>>'
-    }
-  }
-  <</topReqBlock>>
+  include "%gui/weaponry/weaponTooltipMrankLock.tpl"
 
   weaponTooltipBlock {
+    <<#topReqBlock>>
+    width:t='1@bulletTooltipCardWidth'
+    <</topReqBlock>>
+    <<^topReqBlock>>
     min-width:t='1@bulletTooltipCardWidthNarrow'
     max-width:t='1@bulletTooltipCardWidth'
+    <</topReqBlock>>
     padding:t='@bulletTooltipPadding, 0.5*@bulletTooltipPadding'
     flow:t='vertical'
 

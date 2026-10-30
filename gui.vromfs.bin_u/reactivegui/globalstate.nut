@@ -1,7 +1,7 @@
 import "%rGui/interopGen.nut" as interopGen
-from "%rGui/globals/ui_library.nut" import *
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let isInFlight = mkWatched(persist, "isInFlight", false)
+let isInFlight = hardPersistWatched("rGui.globalState.isInFlight", false)
 
 let state = { isInFlight }
 
@@ -11,4 +11,4 @@ interopGen({
 })
 
 
-return state
+return freeze(state)

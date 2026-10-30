@@ -1,25 +1,22 @@
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
+import "%scripts/clans/showClanPageModal.nut" as showClanPageModal
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/chat/chatStates.nut" import isChatEnableWithPlayer, hasMenuChat
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInContacts
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/clans/clanActions.nut" import approvePlayerRequest, rejectPlayerRequest, blacklistAction
+from "%scripts/clans/clanModalHelpers.nut" import requestOpenComplainWnd
+from "%scripts/clans/clanInfo.nut" import getMyClanRights
+from "%scripts/clans/clanRequests.nut" import requestMembership
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/chat/openChat.nut" import openChatPrivate
 from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_natives.nut" import ps4_is_chat_enabled, clan_get_admin_editor_mode, clan_get_requested_clan_id, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { isChatEnableWithPlayer, hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { approvePlayerRequest, rejectPlayerRequest, blacklistAction } = require("%scripts/clans/clanActions.nut")
-let { requestOpenComplainWnd } = require("%scripts/clans/clanModalHelpers.nut")
-let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
-let { requestMembership } = require("%scripts/clans/clanRequests.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { openChatPrivate } = require("%scripts/chat/openChat.nut")
-
 let getClanActions = function(clanId) {
-  if (!hasFeature("Clans"))
-    return []
-
   let myClanId = clan_get_my_clan_id()
 
   return [
@@ -78,7 +75,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
         }
       }
       {
-        text = loc("mainmenu/btnProfile")
+        text = locByVendor("mainmenu/btnProfile")
         action = @() gui_modal_userCard({ uid = playerUid })
       }
       {
@@ -100,7 +97,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
   })
 }
 
-return {
+return freeze({
   getClanActions = getClanActions
   retrieveRequestActions = retrieveRequestActions
-}
+})

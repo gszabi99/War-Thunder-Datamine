@@ -1,14 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/money.nut" import Cost
+from "%scripts/tasker.nut" import addTask
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/crew/crewPointsText.nut" import getCrewSpTextIfNotZero
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import shop_purchase_skillpoints
-
-let { Cost } = require("%scripts/money.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 function buyPackImpl(crew, packsList, onSuccess) {
   let pack = packsList.remove(0)
@@ -50,6 +49,6 @@ function buySkillPointsPack(crew, packsList, onSuccess = null, onCancel = @() nu
   )
 }
 
-return {
+return freeze({
   buySkillPointsPack
-}
+})

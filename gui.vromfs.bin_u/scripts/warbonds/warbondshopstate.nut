@@ -5,7 +5,7 @@ let getPurchaseLimitWb = @(warbond) warbonds_get_purchase_limit(warbond.id, warb
 
 let leftSpecialTasksBoughtCount = Watched(-1)
 
-return {
+return freeze({
   leftSpecialTasksBoughtCount
   getPurchaseLimitWb
-}
+})

@@ -1,4 +1,18 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitWeaponryInfo.nut" import getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion
+from "%scripts/options/optionsManager.nut" import isTripleColorSmokeAvailable
+from "%scripts/customization/skins.nut" import getSkinsOption
+from "%scripts/options/optionsExtNames.nut" import USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES, USEROPT_DEPTHCHARGE_ACTIVATION_TIME
+  , USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES, USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE
+  , USEROPT_SKIN, USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_INFANTRY_SKIN
+  , USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN
+from "%scripts/customization/bannedSkins.nut" import isSkinBanned
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/customization/infantryCamouflageStorage.nut" import getInfantrySkinOnLocation, getLocationInfantrySkins, getTierByMrank, hasSkinsForLocation
+from "%scripts/customization/infantryCamouflageUtils.nut" import convertLevelNameToLocation, getInfantrySkinTooltip, getCamoNameById
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
@@ -8,18 +22,7 @@ from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
 from "%scripts/options/optionsCtors.nut" import create_option_list
 
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
-let { getSkinsOption } = require("%scripts/customization/skins.nut")
-let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES, USEROPT_DEPTHCHARGE_ACTIVATION_TIME, USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES, USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN, USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_INFANTRY_SKIN, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
-let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
-let { getInfantrySkinOnLocation, getLocationInfantrySkins, getTierByMrank, hasSkinsForLocation } = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertLevelNameToLocation, getInfantrySkinTooltip, getCamoNameById } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
 
 let options = {
@@ -143,7 +146,7 @@ options.template <- {
 
 options.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable, null, "id")
-  this.types.sort(@(a, b) a.sortIdx <=> b.sortIdx)
+  this.types.sortby(@(a) a.sortIdx)
 }
 
 local idx = -1

@@ -1,14 +1,14 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExtNames.nut" import USEROPT_CLUSTERS
+from "%scripts/options/optionsExt.nut" import get_option
 from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { USEROPT_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
 
 const SELECTOR_OBJ = "selector_obj"
 const ACTION_BTN = "action_btn"
@@ -135,6 +135,6 @@ local popupOptList = class (BaseGuiHandlerWT) {
 
 register_gui_handler("popupOptList", popupOptList)
 
-return {
+return freeze({
   addPopupOptList = @(params = {}) handlersManager.loadHandler(popupOptList, params)
-}
+})

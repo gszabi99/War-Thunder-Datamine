@@ -1,14 +1,13 @@
+from "%scripts/slotbar/slotbarState.nut" import getSelSlotsData
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle, getCrewByAir
+from "%scripts/weaponry/ammoInfo.nut" import getAmmoCost, getUnitNotReadyAmmoList
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/unit/unitWeaponryInfo.nut" import isShipWithoutPurshasedTorpedoes
 from "%scripts/dagui_natives.nut" import wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING
-
-let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
-let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { getAmmoCost, getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { isShipWithoutPurshasedTorpedoes } = require("%scripts/unit/unitWeaponryInfo.nut")
 
 
 
@@ -116,6 +115,6 @@ function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   return res
 }
 
-return {
+return freeze({
   getBrokenAirsInfo
-}
+})

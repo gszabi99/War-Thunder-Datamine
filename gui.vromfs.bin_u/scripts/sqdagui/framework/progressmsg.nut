@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/callback.nut" import Callback
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "dagor.localize" import loc
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { scene_msg_box, destroyMsgBox } = require("msgBox.nut")
 
 let msgList = {}
@@ -84,7 +84,7 @@ class Msg {
   }
 }
 
-return {
+return freeze({
   function create(uid, config) {
     if (uid in msgList)
       msgList[uid].increment(config)
@@ -104,4 +104,4 @@ return {
 
   setButtonsDelayDefault   = function(value) { buttonsDelayDefault = value }
   setTextLocIdDefault      = function(value) { textLocIdDefault = value }
-}
+})

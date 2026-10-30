@@ -1,3 +1,23 @@
+from "%scripts/options/safeAreaMenu.nut" import is_low_width_screen
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksConditions.nut" import isBitModeType, isNestedUnlockMode, getMainConditionListPrefix, getHeaderCondition
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig, getLocForBitValues, getFullUnlockDesc, getUnlockNameText, getUnlockMainCondDescByCfg
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc, getTooltipMarkupByModeType, getUnlockRewardsText, getUnlocksListView
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes, getTooltipType
+from "%scripts/money.nut" import Cost
+from "%scripts/unlocks/battleTasksState.nut" import getDifficultyTypeByTask, getBattleTaskById, getBattleTaskNameById, isBattleTask
+from "%scripts/unlocks/battleTasks.nut" import getProposedTasks, getGenerationIdInt, isBattleTaskDone, getShowAllTasks, canPlayerInteractWithDifficulty, canGetBattleTaskReward, getTaskStatus
+  , isBattleTaskActive, getTotalActiveTasksNum
+from "%scripts/time.nut" import TIME_MINUTE_IN_SECONDS
+from "%scripts/unlocks/battleTaskDifficulty.nut" import getDifficultyTypeByName
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks
+from "%scripts/unlocks/userstatUnlocksView.nut" import getUnlockReward
+from "%scripts/warbonds/warbondAwardView.nut" import fillWarbondAwardDesc
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond, getCurrentWarbond
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%sqstd/math.nut" import is_bit_set
 from "%globalScripts/unlockConsts.nut" import *
@@ -5,28 +25,10 @@ from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isBitModeType, isNestedUnlockMode, getMainConditionListPrefix, getHeaderCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { buildConditionsConfig, getLocForBitValues, getFullUnlockDesc, getUnlockNameText, getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc, getTooltipMarkupByModeType, getUnlockRewardsText, getUnlocksListView } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getDifficultyTypeByTask, getBattleTaskById, getBattleTaskNameById, isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { getProposedTasks, getGenerationIdInt, isBattleTaskDone, getShowAllTasks, canPlayerInteractWithDifficulty, canGetBattleTaskReward, getTaskStatus, isBattleTaskActive, getTotalActiveTasksNum } = require("%scripts/unlocks/battleTasks.nut")
-let { TIME_MINUTE_IN_SECONDS } = require("%scripts/time.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { getDifficultyTypeByName, EASY_TASK, MEDIUM_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { getUnlockReward } = require("%scripts/unlocks/userstatUnlocksView.nut")
-let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
+let { EASY_TASK, MEDIUM_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
-let { findWarbond, getCurrentWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 
 
 function mkUnlockConfigByBattleTask(task) {
@@ -397,7 +399,7 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   setBattleTasksUpdateTimer
   getBattleTaskDifficultyImage
   getBattleTaskView
@@ -405,4 +407,4 @@ return {
   getBattleTaskUpdateDesc
   mkUnlockConfigByBattleTask
   getBattleTaskDesc
-}
+})

@@ -47,9 +47,9 @@ function ilsJ15t(width, height) {
   })
 }
 
-return {
+return freeze({
   ilsJ10a,
   ilsJ10c,
   ilsJf17,
   ilsJ15t
-}
+})

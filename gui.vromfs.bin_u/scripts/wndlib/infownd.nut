@@ -1,13 +1,12 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
@@ -145,4 +144,4 @@ subscriptions.addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return { InfoWnd }
+return freeze({ InfoWnd })

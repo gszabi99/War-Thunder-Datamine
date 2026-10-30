@@ -84,6 +84,6 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-return {
+return freeze({
   settings
-}
+})

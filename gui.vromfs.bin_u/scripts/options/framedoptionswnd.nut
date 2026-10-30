@@ -1,8 +1,8 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/genericOptions.nut" import GenericOptions
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { GenericOptions } = require("%scripts/genericOptions.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let FramedOptionsWnd = class (GenericOptions) {
   wndType = handlerType.MODAL
@@ -58,4 +58,4 @@ let FramedOptionsWnd = class (GenericOptions) {
 }
 register_gui_handler("FramedOptionsWnd", FramedOptionsWnd)
 
-return { FramedOptionsWnd }
+return freeze({ FramedOptionsWnd })

@@ -12,12 +12,31 @@
   ],
   "entity": [
     {
+      "_template": "level_environment",
+      "level__latitude": -2.0,
+      "level__longtitude": 30.0,
+      "level__day": 10,
+      "level__month": 9,
+      "level__year": 2023,
+      "level__weatherSeed": -1,
+      "level__cloudsHoleEnabled": true,
+      "level__enableAnimatedDay": false,
+      "level__weatherChoice:object": {
+        "hvg_weather_hazy_b:object": {
+          "weight": 1.0,
+          "level__timeVec:array": {
+            "level__timeVec": 10.0
+          }
+        }
+      }
+    },
+    {
       "_template": "volfog_nbs",
       "volfog_nbs__rootGraph": "fog_hvg_tutorial_training_ground.json"
     },
     {
       "_template": "door_mult_ent_generator",
-      "ri_extra_gen__blk": "gameData/modern_conflict_doors.blk"
+      "ri_extra_gen__blk": "gamedata/modern_conflict_doors.blk"
     },
     {
       "_template": "destroyable_wall_config"

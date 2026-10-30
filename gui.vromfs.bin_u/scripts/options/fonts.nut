@@ -1,67 +1,29 @@
-import "%sqStdLibs/helpers/enums.nut" as enums
-from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+import "%appGlobals/style/fontIds.nut" as fontIds
+from "%appGlobals/options/screenInfo.nut" import getScreenHeightForFonts
+from "%appGlobals/options/fontTypes.nut" import FONTS_SAVE_PATH_CONFIG, fontTypes, getAvailableFontBySaveId, getAvailableFonts, canChange, getDefault, getPreLoginFontType
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "math" import round
 from "vr" import is_stereo_mode
 from "fonts" import setFontDefHt, getFontDefHt, getFontInitialHt
 from "eventbus" import eventbus_subscribe
-from "%scripts/dagui_natives.nut" import is_steam_big_picture, display_scale
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_VR = "fonts_css_vr"
-const FONTS_SAVE_PATH_CONFIG = "video/fonts"
 
 let getFontsSavePath = @() is_stereo_mode() ? FONTS_SAVE_PATH_VR : FONTS_SAVE_PATH
-
-enum FONT_SAVE_ID {
-  TINY = "tiny"
-  SMALL = "small"
-  COMPACT = "compact"
-  MEDIUM = "medium"
-  LARGE = "big"
-  HUGE = "huge"
-
-  
-  PX = "px"
-  SCALE = "scale"
-
-  
-  PX_COMPATIBILITY = "%gui/const/const_pxFonts.css"
-  SCALE_COMPATIBILITY = "%gui/const/const_fonts.css"
-}
-
-enum FONT_SIZE_ORDER {
-  PX    
-  TINY
-  SMALL
-  COMPACT
-  MEDIUM
-  LARGE
-  SCALE  
-  HUGE
-}
-
-let getFontsSh = screenInfo.getScreenHeightForFonts
 
 local appliedFontsSh = 0
 local appliedFontsScale = 0
 
 function update_font_heights(font) {
-  let fontsSh = getFontsSh(screen_width(), screen_height())
+  let fontsSh = getScreenHeightForFonts(screen_width(), screen_height())
   if (appliedFontsSh == fontsSh && appliedFontsScale == font.sizeMultiplier)
     return font;
   log("update_font_heights: screenHt={0} fontSzMul={1}".subst(fontsSh, font.sizeMultiplier))
-  foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap()) {
+  foreach (prefixId in fontIds) {
     setFontDefHt(prefixId, round(getFontInitialHt(prefixId) * font.sizeMultiplier).tointeger())
     log("  font <{0}> sz={1}".subst(prefixId, getFontDefHt(prefixId)))
   }
@@ -70,191 +32,38 @@ function update_font_heights(font) {
   return font;
 }
 
-let g_font = {
-  types = []
-  cache = { bySaveId = {} }
-}
-
-g_font.template <- {
-  id = ""  
-  fontGenId = ""
-  saveId = ""
-  saveIdCompatibility = null 
-  isScaleable = true
-  sizeMultiplier = 1.0
-  sizeOrder = 0 
-
-  isAvailable = @(_sWidth, _sHeight) true
-  getFontSizePx = @(sWidth, sHeight) round(this.sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
-  getPixelToPixelFontSizeOutdatedPx = @(_sWidth, _sHeight) 800 
-  isLowWidthScreen = function() {
-    let sWidth = screen_width()
-    let sHeight = screen_height()
-    let mainScreenSize = screenInfo.getMainScreenSizePx(sWidth, sHeight)
-    let sf = this.getFontSizePx(sWidth, sHeight)
-    return 10.0 / 16 * mainScreenSize[0] / sf < 0.99
-  }
-
-  genCssString = function() {
-    let sWidth = screen_width()
-    let sHeight = screen_height()
-    let scrnTgt = this.getFontSizePx(sWidth, sHeight)
-    setScrnTgt(scrnTgt)
-    let config = {
-      set = this.fontGenId
-      scrnTgt
-      isWide = this.isLowWidthScreen() ? 0 : 1
-      pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
-    }
-    if (config.scrnTgt <= 0)
-      script_net_assert_once("Bad screenTgt", $"Bad screenTgt const at load fonts css /*configStr = {toString(config)}*/")
-    foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap())
-      config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{this.fontGenId}")
-    return handyman.renderCached("%gui/const/const_fonts_css.tpl", config)
-  }
-
+let optionTexts = {
   
   getOptionText = @() "".concat(
     loc($"fontSize/{this.id.tolower()}"),
     loc("ui/parentheses/space", { text = "{0}%".subst(round(100 * this.sizeMultiplier).tointeger()) }))
 
-  getFontExample = @() "small_text; font-pixht: {0}".subst(round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger())
+  getFontExampleHt = @() round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger()
+  getFontExample = @() "small_text; font-pixht: {0}".subst(this.getFontExampleHt())
 }
 
-enums.addTypes(g_font,
-{
-  TINY = {
-    saveId = FONT_SAVE_ID.TINY
-    sizeMultiplier = 0.5
-    sizeOrder = FONT_SIZE_ORDER.TINY
+foreach (font in fontTypes.types)
+  font.__update(optionTexts)
 
-    isAvailable = @(sWidth, sHeight) !isSmallScreen && (is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 800)
-  }
-
-  SMALL = {
-    saveId = FONT_SAVE_ID.SMALL
-    sizeMultiplier = 0.66667
-    sizeOrder = FONT_SIZE_ORDER.SMALL
-
-    isAvailable = @(sWidth, sHeight) !isSmallScreen && (is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 768)
-  }
-
-  COMPACT = {
-    saveId = FONT_SAVE_ID.COMPACT
-    sizeMultiplier = 0.75
-    sizeOrder = FONT_SIZE_ORDER.COMPACT
-
-    isAvailable = @(sWidth, sHeight) !isSmallScreen && (is_stereo_mode() || getFontsSh(sWidth, sHeight) >= 720)
-  }
-
-  MEDIUM = {
-    saveId = FONT_SAVE_ID.MEDIUM
-    sizeMultiplier = 0.83334
-    saveIdCompatibility = [FONT_SAVE_ID.PX]
-    sizeOrder = FONT_SIZE_ORDER.MEDIUM
-
-    isAvailable = @(sWidth, sHeight) !isSmallScreen && !is_stereo_mode() && getFontsSh(sWidth, sHeight) >= 720
-  }
-
-  LARGE = {
-    saveId = FONT_SAVE_ID.LARGE
-    sizeMultiplier = 1.0
-    sizeOrder = FONT_SIZE_ORDER.LARGE
-    saveIdCompatibility = [FONT_SAVE_ID.SCALE]
-    isAvailable = @(_sWidth, _sHeight) !isSmallScreen && !is_stereo_mode()
-  }
-
-  HUGE = {
-    saveId = FONT_SAVE_ID.HUGE
-    sizeMultiplier = 1.5
-    sizeOrder = FONT_SIZE_ORDER.HUGE
-
-    isAvailable = @(_sWidth, _sHeight) isSmallScreen && !is_stereo_mode()
-  }
-},
-null,
-"id")
-
-g_font.types.sort(@(a, b) a.sizeOrder <=> b.sizeOrder)
-
-function getAvailableFontBySaveId(saveId) {
-  let res = enums.getCachedType("saveId", saveId, g_font.cache.bySaveId, g_font, null)
-  if (res && res.isAvailable(screen_width(), screen_height()))
-    return res
-
-  foreach (font in g_font.types)
-    if (font.saveIdCompatibility
-      && isInArray(saveId, font.saveIdCompatibility)
-      && font.isAvailable(screen_width(), screen_height()))
-      return font
-
-  return null
-}
-
-g_font.getAvailableFonts <- function getAvailableFonts() {
-  let sWidth = screen_width()
-  let sHeight = screen_height()
-  return this.types.filter(@(f) f.isAvailable(sWidth, sHeight))
-}
-
-g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
+function getSmallestFont(sWidth, sHeight) {
   local res = null
-  foreach (font in this.types)
+  foreach (font in fontTypes.types)
     if (font.isAvailable(sWidth, sHeight) && (!res || font.sizeMultiplier < res.sizeMultiplier))
       res = font
   return res
 }
 
-g_font.getFixedFont <- function getFixedFont() { 
-  let availableFonts = this.getAvailableFonts()
-  return availableFonts.len() == 1 ? availableFonts[0] : null
-}
-
-function canChange() {
-  return g_font.getFixedFont() == null
-}
-
-function getDefault() {
-  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = g_font 
-  let fixedFont = getFixedFont()
-  if (fixedFont)
-    return fixedFont
-
-  if (is_stereo_mode())
-    return SMALL
-  if (isPlatformShieldTv() || isPlatformSony || isPlatformXbox || is_steam_big_picture())
-    return LARGE
-  if (isSmallScreen)
-    return HUGE
-  if (isPlatformSteamDeck)
-    return MEDIUM
-
-  let displayScale = display_scale()
-  let sWidth = screen_width()
-  let sHeight = screen_height()
-  if (displayScale <= 1.2 && COMPACT.isAvailable(sWidth, sHeight))
-    return COMPACT
-  if (displayScale <= 1.4 && MEDIUM.isAvailable(sWidth, sHeight))
-    return MEDIUM
-  return LARGE
-}
-
-g_font.getCurrent <- function getCurrent() {
+function getCurrentFontType() {
   if (!canChange())
     return update_font_heights(getDefault())
 
-  if (!isProfileReceived.get()) {
-    let fontSaveId = getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
-    return update_font_heights((fontSaveId && getAvailableFontBySaveId(fontSaveId))
-      || getDefault())
-  }
+  if (!isProfileReceived.get())
+    return update_font_heights(getPreLoginFontType())
 
   let fontSaveId = loadLocalAccountSettings(getFontsSavePath())
   let res = getAvailableFontBySaveId(fontSaveId)
   return update_font_heights(res || getDefault())
 }
-
-g_font.getFontsSavePath <- getFontsSavePath
 
 function saveFontToConfig(font) {
   if (getSystemConfigOption(FONTS_SAVE_PATH_CONFIG) != font.saveId)
@@ -262,7 +71,7 @@ function saveFontToConfig(font) {
 }
 
 
-g_font.setCurrent <- function setCurrent(font) {
+function setCurrentFontType(font) {
   if (!canChange())
     return false
 
@@ -278,17 +87,25 @@ g_font.setCurrent <- function setCurrent(font) {
 }
 
 
-g_font.validateSavedConfigFonts <- function validateSavedConfigFonts() {
+function validateSavedConfigFonts() {
   if (canChange())
-    saveFontToConfig(this.getCurrent())
+    saveFontToConfig(getCurrentFontType())
 }
 
 function resetAppliedFontsScale(_) {
   log("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
   appliedFontsSh = 0;
-  update_font_heights(g_font.getCurrent());
+  update_font_heights(getCurrentFontType())
 }
 
 eventbus_subscribe("reset_applied_fonts_scale", resetAppliedFontsScale)
 
-return g_font
+return freeze({
+  fontTypes
+  getAvailableFonts
+  getCurrentFontType
+  setCurrentFontType
+  getFontsSavePath
+  getSmallestFont
+  validateSavedConfigFonts
+})

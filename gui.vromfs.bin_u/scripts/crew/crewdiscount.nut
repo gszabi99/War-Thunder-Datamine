@@ -1,11 +1,11 @@
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/discounts/discountUtils.nut" import getDiscountByPath, generateDiscountInfo
 from "blkGetters" import get_warpoints_blk, get_price_blk
 from "%sqstd/datablock.nut" import eachBlock
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
 let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getDiscountByPath, generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
 
 function getCrewDiscountInfo(countryId = -1, idInCountry = -1) {
   if (countryId < 0 || idInCountry < 0)
@@ -69,8 +69,8 @@ function getCrewDiscountsTooltipByInfo(discountInfo, showBuyPoints = true) {
   return generateDiscountInfo(table, format(loc("discount/specialization/tooltip"), maxDiscount)).discountTooltip
 }
 
-return {
+return freeze({
   getCrewDiscountInfo
   getCrewMaxDiscountByInfo
   getCrewDiscountsTooltipByInfo
-}
+})

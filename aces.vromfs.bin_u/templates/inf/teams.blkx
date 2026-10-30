@@ -18,7 +18,7 @@
       "team_bots__plantMinesTimes:list<r>": {}
     }
   },
-  "team_danger_zones": {
+  "team_nav_zones": {
     "_group": [
       {
         "_tags": "server",
@@ -101,6 +101,7 @@
           3.5
         ],
         "path_blocker__preGoalDist": 35.0,
+        "path_blocker__minGoalDist": 15.0,
         "path_blocker__distRange": [
           15.0,
           30.0
@@ -111,11 +112,47 @@
         ],
         "path_blocker__radius": 7.0,
         "path_blocker__radius2": 25.0,
+        "path_blocker__radius3": 7.0,
         "path_blocker__weight": 50.0,
         "path_blocker__weight2": 40.0,
+        "path_blocker__weight3": 30.0,
         "path_blocker__positions:list<p3>": {},
         "path_blocker__areaIds:list<i>": {},
         "path_blocker__types:list<i>": {}
+      },
+      {
+        "_tags": "server",
+        "team_grouping__round": 0,
+        "team_grouping__tickJoins": 5,
+        "team_grouping__tickZones": 3,
+        "team_grouping__numZones": 15,
+        "team_grouping__minMaxMembers": [
+          3,
+          5
+        ],
+        "team_grouping_zones__joinRadius": 10.0,
+        "team_grouping_zones__kickRadius": 15.0,
+        "team_grouping_zones__notKickDist": 7.0,
+        "team_grouping_zones__addRadius": 7.5,
+        "team_grouping_zones__maxRadius": 20.0,
+        "team_grouping_zones__addHeights": [
+          -3.0,
+          3.0
+        ],
+        "team_grouping_zones__mainWeight": 70.0,
+        "team_grouping_zones__edgeWeight": 30.0,
+        "team_grouping_zones__nextIdx": 0,
+        "team_grouping__checkDeltaTime": 0.05,
+        "team_grouping__nextTimeCheckJoins": 0.0,
+        "team_grouping__nextTimeCheckZones": 0.0,
+        "team_grouping_zones__freeList:list<i>": {},
+        "team_grouping_zones__commonData:list<ip3>": {},
+        "team_grouping_zones__lastPosRads:list<p4>": {},
+        "team_grouping_zones__lastHeights:list<p2>": {},
+        "team_grouping_zones__moveTracing:list<p4>": {},
+        "team_grouping_members__next:list<i>": {},
+        "team_grouping_members__eids:list<eid>": {},
+        "team_grouping_members__free:list<i>": {}
       }
     ]
   },
@@ -138,7 +175,7 @@
     "_use": [
       "team_generic",
       "team_bots_data",
-      "team_danger_zones",
+      "team_nav_zones",
       "team_peek_looked_points",
       "team_aware_of_dangers"
     ]

@@ -1860,7 +1860,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_HR_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_M242_HR_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "rearmCartridgeTime": 20.0,
@@ -1908,14 +1908,19 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
-            "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm"
           ],
           "horDriveDm": [
-            "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "rotatedTurret": "bone_turret",
           "linkedAnimPart": {
             "verNode": "bone_gun_02",
@@ -1943,7 +1948,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_MIM146.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_MIM146.blk",
         "weaponType": "rockets",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2000,16 +2005,23 @@
           "head": "bone_gun_01",
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2221,7 +2233,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_gun_flame_09",
         "useEmitter": true,
@@ -2272,14 +2284,14 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_adats_bradley_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_adats_bradley_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_adats_search.blk",
+        "blk": "gamedata/sensors/us_adats_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -2290,7 +2302,7 @@
         "radarParkingAzimuth": 180.0
       },
       {
-        "blk": "gameData/sensors/us_adats_track.blk",
+        "blk": "gamedata/sensors/us_adats_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "optic_gun_dm",
@@ -2298,7 +2310,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+        "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
         "dmPart": "electronic_equipment_dm"
       }
     ]
@@ -3776,7 +3788,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/us_adats_search.blk",
+              "blk": "gamedata/sensors/us_adats_search.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -3786,7 +3798,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/us_adats_track.blk",
+              "blk": "gamedata/sensors/us_adats_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "optic_gun_dm",
@@ -3794,11 +3806,11 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
               "dmPart": "electronic_equipment_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]

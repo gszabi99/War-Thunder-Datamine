@@ -1,7 +1,6 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 class SecondsUpdater {
   timer = 0.0

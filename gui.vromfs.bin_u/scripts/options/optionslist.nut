@@ -1,9 +1,20 @@
+import "%scripts/customization/contentPreset.nut" as contentPreset
 import "soundDevice" as soundDevice
+from "%scripts/chat/chatStates.nut" import chatStatesCanUseVoice
+from "%scripts/options/systemOptions.nut" import onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView
+from "%sqstd/platform.nut" import is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk, isSony, isXbox, isXboxScarlett
+from "%scripts/options/consoleSettings.nut" import canSetVSyncMode
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/langUtils/language.nut" import canSwitchGameLocalization
+from "%scripts/langUtils/customLocalization.nut" import hasCustomLocalizationFlag
+from "%scripts/options/customSoundMods.nut" import hasCustomSoundMods
+from "%scripts/social/crossplay.nut" import isCrossNetworkChatEnabled
+from "%scripts/features/devFeatures.nut" import getDevFeaturesList
+from "%scripts/options/consoleMode.nut" import getIsConsoleModeForceEnabled, showConsoleButtons
 from "%globalScripts/shipHitIconsConsts.nut" import IS_SHIP_HIT_NOTIFICATIONS_VISIBLE
 from "unit" import get_player_unit_name
 from "graphicsOptions" import isHdrEnabled
 from "vr" import is_stereo_mode
-from "%sqstd/platform.nut" import is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk
 from "guiMission" import get_mission_difficulty_int, get_mission_difficulty
 from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
 from "gameplayBinding" import isInFlight
@@ -17,18 +28,6 @@ from "%scripts/options/optionsExtNames.nut" import *
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let contentPreset = require("%scripts/customization/contentPreset.nut")
-let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { canSetVSyncMode } = require("%scripts/options/consoleSettings.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
-let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
-let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
-let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
-let { getIsConsoleModeForceEnabled, showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let getSystemOptions = @() {
@@ -37,7 +36,6 @@ let getSystemOptions = @() {
   isInfoOnTheRight = true
   onApplyHandler = @() onSystemOptionsApply()
   getOptionInfoView = @(id) getSystemOptionInfoView(id)
-  hasStickyHeader = true
   options = []
 }
 
@@ -60,7 +58,7 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || isPlatformXboxScarlett || is_ps5_pro) && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || isXboxScarlett || is_ps5_pro) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [
@@ -69,7 +67,7 @@ let otherOptionsList = @() [
   [USEROPT_SUBTITLES, "spinner"],
   [USEROPT_SAVE_ZOOM_CAMERA, "spinner"],
   [USEROPT_HOLIDAYS, "list"],
-  [USEROPT_HANGAR_SCENE, "list", hasFeature("HangarSceneOption")],
+  [USEROPT_HANGAR_SCENE, "list"],
 ]
 
 let getMainOptions = function() {
@@ -94,13 +92,13 @@ let getMainOptions = function() {
       ["options/mainParameters"],
       [USEROPT_LANGUAGE, "spinner", ! isInFlight() && canSwitchGameLocalization()],
       [USEROPT_CUSTOM_LANGUAGE, "spinner", hasCustomLocalizationFlag()],
-      [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !isInFlight()],
-      [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && hasFeature("ConsoleSeparateLeaderboards")],
-      [USEROPT_CLUSTERS, "spinner", ! isInFlight() && isPlatformSony],
+      [USEROPT_PS4_CROSSPLAY, "spinner", isSony && hasFeature("PS4CrossNetwork") && !isInFlight()],
+      [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isSony && hasFeature("ConsoleSeparateLeaderboards")],
+      [USEROPT_CLUSTERS, "spinner", ! isInFlight() && isSony],
       [USEROPT_VSYNC_MODE, "combobox", canSetVSyncMode()],
       [USEROPT_FONTS_CSS, "spinner"],
       [USEROPT_GAMMA, "slider", !isHdrEnabled()],
-      [USEROPT_AUTOLOGIN, "spinner", !isInFlight() && !(isPlatformSony || is_gdk)],
+      [USEROPT_AUTOLOGIN, "spinner", !isInFlight() && !(isSony || is_gdk)],
       [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !isInFlight()],
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
@@ -162,7 +160,6 @@ let getMainOptions = function() {
       [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! isInFlight()],
       [USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
-      [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
       [USEROPT_IGNORE_BAD_WEATHER, "spinner", !isInFlight()],
       [USEROPT_RADAR_MODE_SELECT, "spinner", isAir && isAllowRadarMode],
@@ -177,7 +174,7 @@ let getMainOptions = function() {
       [USEROPT_HUE_HELICOPTER_HUD_ALERT, "spinner"],
       [USEROPT_HUE_HELICOPTER_MFD, "spinner"],
       [USEROPT_HORIZONTAL_SPEED, "spinner"],
-      [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXbox)],
+      [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isSony || isXbox)],
       [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
       [USEROPT_SHOW_COMPASS_IN_HELICOPTER_HUD, "spinner"],
       [USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
@@ -204,7 +201,7 @@ let getMainOptions = function() {
       [USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [USEROPT_TACTICAL_MAP_SIZE, "slider"],
-      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXbox) && !is_android],
+      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isSony || isXbox) && !is_android],
       [USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
@@ -302,7 +299,7 @@ let getMainOptions = function() {
       [USEROPT_SHOW_INDICATORS_DIST, "spinner"],
 
       ["options/header/chatAndVoiceChat"],
-      [USEROPT_PS4_CROSSNETWORK_CHAT, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork")],
+      [USEROPT_PS4_CROSSNETWORK_CHAT, "spinner", isSony && hasFeature("PS4CrossNetwork")],
       [USEROPT_ONLY_FRIENDLIST_CONTACT, "spinner", ! isInFlight()],
       [USEROPT_AUTO_SHOW_CHAT, "spinner"],
       [USEROPT_CHAT_MESSAGES_FILTER, "spinner"],
@@ -314,22 +311,22 @@ let getMainOptions = function() {
       [USEROPT_ENABLE_CONSOLE_MODE, "spinner", !getIsConsoleModeForceEnabled()],
       [USEROPT_XCHG_STICKS, "spinner"],
       [USEROPT_VIBRATION, "spinner"],
-      [USEROPT_GAMEPAD_VIBRATION_ENGINE, "spinner", !isPlatformSony],
+      [USEROPT_GAMEPAD_VIBRATION_ENGINE, "spinner", !isSony],
       [USEROPT_JOY_MIN_VIBRATION, "slider"],
       [USEROPT_GAMEPAD_ENGINE_DEADZONE, "spinner"],
-      [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isPlatformSony],
-      [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && hasFeature("ControllerLight")],
+      [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isSony],
+      [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isSony && hasFeature("ControllerLight")],
       [USEROPT_ENABLE_HUMAN_AIM_ASSIST, "spinner", showConsoleButtons.get()],
-      ["options/header/replaysAndSpectatorMode", null, hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
+      ["options/header/replaysAndSpectatorMode"],
       [USEROPT_AUTOSAVE_REPLAYS, "spinner", !isInFlight() && hasFeature("ClientReplay")],
-      [USEROPT_HUE_SPECTATOR_ALLY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
-      [USEROPT_HUE_SPECTATOR_ENEMY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
-      [USEROPT_REPLAY_ALL_INDICATORS, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
-      [USEROPT_REPLAY_LOAD_COCKPIT, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
-      [USEROPT_HIDE_MOUSE_SPECTATOR, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
+      [USEROPT_HUE_SPECTATOR_ALLY, "spinner"],
+      [USEROPT_HUE_SPECTATOR_ENEMY, "spinner"],
+      [USEROPT_REPLAY_ALL_INDICATORS, "spinner"],
+      [USEROPT_REPLAY_LOAD_COCKPIT, "spinner"],
+      [USEROPT_HIDE_MOUSE_SPECTATOR, "spinner"],
       [USEROPT_REPLAY_SNAPSHOT_ENABLED, "spinner", hasFeature("ClientReplay") && hasFeature("replayRewind")],
       [USEROPT_RECORD_SNAPSHOT_PERIOD, "spinner", hasFeature("ClientReplay") && hasFeature("replayRewind")],
-      [USEROPT_REPLAY_FOV, "slider", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
+      [USEROPT_REPLAY_FOV, "slider"],
 
       ["options/header/userGeneratedContent"],
       [USEROPT_SHOW_OTHERS_DECALS, "spinner"],
@@ -346,7 +343,7 @@ let getMainOptions = function() {
 local overrideSoundOptionsFn = null
 
 function getSoundOptions() {
-  let needShowVoiceOptions = chatStatesCanUseVoice() && (isCrossNetworkChatEnabled() || isPlatformXbox)
+  let needShowVoiceOptions = chatStatesCanUseVoice() && (isCrossNetworkChatEnabled() || isXbox)
   return overrideSoundOptionsFn?() ?? {
     name = "sound"
     fillFuncName = "fillSoundOptions"
@@ -374,6 +371,7 @@ function getSoundOptions() {
       [USEROPT_VOLUME_DIALOGS, "slider"],
       [USEROPT_VOLUME_VWS, "slider"],
       [USEROPT_VOLUME_RWR, "slider"],
+      [USEROPT_ALLOW_RWR_CUSTOM_SFX, "spinner"],
       [USEROPT_VOLUME_TINNITUS, "slider"],
       [USEROPT_HANGAR_SOUND, "spinner"],
       [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", isPC],
@@ -383,10 +381,11 @@ function getSoundOptions() {
       ["options/voicechat"],
       [USEROPT_VOICE_CHAT, "spinner", needShowVoiceOptions],
       [USEROPT_VOICE_DEVICE_IN, "combobox", needShowVoiceOptions
-        && !isPlatformSony && soundDevice.get_record_devices().len() > 0],
+        && !isSony && soundDevice.get_record_devices().len() > 0],
       [USEROPT_VOLUME_VOICE_IN, "slider", needShowVoiceOptions],
       [USEROPT_VOLUME_VOICE_OUT, "slider", needShowVoiceOptions],
       [USEROPT_PTT, "spinner", needShowVoiceOptions],
+      [USEROPT_VOICE_DIRECT_PEERS, "spinner", needShowVoiceOptions],
     ]
   }
 }
@@ -416,8 +415,8 @@ let getOptionsList = function() {
   return options
 }
 
-return {
+return freeze({
   getOptionsList = getOptionsList
   overrideMainOptions = @(fn) overrideMainOptionsFn = fn
   overrideSoundOptions = @(fn) overrideSoundOptionsFn = fn
-}
+})

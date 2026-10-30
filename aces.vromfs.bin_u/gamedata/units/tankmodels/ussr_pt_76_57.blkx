@@ -1866,7 +1866,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_AU_220_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_AU_220_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -1998,7 +1998,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2042,8 +2042,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_pt_76_57_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_pt_76_57_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "controlDevices": {
@@ -3255,7 +3255,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/57mm_AU_220_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/57mm_AU_220_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3387,7 +3387,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3430,7 +3430,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/81mm_tucha_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3512,6 +3512,7 @@
     "ammo1": {
       "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,

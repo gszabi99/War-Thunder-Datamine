@@ -47,6 +47,12 @@
   "crosshairPreset": "ussr_rbt_5",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1612,7 +1618,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1676,7 +1682,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1720,7 +1726,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/250kg_TT_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/250kg_TT_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1776,8 +1782,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_rbt_5_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_rbt_5_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "PhysSys": {

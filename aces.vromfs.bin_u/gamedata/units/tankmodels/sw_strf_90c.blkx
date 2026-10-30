@@ -2214,7 +2214,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2326,7 +2326,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
@@ -2371,8 +2371,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_strf_90c_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_strf_90c_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3335,6 +3335,7 @@
     "ammo1": {
       "removeLoadedAmmo": false,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,
@@ -3616,7 +3617,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/40mm_Kan_Strf_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3728,7 +3729,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Ksp_58_Strv_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_04",
               "defaultYaw": 0.0,
@@ -3772,7 +3773,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

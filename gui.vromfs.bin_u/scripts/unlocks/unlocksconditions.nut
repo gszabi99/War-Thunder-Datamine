@@ -1,6 +1,9 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "regexp2" as regexp2
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/ranks.nut" import maxCountryRank
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "string" import format
 from "%sqstd/math.nut" import number_of_set_bits
@@ -13,10 +16,7 @@ from "%scripts/dagui_library.nut" import *
 from "types" import Table, Integer, Array
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let time = require("%scripts/time.nut")
 let { isIPoint3 } = u
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let missionModesList = [
   "missionsWon",
@@ -232,14 +232,9 @@ function getUnlockConditions(modeBlk) {
 
 
 function hideConditionsFromBlk(blk, unlockBlk) {
-  let conditionsArray = getUnlockConditions(blk)
-  for (local i = conditionsArray.len() - 1; i >= 0; --i) {
-    let condBlk = conditionsArray[i]
-    if (condBlk?.type == "playerCountry" && condBlk.country == (unlockBlk?.country ?? "")) {
-      let b = blk.getBlock(i)
-      b.setBool("hidden", true)
-    }
-  }
+  foreach (condBlk in getUnlockConditions(blk))
+    if (condBlk?.type == "playerCountry" && condBlk.country == (unlockBlk?.country ?? ""))
+      condBlk.setBool("hidden", true)
 }
 
 
@@ -492,7 +487,9 @@ function loadCondition(blk, unlockBlk) {
   }
   else if (t == "gameModeInfoString") {
     res.name <- blk?.name
-    res.values = (blk % "value").filter(@(v) (blk % "hideValue").indexof(v) == null)
+    let hideValues = blk % "hideValue"
+    res.hideValues <- hideValues
+    res.values = (blk % "value").filter(@(v) hideValues.indexof(v) == null)
 
     if (blk?.locParamName)
       res.locParamName <- blk.locParamName
@@ -789,7 +786,7 @@ function getProgressBarData(modeType, curVal, maxVal) {
   return res
 }
 
-return {
+return freeze({
   getMultipliersTable
   getMainProgressCondition
   getTimeRangeCondition
@@ -808,4 +805,4 @@ return {
   isStreak
   addToText
   getDiffNameByInt
-}
+})

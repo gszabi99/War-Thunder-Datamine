@@ -1,5 +1,17 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%sqstd/platform.nut" import is_gdk, isSony, isPC
+from "%scripts/user/profileStates.nut" import havePlayerTag
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/langUtils/language.nut" import getCurLangShortName, getLanguageName
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
+from "%scripts/waitScreen/waitScreen.nut" import showWaitScreen, closeWaitScreen
+from "%scripts/utils/errorMsgBox.nut" import showErrorMessageBox
+from "%scripts/myStats.nut" import isMeNewbie, isNewbieInited
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%sqstd/platform.nut" import is_gdk
 from "console" import register_command
 from "auth_wt" import getPlayerSsoShortTokenAsync, live_link_email
 from "%sqstd/string.nut" import validateEmail
@@ -10,22 +22,9 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isPlatformSony, isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { havePlayerTag } = require("%scripts/user/profileStates.nut")
-let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
-let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
+let needShowGuestEmailRegistration = @() isPC && havePlayerTag("guestlogin")
 
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-
-let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
+let isRegularUser = @() !isMeNewbie() && isNewbieInited()
 
 function launchGuestEmailRegistration(stoken) {
   let language = getCurLangShortName()
@@ -71,7 +70,7 @@ function checkShowGuestEmailRegistrationAfterLogin() {
   showGuestEmailRegistration()
 }
 
-let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
+let canEmailRegistration = isSony ? @() havePlayerTag("psnlogin")
   : is_gdk ? @() havePlayerTag("livelogin") && hasFeature("AllowXboxAccountLinking")
   : steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
   : @() false
@@ -90,7 +89,7 @@ function launchSteamEmailRegistration() {
 }
 
 function checkShowSteamEmailRegistration() {
-  if (!canEmailRegistration() && !isMeNewbie())
+  if (!canEmailRegistration() || !isRegularUser())
     return
 
   if (getLanguageName() != "Japanese") {
@@ -113,7 +112,7 @@ let launchPS4EmailRegistration = @()
   ps4_open_url_logged_in(loc("url/ps4_bind_url"), loc("url/ps4_bind_redirect"))
 
 function checkShowPS4EmailRegistration() {
-  if (!canEmailRegistration() && !isMeNewbie())
+  if (!canEmailRegistration() || !isRegularUser())
     return
 
   if (loadLocalByAccount("PS4EmailRegistrationShowed", false))
@@ -168,7 +167,7 @@ let forceLauncheXboxSuggestionEmailRegistration = @()
   })
 
 function checkShowXboxEmailRegistration() {
-  if (!canEmailRegistration() && !isMeNewbie())
+  if (!canEmailRegistration() || !isRegularUser())
     return
 
   if (loadLocalByAccount("XboxEmailRegistrationShowed", false))
@@ -179,16 +178,16 @@ function checkShowXboxEmailRegistration() {
   forceLauncheXboxSuggestionEmailRegistration()
 }
 
-let checkShowEmailRegistration = isPlatformSony ? checkShowPS4EmailRegistration
+let checkShowEmailRegistration = isSony ? checkShowPS4EmailRegistration
   : steam_is_running() ? checkShowSteamEmailRegistration
   : is_gdk ? checkShowXboxEmailRegistration
   : @() null
 
-let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
+let emailRegistrationTooltip = isSony ? loc("mainmenu/PS4EmailRegistration/desc")
   : is_gdk ? loc("mainmenu/XboxOneEmailRegistration/desc")
   : loc("mainmenu/SteamEmailRegistration/desc")
 
-let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
+let launchEmailRegistration = isSony ? launchPS4EmailRegistration
   : is_gdk ? launchXboxEmailRegistration
   : steam_is_running() ? launchSteamEmailRegistration
   : @() null
@@ -200,7 +199,7 @@ register_command(function(platform) {
   return console_print($"show suggestion for platform {platform}")
 }, "emailRegistration.showForceSuggestion")
 
-return {
+return freeze({
   launchEmailRegistration
   canEmailRegistration
   emailRegistrationTooltip
@@ -208,4 +207,4 @@ return {
   needShowGuestEmailRegistration
   showGuestEmailRegistration
   checkShowGuestEmailRegistrationAfterLogin
-}
+})

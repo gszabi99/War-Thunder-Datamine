@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "german_summer_1943_gunner_char",
@@ -3514,7 +3520,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "barrelDP": "gun_barrel_dm",
@@ -3564,7 +3570,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -3607,7 +3613,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_02",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -3650,7 +3656,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_03",
         "flash": "emtr_mg_flame_03",
         "defaultYaw": 0.0,
@@ -3693,7 +3699,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_04",
         "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
@@ -3736,7 +3742,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_05",
         "flash": "emtr_mg_flame_05",
         "defaultYaw": 0.0,
@@ -3779,7 +3785,7 @@
       {
         "trigger": "gunner6",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_mg08_user_machinegun.blk",
         "emitter": "bone_mg_v_06",
         "flash": "emtr_mg_flame_06",
         "defaultYaw": 0.0,
@@ -3823,8 +3829,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_a7v_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_a7v_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

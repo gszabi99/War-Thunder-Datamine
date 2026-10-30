@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
 from "math" import abs
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { rollIndicator = null, isVisibleRollIndicator = Watched(false), isVisibleGunBlockedIndicator = Watched(false) } = require("hudTankStates")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let iconedHintsConfig = [{
   id = "roll_indicator"
@@ -63,6 +62,6 @@ function initIconedHints(scene, esUnitType) {
   this.guiScene.replaceContentFromText(hintsObj, blk, blk.len(), this)
 }
 
-return {
+return freeze({
   initIconedHints
-}
+})

@@ -1,10 +1,10 @@
+from "%scripts/tutorials/nextTutorialHandler.nut" import tryOpenNextTutorialHandler
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnit
+from "%scripts/user/newbieTutorialDisplay.nut" import needShowTutorial, reqFirstCountryChoice
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
-let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { needShowTutorial, reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 let hasRunTutorialDialog = @() needShowTutorial("unitTypeChoice", 1) || !reqFirstCountryChoice()
 
@@ -26,7 +26,7 @@ function checkTutorialOnStart() {
 
 register_command(@() checkTutorialOnStart(), "debug.checkTutorialOnStart")
 
-return {
+return freeze({
   checkTutorialOnStart
   hasRunTutorialDialog
-}
+})

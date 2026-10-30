@@ -8,16 +8,18 @@
   "dynCollisionGeom": true,
   "harmonizationSuffix": "_tomoe",
   "moveType": "ship",
-  "maxFwdSpeed": 80.0,
+  "maxFwdSpeed": 55.0,
   "maxRevSpeed": 5.0,
-  "maxAngSpeed": 15.0,
-  "maxAccel": 20.0,
+  "maxAngSpeed": 5.0,
+  "maxAccel": 5.0,
   "maxDecel": 5.0,
-  "maxAngAccel": 15.0,
-  "maxAngAccel0": 2.0,
-  "maxAngAccelV": 15.0,
-  "groundNormSmoothViscosity": 0.1,
+  "maxAngAccel": 5.0,
+  "maxAngAccel0": 1.0,
+  "maxAngAccelV": 5.0,
+  "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
+  "drownGFactor": 0.00001,
+  "drownRollSpeed": 0.01,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "ikPilotMaxUpdateDistance": 200.0,
@@ -1343,9 +1345,9 @@
     "mass": {
       "Empty": 63000000.0,
       "momentOfInertia": [
-        210.0,
-        6500.0,
-        3200.0
+        510.0,
+        7600.0,
+        3800.0
       ],
       "CenterOfGravity": [
         11.1,
@@ -1356,6 +1358,7 @@
     "engines": {
       "maxSpeed": 16.2,
       "maxReverseSpeed": 5.0,
+      "horsePowers": 152000.0,
       "speedToTime": {
         "row": [
           [
@@ -1488,7 +1491,69 @@
           "dmPart": "steering_gear_02_dm"
         }
       ]
+    },
+    "settings": {
+      "rollDampingMult": 1.5,
+      "pitchDampingMult": 1.5
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.5,
+        700.0
+      ],
+      [
+        9.0,
+        1600.0
+      ],
+      [
+        13.5,
+        2600.0
+      ],
+      [
+        18.0,
+        4000.0
+      ],
+      [
+        22.5,
+        6300.0
+      ],
+      [
+        27.0,
+        7900.0
+      ],
+      [
+        31.5,
+        9300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        3200.0
+      ],
+      [
+        -2.0,
+        2000.0
+      ],
+      [
+        -1.0,
+        900.0
+      ],
+      [
+        0.0,
+        600.0
+      ],
+      [
+        5.0,
+        600.0
+      ]
+    ]
   },
   "cockpit": {
     "headPos": [
@@ -2998,14 +3063,14 @@
   },
   "breaches": {
     "repairSpeed": 22.0,
-    "waterMassVel": -100000.0,
-    "waterMassMult": 400.0,
     "sizeToRepair": [
       0.01,
-      10.0,
-      100.0,
-      1250.0
+      7.5,
+      154.0,
+      1185.8
     ],
+    "waterMassVel": -172000.0,
+    "waterMassMult": 400.0,
     "additionalWaterDeathThreshold": 185000000.0,
     "additionalWaterShouldDiePercent": 0.28,
     "fatalBreachDrownTime": 45.0,
@@ -3013,6 +3078,10 @@
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
+    "maxTrimmingAngle": 3.5,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 5.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.25,
     "minCaliberToBreach": 0.2,
@@ -4694,5 +4763,9 @@
       "nameLocId": "ship_flag_genoa_city_01/name",
       "texture": "ship_flag_genoa_city_01_c*"
     }
+  },
+  "shipDamageControl": {
+    "shipDamageControlEnabled": true,
+    "shipDamageControlCoeff": 0.135
   }
 }

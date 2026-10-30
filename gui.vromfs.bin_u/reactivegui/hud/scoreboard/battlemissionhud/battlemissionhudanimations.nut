@@ -11,7 +11,7 @@ let REFLECTION_LINE_ANIM_EASING   = InOutCubic
 const SCORE_TEXT_ANIM_DURATION  = 0.4
 let SCORE_TEXT_ANIM_EASING    = InCubic
 
-let mkScoreBlinkAnim = @(trigger) {
+let mkScoreBlinkAnim = @[pure, nodiscard](trigger) {
   prop     = AnimProp.color
   from     = 0x00ffffff
   easing   = InOutCubic
@@ -67,8 +67,8 @@ function mkReflectionLineAnimComp(trigger, posMult) {
   }
 }
 
-return {
+return freeze({
   mkReflectionLineAnimComp
   mkScoreBlinkAnim
   mkScoreTextAnim
-}
+})

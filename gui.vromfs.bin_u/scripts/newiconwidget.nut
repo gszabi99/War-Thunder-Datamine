@@ -1,5 +1,5 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/dagui_library.nut" import *
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 
 

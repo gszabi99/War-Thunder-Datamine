@@ -1,24 +1,9 @@
-@const unitChoiceImageWidth: (320*@sf/@pf)\1;
-@const unitChoiceImageHeight: (220*@sf/@pf)\1;
-@const unitChoiceTextBlockHeight: 80@sf/@pf;
-@const countryChoiceTextBlockHeight: 130@sf/@pf;
-@const countryChoiceInterval: (10@sf/@pf)\1;
-@const firstChoiceUserIconHeight: 48@sf/@pf;
-
-@const firstChoiceHeaderHeight: 0.05@scrn_tgt;
-
-
-@const firstChoiceColor         : #cccccc;
-@const firstChoiceColorDisabled : #444444;
-
-
-
 firstChoiceItem {
-  margin-right:1@countryChoiceInterval;
   flow:vertical;
   css-hier-invalidate:yes;
-  width:1@unitChoiceImageWidth;
-  height:1@unitChoiceImageHeight;
+  overflow:hidden;
+  border: yes;
+  border-color: #2D3841;
 }
 
 firstChoiceItem[isLast=yes] {
@@ -27,53 +12,67 @@ firstChoiceItem[isLast=yes] {
 
 firstChoiceImage {
   position:absolute;
-  size:@unitChoiceImageWidth, @unitChoiceImageHeight;
+  size:pw, pw;
   pos:0.5pw - 0.5w, 0.5ph - 0.5h;
-  background-repeat:expand;
+  background-repeat:aspect-ratio;
   background-color:@firstChoiceColor;
   input-transparent: yes;
   css-hier-invalidate:yes;
-  border: yes;
-  border-color: #2D3841;
 }
 
 :disabled > firstChoiceImage {
   background-color:@firstChoiceColorDisabled;
 }
 
-firstChoiceImage > movie {
+firstChoiceItem > movie {
   position: absolute;
   size: pw, ph;
   display: hide;
   input-transparent: yes;
 }
 
-[show_console_buttons=yes] [selected=yes] > firstChoiceImage > movie,
-[show_console_buttons=no] :hover > firstChoiceImage > movie {
+[show_console_buttons=yes] firstChoiceItem[selected=yes] > movie,
+[show_console_buttons=no] firstChoiceItem:hover > movie {
   display: show;
 }
 
 firstChoiceShadow {
   position: absolute;
   pos: 0, ph-h;
+  size:pw, 1@firstChoiceShadowH;
   bgcolor: #FFFFFF;
+  background-svg-size:w, h;
+  background-image:!ui/images/firstChoice/countryChoiceShadow.svg;
 }
 
 firstChoiceText {
   re-type: text;
   pos: 0.5pw-0.5w, ph-h;
-  height: 1@unitChoiceTextBlockHeight;
+  height:1@firstChoiceShadowH;
   position: absolute;
-  color: @commonTextColor;
+  color: @activeTextColor;
   font: @fontMedium;
 }
 
-firstChoiceItem[selected=yes] > firstChoiceImage > firstChoiceText,
-firstChoiceItem:hover > firstChoiceImage > firstChoiceText
-{
-  color: @activeTextColor;
+firstChoiceItem:disabled > firstChoiceText {
+  color:@disabledTextColor;
 }
 
-firstChoiceItem:disabled > firstChoiceImage > firstChoiceText {
-  color:@disabledTextColor;
+firstChoiceSelectRect {
+  re-type:9rect;
+  size:pw, ph;
+  position:absolute;
+  display:hide;
+  background-image:#ui/gameuiskin#frame_selected_slot.svg;
+  background-position:4, 4;
+  background-svg-size:196, 75;
+  background-repeat:expand;
+  bgcolor:#FFFFFF;
+}
+
+firstChoiceItem[selected=yes] > slotHoverHighlight,
+firstChoiceItem[selected=yes] > firstChoiceSelectRect,
+firstChoiceItem:hover > slotHoverHighlight,
+firstChoiceItem:hover > firstChoiceSelectRect {
+  display:show;
 }

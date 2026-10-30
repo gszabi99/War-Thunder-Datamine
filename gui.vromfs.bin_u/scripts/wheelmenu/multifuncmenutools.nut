@@ -1,4 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/hud/hudUnitType.nut" import unitTypeByHudUnitType
+from "%scripts/controls/controlsUtils.nut" import getControlsList
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/controlsVisual.nut" import getShortcutText
+from "%scripts/controls/shortcutsUtils.nut" import isShortcutMapped
 from "%sqstd/platform.nut" import isPC
 from "unit" import get_player_unit_name
 from "controls" import isXInputDevice
@@ -6,15 +12,9 @@ from "hudState" import getHudUnitType
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let getMfmHandler = @() handlersManager.findHandlerClassInScene(get_gui_handler("multifuncMenuHandler"))
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 local isDebugMode = false
 register_command(function() {
@@ -191,8 +191,17 @@ function openMfm(cfg, curSectionId = null, isForward = true) {
   return true
 }
 
-return {
+function preloadMfmIfNeeded() {
+  const mfmOpenShortcutIds = ["ID_SHOW_MULTIFUNC_WHEEL_MENU", "ID_HUMAN_ORDERS_MENU",
+    "ID_HUMAN_WEAPON_MENU"]
+  let canOpenMfm = getShortcuts(mfmOpenShortcutIds).findvalue(@(sc) isShortcutMapped(sc)) != null
+  if (canOpenMfm && getMfmHandler() == null)
+    handlersManager.loadHandler(get_gui_handler("multifuncMenuHandler"))
+}
+
+return freeze({
   getMfmHandler
   getMfmSectionTitle
   openMfm
-}
+  preloadMfmIfNeeded
+})

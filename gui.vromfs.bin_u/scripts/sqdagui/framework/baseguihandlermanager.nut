@@ -1,3 +1,9 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler, find_gui_handler_name
+from "%scripts/sqDagui/framework/msgBox.nut" import reset_msg_box_check_anim_time, destroy_all_msg_boxes
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "string" import format
 from "dagor.time" import get_time_msec
 from "dagor.debug" import logerr, debug_dump_stack
@@ -6,14 +12,9 @@ from "eventbus" import eventbus_has_listeners, eventbus_send
 from "console" import register_command
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "dagor.workcycle" import deferOnce
-from "types" import Function
 
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { get_gui_handler, find_gui_handler_name } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { reset_msg_box_check_anim_time, destroy_all_msg_boxes, saved_scene_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
+let { saved_scene_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 local current_base_gui_handler = null 
 local always_reload_scenes = false 
@@ -21,7 +22,39 @@ local always_reload_scenes = false
 
                                 
                                 
-let lastBaseHandlerStartData = persist("lastBaseHandlerStartData", @() [])
+let lastBaseHandlerStartData = persist("lastBaseHandlerStartData", @() []) 
+local isMainSceneRestored = false
+
+let mainSceneStartParams = hardPersistWatched("sqDagui.framework.baseGuiHandlerManager.mainSceneStartParams", null)
+
+function isPlainData(v) {
+  let t = type(v)
+  if (t == "table") {
+    foreach (k, val in v)
+      if (!isPlainData(k) || !isPlainData(val))
+        return false
+    return true
+  }
+  if (t == "array") {
+    foreach (val in v)
+      if (!isPlainData(val))
+        return false
+    return true
+  }
+  return t == "null" || t == "integer" || t == "float" || t == "bool" || t == "string"
+}
+
+let notPlainStartsLogged = {}
+function canStoreStartParams(startParams) {
+  if (isPlainData(startParams))
+    return true
+  let name = startParams?.handlerName ?? startParams?.eventbusName ?? ""
+  if (name not in notPlainStartsLogged) {
+    notPlainStartsLogged[name] <- true
+    println($"GuiManager: start params of {name} are not plain data, a hard reload restores the last plain start")
+  }
+  return false
+}
 
 let activeBaseHandlers = persist("activeBaseHandlers", @() []) 
 
@@ -139,6 +172,7 @@ let handlersManager = {
   }
 
   function initHandler(handler) {
+    handler.guiScene.setObjectOwner(handler.scene, handler)
     this.beforeInitHandler(handler)
 
     local result
@@ -147,7 +181,7 @@ let handlersManager = {
       result = true
     }
     catch (errorMessage) {
-      let handlerName = this.getHandlerClassDebugName(handler)
+      let handlerName = this.getHandlerClassDebugName(handler.getclass())
       let message = $"Error on init handler /*handlerName = {handlerName}, errorMessage = {errorMessage}*/"
       script_net_assert_once(handlerName, message)
       let hType = this.getHandlerType(handler.getclass())
@@ -420,7 +454,7 @@ let handlersManager = {
       return
     }
 
-    this.sendEventToHandlers("onDestroy", guiScene)
+    this.onDestroySceneHandlers(guiScene)
 
     this.beforeClearScene(guiScene)
 
@@ -499,6 +533,8 @@ let handlersManager = {
   }
 
   function startLastBaseHandler() {
+    if (isMainSceneRestored) 
+      return
     this.markfullReloadOnSwitchScene(false)
     let startData = this.findLastBaseHandlerStartData(get_gui_scene())
     if (!startData)
@@ -510,6 +546,19 @@ let handlersManager = {
       startData.startParams = backSceneParams
     this.activeBaseHandlers.clear()
     this.callStartFunc(startParams)
+  }
+
+  
+  
+  function startMainSceneAfterHardReload() {
+    
+    if (!get_gui_scene().isEqual(get_main_gui_scene()))
+      return
+    isMainSceneRestored = true
+    this.clearScene()
+    let startParams = mainSceneStartParams.get()
+    if (startParams != null)
+      this.callStartFunc(startParams)
   }
 
   function checkPostLoadCssOnBackToBaseHandler() {
@@ -611,9 +660,9 @@ let handlersManager = {
     return null
   }
 
-  function isAnyModalHandlerActive() {
+  function isAnyModalHandlerActive(isIgnoredFn = null) {
     foreach (handler in this.handlers[handlerType.MODAL])
-      if (this.isHandlerValid(handler, true))
+      if (this.isHandlerValid(handler, true) && !(isIgnoredFn?(handler) ?? false))
         return true
     return false
   }
@@ -634,16 +683,11 @@ let handlersManager = {
     return null
   }
 
-  function sendEventToHandlers(eventFuncName, guiScene = null, params = null) {
-    foreach (_hType, hList in this.handlers)
+  function onDestroySceneHandlers(guiScene) {
+    foreach (hList in this.handlers)
       foreach (handler in hList)
-        if (this.isHandlerValid(handler)
-            && (!guiScene || handler.guiScene.isEqual(guiScene))
-            && eventFuncName in handler && handler[eventFuncName] instanceof Function)
-          if (params)
-            handler[eventFuncName].call(handler, params)
-          else
-            handler[eventFuncName].call(handler)
+        if (this.isHandlerValid(handler) && handler.guiScene.isEqual(guiScene))
+          handler.onDestroy()
   }
 
   
@@ -718,6 +762,8 @@ let handlersManager = {
     }
     data.startParams = startParams
     data.handlerLocId = handlerLocId
+    if (guiScene.isEqual(get_main_gui_scene()) && canStoreStartParams(startParams))
+      mainSceneStartParams.set(startParams)
   }
   function setLastBaseHandlerStartParamsByHandler(handlerClass, params) {
     let handlerClassName = this.getHandlerClassName(handlerClass)
@@ -807,6 +853,7 @@ deferOnce(@() handlersManager.startLastBaseHandler())
 function closeAllModals() {
   let guiScene = get_cur_gui_scene()
   handlersManager.closeAllModals(guiScene)
+  broadcastEvent("ModalWndDestroy")
 }
 register_command(closeAllModals, "dagui.close_all_modals")
 

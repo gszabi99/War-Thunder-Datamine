@@ -1,18 +1,18 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/chat/chatStates.nut" import chatStatesCanUseVoice
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/clans/clanState.nut" import myClanInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "chat" import get_option_voicechat
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2
 
@@ -35,7 +35,7 @@ elemViewType.addTypes({
     model = elemModelType.VOICE_CHAT
 
     updateView = function(obj, _params) {
-      if (!isLoggedIn.get())
+      if (!hasFullLoginState.get())
         return
 
       let nestObj = obj.getParent().getParent()
@@ -139,4 +139,4 @@ elemViewType.addTypes({
   }
 })
 
-return {}
+return freeze({})

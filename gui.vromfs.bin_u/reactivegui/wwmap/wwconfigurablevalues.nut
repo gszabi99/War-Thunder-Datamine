@@ -19,9 +19,9 @@ function getArtilleryParams(armyData) {
   return null
 }
 
-return {
+return freeze({
   initConfigurableValues
   getArtilleryUnits
   getInfantryUnits
   getArtilleryParams
-}
+})

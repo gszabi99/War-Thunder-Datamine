@@ -1,5 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/hud/hudElementsAabb.nut" import getHudElementAabb
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "eventbus" import eventbus_subscribe
 from "%sqstd/datablock.nut" import getBlkValueByPath, blkOptFromPath
@@ -8,14 +11,14 @@ from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let HudTutorialObject = require("%scripts/hud/hudTutorialObject.nut")
 
-let visibleHTObjects = persist("visibleHTObjects", @() {})
-let debugHudTutorState = persist("debugHudTutorState", @() {isDebugMode=false, debugBlkName = null, debugLastModified = -1})
+let visibleHTObjects = persist("visibleHTObjects", @() {}) 
+
+
+let visibleHTState = mkHardPersist("hud.hudTutorialElements")("visibleHTState", {}) 
+let debugHudTutorState = { isDebugMode = false, debugBlkName = null, debugLastModified = -1 }
 
 let g_hud_tutorial_elements = {
   active = false
@@ -63,6 +66,15 @@ g_hud_tutorial_elements.init <- function init(v_nest) {
       childObj.show(false)
   }
 
+  foreach (id, showUpTo in visibleHTState)
+    if (id not in this.visibleHTObjects) {
+      let htObj = HudTutorialObject(id, this.scene)
+      if (!htObj.isValid())
+        continue
+      htObj.showUpTo = showUpTo
+      this.visibleHTObjects[id] <- htObj
+    }
+
   guiScene.performDelayed(this, function() { this.refreshObjects() })
 
   if (debugHudTutorState.isDebugMode)
@@ -107,6 +119,7 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
       htObj.show(false)
       this.visibleHTObjects.$rawdelete(id)
     }
+    visibleHTState.$rawdelete(id)
     return null
   }
 
@@ -120,6 +133,7 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
 
   if (timeSec >= 0)
     htObj.setTime(timeSec)
+  visibleHTState[id] <- htObj.showUpTo
   return htObj
 }
 
@@ -181,6 +195,7 @@ g_hud_tutorial_elements.refreshObjects <- function refreshObjects() {
   foreach (id in invalidObjects) {
     let htObj = this.visibleHTObjects[id]
     this.visibleHTObjects.$rawdelete(id)
+    visibleHTState.$rawdelete(id)
     this.updateObjTimer(id, htObj)
   }
 
@@ -197,6 +212,7 @@ g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStat
 
   
   this.visibleHTObjects.clear()
+  visibleHTState.clear()
   this.timers.clear()
   debugHudTutorState.isDebugMode = false
 }

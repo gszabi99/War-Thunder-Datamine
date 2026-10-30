@@ -1641,15 +1641,74 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        2.3,
+        300.0
+      ],
+      [
+        4.6,
+        600.0
+      ],
+      [
+        6.9,
+        1000.0
+      ],
+      [
+        9.2,
+        1800.0
+      ],
+      [
+        11.4,
+        3000.0
+      ],
+      [
+        13.7,
+        4600.0
+      ],
+      [
+        16.0,
+        6600.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        1500.0
+      ],
+      [
+        -2.0,
+        900.0
+      ],
+      [
+        -1.0,
+        400.0
+      ],
+      [
+        0.0,
+        200.0
+      ],
+      [
+        5.0,
+        200.0
+      ]
+    ]
+  },
   "shipDamageControl": {
-    "shipDamageControlEnabled": true
+    "shipDamageControlEnabled": true,
+    "shipDamageControlCoeff": 0.007
   },
   "commonWeapons": {
     "Weapon": [
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1723,7 +1782,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1797,7 +1856,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -1871,7 +1930,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -1947,7 +2006,7 @@
   "weapon_presets": {
     "preset": {
       "name": "germ_cargo_ship_goldenfels_default",
-      "blk": "gameData/units/ships/weaponPresets/germ_cargo_ship_goldenfels_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/germ_cargo_ship_goldenfels_default.blk"
     }
   },
   "cockpit": {

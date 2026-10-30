@@ -1,10 +1,9 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/controlsConsts.nut" import AxisDirection
+from "%scripts/controls/input/inputBase.nut" import InputBase
+from "%scripts/controls/input/button.nut" import Button
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
-let { Button } = require("%scripts/controls/input/button.nut")
 
 let blockNameByDirection = {
   [AxisDirection.X] = {
@@ -92,4 +91,4 @@ let KeyboardAxis = class (InputBase) {
     }
   }
 }
-return {KeyboardAxis}
+return freeze({KeyboardAxis})

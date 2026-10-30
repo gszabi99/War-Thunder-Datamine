@@ -60,7 +60,7 @@ let clanTagDecoratorFuncs = {
     let decoratorLists = []
     foreach (reward in rewardsList)
       decoratorLists.append(this.getDecoratorsInternal(blk?[reward], true))
-    decoratorLists.sort(@(a, b) b.len() <=> a.len())
+    decoratorLists.sortby(@(a) -a.len())
 
     foreach (list in decoratorLists)
       foreach (decorator in list)

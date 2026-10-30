@@ -35,33 +35,35 @@ let touchButtonsConfigs = {
   },
   ["ID_SHIP_WEAPON_ALL"] = {
     image = Picture("!ui/gameuiskin#fire")
-    size = [bigTouchButtonSize, bigTouchButtonSize]
+    size = bigTouchButtonSize
   },
   ["ship_steering_rangeMax"] = {
     id = ship_steering_rangeMax
     image = Picture("!ui/gameuiskin#accelerator_left")
-    size = [bigTouchButtonSize, bigTouchButtonSize]
+    size = bigTouchButtonSize
     behavior = WtBhv.TouchScreenButton
     onTouchBegin = @() setShortcutOn(ship_steering_rangeMax)
     onTouchEnd = @() setShortcutOff(ship_steering_rangeMax)
+    onTouchInterrupt = @() setShortcutOff(ship_steering_rangeMax)
   },
   ["ship_steering_rangeMin"] = {
     id = ship_steering_rangeMin
     image = Picture("!ui/gameuiskin#accelerator_right")
-    size = [bigTouchButtonSize, bigTouchButtonSize]
+    size = bigTouchButtonSize
     behavior = WtBhv.TouchScreenButton
     onTouchBegin = @() setShortcutOn(ship_steering_rangeMin)
     onTouchEnd = @() setShortcutOff(ship_steering_rangeMin)
+    onTouchInterrupt = @() setShortcutOff(ship_steering_rangeMin)
   },
   ["ship_main_engine_rangeMax"] = {
     id = "ship_main_engine_rangeMax"
     image = Picture("!ui/gameuiskin#accelerator_up_v1")
-    size = [bigTouchButtonSize, bigTouchButtonSize]
+    size = bigTouchButtonSize
   },
   ["ship_main_engine_rangeMin"] = {
     id = "ship_main_engine_rangeMin"
     image = Picture("!ui/gameuiskin#accelerator_down_v1")
-    size = [bigTouchButtonSize, bigTouchButtonSize]
+    size = bigTouchButtonSize
   },
 }
 
@@ -75,7 +77,7 @@ function mkTouchButton(id, overrideParams = {}) {
     watch = stateFlags
     behavior = Behaviors.Button
     rendObj = ROBJ_IMAGE
-    size = [touchButtonSize, touchButtonSize]
+    size = touchButtonSize
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     color = stateFlags.get() & S_ACTIVE ? iconColorPushed : iconColor
@@ -84,9 +86,9 @@ function mkTouchButton(id, overrideParams = {}) {
   }.__update(buttonConfig, overrideParams)
 }
 
-return {
+return freeze({
   mkTouchButton
   touchButtonSize
   bigTouchButtonSize
   touchButtonMargin
-}
+})

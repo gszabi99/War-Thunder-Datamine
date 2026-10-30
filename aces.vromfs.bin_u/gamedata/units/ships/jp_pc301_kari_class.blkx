@@ -1690,6 +1690,7 @@
     "engines": {
       "maxSpeed": 10.8,
       "maxReverseSpeed": 4.0,
+      "horsePowers": 2900.0,
       "speedToTime": {
         "row": [
           [
@@ -1778,6 +1779,64 @@
         "dmPart": "steering_gear_01_dm"
       }
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.0,
+        0.0
+      ],
+      [
+        6.0,
+        100.0
+      ],
+      [
+        9.0,
+        200.0
+      ],
+      [
+        12.0,
+        300.0
+      ],
+      [
+        15.0,
+        500.0
+      ],
+      [
+        18.0,
+        700.0
+      ],
+      [
+        21.0,
+        1000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        300.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
   },
   "sound": {
     "EngineName": "engine_shiplight01",
@@ -2741,16 +2800,16 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/us_an_sps_5.blk",
+        "blk": "gamedata/sensors/naval/us_an_sps_5.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/us_an_spg_34.blk",
+        "blk": "gamedata/sensors/naval/us_an_spg_34.blk",
         "dmPart": "antenna_target_tagging_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/ship_optical_sight.blk",
+        "blk": "gamedata/sensors/naval/ship_optical_sight.blk",
         "dmPart": "fire_director_01_dm"
       }
     ],
@@ -2804,7 +2863,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2956,7 +3015,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3111,41 +3170,41 @@
     "preset": [
       {
         "name": "jp_pc301_kari_class_default",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_default.blk"
       },
       {
         "name": "hedgehog_mortar",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "bomb_mortar",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "bomb_mortar_and_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_bomb_mortar_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_bomb_mortar_depth_charges.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "hedgehog_mortar_and_bomb_mortar",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "hedgehog_mortar_and_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_depth_charges.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "hedgehog_mortar_bomb_mortar_and_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_bomb_mortar_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_pc301_kari_class_hedgehog_mortar_bomb_mortar_depth_charges.blk",
         "reqModification": "ship_bomb_mortar"
       }
     ]
@@ -3384,23 +3443,27 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -11000.0,
-    "waterMassMult": 150.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 800000.0,
+    "waterMassVel": -39546.0,
+    "waterMassMult": 247.0,
+    "additionalWaterDeathThreshold": 1120287.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 36.0,
+    "maxHeelingAngle": 25.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 6.6,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25
+    "sideCenterOfMassOffsetPercent": 0.136
   },
   "shipCover": {
     "cover": [
@@ -3411,7 +3474,7 @@
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.75,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3422,35 +3485,45 @@
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.6,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.52
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.52
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.8,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.85
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.85
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.11
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.11
+            }
+          ]
         }
       },
       {
         "part": "compartment_05_dm",
-        "weight": 0.4,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]

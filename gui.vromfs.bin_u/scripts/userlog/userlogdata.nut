@@ -1,6 +1,39 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd, guiStartOpenTrophy
+from "%appGlobals/clientState/localProfile.nut" import loadLocalAccountSettings
+from "%scripts/userLog/userlogUtils.nut" import disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog, getLogNameByType
+from "%scripts/onlineShop/entitlementRewardWnd.nut" import showEntitlement
+from "%scripts/unlocks/unlockRewardWnd.nut" import showUnlocks
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
+from "%scripts/userstat/userstatItemsRewards.nut" import removeUserstatItemRewardToShow, userstatItemsListLocId
+from "%scripts/userstat/userstat.nut" import getUserstatItemRewardData
+from "%scripts/missions/missionsText.nut" import getMissionLocName
+from "%scripts/clans/clanFlushExpInfoModal.nut" import SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
+from "%scripts/unit/squadronUnitAction.nut" import needChooseClanUnitResearch
+from "%scripts/items/everyDayLoginAward.nut" import showEveryDayLoginAwardWnd
+from "%scripts/items/showExternalTrophyRewardWnd.nut" import checkShowExternalTrophyRewardWnd
+from "%scripts/clientState/clientStates.nut" import isInMenu, getFromSettingsBlk
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/myStats.nut" import isNewbieInited, isMeNewbie, markStatsReset
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/items/itemsManagerModule.nut" import findItemByUid, findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/modificationsTierResearched.nut" import guiStartModTierResearched
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/globalWorldwarUtils.nut" import openOperationRewardPopup
+from "%scripts/warbonds/warbondsState.nut" import getWarbondPriceText
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
+from "%scripts/items/recycleCompleteWnd.nut" import openOrUpdateRecycleCompleteWnd
+from "%scripts/utils/popupMessages.nut" import showPopupWndIfNeed
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/datablock.nut" import convertBlk
 from "string" import format
 from "unlocks" import isUnlockNeedPopup, isUnlockNeedPopupInMenu
@@ -10,40 +43,7 @@ from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { trophyRewardWnd, guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
-let { loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog, getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
-let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
-let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { removeUserstatItemRewardToShow, userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
-let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo } = require("%scripts/clans/clanFlushExpInfoModal.nut")
-let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
-let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
-let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
-let { isInMenu, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
-let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
-let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
-let { openOrUpdateRecycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
-let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
@@ -76,7 +76,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
 function checkNewNotificationUserlogs(onStartAwards = false) {
   if (getFromSettingsBlk("debug/skipPopups"))
     return
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
   let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
@@ -534,4 +534,4 @@ addListenersWithoutEnv({
   UpdateGamercard = @(_p) checkNewNotificationUserlogs()
 })
 
-return { checkNewNotificationUserlogs }
+return freeze({ checkNewNotificationUserlogs })

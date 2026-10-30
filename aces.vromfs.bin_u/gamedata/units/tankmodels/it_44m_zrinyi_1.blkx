@@ -43,6 +43,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1885,7 +1891,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_43M_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_43M_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -1930,7 +1936,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/158mm_NB_Wf_41_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/158mm_NB_Wf_41_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1998,8 +2004,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_44m_zrinyi_1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_44m_zrinyi_1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3085,7 +3091,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_43M_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_43M_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,
@@ -3130,7 +3136,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/158mm_NB_Wf_41_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/158mm_NB_Wf_41_rocket_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3197,7 +3203,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

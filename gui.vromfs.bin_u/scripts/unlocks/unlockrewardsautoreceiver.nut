@@ -1,10 +1,7 @@
+from "%scripts/userstat/userstatItemsRewards.nut" import receiveRewards, rewardsInProgress
+from "%scripts/unlocks/userstatUnlocksState.nut" import getStageByIndex
+from "%scripts/battlePass/unlocksRewardsState.nut" import basicUnlock, basicProgress, premiumUnlock, premiumProgress, basicUnlockId, premiumUnlockId
 from "%scripts/dagui_library.nut" import *
-
-let { receiveRewards, rewardsInProgress } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { basicUnlock, basicProgress, premiumUnlock, premiumProgress, basicUnlockId, premiumUnlockId
-} = require("%scripts/battlePass/unlocksRewardsState.nut")
-
 
 function getNotReceiveEmptyRewardStageIdx(unlock, progress, rewardsInProgressValue) {
   let { hasReward = false, name = "" } = unlock

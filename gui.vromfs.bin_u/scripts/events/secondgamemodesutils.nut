@@ -1,25 +1,26 @@
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/events/eventTeamsInfo.nut" import getTeamData, getAlowedCrafts, getForbiddenCrafts, isUnitAllowedByTeamData
+from "%scripts/unit/unitInfo.nut" import getUnitTypeByText
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle
+from "%scripts/unit/unitStatus.nut" import isUnitBroken
 from "%scripts/dagui_library.nut" import *
 from "string" import format, startswith
 from "%scripts/teamsConsts.nut" import Team
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "%globalScripts/unitTypeConsts.nut" import ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT
 from "%scripts/matching/matchingGameModes.nut" import getGameModeWithTagContains, getGameModesByEconomicName, SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX, NAVAL_EC_AB_GAME_MODE_TAG_PREFIX, NAVAL_EC_RB_GAME_MODE_TAG_PREFIX, NUCLEAR_ESCALATION_GAME_MODE_TAG_PREFIX
-from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_AB_BATTLES, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_RB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_AB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_RB_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_CLASSIC_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_NUCLEAR_ESCALATION_BATTLES, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_AB_BATTLES, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_RB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_AB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_RB_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_CLASSIC_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_NUCLEAR_ESCALATION_BATTLES
+  , USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES
 from "%scripts/events/eventInfo.nut" import hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName
 from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
 from "%scripts/battleRating.nut" import recentBR, getRecentSquadMrank
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank, getMrankDeltaByUnit
 from "%scripts/squads/squadState.nut" import isInSquad, getMembers
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getTeamData, getAlowedCrafts, getForbiddenCrafts, isUnitAllowedByTeamData } = require("%scripts/events/eventTeamsInfo.nut")
-let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { isUnitBroken } = require("%scripts/unit/unitStatus.nut")
 
 const MIN_MRANK_FOR_NIGHT_BATTLES = 27
 const MIN_MRANK_FOR_SMALL_TEAMS = 27
@@ -54,7 +55,7 @@ function getSmallTeamsDesc(event) {
 
 function getGameModeByTagPrefix(event, tagPrefix) {
   let modes = getGameModesByEconomicName(getEventEconomicName(event))
-  modes.sort(@(a, b) a.gameModeId - b.gameModeId)
+  modes.sortby(@(a) a.gameModeId)
   foreach (gm in modes)
     if (startswith(gm?.tag ?? "", tagPrefix))
       return gm
@@ -138,44 +139,54 @@ function getSquadOnlineMembers() {
   return members
 }
 
-function getMaxMrank(units, ediff) {
+function getMaxMrank(units, ediff, mrankDeltaByUnit) {
   local mrank = -1
   foreach (unit in units)
-    mrank = max(mrank, unit.getEconomicRank(ediff))
+    mrank = max(mrank, getEffectiveMrank(unit, ediff, mrankDeltaByUnit?[unit.name] ?? 0))
   return mrank
 }
 
-function getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits) {
-  let participants = [ getSuitableUnits(event, tagPrefix, getOwnCraftNames()) ]
-  foreach (member in getSquadOnlineMembers())
-    participants.append(getSuitableUnits(event, tagPrefix,
-      member?.crewAirs?[member.country] ?? [], member?.brokenAirs ?? []))
+function getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits, needMrankDelta = false) {
+  let ownCraftNames = getOwnCraftNames()
+  let ownMrankDeltaByUnit = needMrankDelta ? getMrankDeltaByUnit(ownCraftNames) : null
+  let participants = [{
+    units = getSuitableUnits(event, tagPrefix, ownCraftNames)
+    mrankDeltaByUnit = ownMrankDeltaByUnit
+  }]
+  foreach (member in getSquadOnlineMembers()) {
+    let memberMrankDeltaByUnit = needMrankDelta ? member?.mrankDeltaByUnit ?? {} : null
+    participants.append({
+      units = getSuitableUnits(event, tagPrefix,
+        member?.crewAirs?[member.country] ?? [], member?.brokenAirs ?? [])
+      mrankDeltaByUnit = memberMrankDeltaByUnit
+    })
+  }
   return participants
 }
 
 let isSubmodeAvailableByUnits = @(event, tagPrefix, getSuitableUnits)
-  getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits).findindex(@(units) units.len() == 0) == null
+  getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits).findindex(@(p) p.units.len() == 0) == null
 
 function getSubmodeMrank(event, tagPrefix, getSuitableUnits) {
   let ediff = events.getEDiffByEvent(event)
-  return getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits)
-    .map(@(units) getMaxMrank(units, ediff))
+  return getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits, true)
+    .map(@(p) getMaxMrank(p.units, ediff, p.mrankDeltaByUnit))
     .reduce(@(a, b) max(a, b))
 }
 
-let getBulletHellParticipantsCrafts = @(event)
-  getSuitableUnitsParticipants(event, null, getBulletHellSuitableUnits)
+let getBulletHellParticipantsCrafts = @(event, needMrankDelta = false)
+  getSuitableUnitsParticipants(event, null, getBulletHellSuitableUnits, needMrankDelta)
 
 function getBulletHellAvailableCraftsCount(event) {
   return getBulletHellParticipantsCrafts(event)
-    .map(@(units) units.len())
+    .map(@(p) p.units.len())
     .reduce(@(a, b) min(a, b))
 }
 
 function getBulletHellMrank(event) {
   let ediff = events.getEDiffByEvent(event)
-  return getBulletHellParticipantsCrafts(event)
-    .map(@(units) getMaxMrank(units, ediff))
+  return getBulletHellParticipantsCrafts(event, true)
+    .map(@(p) getMaxMrank(p.units, ediff, p.mrankDeltaByUnit))
     .reduce(@(a, b) max(a, b))
 }
 
@@ -395,9 +406,11 @@ function getGmsTagRequests(event, modePairs) {
 }
 
 function getCurRank(event) {
-  return isInSquad()
-    ? getRecentSquadMrank()
-    : getPlayerCurUnit()?.getEconomicRank(events.getEDiffByEvent(event))
+  if (isInSquad())
+    return getRecentSquadMrank()
+
+  let unit = getPlayerCurUnit()
+  return unit == null ? null : getEffectiveMrank(unit, events.getEDiffByEvent(event))
 }
 
 

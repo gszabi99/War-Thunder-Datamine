@@ -1,14 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/events/eventsState.nut" import isMultiCluster
+from "%scripts/queue/queueInfo.nut" import getQueueEvent, isClanQueue, getMyRankInQueue
 from "%appGlobals/ranks_common_shared.nut" import get_team_name_by_mp_team
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/mpTeamConsts.nut" import *
-
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { isMultiCluster } = require("%scripts/events/eventsState.nut")
-let { getQueueEvent, isClanQueue, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 const MULTICLUSTER_NAME = "multi"
 

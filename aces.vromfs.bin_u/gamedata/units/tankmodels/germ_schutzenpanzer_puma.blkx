@@ -2481,7 +2481,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -2535,13 +2535,20 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "rotatedTurret": "bone_turret",
           "linkedAnimPart": {
             "verNode": "bone_camera_roll",
@@ -2626,7 +2633,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/5_56mm_MG4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/5_56mm_MG4_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2658,13 +2665,20 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2680,7 +2694,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2735,17 +2749,19 @@
         "dummy": true,
         "trigger": "gunner4",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_countermeasure_01_h",
-        "defaultYaw": 0.0,
+        "blk": "gamedata/weapons/dummy_weapon.blk",
+        "emitter": "bone_countermeasure_01_v",
+        "defaultYaw": -180.0,
         "defaultPitch": 0.0,
-        "speedYaw": 1000.0,
-        "speedPitch": 1000.0,
+        "speedYaw": 235.0,
+        "speedPitch": 235.0,
+        "accelYaw": 2200.0,
+        "accelPitch": 2200.0,
         "bullets": 1,
         "showBulletsInHud": false,
         "turret": {
           "head": "bone_countermeasure_01_h",
-          "gun": "countermeasure_01"
+          "gun": "bone_countermeasure_01_v"
         },
         "limits": {
           "yaw": [
@@ -2753,8 +2769,8 @@
             180.0
           ],
           "pitch": [
-            -0.0,
-            0.0
+            -15.0,
+            70.0
           ]
         }
       }
@@ -2762,33 +2778,40 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_schutzenpanzer_puma_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_schutzenpanzer_puma_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "counterMeasures": {
     "counterMeasure": {
       "turretIndex": 3,
-      "blk": "gameData/counterMeasures/muss.blk",
+      "blk": "gamedata/counterMeasures/muss_mjh.blk",
       "dmPart": [
         "countermeasure_01_dm",
         "electronic_equipment_dm"
       ],
+      "node": "bone_countermeasure_01_v",
       "ircmProjector": {
-        "node": "countermeasure_01",
+        "node": "bone_countermeasure_01_v",
         "beamRadius": [
-          500.0,
-          50.0
+          1500.0,
+          130.0
         ],
         "power": [
           0.02,
           0.04
         ],
         "glowOffset": [
-          0.15,
+          0.05,
           0.0,
           0.0
-        ]
+        ],
+        "modulation": {
+          "harmonic": {
+            "frequency": 0.5,
+            "amplitude": 0.2
+          }
+        }
       }
     }
   },
@@ -3808,16 +3831,25 @@
     }
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
-      "turretIndex": 0,
-      "designationTurretIndex": 0,
-      "dmPart": [
-        "optic_gun_dm",
-        "electronic_equipment_dm",
-        "power_system_dm"
-      ]
-    }
+    "sensor": [
+      {
+        "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
+        "turretIndex": 0,
+        "designationTurretIndex": 0,
+        "dmPart": [
+          "optic_gun_dm",
+          "electronic_equipment_dm",
+          "power_system_dm"
+        ]
+      },
+      {
+        "blk": "gamedata/sensors/muss_msh.blk",
+        "dmPart": [
+          "countermeasure_01_dm",
+          "electronic_equipment_dm"
+        ]
+      }
+    ]
   },
   "modifications": {
     "new_tank_tracks": {},
@@ -3897,7 +3929,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
               "turretIndex": 0,
               "designationTurretIndex": 0,
               "dmPart": [
@@ -3906,12 +3938,19 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk",
+              "blk": "gamedata/sensors/it_ralm-101.blk",
               "dmPart": "electronic_equipment_dm"
+            },
+            {
+              "blk": "gamedata/sensors/muss_msh.blk",
+              "dmPart": [
+                "countermeasure_01_dm",
+                "electronic_equipment_dm"
+              ]
             }
           ]
         }
@@ -3925,7 +3964,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/30mm_Rheinmetall_MK_30_2_ABM_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -3979,13 +4018,20 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "rotatedTurret": "bone_turret",
                 "linkedAnimPart": {
                   "verNode": "bone_camera_roll",
@@ -4070,7 +4116,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/5_56mm_MG4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/5_56mm_MG4_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -4102,13 +4148,20 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4124,7 +4177,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4179,17 +4232,19 @@
               "dummy": true,
               "trigger": "gunner4",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_countermeasure_01_h",
-              "defaultYaw": 0.0,
+              "blk": "gamedata/weapons/dummy_weapon.blk",
+              "emitter": "bone_countermeasure_01_v",
+              "defaultYaw": -180.0,
               "defaultPitch": 0.0,
-              "speedYaw": 1000.0,
-              "speedPitch": 1000.0,
+              "speedYaw": 235.0,
+              "speedPitch": 235.0,
+              "accelYaw": 2200.0,
+              "accelPitch": 2200.0,
               "bullets": 1,
               "showBulletsInHud": false,
               "turret": {
                 "head": "bone_countermeasure_01_h",
-                "gun": "countermeasure_01"
+                "gun": "bone_countermeasure_01_v"
               },
               "limits": {
                 "yaw": [
@@ -4197,15 +4252,15 @@
                   180.0
                 ],
                 "pitch": [
-                  -0.0,
-                  0.0
+                  -15.0,
+                  70.0
                 ]
               }
             },
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4387,24 +4442,23 @@
     }
   ],
   "ActiveProtectionSystem": {
-    "rearmTime": 45.0,
     "model": "muss",
     "verAngles": [
       -15.0,
-      35.0
+      70.0
     ],
     "horAngles": [
       -180.0,
       180.0
     ],
     "reactionTime": 0.3,
-    "reloadTime": 1.5,
     "targetSpeed": [
-      70.0,
+      20.0,
       1000.0
     ],
     "shotCount": 0,
-    "IRCM": {
+    "targetHoldTime": 1.5,
+    "Module": {
       "sensorPos": [
         0.0,
         0.5,
@@ -4414,15 +4468,20 @@
         -180.0,
         180.0
       ],
-      "emitter": "bone_countermeasure_01_h",
+      "emitter": "bone_countermeasure_01_v",
       "turretNodeName": "bone_countermeasure_01_h",
       "verAngles": [
         -15.0,
-        35.0
+        70.0
       ],
-      "distance": 20.0,
-      "sensorDistance": 250.0,
-      "reloadTime": 1.5,
+      "sensorDistance": 1500.0,
+      "angularRateMax": 4.0,
+      "standbyAngles": [
+        0.0,
+        0.0
+      ],
+      "parkWhenDisabled": true,
+      "requireSensorDetection": "continuous",
       "shotCount": 0,
       "blastDistance": 0.5,
       "additionalHeight": 4.0,
@@ -4434,7 +4493,7 @@
       "targets": {
         "lowspeed": {
           "speed": [
-            70.0,
+            20.0,
             1000.0
           ],
           "size": [
@@ -4444,31 +4503,31 @@
           "self": false,
           "ally": false
         }
-      },
-      "ammo": {
-        "mass": 1.2,
-        "explosiveType": "comp_b",
-        "explosiveMass": 0.5,
-        "damage": {
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.75,
-            "segment": {
-              "radiusScale": 2.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                0.0,
-                0.5
-              ],
-              "countPortion": 0.25
-            }
-          },
-          "shatterDamage": {
-            "breachConeAngle": 45.0
-          }
-        }
       }
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.618,
+      1.179,
+      1.5
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

@@ -792,7 +792,7 @@ struct PolarRadarIndicator : InteractableButton
 
       let color = is_color_or_white(data.lineColor)
 
-      // constraint: the scan range stays inverted (min > max) when no radar transceiver fills it
+      // the scan range stays inverted (min > max) when no radar transceiver fills it
       let hasScanRange = anglesInternal.y > anglesInternal.x
       let isScanMinInsideLimitsAboveEps = anglesInternal.x - anglesExternal.x > 2.0 * FLT_EPSILON
       let isScanMaxInsideLimitsAboveEps = anglesExternal.y - anglesInternal.y > 2.0 * FLT_EPSILON

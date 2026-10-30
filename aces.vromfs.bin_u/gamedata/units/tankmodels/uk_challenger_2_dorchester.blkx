@@ -781,6 +781,9 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -856,6 +859,14 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1172,6 +1183,16 @@
         "armorThrough": 20.0,
         "armorThickness": 10.0,
         "hp": 20.0
+      }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
       }
     }
   },
@@ -2448,7 +2469,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_L30A1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_L30A1_user_cannon.blk",
         "shotFreq": 0.2,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -2457,6 +2478,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 31.0,
         "speedPitch": 11.0,
         "fireConeAngle": 1.0,
@@ -2581,7 +2606,7 @@
         "linkShellCasingToGun": true,
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2624,7 +2649,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_01_dm",
@@ -2681,7 +2706,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "smoke",
-        "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "emtr_mortar_flame_01",
@@ -2731,7 +2756,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2787,7 +2812,7 @@
   "weapon_presets": {
     "preset": {
       "name": "uk_challenger_2_dorchester_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_challenger_2_dorchester_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/uk_challenger_2_dorchester_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2839,13 +2864,13 @@
     "engine": {
       "horsePowers": 1314.0,
       "maxRPM": 2300.0,
-      "minRPM": 660.0,
+      "minRPM": 600.0,
       "manufacturer": "perkins",
       "model": "cv12_6a"
     },
     "mechanics": {
       "steerType": "clutch_braking",
-      "maxBrakeForce": 350000.0,
+      "maxBrakeForce": 400000.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 4.38,
       "sideGearRatio": 1.0,
@@ -2918,6 +2943,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "trackEffects": {
     "top": false
@@ -3806,7 +3843,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_L30A1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_L30A1_user_cannon.blk",
               "shotFreq": 0.2,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
@@ -3931,7 +3968,7 @@
               "linkShellCasingToGun": true,
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3974,7 +4011,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_l37a2_enforcer_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_l37a2_enforcer_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_02",
               "flash": "emtr_mg_flame_03",
               "barrelDP": "gun_barrel_03_dm",
@@ -4083,7 +4120,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4133,7 +4170,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4750,10 +4787,6 @@
   "xrayOverride": {
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
-      "hideDescription": true
-    },
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
       "hideDescription": true
     },
     "turret_hydraulics_dm": {

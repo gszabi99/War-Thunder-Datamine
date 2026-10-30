@@ -50,6 +50,6 @@ class BhvHint {
 
 replace_script_gui_behaviour("bhvHint", BhvHint)
 
-return {
+return freeze({
   bhvHintForceUpdateValuePID
-}
+})

@@ -1,9 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getMapByName
+from "%scripts/worldWar/operations/model/wwGlobalStatusType.nut" import setStatusTypeLoadList
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { wwStatusType, setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 let WwOperationsGroup = class {
   mapId = ""

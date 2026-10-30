@@ -312,7 +312,7 @@ def bipod_human_pre_phys_act_es(evt : CmdPrePhysUpdate;
                                 bipod__isCrawl : bool;
                                 transform : float3x4;
                                 bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.06);
-                                bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.06);
+                                bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.0);
                                 human_cam__calculatedOffset : DPoint3 const?;
                                 human_cam__offsetMult : float = 1.0;
                                 human_weap__currentGunEid : EntityId;
@@ -414,7 +414,7 @@ def bipod_human_post_phys_act_es(evt : CmdPostPhysUpdate;
                                  bipod__enabled : bool;
                                  bipod__isCrawl : bool;
                                  bipod__fpvCorrectionBodyOffset : float2 = float2(0.0, 0.06);
-                                 bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.06);
+                                 bipod__fpvCorrectionBodyOffsetCrawl : float2 = float2(0.0, 0.0);
                                  var bipod__prevBodyDirYaw : float&;
                                  var bipod__prevBodyDirYawDelta : float&;
                                  var human_net_phys : HumanActor&)
@@ -488,7 +488,7 @@ def human_bipod_deattached_from_ri_es(evt : EventRendInstDestroyed;
     bipod__attachedToRi = RIEX_HANDLE_NULL
 
 
-[es(tag=server, track=bipod__enabled)]
+[es(tag=server, track=(bipod__enabled, bipod__anchorPos))]
 def human_bipod_attached_to_ri_es(evt : Event; bipod__enabled : bool; bipod__anchorPos : float3; var bipod__attachedToRi : uint64&)
   if !bipod__enabled
     bipod__attachedToRi = RIEX_HANDLE_NULL

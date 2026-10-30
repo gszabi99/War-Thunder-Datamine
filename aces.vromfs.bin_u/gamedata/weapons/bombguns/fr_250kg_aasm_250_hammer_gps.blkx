@@ -9,7 +9,14 @@
   "mesh_deployed": "fr_250kg_aasm_250_hammer_inertiel_deployed",
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.273,
     "length": 3.11,
     "WdK": [
@@ -29,47 +36,41 @@
     "fireDelay": 2.0,
     "timeLife": 250.0,
     "thrustVectoringAngle": 0.05,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
     "maxSpeed": 340.0,
-    "endSpeed": 0.0,
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 60000.0,
+    "loadFactorMax": 15.0,
     "guidanceType": "sns",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "comp_h6",
+    "explosiveMass": 87.1,
+    "warheadMass": 240.9,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "bomb_ground",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_bomb",
+    "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "explosiveType": "comp_h6",
-    "explosiveMass": 87.1,
-    "maxDeltaAngle": 0.02,
-    "thrustDeviation": 0.01,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -90,18 +91,14 @@
       -0.19,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.25,
-      "finsAoaVer": 0.25
-    },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
+      "angleMax": 180.0,
       "positionError": 7.0,
       "breakLockMaxTime": 250.0,
       "guidanceAutopilot": {
@@ -137,26 +134,26 @@
         "accelControlDiff": 0.001
       }
     },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
         0.5
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.6
       ],
       "mod3": [
         30.0,
-        0.99
+        1.0
       ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.75
       }
     },
     "DamageParts": {

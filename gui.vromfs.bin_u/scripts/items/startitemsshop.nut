@@ -1,12 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/items/itemsManager.nut" import isItemsManagerEnabled
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "eventbus" import eventbus_subscribe
 from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
-
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function gui_start_items_list(curTab, params = null) {
   if (!isItemsManagerEnabled())
@@ -29,8 +28,8 @@ function gui_start_inventory(params = null) {
 eventbus_subscribe("gui_start_itemsShop", gui_start_itemsShop)
 eventbus_subscribe("gui_start_inventory", gui_start_inventory)
 
-return {
+return freeze({
   gui_start_itemsShop
   gui_start_inventory
   gui_start_items_list
-}
+})

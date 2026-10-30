@@ -1,6 +1,8 @@
 from "%rGui/missionState.nut" import scoreLimit, localTeam, ticketsTeamA, ticketsTeamB
 from "%rGui/hud/scoreboard/hudElemsPkg.nut" import mkTeamProgress, mkTeamCapPoint
 from "%rGui/hud/capZones/capZonesState.nut" import startPollingZonesState, stopPollingZonesState, capZones
+from "%rGui/hud/plantSites/plantSitesState.nut" import plantSitesList
+from "%rGui/hud/plantSites/plantSiteHudPoint.nut" import mkPlantSiteHudPoint
 from "console" import register_command
 from "%rGui/globals/ui_library.nut" import *
 
@@ -10,14 +12,22 @@ const ANIM_TRIGGER_ENEMY = "main_anim_enemy"
 
 function mkCaptureZones() {
   let zonesCount = Computed(@() capZones.get().len())
-  return @() {
-    watch = zonesCount
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(2)
-    valign = ALIGN_CENTER
-    children = capZones.get().map(function(_cz, idx) {
-      return mkTeamCapPoint(Computed(@() capZones.get()?[idx]), localTeam)
-    })
+  let zonePoints = {}
+  function getZonePoint(idx) {
+    if (idx not in zonePoints)
+      zonePoints[idx] <- mkTeamCapPoint(Computed(@() capZones.get()?[idx]), localTeam)
+    return zonePoints[idx]
+  }
+  return function() {
+    let children = capZones.get().map(@(_cz, idx) getZonePoint(idx))
+    children.extend(plantSitesList.get().filter(@(s) s.isActive).map(mkPlantSiteHudPoint))
+    return {
+      watch = [zonesCount, plantSitesList]
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(2)
+      valign = ALIGN_CENTER
+      children
+    }
   }
 }
 

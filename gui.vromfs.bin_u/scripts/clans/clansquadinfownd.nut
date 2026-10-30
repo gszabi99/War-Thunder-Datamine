@@ -1,20 +1,20 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign
+from "%scripts/user/usersInfoManager.nut" import requestUsersInfo
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/user/playerContextMenu.nut" import showChatPlayerRClickMenu
+from "%scripts/contacts/contacts.nut" import getContact
 from "%scripts/dagui_library.nut" import *
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let clanSquadInfoWnd = class (BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
@@ -168,4 +168,4 @@ let clanSquadInfoWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("clanSquadInfoWnd", clanSquadInfoWnd)
 
-return { clanSquadInfoWnd }
+return freeze({ clanSquadInfoWnd })

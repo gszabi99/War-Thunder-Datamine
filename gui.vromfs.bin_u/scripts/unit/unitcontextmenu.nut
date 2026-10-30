@@ -1,3 +1,55 @@
+import "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" as slotbarPresets
+import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
+import "%scripts/slotbar/selectUnitHandler.nut" as selectUnitHandler
+import "%scripts/slotbar/selectGroupHandler.nut" as selectGroupHandler
+import "%scripts/crew/crewModalByVehiclesGroups.nut" as crewModalByVehiclesGroups
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+import "%scripts/openCrossPromoWnd.nut" as openCrossPromoWnd
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+from "%scripts/user/profileHandler.nut" import Profile, guiStartProfile
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/money.nut" import Cost
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/onlineShop/entitlementsShopData.nut" import getShopItem, canUseIngameShop, getShopItemsTable
+from "%scripts/unit/unitActions.nut" import repairWithMsgBox, flushSquadronExp, buyUnit, research
+from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
+from "%scripts/weaponry/weaponryInfo.nut" import checkUnitWeapons, checkUnitSecondaryWeapons, needSecondaryWeaponsWnd
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, canResearchUnit, isUnitInResearch, canShowUnitInfo, isUnitUsable, isUnitFeatureLocked, isUnitResearched, isTestFlightAvailable
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
+from "%scripts/unit/unitChecks.nut" import checkForResearch
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/unlocks/unlockMarkers.nut" import getUnlockIdByUnitName, hasMarkerByUnitName
+from "%scripts/unit/unitInfo.nut" import getUnitCountry, getUnitReqExp, getUnitExp, getUnitCost
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo
+from "%scripts/missions/modificationTutorial.nut" import needShowUnseenModTutorialForUnit
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/customization/contentPreview.nut" import gui_start_decals, guiStartInfantryCamouflage
+from "%scripts/missionBuilder/testFlightState.nut" import guiStartTestflight
+from "%scripts/wishlist/wishlistManager.nut" import hasInWishlist, isWishlistFull, canAddUnitToWishlist
+from "%scripts/wishlist/addWishWnd.nut" import tryAddToWishlist
+from "%scripts/crew/crewDiscount.nut" import getCrewMaxDiscountByInfo, getCrewDiscountInfo
+from "%scripts/wishlist/wishlistHandler.nut" import openWishlist
+from "%scripts/crew/crew.nut" import isCrewNeedUnseenIcon, gui_modal_crew
+from "%scripts/unit/unitWikiInfo.nut" import openUnitWikiInfo
+from "%scripts/items/unitCoupons.nut" import getUnitCoupon, hasUnitCoupon
+from "%scripts/discounts/discountUtils.nut" import getMaxWeaponryDiscountByUnitName
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/matchingRooms/sessionLobbyState.nut" import canChangeCrewUnits
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/utils/delayedTooltip.nut" import delayedTooltipOnHover
+from "%scripts/convertExp/convertExp.nut" import openConvertExpModalWnd
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/unit/unitEvents.nut" import hasUnitEvent, getUnitEventId, isUnitOnlyFromEvent
+from "%scripts/customization/infantryCamouflageStorage.nut" import getSkinsSeenList
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "string" import format
@@ -7,58 +59,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { Profile, guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { getShopItem, canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { repairWithMsgBox, flushSquadronExp, buyUnit, research } = require("%scripts/unit/unitActions.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
-let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
-let crewModalByVehiclesGroups = require("%scripts/crew/crewModalByVehiclesGroups.nut")
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { checkUnitWeapons, checkUnitSecondaryWeapons, needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, canResearchUnit, isUnitInResearch, canShowUnitInfo, isUnitUsable, isUnitFeatureLocked, isUnitResearched, isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
-let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getUnitCountry, getUnitReqExp, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
-let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { gui_start_decals, guiStartInfantryCamouflage } = require("%scripts/customization/contentPreview.nut")
-let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { hasInWishlist, isWishlistFull, canAddUnitToWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { tryAddToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
-let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
-let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-let { isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
-let { openUnitWikiInfo } = require("%scripts/unit/unitWikiInfo.nut")
-let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
-let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
-let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { hasUnitEvent, getUnitEventId, isUnitOnlyFromEvent } = require("%scripts/unit/unitEvents.nut")
-let { getSkinsSeenList } = require("%scripts/customization/infantryCamouflageStorage.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,

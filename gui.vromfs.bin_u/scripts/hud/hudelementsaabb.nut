@@ -1,14 +1,15 @@
 import "hudState" as hudState
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/hud/hudHitCamera.nut" import getHitCameraAABB
+from "%scripts/hud/actionBarState.nut" import actionBarItems
+from "%scripts/hud/hudActionBar.nut" import getActionBarObjId
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb
+from "%appGlobals/hud/hudState.nut" import mpScoreBox
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
-let { getActionBarObjId } = require("%scripts/hud/hudActionBar.nut")
-let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 
 function getAabbObjFromHud(hudFuncName) {
   let handler = handlersManager.findHandlerClassInScene(get_gui_handler("Hud"))
@@ -18,9 +19,11 @@ function getAabbObjFromHud(hudFuncName) {
   return getDaguiObjAabb(handler[hudFuncName]())
 }
 
-let dmPanelStatesAabb = mkWatched(persist, "dmPanelStatesAabb", {})
-let twsPanelStateAabb = persist("twsPanelStateAabb", @() {})
-let helicopterHudStatesAabb = {}
+let hardPersist = mkHardPersist("hud.hudElementsAabb")
+
+let dmPanelStatesAabb = mkHardPersistWatched("hud.hudElementsAabb")("dmPanelStatesAabb", {})
+let twsPanelStateAabb = hardPersist("twsPanelStateAabb", {})
+let helicopterHudStatesAabb = hardPersist("helicopterHudStatesAabb", {})
 
 let prevHashAabbParams = {}
 
@@ -114,7 +117,7 @@ let aabbList = {
   map = @() getAabbObjFromHud("getTacticalMapObj")
   rwr = getTwsRadarAabb
   hitCamera = @() getHitCameraAABB()
-  multiplayerScore = @() getAabbObjFromHud("getMultiplayerScoreObj")
+  multiplayerScore = @() mpScoreBox.get()
   dmPanel = getDamagePannelAabb
   tankDebuffs = getDamagePannelAabb
   aircraftInstruments = getAircraftInstrumentsAabb
@@ -145,7 +148,7 @@ eventbus_subscribe("update_tws_panel_state", @(value) updateTwsPanelState(value)
 
 eventbus_subscribe("update_helicopter_hud_aabb_state", @(params) updateHelicopterHudAabbState(params))
 
-return {
+return freeze({
   getHudElementAabb
   dmPanelStatesAabb
-}
+})

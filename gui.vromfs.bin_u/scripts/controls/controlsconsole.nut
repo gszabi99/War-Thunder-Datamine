@@ -1,19 +1,19 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/genericOptions.nut" import GenericOptionsModal
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExt.nut" import set_option, create_options_container, get_option
+from "%scripts/options/optionsExtNames.nut" import USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTY_HUMAN, USEROPT_INVERTCAMERAY, USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY
+  , USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y
+from "%scripts/controls/startControls.nut" import switchControlsMode
+from "%scripts/help/helpWnd.nut" import gui_modal_help
+from "%scripts/controls/controlsUtils.nut" import gui_modal_controlsWizard
 from "%sqstd/platform.nut" import is_xbox
 from "mission" import get_game_mode
 from "%scripts/dagui_natives.nut" import ps4_headtrack_get_enable, ps4_headtrack_calibrate, ps4_headtrack_is_attached, ps4_headtrack_is_active
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTY_HUMAN, USEROPT_INVERTCAMERAY, USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY, USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y } = require("%scripts/options/optionsExtNames.nut")
-let { switchControlsMode } = require("%scripts/controls/startControls.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
 
 register_gui_handler("ControlsConsole", class (GenericOptionsModal) {
   wndType = handlerType.BASE
@@ -57,9 +57,9 @@ register_gui_handler("ControlsConsole", class (GenericOptionsModal) {
   }
 
   function onControlsHelp() {
-    this.applyFunc = function() {
+    this.applyFunc = function(optionsHandler) {
       gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
-      this.applyFunc = null
+      optionsHandler.applyFunc = null
     }
     this.applyOptions()
   }

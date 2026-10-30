@@ -1,6 +1,6 @@
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/options/optionsExtNames.nut" import USEROPT_HELPERS_MODE
 from "%scripts/dagui_library.nut" import *
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_HELPERS_MODE } = require("%scripts/options/optionsExtNames.nut")
 
 return [{
   id = "helpers_mode"

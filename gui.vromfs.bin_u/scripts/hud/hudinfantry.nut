@@ -1,15 +1,15 @@
+from "%scripts/hud/baseUnitHud.nut" import BaseUnitHud
+from "%scripts/hud/iconedHints.nut" import initIconedHints
+from "%scripts/hud/hudActionBar.nut" import ActionBar
+from "%scripts/hud/hudDisplayTimers.nut" import hudDisplayTimersInit, hudDisplayTimersReInit
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/help/helpWnd.nut" import gui_modal_help
 from "%appGlobals/hudSquadMembers.nut" import hudSquadBlockCollapsed
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
-
-let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
-let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
-let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
-let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+from "%scripts/hud/dargHudLayers.nut" import infantryKillFeedPlace
 
 const LOCAL_SQUAD_COLLAPSED_STATE_ID = "savedCollapsedHudSquad"
 hudSquadBlockCollapsed.subscribe(@(v) saveLocalAccountSettings(LOCAL_SQUAD_COLLAPSED_STATE_ID, v))
@@ -18,6 +18,8 @@ const SEEN_HELP_ID = "seenInfantryHelpOnFirstGame"
 
 let HudInfantry = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudInfantry.blk"
+  killFeedPlace = infantryKillFeedPlace
+  hasMpScore = true
 
   function initScreen() {
     base.initScreen()
@@ -31,7 +33,6 @@ let HudInfantry = class (BaseUnitHud) {
     )
     this.actionBarWeak = actionBar.weakref()
     this.updateShowHintsNest()
-    this.updatePosHudMultiplayerScore()
 
     let isCollapsed = loadLocalAccountSettings(LOCAL_SQUAD_COLLAPSED_STATE_ID, false)
     hudSquadBlockCollapsed.set(isCollapsed)
@@ -55,6 +56,6 @@ let HudInfantry = class (BaseUnitHud) {
 
 register_command(@() saveLocalAccountSettings(SEEN_HELP_ID, false), "debug.resetSeenInfantryHelp")
 
-return {
+return freeze({
   HudInfantry
-}
+})

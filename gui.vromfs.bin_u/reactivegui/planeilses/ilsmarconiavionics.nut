@@ -63,40 +63,35 @@ function generatePitchLine(num) {
     size = const [pw(60), ph(40)]
     pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -20, 0, 30, 0],
-          [VECTOR_LINE, 70, 0, 120, 0]
-        ]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, 0, 5 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0],
-          (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
-          [VECTOR_LINE, 100, 5 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
-          (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : [])
-        ]
-        children = newNum <= 90 && newNum % 5 == 0 ? [angleTxt(newNum, true, 1, pw(-25)), angleTxt(newNum, false, 1, pw(25))] : null
-      }
-    ]
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, -20, 0, 30, 0],
+        [VECTOR_LINE, 70, 0, 120, 0]
+      ]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        [VECTOR_LINE, 0, 5 * sign, 0, 0],
+        [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0],
+        (num < 0 ? const [VECTOR_LINE, 10, 0, 17, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 23, 0, 30, 0] : const []),
+        [VECTOR_LINE, 100, 5 * sign, 100, 0],
+        [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
+        (num < 0 ? const [VECTOR_LINE, 90, 0, 83, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 77, 0, 70, 0] : const [])
+      ]
+      children = newNum <= 90 && newNum % 5 == 0 ? [angleTxt(newNum, true, 1, pw(-25)), angleTxt(newNum, false, 1, pw(25))] : null
+    }
   }
 }
 
@@ -112,7 +107,7 @@ function KaiserTvvLinked(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 50, 50],
           [VECTOR_LINE, -50, 0, -100, 0],
           [VECTOR_LINE, 50, 0, 100, 0],
@@ -136,7 +131,7 @@ let adlMarker = @() {
   size = const [pw(3), ph(3)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, -40, 0],
     [VECTOR_LINE, 0, -100, 0, -40],
     [VECTOR_LINE, 100, 0, 40, 0],
@@ -285,9 +280,7 @@ function altWrap(width, height, generateFunc) {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.75, height * 0.2]
     clipChildren = true
-    children = [
-      altitude(height * 0.5, generateFunc)
-    ]
+    children = altitude(height * 0.5, generateFunc)
   }
 }
 
@@ -342,7 +335,7 @@ function radarTarget(width, height) {
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [
+    commands = const [
       [VECTOR_RECTANGLE, -50, -50, 100, 100]
     ]
     animations = [
@@ -418,90 +411,82 @@ let AamIsReady = Computed(@() GuidanceLockState.get() == GuidanceLockResult.RESU
 let aamCircle = @() {
   watch = IlsTrackerVisible
   size = FLEX
-  children = IlsTrackerVisible.get() ? [
-    @() {
-      watch = [AamIsReady, IlsColor]
-      size = const [pw(10), ph(10)]
+  children = IlsTrackerVisible.get() ? @() {
+    watch = [AamIsReady, IlsColor]
+    size = const [pw(10), ph(10)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = const [
+      [VECTOR_LINE, -10, 0, 0, -10],
+      [VECTOR_LINE, 10, 0, 0, 10],
+      [VECTOR_LINE, 0, -10, 10, 0],
+      [VECTOR_LINE, 0, 10, -10, 0],
+    ]
+    children = AamIsReady.get() ? @() {
+      watch = IlsColor
+      key = $"AamIlsAnim_1"
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_LINE, -10, 0, 0, -10],
-        [VECTOR_LINE, 10, 0, 0, 10],
-        [VECTOR_LINE, 0, -10, 10, 0],
-        [VECTOR_LINE, 0, 10, -10, 0],
+      commands = const [
+        [VECTOR_ELLIPSE, 0, 0, 100, 100],
+        [VECTOR_LINE, -115, 0, -100, 0],
+        [VECTOR_LINE, 0, -115, 0, -100]
       ]
-      children = AamIsReady.get() ? [
-        @() {
-          watch = IlsColor
-          key = $"AamIlsAnim_1"
-          size = FLEX
-          rendObj = ROBJ_VECTOR_CANVAS
-          color = IlsColor.get()
-          fillColor = Color(0, 0, 0, 0)
-          lineWidth = baseLineWidth * IlsLineScale.get()
-          commands = [
-            [VECTOR_ELLIPSE, 0, 0, 100, 100],
-            [VECTOR_LINE, -115, 0, -100, 0],
-            [VECTOR_LINE, 0, -115, 0, -100]
-          ]
-          animations = [
-            { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, play = true, loop = true }
-          ]
-        }
-      ] : [
-        @() {
-          watch = IlsColor
-          key = $"AamIlsAnim_0"
-          size = FLEX
-          rendObj = ROBJ_VECTOR_CANVAS
-          color = IlsColor.get()
-          fillColor = Color(0, 0, 0, 0)
-          lineWidth = baseLineWidth * IlsLineScale.get()
-          commands = [
-            [VECTOR_ELLIPSE, 0, 0, 100, 100],
-            [VECTOR_LINE, -115, 0, -100, 0],
-            [VECTOR_LINE, 0, -115, 0, -100]
-          ]
-        }
+      animations = [
+        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, play = true, loop = true }
       ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = [IlsTrackerX.get(), IlsTrackerY.get()]
-        }
+    } : @() {
+      watch = IlsColor
+      key = $"AamIlsAnim_0"
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.get()
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      commands = const [
+        [VECTOR_ELLIPSE, 0, 0, 100, 100],
+        [VECTOR_LINE, -115, 0, -100, 0],
+        [VECTOR_LINE, 0, -115, 0, -100]
+      ]
+    }
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [IlsTrackerX.get(), IlsTrackerY.get()]
       }
     }
-  ] : null
+  } : null
 }
 
 let LCOSwatch = Computed(@() !isAAMMode.get() && !CCIPMode.get() && !BombingMode.get())
 let lcos = @() {
   watch = LCOSwatch
   size = FLEX
-  children = LCOSwatch.get() ? [
-    @() {
-      watch = IlsColor
-      size = const [pw(10), ph(10)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      fillColor = Color(0, 0, 0, 0)
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100],
-        [VECTOR_ELLIPSE, 0, 0, 10, 10],
-        [VECTOR_LINE, 0, -100, 0, -110],
-        [VECTOR_LINE, 100, 0, 110, 0]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = TargetPos.get()
-        }
+  children = LCOSwatch.get() ? @() {
+    watch = IlsColor
+    size = const [pw(10), ph(10)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    fillColor = Color(0, 0, 0, 0)
+    commands = const [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100],
+      [VECTOR_ELLIPSE, 0, 0, 10, 10],
+      [VECTOR_LINE, 0, -100, 0, -110],
+      [VECTOR_LINE, 100, 0, 110, 0]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = TargetPos.get()
       }
     }
-  ] : null
+  } : null
 }
 
 function ccip(width, height) {
@@ -517,7 +502,7 @@ function ccip(width, height) {
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
         fillColor = Color(0, 0, 0, 0)
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 100, 100],
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
@@ -559,9 +544,9 @@ function ccrp(height) {
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
-          [VECTOR_LINE, 0, 0, 0, 0],
+          const [VECTOR_LINE, 0, 0, 0, 0],
           [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 0.8],
-          [VECTOR_RECTANGLE, -50, -50, 100, 100]
+          const [VECTOR_RECTANGLE, -50, -50, 100, 100]
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
@@ -577,14 +562,14 @@ function ccrp(height) {
         size = FLEX
         color = IlsColor.get()
         commands = [
-          (TargetPosValid.get() ? [VECTOR_LINE, 0, 100, 0, -100] : [])
+          (TargetPosValid.get() ? const [VECTOR_LINE, 0, 100, 0, -100] : const [])
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
             translate = TargetPosValid.get() ? [TargetPos.get()[0], clamp(TargetPos.get()[1], 0, height)] : [TargetPos.get()[0], height]
             rotate = -Roll.get()
-            pivot = [0, 0]
+            pivot = 0
           }
         }
       },

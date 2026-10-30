@@ -1,15 +1,16 @@
-from "%sqstd/string.nut" import clearBorderSymbolsMultiline, replace
+import "%scripts/dirtyWordsFilter.nut" as dirtyWordsFilter
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CHAT_FILTER, USEROPT_ONLY_FRIENDLIST_CONTACT
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts, isPlayerInFriendsGroup
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/contacts/contactsListState.nut" import clanUserTable
+from "%scripts/chat/localizedMessages.nut" import validateChatMessage
+from "%sqstd/string.nut" import replace
+from "%sqStdLibs/helpers/daguiString.nut" import clearBorderSymbolsMultiline
 from "console" import register_command
 from "mission" import get_mplayers_list, GET_MPLAYERS_LIST
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_CHAT_FILTER, USEROPT_ONLY_FRIENDLIST_CONTACT } = require("%scripts/options/optionsExtNames.nut")
-let { isPlayerNickInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 
 function getChatObject(scene) {
   if (!checkObj(scene))
@@ -30,7 +31,6 @@ function isUserBlockedByPrivateSetting(uid = null, name = "") {
     || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
-let { validateChatMessage } = require("%scripts/chat/localizedMessages.nut")
 
 function validateThreadTitle(title) {
   local res = title.replace("\\n", "\n")
@@ -101,7 +101,7 @@ function addTextToEditbox(obj, text) {
     obj.setValue($"{value}{text}")
 }
 
-return {
+return freeze({
   getChatObject
   isUserBlockedByPrivateSetting
   validateThreadTitle
@@ -112,4 +112,4 @@ return {
   filterNameFromHtmlCodes
   addTextToEditbox
   addTagsForMpPlayers
-}
+})

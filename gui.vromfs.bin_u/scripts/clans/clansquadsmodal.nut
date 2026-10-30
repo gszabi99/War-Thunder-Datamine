@@ -1,28 +1,28 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/squads/squadApplications.nut" as squadApplications
+from "%scripts/chat/chatStorage.nut" import getRoomById
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/guiBhv/bhvPosNavigator.nut" import posNavigator
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/clans/clanSquadInfoWnd.nut" import clanSquadInfoWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/invites/invitesClasses.nut" import findInviteClass
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/contacts/contactsListState.nut" import getContactByName
+from "%scripts/user/playerContextMenu.nut" import showChatPlayerRClickMenu
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/user/presenceType.nut" import getByPresenceParams
+from "%scripts/invites/invites.nut" import findInviteByUid
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { getRoomById } = require("%scripts/chat/chatStorage.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { posNavigator } = require("%scripts/sqDagui/guiBhv/bhvPosNavigator.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { clanSquadInfoWnd } = require("%scripts/clans/clanSquadInfoWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
-let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
-let { findInviteByUid } = require("%scripts/invites/invites.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -475,4 +475,4 @@ let MyClanSquadsListModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MyClanSquadsListModal", MyClanSquadsListModal)
 
-return { MyClanSquadsListModal }
+return freeze({ MyClanSquadsListModal })

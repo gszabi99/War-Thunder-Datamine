@@ -120,10 +120,7 @@ let pilotHud = @() {
 function helicopterArbiterHud() {
   return @() {
     watch = IsArbiterHudVisible
-    children = IsArbiterHudVisible.get() ?
-    [
-      helicopterArbiterParamsTable(HudColor)
-    ]
+    children = IsArbiterHudVisible.get() ? helicopterArbiterParamsTable(HudColor)
     : null
   }
 }
@@ -190,7 +187,7 @@ let helicopterHud = @() {
   }
 }
 
-return {
+return freeze({
   helicopterParamsTableView
   helicopterHud
-}
+})

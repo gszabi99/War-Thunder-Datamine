@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1929,7 +1935,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_T185E1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_T185E1_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "shellCasingEmitter": "emtr_shell",
@@ -2006,7 +2012,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "recoilOffset": 0.0,
@@ -2050,7 +2056,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M37_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M37_user_machinegun.blk",
         "emitter": "bone_gun_barrel_03",
         "flash": "emtr_gun_flame_03",
         "defaultYaw": 0.0,
@@ -2094,7 +2100,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M37_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M37_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2138,7 +2144,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "speedYaw": 0.0,
         "speedPitch": 0.0,
@@ -2169,7 +2175,7 @@
   "weapon_presets": {
     "preset": {
       "name": "us_t92_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_t92_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/us_t92_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4013,5 +4019,29 @@
       45.0,
       90.0
     ]
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -1.757,
+      1.2943,
+      0.94
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

@@ -1501,7 +1501,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_03",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1538,7 +1538,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/170mm_BAe_Swingfire_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/170mm_BAe_Swingfire_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1625,7 +1625,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
         "emitter": "bone_gun_01",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1682,7 +1682,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1712,8 +1712,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_fv102_striker_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_fv102_striker_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2779,7 +2779,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_gun_03",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -2816,7 +2816,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/170mm_BAe_Swingfire_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/170mm_BAe_Swingfire_launcher_user_cannon.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -2903,7 +2903,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
               "emitter": "bone_gun_01",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -2960,7 +2960,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -2989,7 +2989,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3166,5 +3166,29 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.414,
+      0.917,
+      0.992
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

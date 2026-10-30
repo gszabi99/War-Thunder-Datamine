@@ -1,15 +1,15 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/debriefing/debriefingFull.nut" import getDynamicResult
 from "dynamicMission" import dynamicGetVisual
 from "%scripts/dagui_natives.nut" import get_session_warpoints
 from "%scripts/dagui_library.nut" import *
 from "guiMission" import MISSION_STATUS_SUCCESS
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 let CampaignResults = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/debriefingCamp.blk"
@@ -64,6 +64,6 @@ let CampaignResults = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("CampaignResults", CampaignResults)
 
-return {
+return freeze({
   guiStartDynamicResults = @() handlersManager.loadHandler(CampaignResults)
-}
+})

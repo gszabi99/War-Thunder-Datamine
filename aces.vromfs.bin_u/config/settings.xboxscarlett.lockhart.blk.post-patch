@@ -16,7 +16,7 @@
   multislicedImpostors:b=no
   forcePanoramaInHangar:b=yes
   waterChopDetailWavesAllowed:b=no
-  bloomQuality:i=1
+  bloomQuality:i=3
 }
 
 "@override:texStreaming" {
@@ -142,10 +142,21 @@ console_presets {
     "@override:hangar"
     {
       "@override:enabled":b = false
+      "@override:ship"
+      {
+        "@override:enabled":b = false
+      }
     }
-    "@override:hangar_ship"
-    {
-      "@override:enabled":b = false
+  }
+}
+
+"@override:shadows" {
+  "@override:medium" {
+    "@override:contactShadows" { // Series S: no contact and SWRT shadows on aircraft
+      "@override:aircraft" { "@override:contactShadowsQuality":i = 0 }
+    }
+    "@override:swrtShadows" {
+      "@override:aircraft" { "@override:enabled":b = no }
     }
   }
 }

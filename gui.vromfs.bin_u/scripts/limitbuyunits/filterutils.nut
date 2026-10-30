@@ -1,11 +1,10 @@
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched
+from "%scripts/user/balance.nut" import get_balance
+from "%scripts/unit/unitInfo.nut" import getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_library.nut" import *
-
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { get_balance } = require("%scripts/user/balance.nut")
-let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 function getUnitBuyTypes(unit) {
   let res = []
@@ -63,9 +62,9 @@ function getUnitAvailabilityForBuyType(unit) {
   return res
 }
 
-return {
+return freeze({
   getUnitBuyTypes
   isIntersects
   isFullyIncluded
   getUnitAvailabilityForBuyType
-}
+})

@@ -21,6 +21,6 @@ function isDeviceConnected(devId = null) {
   return false
 }
 
-return {
+return freeze({
   isDeviceConnected
-}
+})

@@ -1,9 +1,9 @@
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
 from "dagor.time" import get_time_msec
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "math" import clamp, abs, max, min
 
-let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
 let { g_wrap_dir } = require("wrapDir.nut")
 
 const DEF_HOLD_DELAY = 700 
@@ -599,4 +599,4 @@ let posNavigator = class {
 
 replace_script_gui_behaviour("posNavigator", posNavigator)
 
-return {posNavigator}
+return freeze({posNavigator})

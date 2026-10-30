@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-let params = Watched(null)
+let params = mkWatchedClearedOnReload(null)
 
 return params

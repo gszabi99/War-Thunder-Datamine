@@ -1,11 +1,10 @@
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockRewardsText
+from "%scripts/items/trophyMultiAward.nut" import isPrizeMultiAward
 from "%sqstd/string.nut" import cutPostfix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
-
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
 
 let unlockAddProgressView = {
   battlpass_progress = {

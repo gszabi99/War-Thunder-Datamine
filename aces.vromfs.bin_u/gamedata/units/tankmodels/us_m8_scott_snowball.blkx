@@ -47,6 +47,12 @@
   "additionalEcsTemplate": "event_snowball_unit",
   "forcedLanguage": "NyEvent",
   "hitSfxFromEffect": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "hangar_technic_female_elf_idle_2_char",
@@ -3397,7 +3403,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/75mm_snowball_event_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/75mm_snowball_event_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "defaultYaw": 0.0,
@@ -3500,7 +3506,7 @@
   "weapon_presets": {
     "preset": {
       "name": "us_m8_scott_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m8_scott_snowball_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/us_m8_scott_snowball_default.blk"
     }
   },
   "ammoStowages": {

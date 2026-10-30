@@ -1,17 +1,18 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/weaponry/weaponryInfo.nut" import isMissileWeapon, isMissileBullet, isGuidedBomb
+from "%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut" import getBulletCacheSaveId
+from "%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut" import GraphCompareBulletsWnd
+from "%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut" import mkSliderMarkup
+from "%scripts/unit/statCardInfo.nut" import getStatCardInfo
 from "console" import register_command
-from "unitCalculcation" import buildMissileTrajectoryData
+from "%scripts/unit/unitCalcRequests.nut" import buildMissileTrajectoryData
 from "dagor.math" import Point3
 from "%sqstd/math.nut" import round_by_value
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isMissileWeapon, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
-let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
-let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
-let { mkSliderMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
-let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { graphColorList } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 
 
 function canRequestTrajectorys(wType, bType, _hasNestedRocketBlk = false) {
@@ -197,6 +198,6 @@ register_command(@() openMissileTrajectoryWnd({
   unit = getAircraftByName("nt_mig_23mld")
 }), "debug.open_missile_trajectory_wnd")
 
-return {
+return freeze({
   openMissileTrajectoryWnd
-}
+})

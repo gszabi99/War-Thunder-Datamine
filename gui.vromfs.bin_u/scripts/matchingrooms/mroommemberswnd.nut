@@ -1,23 +1,22 @@
+import "%scripts/time.nut" as time
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/matchingRooms/mRoomPlayersListWidget.nut" import MRoomPlayersListWidget
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/matchingRooms/mRoomInfoManager.nut" import getMroomInfo
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getRoomSessionStartTime, getSessionLobbyMaxMembersCount
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomMGameMode, getMembersCountByTeams
+from "%scripts/onlineInfo/onlineInfo.nut" import getMatchingServerTime
+from "%scripts/statistics/mpStatisticsUtil.nut" import updateTeamCssLabel
+from "%scripts/user/playerContextMenu.nut" import showSessionPlayerRClickMenu
 from "%scripts/dagui_library.nut" import *
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MRoomPlayersListWidget } = require("%scripts/matchingRooms/mRoomPlayersListWidget.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getRoomSessionStartTime, getSessionLobbyMaxMembersCount
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getRoomMGameMode, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 let MRoomMembersWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -169,4 +168,4 @@ let MRoomMembersWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MRoomMembersWnd", MRoomMembersWnd)
 
-return { MRoomMembersWnd }
+return freeze({ MRoomMembersWnd })

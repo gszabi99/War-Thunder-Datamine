@@ -1,7 +1,7 @@
 {
   "model": "mb_326b",
   "fmFile": "fm/mb_326b.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.333,
   "gearSinkRangeC": 0.296,
@@ -21,17 +21,17 @@
   "type": "typeFighter",
   "advancedInstructor": true,
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "900kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -647,15 +647,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -698,7 +702,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2399,47 +2405,47 @@
     "preset": [
       {
         "name": "mb_326b_default",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_default.blk"
       },
       {
         "name": "mb_326b_hvar",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_hvar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_hvar.blk"
       },
       {
         "name": "mb_326b_lau_51_ffar",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_lau_51_ffar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_lau_51_ffar.blk"
       },
       {
         "name": "mb_326b_matra_lr_f4",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_matra_lr_f4.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_matra_lr_f4.blk"
       },
       {
         "name": "mb_326b_lau_10_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_lau_10_zuni.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_lau_10_zuni.blk"
       },
       {
         "name": "mb_326b_anm57",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_anm57.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_anm57.blk"
       },
       {
         "name": "mb_326b_mk81",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_mk81.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_mk81.blk"
       },
       {
         "name": "mb_326b_m64a1",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_m64a1.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_m64a1.blk"
       },
       {
         "name": "mb_326b_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_mk82.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_mk82.blk"
       },
       {
         "name": "mb_326b_aerea_559g1",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_aerea_559g1.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_aerea_559g1.blk"
       },
       {
         "name": "mb_326b_suu_11",
-        "blk": "gameData/FlightModels/weaponPresets/mb_326b_suu_11.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mb_326b_suu_11.blk"
       }
     ]
   },
@@ -2522,7 +2528,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
               "emitter": "hvar_x2_launcher_1",
               "external": true
             }
@@ -2536,7 +2542,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_001",
               "external": true
             }
@@ -2551,7 +2557,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_001"
             }
           },
@@ -2565,7 +2571,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_001"
             }
           },
@@ -2577,7 +2583,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_001",
               "bullets": 1,
               "external": true,
@@ -2594,7 +2600,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_001",
               "bullets": 1,
               "external": true,
@@ -2610,7 +2616,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_001",
               "bullets": 1,
               "external": true,
@@ -2627,7 +2633,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_001",
               "bullets": 1,
               "external": true,
@@ -2644,7 +2650,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "bomb_mk82_001",
               "bullets": 1,
               "external": true,
@@ -2679,7 +2685,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare7",
               "flash": "flare7",
               "dm": "mgun1_dm",
@@ -2707,7 +2713,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
               "emitter": "hvar_x2_launcher_2",
               "external": true
             }
@@ -2721,7 +2727,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_002",
               "external": true
             }
@@ -2736,7 +2742,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_002"
             }
           },
@@ -2750,7 +2756,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_002"
             }
           },
@@ -2762,7 +2768,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_002",
               "bullets": 1,
               "external": true,
@@ -2779,7 +2785,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_002",
               "bullets": 1,
               "external": true,
@@ -2795,7 +2801,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_002",
               "bullets": 1,
               "external": true,
@@ -2812,7 +2818,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_002",
               "bullets": 1,
               "external": true,
@@ -2829,7 +2835,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "bomb_mk82_002",
               "bullets": 1,
               "external": true,
@@ -2854,7 +2860,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare8",
               "flash": "flare8",
               "dm": "mgun2_dm",
@@ -2878,7 +2884,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/it_330l_drop_tank_1.blk",
+              "blk": "gamedata/weapons/drop_tank/it_330l_drop_tank_1.blk",
               "emitter": "it_330l_drop_tank_001",
               "bullets": 1,
               "external": true
@@ -2904,7 +2910,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_left.blk",
               "emitter": "hvar_x2_launcher_3",
               "external": true
             }
@@ -2918,7 +2924,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_003",
               "external": true
             }
@@ -2933,7 +2939,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_003"
             }
           },
@@ -2947,7 +2953,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_003",
               "flapsRange": [
                 0.0,
@@ -2963,7 +2969,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_003",
               "bullets": 1,
               "external": true,
@@ -2980,7 +2986,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_003",
               "bullets": 1,
               "external": true,
@@ -2996,7 +3002,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_003",
               "bullets": 1,
               "external": true,
@@ -3013,7 +3019,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_003",
               "bullets": 1,
               "external": true,
@@ -3033,7 +3039,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "dm": "mgun7_dm",
@@ -3066,7 +3072,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare9",
               "flash": "flare9",
               "dm": "mgun3_dm",
@@ -3094,7 +3100,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
               "emitter": "hvar_x2_launcher_4",
               "external": true
             }
@@ -3108,7 +3114,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_004",
               "external": true
             }
@@ -3123,7 +3129,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_004"
             }
           },
@@ -3137,7 +3143,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_004",
               "flapsRange": [
                 0.0,
@@ -3153,7 +3159,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_004",
               "bullets": 1,
               "external": true,
@@ -3170,7 +3176,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_004",
               "bullets": 1,
               "external": true,
@@ -3186,7 +3192,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_004",
               "bullets": 1,
               "external": true,
@@ -3203,7 +3209,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_004",
               "bullets": 1,
               "external": true,
@@ -3223,7 +3229,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+              "blk": "gamedata/weapons/gunBrowning50_M3.blk",
               "emitter": "flare6",
               "flash": "flare6",
               "dm": "mgun8_dm",
@@ -3256,7 +3262,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare10",
               "flash": "flare10",
               "dm": "mgun4_dm",
@@ -3284,7 +3290,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
               "emitter": "hvar_x2_launcher_5",
               "external": true
             }
@@ -3298,7 +3304,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_005",
               "external": true
             }
@@ -3313,7 +3319,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_005"
             }
           },
@@ -3327,7 +3333,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_005"
             }
           },
@@ -3339,7 +3345,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_005",
               "bullets": 1,
               "external": true,
@@ -3356,7 +3362,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_005",
               "bullets": 1,
               "external": true,
@@ -3372,7 +3378,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_005",
               "bullets": 1,
               "external": true,
@@ -3389,7 +3395,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_005",
               "bullets": 1,
               "external": true,
@@ -3406,7 +3412,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "bomb_mk82_005",
               "bullets": 1,
               "external": true,
@@ -3431,7 +3437,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare11",
               "flash": "flare11",
               "dm": "mgun5_dm",
@@ -3455,7 +3461,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/it_330l_drop_tank_2.blk",
+              "blk": "gamedata/weapons/drop_tank/it_330l_drop_tank_2.blk",
               "emitter": "it_330l_drop_tank_002",
               "bullets": 1,
               "external": true
@@ -3481,7 +3487,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
+              "blk": "gamedata/weapons/containers/it_mb_326_hvar_x2_launcher_right.blk",
               "emitter": "hvar_x2_launcher_6",
               "external": true
             }
@@ -3495,7 +3501,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_006",
               "external": true
             }
@@ -3510,7 +3516,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/matra_lr_f4.blk",
+              "blk": "gamedata/weapons/containers/matra_lr_f4.blk",
               "emitter": "matra_lr_f4_006"
             }
           },
@@ -3524,7 +3530,7 @@
             "Weapon": {
               "trigger": "rockets",
               "external": true,
-              "blk": "gameData/Weapons/containers/lau_10a_zuni_wafar_mk32.blk",
+              "blk": "gamedata/weapons/containers/lau_10a_zuni_wafar_mk32.blk",
               "emitter": "lau_51a_006"
             }
           },
@@ -3536,7 +3542,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_mk_81_ldgp.blk",
               "emitter": "bomb_mk82_006",
               "bullets": 1,
               "external": true,
@@ -3553,7 +3559,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb_mk82_006",
               "bullets": 1,
               "external": true,
@@ -3569,7 +3575,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "blk": "gamedata/weapons/bombguns/us_250lb_anm57.blk",
               "emitter": "bomb_mk82_006",
               "bullets": 1,
               "external": true,
@@ -3586,7 +3592,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_anm64a1.blk",
               "emitter": "bomb_mk82_006",
               "bullets": 1,
               "external": true,
@@ -3603,7 +3609,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "blk": "gamedata/weapons/bombguns/it_250kg_napalm_aerea_559g1.blk",
               "emitter": "bomb_mk82_006",
               "bullets": 1,
               "external": true,
@@ -3638,7 +3644,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunM134_Minigun.blk",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
               "emitter": "flare12",
               "flash": "flare12",
               "dm": "mgun6_dm",

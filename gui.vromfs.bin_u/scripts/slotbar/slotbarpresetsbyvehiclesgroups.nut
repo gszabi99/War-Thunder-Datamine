@@ -1,4 +1,9 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/crew/crew.nut" import getCrew, getCrewUnit
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/unit/unitInfo.nut" import getUnitName
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "chard" import getProfileCountry
@@ -7,13 +12,8 @@ from "%scripts/dagui_natives.nut" import get_crew_count
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCrew, getCrewUnit } = require("%scripts/crew/crew.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local curPreset = {
   groupsList = {} 
@@ -387,7 +387,7 @@ function getBestAvailableUnitByGroup(curSlotbarUnits, groupUnits, presetGroupsLi
   return sortedUnits.findvalue(@(u) canAssignInSlot(u.unit, presetGroupsList, country))
 }
 
-return {
+return freeze({
   setCurPreset
   getCurPreset
   setUnit
@@ -401,4 +401,4 @@ return {
   getWarningTextTbl
   getCurPresetUnitNames
   getBestAvailableUnitByGroup
-}
+})

@@ -31,8 +31,8 @@ function stopPollingZonesState() {
   clearTimer(updateCapZones)
 }
 
-return {
+return freeze({
   capZones
   startPollingZonesState
   stopPollingZonesState
-}
+})

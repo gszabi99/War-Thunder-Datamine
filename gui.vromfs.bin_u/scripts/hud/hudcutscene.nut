@@ -1,9 +1,9 @@
-let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
+from "%scripts/hud/baseUnitHud.nut" import BaseUnitHud
 
 let HudCutscene = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 
-return {
+return freeze({
   HudCutscene
-}
+})

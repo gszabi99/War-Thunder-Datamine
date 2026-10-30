@@ -437,13 +437,13 @@ def on_demonstrated_shell_visible_update(evt : EventUpdateDemonstratedShellVisib
   query() <| $ [es(REQUIRE=demonstrated_shell)] (var simpleObject__visible : bool&)
     simpleObject__visible = isVisible
     found = true
-  if !found && isVisible
+  if !found && isVisible && hangar_get_current_unit_name() == hangar_get_loaded_unit_name()
     using() <| $(var blk : DataBlock)
       if unit__ref.unit.isFlightModelWrap
-        if datablock_load(blk, "gameData/flightModels/{unit__ref.unit.props.fileName}.blk")
+        if datablock_load(blk, "gamedata/flightModels/{unit__ref.unit.props.fileName}.blk")
           init_demonstrated_shells_impl(blk, unit__ref)
       elif unit__ref.unit.isTank
-        if datablock_load(blk, "gameData/units/{unit__ref.unit.props.fileName}.blk")
+        if datablock_load(blk, "gamedata/units/{unit__ref.unit.props.fileName}.blk")
           init_demonstrated_tank_bullets_impl(blk, unit__ref.unit.modBlk, unit__ref.unit.unitTm, unit__ref.unit.boundingBox.boxMax, true)
 
 def check_same_bullet(var list : array<ShellParam>&; check_name : string)
@@ -601,6 +601,7 @@ def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
     tm[2] = cross(tm[0], tm[1])
     spawn_shell(bullet, tm, true)
     choose_bullet_target(bullet.penetration, bullet.caliber, bullet.bulletType, tm)
+
 
 
 

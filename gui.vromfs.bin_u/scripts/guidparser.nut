@@ -8,6 +8,6 @@ function isGuid(str) {
   return guidRe.match(str)
 }
 
-return {
+return freeze({
   isGuid
-}
+})

@@ -2,7 +2,7 @@ from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import artilleryStrikesInfo, samS
 from "%appGlobals/worldWar/wwSettings.nut" import getSettings
 from "%rGui/wwMap/wwMapUtils.nut" import convertColor4
 from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds, mapZoom
-from "%rGui/wwMap/wwArmyStates.nut" import movingArmiesPositions, getArmyByName
+from "%rGui/wwMap/wwArmyStates.nut" import mkArmyMapPosition
 from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
 
@@ -59,15 +59,13 @@ function mkArtilleryStrike(strikeInfo, areaBounds, mpZoom) {
 
 function mkSAMStrike(strikeInfo, areaBounds, mpZoom) {
   let { forcedTargetArmyName, radius, strikesDone } = strikeInfo
-  let forcedTargetPosition = Computed(function() {
-    local pos = movingArmiesPositions.get()?[forcedTargetArmyName]
-    if (pos != null)
-      return pos
-    let forcedTarget = getArmyByName(forcedTargetArmyName)
-    return convertToRelativeMapCoords(forcedTarget.pathTracker.pos)
-  })
+  let forcedTargetPosition = mkArmyMapPosition(forcedTargetArmyName)
 
   return function() {
+    let targetPos = forcedTargetPosition.get()
+    if (targetPos == null)
+      return { watch = forcedTargetPosition }
+
     let { areaWidth, areaHeight } = areaBounds
 
     let artilleryStrikeSettings = getSettings("artilleryStrike")
@@ -83,7 +81,7 @@ function mkSAMStrike(strikeInfo, areaBounds, mpZoom) {
     let circleBlinkPeriod = artilleryStrikeSettings.circleBlinkPeriod
     let strikeSize = radius * 2 * mpZoom
     let size = [strikeSize, strikeSize]
-    let pos = [areaWidth * forcedTargetPosition.get().x - strikeSize / 2, areaHeight * forcedTargetPosition.get().y - strikeSize / 2]
+    let pos = [areaWidth * targetPos.x - strikeSize / 2, areaHeight * targetPos.y - strikeSize / 2]
 
     return {
       rendObj = ROBJ_BOX
@@ -123,6 +121,6 @@ let artilleryStrikes = @() {
       )
   }
 
-return {
+return freeze({
   artilleryStrikes
-}
+})

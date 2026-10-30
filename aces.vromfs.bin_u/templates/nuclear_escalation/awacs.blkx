@@ -1,0 +1,43 @@
+{
+  "nuclear_escalation_awacs": {
+    "_use": "disable_radar_on_start",
+    "nuclear_escalation_awacs__isActive": false,
+    "_replicated": [
+      "nuclear_escalation_awacs__isActive",
+      "nuclear_escalation_awacs__detectedUnits",
+      "nuclear_escalation_awacs_debug__totalDetected"
+    ],
+    "nuclear_escalation_awacs__detectedUnits:list<eid>": {},
+    "_group": [
+      {
+        "_tags": "server",
+        "nuclear_escalation_awacs__detectCheckTimer": 0.0
+      },
+      {
+        "_tags": "dev",
+        "nuclear_escalation_awacs_debug__totalDetected": 0
+      },
+      {
+        "_tags": "render",
+        "nuclear_escalation_awacs__hudSweepPeriod": 10.0,
+        "nuclear_escalation_awacs__hudBeamWidth": 0.5,
+        "nuclear_escalation_awacs__hudBeamRadius": 90.0,
+        "nuclear_escalation_awacs__hudDashLen": 12.0,
+        "nuclear_escalation_awacs__hudGapLen": 8.0,
+        "nuclear_escalation_awacs__hudLineWidth": 1.5
+      }
+    ]
+  },
+  "nuclear_escalation_awacs_rotation": {
+    "_group": {
+      "_tags": "server",
+      "nuclear_escalation_awacs_rotation__team": -1,
+      "nuclear_escalation_awacs_rotation__windowTimer": -1.0,
+      "nuclear_escalation_awacs_rotation__isRestPhase": false,
+      "nuclear_escalation_awacs_rotation__workTime": 30.0,
+      "nuclear_escalation_awacs_rotation__restTime": 10.0,
+      "nuclear_escalation_awacs_rotation__roster:list<eid>": {},
+      "nuclear_escalation_awacs_rotation__activeEid:eid": {}
+    }
+  }
+}

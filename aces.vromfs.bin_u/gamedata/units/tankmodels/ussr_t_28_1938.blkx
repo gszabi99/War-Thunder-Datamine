@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "controlDevices": {
     "device": [
       {
@@ -2124,7 +2130,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_KT28_for_T26_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_KT28_for_T26_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -2189,7 +2195,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2234,7 +2240,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_02",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2279,7 +2285,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_03",
         "flash": "emtr_mg_flame_03",
         "defaultYaw": 0.0,
@@ -2323,7 +2329,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_t_28_1938_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_28_1938_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_t_28_1938_default.blk"
     }
   },
   "VehiclePhys": {

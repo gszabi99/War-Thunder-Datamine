@@ -209,8 +209,8 @@
     "airfieldSetIndication": {
       "scheme": "actions/airfieldSetIndication.scheme.nut"
     },
-    "awardAchievement": {
-      "scheme": "actions/awardAchievement.scheme.nut"
+    "captureZoneSetProperties": {
+      "scheme": "actions/captureZoneSetProperties.scheme.nut"
     },
     "missionAttempts": {
       "scheme": "actions/missionAttempts.scheme.nut"
@@ -227,12 +227,6 @@
     "missionDestroyArea": {
       "scheme": "actions/missionDestroyArea.scheme.nut"
     },
-    "missionHint": {
-      "scheme": "actions/missionHint.scheme.nut"
-    },
-    "missionEnableMapAutoScale": {
-      "scheme": "actions/missionEnableMapAutoScale.scheme.nut"
-    },
     "missionFailed": {
       "scheme": "actions/missionFailed.scheme.nut"
     },
@@ -248,20 +242,26 @@
     "missionMarkAsCaptureZone": {
       "scheme": "actions/missionMarkAsCaptureZone.scheme.nut"
     },
-    "missionMarkAsLandingZone": {
-      "scheme": "actions/missionMarkAsLandingZone.scheme.nut"
-    },
     "missionMarkAsWaypoint": {
       "scheme": "actions/missionMarkAsWaypoint.scheme.nut"
-    },
-    "missionMarkUnitsForStrike": {
-      "scheme": "actions/missionMarkUnitsForStrike.scheme.nut"
     },
     "missionMarkAsRespawnPoint": {
       "scheme": "actions/missionMarkAsRespawnPoint.scheme.nut"
     },
+    "missionMarkAsPlantSite": {
+      "scheme": "actions/missionMarkAsPlantSite.scheme.nut"
+    },
+    "missionMarkAsSupplyBase": {
+      "scheme": "actions/missionMarkAsSupplyBase.scheme.nut"
+    },
+    "plantSiteSetProperties": {
+      "scheme": "actions/plantSiteSetProperties.scheme.nut"
+    },
     "missionPlayDialogue": {
       "scheme": "actions/missionPlayDialogue.scheme.nut"
+    },
+    "missionSetBenchmarkMode": {
+      "scheme": "actions/missionSetBenchmarkMode.scheme.nut"
     },
     "missionSetFade": {
       "scheme": "actions/missionSetFade.scheme.nut"
@@ -271,9 +271,6 @@
     },
     "missionSetProperties": {
       "scheme": "actions/missionSetProperties.scheme.nut"
-    },
-    "missionSetScore": {
-      "scheme": "actions/missionSetScore.scheme.nut"
     },
     "missionSetTimeIndicator": {
       "scheme": "actions/missionSetTimeIndicator.scheme.nut"
@@ -320,14 +317,8 @@
     "playerToggleHero": {
       "scheme": "actions/playerToggleHero.scheme.nut"
     },
-    "playerSetPhys": {
-      "scheme": "actions/playerSetPhys.scheme.nut"
-    },
     "playSound": {
       "scheme": "actions/playSound.scheme.nut"
-    },
-    "roundCompleted": {
-      "scheme": "actions/roundCompleted.scheme.nut"
     },
     "spawnOnAirfield": {
       "scheme": "actions/spawnOnAirfield.scheme.nut"
@@ -344,6 +335,9 @@
     "systemPlayRumble": {
       "scheme": "actions/systemPlayRumble.scheme.nut"
     },
+    "systemProfiler": {
+      "scheme": "actions/systemProfiler.scheme.nut"
+    },
     "triggerActivate": {
       "scheme": "actions/triggerActivate.scheme.nut"
     },
@@ -356,14 +350,8 @@
     "unitDamage": {
       "scheme": "actions/unitDamage.scheme.nut"
     },
-    "unitDestroyMissile": {
-      "scheme": "actions/unitDestroyMissile.scheme.nut"
-    },
     "unitDropAmmo": {
       "scheme": "actions/unitDropAmmo.scheme.nut"
-    },
-    "unitFire": {
-      "scheme": "actions/unitFire.scheme.nut"
     },
     "unitForceRearmSpeed": {
       "scheme": "actions/unitForceRearmSpeed.scheme.nut"
@@ -437,6 +425,9 @@
     "varSetInt": {
       "scheme": "actions/varSetInt.scheme.nut"
     },
+    "varSetPoint4": {
+      "scheme": "actions/varSetPoint4.scheme.nut"
+    },
     "varSetReal": {
       "scheme": "actions/varSetReal.scheme.nut"
     },
@@ -449,17 +440,14 @@
     "wait": {
       "scheme": "actions/wait.scheme.nut"
     },
-    "loop": {
-      "scheme": "actions/loop.scheme.nut"
-    },
-    "playerSetAmmo": {
-      "scheme": "actions/playerSetAmmo.scheme.nut"
-    },
     "playerSetMouseAim": {
       "scheme": "actions/playerSetMouseAim.scheme.nut"
     },
     "playerCenterMouseAim": {
       "scheme": "actions/playerCenterMouseAim.scheme.nut"
+    },
+    "getTotalUnitsCount": {
+      "scheme": "actions/getTotalUnitsCount.scheme.nut"
     },
     "gameMPChangeScore": {
       "scheme": "actions/gameMPChangeScore.scheme.nut"
@@ -511,8 +499,8 @@
     "misObjStatus": {
       "scheme": "conditions/misObjStatus.scheme.nut"
     },
-    "missionIsLZCaptured": {
-      "scheme": "conditions/missionIsLZCaptured.scheme.nut"
+    "missionIsRespawnAllowed": {
+      "scheme": "conditions/missionIsRespawnAllowed.scheme.nut"
     },
     "missionIsSuccess": {
       "scheme": "conditions/missionIsSuccess.scheme.nut"
@@ -520,11 +508,11 @@
     "missionIsZoneCaptured": {
       "scheme": "conditions/missionIsZoneCaptured.scheme.nut"
     },
-    "missionWhenAdditionalTime": {
-      "scheme": "conditions/missionWhenAdditionalTime.scheme.nut"
+    "missionIsZoneBeingCaptured": {
+      "scheme": "conditions/missionIsZoneBeingCaptured.scheme.nut"
     },
-    "missionWhenTime": {
-      "scheme": "conditions/missionWhenTime.scheme.nut"
+    "missionPlantSiteDestroyed": {
+      "scheme": "conditions/missionPlantSiteDestroyed.scheme.nut"
     },
     "playersDistanceBetween": {
       "scheme": "conditions/playersDistanceBetween.scheme.nut"

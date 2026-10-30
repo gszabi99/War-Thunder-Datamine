@@ -11410,6 +11410,42 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "406mm_germ_navy_he": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "isReserve": true,
+      "group": "406mm_HE",
+      "effects": {
+        "additiveBulletMod": "406mm_germ_navy_he"
+      }
+    },
+    "406mm_germ_navy_ap": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "reqModification": "406mm_germ_navy_ap_ammo_pack",
+      "group": "406mm_AP",
+      "effects": {
+        "additiveBulletMod": "406mm_germ_navy_ap"
+      }
+    },
+    "406mm_germ_navy_ap_ammo_pack": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "406mm_germ_navy_sap": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "reqModification": "406mm_germ_navy_sap_ammo_pack",
+      "group": "406mm_AP",
+      "effects": {
+        "additiveBulletMod": "406mm_germ_navy_sap"
+      }
+    },
+    "406mm_germ_navy_sap_ammo_pack": {
+      "image": "!#ui/gameuiskin#he_frag_base_fuse_tank.avif",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "75mm_ger_kwk37_APHE": {
       "image": "!#ui/gameuiskin#tank_ammo.avif",
       "isReserve": true,
@@ -12270,6 +12306,28 @@
         "additiveBulletMod": "76mm_usa_M62_APCBC"
       }
     },
+    "75mm_us_m3_naval_he": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "isReserve": true,
+      "group": "75mm_HE",
+      "effects": {
+        "additiveBulletMod": "75mm_us_m3_naval_he"
+      }
+    },
+    "75mm_us_m3_naval_apcbc": {
+      "image": "!#ui/gameuiskin#apcbc_tank.avif",
+      "reqModification": "75mm_us_m3_naval_apcbc_ammo_pack",
+      "group": "75mm_AP",
+      "effects": {
+        "additiveBulletMod": "75mm_us_m3_naval_apcbc"
+      }
+    },
+    "75mm_us_m3_naval_apcbc_ammo_pack": {
+      "image": "!#ui/gameuiskin#apcbc_tank.avif",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "76mm_usa_navy_AP": {
       "image": "!#ui/gameuiskin#apcbc_tank.avif",
       "reqModification": "76mm_usa_navy_AP_ammo_pack",
@@ -12733,6 +12791,42 @@
       }
     },
     "127mm_usa_mk41_mod0_he_vt_ammo_pack": {
+      "image": "!#ui/gameuiskin#he_frag_proxi_fuze_ship.avif",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "127mm_it_mk41_mod0_common_he": {
+      "image": "!#ui/gameuiskin#he_frag_proxi_fuze_ship.avif",
+      "isReserve": true,
+      "group": "127mm_HE",
+      "effects": {
+        "additiveBulletMod": "127mm_it_mk41_mod0_common_he"
+      }
+    },
+    "127mm_it_mk42_mod0_common_sap": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "reqModification": "127mm_it_mk42_mod0_common_sap_ammo_pack",
+      "group": "127mm_AP",
+      "effects": {
+        "additiveBulletMod": "127mm_it_mk42_mod0_common_sap"
+      }
+    },
+    "127mm_it_mk42_mod0_common_sap_ammo_pack": {
+      "image": "!#ui/gameuiskin#tank_ammo.avif",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "127mm_it_mk41_mod0_he_vt": {
+      "image": "!#ui/gameuiskin#he_frag_proxi_fuze_ship.avif",
+      "reqModification": "127mm_it_mk41_mod0_he_vt_ammo_pack",
+      "group": "127mm_HE",
+      "effects": {
+        "additiveBulletMod": "127mm_it_mk41_mod0_he_vt"
+      }
+    },
+    "127mm_it_mk41_mod0_he_vt_ammo_pack": {
       "image": "!#ui/gameuiskin#he_frag_proxi_fuze_ship.avif",
       "tier": 2,
       "modClass": "firepower",
@@ -16805,10 +16899,10 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk",
+              "blk": "gamedata/sensors/it_ralm-101.blk",
               "turretWeaponIndex": 0
             }
           ]
@@ -16867,10 +16961,10 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk",
+              "blk": "gamedata/sensors/it_ralm-101.blk",
               "turretWeaponIndex": 0
             }
           ]
@@ -16929,10 +17023,10 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk",
+              "blk": "gamedata/sensors/it_ralm-101.blk",
               "turretWeaponIndex": 0
             }
           ]
@@ -16991,13 +17085,13 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
             },
             {
-              "blk": "gameData/sensors/su_tshu_1_11.blk",
+              "blk": "gamedata/sensors/su_tshu_1_11.blk",
               "turretWeaponIndex": 0
             }
           ]
@@ -17055,7 +17149,7 @@
         "rcostAddParam": 0.98,
         "sensors": {
           "sensor": {
-            "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
           }
         }
       }
@@ -24623,6 +24717,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "jp_gcs_1": {
+      "image": "!#ui/gameuiskin#pilon_bomb.avif",
+      "animation": "video/unitModifications/bomb.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "swe_rb24": {
       "image": "!#ui/gameuiskin#air_to_air_missile.avif",
       "animation": "video/unitModifications/missile_air_to_air.ivf",
@@ -25565,6 +25665,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "il_spice": {
+      "image": "!#ui/gameuiskin#optical_guided_bomb.avif",
+      "animation": "video/unitModifications/guided_bomb.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "de_hosbo_glide_bomb": {
       "image": "!#ui/gameuiskin#optical_guided_bomb.avif",
       "animation": "video/unitModifications/guided_bomb.ivf",
@@ -25686,6 +25792,18 @@
       "deactivationIsAllowed": false
     },
     "mig_23_r_24t": {
+      "image": "!#ui/gameuiskin#air_to_air_missile.avif",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_r_98mr": {
+      "image": "!#ui/gameuiskin#air_to_air_missile.avif",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_r_98mt": {
       "image": "!#ui/gameuiskin#air_to_air_missile.avif",
       "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
@@ -27164,6 +27282,24 @@
       "modClass": "unsinkability",
       "invertEnableLogic": true
     },
+    "ship_base_degaussing": {
+      "modClass": "unsinkability",
+      "tier": 0,
+      "isHidden": true,
+      "isReserve": true,
+      "deactivationIsAllowed": false,
+      "effects": {
+        "mulHullMagneticMoment": 0.3
+      }
+    },
+    "ship_main_degaussing": {
+      "image": "!#ui/gameuiskin#new_ship_engine.avif",
+      "tier": 4,
+      "modClass": "unsinkability",
+      "effects": {
+        "mulHullMagneticMoment": 0.1
+      }
+    },
     "ship_torpedoes": {
       "modClass": "firepower",
       "tier": 0,
@@ -28167,6 +28303,14 @@
       }
     },
     "MAW_system_heli_false_thermal_targets_large": {
+      "image": "!#ui/gameuiskin#heli_false_thermal_targets.avif",
+      "animation": "video/unitModifications/flare.ivf",
+      "modClass": "weapon",
+      "requiresModelReload": true,
+      "deactivationIsAllowed": false,
+      "group": "mi-24_EVU"
+    },
+    "MAW_system_heli_false_thermal_targets_large_dircm": {
       "image": "!#ui/gameuiskin#heli_false_thermal_targets.avif",
       "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",

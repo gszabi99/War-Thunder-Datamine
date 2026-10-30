@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "german_summer_1943_gunner_char",
@@ -2387,7 +2393,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/105mm_K18_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/105mm_K18_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "shellCasingEmitter": "emtr_shell",
@@ -2444,8 +2450,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_pzsfl_IVa_dickermax",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_pzsfl_IVa_dickermax_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

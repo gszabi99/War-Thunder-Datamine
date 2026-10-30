@@ -1388,6 +1388,7 @@
     "engines": {
       "maxSpeed": 6.94,
       "maxReverseSpeed": 2.5,
+      "horsePowers": 200.0,
       "waterResistanceAtStopK": 0.3,
       "speedToTime": {
         "row": [
@@ -1524,6 +1525,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1.9,
+        0.0
+      ],
+      [
+        3.9,
+        100.0
+      ],
+      [
+        5.8,
+        100.0
+      ],
+      [
+        7.7,
+        200.0
+      ],
+      [
+        9.6,
+        300.0
+      ],
+      [
+        11.6,
+        400.0
+      ],
+      [
+        13.5,
+        600.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        200.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
@@ -1555,7 +1614,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/57mm_type_97_1937_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/57mm_type_97_1937_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1643,7 +1702,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_type_98_twin_type4_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_type_98_twin_type4_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1730,7 +1789,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_type_98_twin_type4_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_type_98_twin_type4_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -1809,11 +1868,11 @@
     "preset": [
       {
         "name": "jp_sehatei_mod1_default",
-        "blk": "gameData/units/ships/weaponPresets/jp_sehatei_mod1_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_sehatei_mod1_default.blk"
       },
       {
         "name": "jp_sehatei_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_sehatei_mod1_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_sehatei_mod1_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       }
     ]
@@ -1890,29 +1949,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -3500.0,
-    "waterMassMult": 100.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 100000.0,
+    "waterMassVel": -16209.0,
+    "waterMassMult": 203.0,
+    "additionalWaterDeathThreshold": 150204.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 35.0,
+    "maxHeelingAngle": 27.0,
     "maxHeelingTime": 7.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.5,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.179
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.8,
+        "weight": 0.7,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -1929,24 +1992,34 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.53
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.53
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.75,
+        "weight": 0.66,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.6
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.6
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

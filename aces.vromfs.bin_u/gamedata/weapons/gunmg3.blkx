@@ -1,11 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 20.0,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,25 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 20.0,
+  "bullets": 250,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        100.0,
+        0.0
+      ],
+      [
+        120.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.009849433,
@@ -427,7 +439,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "noTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2059,25 +2071,6 @@
       }
     }
   ],
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "mg17_gun_outside",
-    "cockpit": "mg17_gun_inside",
-    "ai": "mg17_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        100.0,
-        0.0
-      ],
-      [
-        120.0,
-        0.05
-      ]
-    ]
-  },
   "M163_Minigun_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -2092,5 +2085,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "mg17_gun_outside",
+    "cockpit": "mg17_gun_inside",
+    "ai": "mg17_gun_ai"
   }
 }

@@ -1,22 +1,19 @@
 {
   "bombGun": true,
-  "preset_cost": 100,
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "su_grom_e1_missile_na",
   "mesh_deployed": "su_grom_e1_missile",
   "shellAnimChar": "su_grom_e1_missile_char",
   "rollForDemonstration": 180.0,
-  "bullets": 1,
-  "shotFreq": 10.0,
-  "helicopterGroup": 2,
   "offsetForDemonstration": [
     0.0,
     -0.03,
     0.0
   ],
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "tags": {},
   "bomb": {
     "mass": 598.0,
     "caliber": 0.31,
@@ -146,7 +143,6 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
@@ -154,6 +150,7 @@
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
       "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": 5.0,

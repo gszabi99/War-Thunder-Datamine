@@ -5,9 +5,8 @@ from "%rGui/style/airHudStyle.nut" import hudFontHgt
 from "%rGui/twsState.nut" import IsTwsActivated, rwrTargetsTriggers
 from "%rGui/planeRwrs/rwrAnAlr56Components.nut" import settings
 from "%rGui/planeState/planeToolsState.nut" import HmdYaw, RadarTargetPosValid, RadarTargetDistRate
-from "%rGui/rocketAamAimState.nut" import TrackerVisible, TrackerX, TrackerY, GuidanceLockState
-from "%rGui/airState.nut" import TATargetVisible
-from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
+from "%rGui/rocketAamAimState.nut" import HmdTrackerVisible, HmdTrackerX, HmdTrackerY, GuidanceLockState
+from "%rGui/hud/targetTrackerState.nut" import HmdTargetX, HmdTargetY, HmdTargetVisible
 from "%rGui/style/screenState.nut" import isInVr
 from "%rGui/radarState.nut" import DistanceMax, AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax, AamLaunchZoneDist
 from "%sqstd/math.nut" import floor, round, atan2, PI
@@ -129,7 +128,6 @@ let rwrCircle = {
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
-      pivot = [0.5, 0.5]
       rotate = HmdYaw.get() - 90.0
     }
   }
@@ -169,16 +167,15 @@ let rwr = @() {
     }
     @() {
       watch = rwrTargetAngle
-      size = rwrTargetAngle.get() != null ? FLEX : [0, 0]
+      size = rwrTargetAngle.get() != null ? FLEX : const [0, 0]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       lineWidth = baseLineWidth
       fillColor = Color(0,0,0,0)
       commands = rwrTargetAngle.get() != null
-        ? [[VECTOR_POLY, 42.5, 7.5, 50, 0, 57.5, 7.5, 50, 15]]
-        : []
+        ? const [[VECTOR_POLY, 42.5, 7.5, 50, 0, 57.5, 7.5, 50, 15]]
+        : const []
       transform = {
-        pivot = [0.5, 0.5]
         rotate = rwrTargetAngle.get() ?? 0
       }
     }
@@ -239,9 +236,7 @@ function compassWrap(width, height, generateFunc) {
     size = [width * 0.2, height]
     pos = [width * 0.4, height * 0.65]
     clipChildren = true
-    children = [
-      compass(width * 0.2, generateFunc)
-    ]
+    children = compass(width * 0.2, generateFunc)
   }
 }
 
@@ -256,24 +251,22 @@ let compassVal = {
   commands = [
     [VECTOR_RECTANGLE, 0, 0, 100, 100]
   ]
-  children = [
-    @() {
-      watch = CompassInt
-      rendObj = ROBJ_TEXT
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      size = FLEX
-      color = baseColor
-      lineWidth = baseLineWidth
-      font = Fonts.hud
-      fontSize = hudFontHgt * 1.4
-      text = CompassInt.get().tostring()
-    }
-  ]
+  children = @() {
+    watch = CompassInt
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    size = FLEX
+    color = baseColor
+    lineWidth = baseLineWidth
+    font = Fonts.hud
+    fontSize = hudFontHgt * 1.4
+    text = CompassInt.get().tostring()
+  }
 }
 
 let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT_STANDBY)
-let AamCancel = Computed(@() TrackerX.get() < sw(37) || TrackerX.get() > sw(65) || TrackerY.get() < sh(35) || TrackerY.get() > sh(70))
+let AamCancel = Computed(@() HmdTrackerX.get() < sw(37) || HmdTrackerX.get() > sw(65) || HmdTrackerY.get() < sh(35) || HmdTrackerY.get() > sh(70))
 function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
@@ -285,7 +278,7 @@ function aamReticle(width, height) {
         color = baseColor
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth
-        commands = [
+        commands = const [
           [VECTOR_POLY, -100, 0, 0, -100, 100, 0, 0, 100]
         ]
       }
@@ -295,34 +288,34 @@ function aamReticle(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         lineWidth = baseLineWidth
-        commands = AamCancel.get() ? [
+        commands = AamCancel.get() ? const [
           [VECTOR_LINE, -100, -100, 100, 100],
           [VECTOR_LINE, -100, 100, 100, -100]
-        ] : []
+        ] : const []
       }
     ] : null
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TrackerVisible.get() ? [clamp(TrackerX.get(), 0.37 * width, 0.63 * width), clamp(TrackerY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
+        translate = HmdTrackerVisible.get() ? [clamp(HmdTrackerX.get(), 0.37 * width, 0.63 * width), clamp(HmdTrackerY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
       }
     }
   }
 }
 
-let AimLockLimited = Computed(@() TargetX.get() < sw(37) || TargetX.get() > sw(65) || TargetY.get() < sh(35) || TargetY.get() > sh(70))
+let AimLockLimited = Computed(@() HmdTargetX.get() < sw(37) || HmdTargetX.get() > sw(65) || HmdTargetY.get() < sh(35) || HmdTargetY.get() > sh(70))
 function ccrpReticle(width, height) {
   return @() {
-    watch = TATargetVisible
+    watch = HmdTargetVisible
     size = ph(2)
-    children = TATargetVisible.get() ? [
+    children = HmdTargetVisible.get() ? [
       {
         size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth
-        commands = [
+        commands = const [
           [VECTOR_RECTANGLE, -50, -50, 100, 100],
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
@@ -333,10 +326,10 @@ function ccrpReticle(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         lineWidth = baseLineWidth
-        commands = AimLockLimited.get() ? [
+        commands = AimLockLimited.get() ? const [
           [VECTOR_LINE, -50, -50, 50, 50],
           [VECTOR_LINE, -50, 50, 50, -50]
-        ] : []
+        ] : const []
       }
     ] : null
     animations = [
@@ -345,7 +338,7 @@ function ccrpReticle(width, height) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TATargetVisible.get() ? [clamp(TargetX.get(), 0.37 * width, 0.63 * width), clamp(TargetY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
+        translate = HmdTargetVisible.get() ? [clamp(HmdTargetX.get(), 0.37 * width, 0.63 * width), clamp(HmdTargetY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
       }
     }
   }
@@ -362,9 +355,30 @@ let MaxLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMax.get()) * 10
 let MinLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMin.get()) * 100.0).tointeger())
 let RadarClosureSpeed = Computed(@() (RadarTargetDistRate.get() * mpsToKnots * -1.0).tointeger())
 let RadarClosureSpeedKmh = Computed(@() (RadarTargetDistRate.get() * mpsToKmh * -1.0).tointeger())
+let launchDistArrow = {
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = const [pw(30), ph(7)]
+  color = baseColor
+  lineWidth = baseLineWidth
+  commands = const [
+    [VECTOR_LINE, 0, 0, 100, 50],
+    [VECTOR_LINE, 0, 100, 100, 50]
+  ]
+}
 let launchZone = @(is_metric) function() {
   let radarClosureWatched = is_metric ? RadarClosureSpeedKmh : RadarClosureSpeed
   let maxDistWatched = is_metric ? MaxDistLaunchKm : MaxDistLaunch
+  let launchDistMark = [
+    @(){
+      watch = radarClosureWatched
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      color = baseColor
+      fontSize = hudFontHgt * 1.1
+      text = radarClosureWatched.get().tostring()
+    },
+    launchDistArrow
+  ]
   return {
     watch = IsLaunchZoneVisible
     size = const [pw(2), ph(15)]
@@ -376,26 +390,7 @@ let launchZone = @(is_metric) function() {
         pos = [pw(-100), ph((1.0 - AamLaunchZoneDist.get()) * 100.0)]
         flow = FLOW_HORIZONTAL
         halign = ALIGN_RIGHT
-        children = [
-          @(){
-            watch = radarClosureWatched
-            rendObj = ROBJ_TEXT
-            size = SIZE_TO_CONTENT
-            color = baseColor
-            fontSize = hudFontHgt * 1.1
-            text = radarClosureWatched.get().tostring()
-          },
-          {
-            rendObj = ROBJ_VECTOR_CANVAS
-            size = const [pw(30), ph(7)]
-            color = baseColor
-            lineWidth = baseLineWidth
-            commands = [
-              [VECTOR_LINE, 0, 0, 100, 50],
-              [VECTOR_LINE, 0, 100, 100, 50]
-            ]
-          }
-        ]
+        children = launchDistMark
       },
       {
         size = const [pw(25), FLEX]
@@ -438,20 +433,18 @@ let launchZone = @(is_metric) function() {
               @(){
                 watch = IsDgftLaunchZoneVisible
                 size = FLEX
-                children = IsDgftLaunchZoneVisible.get() ? [
-                  @(){
-                    watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
-                    rendObj = ROBJ_VECTOR_CANVAS
-                    size = FLEX
-                    color = baseColor
-                    lineWidth = baseLineWidth
-                    commands = [
-                      [VECTOR_LINE, 0, MaxLaunchDgftPos.get(), 100, MaxLaunchDgftPos.get()],
-                      [VECTOR_LINE, 0, MinLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()],
-                      [VECTOR_LINE, 100, MaxLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()]
-                    ]
-                  }
-                ] : null
+                children = IsDgftLaunchZoneVisible.get() ? @(){
+                  watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
+                  rendObj = ROBJ_VECTOR_CANVAS
+                  size = FLEX
+                  color = baseColor
+                  lineWidth = baseLineWidth
+                  commands = [
+                    [VECTOR_LINE, 0, MaxLaunchDgftPos.get(), 100, MaxLaunchDgftPos.get()],
+                    [VECTOR_LINE, 0, MinLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()],
+                    [VECTOR_LINE, 100, MaxLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()]
+                  ]
+                } : null
               }
             ]
           }
@@ -461,8 +454,8 @@ let launchZone = @(is_metric) function() {
   }
 }
 
-let isTargetDirVisible = Computed(@() TrackerVisible.get() ? AamCancel.get() :
- (TATargetVisible.get() ? AimLockLimited.get() : false))
+let isTargetDirVisible = Computed(@() HmdTrackerVisible.get() ? AamCancel.get() :
+ (HmdTargetVisible.get() ? AimLockLimited.get() : false))
 function targetDir(width, height) {
   return @() {
     watch = isTargetDirVisible
@@ -473,16 +466,16 @@ function targetDir(width, height) {
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 100, 0]
       ]
       behavior = Behaviors.RtPropUpdate
       update = function() {
-        let target = TrackerVisible.get() ? [TrackerX.get(), TrackerY.get()] : (TATargetVisible.get() ? [TargetX.get(), TargetY.get()] : [0, 0])
+        let target = HmdTrackerVisible.get() ? [HmdTrackerX.get(), HmdTrackerY.get()] : (HmdTargetVisible.get() ? [HmdTargetX.get(), HmdTargetY.get()] : [0, 0])
         return {
           transform = {
             rotate = atan2(height * -0.5 + target[1], width * -0.5 + target[0]) * (180.0 / PI)
-            pivot = [0, 0]
+            pivot = 0
           }
         }
       }

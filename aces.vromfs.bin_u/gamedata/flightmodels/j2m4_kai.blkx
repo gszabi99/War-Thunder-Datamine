@@ -1,31 +1,31 @@
 {
   "model": "j2m4_kai",
   "fmFile": "fm/j2m4_kai.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_radial_big_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_piston_radial_big_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_high_common.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_high_common.blk",
   "gyroSight": [
     false,
     false
   ],
   "type": "typeFighter",
   "paratrooper": "japan_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": [
     "600kph",
     "600kph",
     "600kph"
   ],
   "fightAiBehaviour": "fighter",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "ikPilot": {
     "model": "pilot_japan_char",
     "maxHeadHorAngle": 60.0,
@@ -803,15 +803,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -824,36 +828,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -886,15 +900,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -937,7 +955,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2204,7 +2224,7 @@
     "Weapon": [
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99mark4.blk",
+        "blk": "gamedata/weapons/cannonType99mark4.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2214,7 +2234,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99Mk2_Kai.blk",
+        "blk": "gamedata/weapons/cannonType99Mk2_Kai.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "shell": "emtr_shellrejection2",
@@ -2225,7 +2245,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99Mk2_Kai.blk",
+        "blk": "gamedata/weapons/cannonType99Mk2_Kai.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2236,7 +2256,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99mark4.blk",
+        "blk": "gamedata/weapons/cannonType99mark4.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection4",
@@ -2257,11 +2277,11 @@
     "preset": [
       {
         "name": "j2m3_default",
-        "blk": "gameData/FlightModels/weaponPresets/n1k2_j_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/n1k2_j_default.blk"
       },
       {
         "name": "j2m3_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/j2m_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/j2m_bombs.blk"
       }
     ]
   },

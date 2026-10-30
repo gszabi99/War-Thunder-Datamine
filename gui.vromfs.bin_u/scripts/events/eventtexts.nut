@@ -1,13 +1,12 @@
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/events/eventInfo.nut" import getEventEconomicName, isEventForClan
+from "%scripts/langUtils/language.nut" import getLocTextFromConfig
+from "%scripts/events/eventsState.nut" import getEventByEconomicName
+from "%scripts/events/eventTeamsInfo.nut" import getMaxBrText
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
 from "blkGetters" import get_gui_regional_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/langUtils/localization.nut" import getLocIdsArray
-
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { getEventEconomicName, isEventForClan } = require("%scripts/events/eventInfo.nut")
-let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getEventByEconomicName } = require("%scripts/events/eventsState.nut")
-let { getMaxBrText } = require("%scripts/events/eventTeamsInfo.nut")
 
 
 
@@ -65,9 +64,9 @@ addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_) eventNameText.clear()
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   getTextsBlock
   getEventNameText
   getNameByEconomicName
   getAbbrLocKey
-}
+})

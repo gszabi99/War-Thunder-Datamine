@@ -1,39 +1,39 @@
+import "%scripts/time.nut" as time
+import "%scripts/options/handlers/preloaderOptionsModal.nut" as preloaderOptionsModal
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene, getDecoratorDataToUse, useDecorator
+from "%scripts/items/exchangeRecipes.nut" import tryUseRecipeSeveralTime
+from "%scripts/items/itemGeneratorsManager.nut" import findItemGeneratorByReceptUid
+from "%scripts/loading/loadingBgData.nut" import isLoadingBgUnlock, getLoadingBgIdByUnlockId
+from "%scripts/items/roulette/itemsRoulette.nut" import initItemsRoulette, skipItemsRouletteAnimation
+from "%scripts/customization/decoratorGetters.nut" import getDecoratorByResource
+from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/items/trophyReward.nut" import rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getItemsList
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/items/itemsManagerDbgState.nut" import getInternalItemsDebugInfo
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
+from "%scripts/items/prizesView.nut" import getPrizeImageByConfig, getRewardsListViewData
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "eventbus" import eventbus_subscribe
 from "console" import register_command
 from "blkGetters" import get_price_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
-let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
-let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
-let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
-let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem } = require("%scripts/items/trophyReward.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { findItemById, getItemsList } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { getInternalItemsDebugInfo } = require("%scripts/items/itemsManagerDbgState.nut")
 let { itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { getPrizeImageByConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 
 local afterCloseTrophyWnd = @(_configsTable) null
 
@@ -73,7 +73,7 @@ function guiStartOpenTrophy(configsTable = {}) {
   let trophyItem = findItemById(itemId)
   if (!trophyItem) {
     let configsArrayString = toString(configsArray, 2) 
-    let isLoggedInValue = isLoggedIn.get()              
+    let hasFullLogin = hasFullLoginState.get()    
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, 
       dbgUpdateInternalItemsCount 
     } = getInternalItemsDebugInfo()
@@ -226,14 +226,14 @@ let trophyRewardWnd = class (BaseGuiHandlerWT) {
 
     let frameWidth = (this.rewardImage != null) ? "@chestRewardFrameWidth" : "@trophyWndWidth"
     let titleMaxWidthPx = to_pixels($"{frameWidth} - @buttonCloseHeight - 4@blockInterval")
-    let titleWidthPx = daguiFonts.getStringWidthPx(title, "fontMedium", this.guiScene)
+    let titleWidthPx = getStringWidthPx(title, "fontMedium", this.guiScene)
     if (titleWidthPx > titleMaxWidthPx) {
       titleObj.caption = "no"
 
       if (frameWidth == "@chestRewardFrameWidth") 
         return
 
-      let titleSmallerWidthPx = daguiFonts.getStringWidthPx(title, "fontNormal", this.guiScene)
+      let titleSmallerWidthPx = getStringWidthPx(title, "fontNormal", this.guiScene)
       if (titleSmallerWidthPx > titleMaxWidthPx)
         this.scene.findObject("reward_frame").width
           = $"({titleSmallerWidthPx} + 4@blockInterval + @buttonCloseHeight) $min @chestRewardFrameWidth"
@@ -602,7 +602,7 @@ let trophyRewardWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("trophyRewardWnd", trophyRewardWnd)
 
-return {
+return freeze({
   trophyRewardWnd
   guiStartOpenTrophy
-}
+})

@@ -1,7 +1,6 @@
+from "%scripts/controls/controlsConsts.nut" import MAX_DEADZONE, MAX_NONLINEARITY, CONTROL_TYPE
 from "%sqstd/math.nut" import sqrt, pow
 from "%scripts/dagui_library.nut" import *
-
-let { MAX_DEADZONE, MAX_NONLINEARITY, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
   {
@@ -61,7 +60,6 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     value = @(axis) axis.relative
     setValue = @(axis, objValue) axis.relative = objValue
-    onChangeValue = "onChangeAxisRelative"
   }
   {
     id = "kRelSpd"

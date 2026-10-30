@@ -10,7 +10,7 @@ from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/respawn/respawnConsts.nut" import RespawnBaseType, CATAPULT_CARRIER_SPAWN_NAME, TRAMPOLINE_CARRIER_SPAWN_NAME
-from "%scripts/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%scripts/missions/missionType.nut" import isShipBattle
 from "%scripts/dagui_natives.nut" import get_slot_delay
 from "blkGetters" import get_current_mission_info_cached

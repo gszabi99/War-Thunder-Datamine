@@ -1,20 +1,20 @@
+import "%scripts/worldWar/handler/wwRewards.nut" as wwRewards
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
-from "%sqstd/string.nut" import stripTags
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/leaderboard/leaderboard.nut" import LeaderboardWindow
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/social/crossplay.nut" import getSeparateLeaderboardPlatformName, getSeparateLeaderboardPlatformValue
+from "%scripts/leaderboard/leaderboardView.nut" import addClanTagToNameInLeaderbord
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/tasker.nut" import charRequestBlk
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
-let { getSeparateLeaderboardPlatformName, getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
-let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { charRequestBlk } = require("%scripts/tasker.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")

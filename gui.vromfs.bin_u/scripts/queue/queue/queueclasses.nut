@@ -12,7 +12,7 @@ function registerQueueClass(key, queueClass) {
 
 let getQueueClass = @(key) queueClasses?[key]
 
-return {
+return freeze({
   registerQueueClass
   getQueueClass
-}
+})

@@ -3,9 +3,9 @@ from "%rGui/planeState/planeFlyState.nut" import Speed, BarAltitude, Overload, M
 from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, mpsToKmh, metrToFeet, metrToNavMile
 from "%rGui/style/airHudStyle.nut" import hudFontHgt
 from "%rGui/planeState/planeToolsState.nut" import HmdYaw, RadarTargetDist, CannonMode, RocketMode, BombingMode, BombCCIPMode
-from "%rGui/rocketAamAimState.nut" import TrackerVisible, TrackerX, TrackerY, GuidanceLockState
-from "%rGui/airState.nut" import TATargetVisible, AamTimeToHit
-from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
+from "%rGui/rocketAamAimState.nut" import HmdTrackerVisible, HmdTrackerX, HmdTrackerY, GuidanceLockState
+from "%rGui/airState.nut" import AamTimeToHit
+from "%rGui/hud/targetTrackerState.nut" import HmdTargetX, HmdTargetY, HmdTargetVisible
 from "%rGui/style/screenState.nut" import isInVr
 from "%rGui/planeState/planeWeaponState.nut" import CurWeaponName, ShellCnt
 from "%rGui/radarState.nut" import AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax, AamLaunchZoneDist
@@ -71,12 +71,10 @@ function speedDataComp(useMetric) {
     children = [
       @() boxedTemplate.__merge({
         halign = ALIGN_RIGHT
-        children = [
-          @() textTemplateLarge.__merge({
-            watch = iasVal
-            text = string.format("%4d", iasVal.get())
-          })
-        ]
+        children = @() textTemplateLarge.__merge({
+          watch = iasVal
+          text = string.format("%4d", iasVal.get())
+        })
       }),
       @() textTemplate.__merge({
         watch = tasVal
@@ -93,14 +91,13 @@ function baroAltComp(useMetric) {
   return @() boxedTemplate.__merge({
     pos = const [pw(58), ph(45)]
     halign = ALIGN_RIGHT
-    children = [
-    @() textTemplateLarge.__merge({
+    children = @() textTemplateLarge.__merge({
       watch = useMetric ? BaroAltValueM : BaroAltValueFt
       text = useMetric
         ? string.format("%d", BaroAltValueM.get())
         : BaroAltValueFt.get() < 1000 ? string.format("  ,%03d", BaroAltValueFt.get() % 1000) : string.format("%2d,%03d", BaroAltValueFt.get() / 1000, BaroAltValueFt.get() % 1000)
     })
-  ]})
+  })
 }
 
 let AGMasterMode =  Computed(@() CannonMode.get() || BombingMode.get() || BombCCIPMode.get() || RocketMode.get())
@@ -205,9 +202,7 @@ function compassWrap(width, height, generateFunc) {
     clipChildren = true
     rendObj = ROBJ_MASK
     image = Picture($"ui/gameuiskin#hmd_targo_mask.svg:{size[0]}:{size[1]}:P")
-    children = [
-      compass(width * 0.2, generateFunc)
-    ]
+    children = compass(width * 0.2, generateFunc)
   }
 }
 
@@ -217,12 +212,10 @@ let compassValue = boxedTemplate.__merge({
   pos = const [pw(0), ph(31)]
   halign = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  children = [
-    @() textTemplate.__merge({
-      watch = CompassIntValue
-      text = string.format("%03d", CompassIntValue.get())
-    })
-  ]
+  children = @() textTemplate.__merge({
+    watch = CompassIntValue
+    text = string.format("%03d", CompassIntValue.get())
+  })
 })
 
 let HmdCompassIntValue = Computed(@() ((360.0 + CompassValue.get() + HmdYaw.get()) % 360.0).tointeger())
@@ -236,12 +229,10 @@ let hmdCompassValue = {
   color = baseColor
   fillColor = 0x00000000
   lineWidth = baseLineWidth
-  children = [
-    @() textTemplate.__merge({
-      watch = HmdCompassIntValue
-      text = string.format("%03d", HmdCompassIntValue.get())
-    })
-  ]
+  children = @() textTemplate.__merge({
+    watch = HmdCompassIntValue
+    text = string.format("%03d", HmdCompassIntValue.get())
+  })
   commands = [
     [VECTOR_POLY, 0, 50, 20, 0, 80, 0, 100, 50, 80, 100, 20, 100],
     [VECTOR_LINE, 35, 0, 50, -50, 65, 0]
@@ -249,7 +240,7 @@ let hmdCompassValue = {
 }
 
 let isAAMMode = Computed(@() GuidanceLockState.get() != GuidanceLockResult.RESULT_STANDBY)
-let AamCancel = Computed(@() TrackerX.get() < sw(37) || TrackerX.get() > sw(65) || TrackerY.get() < sh(35) || TrackerY.get() > sh(70))
+let AamCancel = Computed(@() HmdTrackerX.get() < sw(37) || HmdTrackerX.get() > sw(65) || HmdTrackerY.get() < sh(35) || HmdTrackerY.get() > sh(70))
 function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
@@ -261,7 +252,7 @@ function aamReticle(width, height) {
         color = lockColor
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth
-        commands = [
+        commands = const [
           [VECTOR_RECTANGLE, 0, 0, 100, 100]
         ]
       }
@@ -271,34 +262,34 @@ function aamReticle(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = lockColor
         lineWidth = baseLineWidth
-        commands = AamCancel.get() ? [
+        commands = AamCancel.get() ? const [
           [VECTOR_LINE, -100, -100, 100, 100],
           [VECTOR_LINE, -100, 100, 100, -100]
-        ] : []
+        ] : const []
       }
     ] : null
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TrackerVisible.get() ? [clamp(TrackerX.get(), 0.37 * width, 0.63 * width), clamp(TrackerY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
+        translate = HmdTrackerVisible.get() ? [clamp(HmdTrackerX.get(), 0.37 * width, 0.63 * width), clamp(HmdTrackerY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
       }
     }
   }
 }
 
-let AimLockLimited = Computed(@() TargetX.get() < sw(37) || TargetX.get() > sw(65) || TargetY.get() < sh(35) || TargetY.get() > sh(70))
+let AimLockLimited = Computed(@() HmdTargetX.get() < sw(37) || HmdTargetX.get() > sw(65) || HmdTargetY.get() < sh(35) || HmdTargetY.get() > sh(70))
 function ccrpReticle(width, height) {
   return @() {
-    watch = TATargetVisible
+    watch = HmdTargetVisible
     size = ph(2)
-    children = TATargetVisible.get() ? [
+    children = HmdTargetVisible.get() ? [
       {
         size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth
-        commands = [
+        commands = const [
           [VECTOR_RECTANGLE, -50, -50, 100, 100],
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
@@ -309,10 +300,10 @@ function ccrpReticle(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         lineWidth = baseLineWidth
-        commands = AimLockLimited.get() ? [
+        commands = AimLockLimited.get() ? const [
           [VECTOR_LINE, -50, -50, 50, 50],
           [VECTOR_LINE, -50, 50, 50, -50]
-        ] : []
+        ] : const []
       }
     ] : null
     animations = [
@@ -321,7 +312,7 @@ function ccrpReticle(width, height) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TATargetVisible.get() ? [clamp(TargetX.get(), 0.37 * width, 0.63 * width), clamp(TargetY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
+        translate = HmdTargetVisible.get() ? [clamp(HmdTargetX.get(), 0.37 * width, 0.63 * width), clamp(HmdTargetY.get(), 0.35 * height, 0.7 * height)] : [width * 0.5, height * 0.5]
       }
     }
   }
@@ -333,6 +324,16 @@ let MinLaunchPos = Computed(@() ((1.0 - AamLaunchZoneDistMin.get()) * 100.0).toi
 let IsDgftLaunchZoneVisible = Computed(@() AamLaunchZoneDistDgftMax.get() > 0.0)
 let MaxLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMax.get()) * 100.0).tointeger())
 let MinLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMin.get()) * 100.0).tointeger())
+let launchDistArrow = {
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = const [pw(30), ph(7)]
+  lineWidth = baseLineWidth
+  color = lightBlueColor
+  commands = const [
+    [VECTOR_LINE, 0, 0, 100, 50],
+    [VECTOR_LINE, 0, 100, 100, 50]
+  ]
+}
 let launchZone = @() {
   watch = IsLaunchZoneVisible
   size = const [pw(2), ph(15)]
@@ -344,76 +345,61 @@ let launchZone = @() {
       pos = [pw(-100), ph((1.0 - AamLaunchZoneDist.get()) * 100.0)]
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
-      children = [
-        {
-          rendObj = ROBJ_VECTOR_CANVAS
-          size = const [pw(30), ph(7)]
-          lineWidth = baseLineWidth
-          color = lightBlueColor
-          commands = [
-            [VECTOR_LINE, 0, 0, 100, 50],
-            [VECTOR_LINE, 0, 100, 100, 50]
-          ]
-        }
-      ]
+      children = launchDistArrow
     },
     {
       size = const [pw(25), FLEX]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = FLEX
-          children = [
-            {
+      children = {
+        size = FLEX
+        children = [
+          {
+            rendObj = ROBJ_VECTOR_CANVAS
+            size = FLEX
+            color = blueColor
+            lineWidth = baseLineWidth
+            commands = const [
+              [VECTOR_LINE, -100, 0, 100, 0],
+              [VECTOR_LINE, -100, 100, 100, 100],
+            ]
+          },
+          @() {
+            watch = [MaxLaunchPos, MinLaunchPos]
+            rendObj = ROBJ_VECTOR_CANVAS
+            size = FLEX
+            color = blueColor
+            lineWidth = baseLineWidth
+            commands = [
+              [VECTOR_LINE, -100, MaxLaunchPos.get(), 100, MaxLaunchPos.get()],
+              [VECTOR_LINE, -100, MinLaunchPos.get(), 100, MinLaunchPos.get()],
+              [VECTOR_LINE, 0, MaxLaunchPos.get(), 0, MinLaunchPos.get()]
+            ]
+          },
+          @(){
+            watch = IsDgftLaunchZoneVisible
+            size = FLEX
+            children = IsDgftLaunchZoneVisible.get() ? @(){
+              watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
               rendObj = ROBJ_VECTOR_CANVAS
               size = FLEX
-              color = blueColor
+              color = baseColor
               lineWidth = baseLineWidth
               commands = [
-                [VECTOR_LINE, -100, 0, 100, 0],
-                [VECTOR_LINE, -100, 100, 100, 100],
+                [VECTOR_LINE, -50, MaxLaunchDgftPos.get(), 50, MaxLaunchDgftPos.get()],
+                [VECTOR_LINE, 50, MaxLaunchDgftPos.get(), 50, MinLaunchDgftPos.get()],
+                [VECTOR_LINE, 50, MinLaunchDgftPos.get(), -50, MinLaunchDgftPos.get()],
+                [VECTOR_LINE, -50, MinLaunchDgftPos.get(), -50, MaxLaunchDgftPos.get()]
               ]
-            },
-            @() {
-              watch = [MaxLaunchPos, MinLaunchPos]
-              rendObj = ROBJ_VECTOR_CANVAS
-              size = FLEX
-              color = blueColor
-              lineWidth = baseLineWidth
-              commands = [
-                [VECTOR_LINE, -100, MaxLaunchPos.get(), 100, MaxLaunchPos.get()],
-                [VECTOR_LINE, -100, MinLaunchPos.get(), 100, MinLaunchPos.get()],
-                [VECTOR_LINE, 0, MaxLaunchPos.get(), 0, MinLaunchPos.get()]
-              ]
-            },
-            @(){
-              watch = IsDgftLaunchZoneVisible
-              size = FLEX
-              children = IsDgftLaunchZoneVisible.get() ? [
-                @(){
-                  watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
-                  rendObj = ROBJ_VECTOR_CANVAS
-                  size = FLEX
-                  color = baseColor
-                  lineWidth = baseLineWidth
-                  commands = [
-                    [VECTOR_LINE, -50, MaxLaunchDgftPos.get(), 50, MaxLaunchDgftPos.get()],
-                    [VECTOR_LINE, 50, MaxLaunchDgftPos.get(), 50, MinLaunchDgftPos.get()],
-                    [VECTOR_LINE, 50, MinLaunchDgftPos.get(), -50, MinLaunchDgftPos.get()],
-                    [VECTOR_LINE, -50, MinLaunchDgftPos.get(), -50, MaxLaunchDgftPos.get()]
-                  ]
-                }
-              ] : null
-            }
-          ]
-        }
-      ]
+            } : null
+          }
+        ]
+      }
     }
   ] : null
 }
 
-let IsTargetDirVisible = Computed(@() TrackerVisible.get() ? AamCancel.get() :
- (TATargetVisible.get() ? AimLockLimited.get() : false))
+let IsTargetDirVisible = Computed(@() HmdTrackerVisible.get() ? AamCancel.get() :
+ (HmdTargetVisible.get() ? AimLockLimited.get() : false))
 function targetDir(width, height) {
   return @() {
     watch = IsTargetDirVisible
@@ -424,16 +410,16 @@ function targetDir(width, height) {
       rendObj = ROBJ_VECTOR_CANVAS
       color = lockColor
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 100, 0]
       ]
       behavior = Behaviors.RtPropUpdate
       update = function() {
-        let target = TrackerVisible.get() ? [TrackerX.get(), TrackerY.get()] : (TATargetVisible.get() ? [TargetX.get(), TargetY.get()] : [0, 0])
+        let target = HmdTrackerVisible.get() ? [HmdTrackerX.get(), HmdTrackerY.get()] : (HmdTargetVisible.get() ? [HmdTargetX.get(), HmdTargetY.get()] : [0, 0])
         return {
           transform = {
             rotate = atan2(height * -0.5 + target[1], width * -0.5 + target[0]) * (180.0 / PI)
-            pivot = [0, 0]
+            pivot = 0
           }
         }
       }

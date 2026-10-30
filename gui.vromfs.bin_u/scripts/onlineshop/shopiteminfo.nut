@@ -24,6 +24,6 @@ function requestMultipleItems(guids, onSuccessEventName) {
   })
 }
 
-return {
+return freeze({
   requestMultipleItems
-}
+})

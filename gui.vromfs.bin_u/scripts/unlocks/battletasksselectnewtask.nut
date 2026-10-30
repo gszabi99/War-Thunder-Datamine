@@ -1,20 +1,19 @@
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/unlocks/battleTasks.nut" import filterBattleTasksByGameModeId
+from "%scripts/unlocks/battleTasksView.nut" import getBattleTaskView, mkUnlockConfigByBattleTask
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/tasker.nut" import addTask
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { filterBattleTasksByGameModeId } = require("%scripts/unlocks/battleTasks.nut")
-let { getBattleTaskView, mkUnlockConfigByBattleTask } = require("%scripts/unlocks/battleTasksView.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
 register_gui_handler("BattleTasksSelectNewTaskWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

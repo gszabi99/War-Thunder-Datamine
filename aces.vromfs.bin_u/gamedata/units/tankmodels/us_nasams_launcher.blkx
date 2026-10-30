@@ -2071,7 +2071,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/178mm_nasams_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/178mm_nasams_user_cannon.blk",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
@@ -2138,13 +2138,23 @@
         "gunnerDm": "commander_dm",
         "verDriveDm": [
           "drive_turret_v_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_v_01_dm",
+          "drive_turret_v_02_dm"
         ],
         "horDriveDm": [
           "drive_turret_h_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_h_01_dm"
         ],
-        "shootingDmPart": "fire_control_system_dm"
+        "shootingDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ]
       },
       "limits": {
         "yaw": [
@@ -2250,8 +2260,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_nasams_launcher_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_nasams_launcher_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2362,7 +2372,7 @@
       },
       "preset": {
         "name": "se_nasams_launcher_default",
-        "blk": "gameBase/gameData/units/tankModels/dm/_damage_weight_settings.blk"
+        "blk": "gameBase/gamedata/units/tankModels/dm/_damage_weight_settings.blk"
       },
       "driven": {
         "wheel_r_03": true,

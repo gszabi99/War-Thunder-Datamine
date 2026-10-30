@@ -1,3 +1,4 @@
+from "%scripts/user/profileStates.nut" import isMyUserId
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "matching.errors" import INVALID_ROOM_ID
 from "string" import format
@@ -5,9 +6,8 @@ from "%scripts/dagui_natives.nut" import script_net_assert, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { isMyUserId } = require("%scripts/user/profileStates.nut")
 
-let roomState = persist("roomState", @() {
+let roomState = mkHardPersist("matching.serviceNotifications.mroomsState")("roomState", {
   hostId = null 
   roomId = INVALID_ROOM_ID
   room = null
@@ -18,6 +18,7 @@ let roomState = persist("roomState", @() {
   isSelfReady = false
   isLeaving = false
 })
+roomState.isLeaving = false 
 
 function cleanupRoomState() {
   if (roomState.room == null)

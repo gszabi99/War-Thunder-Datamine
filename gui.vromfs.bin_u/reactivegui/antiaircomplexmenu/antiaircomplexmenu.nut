@@ -49,9 +49,11 @@ const AA_VERTICAL_VIEW_KEY = {}
 local tooltipTimer = null
 
 const imageSize = hdpxi(20)
-let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg:{imageSize}:P")
-let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg:{imageSize}:P")
-let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg:{imageSize}:P")
+let mkTargetPictures = @() {
+  planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg:{imageSize}:P")
+  helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg:{imageSize}:P")
+  rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg:{imageSize}:P")
+}
 
 let headerToopltipLocs = {
   azimuth = "hud/AAComplexMenu/azimuth/tooltip"
@@ -99,10 +101,10 @@ let radarStateText = Computed(@()
     : ""
   )
 
-let imageByTargetIconType = {
-  [RadarHudTargetIconType.JET] = planeTargetPicture,
-  [RadarHudTargetIconType.HELICOPTER] = helicopterTargetPicture,
-  [RadarHudTargetIconType.ROCKET] = rocketTargetPicture,
+let mkImageByTargetIconType = @(targetPictures) {
+  [RadarHudTargetIconType.JET] = targetPictures.planeTargetPicture,
+  [RadarHudTargetIconType.HELICOPTER] = targetPictures.helicopterTargetPicture,
+  [RadarHudTargetIconType.ROCKET] = targetPictures.rocketTargetPicture,
 }
 
 let contentScale = Computed(function() {
@@ -140,7 +142,7 @@ let leftPanelsHeight = Computed(function() {
 let leftPanelsWidth = Computed(@() defLeftPanelsWidth * contentScale.get())
 let rightPanelsWidth = Computed(@() defRightPanelsWidth * contentScale.get())
 
-function mkVerticalViewIndicator() {
+function mkVerticalViewIndicator(targetPictures) {
   let verticalViewIndicatorHeight = Computed(@() leftPanelsHeight.get() * 0.4 - panelsGap / 2 - frameHeaderHeight * contentScale.get() - 2 * borderWidth)
   return @() {
     watch = [aaMenuCfg, contentScale, verticalViewIndicatorHeight, leftPanelsWidth]
@@ -151,21 +153,19 @@ function mkVerticalViewIndicator() {
     setupFunc = "setup"
     font = Fonts.hud
     fontSize = hdpx(14 * contentScale.get())
-    planeTargetPicture
-    helicopterTargetPicture
-    rocketTargetPicture
+    ...targetPictures
     maxAltitude = aaMenuCfg.get()?["verticalViewMaxAltitude"]
   }
 }
 
-function mkVerticalViewIndicatorFrame() {
+function mkVerticalViewIndicatorFrame(targetPictures) {
   let verticalViewIndicatorPos = Computed(@() leftPanelsHeight.get() * 0.6 + panelsGap / 2)
   return @() {
     watch = [verticalViewIndicatorPos, contentScale]
     pos = [0, verticalViewIndicatorPos.get()]
-    children = mkFrame(mkVerticalViewIndicator(),
+    children = mkFrame(mkVerticalViewIndicator(targetPictures),
       { text = loc("hud/elevation_azimuth_indicator"), scale = contentScale.get() },
-      { key = AA_VERTICAL_VIEW_KEY })
+      const { key = AA_VERTICAL_VIEW_KEY })
   }
 }
 
@@ -186,7 +186,7 @@ function mkCameraRender() {
   }
 }
 
-let circularRadar = @() radarCanvas(null, {
+let mkCircularRadar = @(targetPictures) @() radarCanvas(null, {
   watch = [radarHeight, contentScale]
   size = [radarHeight.get() * contentScale.get(), radarHeight.get() * contentScale.get()]
   font = Fonts.hud
@@ -196,9 +196,7 @@ let circularRadar = @() radarCanvas(null, {
   isAAComplexMenuLayout = true
   vignetteColor = 0xFF304054
   usePictureTargets = true
-  planeTargetPicture
-  helicopterTargetPicture
-  rocketTargetPicture
+  ...targetPictures
   screenHeight = sh(100)
   children = {
     margin = shortcutsBtnPadding
@@ -248,7 +246,7 @@ let sensorStateBlock = @() {
   text = radarStateText.get()
 }
 
-let mkCentralBlock = @() @() {
+let mkCentralBlock = @(circularRadar) @() {
   watch = contentScale
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -256,7 +254,7 @@ let mkCentralBlock = @() @() {
   gap = panelsGap
   children = [
     mkFrame(circularRadar,{ text = loc("hud/plan_position_indicator"), scale = contentScale.get() },
-      { key = AA_CIRCULAR_VIEW_KEY, opacity = 0.8 })
+      const { key = AA_CIRCULAR_VIEW_KEY, opacity = 0.8 })
     {
       flow = FLOW_HORIZONTAL
       gap = panelsGap
@@ -312,7 +310,7 @@ let selectNextTarget = @() findAndSelectTarget(1)
 
 let targetTypeIconStatus = {
   construct_header = @(_, __) { size = targetTypeIconSize }
-  construct_ellement = function(target, _) {
+  construct_ellement = function(target, _, imageByTargetIconType) {
     let iconType = target.iconType
     let icon = imageByTargetIconType?[iconType]
 
@@ -351,7 +349,7 @@ let mkTooltipText = @(text) {
 }
 
 function mkTooltipHeader() {
-  let { id, pos = [0, 0] } = headerTooltipData.get()
+  let { id, pos = const [0, 0] } = headerTooltipData.get()
   if (id == null || id not in headerToopltipLocs)
     return { watch = headerTooltipData }
 
@@ -360,7 +358,7 @@ function mkTooltipHeader() {
 
   return {
     rendObj = ROBJ_BOX
-    watch = [ headerTooltipData ]
+    watch = headerTooltipData
     pos = [min(pos[0], sw(100) - tooltipWidth), pos[1]]
     zOrder = Layers.Tooltip
     fillColor = frameBackgroundColor
@@ -456,7 +454,7 @@ function isTargetInCueZone(target, azimuthMin, azimuthRange, cueReferenceTurretA
   return isInCueAzimuth && isInCueDist
 }
 
-function createTargetListElement(is_header, target, scale, isSelected = false) {
+function createTargetListElement(is_header, target, scale, isSelected = false, imageByTargetIconType = null) {
   let fontSize = is_header ? hdpx(14 * scale) : hdpx(16 * scale)
 
   let isThisTargetInLockZone = Computed(@() target != null && isTargetInLockZone(target,
@@ -512,7 +510,8 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
           let isPresent =  aaMenuCfg.get().targetList?[prot.key] ?? true
 
           if (isPresent){
-            return is_header ? prot.ell.construct_header(fontSize, @(on, rect) onHoverHeader(on, rect, prot.key)) : prot.ell.construct_ellement(target, fontSize)
+            return is_header ? prot.ell.construct_header(fontSize, @(on, rect) onHoverHeader(on, rect, prot.key))
+              : prot.ell.construct_ellement(target, fontSize, imageByTargetIconType)
           }
           return null
         })
@@ -521,8 +520,8 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
   }
 }
 
-function createTargetDist(index, target, scale, isShowConsoleButtons) {
-  let targetElement = createTargetListElement(false, target, scale, target.isDetected)
+function createTargetDist(index, target, scale, isShowConsoleButtons, imageByTargetIconType) {
+  let targetElement = createTargetListElement(false, target, scale, target.isDetected, imageByTargetIconType)
 
   if (target.isDetected && isShowConsoleButtons)
     scrollTargetsListToTarget(index)
@@ -530,7 +529,7 @@ function createTargetDist(index, target, scale, isShowConsoleButtons) {
   return targetElement
 }
 
-let targetList = @() {
+let mkTargetList = @(imageByTargetIconType) @() {
   watch = [TargetsTrigger, contentScale, targetSortFunctionWatched, showConsoleButtons]
   size = FLEX
   flow = FLOW_VERTICAL
@@ -541,7 +540,7 @@ let targetList = @() {
     children = targets
       .filter(isVisibleTarget)
       .sort(targetsSortFunction)
-      .map(@(t, i) createTargetDist(i, t, contentScale.get(), showConsoleButtons.get()))
+      .map(@(t, i) createTargetDist(i, t, contentScale.get(), showConsoleButtons.get(), imageByTargetIconType))
     },
     {
       scrollHandler = scrollHandler
@@ -549,7 +548,7 @@ let targetList = @() {
     })
 }
 
-let targetListMain = @() {
+let mkTargetListMain = @(targetList) @() {
   watch = [radarHeight, rightPanelsWidth, contentScale]
   size = [rightPanelsWidth.get(), radarHeight.get() * contentScale.get()]
   padding = targetsListPadding
@@ -644,46 +643,51 @@ let helpBtn = watchElemState(@(sf) {
   }
 })
 
-let aaComplexMenu = {
-  size = FLEX
-  rendObj = ROBJ_SOLID
-  color = 0xDD101010
-  hotkeys = [
-    ["^Esc | J:Start", onAAComplexMenuEscape],
-    ["@ID_HELP", openAAHelp]
-  ]
-  children = [
-    @() {
-      watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
-      size = FLEX
-      margin = safeAreaSizeHud.get().borders
-      padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
+function aaComplexMenu() {
+  let targetPictures = mkTargetPictures()
+  let circularRadar = mkCircularRadar(targetPictures)
+  let targetListMain = mkTargetListMain(mkTargetList(mkImageByTargetIconType(targetPictures)))
+  return {
+    size = FLEX
+    rendObj = ROBJ_SOLID
+    color = 0xDD101010
+    hotkeys = [
+      ["^Esc | J:Start", onAAComplexMenuEscape],
+      ["@ID_HELP", openAAHelp]
+    ]
+    children = [
+      @() {
+        watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
+        size = FLEX
+        margin = safeAreaSizeHud.get().borders
+        padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
 
-      children = [
-        zoomControlByMouseWheel
-        aaMenuCfg.get()?["hasVerticalView"] ? mkVerticalViewIndicatorFrame() : null
-        mkCentralBlock()
-        aaMenuCfg.get()?["hasTargetList"]
-          ? mkFrame(targetListMain,
-            { text = loc("hud/target_list"), scale = contentScale.get(),
-              rightBlock = mkFilterTargetsBtn(contentScale.get()) },
-            { key = AA_TARGET_LIST_KEY, hplace = ALIGN_RIGHT })
-          : null
-        aaMenuCfg.get()?["hasTurretView"]
-          ? mkFrame(mkCameraRender(), {
-              text = loc("hud/sight_view"),
-              scale = contentScale.get(),
-              rightBlock = mkNightVisionBtn(contentScale.get())
-            },
-            { key = AA_SIGHT_VIEW_KEY })
-          : null
-        fakeActionBar
-      ]
-    }
-    helpBtn
-    mkTooltipHeader
-    screenHelpOverlay
-  ]
+        children = [
+          zoomControlByMouseWheel
+          aaMenuCfg.get()?["hasVerticalView"] ? mkVerticalViewIndicatorFrame(targetPictures) : null
+          mkCentralBlock(circularRadar)
+          aaMenuCfg.get()?["hasTargetList"]
+            ? mkFrame(targetListMain,
+              { text = loc("hud/target_list"), scale = contentScale.get(),
+                rightBlock = mkFilterTargetsBtn(contentScale.get()) },
+              const { key = AA_TARGET_LIST_KEY, hplace = ALIGN_RIGHT })
+            : null
+          aaMenuCfg.get()?["hasTurretView"]
+            ? mkFrame(mkCameraRender(), {
+                text = loc("hud/sight_view"),
+                scale = contentScale.get(),
+                rightBlock = mkNightVisionBtn(contentScale.get())
+              },
+              const { key = AA_SIGHT_VIEW_KEY })
+            : null
+          fakeActionBar
+        ]
+      }
+      helpBtn
+      mkTooltipHeader
+      screenHelpOverlay
+    ]
+  }
 }
 
 return { aaComplexMenu }

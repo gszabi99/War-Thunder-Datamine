@@ -1,15 +1,14 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/worldWar/operations/handler/wwMapDescription.nut" import WwMapDescription
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import getGlobalStatusData
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 register_gui_handler("WwQueueDescriptionCustomHandler", class (WwMapDescription) {
   function mapCountriesToView(side, _amountByCountry, joinedCountries) {

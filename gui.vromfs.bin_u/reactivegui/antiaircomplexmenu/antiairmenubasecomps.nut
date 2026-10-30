@@ -126,7 +126,7 @@ let mkTargetCell = @(size, fontSize, text) {
   text
 }
 
-local targetStatusGetterForSort = {
+let targetStatusGetterForSort = {
   order = 1
   func = null
 }
@@ -176,14 +176,14 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
         }
       }
     }
-    construct_ellement = @(target, font_size) function() {
+    construct_ellement = @(target, font_size, _) function() {
       let updVal = isFunction(upd) ? upd(target) : upd
       return mkTargetCell(size, font_size, status_to_text(status_getter_compairable(target), target)).__update(updVal)
     }
   }
 }
 
-return {
+return freeze({
   mkFrame
   mkShortcutButton
   mkShortcutButtonContinued
@@ -198,4 +198,4 @@ return {
   frameBorderColor
   frameBackgroundColor
   hoverFillColor
-}
+})

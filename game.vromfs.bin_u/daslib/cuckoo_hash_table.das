@@ -20,7 +20,7 @@ require strings public
 
 def public hash0(data) {
     
-    let k64 = uint64(data)  
+    let k64 = uint64(data)
     return k64 <= 2ul ? 0x9e3779b97f4a7c15ul : k64
 }
 
@@ -30,16 +30,6 @@ def public hash_extra(data) {
     k64 = k64 <= 2ul ? 0x9e3779b97f4a7c15ul : k64
     return k64 >>> 32ul
 }
-
-
-
-
-
-
-
-
-
-
 
 [template_structure(KeyType, ValueType, hashFunction0Name=@@hash0, hashFunction1Name=@@hash_extra)]
 struct template TCuckooHashTable {
@@ -301,7 +291,6 @@ struct template TCuckooHashTable {
         if (data_length > ((mask + 1) >> 1)) {
             self |> grow()
         }
-        
         let firstHash = $c(hashFunction0Name)(key)
         let firstIndex = int(firstHash) & mask
         if (khv[firstIndex].hash == firstHash && khv[firstIndex].key == key) {
@@ -316,7 +305,6 @@ struct template TCuckooHashTable {
                 return khv[secondIndex].value
             }
         }
-        
         if (khv[firstIndex].hash == 0ul) {
             khv[firstIndex].hash = firstHash
             khv[firstIndex].key := key
@@ -333,7 +321,6 @@ struct template TCuckooHashTable {
                 return khv[secondIndex].value
             }
         }
-        
         self |> insert(key, default<ValueType>)
         let index = self |> key_index(key)
         unsafe {
@@ -351,7 +338,7 @@ struct template TCuckooHashTable {
         }
         panic("key not found")
         unsafe {
-            return khv[0].value 
+            return khv[0].value
         }
     }
 

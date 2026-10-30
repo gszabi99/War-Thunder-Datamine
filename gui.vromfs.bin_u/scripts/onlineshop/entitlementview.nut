@@ -1,25 +1,25 @@
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/sqDagui/globalCallbacks/globalCallbacks.nut" import getGcbName, getGcbParamsMarkup
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockType
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/unit/unitInfo.nut" import getUnitTypeTextByUnit
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/items/prizeUtils.nut" import getWPIcon
 from "%sqStdLibs/helpers/u.nut" import isArray
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getWPIcon } = require("%scripts/items/prizeUtils.nut")
 
 const template = "%gui/items/trophyDesc.tpl"
 const singleItemIconLayer = "item_place_single"
@@ -61,7 +61,7 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
   let typeValid = unlockType >= 0
   let unlockTypeText = typeValid ? get_name_by_unlock_type(unlockType) : "unknown"
 
-  local unlockTypeName = loc($"trophy/unlockables_names/{unlockTypeText}")
+  local unlockTypeName = locByVendor($"trophy/unlockables_names/{unlockTypeText}")
   unlockTypeName = colorize(typeValid ? "activeTextColor" : "red", unlockTypeName)
 
   local name = unlockTypeName
@@ -288,7 +288,7 @@ function getEntitlementLayerIconsConfig(entitlement, params = null) {
   }
 }
 
-return {
+return freeze({
   getEntitlementView
   getEntitlementLayerIconsConfig
-}
+})

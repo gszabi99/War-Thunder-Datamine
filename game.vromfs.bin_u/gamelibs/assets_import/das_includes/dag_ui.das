@@ -42,9 +42,6 @@ def get_asset_status_color(status : AssetLoadingStatus)
   else 
     return float4(1f, 1f, 1f, 1f)
 
-def dag_tex_id_to_imgui(tex_id : D3DRESID&)
-  return convert_dag_res_id_to_imgui(tex_id)
-
 def open_file(path : string)
   
   os_shell_execute("open", path, "", "")
@@ -68,7 +65,7 @@ def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAsset
     let texId = status == AssetLoadingStatus.Loaded ? get_managed_texture_id("{asset.name}*") : BAD_TEXTUREID
     if texId != BAD_TEXTUREID
       imgui::SameLine()
-      let imguiTexId = dag_tex_id_to_imgui(texId)
+      let imguiTexId = convert_dag_res_id_to_imgui(texId)
       imgui::PushStyleVar(ImGuiStyleVar.FramePadding, float2(0))
       imgui::ImageButton("{asset}_image", imgui::ImTextureRef(imguiTexId), float2(textureIconSize), float2(0), float2(1), float4(1), float4(1))
       imgui::PopStyleVar()
@@ -141,7 +138,8 @@ def view_dag_assets(assset_type : string; b : block<(arg1 : string const) : void
         imgui_click_to_copy(name)
         imgui::Spacing()
 
-        imgui::Button("Copy path")
+        if imgui::Button("Copy path")
+          SetClipboardText(path)
         imgui_click_to_copy(path)
         imgui::Spacing()
 

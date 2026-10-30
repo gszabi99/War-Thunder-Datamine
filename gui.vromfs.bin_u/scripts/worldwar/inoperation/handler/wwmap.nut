@@ -1,5 +1,43 @@
+import "%scripts/time.nut" as time
+import "%scripts/worldWar/inOperation/model/wwMapAirfields.nut" as mapAirfields
+import "%scripts/worldWar/inOperation/wwActionModesManager.nut" as actionModesManager
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/daguiFonts.nut" import getMaxFontTextByWidth
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/worldWar/handler/wwMapTooltip.nut" import wwMapTooltip
+from "%scripts/worldWar/handler/wwBattleDescription.nut" import WwBattleDescription
+from "%scripts/mainmenu/topMenuButtonsHandler.nut" import TopMenuButtonsHandler
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/safeAreaMenu.nut" import is_low_width_screen
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/services/wwService.nut" import subscribeOperationNotifyOnce
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/squads/leaderWwOperationStates.nut" import getLeaderOperationState
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/sqDagui/guiBhv/bhvAnim.nut" import create_ObjMoveToOBj
+from "%scripts/worldWar/bhvWorldWarMap.nut" import worldWarMapControls
+from "%scripts/worldWar/wwMapDataBridge.nut" import setWWMapParams, dargMapVisible
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
+from "%scripts/worldWar/inOperation/model/wwOperationLog.nut" import getWWLogsData, requestNewWWLogs
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide, getOperationObjectives, getSaveOperationLogId, getSidesOrder, getOperationTimeSec
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/worldWarState.nut" import getBattles, getArmyGroupsBySide
+from "%scripts/worldWar/inOperation/wwOperations.nut" import fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
 from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
 from "%appGlobals/worldWar/wwOperationState.nut" import isOperationPaused, isOperationFinished
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -16,52 +54,15 @@ from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_highli
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { wwMapTooltip } = require("%scripts/worldWar/handler/wwMapTooltip.nut")
-let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
-let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let mapAirfields = require("%scripts/worldWar/inOperation/model/wwMapAirfields.nut")
-let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { LEADER_OPERATION_STATES, getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
-let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
+let { LEADER_OPERATION_STATES } = require("%scripts/squads/leaderWwOperationStates.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let { setWWMapParams, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
-let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide, getOperationObjectives, getSaveOperationLogId, getSidesOrder, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapInfoTypes.nut")
 let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model/wwMapControlsButtons.nut")
 let { g_ww_map_reinforcement_tab_type } = require("%scripts/worldWar/inOperation/model/wwMapReinforcementTabType.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
-let { getBattles, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
-let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 
 
 const WW_LOG_REQUEST_DELAY = 1
@@ -445,7 +446,7 @@ let WwMap = class (BaseGuiHandlerWT) {
     toBattleButtonObj.setValue(txt)
     toBattleButtonObj.findObject("to_battle_button_text").setValue(txt)
     toBattleButtonObj.isCancel = isCancel ? "yes" : "no"
-    toBattleButtonObj.fontOverride = daguiFonts.getMaxFontTextByWidth(txt,
+    toBattleButtonObj.fontOverride = getMaxFontTextByWidth(txt,
       to_pixels("1@maxToBattleButtonTextWidth"), "bold")
   }
 

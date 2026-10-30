@@ -1,6 +1,15 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqstd/math.nut" as stdMath
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo
+from "%scripts/myStats.nut" import isMeNewbieOnUnitType
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomUnitTypesMask, getRoomRequiredUnitTypesMask
+from "%scripts/missions/missionsUtils.nut" import getMissionAllowedUnittypesMask
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "string" import format
 from "dagor.random" import rnd
 from "dagor.time" import get_time_msec
@@ -8,17 +17,9 @@ from "dagor.localize" import doesLocTextExist
 from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/controls/activeInputDevice.nut" import locByInputDevice
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { getRoomUnitTypesMask, getRoomRequiredUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getMissionAllowedUnittypesMask } = require("%scripts/missions/missionsUtils.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -75,7 +76,7 @@ function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips) {
     }
     notExistInARow = 0
 
-    if (isShow && (isLoggedIn.get() || tip.indexof("{{") == null)) 
+    if (isShow && (hasFullLoginState.get() || tip.indexof("{{") == null)) 
       res.append(key)
   }
   return res
@@ -119,7 +120,7 @@ function validate() {
 }
 
 function getDefaultUnitTypeMask() {
-  if (!isLoggedIn.get() || isInMenu.get())
+  if (!hasFullLoginState.get() || isInMenu.get())
     return existTipsMask
 
   local res = 0
@@ -187,7 +188,7 @@ function generateNewTip(unitTypeMask = 0) {
     }
 
     
-    curTip = loc($"{TIP_LOC_KEY_PREFIX}{keys[tipIdx]}")
+    curTip = locByInputDevice($"{TIP_LOC_KEY_PREFIX}{keys[tipIdx]}")
 
     
     if (unitTypeBit != GLOBAL_LOADING_TIP_BIT && stdMath.number_of_set_bits(unitTypeMask) > 1) {
@@ -244,7 +245,7 @@ addListenersWithoutEnv({
   ProfileReceived = @(_) invalidateTips()
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   getAllTips
   getTip
-}
+})

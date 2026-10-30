@@ -1,7 +1,7 @@
 {
   "model": "mig_25pd",
   "fmFile": "fm/mig_25pd.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.36,
   "gearSinkRangeC": 0.29,
   "jetEnginePowerFullScale": true,
@@ -22,16 +22,16 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
@@ -730,15 +730,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -751,36 +755,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -813,15 +827,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -864,7 +882,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2690,11 +2710,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_sapphire_25.blk",
+        "blk": "gamedata/sensors/su_sapphire_25.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/su_spo-10.blk"
+        "blk": "gamedata/sensors/su_spo-10.blk"
       }
     ]
   },
@@ -2708,19 +2728,19 @@
     "preset": [
       {
         "name": "mig_25pd_default",
-        "blk": "gameData/FlightModels/weaponPresets/mig_25pd_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mig_25pd_default.blk"
       },
       {
         "name": "mig_25pd_r60m_x4",
-        "blk": "gameData/FlightModels/weaponPresets/mig_25pd_r60m_x4.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mig_25pd_r60m_x4.blk"
       },
       {
         "name": "mig_25pd_r40rd_x4",
-        "blk": "gameData/FlightModels/weaponPresets/mig_25pd_r40rd_x4.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mig_25pd_r40rd_x4.blk"
       },
       {
         "name": "mig_25pd_r40td_x2",
-        "blk": "gameData/FlightModels/weaponPresets/mig_25pd_r40td_x2.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mig_25pd_r40td_x2.blk"
       }
     ]
   },
@@ -2748,7 +2768,7 @@
           "name": "ltc_common",
           "Weapon": {
             "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+            "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
             "emitter": "emtr_flare1",
             "bullets": 64,
             "external": true,
@@ -2770,7 +2790,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/p_62_2_l_r_60m_x2.blk",
+              "blk": "gamedata/weapons/containers/p_62_2_l_r_60m_x2.blk",
               "emitter": "pylon_1_apu_60m_2_l",
               "external": true,
               "separate": true
@@ -2782,7 +2802,7 @@
             "reqModification": "mig_25_r_40rd",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40rd.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40rd.blk",
               "emitter": "pylon_1_su_r_40rd",
               "bullets": 1,
               "external": true,
@@ -2802,7 +2822,7 @@
             "name": "r_40rd_default_slot2",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40rd_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40rd_default.blk",
               "emitter": "pylon_2_su_r_40rd",
               "bullets": 1,
               "external": true,
@@ -2815,7 +2835,7 @@
             "reqModification": "mig_25_r_40td",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40td.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40td.blk",
               "emitter": "pylon_2_su_r_40td",
               "bullets": 1,
               "external": true,
@@ -2841,7 +2861,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/su_5280l_mig_25pd_drop_tank_central.blk",
+            "blk": "gamedata/weapons/drop_tank/su_5280l_mig_25pd_drop_tank_central.blk",
             "emitter": "su_5280l_mig_25pd_drop_tank_central",
             "bullets": 1,
             "external": true,
@@ -2863,7 +2883,7 @@
             "name": "r_40rd_default_slot4",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40rd_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40rd_default.blk",
               "emitter": "pylon_3_su_r_40rd",
               "bullets": 1,
               "external": true,
@@ -2876,7 +2896,7 @@
             "reqModification": "mig_25_r_40td",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40td.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40td.blk",
               "emitter": "pylon_3_su_r_40td",
               "bullets": 1,
               "external": true,
@@ -2898,7 +2918,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/p_62_2_r_r_60m_x2.blk",
+              "blk": "gamedata/weapons/containers/p_62_2_r_r_60m_x2.blk",
               "emitter": "pylon_4_apu_60m_2_r",
               "external": true,
               "separate": true
@@ -2910,7 +2930,7 @@
             "reqModification": "mig_25_r_40rd",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_40rd.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_r_40rd.blk",
               "emitter": "pylon_4_su_r_40rd",
               "bullets": 1,
               "external": true,

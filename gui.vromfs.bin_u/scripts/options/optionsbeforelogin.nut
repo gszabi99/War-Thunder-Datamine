@@ -1,8 +1,7 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings, loadLocalSharedSettings
+from "%scripts/options/optionsExtNames.nut" import USEROPT_AUTOLOGIN
 from "guiOptions" import get_gui_option
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalSharedSettings, loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { USEROPT_AUTOLOGIN } = require("%scripts/options/optionsExtNames.nut")
 
 const AUTOLOGIN_SAVE_ID = "autologin"
 
@@ -20,7 +19,7 @@ function is_autologin_enabled() {
   return res
 }
 
-return {
+return freeze({
   set_autologin_enabled
   is_autologin_enabled
-}
+})

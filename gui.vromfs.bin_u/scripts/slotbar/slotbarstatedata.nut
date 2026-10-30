@@ -1,22 +1,21 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnitName
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/clientState/localProfileDeprecated.nut" import saveLocalByAccount
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
 from "%sqStdLibs/helpers/u.nut" import appendOnce
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/charActionConsts.nut" import *
 
-let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
-let { isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-
-let selectedCrews = persist("selectedCrews", @() {})
+let selectedCrews = {}
 
 let ignoreTransactions = [
   EATT_SAVING
@@ -50,7 +49,7 @@ function getAvailableCrewId(countryData) {
 }
 
 function saveSelectedCrews() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   saveLocalByAccount("selected_crews", selectedCrews)

@@ -1,23 +1,23 @@
+import "%scripts/time.nut" as time
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/clans/modify/modifyClanModalHandler.nut" import ModifyClanModalHandler
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton, warningIfGold
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/clans/clanTextInfo.nut" import stripClanTagDecorators, checkUGCAllowed
+from "%scripts/clans/clanRequests.nut" import prepareEditRequest
+from "%scripts/clans/clanActions.nut" import upgradeClanMembers, editClan, disbandClan
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table, getFilteredClanData
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/clanNativeConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ModifyClanModalHandler } = require("%scripts/clans/modify/modifyClanModalHandler.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let time = require("%scripts/time.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { stripClanTagDecorators, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
-let { prepareEditRequest } = require("%scripts/clans/clanRequests.nut")
-let { upgradeClanMembers, editClan, disbandClan } = require("%scripts/clans/clanActions.nut")
-let { get_clan_info_table, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 let EditClanModalhandler = class (ModifyClanModalHandler) {
   owner = null
@@ -190,8 +190,7 @@ let EditClanModalhandler = class (ModifyClanModalHandler) {
     let canUpgrade = this.clanData.clanType.canUpgradeMembers(this.clanData.mlimit)
     let haveLeaderRight = isInArray("LEADER", this.myRights)
 
-    let upgradeMembersButtonVisible = hasFeature("ClanUpgradeMembers") &&
-                          ((this.isMyClan && haveLeaderRight) || this.adminMode) &&
+    let upgradeMembersButtonVisible = ((this.isMyClan && haveLeaderRight) || this.adminMode) &&
                           canUpgrade
 
     if (upgradeMembersButtonVisible) {
@@ -272,6 +271,6 @@ register_gui_handler("EditClanModalhandler", EditClanModalhandler)
 let openEditClanWnd = @(clanData, owner) loadHandler(
   EditClanModalhandler, { clanData, owner })
 
-return {
+return freeze({
   openEditClanWnd
-}
+})

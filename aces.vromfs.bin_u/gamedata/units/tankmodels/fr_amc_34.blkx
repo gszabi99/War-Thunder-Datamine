@@ -46,6 +46,12 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 0.5,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1864,7 +1870,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/47mm_SA_34_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/47mm_SA_34_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -1966,7 +1972,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2010,8 +2016,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_amc_34_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_amc_34_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

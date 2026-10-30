@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1900,7 +1906,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_Type_II_Model_I_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_Type_II_Model_I_user_cannon.blk",
         "shotFreq": 0.2224,
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
@@ -1965,7 +1971,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_Type1_Chi_Ri_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_Type1_Chi_Ri_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2040,7 +2046,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
         "emitter": "bone_mg_body_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2085,7 +2091,7 @@
   "weapon_presets": {
     "preset": {
       "name": "jp_type_5_chi_ri_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_5_chi_ri_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/jp_type_5_chi_ri_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2127,7 +2133,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 180000.0,
       "driveGearRadius": 0.3,
       "mainGearRatio": 0.73,
@@ -2163,7 +2172,18 @@
         150000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {

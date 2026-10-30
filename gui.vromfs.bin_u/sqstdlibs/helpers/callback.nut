@@ -24,17 +24,24 @@ let u = require("u.nut")
 
 
 
-
-
-
-local assertFunc = function(_callback, errorText) { throw(errorText) }
+local assertFunc = function(_contextDbgName, errorText) { throw(errorText) }
 local getDbgName = @(context) type(context)
+
+function callIfValid(origin_this, ...) {
+  try {
+    if (!this.isValid())
+      return
+    return this.callbackFn.acall([origin_this].extend(vargv))
+  }
+  catch (err) {
+    assertFunc(this.getContextDbgName(), err)
+  }
+}
 
 local Callback = class {
   refToContext = null
   hasContext = false
   callbackFn = null
-  valid = true
 
   isToStringForDebug = true
 
@@ -43,8 +50,6 @@ local Callback = class {
 
     if (context)
       this.setContext(context)
-
-    this.valid = true
   }
 
   function setContext(context) {
@@ -54,11 +59,16 @@ local Callback = class {
   }
 
   function isValid() {
-    return this.isContextValid() && this.valid
-  }
+    if (!this.hasContext)
+      return true
 
-  function markInvalid() {
-    this.valid = false
+    if (this.refToContext == null)
+      return false
+
+    if ("isValid" in this.refToContext)
+      return this.refToContext.isValid()
+
+    return true
   }
 
   function getContextDbgName() {
@@ -75,48 +85,8 @@ local Callback = class {
     return format("Callback( context = %s)", this.getContextDbgName())
   }
 
-  
-
-
-  function _call(origin_this, ...) {
-    try {
-      if (!this.isValid())
-        return
-      return this.callbackFn.acall([origin_this].extend(vargv))
-    }
-    catch (err) {
-      assertFunc(this, err)
-    }
-  }
-
-  
-
-
-  function call(origin_this, ...) {
-    try {
-      if (!this.isValid())
-        return
-      return this.callbackFn.acall([origin_this].extend(vargv))
-    }
-    catch (err) {
-      assertFunc(this, err)
-    }
-  }
-
-  
-
-  function isContextValid() {
-    if (!this.hasContext)
-      return true
-
-    if (this.refToContext == null)
-      return false
-
-    if ("isValid" in this.refToContext)
-      return this.refToContext.isValid()
-
-    return true
-  }
+  _call = callIfValid
+  call = callIfValid
 
   isEqual = @(other) this == other 
   isEmpty = @() false
@@ -133,9 +103,10 @@ function make(func, context = null) {
   return null
 }
 
-return {
+return freeze({
   Callback
   setAssertFunction = @(func) assertFunc = func  
+  reportError = @(assertText, contextDbgName = "null") assertFunc(contextDbgName, assertText)
   setContextDbgNameFunction = @(func) getDbgName = func  
   make
-}
+})

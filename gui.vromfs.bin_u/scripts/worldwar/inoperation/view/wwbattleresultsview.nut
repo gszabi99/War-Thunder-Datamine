@@ -1,16 +1,16 @@
+import "%scripts/time.nut" as time
+import "%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut" as wwOperationUnitsGroups
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/missions/missionsText.nut" import getMissionLocName
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSidesOrder
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let time = require("%scripts/time.nut")
-let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 enum UNIT_STATS {

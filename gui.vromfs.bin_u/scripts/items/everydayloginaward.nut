@@ -1,5 +1,31 @@
+import "%scripts/time.nut" as time
+import "%scripts/wndLib/qrWindow.nut" as openQrWindow
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/userLog/userlogUtils.nut" import disableSeenUserlogs, shownUserlogNotifications
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/battlePass/seasonState.nut" import todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak
+from "%scripts/items/roulette/itemsRoulette.nut" import initItemsRoulette, skipItemsRouletteAnimation
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/trophyReward.nut" import MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem, getRestRewardsNumLayer
+from "%scripts/items/prizesView.nut" import getPrizeImageByConfig, getTrophyReward
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/viewUtils/hints.nut" import g_hints
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
 from "%sqstd/datablock.nut" import convertBlk
 from "console" import register_command
 from "dagor.random" import rnd_int
@@ -7,42 +33,26 @@ from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 from "chard" import getLoginGuardState, LOGIN_STREAK_GUARD_PERIOD_DEFAULT
+from "dagor.workcycle" import resetTimeout
 
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let { disableSeenUserlogs, shownUserlogNotifications } = require("%scripts/userLog/userlogUtils.nut")
-let { getUserlogImageItem } = require("%scripts/userLog/userlogViewData.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
+let { getUserlogImageItem, mkFreezingLine, MAX_LOGIN_GUARD_POINTS
+} = require("%scripts/userLog/userlogViewData.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem, getRestRewardsNumLayer } = require("%scripts/items/trophyReward.nut")
-let { getPrizeImageByConfig, getTrophyReward } = require("%scripts/items/prizesView.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+
 
 let getStreakGuardPeriod = @() getUnlockById("every_day_award")?.mode.streakGuardPeriod
   ?? LOGIN_STREAK_GUARD_PERIOD_DEFAULT
 
 let sizeTimerPid = dagui_propid_add_name_id("_size-timer")
 let sizeDelayPid = dagui_propid_add_name_id("_size_delay")
+let transpTimerPid = dagui_propid_add_name_id("_transp-timer")
 
 const ARROWS_ANIM_TIME = 0.4
 const ARROWS_STOP_BEFORE_END_TIME = 0.1
+
+const ADD_FREEZE_ALERT_TIME = 3
+const ADD_FREEZE_ALERT_TIMER_ID = "timer_add_freeze_alert"
+
 
 class EveryDayLoginAward (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
@@ -77,6 +87,7 @@ class EveryDayLoginAward (BaseGuiHandlerWT) {
     this.checkRewardsArray()
 
     this.updateAwards()
+    this.updateFreezingInfo()
     this.updateDaysProgressBar()
     this.fillOpenedChest()
     this.initExpTexts()
@@ -598,6 +609,67 @@ class EveryDayLoginAward (BaseGuiHandlerWT) {
       })
   }
 
+  function updateFreezingInfo() {
+    if (!hasFeature("loginGuard")) {
+      showObjById("freezing_block", false, this.scene)
+      return
+    }
+
+    let { loginGuard = 0, loginGuardSpent = 0, loginGuardAdded = 0 } = this.userlog?.body
+    let streak = this.userlog?.body.loginStreak ?? 0
+    let streakGuardPeriod = getStreakGuardPeriod()
+
+    let frInfoObj = this.scene.findObject("freezing_info")
+    let frAlertObj = this.scene.findObject("freezing_alert")
+    frAlertObj.show(loginGuardAdded > 0)
+
+    frInfoObj.findObject("freezing_count").setValue(loc("mainmenu/freezingCounter", {
+      addCount = 1
+      count = streak
+      days = streakGuardPeriod
+    }))
+    let progress = streakGuardPeriod <= 0 ? 0 : streak / streakGuardPeriod.tofloat()
+    let freezingBarObj = this.scene.findObject("filled_freezing_progress")
+    freezingBarObj.width = $"{progress}pw"
+
+    let statueLocId = loginGuardAdded > 0 && loginGuardSpent > 0 ? "mainmenu/freezingReceivedUsed"
+      : loginGuardAdded > 0 ? "mainmenu/freezingAdded"
+      : loginGuardSpent > 0 ? "mainmenu/freezingUsed"
+      : "mainmenu/freezingAvailable"
+    frInfoObj.findObject("freezing_status").setValue(loc(statueLocId, {
+      addCount = 1
+      used = loginGuardSpent
+      count = loginGuard
+      total = MAX_LOGIN_GUARD_POINTS
+    }))
+
+    frInfoObj.state = loginGuardAdded > 0 ? "add"
+      : loginGuardSpent > 0 ? "use"
+      : ""
+
+    showObjById("freezing_alert_bg", loginGuardAdded > 0, this.scene)
+    if (loginGuardAdded == 0) {
+      frInfoObj.setFloatProp(transpTimerPid, 0.0)
+      frInfoObj.animation = "quickFadeIn"
+    }
+    else {
+      frAlertObj.findObject("freezing_alert_txt").setValue(loc("mainmenu/freezingReceived", {
+        addCount = 1
+        days = streakGuardPeriod
+      }))
+      frAlertObj.setFloatProp(transpTimerPid, 0.0)
+      frAlertObj.animation = "fadeIn"
+
+      let cb = Callback(function() {
+        showObjById("freezing_alert_bg", false, this.scene)
+        frAlertObj.setFloatProp(transpTimerPid, 0.0)
+        frAlertObj.animation = "fadeOut"
+        frInfoObj.setFloatProp(transpTimerPid, 0.0)
+        frInfoObj.animation = "fadeIn"
+      }, this)
+      resetTimeout(ADD_FREEZE_ALERT_TIME, @() cb(), ADD_FREEZE_ALERT_TIMER_ID)
+    }  }
+
   function updateDaysProgressBar() {
     local value = (this.userlog.body?.dayInLoop ?? -1)
     local maxVal = (this.userlog.body?.loopLenght ?? -1)
@@ -786,10 +858,35 @@ function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
   console_print("!!!! NOT FOUND ANY EVERY DAY LOGIN AWARD")
 }
 
+addTooltipTypes({
+  DAILY_FREEZING = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, ...) {
+      let texts = [
+        loc("mainmenu/freezingTooltip0")
+        loc("mainmenu/freezingTooltip1", { useCount = 1 })
+        loc("mainmenu/freezingTooltip2", {
+          addCount = 1
+          days = getStreakGuardPeriod()
+          total = MAX_LOGIN_GUARD_POINTS
+        })
+      ]
+      let markup = "".join(texts.map(@(t) mkFreezingLine(t, false, "center")))
+      let guiScene = obj.getScene()
+      let contentWidth = g_hints.getMaxHintTextWidthPx(texts, "fontSmall", "1@sIco", guiScene)
+      
+      obj.width = $"{contentWidth} + 3@blockInterval"
+      obj.flow = "vertical"
+      guiScene.replaceContentFromText(obj, markup, markup.len(), handler)
+      return true
+    }
+  }
+})
+
 register_command(debugEveryDayLoginAward, "debug.everyDayLoginAward")
 
-return {
+return freeze({
   EveryDayLoginAward
   showEveryDayLoginAwardWnd
   hasEveryDayLoginAward
-}
+})

@@ -1,17 +1,17 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/worldWar/handler/wwBattleDescription.nut" import WwBattleDescription
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/worldWar/worldWarState.nut" import getBattleById
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 

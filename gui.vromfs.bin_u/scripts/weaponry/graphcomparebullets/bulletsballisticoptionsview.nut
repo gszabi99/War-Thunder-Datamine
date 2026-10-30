@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 function mkSliderMarkup(option) {
   return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
@@ -35,7 +34,7 @@ function mkModeButtonsMarkup(option) {
   return "".concat("tdiv { id:t='", id, "'; width:t='pw'; ", buttons, " }")
 }
 
-return {
+return freeze({
   mkSliderMarkup
   mkModeButtonsMarkup
-}
+})

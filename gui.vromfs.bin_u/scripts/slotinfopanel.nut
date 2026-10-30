@@ -1,45 +1,46 @@
+import "%scripts/protectionAnalysis/protectionAnalysis.nut" as protectionAnalysis
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/unlocks/favoriteUnlocksListView.nut" import FavoriteUnlocksListView
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/favoriteUnlocks.nut" import FAVORITE_UNLOCKS_LIMIT, getFavoriteUnlocksNum, canAddFavorite
+from "%scripts/crew/crewSkills.nut" import getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
+from "%scripts/crew/crewSkillsView.nut" import getSkillCategoryName
+from "%scripts/slotInfoPanel/slotInfoPanelButtons.nut" import slotInfoPanelButtons
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnit, getShowedUnitName, setShowUnit
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitChecks.nut" import checkUnitModsUpdate, checkSecondaryWeaponModsRecount
+from "%scripts/crew/crewPointsText.nut" import getCrewSpText
+from "%scripts/missions/modificationTutorial.nut" import needShowUnseenModTutorialForUnit
+from "%scripts/slotbar/slotbarStateData.nut" import getSelectedCrews
+from "%scripts/bonusModule.nut" import showCurBonus
+from "%scripts/missionBuilder/testFlightState.nut" import guiStartTestflight
+from "%scripts/user/profileHandler.nut" import guiStartProfile
+from "%scripts/crew/crew.nut" import getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus, gui_modal_crew
+from "%scripts/crew/crewDiscount.nut" import getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
+from "%scripts/discounts/discountUtils.nut" import getMaxWeaponryDiscountByUnitName
+from "%scripts/weaponry/weaponryActions.nut" import open_weapons_for_unit
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
+from "%scripts/unit/selectUnitModal.nut" import openSelectUnitWnd
+from "%scripts/hangarModelLoadManager.nut" import loadFirearm
+from "%scripts/airInfo.nut" import fillAirInfo
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "string" import format
+from "%globalScripts/loc_helpers.nut" import locByVendor, getVendorLocId
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { FavoriteUnlocksListView } = require("%scripts/unlocks/favoriteUnlocksListView.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { FAVORITE_UNLOCKS_LIMIT, getFavoriteUnlocksNum, canAddFavorite } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let protectionAnalysis = require("%scripts/dmViewer/protectionAnalysis.nut")
-let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel } = require("%scripts/crew/crewSkills.nut")
-let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getShowedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
-let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
-let { showCurBonus } = require("%scripts/bonusModule.nut")
-let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus, gui_modal_crew } = require("%scripts/crew/crew.nut")
-let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo } = require("%scripts/crew/crewDiscount.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
-let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
-let { loadFirearm } = require("%scripts/hangarModelLoadManager.nut")
-let { fillAirInfo } = require("%scripts/airInfo.nut")
 
 
 function getSkillCategoryView(crewData, unit) {
@@ -93,7 +94,7 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
         fillerFunction = function() { this.updateCrewInfo(true) }
       },
       {
-        tooltip = "#mainmenu/btnFavoritesUnlockAchievement",
+        tooltip = $"#{getVendorLocId("mainmenu/btnFavoritesUnlockAchievement")}",
         imgId = "",
         imgBg = "#ui/gameuiskin#sh_unlockachievement.svg",
         discountId = "",
@@ -107,6 +108,7 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
   function initScreen() {
     this.infoPanelObj = this.scene.findObject("slot_info_side_panel")
     this.infoPanelObj.show(true)
+    this.scene.findObject("btn_achievements_all").setValue(locByVendor("mainmenu/btnUnlockAchievementsAll"))
     dmViewer.init(this)
 
     this.updateAirInfoBlk()
@@ -298,6 +300,11 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
 
   }
 
+  function onEventUnitMrankSelectionChanged(p) {
+    if (p.unitName == this.getCurShowUnit()?.name)
+      this.doWhenActiveOnce("updateAirInfo")
+  }
+
   function checkUpdateAirInfo() {
     let unit = this.getCurShowUnit()
     if (!unit)
@@ -458,7 +465,7 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
 
     let cur = getFavoriteUnlocksNum()
     let text = "".concat(
-      loc("mainmenu/btnFavoritesUnlockAchievement"),
+      locByVendor("mainmenu/btnFavoritesUnlockAchievement"),
       loc("ui/parentheses/space", {
         text = colorize(
           canAddFavorite() ? "" : "warningTextColor",
@@ -625,6 +632,6 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   createSlotInfoPanel
-}
+})

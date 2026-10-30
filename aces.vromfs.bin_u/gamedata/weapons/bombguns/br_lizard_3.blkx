@@ -1,10 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 20,
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "br_ba_fg_230_lizard_2_na",
   "mesh_deployed": "br_ba_fg_230_lizard_2_deployed",
   "offsetForDemonstration": [
@@ -139,6 +138,7 @@
       "damageType": "pressure"
     },
     "guidance": {
+      "allowCCRP": true,
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
       "hasTimeToHitTimer": true,

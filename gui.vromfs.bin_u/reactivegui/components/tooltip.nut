@@ -1,9 +1,9 @@
+import "%rGui/style/fontsState.nut" as fontsState
+import "%appGlobals/style/cssColors.nut" as cssColors
 from "%rGui/style/screenState.nut" import bw, bh
 from "dagor.debug" import logerr
 from "%rGui/globals/ui_library.nut" import *
 from "types" import Array, String
-
-let fontsState = require("%rGui/style/fontsState.nut")
 
 let state = Watched(null)
 local curContent = null
@@ -26,12 +26,16 @@ let tooltipBg = {
   padding = hdpx(10)
 }
 
+let textTags = { b = { font = fontsState.get("normal") } }
+
 let mkTooltipText = @(text, ovr = {}) {
   maxWidth = hdpx(800)
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   font = fontsState.get("small")
   color = 0xFFC0C0C0
+  colorTable = cssColors
+  tagsTable = textTags
   text
 }.__update(ovr)
 
@@ -119,6 +123,15 @@ let tooltipDetach = @(stateFlags, key) @() (stateFlags.get() & S_HOVER) != 0 ? h
 let withTooltip = @(stateFlags, key, tooltipCtor)
   withTooltipImpl(stateFlags, key, @() showTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
 
+
+function withHint(stateFlags, key, getText) {
+  let mkParams = function() {
+    let content = getText()
+    return (content ?? "") == "" ? null : { content, key }
+  }
+  return withTooltip(stateFlags, key, mkParams)
+}
+
 function tooltipComp() {
   if (state.get() == null)
     return { watch = state }
@@ -136,6 +149,7 @@ function tooltipComp() {
   return position.__merge({
     watch = [state, bw, bh]
     size = 0
+    zOrder = Layers.Tooltip
     halign
     valign
     children = {
@@ -148,8 +162,9 @@ function tooltipComp() {
   })
 }
 
-return {
+return freeze({
   tooltipComp
   withTooltip
+  withHint
   tooltipDetach
-}
+})

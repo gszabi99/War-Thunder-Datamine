@@ -1,17 +1,17 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/bhvWorldWarMap.nut" import worldWarMapControls
+from "%scripts/worldWar/wwMapDataBridge.nut" import hoverArmyByName
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
 from "worldwar" import wwUpdateHoverArmyName
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
-let { hoverArmyByName } = require("%scripts/worldWar/wwMapDataBridge.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_map_armies_status_tab_type } = require("%scripts/worldWar/inOperation/model/wwArmiesStatusTabType.nut")
 
 let WwArmiesList = class (BaseGuiHandlerWT) {
@@ -287,4 +287,4 @@ let WwArmiesList = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwArmiesList", WwArmiesList)
 
-return { WwArmiesList }
+return freeze({ WwArmiesList })

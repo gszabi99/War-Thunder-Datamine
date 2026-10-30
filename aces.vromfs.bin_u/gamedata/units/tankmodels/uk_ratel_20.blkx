@@ -1973,7 +1973,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_GI_2_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_GI_2_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.1,
@@ -2054,7 +2054,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_twin_flame",
         "defaultYaw": 0.0,
@@ -2100,7 +2100,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_03_dm",
@@ -2142,7 +2142,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/103mm_MILAN_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/103mm_MILAN_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_02",
@@ -2198,8 +2198,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_ratel_20_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_ratel_20_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3777,7 +3777,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_GI_2_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/20mm_GI_2_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.1,
@@ -3858,7 +3858,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_twin_flame",
               "defaultYaw": 0.0,
@@ -3904,7 +3904,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Browning_MG4_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_02",
               "barrelDP": "gun_barrel_03_dm",
@@ -3946,7 +3946,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/103mm_MILAN_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/103mm_MILAN_rocket_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_02",
@@ -3995,7 +3995,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4163,5 +4163,29 @@
     "fov": 12.0,
     "zoomFov": 7.3,
     "hookNodeName": "atgm_sight"
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.671,
+      1.4914,
+      1.2354
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

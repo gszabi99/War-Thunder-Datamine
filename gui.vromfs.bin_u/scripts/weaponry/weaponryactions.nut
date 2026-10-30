@@ -1,15 +1,15 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BULLETS0, USEROPT_BULLET_COUNT0, USEROPT_BULLETS_WEAPON0
+from "%scripts/options/optionsExt.nut" import set_option
 from "guiOptions" import set_unit_option, set_gui_option
 from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_natives.nut" import shop_enable_modifications
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/hangarMiscConsts.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0, USEROPT_BULLETS_WEAPON0 } = require("%scripts/options/optionsExtNames.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 
 function open_weapons_for_unit(unit, params = {}) {
   if (!("name" in unit))
@@ -66,9 +66,9 @@ function updateBulletCountOptions(unit, bulletGroups) {
   }
 }
 
-return {
+return freeze({
   open_weapons_for_unit
   enable_modifications
   enable_current_modifications
   updateBulletCountOptions
-}
+})

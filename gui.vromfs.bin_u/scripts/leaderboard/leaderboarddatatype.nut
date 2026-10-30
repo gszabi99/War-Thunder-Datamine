@@ -1,15 +1,14 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/enums.nut" as enums
 import "%sqstd/math.nut" as stdMath
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/langUtils/textFormat.nut" import shortTextFromNum
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/contacts/contactsListState.nut" import getContactByName
+from "%scripts/contacts/contactsInfo.nut" import colorizeWhitePsnIcon
 from "%scripts/dagui_natives.nut" import clan_get_role_name, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let time = require("%scripts/time.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 
 function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)

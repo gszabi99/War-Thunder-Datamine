@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/missions/startMissionsList.nut" import guiStartBuilder
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { guiStartBuilder } = require("%scripts/missions/startMissionsList.nut")
 
 let changeAircraftForBuilder = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -19,7 +18,6 @@ let changeAircraftForBuilder = class (BaseGuiHandlerWT) {
          hasActions = false,
          afterSlotbarSelect = this.updateButtons,
          slotbarBehavior = "posNavigator",
-         needFullSlotBlock = true
          onSlotDblClick = Callback(@(_crew) this.onApply(), this)
          onSlotActivate = Callback(@(_crew) this.onApply(), this)
        },
@@ -56,4 +54,4 @@ let changeAircraftForBuilder = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("changeAircraftForBuilder", changeAircraftForBuilder)
 
-return { changeAircraftForBuilder }
+return freeze({ changeAircraftForBuilder })

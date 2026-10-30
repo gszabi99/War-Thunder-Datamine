@@ -46,6 +46,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1850,7 +1856,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -1938,7 +1944,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "maxAdditionalPitch": 0.0,
@@ -1982,15 +1988,15 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_a_13_mk1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_a_13_mk1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 13290.0,
-      "Fuel": 510.0,
-      "TakeOff": 13800.0,
+      "Empty": 14000.0,
+      "Fuel": 500.0,
+      "TakeOff": 14500.0,
       "momentOfInertia": [
         1.8,
         1.7,
@@ -3012,7 +3018,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,
@@ -3100,7 +3106,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "maxAdditionalPitch": 0.0,
@@ -3143,7 +3149,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/102mm_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/102mm_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -1,11 +1,12 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%appGlobals/clientState/platform.nut" import ps4RegionName
 from "%sqstd/underscore.nut" import getSubTable
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { ps4RegionName, isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let cache = {}
@@ -48,13 +49,13 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) clearCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
-  : isPlatformXbox ? "xbox"
+let getBundlesBlockName = @() isSony ? ps4RegionName()
+  : isXbox ? "xbox"
   : epic_is_running() ? "epic"
   : "guid"
 
-return {
+return freeze({
   getBundlesBlockName
   getBundleId = @(name) getCachedBundleId(getBundlesBlockName(), name)
   getEntitlementId = @(name) getCachedEntitlementId(getBundlesBlockName(), name)
-}
+})

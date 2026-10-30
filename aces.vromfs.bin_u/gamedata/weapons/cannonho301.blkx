@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.32,
-  "shotFreq": 6.0,
-  "bullets": 10,
-  "reloadSpeedK": 1.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,44 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.32,
+  "shotFreq": 6.0,
+  "bullets": 10,
+  "reloadSpeedK": 1.5,
+  "overheat": {
+    "overheat": [
+      [
+        3.0,
+        0.0
+      ],
+      [
+        7.0,
+        0.5
+      ],
+      [
+        12.0,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": {
     "mass": 0.585,
     "caliber": 0.04,
@@ -456,45 +488,6 @@
       "trail": "black"
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "ho301_gun_outside",
-    "cockpit": "ho301_gun_inside",
-    "ai": "ho301_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        3.0,
-        0.0
-      ],
-      [
-        7.0,
-        0.5
-      ],
-      [
-        12.0,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
-  },
   "ho301_new_gun": {
     "maxDeltaAngle": 0.96,
     "overheat": {
@@ -513,5 +506,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "ho301_gun_outside",
+    "cockpit": "ho301_gun_inside",
+    "ai": "ho301_gun_ai"
   }
 }

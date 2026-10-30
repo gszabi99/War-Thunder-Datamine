@@ -1,5 +1,40 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/chat/mpChatModel.nut" import getLogForBanhammer
+from "%scripts/controls/mousePointerInitialPos.nut" import setMousePointerInitialPosOnChildByValue
+from "%scripts/statistics/squadIcon.nut" import updateListLabelsSquad, isShowSquad
+from "%scripts/statistics/mplayersList.nut" import getMplayersList
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyPublicParam
+from "%scripts/statistics/mpStatisticsUtil.nut" import get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle, getMpKickCountdown, setMpTable, getLocalTeamForMpStats, buildMpTable
+  , updateTeamCssLabel, countWidthForMpTable
+from "%scripts/statistics/mpStatisticsInfo.nut" import getSkillBonusTooltipText
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/missions/missionsUtils.nut" import setMissionEnviroment, getBadWeatherTooltipText
+from "%scripts/options/safeAreaMenu.nut" import is_low_width_screen
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/items/orders.nut" import openOrdersInventory, updateActiveOrder, orderCanBeActivated, getActivateButtonLabel, activateSoonExpiredOrder
+from "%scripts/gamercard/fillGamercard.nut" import fillGamercard
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/options/optionsExt.nut" import get_option_in_mode
+from "%scripts/user/playerContextMenu.nut" import showSessionPlayerRClickMenu
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/wishlist/wishlistManager.nut" import hasInWishlist, isWishlistFull
+from "%scripts/wishlist/addWishWnd.nut" import addToWishlist
+from "%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut" import InContainersNavigator
+from "%scripts/respawn/respawnState.nut" import needToShowBadWeatherWarning, hasAirfieldRespawn
+from "%scripts/countries/countriesCustomization.nut" import getUseOperatorFlagsInBattle, getCountryFlagSubstitute, getCountryOverride
+from "%scripts/unit/unitInfo.nut" import getUnitCountry
+from "%scripts/utils/genericTooltip.nut" import openGenericTooltip
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "math" import ceil
 from "dagor.time" import get_time_msec
 from "string" import format
@@ -7,50 +42,18 @@ from "replays" import is_replay_playing
 from "mission" import get_game_mode, get_game_type, GET_MPLAYERS_LIST
 from "guiMission" import get_mission_difficulty_int, get_mp_tbl_teams, get_player_army_for_hud
 from "%globalScripts/gameTypeConsts.nut" import *
-from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, is_race_started, get_race_winners_count, mpstat_get_sort_func, get_multiplayer_time_left
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "%appGlobals/missions/missionScore.nut" import getMissionScore
 from "types" import Table, String
 
-let { events } = require("%scripts/events/eventsManager.nut")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
-let { g_team } = require("%scripts/teams.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
-let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
-let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
-let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE } = require("%scripts/options/optionsExtNames.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle, getMpKickCountdown, setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { setMissionEnviroment, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { openOrdersInventory, updateActiveOrder, orderCanBeActivated, getActivateButtonLabel, activateSoonExpiredOrder } = require("%scripts/items/orders.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
-let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
-let { InContainersNavigator } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { needToShowBadWeatherWarning, hasAirfieldRespawn } = require("%scripts/respawn/respawnState.nut")
-let { getUseOperatorFlagsInBattle, getCountryFlagSubstitute, getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -105,7 +108,7 @@ let MPStatistics = class (BaseGuiHandlerWT) {
                                "raceLastCheckpointTime", "deaths"]
   footballRowHeaders        = ["name", "footballScore", "footballGoals", "footballSaves", "footballAssists"]
 
-  statTrSize = "pw, 1@baseTrHeight"
+  statTrSize = "pw, 1@rows16height"
 
   function onActivateOrder() {
     openOrdersInventory()
@@ -278,7 +281,7 @@ let MPStatistics = class (BaseGuiHandlerWT) {
   function initStatsMissionParams() {
     this.gameMode = get_game_mode()
     this.gameType = get_game_type()
-    this.isOnline = isLoggedIn.get()
+    this.isOnline = hasFullLoginState.get()
 
     this.isTeamplay = isModeWithTeams(this.gameType)
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
@@ -300,6 +303,7 @@ let MPStatistics = class (BaseGuiHandlerWT) {
       invert = invert
       colorTeam = "blue"
       columns = {}
+      smallFont = is_low_width_screen()
     }
 
     if (this.gameType & GT_COOPERATIVE) {
@@ -358,7 +362,7 @@ let MPStatistics = class (BaseGuiHandlerWT) {
         this.sortTable(tbl)
 
       let data = buildMpTable(tbl, markupData, tblData, 1,
-        { canHasBonusIcon = true, hasCustomTooltip = true })
+        { canHasBonusIcon = true, hasCustomTooltip = true, isTeamplay = this.isTeamplay })
       this.guiScene.replaceContentFromText(objTbl, data, data.len(), this)
     }
   }
@@ -382,8 +386,6 @@ let MPStatistics = class (BaseGuiHandlerWT) {
       return
 
     local tbl = null
-
-    objTbl.smallFont = is_low_width_screen() ? "yes" : "no"
 
     if (customTbl) {
       let idx = max(team - 1, -1)
@@ -449,6 +451,8 @@ let MPStatistics = class (BaseGuiHandlerWT) {
         roomEventName = this.getRoomEventEconomicName()
         isDebriefing = !!this?.debriefingResult
         hasCustomTooltip = true
+        friendlyTeamCode = friendlyTeam
+        isTeamplay = this.isTeamplay
       })
       updateTeamCssLabel(objTbl, this.getLocalTeam())
 
@@ -1016,10 +1020,10 @@ let MPStatistics = class (BaseGuiHandlerWT) {
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
-      let mp_ffa_score_limit = get_mp_ffa_score_limit()
-      if (!this.isTeamplay && mp_ffa_score_limit && checkObj(scoreLimitTextObj))
+      let { ffaMaxScore } = getMissionScore()
+      if (!this.isTeamplay && ffaMaxScore && checkObj(scoreLimitTextObj))
         scoreLimitTextObj.setValue(getCompoundedText("".concat(loc("options/scoreLimit"), loc("ui/colon")),
-                                   mp_ffa_score_limit,
+                                   ffaMaxScore,
                                    "activeTextColor"))
     }
   }
@@ -1076,8 +1080,12 @@ let MPStatistics = class (BaseGuiHandlerWT) {
       return
     badWeatherWarningTop.tooltip = getBadWeatherTooltipText(hasBadWeather, hasAirfieldRespawn.get())
   }
+
+  function onGenericTooltipOpen(obj) {
+    openGenericTooltip(obj, this, this.scene.findObject("modal_tooltip_parent"))
+  }
 }
 
 register_gui_handler("MPStatistics", MPStatistics)
 
-return { MPStatistics }
+return freeze({ MPStatistics })

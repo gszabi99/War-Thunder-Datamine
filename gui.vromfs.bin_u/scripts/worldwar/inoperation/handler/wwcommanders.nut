@@ -1,20 +1,18 @@
+import "%scripts/clans/showClanPageModal.nut" as showClanPageModal
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/wwMapDataBridge.nut" import showArmiesIndex
+from "%scripts/worldWar/worldWarState.nut" import getArmyGroups, getArmyGroupsBySide
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSidesOrder
 from "worldwar" import wwGetOperationId, wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_update_popuped_armies_name, ww_get_armies_names_of_armygroup, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { showArmiesIndex } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let WwArmyGroupHandler = require("%scripts/worldWar/inOperation/handler/wwArmyGroupHandler.nut")
-let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { getArmyGroups, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
-let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 let WwCommanders = class (BaseGuiHandlerWT) {
@@ -163,4 +161,4 @@ let WwCommanders = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwCommanders", WwCommanders)
 
-return { WwCommanders }
+return freeze({ WwCommanders })

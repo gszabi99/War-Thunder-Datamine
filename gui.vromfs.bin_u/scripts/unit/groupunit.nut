@@ -1,8 +1,7 @@
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
+from "%scripts/unit/unitInfo.nut" import image_for_air
 from "%scripts/dagui_library.nut" import *
-
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 
 function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   let params = {
@@ -26,6 +25,6 @@ function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
 }
 
 
-return {
+return freeze({
   getGroupUnitMarkUp
-}
+})

@@ -1,6 +1,6 @@
 import "string" as string
 from "%rGui/hud/tankDebugState.nut" import Visible, Rpm, Omega, MaxRpm, CurrentGear, NeutralGearIdx, GearCount
-  , GearMaxSpeed, GearRatio, Speed, DDGearRatio, LTrackSpeed, RTrackSpeed, HillClimbKx
+  , GearMaxSpeed, GearRatio, Speed, DDGearRatio, SteerType, LTrackSpeed, RTrackSpeed, HillClimbKx
   , HillClimbKy, LeftTrackSlide, RightTrackSlide, WorldForceVal, TrackForceVal, WorldForceDirUp, TrackForceDirUp
   , WorldForceDirForward, TrackForceDirForward, Throttle, LeftBrake, RightBrake, ClutchLeft, ClutchRight
   , Steering, TrackFricFront, TrackFricFrontSlide, TrackFricSideX, TrackFricSideY, TrackFricSideZ, TrackFricSideW
@@ -16,9 +16,6 @@ const baseFontSize = 20
 
 const iconWidth = 80
 const iconHeight = 80
-let engineIcon = Picture($"!ui/gameuiskin#engine_state_indicator.svg:{iconWidth}:{iconHeight}")
-let transmissionIcon = Picture($"!ui/gameuiskin#new_tank_transmission.avif:{iconWidth}:{iconHeight}")
-let trackIcon = Picture($"!ui/gameuiskin#track_state_indicator.svg:{iconWidth}:{iconHeight}")
 
 let engineRpmVal = @() {
   watch = [Rpm, MaxRpm]
@@ -116,7 +113,7 @@ let speed = {
   ]
 }
 
-let engine = {
+let mkEngine = @() {
   size = const [pw(10), ph(20)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -124,7 +121,7 @@ let engine = {
     {
       size = const [iconWidth, iconHeight]
       rendObj = ROBJ_IMAGE
-      image = engineIcon
+      image = Picture($"!ui/gameuiskin#engine_state_indicator.svg:{iconWidth}:{iconHeight}")
       color = baseColor
     }
     engineRpm
@@ -157,6 +154,30 @@ let transCurretGear = {
       valign = ALIGN_BOTTOM
     }
     transCurGearVal
+  ]
+}
+
+let steerTypeVal = @() {
+  watch = SteerType
+  size = FLEX_H
+  halign = ALIGN_RIGHT
+  rendObj = ROBJ_TEXT
+  color = baseColor
+  fontSize = baseFontSize
+  text = SteerType.get()
+}
+
+let steerType = {
+  size = FLEX_H
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      color = baseColor
+      fontSize = baseFontSize
+      text = "SteerType"
+    }
+    steerTypeVal
   ]
 }
 
@@ -220,7 +241,7 @@ let doubleDiffRatio = {
   ]
 }
 
-let transmission = {
+let mkTransmission = @() {
   size = const [pw(15), ph(20)]
   pos = const [0, ph(20)]
   flow = FLOW_VERTICAL
@@ -229,10 +250,11 @@ let transmission = {
     {
       size = const [iconWidth, iconHeight]
       rendObj = ROBJ_IMAGE
-      image = transmissionIcon
+      image = Picture($"!ui/gameuiskin#new_tank_transmission.avif:{iconWidth}:{iconHeight}")
       
     }
     transCurretGear
+    steerType
     {
       size = FLEX_H
       flow = FLOW_HORIZONTAL
@@ -500,7 +522,7 @@ let frictionForce = {
   ]
 }
 
-let tracks = {
+let mkTracks = @() {
   size = const [pw(18), ph(20)]
   pos = const [pw(80), 0]
   flow = FLOW_VERTICAL
@@ -509,7 +531,7 @@ let tracks = {
     {
       size = const [iconWidth, iconHeight]
       rendObj = ROBJ_IMAGE
-      image = trackIcon
+      image = Picture($"!ui/gameuiskin#track_state_indicator.svg:{iconWidth}:{iconHeight}")
       color = baseColor
     }
     trackSpeed
@@ -523,6 +545,23 @@ let tracks = {
   ]
 }
 
+let forceOrientUpLabels = [
+  {
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = const [pw(-120), ph(-120)]
+    color = baseColor
+    fontSize = baseFontSize
+    text = "view from above:"
+  }
+  {
+    size = const [pw(10), ph(20)]
+    rendObj = ROBJ_SOLID
+    pos = const [pw(-5), ph(-10)]
+    color = baseColor
+  }
+]
+
 let forceOrientUp = @(){
   watch = [WorldForceDirUp, TrackForceDirUp]
   size = const [pw(7.5), ph(10)]
@@ -531,26 +570,28 @@ let forceOrientUp = @(){
   color = warningColor
   commands = [
     [VECTOR_LINE, sin(TrackForceDirUp.get()) * 20, -cos(TrackForceDirUp.get()) * 20, sin(TrackForceDirUp.get()) * 100, -cos(TrackForceDirUp.get()) * 100],
-    [VECTOR_COLOR, critColor],
+    const [VECTOR_COLOR, critColor],
     [VECTOR_LINE, sin(WorldForceDirUp.get()) * 20, -cos(WorldForceDirUp.get()) * 20, sin(WorldForceDirUp.get()) * 100, -cos(WorldForceDirUp.get()) * 100]
   ]
-  children = [
-    {
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      pos = const [pw(-120), ph(-120)]
-      color = baseColor
-      fontSize = baseFontSize
-      text = "view from above:"
-    }
-    {
-      size = const [pw(10), ph(20)]
-      rendObj = ROBJ_SOLID
-      pos = const [pw(-5), ph(-10)]
-      color = baseColor
-    }
-  ]
+  children = forceOrientUpLabels
 }
+
+let forceOrientFwdLabels = [
+  {
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = const [pw(-100), ph(-120)]
+    color = baseColor
+    fontSize = baseFontSize
+    text = "Front view:"
+  }
+  {
+    size = const [pw(30), ph(20)]
+    rendObj = ROBJ_SOLID
+    pos = const [pw(-15), ph(-10)]
+    color = baseColor
+  }
+]
 
 let forceOrientFwd = @(){
   watch = [WorldForceDirForward, TrackForceDirForward]
@@ -560,25 +601,10 @@ let forceOrientFwd = @(){
   color = warningColor
   commands = [
     [VECTOR_LINE, sin(TrackForceDirForward.get()) * 20, -cos(TrackForceDirForward.get()) * 20, sin(TrackForceDirForward.get()) * 100, -cos(TrackForceDirForward.get()) * 100],
-    [VECTOR_COLOR, critColor],
+    const [VECTOR_COLOR, critColor],
     [VECTOR_LINE, sin(WorldForceDirForward.get()) * 20, -cos(WorldForceDirForward.get()) * 20, sin(WorldForceDirForward.get()) * 100, -cos(WorldForceDirForward.get()) * 100]
   ]
-  children = [
-    {
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      pos = const [pw(-100), ph(-120)]
-      color = baseColor
-      fontSize = baseFontSize
-      text = "Front view:"
-    }
-    {
-      size = const [pw(30), ph(20)]
-      rendObj = ROBJ_SOLID
-      pos = const [pw(-15), ph(-10)]
-      color = baseColor
-    }
-  ]
+  children = forceOrientFwdLabels
 }
 
 function axisVal(axis, main_color) {
@@ -832,9 +858,9 @@ let Root = @(){
   watch = Visible
   size = FLEX
   children = Visible.get() ? [
-    engine
-    transmission
-    tracks
+    mkEngine()
+    mkTransmission()
+    mkTracks()
     forceOrientUp
     forceOrientFwd
     axis

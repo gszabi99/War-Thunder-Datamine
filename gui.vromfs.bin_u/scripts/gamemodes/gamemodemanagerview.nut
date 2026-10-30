@@ -1,21 +1,22 @@
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, needShowCrossPlayInfo
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/user/balance.nut" import hasMultiplayerRestritionByBalance
+from "%scripts/missions/startMissionsList.nut" import guiStartSkirmish
+from "%scripts/events/eventsHandler.nut" import guiStartModalEvents
+from "%scripts/gameModes/gameModeManagerState.nut" import setCurrentGameModeById, getGameModeById, getGameModeEvent
+from "%scripts/events/eventInfo.nut" import isEventPlatformOnlyAllowed
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled, getCantPlayWorldwarReasonText
+from "%scripts/globalWorldwarUtils.nut" import openWWMainWnd
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { guiStartSkirmish } = require("%scripts/missions/startMissionsList.nut")
-let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
-let { setCurrentGameModeById, getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { killsOnUnitTypes, newbieNextEvent } = require("%scripts/myStats.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { isWorldWarEnabled, getCantPlayWorldwarReasonText } = require("%scripts/globalWorldWarScripts.nut")
-let { openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 
 let fullRealModeOnBattleButtonClick = @(gameMode)
   guiStartModalEvents({ event = gameMode?.getEventId() ?? gameMode?.modeId })
@@ -84,7 +85,7 @@ let customStateByGameModeId = {
       if (!isMultiplayerPrivilegeAvailable.get())
         return loc("xbox/noMultiplayer")
       if (isCrossPlayEnabled())
-        return loc("xbox/crossPlayEnabled")
+        return locByVendor("xbox/crossPlayEnabled")
       return null
     }
   }
@@ -96,7 +97,7 @@ let customStateByGameModeId = {
       else if (!isMultiplayerPrivilegeAvailable.get())
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
-        checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+        checkAndShowCrossplayWarning(@() showInfoMsgBox(locByVendor("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     getUnlockText = @() getCustomGameModeUnlockText()
     crossplayTooltip = function() {
@@ -107,9 +108,9 @@ let customStateByGameModeId = {
       
       
       if (isCrossPlayEnabled())
-        return loc("xbox/crossPlayEnabled")
+        return locByVendor("xbox/crossPlayEnabled")
       
-      return loc("xbox/crossPlayRequired")
+      return locByVendor("xbox/crossPlayRequired")
     }
 
   }
@@ -195,17 +196,17 @@ function getGameModeUnlockFullText(gameMode) {
     otherResctrictionsText = "".concat(loc("revoking_fraudulent_purchases"), "\n")
   let event = getGameModeEvent(gameMode)
   if (event && !isEventPlatformOnlyAllowed(event) && needShowCrossPlayInfo() && !isCrossPlayEnabled())
-    otherResctrictionsText = "".concat(loc("xbox/crossPlayRequired"), "\n")
+    otherResctrictionsText = "".concat(locByVendor("xbox/crossPlayRequired"), "\n")
 
   return tooltipText != "" && otherResctrictionsText != "" ? "".concat(otherResctrictionsText, tooltipText)
     : tooltipText ?? otherResctrictionsText
 }
 
-return {
+return freeze({
   getGameModeStartFunction = @(id) customStateByGameModeId?[id].startFunction
   getGameModeOnBattleButtonClick = @(id) customStateByGameModeId?[id].onBattleButtonClick
   getGameModeCrossplayTooltip = @(id) customStateByGameModeId?[id].crossplayTooltip
   getGameModeUnlockTooltipText
   getGameModeDescrAndUnlockTooltipText
   getGameModeUnlockFullText
-}
+})

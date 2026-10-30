@@ -46,6 +46,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1566,7 +1572,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/84mm_kan_strv81_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/84mm_kan_strv81_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.16,
@@ -1673,7 +1679,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1715,7 +1721,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/164mm_s11_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/164mm_s11_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1773,7 +1779,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1805,8 +1811,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_centurion_mk_III_ss11_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_centurion_mk_III_ss11_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3064,7 +3070,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/84mm_kan_strv81_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/84mm_kan_strv81_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.16,
@@ -3171,7 +3177,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3213,7 +3219,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/164mm_s11_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/164mm_s11_rocket_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3271,7 +3277,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3299,7 +3305,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

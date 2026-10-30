@@ -124,4 +124,4 @@ let UsersInfoRetryManager = class {
   }
 }
 
-return { UsersInfoRetryManager }
+return freeze({ UsersInfoRetryManager })

@@ -1,10 +1,9 @@
+from "%scripts/squads/squadState.nut" import getPlayerStatusInMySquad
+from "%scripts/clans/clanState.nut" import is_in_my_clan
 from "%sqStdLibs/helpers/enums.nut" import addTypes
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
-
-let { getPlayerStatusInMySquad } = require("%scripts/squads/squadState.nut")
-let { is_in_my_clan } = require("%scripts/clans/clanState.nut")
 
 enum PRESENCE_SORT {
   UNKNOWN
@@ -44,19 +43,19 @@ let contactPresence = {
 addTypes(contactPresence, {
   UNKNOWN = {
     sortOrder = PRESENCE_SORT.UNKNOWN
-    iconName = "player_unknown"
+    iconName = "player_unknown.svg"
     iconColor = "contactUnknownColor"
   }
 
   OFFLINE = {
     sortOrder = PRESENCE_SORT.OFFLINE
-    iconName = "player_offline"
+    iconName = "player_offline.svg"
     iconColor = "contactOfflineColor"
   }
 
   ONLINE = {
     sortOrder = PRESENCE_SORT.ONLINE
-    iconName = "player_online"
+    iconName = "player_online.svg"
     iconColor = "contactOnlineColor"
     colorInTooltip = "@contactTooltipOnlineColor"
   }
@@ -103,7 +102,7 @@ addTypes(contactPresence, {
 
   STEAM_ONLINE = {
     sortOrder = PRESENCE_SORT.STEAM_ONLINE
-    iconName = "player_online"
+    iconName = "player_online.svg"
     iconColor = "contactOfflineColor"
   }
 }, @() this.presenceName = this.typeName.tolower(), "typeName")

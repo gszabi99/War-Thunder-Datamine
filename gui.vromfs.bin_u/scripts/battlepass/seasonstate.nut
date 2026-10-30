@@ -1,12 +1,12 @@
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks, getStageByIndex
+from "%scripts/userstat/userstat.nut" import userstatStats, refreshUserstatDescList
+from "%scripts/battlePass/unlocksRewardsState.nut" import basicUnlock, premiumUnlock, hasBattlePass, basicUnlockMeta, premiumUnlockMeta
+from "%scripts/unlocks/unlocksConditions.nut" import getRangeTextByPoint2
+from "%scripts/items/itemsChecks.nut" import isItemdefId
 from "math" import floor
 from "%scripts/dagui_library.nut" import *
 
-let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { userstatStats, refreshUserstatDescList } = require("%scripts/userstat/userstat.nut")
-let { basicUnlock, premiumUnlock, hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { getRangeTextByPoint2 } = require("%scripts/unlocks/unlocksConditions.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 
 const expStatId = "battlepass_exp"
 
@@ -73,8 +73,8 @@ let levelExp = Computed(function() {
 
 let seasonLevel = Computed(@() levelExp.get().level)
 
-let maxSeasonLvl = Computed(@() max(basicUnlock.get()?.meta.mainPrizeStage ?? 1,
-  premiumUnlock.get()?.meta.mainPrizeStage ?? 1))
+let maxSeasonLvl = Computed(@() max(basicUnlockMeta.get()?.mainPrizeStage ?? 1,
+  premiumUnlockMeta.get()?.mainPrizeStage ?? 1))
 
 let loginUnlock = Computed(@() activeUnlocks.get()?[LOGIN_UNLOCK_ID])
 let loginStreak = Computed(@() loginUnlock.get()?.stage ?? 0)
@@ -120,15 +120,15 @@ function getExpRangeTextOfLoginStreak() {
     loc("ui/colon"), text)
 }
 
-let warbondsShopLevelByStages = Computed(@() basicUnlock.get()?.meta.wbShopLevel ?? {})
+let warbondsShopLevelByStages = Computed(@() basicUnlockMeta.get()?.wbShopLevel ?? {})
 let getBPStageByShopLevel = @(level) warbondsShopLevelByStages.get()
   .findindex(@(l) level == l) ?? -1
 
 
-let seasonMainPrizesData = Computed(@() [].extend(premiumUnlock.get()?.meta.promo ?? [],
-  basicUnlock.get()?.meta.promo ?? []))
+let seasonMainPrizesData = Computed(@() [].extend(premiumUnlockMeta.get()?.promo ?? [],
+  basicUnlockMeta.get()?.promo ?? []))
 
-let battlePassShopConfig = Computed(@() basicUnlock.get()?.meta.purchaseWndItems)
+let battlePassShopConfig = Computed(@() basicUnlockMeta.get()?.purchaseWndItems)
 
 battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
   let itemsToRequest = []
@@ -146,7 +146,7 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
 let hasBattlePassReward = Computed(@() basicUnlock.get()?.hasReward
   || (hasBattlePass.get() && premiumUnlock.get()?.hasReward))
 
-return {
+return freeze({
   seasonLevel
   maxSeasonLvl
   todayLoginExp
@@ -165,4 +165,4 @@ return {
   seasonEndsTime
   basicUnlockStages
   getLevelFromStagesByExp
-}
+})

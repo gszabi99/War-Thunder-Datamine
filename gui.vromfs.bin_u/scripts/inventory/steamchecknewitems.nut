@@ -1,21 +1,22 @@
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/inventory/steamInventory.nut" import requestAllItems
+from "%scripts/items/exchangeRecipes.nut" import tryUseRecipes
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
-let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let logS = log_with_prefix("[Steam Items] ")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
-let steamNewItems = mkWatched(persist, "steamNewItems", [])
+let hardPersistWatched = mkHardPersistWatched("inventory.steamCheckNewItems")
+let steamNewItems = hardPersistWatched("steamNewItems", [])
 wlog(steamNewItems, "[Steam Items]: newitems ")
-let unknownSteamNewItems = mkWatched(persist, "unknownSteamNewItems",{})
+let unknownSteamNewItems = hardPersistWatched("unknownSteamNewItems", {})
 wlog(unknownSteamNewItems, "[Steam Items]: unknownSteamNewItems ")
 let inqueueSteamItems = mkWatched(persist, "inqueueSteamItems", {})
 wlog(inqueueSteamItems, "[Steam Items]: inqueueSteamItems ")
@@ -140,6 +141,6 @@ addListenersWithoutEnv({
   SignOut = @(_) inqueueSteamItems.set({})
 })
 
-return {
+return freeze({
   steamCheckNewItems
-}
+})

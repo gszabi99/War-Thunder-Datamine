@@ -165,6 +165,11 @@
   "customClassIco": "!#ui/gameuiskin#infantry_ico.svg",
   "supportUnitClass": "structures/ussr_122mm_m30",
   "supportUnitTag": "artillery",
+  "helmetProtectionTemplate": "rank3_helmet_medium_class_3a_protection",
+  "bodyProtectionTemplate": "rank3_body_armor_medium_class_3_protection",
+  "commonSkinPreset": "appearanceArmor03",
+  "armorDefaultLangId": "modification/bulletproof_vest_medium",
+  "armorDefaultIcon": "!#ui/gameuiskin#medium_armor.avif",
   "cockpit": {
     "headPos": [
       0.0,
@@ -788,10 +793,17 @@
     "5_56mm_ap_ammo_belt": {
       "reqModification": "5_56mm_tracer_ammo_belt"
     },
+    "shotgun_mossberg_590": {},
     "at_laucher_at_4": {},
+    "mpads_stinger": {},
+    "strike_drone": {},
+    "fpv_drone": {},
+    "stun_grenade": {},
     "smoke_grenade": {},
     "explosive_charge": {},
-    "helmet_steel": {},
+    "bulletproof_vest_light": {},
+    "bulletproof_vest_heavy": {},
+    "sidearms_pistol_beretta_m9": {},
     "human_medkit": {}
   },
   "WeaponSlots": {
@@ -800,9 +812,30 @@
         "index": 2,
         "WeaponPreset": [
           {
-            "name": "m72_law_default",
-            "ecsTemplate": "m72_law_default_gun",
-            "inventoryItemEcsTemplate": "m72_law_rocket_item",
+            "name": "usa_recon_drone",
+            "ecsTemplate": "uav_inf_recon_drone_item"
+          },
+          {
+            "name": "usa_kamikaze_drone",
+            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
+            "reqModification": "strike_drone"
+          },
+          {
+            "name": "usa_fpv_drone",
+            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
+            "reqModification": "fpv_drone"
+          },
+          {
+            "name": "mossberg_590",
+            "ecsTemplate": "mossberg_590_gun",
+            "inventoryItemEcsTemplate": "mossberg_590_magazine",
+            "inventoryItemNum": 5,
+            "reqModification": "shotgun_mossberg_590"
+          },
+          {
+            "name": "pslr_1_default",
+            "ecsTemplate": "pslr_1_default_gun",
+            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
             "inventoryItemNum": 4
           },
           {
@@ -811,6 +844,13 @@
             "inventoryItemEcsTemplate": "m136_at4_rocket_item",
             "inventoryItemNum": 4,
             "reqModification": "at_laucher_at_4"
+          },
+          {
+            "name": "mpads_stinger",
+            "ecsTemplate": "mpads_fim_92e_stinger_gun",
+            "inventoryItemEcsTemplate": "fim_92e_stinger_missile_item",
+            "inventoryItemNum": 2,
+            "reqModification": "mpads_stinger"
           },
           {
             "name": "medic_box",
@@ -830,11 +870,6 @@
         "index": 4,
         "WeaponPreset": [
           {
-            "name": "frag_grenade_heavy",
-            "inventoryItemEcsTemplate": "m67_grenade_item",
-            "inventoryItemNum": 6
-          },
-          {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "m67_grenade_item",
             "inventoryItemNum": 4
@@ -851,25 +886,45 @@
           },
           {
             "name": "smoke_grenade",
-            "inventoryItemEcsTemplate": "m18_smoke_grenade_item",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
             "inventoryItemNum": 2,
             "reqModification": "smoke_grenade"
           },
           {
             "name": "smoke_grenade_light",
-            "inventoryItemEcsTemplate": "m18_smoke_grenade_item",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
             "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
+          },
+          {
+            "name": "stun_grenade",
+            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemNum": 6,
+            "reqModification": "stun_grenade"
           }
         ]
       }
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "m249_para_default",
-      "blk": "gamedata/units/humans/weaponPresets/presets_coldwar/usa_class_gunner_preset_3.blk"
-    }
+    "preset": [
+      {
+        "name": "m249_para_default",
+        "blk": "gamedata/units/humans/weaponPresets/presetsSolo/usa_class_gunner_preset_1.blk"
+      },
+      {
+        "name": "m249_para_preset_2",
+        "blk": "gamedata/units/humans/weaponPresets/presetsSolo/usa_class_gunner_preset_2.blk"
+      },
+      {
+        "name": "m249_para_preset_3",
+        "blk": "gamedata/units/humans/weaponPresets/presetsSolo/usa_class_gunner_preset_3.blk"
+      },
+      {
+        "name": "m249_para_preset_4",
+        "blk": "gamedata/units/humans/weaponPresets/presetsSolo/usa_class_gunner_preset_4.blk"
+      }
+    ]
   },
   "skin": [
     {

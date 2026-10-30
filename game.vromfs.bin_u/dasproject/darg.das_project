@@ -8,7 +8,7 @@ let remap <- {
 
 
 [export]
-def module_get(req : string, from:string) : tuple<string;string;string>
+def module_get(req : string, _from:string) : tuple<string;string;string>
     var rs = split_by_chars(req, "./")
 
     if length(rs) == 0

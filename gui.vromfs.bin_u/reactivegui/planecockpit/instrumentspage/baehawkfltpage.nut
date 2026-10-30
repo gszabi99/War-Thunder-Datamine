@@ -55,113 +55,99 @@ let buttons = {
       pos = const [pw(19), ph(3)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-            size = SIZE_TO_CONTENT
-            pos = const [pw(5), ph(1)]
-            rendObj = ROBJ_TEXT
-            color = baseColor
-            font = Fonts.ah64
-            fontSize = baseFontSize
-            text = "GS"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "GS"
+      }
     }
     {
       pos = const [pw(5), ph(30)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "GO"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "GO"
+      }
     }
     {
       pos = const [pw(5), ph(34)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "TO"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "TO"
+      }
     }
     {
       pos = const [pw(5), ph(47)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "\nIN"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "\nIN"
+      }
     }
     {
       pos = const [pw(5), ph(51)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "NAV"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "NAV"
+      }
     }
     {
       pos = const [pw(5), ph(62)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "RAD"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "RAD"
+      }
     }
     {
       pos = const [pw(5), ph(66)]
       size = const [pw(8), ph(5)]
       flow = FLOW_VERTICAL
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "NAV"
-        }
-      ]
+      children = {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(5), ph(1)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = baseFontSize
+        text = "NAV"
+      }
     }
     {
       size = SIZE_TO_CONTENT
@@ -243,32 +229,27 @@ function generatePitchLine(num) {
     size = const [pw(40), ph(18)]
     pos = const [pw(30), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
-        color = Color(128, 64, 48)
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -25, 0, 125, 0]
-        ]
-        children = [angleTxt(-10, true, pw(-32)), angleTxt(-10, false, pw(32))]
-      }
-    ] :
-    [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
-        color = newNum > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
-        commands = [
-          [VECTOR_LINE, 10, 18, 90, 18],
-          [VECTOR_LINE, 42, 70, 58, 70]
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, pw(-25)), angleTxt(newNum, false, pw(25))] : null
-      }
-    ]
+    children = num == 0 ? {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = Color(128, 64, 48)
+      padding = const [0, 10]
+      commands = [
+        [VECTOR_LINE, -25, 0, 125, 0]
+      ]
+      children = [angleTxt(-10, true, pw(-32)), angleTxt(-10, false, pw(32))]
+    } : {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = newNum > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
+      commands = [
+        [VECTOR_LINE, 10, 18, 90, 18],
+        [VECTOR_LINE, 42, 70, 58, 70]
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, pw(-25)), angleTxt(newNum, false, pw(25))] : null
+    }
   }
 }
 
@@ -298,13 +279,30 @@ function pitch(width, height, generateFunc) {
 }
 
 let bankExtendSign= Computed(@() Roll.get() > 20.0 ? 1 : (Roll.get() < -20 ? -1 : 0))
+let bankPointer = {
+  size = FLEX
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = baseColor
+  lineWidth = baseLineWidth
+  fillColor = baseColor
+  commands = [
+    [VECTOR_POLY, 50, 21, 49, 23, 51, 23]
+  ]
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = -Roll.get()
+    }
+  }
+}
 let bankAngle = @(){
+  watch = bankExtendSign
   size = const [pw(130), ph(130)]
   pos = const [pw(-15), ph(-15)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = bankExtendSign.get() == 0 ? baseColor : Color(255, 255, 255)
   lineWidth = baseLineWidth * 3.0
-  commands = [
+  commands = const [
     [VECTOR_LINE, 35, 24, 36, 25.75],
     [VECTOR_LINE, 65, 24, 64, 25.75],
     [VECTOR_LINE, 27, 30.72, 28.55, 32],
@@ -324,22 +322,7 @@ let bankAngle = @(){
     [VECTOR_LINE, 47.4, 20.1, 47.47, 21.1],
     [VECTOR_LINE, 52.6, 20.1, 52.53, 21.1],
   ]
-  children = {
-    size = FLEX
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = baseColor
-    lineWidth = baseLineWidth
-    fillColor = baseColor
-    commands = [
-      [VECTOR_POLY, 50, 21, 49, 23, 51, 23]
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        rotate = -Roll.get()
-      }
-    }
-  }
+  children = bankPointer
 }
 
 let flyPath = {
@@ -386,7 +369,7 @@ let climbSpeedGrid = @(){
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
   color = baseColor
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 40, 0],
     [VECTOR_LINE, 0, 25, 40, 25],
     [VECTOR_LINE, 20, 30, 40, 30],
@@ -407,7 +390,7 @@ let climbSpeedGrid = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth
     color = baseColor
-    commands = [
+    commands = const [
       [VECTOR_LINE, 60, 0, 100, 0],
       [VECTOR_LINE, 60, 25, 100, 25],
       [VECTOR_LINE, 60, 50, 100, 50],
@@ -486,6 +469,10 @@ function climbSpeed(width, height) {
 }
 
 let speedVal = Computed(@() (Tas.get() * mpsToKnots).tointeger())
+const speedLimitBox = {
+  size = [pw(150), ph(150)]
+  rendObj = ROBJ_BOX
+}
 let speed = @(){
   watch = speedVal
   size = const [pw(8), ph(4.5)]
@@ -497,10 +484,7 @@ let speed = @(){
   font = Fonts.ah64
   fontSize = baseFontSize * 1.2
   text = speedVal.get().tointeger()
-  children = speedVal.get() >= 210 ? {
-    size = const [pw(150), ph(150)]
-    rendObj = ROBJ_BOX
-  } : null
+  children = speedVal.get() >= 210 ? speedLimitBox : null
 }
 
 let OverloadVisible = Computed(@() Overload.get() >= 2.0)

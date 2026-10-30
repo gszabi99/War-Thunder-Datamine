@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2001,7 +2007,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_Vickers_Terni_37_40_M18_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_Vickers_Terni_37_40_M18_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "maxAdditionalPitch": 0.0,
@@ -2061,7 +2067,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2109,7 +2115,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_mg_flame_02",
         "useEmitter": true,
@@ -2158,8 +2164,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_m11_39_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_m11_39_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

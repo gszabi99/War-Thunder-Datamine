@@ -13,8 +13,8 @@ let getPromoAction = @(actionId) performActionTable?[actionId]
 
 let isVisiblePromoByAction = @(actionId, params) visibilityByAction?[actionId](params) ?? true
 
-return {
+return freeze({
   addPromoAction
   getPromoAction
   isVisiblePromoByAction
-}
+})

@@ -1,3 +1,8 @@
+from "%scripts/weaponry/modificationInfo.nut" import isModClassExpendable
+from "%scripts/weaponry/weaponryPresets.nut" import getWeaponsByTypes
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/clientState/contentState.nut" import isConsoleClientFullyDownloaded
+from "%sqstd/platform.nut" import isPS5
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, isString, appendOnce
 from "string" import split_by_chars
 from "%sqstd/datablock.nut" import eachBlock, eachParam
@@ -6,16 +11,10 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
-let { getWeaponsByTypes } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { isConsoleClientFullyDownloaded } = require("%scripts/clientState/contentState.nut")
-let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 
 
 
-
-let haveModificationAnimations = !isPlatformPS5 || isConsoleClientFullyDownloaded()
+let haveModificationAnimations = !isPS5 || isConsoleClientFullyDownloaded()
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -231,14 +230,18 @@ function initUnitCustomPresetsWeapons(unit, weapons) {
 }
 
 function initWeaponryUpgrades(upgradesTarget, blk) {
+  let upgrades = []
   foreach (upgradeName in upgradeNames) {
     if (blk?[upgradeName] == null)
       break
-
-    if (!("weaponUpgrades" in upgradesTarget))
-      upgradesTarget.weaponUpgrades <- []
-    upgradesTarget.weaponUpgrades.append(split_by_chars(blk[upgradeName], "/"))
+    upgrades.append(split_by_chars(blk[upgradeName], "/"))
   }
+  if (upgrades.len() == 0)
+    return
+  if ("weaponUpgrades" in upgradesTarget)
+    upgradesTarget.weaponUpgrades = [...upgradesTarget.weaponUpgrades, ...upgrades]
+  else
+    upgradesTarget.weaponUpgrades <- upgrades
 }
 
 function initUnitModifications(modifications, modificationsBlk, esUnitType) {
@@ -257,6 +260,9 @@ function initUnitModifications(modifications, modificationsBlk, esUnitType) {
     if (modBlk?.maxToRespawn)
       mod.maxToRespawn <- modBlk.maxToRespawn
 
+    mod.addMrank <- modBlk?.addMrank ?? 0
+    mod.isEnabledByDefaultForAddMrank <- modBlk?.isEnabledByDefaultForAddMrank ?? true
+
     
     if (("prevModification" in mod) && !(modificationsBlk?[mod.prevModification]))
       errorsTextArray.append(
@@ -274,11 +280,11 @@ function initUnitWeaponsContainers(weaponsContainers, weaponsBlk) {
   })
 }
 
-return {
+return freeze({
   initUnitWeapons
   initWeaponryUpgrades
   initUnitModifications
   initUnitWeaponsContainers
   initUnitCustomPresetsWeapons
   getWeaponImage
-}
+})

@@ -1,4 +1,27 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "regexp2" as regexp2
+from "%scripts/utils_sa.nut" import array_to_blk
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/slotbar/slotbarStateData.nut" import isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits
+from "%scripts/slotbar/slotbarState.nut" import selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates
+from "%scripts/crew/crewTrain.nut" import batchTrainCrew
+from "%scripts/clientState/saveProfile.nut" import forceSaveProfile
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/firstChoice/firstChoice.nut" import reqFirstUnitTypeChoice, isCountryAvailable
+from "%scripts/user/newbieTutorialDisplay.nut" import reqFirstCountryChoice
+from "%scripts/shop/shopUnitsInfo.nut" import hasDefaultUnitsInCountry
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId, setCurrentGameModeById, getGameModeById, getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry, getCrewById
+from "%scripts/slotbar/slotbarPresetsState.nut" import isSlotbarPresetsLoading
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo, updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInvalidCrewsAllowed
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import isUnitAllowedForRoom
+from "%scripts/queue/queueManager.nut" import isCanModifyCrew
+from "%scripts/events/eventsState.nut" import isEventsLoaded
+from "%scripts/slotbar/slotbarOverride.nut" import isSlotbarOverrided
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
@@ -8,32 +31,10 @@ from "%sqstd/underscore.nut" import deep_clone
 from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
 
-let { array_to_blk } = require("%scripts/utils_sa.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
-let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
-let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { reqFirstUnitTypeChoice, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById, getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList, getCrewsListByCountry, getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion, isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo, updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isCanModifyCrew } = require("%scripts/queue/queueManager.nut")
-let { isEventsLoaded } = require("%scripts/events/eventsState.nut")
-let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
+let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -708,7 +709,7 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   MAX_COUNTRY_PRESETS_AMOUNT
   newbieInitSlotbarPresets
   initSlotbarPresets
@@ -726,4 +727,4 @@ return {
   swapCrewsInCurrentPreset
   replaceCrewsInCurrentPreset
   getGameModeIdByPreset
-}
+})

@@ -1,3 +1,14 @@
+import "%scripts/social/psnSessionManager/psnSessionManagerApi.nut" as psnsm
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/langUtils/localization.nut" import getFilledFeedTextByLang
+from "%scripts/invites/invitesClasses.nut" import findInviteClass
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isRoomInSession, getSessionLobbyRoomId, getIsSpectatorSelectLocked, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getSessionLobbyMissionNameLocIdsArray
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/invites/invites.nut" import findInviteByUid, addSessionRoomInvite
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqStdLibs/helpers/u.nut" import isEmpty, copy
 from "%appGlobals/login/loginState.nut" import isLoggedIn
@@ -5,18 +16,7 @@ from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
-let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
-let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { isRoomInSession, getSessionLobbyRoomId, getIsSpectatorSelectLocked, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getSessionLobbyMissionNameLocIdsArray } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { findInviteByUid, addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -29,7 +29,8 @@ let PSN_SESSION_TYPE = {
 
 
 
-let createdSessionData = mkWatched(persist, "createdSessionData", {})
+let hardPersistWatched = mkHardPersistWatched("social.psnSessionManager.psnSessionManager")
+let createdSessionData = hardPersistWatched("createdSessionData", {})
 let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
       sType = sType
@@ -42,7 +43,7 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
 let pendingSessions = mkWatched(persist, "pendingSessions", {})
 
 
-let postponedInvitations = mkWatched(persist, "postponedInvitations", [])
+let postponedInvitations = hardPersistWatched("postponedInvitations", [])
 
 let getLocalizedTextInfo = function(locIdsArray) {
   let textsData = getFilledFeedTextByLang(locIdsArray)

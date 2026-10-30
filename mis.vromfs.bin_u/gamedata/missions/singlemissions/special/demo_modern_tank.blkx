@@ -1,0 +1,4601 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/avg_tunisia_desert.bin",
+      "gt_training": false,
+      "environment": "Morning",
+      "weather": "cloudy",
+      "gt_reload_explosives": true,
+      "restoreType": "manual",
+      "optionalTakeOff": false,
+      "forceSkiesInitialRandomSeed": true,
+      "windSpeed": [
+        3.0,
+        5.0
+      ]
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "units_settings": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": [
+          {
+            "tankSightPreset": "western_modern_tanks_2",
+            "object": "t1_player01"
+          },
+          {
+            "object": [
+              "t72_squad",
+              "bmp_squad"
+            ],
+            "accuracy": 0.3,
+            "checkVisibilityTarget": true
+          }
+        ],
+        "unitPlayEffect": {
+          "effect_type": "specify",
+          "effect": "land_crash_smoke",
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "show": true,
+          "attach": false,
+          "scale": 1.0,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "target": [
+            "smoke_effect01",
+            "smoke_effect02",
+            "smoke_effect03",
+            "smoke_effect04"
+          ]
+        },
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "target": "t72_dead_squad",
+          "doExplosion": true
+        },
+        "unitSetGunProperties": {
+          "maxNumAttackersPerTargetGroupIdx": 1,
+          "maxNumAttackersPerTarget": 2,
+          "target": [
+            "t72_squad",
+            "bmp_squad"
+          ],
+          "aimMaxDist": 3000.0,
+          "attackMaxDist": 2500.0
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": [
+            "t72_squad",
+            "bmp_squad"
+          ]
+        },
+        "missionDestroyArea": {
+          "target_type": "ALL",
+          "area": [
+            "no_object01",
+            "no_object02"
+          ]
+        },
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": [
+            "t1_player02",
+            "t1_player03"
+          ],
+          "attack_type": "attack_target",
+          "target": [
+            "bmp_squad",
+            "t72_squad"
+          ],
+          "fireRandom": true
+        }
+      },
+      "else_actions": {}
+    },
+    "units_spawn": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "triggerEnable": {
+          "target": "player_restart"
+        },
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.0
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          }
+        ],
+        "wait": {
+          "time": 2.0
+        },
+        "unitMoveTo": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_main_players_spawn",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "t1_player01",
+            "move_type": "teleport",
+            "lookat": "t72_w01"
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "ally_spawn01",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "t1_player02",
+            "move_type": "teleport",
+            "lookat": "t72_w06"
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "ally_spawn02",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "t1_player03",
+            "move_type": "teleport",
+            "lookat": "t72_w11"
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "ally_spawn01",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t1_player02",
+              "t1_player03"
+            ],
+            "move_type": "stand"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "units_move_to": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "__unitLoadBehTree": {
+          "name": "missionHitThePoint",
+          "objects": "t72_squad"
+        },
+        "unitMoveTo": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point01",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w01",
+              "t72_w11",
+              "bmp_w01",
+              "bmp_w05"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point02",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w02",
+              "t72_w12",
+              "bmp_w02",
+              "bmp_w06"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point03",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w03",
+              "t72_w13",
+              "bmp_w03",
+              "bmp_w07"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point04",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w04",
+              "t72_w14",
+              "bmp_w04",
+              "bmp_w08"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point05",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w05",
+              "t72_w15"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point06",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w09",
+              "t72_w06",
+              "bmp_w11"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point07",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w07",
+              "t72_w08",
+              "bmp_w10"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point08",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w10",
+              "bmp_w12",
+              "bmp_w09"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "player_restart": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.0
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          }
+        ],
+        "wait": {
+          "time": 2.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "t1_main_players_spawn",
+          "lookAtTargetUponRespawn": "t72_w01"
+        }
+      },
+      "else_actions": {}
+    },
+    "hints": {
+      "isCategory": true,
+      "is_enabled": true,
+      "aim": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": {
+            "time": 3.0
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/tank_modifications/aim",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW_GM"
+          },
+          "triggerEnable": {
+            "target": "turret"
+          }
+        },
+        "else_actions": {}
+      },
+      "turret": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_TOGGLE_VIEW_GM"
+          }
+        },
+        "actions": {
+          "wait": {
+            "time": 1.0
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "missions/demo_tank_turret",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "elevator+ailerons"
+          },
+          "triggerEnable": {
+            "target": "night_vision"
+          }
+        },
+        "else_actions": {}
+      },
+      "night_vision": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": {
+            "time": 3.0
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "missions/demo_tank_nvd",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TANK_NIGHT_VISION"
+          },
+          "triggerEnable": {
+            "target": "zoom"
+          }
+        },
+        "else_actions": {}
+      },
+      "zoom": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_TANK_NIGHT_VISION"
+          }
+        },
+        "actions": {
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "standard",
+              "name": "hints/tank_modifications/zoom",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "item": "ID_ZOOM_TOGGLE"
+            },
+            {
+              "hintType": "standard",
+              "name": "missions/demo_tank_aim",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "item": "ID_RANGEFINDER"
+            }
+          ],
+          "wait": [
+            {
+              "time": 1.0
+            },
+            {
+              "time": 3.0
+            }
+          ],
+          "triggerEnable": {
+            "target": "rangefinder"
+          }
+        },
+        "else_actions": {}
+      },
+      "rangefinder": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerWhenCursorIn": {
+            "cursor": "crosshair",
+            "element": "curTarget",
+            "targetName": [
+              "t72_squad",
+              "bmp_squad"
+            ]
+          }
+        },
+        "actions": {
+          "playHint": {
+            "hintType": "standard",
+            "name": "missions/demo_tank_aim",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_RANGEFINDER"
+          },
+          "triggerEnable": {
+            "target": "fire"
+          }
+        },
+        "else_actions": {}
+      },
+      "fire": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_RANGEFINDER"
+          }
+        },
+        "actions": {
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "standard",
+              "name": "missions/demo_aircraft_fire",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "item": "ID_FIRE_PRIMARY"
+            }
+          ],
+          "wait": {
+            "time": 1.0
+          },
+          "triggerEnable": {
+            "target": "main_task"
+          }
+        },
+        "else_actions": {}
+      },
+      "main_task": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_FIRE_PRIMARY"
+          }
+        },
+        "actions": {
+          "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "standard",
+              "name": "missions/demo_tank_task",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ],
+          "wait": [
+            {
+              "time": 3.0
+            },
+            {
+              "time": 5.0
+            }
+          ]
+        },
+        "else_actions": {}
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "t1_dover_kill_bombers": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 6000,
+        "team": "A"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
+  },
+  "variables": {
+    "t1_randomizer": 0,
+    "t2_randomizer": 0,
+    "t1_carrier_area": "",
+    "t2_carrier_area": "",
+    "t1_spawned_player": "",
+    "t2_spawned_player": "",
+    "t1_ai_assault_name": "",
+    "t2_ai_assault_name": "",
+    "t1_ships_killed": 0,
+    "t2_ships_killed": 0,
+    "t1_squad_01_name": "t1_squad_01",
+    "t1_squad_02_name": "t1_squad_02",
+    "t1_squad_03_name": "t1_squad_03",
+    "t2_squad_01_name": "t2_squad_01",
+    "t2_squad_02_name": "t2_squad_02",
+    "t2_squad_03_name": "t2_squad_03",
+    "t1_aaa_unit_count": 0,
+    "t2_aaa_unit_count": 0
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "t72_w01",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            568.406,
+            18.2666,
+            1219.58
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_player01",
+        "tm": [
+          [
+            0.627884,
+            4.66498e-16,
+            0.778307
+          ],
+          [
+            -8.64152e-10,
+            1.0,
+            3.3128e-10
+          ],
+          [
+            -0.778307,
+            -6.07952e-16,
+            0.627884
+          ],
+          [
+            719.2,
+            45.1183,
+            2738.1
+          ]
+        ],
+        "unit_class": "us_m1a2_sep_abrams",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_m1a2_sep_abrams_default",
+        "bullets0": "120mm_M829A_APDS_FS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher",
+          "modern_tank_laser_rangefinder",
+          "120mm_M829A_APDS_FS",
+          "night_vision_system"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": true,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "skin": "modern_gray_desert"
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w02",
+        "tm": [
+          [
+            0.616162,
+            0.0,
+            0.787619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.787619,
+            0.0,
+            0.616162
+          ],
+          [
+            783.406,
+            17.7598,
+            547.11
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w03",
+        "tm": [
+          [
+            0.0973727,
+            0.0,
+            0.995247
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995247,
+            0.0,
+            0.0973727
+          ],
+          [
+            672.856,
+            48.332,
+            269.91
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w04",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            860.506,
+            41.8926,
+            309.36
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w05",
+        "tm": [
+          [
+            0.458785,
+            0.0,
+            0.888547
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.888547,
+            0.0,
+            0.458785
+          ],
+          [
+            677.106,
+            18.1221,
+            765.26
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead01",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            691.423,
+            19.3756,
+            1527.93
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead02",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            369.298,
+            19.3757,
+            2187.43
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead03",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            391.912,
+            19.376,
+            1834.54
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead04",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            490.218,
+            19.376,
+            1552.39
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead05",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            615.111,
+            19.3758,
+            1873.66
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead06",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            668.329,
+            19.3758,
+            1802.09
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead07",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            906.446,
+            19.3757,
+            2668.39
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead08",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            536.328,
+            19.3758,
+            2557.79
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead09",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            698.716,
+            19.3758,
+            2107.06
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_dead10",
+        "tm": [
+          [
+            0.252715,
+            0.0,
+            0.967541
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.967541,
+            0.0,
+            0.252715
+          ],
+          [
+            790.632,
+            19.3758,
+            2210.78
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w06",
+        "tm": [
+          [
+            0.0725378,
+            0.0,
+            0.997366
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.997366,
+            0.0,
+            0.0725378
+          ],
+          [
+            932.628,
+            18.2666,
+            1847.35
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w07",
+        "tm": [
+          [
+            0.462645,
+            0.0,
+            0.886543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.886543,
+            0.0,
+            0.462645
+          ],
+          [
+            892.068,
+            17.7598,
+            1612.35
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w08",
+        "tm": [
+          [
+            -0.0852527,
+            0.0,
+            0.996358
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.996358,
+            0.0,
+            -0.0852527
+          ],
+          [
+            956.588,
+            48.332,
+            1685.97
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w09",
+        "tm": [
+          [
+            -0.272204,
+            0.0,
+            0.962239
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.962239,
+            0.0,
+            -0.272204
+          ],
+          [
+            1133.93,
+            41.8926,
+            1758.88
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w10",
+        "tm": [
+          [
+            0.289538,
+            0.0,
+            0.957166
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.957166,
+            0.0,
+            0.289538
+          ],
+          [
+            1041.76,
+            18.122,
+            1770.85
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w11",
+        "tm": [
+          [
+            0.774085,
+            0.0,
+            0.633083
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.633083,
+            0.0,
+            0.774085
+          ],
+          [
+            241.593,
+            18.2666,
+            1805.13
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w12",
+        "tm": [
+          [
+            0.961838,
+            0.0,
+            0.273619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.273619,
+            0.0,
+            0.961838
+          ],
+          [
+            111.344,
+            17.7598,
+            1706.22
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w13",
+        "tm": [
+          [
+            0.664862,
+            0.0,
+            0.746965
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.746965,
+            0.0,
+            0.664862
+          ],
+          [
+            -141.26,
+            48.332,
+            1547.31
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w14",
+        "tm": [
+          [
+            0.511546,
+            0.0,
+            0.859256
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.859256,
+            0.0,
+            0.511546
+          ],
+          [
+            33.6264,
+            41.8926,
+            1468.67
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t72_w15",
+        "tm": [
+          [
+            0.894096,
+            0.0,
+            0.447874
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.447874,
+            0.0,
+            0.894096
+          ],
+          [
+            153.922,
+            18.1221,
+            1945.12
+          ]
+        ],
+        "unit_class": "ussr_t_72a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w01",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            629.551,
+            41.8926,
+            -57.3586
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w02",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            455.039,
+            41.8926,
+            -57.3586
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w03",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            455.039,
+            41.8926,
+            -255.506
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w04",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            622.402,
+            41.8926,
+            -255.506
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w05",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            -354.112,
+            41.8927,
+            1186.95
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w06",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            -186.748,
+            41.8927,
+            1186.95
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w07",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            -179.599,
+            41.8927,
+            1385.1
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w08",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            -354.112,
+            41.8927,
+            1385.1
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w09",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            984.618,
+            41.8926,
+            1449.13
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w10",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            1151.99,
+            41.8926,
+            1449.13
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w11",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            1159.14,
+            41.8926,
+            1647.28
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "bmp_w12",
+        "tm": [
+          [
+            -0.0926664,
+            0.0,
+            0.995697
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.995697,
+            0.0,
+            -0.0926664
+          ],
+          [
+            984.618,
+            41.8926,
+            1647.28
+          ]
+        ],
+        "unit_class": "ussr_bmp_2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "skill": 4,
+          "formation_type": "rows",
+          "formation_div": 5,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 50.0,
+            "col_distances": 50.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_player02",
+        "tm": [
+          [
+            0.627884,
+            4.66498e-16,
+            0.778307
+          ],
+          [
+            -8.64152e-10,
+            1.0,
+            3.3128e-10
+          ],
+          [
+            -0.778307,
+            -6.07952e-16,
+            0.627884
+          ],
+          [
+            2656.24,
+            7.80685,
+            3849.05
+          ]
+        ],
+        "unit_class": "us_m1a2_sep_abrams",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_m1a2_sep_abrams_default",
+        "bullets0": "120mm_M829A_APDS_FS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher",
+          "modern_tank_laser_rangefinder",
+          "120mm_M829A_APDS_FS"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "skin": "modern_gray_desert"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_player03",
+        "tm": [
+          [
+            0.627884,
+            4.66498e-16,
+            0.778307
+          ],
+          [
+            -8.64152e-10,
+            1.0,
+            3.3128e-10
+          ],
+          [
+            -0.778307,
+            -6.07952e-16,
+            0.627884
+          ],
+          [
+            2505.97,
+            7.80685,
+            3849.05
+          ]
+        ],
+        "unit_class": "us_m1a2_sep_abrams",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "us_m1a2_sep_abrams_default",
+        "bullets0": "120mm_M829A_APDS_FS",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "tank_tool_kit",
+          "manual_extinguisher",
+          "modern_tank_laser_rangefinder",
+          "120mm_M829A_APDS_FS"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "skin": "modern_gray_desert"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t72_squad",
+        "tm": [
+          [
+            0.865409,
+            0.0,
+            0.501065
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.501065,
+            0.0,
+            0.865409
+          ],
+          [
+            -988.147,
+            19.3761,
+            -959.679
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t72_w02",
+            "t72_w03",
+            "t72_w04",
+            "t72_w05",
+            "t72_w01",
+            "t72_w06",
+            "t72_w07",
+            "t72_w08",
+            "t72_w09",
+            "t72_w10",
+            "t72_w11",
+            "t72_w12",
+            "t72_w13",
+            "t72_w14",
+            "t72_w15"
+          ]
+        }
+      },
+      {
+        "name": "t72_dead_squad",
+        "tm": [
+          [
+            0.865409,
+            0.0,
+            0.501065
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.501065,
+            0.0,
+            0.865409
+          ],
+          [
+            -988.147,
+            19.3761,
+            -959.679
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t72_dead01",
+            "t72_dead02",
+            "t72_dead03",
+            "t72_dead04",
+            "t72_dead05",
+            "t72_dead06",
+            "t72_dead07",
+            "t72_dead08",
+            "t72_dead09",
+            "t72_dead10"
+          ]
+        }
+      },
+      {
+        "name": "bmp_squad",
+        "tm": [
+          [
+            0.865409,
+            0.0,
+            0.501065
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.501065,
+            0.0,
+            0.865409
+          ],
+          [
+            -988.147,
+            19.3761,
+            -959.679
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bmp_w01",
+            "bmp_w02",
+            "bmp_w03",
+            "bmp_w04",
+            "bmp_w05",
+            "bmp_w06",
+            "bmp_w07",
+            "bmp_w08",
+            "bmp_w09",
+            "bmp_w10",
+            "bmp_w11",
+            "bmp_w12"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "mission_area": {
+      "type": "Box",
+      "tm": [
+        [
+          3520.5,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          3457.07
+        ],
+        [
+          1088.8,
+          1.0,
+          1301.75
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_main_players_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          719.2,
+          45.1183,
+          2738.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point01": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          364.34,
+          13.4601,
+          1989.99
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point02": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          563.068,
+          13.4602,
+          1960.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point03": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          746.544,
+          13.46,
+          1991.26
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point04": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          666.337,
+          45.3535,
+          2261.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point05": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          295.12,
+          13.46,
+          2316.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "no_object01": {
+      "type": "Box",
+      "tm": [
+        [
+          160.332,
+          0.0,
+          -547.937
+        ],
+        [
+          0.0,
+          25.0,
+          0.0
+        ],
+        [
+          201.782,
+          0.0,
+          59.0436
+        ],
+        [
+          811.0,
+          -7.70844,
+          1980.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "no_object02": {
+      "type": "Box",
+      "tm": [
+        [
+          -135.036,
+          0.0,
+          -883.498
+        ],
+        [
+          0.0,
+          25.0,
+          0.0
+        ],
+        [
+          325.355,
+          0.0,
+          -49.7278
+        ],
+        [
+          1495.4,
+          17.5605,
+          -174.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "ally_spawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          769.2,
+          45.1183,
+          2738.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "ally_spawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          600.862,
+          45.1183,
+          2738.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "smoke_effect01": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          2201.33,
+          45.1184,
+          -230.601
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "smoke_effect02": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          1866.45,
+          45.1184,
+          -230.601
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "smoke_effect03": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          -58.27,
+          45.1184,
+          -781.307
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "smoke_effect04": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          -458.607,
+          45.1184,
+          -781.307
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_zone_close": {
+      "type": "Sphere",
+      "tm": [
+        [
+          561.669,
+          0.0,
+          -1919.51
+        ],
+        [
+          0.0,
+          2000.0,
+          0.0
+        ],
+        [
+          1919.51,
+          0.0,
+          561.67
+        ],
+        [
+          684.799,
+          -7.7085,
+          2740.57
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_zone_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1123.34,
+          0.0,
+          -3839.02
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3839.02,
+          0.0,
+          1123.34
+        ],
+        [
+          684.282,
+          -7.7085,
+          2744.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point06": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          1038.78,
+          13.46,
+          2502.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point07": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          1028.34,
+          13.46,
+          2418.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point08": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          912.219,
+          13.4602,
+          2330.22
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

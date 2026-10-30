@@ -1,4 +1,15 @@
+import "%scripts/time.nut" as time
 import "regexp2" as regexp2
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, USEROPT_HUD_VISIBLE_KILLLOG
+from "%scripts/user/profileStates.nut" import userName, userIdInt64
+from "%scripts/missions/missionType.nut" import isShipBattle, isHumanMission
+from "%scripts/streaks.nut" import getLocForStreak
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/squads/squadState.nut" import isEqualSquadId
+from "%scripts/statistics/mplayersList.nut" import buildMplayerName
+from "%scripts/weaponry/bulletsInfo.nut" import getProjectileNameLoc
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
+from "%scripts/missions/missionsStates.nut" import get_mission_settings
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format, split_by_chars
 from "replays" import is_replay_playing
@@ -13,20 +24,10 @@ from "%globalScripts/battleMetaConsts.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color, is_team_friendly
+from "%appGlobals/missions/respawnCountModes.nut" import isRespawnAllowed
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, USEROPT_HUD_VISIBLE_KILLLOG } = require("%scripts/options/optionsExtNames.nut")
-let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isShipBattle, isHumanMission } = require("%scripts/missions/missionType.nut")
-let { getLocForStreak } = require("%scripts/streaks.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
-let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
-let { getProjectileNameLoc } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
@@ -124,7 +125,7 @@ let killLogMsgTypes = {
   [HUD_MSG_ENEMY_FATAL_DAMAGE] = true
 }
 
-let battleLog = persist("battleLog", @() [])
+let battleLog = mkHardPersist("hud.hudBattleLog")("battleLog", [])
 
 function reset(safe = false) {
   if (safe && battleLog.len() && battleLog[battleLog.len() - 1].time < get_mission_time())
@@ -479,7 +480,7 @@ function isValidKillLogMsg(msg) {
     return false
 
   let { maxRespawns } = get_mission_settings()
-  if (msg.type == HUD_MSG_MULTIPLAYER_DMG && !isKill && maxRespawns != 1)
+  if (msg.type == HUD_MSG_MULTIPLAYER_DMG && !isKill && isRespawnAllowed(maxRespawns))
     return false
   if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
     return false
@@ -641,7 +642,10 @@ let HudBattleLog = {
   historyLogCustomMsgType
 }
 
-let setBattleLog = @(bLog) HudBattleLog.battleLog = (bLog ?? [])
+function setBattleLog(bLog) {
+  battleLog.clear()
+  battleLog.extend(bLog ?? [])
+}
 
 return {
   HudBattleLog

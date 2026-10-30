@@ -1,7 +1,6 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/onlineShop/ingameConsoleStore.nut" import IngameConsoleStore
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
 
 register_gui_handler("EpicShop", class (IngameConsoleStore) {
   needWaitIcon = true

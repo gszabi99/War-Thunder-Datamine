@@ -1,14 +1,12 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "DataBlock" as DataBlock
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/matching/requests.nut" import request_nick_by_uid_batch
 from "%sqStdLibs/helpers/u.nut" import search
 from "worldwar" import wwGetArmyGroupsInfo, wwGetBattlesInfo, wwGetOperationId
 from "guiMission" import get_current_mission_desc
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
-
 
 let isLastFlightWasWwBattle = Watched(false)
 let armyGroups = []

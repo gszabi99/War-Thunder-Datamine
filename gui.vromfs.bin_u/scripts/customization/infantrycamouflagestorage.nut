@@ -1,4 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/seen/seenList.nut" as seenList
 import "DataBlock" as DataBlock
+from "%scripts/utils/listTreeUtils.nut" import generateListTree, getBranchDataByPath
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%globalScripts/dataBlockExt.nut" import copyFromDataBlock, setBlkValueByPath
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dagor.fs" import scan_folder
@@ -8,11 +12,7 @@ from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { generateListTree, getBranchDataByPath } = require("%scripts/utils/listTreeUtils.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { convertFromTemplateName } = require("%scripts/customization/infantryCamouflageUtils.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let seenList = require("%scripts/seen/seenList.nut")
 
 const SKINS_DEEP_IN_TREE = 5
 
@@ -43,8 +43,7 @@ let innerSkinNames = [
   DEFAULT_SKINS.randomNotDefault
 ]
 
-let sortSkinsFn = @(a, b)
-  (skinSortId?[a?.id ?? a] ?? -1) <=> (skinSortId?[b?.id ?? b] ?? -1)
+let sortSkinsFn = @(a) skinSortId?[a?.id ?? a] ?? -1
 
 function getBranchName(location, team = -1, tier = -1) {
   return "".concat($"{location}_infantry_skins",
@@ -183,7 +182,7 @@ function getLocationInfantrySkins(location, team, tier) {
     if (branch?.data.isSkin)
       skins.append(idx)
 
-  return skins.sort(sortSkinsFn)
+  return skins.sortby(sortSkinsFn)
 }
 
 function saveInfantrySkin(skin, location, teamNum, tier, unitName = "") {
@@ -265,7 +264,7 @@ function getTiersRangeOnLocation(location) {
   let tiers = []
   foreach (tierId, _tierData in branch.branches)
     tiers.append(to_integer_safe(convertFromTemplateName.tier(tierId)))
-  return tiers.sort(@(a, b) a <=> b)
+  return tiers.sort()
 }
 
 let isSkinCanBeNew = @(skinId) !([DEFAULT_SKINS.random, DEFAULT_SKINS.randomNotDefault].contains(skinId))
@@ -321,7 +320,7 @@ addListenersWithoutEnv({
   SignOut = @(_) onLogout()
 } g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getInfantrySkinsTree
   getInfantrySkinOnLocation
   getLocationInfantrySkins
@@ -341,4 +340,4 @@ return {
   getSkinsSeenList
   isSkinCanBeNew
   parseSkinPathArr
-}
+})

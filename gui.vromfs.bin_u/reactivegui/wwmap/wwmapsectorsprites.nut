@@ -25,7 +25,7 @@ let mkSectorSprite = @(sectorSpriteData, sectorSpriteSettings, areaBounds) funct
   return {
     rendObj = ROBJ_IMAGE
     pos
-    size = [spriteIconSize, spriteIconSize]
+    size = spriteIconSize
     keepAspect = true
     image = Picture($"{iconName}:{floor(spriteIconSize)}:{floor(spriteIconSize)}")
     color = convertColor4(spriteColor)
@@ -58,6 +58,6 @@ function mkSectorSprites() {
   }
 }
 
-return {
+return freeze({
  mkSectorSprites
-}
+})

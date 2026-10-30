@@ -1,20 +1,21 @@
+import "%scripts/customization/skinLocations.nut" as skinLocations
+from "%scripts/unlocks/unlocksState.nut" import getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/skinUtils.nut" import isDefaultSkin
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByUnlockedItemType
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "math" import sqrt
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 
 function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
@@ -228,6 +229,6 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   updateDecoratorDescription
-}
+})

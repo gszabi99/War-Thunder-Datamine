@@ -16,6 +16,6 @@ eventbus_subscribe("update_bullets_penetration_graph_state", function(p) {
   bulletsPenetrationGraphParams.mutate(@(params) params.__update(graphData))
 })
 
-return {
+return freeze({
   bulletsPenetrationGraphParams
-}
+})

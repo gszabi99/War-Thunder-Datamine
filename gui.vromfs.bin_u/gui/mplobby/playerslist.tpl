@@ -1,12 +1,11 @@
 <<#teams>>
-table
+statCell
 {
   id:t='<<tableId>>'
   width:t='pw/<<teamsAmount>> - 2 + (1 - <<teamsAmount>>) / <<teamsAmount>> * 1@itemsInterval'
   pos:t='1 <<^isFirst>>+@itemsInterval<</isFirst>>, 1'
   position:t='relative'
-  baseRow:t='rows16'
-  class:t='mpTable'
+  flow:t='vertical'
 
   behavior:t='PosNavigator'
   moveX:t='linear'

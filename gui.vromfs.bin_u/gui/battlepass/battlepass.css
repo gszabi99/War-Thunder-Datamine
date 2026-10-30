@@ -1,36 +1,3 @@
-@const battlePassStageWidth: 1@itemWidth;
-@const battlePassFlagSize: 50*@sf/@pf \ 1;
-@const battlePassFlagBigSize: 84@sf/@pf \ 1;
-@const battlePassFlagSmallSize: 1@dIco;
-@const battlePassStageHeight: 1@itemHeight + 1@battlePassFlagSize + 1@buttonHeight + 2@blockInterval;
-@const battlePassStageMargin: 2@dp;
-@const battlePassFreeTextHeight: 1@fontHeightNormal + 10@sf/@pf;
-@const battlePassFreeTextMargin: 1@dp;
-@const battlePassRankInfoHeight: 128@sf/@pf \ 1;
-@const battlePassBigFlagTextAbsPos: 0.5@battlePassRankInfoHeight - 0.5@battlePassFlagBigSize + 1@blockInterval;
-@const battlePassStampWidth: 135@sf/@pf \ 1;
-@const battlePassStampHeight: 41@sf/@pf \ 1;
-
-@const battlePassPromoBottomMargin: 1@battlePassFreeTextHeight;
-@const battlePassWndPreferredWidth: (10@battlePassStageWidth + 12@battlePassStageMargin) \ 1;
-@const battlePassWndPreferredPromoHeight: (0.55*450/800)@battlePassWndPreferredWidth;
-@const battlePassWndPromoHeight: 1@battlePassWndPreferredPromoHeight $min (1@maxWindowHeight - 2@frameHeaderHeight - 1@battlePassStageHeight - 2@battlePassFreeTextHeight- 2@battlePassStageMargin - 1@frameFooterHeight);
-@const battlePassWndPromoWidth: (800.0/450)@battlePassWndPromoHeight;
-
-@const battlePassStageBgColor: #252c37;
-@const battlePassCurStageBgColor: #3b4351;
-@const battlePassCurStageBorderColor: #4f6079;
-@const battlePassFlagColor: #f04b4b;
-@const battlePassLockedFlagColor: #5f6d82;
-@const battlePassLockedFlagTextColor: #c3c3c3;
-@const battlePassBottomBarColor: #4d5563;
-@const battlePassFreeBgColor: #589768;
-@const battlePassFreeNestBgColor: #101318;
-
-@const battlePassProgressBGColor: #404A5A;
-@const battlePassProgressFGColor: #CE4747;
-@const battlePassTaskProgressFGColor: #667284;
-
 battlePassStage {
   behaviour:button;
   size:1@battlePassStageWidth, 1@battlePassStageHeight;

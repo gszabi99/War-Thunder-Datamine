@@ -1,5 +1,9 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/misObjectives/objectiveStatus.nut" import getObjectiveStatusByCode
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getOppositeSide, getOperationTimeSec
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "string" import split_by_chars
@@ -12,11 +16,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
-let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { getOppositeSide, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 function getTimerUpdateFuncByParam(t, param) {

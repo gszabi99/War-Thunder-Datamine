@@ -1,13 +1,13 @@
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import setUnits, getSlotItem, getCurPreset
+from "%scripts/crew/crewTrain.nut" import batchTrainCrew
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewLevel, getMaxCrewLevel
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
-let { setUnits, getSlotItem, getCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewLevel, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 let stepsSpecForFindBestCrew = [
@@ -152,7 +152,7 @@ function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
   )
 }
 
-return {
+return freeze({
   getBestPresetData = getBestPresetData
   generatePreset = generatePreset
-}
+})

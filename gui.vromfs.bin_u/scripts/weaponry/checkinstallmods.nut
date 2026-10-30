@@ -1,12 +1,10 @@
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponDisabledMods
+from "%scripts/weaponry/weaponryActions.nut" import enable_modifications
+from "%scripts/tasker.nut" import addTask
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
-let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-
 
 let needReqModInstall = @(unit, weapon) getWeaponDisabledMods(unit, weapon).len() > 0
 
@@ -35,7 +33,7 @@ function promptReqModInstall(unit, weapon) {
   return false
 }
 
-return {
+return freeze({
   needReqModInstall
   promptReqModInstall
-}
+})

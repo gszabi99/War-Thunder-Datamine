@@ -1,13 +1,12 @@
 import "DataBlock" as DataBlock
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/user/playerCountry.nut" import profileCountrySq
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "blkGetters" import get_game_settings_blk
 from "worldwar" import wwGetConfigurableValues
 from "%sqstd/datablock.nut" import getBlkValueByPath
 from "%scripts/dagui_library.nut" import *
-
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -108,8 +107,12 @@ function loadLastPlayed() {
   if (lastPlayedOperationId)
     lastPlayedOperationCountry = loadLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, profileCountrySq.get())
 }
-if (isLoggedIn.get())
+if (hasFullLoginState.get())
   loadLastPlayed()
+
+
+if (hasFullLoginState.get() && wwstorage.configurableValues.paramCount() == 0)
+  fillConfigurableValues()
 
 addListenersWithoutEnv({
   WWLoadOperationFirstTime = @(_) fillConfigurableValues()
@@ -117,7 +120,7 @@ addListenersWithoutEnv({
   LoginComplete            = @(_) loadLastPlayed()
 })
 
-return {
+return freeze({
   getWwSetting
   getWWConfigurableValue
   fillConfigurableValues
@@ -129,4 +132,4 @@ return {
   getLastPlayedOperationId = @() lastPlayedOperationId
   getLastPlayedOperationCountry = @() lastPlayedOperationCountry
   saveLastPlayed
-}
+})

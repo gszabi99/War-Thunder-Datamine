@@ -10,25 +10,6 @@ require DagorSystem
 require Dacoll
 
 
-def get_aim_optic_magnification(gun_eid : EntityId; gun_mod_eids : EidList) : float
-  if !gun_eid
-    return 1.0
-  let subsEid = get_Eid(gun_eid, "subsidiaryGunEid") ?? INVALID_ENTITY_ID
-  if !!subsEid
-    return get_float(subsEid, "gun__magnification") ?? 1.0
-  var scopeEid = INVALID_ENTITY_ID
-  for gunMod in gun_mod_eids
-    query(gunMod) <| $ [es(REQUIRE_NOT=secondScope, REQUIRE=gunScope)] (eid : EntityId)
-      scopeEid = eid
-  if !scopeEid && (get_bool(gun_eid, "gun__integratedScope") ?? false)
-    scopeEid = gun_eid
-
-  let scopeZoomFactor = get_float(scopeEid, "gunmod__zoomFactor") ?? 0.0
-  if scopeZoomFactor > 0.0
-    return scopeZoomFactor
-  return get_float(gun_eid, "gun__magnification") ?? 1.5
-
-
 def private half_wave(t, p, q : float) : float
   let a = pow(t, p)
   let b = pow(1.f - t, q)

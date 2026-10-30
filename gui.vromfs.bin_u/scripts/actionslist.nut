@@ -1,17 +1,17 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_obj, setPopupMenuPosAndAlign
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/utils/genericTooltip.nut" import removeAllGenericTooltip
+from "%scripts/utils/delayedTooltip.nut" import hideTooltip
+from "%scripts/actionsList/actionsListState.nut" import isActionsListOpen
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child, move_mouse_on_obj, getSelectedChild, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { hideTooltip } = require("%scripts/utils/delayedTooltip.nut")
-let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
@@ -221,21 +221,6 @@ let ActionsList = class (BaseGuiHandler) {
     broadcastEvent("ClosedActionsList", {listParent = this.parentObj})
   }
 
-  function onFocus(obj) {
-    this.guiScene.performDelayed(this, function () {
-      if (!checkObj(this.scene) || this.scene?.close == "yes" || !checkObj(obj))
-        return
-
-      let currentObj = getSelectedChild(obj)
-      if (!currentObj)
-        return this.close()
-
-      if ((!currentObj.isValid() || !currentObj.isFocused()) &&
-        !obj.isFocused() && !this.closeOnUnhover)
-        this.close()
-    })
-  }
-
   function onBtnClose() {
     if (this.scene.isValid())
       move_mouse_on_obj(this.scene.getParent())
@@ -282,4 +267,4 @@ let ActionsList = class (BaseGuiHandler) {
 }
 register_gui_handler("ActionsList", ActionsList)
 
-return { ActionsList }
+return freeze({ ActionsList })

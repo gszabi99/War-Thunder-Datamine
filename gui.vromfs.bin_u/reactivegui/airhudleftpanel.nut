@@ -52,7 +52,7 @@ let panel = @() {
   ]
 }
 
-return {
+return freeze({
   leftPanel = panel
   xrayIndicator
-}
+})

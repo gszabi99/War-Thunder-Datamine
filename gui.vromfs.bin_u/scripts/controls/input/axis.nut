@@ -1,13 +1,13 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/controlsConsts.nut" import AXIS_MODIFIERS, GAMEPAD_AXIS
+from "%scripts/controls/input/inputBase.nut" import InputBase
+from "%scripts/controls/controlsVisual.nut" import remapAxisName
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
-let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let Axis = class (InputBase) {
   
@@ -79,4 +79,4 @@ let Axis = class (InputBase) {
     }
   }
 }
-return {Axis}
+return freeze({Axis})

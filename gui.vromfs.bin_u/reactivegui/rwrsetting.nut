@@ -26,7 +26,7 @@ let rwrSetting = Computed(function() {
     if (!isAirUnitType(unitType.get()))
       return res
     let blk = DataBlock()
-    let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
+    let fileName = $"gamedata/flightModels/{BlkFileName.get()}.blk"
     if (!tryLoadBlk(blk, fileName))
       return res
 

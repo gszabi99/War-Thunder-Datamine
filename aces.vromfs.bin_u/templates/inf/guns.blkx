@@ -212,6 +212,10 @@
       "item__sharpening": 0.175
     }
   },
+  "render_icon_settings_firearms": {
+    "_use": "render_icon_settings",
+    "item__iconRecalcAnim": true
+  },
   "melee_weapon": {
     "_skipInitialReplication": [
       "gun_anim__reloadProgress",
@@ -354,7 +358,7 @@
       "gun_anim_vars",
       "human_gun_heat_sources",
       "gun_dynamic_position",
-      "render_icon_settings"
+      "render_icon_settings_firearms"
     ],
     "gun__inertialMass": 3.0,
     "gun__rotInertia": [
@@ -634,7 +638,7 @@
     "slot_attach__visible": true,
     "animchar_render__enabled": true,
     "meleeSoundType": "mgun",
-    "melee_weapon__blk": "gameData/weapons/melee.blk",
+    "melee_weapon__blk": "gamedata/weapons/melee.blk",
     "gun__melee": false,
     "gun__useLocalPlayerTracer": false,
     "gun_attach__slot": "weapon",
@@ -879,6 +883,7 @@
       0.0
     ],
     "gun__barrelRadius": 0.03,
+    "gun__curMountPoint": -1,
     "gun__mountPoints:shared:array": {}
   },
   "reload_single_bullet": {
@@ -983,9 +988,9 @@
     "single_reload__loopTime": 0.63,
     "single_reload__postTime": 1.1,
     "animchar__res": "smle_mk_3_char",
-    "gun__blk": "gameData/weapons/smle_mk3.blk",
+    "gun__blk": "gamedata/weapons/smle_mk3.blk",
     "item__template": "smle_mk3_gun_item",
-    "item__proto": "gameData/weapons/smle_mk3.blk",
+    "item__proto": "gamedata/weapons/smle_mk3.blk",
     "item__weapTemplate": "smle_mk3_gun",
     "item__name": "items/smle_mk3",
     "item__weapType": "rifle",
@@ -1026,7 +1031,7 @@
       "ammoHolders": "lee_enfield_no4_mk1_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/303_british_mk7.blk"
+      "shells": "gamedata/weapons/303_british_mk7.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -1061,10 +1066,15 @@
     "gun_reload_state__bulletMultipleTime": 0.95,
     "gun_reload_state__bulletMultipleCount": 5,
     "gun_reload_state__postTime": 1.1,
+    "gun_sound__prefix": "",
     "multiStateReloadSystem:tag": {},
+    "_group": {
+      "_tags": "sound",
+      "gun_shot_dry_sound__path": "infantry/player/weapon/_common/shot_dry_pistol"
+    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/lee_enfield"
+      "path": "event/soldier/weapon/rifle/lee_enfield"
     },
     "gun__mountPoints:shared:array": {
       "point:object": {
@@ -1160,6 +1170,13 @@
     "item__iconYaw": 30.0,
     "item__iconPitch": 30.0
   },
+  "pre_war_kar98k_gun_item": {
+    "_use": [
+      "item_gun",
+      "pre_war_kar98k"
+    ],
+    "collres__res": "pre_war_kar98k_collision"
+  },
   "pre_war_kar98k": {
     "_use": [
       "main_weap_slots",
@@ -1171,9 +1188,9 @@
     "single_reload__loopTime": 0.63,
     "single_reload__postTime": 1.3,
     "animchar__res": "pre_war_kar98k_char",
-    "gun__blk": "gameData/weapons/pre_war_kar98k.blk",
+    "gun__blk": "gamedata/weapons/pre_war_kar98k.blk",
     "item__template": "pre_war_kar98k_gun_item",
-    "item__proto": "gameData/weapons/pre_war_kar98k.blk",
+    "item__proto": "gamedata/weapons/pre_war_kar98k.blk",
     "item__weapTemplate": "pre_war_kar98k_gun",
     "item__name": "items/pre_war_kar98k",
     "item__weapType": "rifle",
@@ -1217,7 +1234,7 @@
       ]
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/7.92x57_mauser_carbine.blk"
+      "shells": "gamedata/weapons/7.92x57_mauser_carbine.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -1254,32 +1271,37 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.11,
     "gun_anim_var__fpsGunOffsetAcross": 0.035,
     "gun_anim_var__fpsGunOffsetUp": 0.065,
+    "gun_sound__prefix": "",
+    "_group": {
+      "_tags": "sound",
+      "gun_shot_dry_sound__path": "infantry/player/weapon/_common/shot_dry_pistol"
+    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/mauser98k/shot_single"
+      "path": "event/soldier/weapon/rifle/mauser98k"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "reload1:object": {
-        "path": "/weapon/rifle/mauser98k/reload1/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload1/change_ammo"
       },
       "reload2:object": {
-        "path": "/weapon/rifle/mauser98k/reload2/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload2/change_ammo"
       },
       "reload3:object": {
-        "path": "/weapon/rifle/mauser98k/reload3/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload3/change_ammo"
       },
       "reload4:object": {
-        "path": "/weapon/rifle/mauser98k/reload4/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload4/change_ammo"
       },
       "reload5:object": {
-        "path": "/weapon/rifle/mauser98k/reload5/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload5/change_ammo"
       },
       "reload6:object": {
-        "path": "/weapon/rifle/mauser98k/reload6/change_ammo"
+        "path": "event/soldier/weapon/rifle/mauser98k/reload6/change_ammo"
       },
       "boltAction:object": {
-        "path": "/weapon/rifle/mauser98k/bolt_action"
+        "path": "event/soldier/weapon/rifle/mauser98k/bolt_action"
       }
     },
     "gun_mods__slots:object": {
@@ -1359,9 +1381,9 @@
       "ironsights_open_machinegun"
     ],
     "animchar__res": "lewis_gun_char",
-    "gun__blk": "gameData/weapons/lewis_lmg.blk",
+    "gun__blk": "gamedata/weapons/lewis_lmg.blk",
     "item__template": "lewis_lmg_gun_item",
-    "item__proto": "gameData/weapons/lewis_lmg.blk",
+    "item__proto": "gamedata/weapons/lewis_lmg.blk",
     "item__weapTemplate": "lewis_lmg_gun",
     "item__name": "items/lewis_lmg",
     "item__weapType": "machine_gun",
@@ -1404,7 +1426,7 @@
       ]
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/7.62x54_r_l_fmj.blk"
+      "shells": "gamedata/weapons/7.62x54_r_l_fmj.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -1434,6 +1456,7 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.24,
     "gun_anim_var__fpsGunOffsetAcross": 0.035,
     "gun_anim_var__fpsGunOffsetUp": 0.025,
+    "gun_sound__prefix": "",
     "anim_irq__eventNames:object": {
       "newMagazineShown:object": {
         "irqName": "ammo_refresh",
@@ -1441,23 +1464,27 @@
       }
     },
     "anim_irq_to_event_converter": {},
+    "_group": {
+      "_tags": "sound",
+      "gun_shot_dry_sound__path": "infantry/player/weapon/_common/shot_dry_pistol"
+    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/mgun/lewis/shot_loop"
+      "path": "event/soldier/weapon/mgun/lewis"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "reload1:object": {
-        "path": "/weapon/mgun/dpm/reload1/change_ammo"
+        "path": "event/soldier/weapon/mgun/lewis/reload1/change_ammo"
       },
       "reload2:object": {
-        "path": "/weapon/mgun/dpm/reload2/change_ammo"
+        "path": "event/soldier/weapon/mgun/lewis/reload2/change_ammo"
       },
       "reload3:object": {
-        "path": "/weapon/mgun/dpm/reload3/change_ammo"
+        "path": "event/soldier/weapon/mgun/lewis/reload3/change_ammo"
       },
       "reload4:object": {
-        "path": "/weapon/mgun/dpm/reload4/change_ammo"
+        "path": "event/soldier/weapon/mgun/lewis/reload4/change_ammo"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -1509,38 +1536,65 @@
     "item__iconRoll": -30.0,
     "melee_weapon__propsId:props::PropsId": {},
     "weaponMeleeMod:tag": {},
-    "meleeChargeMod:tag": {},
     "gunAttachable__isBayonet:tag": {}
   },
-  "smle_mk3_bayonet": {
-    "_use": "bayonet_gunmod",
+  "smle_mk3_bayonet_base": {
     "animchar__res": "smle_mk3_bayonet_char",
     "item__template": "smle_mk3_bayonet_item",
-    "item__proto": "gameData/weapons/smle_mk3_bayonet.blk",
-    "gunAttachable__slot": -1,
+    "item__proto": "gamedata/weapons/smle_mk3_bayonet.blk",
     "gunAttachable__slotName": "bayonet",
     "gunAttachable__gunSlotName": "bayonet",
     "gunAttachable__slotTag": "smle_mk3_bayonet",
     "item__weight": 0.3,
     "item__volume": 0.5,
     "item__name": "items/smle_mk3_bayonet",
-    "melee_weapon__blk": "gameData/weapons/smle_mk3_bayonet.blk",
     "gunAttachable:tag": {}
   },
-  "sg_8498_III_bayonet": {
-    "_use": "bayonet_gunmod",
+  "smle_mk3_bayonet": {
+    "_use": [
+      "bayonet_gunmod",
+      "smle_mk3_bayonet_base"
+    ],
+    "gunAttachable__slot": -1,
+    "melee_weapon__blk": "gamedata/weapons/smle_mk3_bayonet.blk"
+  },
+  "smle_mk3_bayonet_item": {
+    "_use": [
+      "item",
+      "smle_mk3_bayonet_base"
+    ],
+    "collres__res": "smle_mk3_bayonet_collision",
+    "item__iconYaw": -90.0,
+    "item__iconRoll": -30.0
+  },
+  "sg_8498_III_bayonet_base": {
     "animchar__res": "sg_8498_III_bayonet_char",
     "item__template": "sg_8498_III_bayonet_item",
     "item__proto": "sg_8498_iii_bayonet/sg_8498_iii_bayonet.blk",
-    "gunAttachable__slot": -1,
     "gunAttachable__slotName": "bayonet",
     "gunAttachable__gunSlotName": "bayonet",
     "gunAttachable__slotTag": "sg_8498_III_bayonet",
     "item__weight": 0.3,
     "item__volume": 0.5,
     "item__name": "items/sg_8498_III_bayonet",
-    "melee_weapon__blk": "gameData/weapons/sg_8498_iii_bayonet.blk",
     "gunAttachable:tag": {}
+  },
+  "sg_8498_III_bayonet": {
+    "_use": [
+      "bayonet_gunmod",
+      "sg_8498_III_bayonet_base"
+    ],
+    "gunAttachable__slot": -1,
+    "melee_weapon__blk": "gamedata/weapons/sg_8498_III_bayonet.blk"
+  },
+  "sg_8498_III_bayonet_item": {
+    "_use": [
+      "item",
+      "sg_8498_III_bayonet_base"
+    ],
+    "collres__res": "sg_8498_III_bayonet_collision",
+    "item__iconYaw": -90.0,
+    "item__iconRoll": -30.0
   },
   "mp_18_gun_item": {
     "_use": [
@@ -1548,7 +1602,7 @@
       "mp_18"
     ],
     "item__template": "mp_18_gun_item",
-    "item__proto": "gameData/weapons/mp_18.blk",
+    "item__proto": "gamedata/weapons/mp_18.blk",
     "item__userstats__pickupName": "pickup_mp_18_gun",
     "collres__res": "mp_18_collision"
   },
@@ -1558,9 +1612,9 @@
       "ironsights_open_smg"
     ],
     "animchar__res": "mp_18_char",
-    "gun__blk": "gameData/weapons/mp_18.blk",
+    "gun__blk": "gamedata/weapons/mp_18.blk",
     "item__template": "mp_18_gun_item",
-    "item__proto": "gameData/weapons/mp_18.blk",
+    "item__proto": "gamedata/weapons/mp_18.blk",
     "item__weapTemplate": "mp_18_gun",
     "item__name": "items/mp_18",
     "item__weapType": "submachine_gun",
@@ -1602,7 +1656,7 @@
       ]
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/9x19_parabellum_smg.blk"
+      "shells": "gamedata/weapons/9x19_parabellum_smg.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -1740,24 +1794,26 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.1,
     "gun_anim_var__fpsGunOffsetAcross": 0.0,
     "gun_anim_var__fpsGunOffsetUp": 0.03,
+    "gun_sound__prefix": "",
     "_group": {
       "_tags": "sound",
-      "gun_sound__forceOneshot": true
+      "gun_sound__forceOneshot": true,
+      "gun_shot_dry_sound__path": "infantry/player/weapon/_common/shot_dry_pistol"
     },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/mgun/mp18"
+      "path": "event/soldier/weapon/mgun/mp18"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "reload1:object": {
-        "path": "/weapon/mgun/mp18/reload1/change_ammo"
+        "path": "event/soldier/weapon/mgun/m38/reload1/change_ammo"
       },
       "reload2:object": {
-        "path": "/weapon/mgun/mp18/reload2/change_ammo"
+        "path": "event/soldier/weapon/mgun/m38/reload2/change_ammo"
       },
       "reload3:object": {
-        "path": "/weapon/mgun/mp18/reload3/change_ammo"
+        "path": "event/soldier/weapon/mgun/m38/reload3/change_ammo"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -1778,7 +1834,7 @@
       "browning_m1918"
     ],
     "item__template": "browning_m1918_gun_item",
-    "item__proto": "gameData/weapons/browning_m1918.blk",
+    "item__proto": "gamedata/weapons/browning_m1918.blk",
     "item__userstats__pickupName": "pickup_browning_m1918_gun",
     "collres__res": "browning_m1918_collision",
     "dropTm": [
@@ -1810,9 +1866,9 @@
       "ironsights_open_machinegun"
     ],
     "animchar__res": "browning_m1918_char",
-    "gun__blk": "gameData/weapons/browning_m1918.blk",
+    "gun__blk": "gamedata/weapons/browning_m1918.blk",
     "item__template": "browning_m1918_gun_item",
-    "item__proto": "gameData/weapons/browning_m1918.blk",
+    "item__proto": "gamedata/weapons/browning_m1918.blk",
     "item__weapTemplate": "browning_m1918_gun",
     "item__name": "items/browning_m1918",
     "item__weapType": "machine_gun",
@@ -1856,7 +1912,7 @@
       ]
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/7.62x63_m1_fmj_t.blk"
+      "shells": "gamedata/weapons/human_weapons/bullets/7.62x63_m1_fmj_t.blk"
     },
     "gun__firingModes:array": {
       "mode:object": [

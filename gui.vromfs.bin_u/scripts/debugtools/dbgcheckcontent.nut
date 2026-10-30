@@ -1,7 +1,14 @@
+import "%scripts/customization/skinLocations.nut" as skinLocations
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "dagor.fs" as dagor_fs
 import "regexp2" as regexp2
 import "DataBlock" as DataBlock
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage, getUnitClassIco
+from "%scripts/debugTools/dbgUtils.nut" import debug_get_skyquake_path
+from "%scripts/customization/skins.nut" import getBestSkinsList
+from "%scripts/langUtils/harmonized.nut" import is_harmonized_unit_image_required
+from "%scripts/unit/unitInfo.nut" import image_for_air
 from "language" import getLocalLanguage
 from "string" import format, strip
 from "console" import register_command
@@ -16,13 +23,6 @@ from "app" import is_dev_version
 
 
 let stdpath = require("%sqstd/path.nut")
-let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnitTooltipImage, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
-let { getBestSkinsList } = require("%scripts/customization/skins.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
-let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 
 local skyquakePath = debug_get_skyquake_path()
 

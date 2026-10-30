@@ -11,6 +11,7 @@ module shader_block_layout shared public
 
 require math
 require daslib/ast
+require daslib/math_boost
 
 
 
@@ -24,25 +25,16 @@ def public matrix_info(t : TypeDecl?) : tuple<ok : bool; width : int; cols : int
     return (ok = false, width = 0, cols = 0)
 }
 
-
-
-
 def public value_base_type(t : TypeDecl?) : Type {
     if (t == null) return Type.none
     if (t.isEnum && t.enumType != null) return t.enumType.baseType
     return t.baseType
 }
 
-
-
-
 def public lattice_small_type(bt : Type) : bool {
     return ((int(bt) >= int(Type.tFloat16) && int(bt) <= int(Type.tUByte16))
         || bt == Type.tInt8 || bt == Type.tUInt8 || bt == Type.tInt16 || bt == Type.tUInt16)
 }
-
-
-
 
 def public cpu_only_lattice_width(bt : Type) : bool {
     return (bt == Type.tHalf8
@@ -50,7 +42,6 @@ def public cpu_only_lattice_width(bt : Type) : bool {
         || bt == Type.tByte8 || bt == Type.tByte16
         || bt == Type.tUByte8 || bt == Type.tUByte16)
 }
-
 
 def public scalar_class(bt : Type) : int {
     if (bt == Type.tInt || bt == Type.tInt2 || bt == Type.tInt3 || bt == Type.tInt4
@@ -64,8 +55,6 @@ def public scalar_class(bt : Type) : int {
     return -1
 }
 
-
-
 def public scalar_width(bt : Type) : int {
     if (bt == Type.tFloat16 || bt == Type.tHalf2 || bt == Type.tHalf3 || bt == Type.tHalf4
             || bt == Type.tInt16 || bt == Type.tShort2 || bt == Type.tShort3 || bt == Type.tShort4
@@ -75,7 +64,6 @@ def public scalar_width(bt : Type) : int {
     if (scalar_class(bt) >= 0 || bt == Type.tBool) return 32
     return 0
 }
-
 
 def public component_count(bt : Type) : int {
     if (bt == Type.tInt || bt == Type.tUInt || bt == Type.tFloat || bt == Type.tBool) return 1
@@ -89,9 +77,6 @@ def public component_count(bt : Type) : int {
     return 0
 }
 
-
-
-
 def public numeric_info(bt : Type) : tuple<ok : bool; cls : int; width : int; lanes : int> {
     if (bt == Type.tInt64) return (ok = true, cls = 0, width = 64, lanes = 1)
     if (bt == Type.tUInt64) return (ok = true, cls = 1, width = 64, lanes = 1)
@@ -101,21 +86,14 @@ def public numeric_info(bt : Type) : tuple<ok : bool; cls : int; width : int; la
     return (ok = true, cls = c, width = scalar_width(bt), lanes = component_count(bt))
 }
 
-
 enum public BlockLayoutRules {
     std140
     std430
 }
 
-
-
-
 def public arith_width_ok(cls, width : int) : bool {
     return width <= 32 || (width == 64 && cls == 2)
 }
-
-
-
 
 def public arith_class(bt : Type) : int {
     let ni = numeric_info(bt)
@@ -127,8 +105,6 @@ def public arith_lanes(bt : Type) : int {
     let ni = numeric_info(bt)
     return ni.ok && arith_width_ok(ni.cls, ni.width) ? ni.lanes : 0
 }
-
-
 
 def public std140_align(bt : Type) : int {
     if (bt == Type.tInt64 || bt == Type.tUInt64) return 8
@@ -143,7 +119,6 @@ def public std140_size(bt : Type) : int {
     return component_count(bt) * 4
 }
 
-
 def public block_scalar_size(bt : Type) : int {
     if (bt == Type.tInt64 || bt == Type.tUInt64) return 8
     return component_count(bt) * (scalar_width(bt) / 8)
@@ -155,10 +130,6 @@ def public block_scalar_align(bt : Type; rules : BlockLayoutRules) : int {
     let cc = component_count(bt)
     let lanes = cc == 1 ? 1 : (cc == 2 ? 2 : 4)
     return lanes * (scalar_width(bt) / 8)
-}
-
-def public round_up(off, a : int) : int {
-    return ((off + a - 1) / a) * a
 }
 
 
@@ -176,7 +147,6 @@ struct public BlockField {
     is_composite      : bool   
 }
 
-
 def public block_array_element_stride(bt : Type; rules : BlockLayoutRules) : int {
     if (rules == BlockLayoutRules.std140) return round_up(std140_size(bt), 16)
     return round_up(block_scalar_size(bt), block_scalar_align(bt, rules))
@@ -184,7 +154,7 @@ def public block_array_element_stride(bt : Type; rules : BlockLayoutRules) : int
 
 
 [macro_function]
-def public compute_block_layout(sname : string; st : Structure?; var fields : array<BlockField>; var errors : array<string>; rules : BlockLayoutRules = BlockLayoutRules.std140) : tuple<ok : bool; size : int; align : int> {
+def public compute_block_layout(sname : string; st : Structure?; var fields : array<BlockField>; var errors : array<string>; rules : BlockLayoutRules = BlockLayoutRules.std140) : tuple<ok : bool; size : int; align : int> {  
     fields |> clear
     if (st == null || empty(st.fields)) {
         errors |> push("interface block '{sname}' must be a struct with at least one field")
@@ -193,7 +163,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
     var off = 0
     var max_align = 0
     for (fld in st.fields) {
-        
         let mi = matrix_info(fld._type)
         if (mi.ok) {
             off = round_up(off, 16)
@@ -203,7 +172,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
             max_align = max(max_align, 16)
             continue
         }
-        
         if (fld._type != null && fld._type.baseType == Type.tStructure && fld._type.structType != null) {
             var inner : array<BlockField>
             let inner_layout = compute_block_layout("{sname}.{fld.name}", fld._type.structType, inner, errors, rules)
@@ -223,7 +191,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
             max_align = max(max_align, struct_align)
             continue
         }
-        
         if (fld._type != null && fld._type.baseType == Type.tFixedArray && fld._type.firstType != null) {
             let et = fld._type.firstType
             let nelem = fld._type.fixedDim
@@ -232,7 +199,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
                 fields |> clear
                 return (ok = false, size = 0, align = 0)
             }
-            
             if (et.baseType != Type.tStructure && et.baseType != Type.tFixedArray && !matrix_info(et).ok) {
                 let ebt = et.baseType
                 if (scalar_class(ebt) < 0 || (rules == BlockLayoutRules.std140 && scalar_width(ebt) != 32)) {
@@ -242,7 +208,7 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
                 }
                 let stride = block_array_element_stride(ebt, rules)
                 let abase = rules == BlockLayoutRules.std140 ? 16 : block_scalar_align(ebt, rules)
-                off = round_up(off, abase)     
+                off = round_up(off, abase)
                 let total = stride * nelem
                 fields |> emplace(BlockField(name := string(fld.name), offset = off, size = total,
                     is_matrix = false, matrix_width = 0, matrix_cols = 0,
@@ -252,7 +218,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
                 max_align = max(max_align, abase)
                 continue
             }
-            
             if (et.baseType == Type.tStructure && et.structType != null) {
                 var inner : array<BlockField>
                 let inner_layout = compute_block_layout("{sname}.{fld.name}[]", et.structType, inner, errors, rules)
@@ -277,7 +242,6 @@ def public compute_block_layout(sname : string; st : Structure?; var fields : ar
             fields |> clear
             return (ok = false, size = 0, align = 0)
         }
-        
         let fbt = fld._type.baseType
         let is_int64 = fbt == Type.tInt64 || fbt == Type.tUInt64
         if (!is_int64 && (scalar_class(fbt) < 0 || (rules == BlockLayoutRules.std140 && scalar_width(fbt) != 32))) {

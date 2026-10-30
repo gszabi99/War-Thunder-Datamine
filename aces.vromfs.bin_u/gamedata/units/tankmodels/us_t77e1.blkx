@@ -42,6 +42,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "us_gunner_char",
@@ -2257,7 +2263,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2354,7 +2360,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_05",
         "flash": "emtr_mg_flame_05",
         "useEmitter": true,
@@ -2428,7 +2434,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_mg_flame_07",
         "useEmitter": true,
@@ -2502,7 +2508,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_06",
         "flash": "emtr_mg_flame_06",
         "useEmitter": true,
@@ -2576,7 +2582,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_03",
         "flash": "emtr_mg_flame_03",
         "useEmitter": true,
@@ -2650,7 +2656,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_m2_hb_t77e1_user_machinegun.blk",
         "emitter": "bone_gun_barrel_04",
         "flash": "emtr_mg_flame_04",
         "useEmitter": true,
@@ -2726,8 +2732,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_t77e1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_t77e1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

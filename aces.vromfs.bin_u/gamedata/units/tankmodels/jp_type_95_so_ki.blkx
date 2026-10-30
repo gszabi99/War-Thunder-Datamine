@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -2913,28 +2919,8 @@
   "MetaParts": {
     "open_fightning_compartment": {
       "part": [
-        "driver_dm",
         "gunner_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
-        "commander_dm",
-        "machine_gunner_dm",
-        "machine_gunner_01_dm",
-        "machine_gunner_02_dm",
-        "machine_gunner_03_dm",
-        "machine_gunner_04_dm",
-        "machine_gunner_05_dm",
-        "machine_gunner_06_dm",
-        "machine_gunner_07_dm",
-        "machine_gunner_08_dm",
-        "machine_gunner_09_dm",
-        "machine_gunner_10_dm",
-        "machine_gunner_11_dm",
-        "machine_gunner_12_dm",
-        "loader_dm",
-        "loader_01_dm",
-        "loader_02_dm",
-        "loader_03_dm"
+        "loader_dm"
       ],
       "effect": {
         "pressureOpen": true
@@ -2942,30 +2928,8 @@
     },
     "closed_fightning_compartment": {
       "part": [
-        "driver_dm",
         "gunner_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
-        "commander_dm",
-        "machine_gunner_dm",
-        "machine_gunner_01_dm",
-        "machine_gunner_02_dm",
-        "machine_gunner_03_dm",
-        "machine_gunner_04_dm",
-        "machine_gunner_05_dm",
-        "machine_gunner_06_dm",
-        "machine_gunner_07_dm",
-        "machine_gunner_08_dm",
-        "machine_gunner_09_dm",
-        "machine_gunner_10_dm",
-        "machine_gunner_11_dm",
-        "machine_gunner_12_dm",
         "loader_dm",
-        "loader_01_dm",
-        "loader_02_dm",
-        "loader_03_dm",
-        "driver_controls_dm",
-        "radio_station_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -3052,7 +3016,30 @@
         "ammo_turret_77_dm",
         "ammo_turret_78_dm",
         "ammo_turret_79_dm",
-        "ammo_turret_80_dm",
+        "ammo_turret_80_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
+      "part": [
+        "driver_dm",
+        "machine_gunner_dm",
+        "commander_dm",
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "radio_station_dm",
+        "driver_controls_dm",
         "ammo_body_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
@@ -3194,23 +3181,7 @@
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
         "ammo_body_r_30_dm",
-        "transmission_dm",
-        "fuel_tank_dm",
-        "fuel_tank_01_dm",
-        "fuel_tank_02_dm",
-        "fuel_tank_03_dm",
-        "fuel_tank_04_dm",
-        "fuel_tank_05_dm",
-        "fuel_tank_r_01_dm",
-        "fuel_tank_r_02_dm",
-        "fuel_tank_r_03_dm",
-        "fuel_tank_r_04_dm",
-        "fuel_tank_r_05_dm",
-        "fuel_tank_l_01_dm",
-        "fuel_tank_l_02_dm",
-        "fuel_tank_l_03_dm",
-        "fuel_tank_l_04_dm",
-        "fuel_tank_l_05_dm"
+        "transmission_dm"
       ],
       "effect": [
         {
@@ -3251,7 +3222,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3360,7 +3331,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3442,8 +3413,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_95_so_ki_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_95_so_ki_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "ammoStowages": {

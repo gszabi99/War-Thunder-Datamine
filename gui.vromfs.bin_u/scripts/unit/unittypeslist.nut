@@ -172,7 +172,7 @@ let unitTypes = {
       "unitTypesList"
     )
 
-    this.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
+    this.types.sortby(@(a) a.sortOrder)
   }
 }
 

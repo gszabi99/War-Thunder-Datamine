@@ -1,7 +1,6 @@
+import "%scripts/sqDagui/elemUpdater/elemUpdaterEvents.nut" as elemEvents
 import "%sqStdLibs/helpers/enums.nut" as enums
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let elemEvents = require("%scripts/sqDagui/elemUpdater/elemUpdaterEvents.nut")
 
 let modelType = {
   types = []

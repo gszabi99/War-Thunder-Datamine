@@ -6,7 +6,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let mapColorsCache = {}
 
-function convertColor4(color) {
+function [pure, nodiscard] convertColor4(color) {
   let opacity = color.a * 255
   return Color(color.r * opacity, color.g * opacity, color.b * opacity, opacity)
 }
@@ -28,9 +28,9 @@ function sendToDagui(eventId, params = {}) {
   send("WWMapEvent", { eventId, data = params })
 }
 
-return {
+return freeze({
   convertColor4
   getMapColor
   selectColorBySide
   sendToDagui
-}
+})

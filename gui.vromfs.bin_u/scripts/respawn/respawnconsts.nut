@@ -18,4 +18,4 @@ enum RespawnBaseType {
 const CATAPULT_CARRIER_SPAWN_NAME = "missions/catapult_carriers_spawn"
 const TRAMPOLINE_CARRIER_SPAWN_NAME = "missions/trampline_carriers_spawn"
 
-return { RespawnOptUpdBit, RespawnBaseType, CATAPULT_CARRIER_SPAWN_NAME, TRAMPOLINE_CARRIER_SPAWN_NAME }
+return freeze({ RespawnOptUpdBit, RespawnBaseType, CATAPULT_CARRIER_SPAWN_NAME, TRAMPOLINE_CARRIER_SPAWN_NAME })

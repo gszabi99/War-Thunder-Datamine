@@ -1,4 +1,34 @@
+import "%sqStdLibs/helpers/callback.nut" as callback
+import "%scripts/contacts/updateContacts.nut" as updateContacts
+import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/ranksAllowed.nut" import isRanksAllowed
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/chat/chatStates.nut" import hasMenuChat
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/onlineShop/onlineShopModel.nut" import launchOnlineShop
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/unlocks/personalUnlocks.nut" import getManualUnlocks
+from "%scripts/matching/matchingOnline.nut" import checkShowMatchingConnect
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/contacts/contactsHandlerState.nut" import switchContactsObj, isContactsWindowActive
+from "%scripts/tasker.nut" import addTask, charCallback, restoreCharCallback
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo, initSquadWidgetHandler
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/utils/genericTooltip.nut" import openGenericTooltip, closeGenericTooltip
+from "%scripts/contacts/contactsListState.nut" import steamContactsGroup
+from "%scripts/queue/queueState.nut" import getQueuesInfoText
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/contacts/contacts.nut" import getContact, fillContactTooltip
+from "%scripts/modalInfo/modalInfoActions.nut" import doAction
+from "%scripts/convertExp/convertExp.nut" import openConvertExpModalWnd
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "eventbus" import eventbus_send
@@ -18,40 +48,11 @@ from "hudState" import is_hud_visible
 from "types" import Table
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let callback = require("%sqStdLibs/helpers/callback.nut")
-let updateContacts = require("%scripts/contacts/updateContacts.nut")
-let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
-let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nut")
-let { checkSquadUnreadyAndDo, initSquadWidgetHandler } = require("%scripts/squads/squadUtils.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { steamContactsGroup } = require("%scripts/contacts/contactsListState.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
-let { getContact, fillContactTooltip } = require("%scripts/contacts/contacts.nut")
-let { doAction } = require("%scripts/modalInfo/modalInfoActions.nut")
-let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -340,15 +341,8 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     openConvertExpModalWnd()
   }
 
-  function notAvailableYetMsgBox() {
-    this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
-  }
-
   function onUserLog(_obj) {
-    if (hasFeature("UserLog"))
-      loadHandler(get_gui_handler("UserLogHandler"))
-    else
-      this.notAvailableYetMsgBox()
+    loadHandler(get_gui_handler("UserLogHandler"))
   }
 
   function onProfile(_obj) {
@@ -383,9 +377,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     switchContactsObj(this.scene, this)
   }
   function onGC_contacts(_obj) {
-    if (!hasFeature("Friends"))
-      return this.notAvailableYetMsgBox()
-
     if (!isContactsWindowActive())
       updateContacts()
 
@@ -896,4 +887,4 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
 register_gui_handler("BaseGuiHandlerWT", BaseGuiHandlerWT)
 
-return { BaseGuiHandlerWT }
+return freeze({ BaseGuiHandlerWT })

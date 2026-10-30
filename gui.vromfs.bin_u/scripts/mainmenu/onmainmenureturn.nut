@@ -1,5 +1,39 @@
+import "%scripts/mainmenu/onMainMenuReturnActions.nut" as onMainMenuReturnActions
+import "%scripts/items/itemNotifications.nut" as itemNotifications
+from "%scripts/options/fontChoiceWnd.nut" import FontChoiceWnd
+from "%scripts/slotInfoPanel.nut" import createSlotInfoPanel
+from "%scripts/userstat/userstatItemsRewards.nut" import claimRegionalUnlockRewards
+from "%scripts/penitentiary/bannedStatusMsgBox.nut" import showBannedStatusMsgBox
+from "%scripts/mainmenu/reminderGaijinPass.nut" import checkGaijinPassReminder
+from "%scripts/options/systemOptions.nut" import systemOptionsMaintain, checkShowGraphicSettingsWasModified, checkShowFullscreenImeUnavailable
+from "%scripts/controls/hotas.nut" import checkJoystickThustmasterHotas
+from "%scripts/unlocks/battleTasks.nut" import checkNewSpecialTasks
+from "%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut" import checkInvitesAfterFlight
+from "%scripts/matching/serviceNotifications/nuclearEventHandler.nut" import checkNuclearEvent
+from "%scripts/user/suggestionRateGame.nut" import checkShowRateWnd
+from "%scripts/user/suggestionEmailRegistration.nut" import checkShowEmailRegistration, checkShowGuestEmailRegistrationAfterLogin
+from "%scripts/options/gpuBenchmarkWnd.nut" import checkShowGpuBenchmarkWnd
+from "%scripts/social/xboxSquadManager/xboxSquadManager.nut" import checkAfterFlight
+from "%scripts/user/personalOffers.nut" import checkShowPersonalOffers
+from "%scripts/inventory/steamCheckNewItems.nut" import steamCheckNewItems
+from "%scripts/tutorials.nut" import checkTutorialOnStart
+from "%scripts/user/profileStates.nut" import isGuestLogin
+from "%scripts/clientState/clientStates.nut" import getFromSettingsBlk
+from "%scripts/firstChoice/firstChoice.nut" import checkUnlockedCountriesByAirs
+from "%scripts/weaponry/weaponryPresetsRepair.nut" import searchAndRepairInvalidPresets
+from "%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut" import checkDecalsOnOtherPlayersOptions
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import checkReconnect
+from "%scripts/userPresence.nut" import initUserPresence
+from "%scripts/options/tankSightMigrate.nut" import showUserSightMigrationPopupIfNeeded
+from "%scripts/login/logout.nut" import checkLogoutScheduled
+from "%scripts/utils/popupMessages.nut" import showPopupWndIfNeed
+from "%scripts/userLog/userlogData.nut" import checkNewNotificationUserlogs
+from "%scripts/user/newbieTutorialDisplay.nut" import needShowTutorial
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsForceDisabled, showMsgboxIfSoundModsBanksCheckFailed
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "hangar" import DM_VIEWER_ARMOR, DM_VIEWER_XRAY
 from "string" import format
@@ -8,47 +42,13 @@ from "%scripts/dagui_natives.nut" import copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
 
-let { FontChoiceWnd } = require("%scripts/options/fontChoiceWnd.nut")
-let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
-let { claimRegionalUnlockRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
-let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let { showBannedStatusMsgBox } = require("%scripts/penitentiary/bannedStatusMsgBox.nut")
-let itemNotifications = require("%scripts/items/itemNotifications.nut")
-let { checkGaijinPassReminder } = require("%scripts/mainmenu/reminderGaijinPass.nut")
-let { systemOptionsMaintain, checkShowGraphicSettingsWasModified } = require("%scripts/options/systemOptions.nut")
-let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { checkNewSpecialTasks } = require("%scripts/unlocks/battleTasks.nut")
-let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
-let { checkShowRateWnd } = require("%scripts/user/suggestionRateGame.nut")
-let { checkShowEmailRegistration, checkShowGuestEmailRegistrationAfterLogin } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
-let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
-let { checkShowPersonalOffers } = require("%scripts/user/personalOffers.nut")
-let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
-let { checkTutorialOnStart } = require("%scripts/tutorials.nut")
-let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
-let { searchAndRepairInvalidPresets } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
-let { checkDecalsOnOtherPlayersOptions } = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { checkReconnect } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { initUserPresence } = require("%scripts/userPresence.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { showUserSightMigrationPopupIfNeeded } = require("%scripts/options/tankSightMigrate.nut")
-let { checkLogoutScheduled } = require("%scripts/login/logout.nut")
-let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
-let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
-let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { showMsgboxIfSoundModsForceDisabled, showMsgboxIfSoundModsBanksCheckFailed } = require("%scripts/penitentiary/soundMods.nut")
 let ludeo = require_optional("acesludeo")
 
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
-  if (!isLoggedIn.get()) {
+  if (!hasFullLoginState.get()) {
     delayed_gblk_error_popups.append({ type = errCode, path = path })
     return
   }
@@ -62,7 +62,7 @@ function showGblkErrorPopup(errCode, path) {
 eventbus_subscribe("showGblkErrorPopupNative", @(params) showGblkErrorPopup(params.errorType, params.path))
 
 function popGblkErrorPopups() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   let total = delayed_gblk_error_popups.len()
@@ -168,6 +168,9 @@ function onMainMenuReturn(handler, isAfterLogin) {
     ludeo?.activate_session()
 
   handler.doWhenActive(popGblkErrorPopups)
+
+  if (isAfterLogin && isAllowPopups)
+    handler.doWhenActive(checkShowFullscreenImeUnavailable)
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 

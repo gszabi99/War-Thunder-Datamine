@@ -2,7 +2,7 @@ from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 
-let usedItemsInBattle = persist("usedItemsInBattle", @() {})
+let usedItemsInBattle = mkHardPersist("items.usedItemsInBattle")("usedItemsInBattle", {})
 
 function markUsedItemCount(iType, itemId, count = 1) {
   if (iType not in usedItemsInBattle)
@@ -20,7 +20,7 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   markUsedItemCount
   getUsedItemCount
-}
+})

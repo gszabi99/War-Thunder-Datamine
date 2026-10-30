@@ -1,10 +1,9 @@
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
-
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 function getUnitsGroups() {
   let unitsGroupByCountry = getOperationById(
@@ -40,8 +39,8 @@ function overrideUnitsViewParamsByGroups(wwUnitsViewParams) {
   return wwUnitsViewParams.map(@(wwUnit) overrideUnitViewParamsByGroups(wwUnit, unitsGroups))
 }
 
-return {
+return freeze({
   getUnitsGroups
   overrideUnitViewParamsByGroups
   overrideUnitsViewParamsByGroups
-}
+})

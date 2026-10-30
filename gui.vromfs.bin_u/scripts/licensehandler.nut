@@ -1,16 +1,17 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
 from "%sqstd/platform.nut" import platformId, is_gdk
-from "dagor.fs" import read_text_from_file, read_text_from_file_on_disk, file_exists
+from "dagor.fs" import read_text_from_file_on_disk, file_exists
+from "%sqstd/packedText.nut" import readPackedText, packedTextExists
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_unlocked
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 
 const DELIVER = "==== "
@@ -67,8 +68,13 @@ let licensesCfgList = [
     id = "CREDITS"
     fileName = "%langTxt/credits.txt"
     locId = "mainmenu/btnCredits"
-    isVisible = @() hasFeature("Credits")
-    readFunc = read_text_from_file
+    isVisible = @() true
+    function readFunc(path) {
+      let text = readPackedText(path)
+      if (text == null)
+        logerr($"LicenseHandler: {path} is missing")
+      return text ?? loc("credits/updateGame")
+    }
   }
 ]
 
@@ -85,7 +91,7 @@ let LicenseHandler = class (BaseGuiHandler) {
   reqViewCreditsUnlock = true
 
   function initScreen() {
-    this.curCfgList = licensesCfgList.filter(@(cfg) cfg.isVisible() && file_exists(cfg.fileName))
+    this.curCfgList = licensesCfgList.filter(@(cfg) cfg.isVisible() && (cfg.id == "CREDITS" || file_exists(cfg.fileName)))
     let total = this.curCfgList.len()
     let view = {
       tabs = this.curCfgList.map(@(v, idx) {
@@ -120,7 +126,7 @@ let LicenseHandler = class (BaseGuiHandler) {
     this.updatePageContent()
 
     this.creditsCompleteYPos = null
-    if (this.reqViewCreditsUnlock && cfg.id == "CREDITS") {
+    if (this.reqViewCreditsUnlock && cfg.id == "CREDITS" && packedTextExists(cfg.fileName)) {
       this.guiScene.applyPendingChanges(false)
       let licenseNestObj = this.scene.findObject("license_nest")
       let licenseTextObj = this.scene.findObject("license_text")
@@ -157,6 +163,6 @@ let LicenseHandler = class (BaseGuiHandler) {
 }
 register_gui_handler("LicenseHandler", LicenseHandler)
 
-return {
+return freeze({
   openLicenseWindow = @() handlersManager.loadHandler(LicenseHandler)
-}
+})

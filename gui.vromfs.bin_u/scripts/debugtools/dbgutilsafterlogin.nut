@@ -1,7 +1,22 @@
 
 
+import "%globalScripts/debugTools/dbgExportToFile.nut" as dbgExportToFile
+import "%scripts/shop/shopSearchCore.nut" as shopSearchCore
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "userstat" as userstat
 import "DataBlock" as DataBlock
+from "%scripts/loading/loadingBrief.nut" import LoadingBrief
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, getWeaponNameText, makeWeaponInfoData
+from "%scripts/weaponry/weaponryInfo.nut" import isWeaponAux, getWeaponNameByBlkPath
+from "%scripts/userstat/userstat.nut" import userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, toPlainData
+from "%scripts/debriefing/debriefingModal.nut" import guiStartDebriefingFull
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeapons
+from "%scripts/unit/unitWeaponryInfo.nut" import getUnitMassPerSecValue
+from "%scripts/controls/hotas.nut" import hotasControlImagePath
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/u.nut" import isDataBlock
 from "string" import format, split_by_chars
@@ -14,22 +29,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, char_send_blk, save_online_single_job, set_auto_refill, get_auto_refill
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL, SAVE_WEAPON_JOB_DIGIT
-let { LoadingBrief } = require("%scripts/loading/loadingBrief.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let dbgExportToFile = require("%globalScripts/debugTools/dbgExportToFile.nut")
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
-let { guiStartDebriefingFull } = require("%scripts/debriefing/debriefingModal.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
@@ -184,7 +184,7 @@ function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01
 
 function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = false) {
   let units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
-  units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
+  units.sortby(@(a) a.name)
 
   let res = units.map(function(unit) {
     let locName = getUnitName(unit)
@@ -288,9 +288,9 @@ register_command(debug_show_unit, "debug.show_unit")
 register_command(debug_show_units_by_loc_name, "debug.show_units_by_loc_name")
 register_command(debug_show_weapon, "debug.show_weapon")
 register_command(debug_get_last_userlogs, "debug.get_last_userlogs")
-register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDescList.get()), "debug.userstat.desc_list")
+register_command(@() consoleAndDebugTableData("userstatDescList: ", toPlainData(userstatDescList.get())), "debug.userstat.desc_list")
 register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.get()), "debug.userstat.unlocks")
-register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.get()), "debug.userstat.stats")
+register_command(@() consoleAndDebugTableData("userstatStats: ", toPlainData(userstatStats.get())), "debug.userstat.stats")
 register_command(sendActionToCharAndStartLogout, "debug.send_action_to_char_and_start_logout")
 
 function debugLoginGuardState() {

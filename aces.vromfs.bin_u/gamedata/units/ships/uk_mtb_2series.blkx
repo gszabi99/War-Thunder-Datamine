@@ -1478,6 +1478,7 @@
     "engines": {
       "maxSpeed": 16.97,
       "maxReverseSpeed": 8.5,
+      "horsePowers": 1650.0,
       "waterResistanceAtStopK": 0.4,
       "speedToTime": {
         "row": [
@@ -1645,6 +1646,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.7,
+        0.0
+      ],
+      [
+        9.4,
+        100.0
+      ],
+      [
+        14.2,
+        200.0
+      ],
+      [
+        18.9,
+        200.0
+      ],
+      [
+        23.6,
+        400.0
+      ],
+      [
+        28.3,
+        600.0
+      ],
+      [
+        33.0,
+        900.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -1653,7 +1712,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1731,7 +1790,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1809,7 +1868,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -1887,7 +1946,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -1965,7 +2024,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -2043,7 +2102,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -2121,7 +2180,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -2199,7 +2258,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_lewis_amg_1916_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
@@ -2292,22 +2351,22 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/uk_mtb_2series_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_mtb_2series_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "mk_vii_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/uk_mtb_2series_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_mtb_2series_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "mk_vii_depth_charges_mk_xii_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/uk_mtb_2series_depth_charges_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_mtb_2series_depth_charges_torpedoes.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "uk_mtb_1series_default",
-        "blk": "gameData/units/ships/weaponPresets/uk_mtb_2series_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/uk_mtb_2series_default.blk"
       }
     ]
   },
@@ -3315,29 +3374,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -6000.0,
-    "waterMassMult": 70.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 170000.0,
+    "waterMassVel": -5320.0,
+    "waterMassMult": 66.0,
+    "additionalWaterDeathThreshold": 197779.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 49.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 9.1,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.668
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.8,
+        "weight": 0.77,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3348,26 +3411,38 @@
       },
       {
         "part": "compartment_02_dm",
-        "weight": 1.0,
+        "weight": 0.98,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.8,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.28
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.27
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.28
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.03
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.02
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.03
             }
           ]
         }

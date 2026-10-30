@@ -92,6 +92,7 @@ def vehicle_collision_sound(info : ParallelUpdateFrameDelayed;
 
                             vehicle_sound_phys_state__deltaShock : float;
                             vehicle_sound_phys_state__noiseReduction : float;
+                            vehicle_sound_phys_state__deltaTreeShock : float;
 
                             is_watched_sound : bool;
 
@@ -120,16 +121,19 @@ def vehicle_collision_sound(info : ParallelUpdateFrameDelayed;
   var coll = 0.
   var descName = ""
   var matProps : SoundVehiclePhysMatProps const? = null
-  let treeCollision = false
 
-  if vehicle_sound_phys_state__deltaShock > vehicle_collision_sound__entityCollSummary
-    coll = vehicle_sound_phys_state__deltaShock
-    descName = treeCollision ? "collTree" : "collGeneric"
+  if vehicle_sound_phys_state__deltaTreeShock > 0.
+    coll = vehicle_sound_phys_state__deltaTreeShock
+    descName = "collTree"
   else
-    coll = vehicle_collision_sound__entityCollSummary
+    if vehicle_sound_phys_state__deltaShock > vehicle_collision_sound__entityCollSummary
+      coll = vehicle_sound_phys_state__deltaShock
+      descName = "collGeneric"
+    else
+      coll = vehicle_collision_sound__entityCollSummary
 
-  vehicle_physmat_sound_get_props(vehicle_collision_sound__entityCollMatId) <| $(props : SoundVehiclePhysMatProps)
-    descName = props.collDesc
+    vehicle_physmat_sound_get_props(vehicle_collision_sound__entityCollMatId) <| $(props : SoundVehiclePhysMatProps)
+      descName = props.collDesc
 
   vehicle_collision_sound__entityCollSummary = 0.
   vehicle_collision_sound__entityCollMatId = PHYSMAT_DEFAULT

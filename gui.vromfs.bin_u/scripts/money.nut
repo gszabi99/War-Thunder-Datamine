@@ -1,7 +1,7 @@
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
 from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 
 
@@ -21,8 +21,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 
 
-
-let money_type = {
+const money_type = {
   none = 0
   cost = 1
   balance = 2
@@ -299,12 +298,12 @@ let Cost = class (Money) {
   }
 }
 
-let zero_money = Money(money_type.none)
+let zero_money = freeze(Money(money_type.none))
 
-return {
+return freeze({
   money_type
   Money
   Balance
   Cost
   zero_money
-}
+})

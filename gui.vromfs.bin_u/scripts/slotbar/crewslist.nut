@@ -1,14 +1,13 @@
+from "%scripts/slotbar/slotbarOverride.nut" import getSlotbarOverrideData, isSlotbarOverrided
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import isEqual
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 from "gameplayBinding" import isInFlight
 from "chard" import getProfileCountry
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_natives.nut" import get_crew_info
 from "%scripts/dagui_library.nut" import *
-
-let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 function getCrewInfo(isInBattle) {
   let crewInfo = get_crew_info()
@@ -40,7 +39,7 @@ function getCrewInfo(isInBattle) {
   return crewInfo
 }
 
-local crewsList = !isLoggedIn.get() ? [] : getCrewInfo(isInFlight())
+local crewsList = [] 
 local version = 0
 
 let isCrewListOverrided = hardPersistWatched("isCrewListOverrided", false)
@@ -92,7 +91,7 @@ function getCrewsListByCountry(country) {
   return []
 }
 
-return {
+return freeze({
   clearCrewsList = @() crewsList = []
   isCrewListOverrided
   getCrewsListVersion = @() version
@@ -100,4 +99,4 @@ return {
   getCrewsList
   getCrewById
   getCrewsListByCountry
-}
+})

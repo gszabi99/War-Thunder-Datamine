@@ -1,15 +1,14 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/queue/queueInfo/qiHandlerBase.nut" import QiHandlerBase
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/onlineInfo/clustersManagement.nut" import getClusterShortName, isClusterUnstable
+from "%scripts/queue/queueInfo/qiViewUtils.nut" import createQueueViewByCountries, updateQueueViewByCountries
+from "%scripts/queue/queueInfo.nut" import getQueueCountry, getQueueClusters
 from "%scripts/dagui_library.nut" import *
-
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { QiHandlerBase } = require("%scripts/queue/queueInfo/qiHandlerBase.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterShortName, isClusterUnstable } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { getQueueCountry, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 
 register_gui_handler("QiHandlerByCountries", class (QiHandlerBase) {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"

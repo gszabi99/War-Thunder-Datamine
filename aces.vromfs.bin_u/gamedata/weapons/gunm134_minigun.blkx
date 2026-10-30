@@ -1,14 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 66.66,
-  "alternativeShotFreq": 33.33,
-  "traceFreq": 4,
-  "bullets": 150,
-  "shootingCharge": 5.5,
-  "mass": 111.0,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,7 +14,29 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 66.66,
+  "alternativeShotFreq": 33.33,
+  "bullets": 150,
+  "shootingCharge": 5.5,
+  "mass": 111.0,
+  "shouldCollideWithRendinsts": true,
   "iconType": "multibarrel_box",
+  "overheat": {
+    "overheat": [
+      [
+        40.0,
+        0.0
+      ],
+      [
+        60.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.01073718,
@@ -2873,31 +2885,10 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "noTrail"
+        "trail": "tinyTrail"
       }
     }
   ],
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m134_gun_outside",
-    "cockpit": "m134_gun_inside",
-    "charge": "m134_rotor_outside",
-    "charge_inside": "m134_rotor_inside",
-    "ai": "m134_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        40.0,
-        0.0
-      ],
-      [
-        60.0,
-        0.05
-      ]
-    ]
-  },
   "M163_Minigun_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -2912,5 +2903,14 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m134_gun_outside",
+    "cockpit": "m134_gun_inside",
+    "charge": "m134_rotor_outside",
+    "charge_inside": "m134_rotor_inside",
+    "ai": "m134_gun_ai"
   }
 }

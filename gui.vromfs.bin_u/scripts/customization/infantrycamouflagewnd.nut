@@ -1,20 +1,23 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/hangarModelLoadManager.nut" import loadFirearm
+from "%scripts/utils/listTreeUtils.nut" import getBranchDataByPath
+from "%scripts/slotInfoPanel.nut" import createSlotInfoPanel
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/customization/infantryCamouflageStorage.nut" import getInfantrySkinsTree, saveInfantrySkinByPath, DEFAULT_SKINS, getRandomSkin, getApplyToAllState, sortSkinsFn, getTiersRangeOnLocation
+  , getSavedSkinByPatchArr, saveInfantrySkin, parseSkinPathArr, getSeenListSubset, getSkinsSeenList, isSkinCanBeNew, getInfantrySkinOnLocation
+  , getBranchName
+from "%scripts/customization/infantryCamouflageUtils.nut" import getCamoNameById
+from "%scripts/sqDagui/daguiUtil.nut" import findChildIndex
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "unitCustomization" import apply_human_skin
 from "hangar" import hangar_is_model_loaded, hangar_focus_model, hangar_weapon_loaded
 from "%sqstd/string.nut" import lastIndexOf
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadFirearm } = require("%scripts/hangarModelLoadManager.nut")
-let { getBranchDataByPath } = require("%scripts/utils/listTreeUtils.nut")
-let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getInfantrySkinsTree, saveInfantrySkinByPath, DEFAULT_SKINS, getRandomSkin, getApplyToAllState, sortSkinsFn, getTiersRangeOnLocation, getSavedSkinByPatchArr, saveInfantrySkin, parseSkinPathArr, getSeenListSubset, getSkinsSeenList, isSkinCanBeNew, getInfantrySkinOnLocation, getBranchName } = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertFromTemplateName, getCamoNameById } = require("%scripts/customization/infantryCamouflageUtils.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { findChildIndex } = require("%scripts/sqDagui/daguiUtil.nut")
+let { convertFromTemplateName } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
 const TEAMS_COUNT = 2
 
@@ -127,7 +130,7 @@ register_gui_handler("InfantryCamouflageHandler", class (BaseGuiHandlerWT) {
 
     return branches
       .values()
-      .sort(sortSkinsFn)
+      .sortby(sortSkinsFn)
   }
 
   function onSkinRadioBtnClick(radioBtnObj) {

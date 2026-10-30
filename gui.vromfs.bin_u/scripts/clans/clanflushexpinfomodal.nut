@@ -1,15 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/clans/clanVehiclesModal.nut" import clanVehiclesModal
+from "%scripts/money.nut" import Cost
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings
+from "%scripts/userLog/userlogUtils.nut" import disableSeenUserlogs
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitStatus.nut" import canResearchUnit
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
 from "string" import format
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { clanVehiclesModal } = require("%scripts/clans/clanVehiclesModal.nut")
-let { Cost } = require("%scripts/money.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
@@ -92,7 +91,7 @@ let handlerClass = class (clanVehiclesModal) {
 
 register_gui_handler("clanFlushExpInfoModal", handlerClass)
 
-return {
+return freeze({
   SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID
   showClanFlushExpInfo = @(p) loadHandler(handlerClass, p)
-}
+})

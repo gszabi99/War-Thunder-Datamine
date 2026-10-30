@@ -1,5 +1,39 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/sqDagui/framework/framedMessageBox.nut" import FramedMessageBox
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/matching/serviceNotifications/postbox.nut" import addMail
+from "%scripts/tasker.nut" import addTask
+from "%scripts/utils/genericTooltip.nut" import removeAllGenericTooltip
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName, getSelectedArmies, hasEntrenchedInList
+from "%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut" import WwReinforcementArmy
+from "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" import sortUnitsBySortCodeAndCount, loadUnitsFromBlk
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus
+from "%scripts/worldWar/services/wwService.nut" import subscribeOperationNotifyOnce
+from "%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut" import openWwOperationRewardPopup
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import getGlobalStatusData
+from "%scripts/worldWar/worldWarGlobalStates.nut" import isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle
+from "%scripts/worldWar/inOperation/model/wwOperationLog.nut" import getWWLogsData, clearWWLogs
+from "%scripts/worldWar/worldWarCfgState.nut" import updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed
+from "%scripts/worldWar/worldWarState.nut" import isLastFlightWasWwBattle, getArmyGroups, getMyArmyGroup
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import curOperationCountry, invalidateRearZones
+from "%scripts/chat/openChat.nut" import openWWOperationChatRoomById
+from "%scripts/queue/queueState.nut" import findQueueByName
+from "%scripts/queue/queueManager.nut" import leaveQueue, leaveQueueByType
+from "%scripts/gameModes/gameModeMesasge.nut" import showNotAvailableMsgBox
+from "%scripts/worldWar/inOperation/model/wwBattlesState.nut" import isAutoBattle
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%appGlobals/worldWar/wwAirfieldStatus.nut" import hoveredAirfieldIndex
 from "guiMission" import get_current_mission_desc
@@ -14,46 +48,13 @@ from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { FramedMessageBox } = require("%scripts/sqDagui/framework/framedMessageBox.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { addMail } = require("%scripts/matching/serviceNotifications/postbox.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { getArmyByName, getSelectedArmies, hasEntrenchedInList } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
-let { sortUnitsBySortCodeAndCount, loadUnitsFromBlk } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
-let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
-let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { getWWLogsData, clearWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getMyArmyGroup } = require("%scripts/worldWar/worldWarState.nut")
-let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { openWWOperationChatRoomById } = require("%scripts/chat/openChat.nut")
-let { findQueueByName } = require("%scripts/queue/queueState.nut")
-let { leaveQueue, leaveQueueByType } = require("%scripts/queue/queueManager.nut")
-let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
+let { baseWWState } = require("%scripts/worldWar/worldWarState.nut")
 let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
-let { isAutoBattle } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
@@ -776,4 +777,4 @@ let g_world_war = {
 
 subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)
 
-return g_world_war
+return freeze(g_world_war)

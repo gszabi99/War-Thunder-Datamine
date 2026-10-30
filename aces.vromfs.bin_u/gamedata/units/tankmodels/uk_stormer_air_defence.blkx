@@ -2039,7 +2039,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_GAU_12U_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_GAU_12U_user_cannon.blk",
         "emitter": "emtr_gun_flame",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -2094,13 +2094,23 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -2284,7 +2294,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/70mm_fim_92e_stinger_stormer_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/70mm_fim_92e_stinger_stormer_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2333,16 +2343,26 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "gunnerDm": "gunner_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2579,7 +2599,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
         "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2630,8 +2650,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_stormer_air_defence_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_stormer_air_defence_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3721,7 +3741,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/uk_esd_ra_20_s_search.blk",
+              "blk": "gamedata/sensors/uk_esd_ra_20_s_search.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -3731,7 +3751,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/sam_tv_ir_track.blk",
+              "blk": "gamedata/sensors/sam_tv_ir_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "optic_gun_dm",
@@ -3739,7 +3759,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]
@@ -3759,7 +3779,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/25mm_GAU_12U_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/25mm_GAU_12U_user_cannon.blk",
               "emitter": "emtr_gun_flame",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -3814,13 +3834,23 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "rotatedTurret": "bone_turret"
               },
               "limits": {
@@ -4004,7 +4034,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/70mm_fim_92e_stinger_stormer_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/70mm_fim_92e_stinger_stormer_launcher_user_cannon.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -4053,16 +4083,26 @@
                 "head": "bone_turret",
                 "gun": "bone_gun",
                 "gunnerDm": "gunner_dm",
+                "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
-                "rotatedTurret": "bone_turret"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4299,7 +4339,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
               "emitter": "emtr_mg_flame_01",
               "flash": "emtr_mg_flame_01",
               "useEmitter": true,
@@ -4342,7 +4382,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortart_flame_01",
@@ -4392,7 +4432,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4564,7 +4604,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/uk_esd_ra_20_s_search.blk",
+        "blk": "gamedata/sensors/uk_esd_ra_20_s_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -4574,7 +4614,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/sam_tv_ir_track.blk",
+        "blk": "gamedata/sensors/sam_tv_ir_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "optic_gun_dm",
@@ -4588,5 +4628,29 @@
     "hasTargetList": true,
     "hasTurretView": true,
     "hasVerticalView": false
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.765,
+      1.01,
+      1.0622
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

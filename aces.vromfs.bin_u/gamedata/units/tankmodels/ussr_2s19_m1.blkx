@@ -1950,7 +1950,13 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_01_dm"
       ],
       "effect": [
         {
@@ -1976,7 +1982,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_2A64_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_2A64_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2021,13 +2027,12 @@
           "barrel": "bone_gun_barrel",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2043,7 +2048,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_72_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_NSV_t_72_user_cannon.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2087,7 +2092,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2117,8 +2122,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_2s19_m1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_2s19_m1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2211,7 +2216,12 @@
         200000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 1000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0
+      }
     }
   },
   "PhysSys": {
@@ -3578,7 +3588,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/152mm_2A64_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/152mm_2A64_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3623,13 +3633,12 @@
                 "barrel": "bone_gun_barrel",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3645,7 +3654,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_72_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_NSV_t_72_user_cannon.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_aa_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3689,7 +3698,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3718,7 +3727,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/81mm_tucha_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3818,10 +3827,10 @@
       "replenishmentTime": 10.0,
       "shells": {
         "autoLoad": true,
+        "autoloader": "autoloader_dm",
         "fireEvent": "ammo_fire",
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
-        "autoloader": "autoloader_dm",
         "ammo_turret_01_dm": {
           "count": 1
         },
@@ -3975,6 +3984,7 @@
       },
       "charges": {
         "autoLoad": true,
+        "autoloader": "autoloader_dm",
         "fireEvent": "ammo_fire",
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,

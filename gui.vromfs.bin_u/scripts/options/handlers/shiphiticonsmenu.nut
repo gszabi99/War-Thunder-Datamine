@@ -1,3 +1,8 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndLib/multiSelectMenu.nut" import MultiSelectMenu
+from "%scripts/options/optionsExt.nut" import set_option, get_option, registerOption, def_set_gui_option, mkUseroptHardWatched
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_HIT_ICONS_SHIP
+from "%scripts/options/optionsStorage.nut" import get_available_ship_hit_notifications
 from "%globalScripts/shipHitIconsConsts.nut" import ShipHitIconId, SHIP_HIT_ICONS_VIS_ALL_FLAGS
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dagor.localize" import doesLocTextExist
@@ -5,13 +10,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "guiOptions" import get_gui_option
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option, get_option, registerOption, def_set_gui_option, mkUseroptHardWatched } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_SHOW_HIT_ICONS_SHIP } = require("%scripts/options/optionsExtNames.nut")
 let { ShipHitIconVisibilityMask, ShipHitIconCfgId } = require("%globalScripts/shipHitIconsConsts.nut")
-let { get_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
 
 let ShipHitIcons = {
   [ShipHitIconId.HIT]                = "ui/gameuiskin#dm_ship_armor_hit.svg",
@@ -96,4 +96,4 @@ addListenersWithoutEnv({
   }
 })
 
-return { openShipHitIconsMenu }
+return freeze({ openShipHitIconsMenu })

@@ -1,4 +1,20 @@
+import "%scripts/customization/contentPreset.nut" as contentPreset
 import "DataBlock" as DataBlock
+from "%scripts/missions/missionsStates.nut" import currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings, is_user_mission, isCustomMissionFlight
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/genericOptions.nut" import GenericOptions
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeCoop
+from "%scripts/missions/missionsText.nut" import loc_current_mission_desc, getWeatherLocName, locCurrentMissionName, getMissionTimeText
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/onlineInfo/clustersManagement.nut" import getClustersList
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyMaxMembersCount
+from "%scripts/options/optionsExt.nut" import create_options_container, get_option, registerOption
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/missions/missionsUtils.nut" import isMissionForUnitType, isSkirmishWithKillStreaks
+from "%scripts/options/options.nut" import getOptionsMode
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo
 from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank
 from "%sqstd/datablock.nut" import fillBlock
 from "string" import format
@@ -15,23 +31,6 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
-
-let { currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings, is_user_mission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { GenericOptions } = require("%scripts/genericOptions.nut")
-let contentPreset = require("%scripts/customization/contentPreset.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { loc_current_mission_desc, getWeatherLocName, locCurrentMissionName, getMissionTimeText } = require("%scripts/missions/missionsText.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { create_options_container, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
-let { getOptionsMode } = require("%scripts/options/options.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 
 function getMissionTypesFromMetaMissionInfo(metaInfo) {
   let types = [];
@@ -217,6 +216,305 @@ function get_mission_desc_text(missionBlk) {
   return descrAdd
 }
 
+function applyMissionOptions(optionsHandler, misBlk) {
+  if (!optionsHandler.isValid())
+    return
+
+  let gm = get_game_mode()
+  let gt = get_game_type()
+  local value = ""
+
+  if (!misBlk) {
+    misBlk = DataBlock()
+    get_current_mission_info(misBlk)
+  }
+
+  if (gm == GM_DYNAMIC) {
+    let cms = get_mission_settings()
+    let mfull = cms.dynlist[cms.currentMissionIdx]
+    set_mission_settings("missionFull", mfull)
+    misBlk.setFrom(mfull.mission_settings.mission);
+    misBlk.setInt("currentMissionIdx", cms.currentMissionIdx);
+    misBlk.setInt("takeoffMode", cms.takeoffMode);
+  }
+
+  misBlk.setInt("_gameMode", gm)
+
+  if (!("loc_name" in misBlk))
+    misBlk.setStr("loc_name", "")
+
+  set_gui_option(USEROPT_NUM_ATTEMPTS, -1)
+
+  if (gm == GM_DYNAMIC) {
+    misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
+  }
+  else if (optionsHandler.getObj("difficulty") != null) {
+    set_mission_settings("diff", optionsHandler.getObj("difficulty").getValue())
+    misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
+  }
+  else
+    set_mission_settings("diff", 0)
+
+  value = optionsHandler.getOptValue(USEROPT_LIMITED_FUEL, false)
+  if (value != null) {
+    set_mission_settings("isLimitedFuel", value)
+    misBlk.setBool("isLimitedFuel", get_mission_settings().isLimitedFuel)
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_LIMITED_AMMO, false)
+  if (value != null) {
+    set_mission_settings("isLimitedAmmo", value)
+    misBlk.setBool("isLimitedAmmo", get_mission_settings().isLimitedAmmo)
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_OPTIONAL_TAKEOFF, false)
+  if (value != null)
+    misBlk.setBool("takeOffOnStart", value && misBlk.getBool("isOptionalTakeOff", false))
+
+  value = optionsHandler.getOptValue(USEROPT_DISABLE_AIRFIELDS, false)
+  if (value != null)
+    misBlk.setBool("disableAirfields", value)
+
+  value = optionsHandler.getOptValue(USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, false)
+  if (value != null)
+    misBlk.setBool("spawnAiTankOnTankMaps", value)
+
+  value = optionsHandler.getOptValue(USEROPT_SKIN, false)
+  if (value != null && (gt & GT_DYNAMIC)) {
+    let ar = get_mission_settings().missionFull.units % "armada";
+    for (local i = 0; i < ar.len(); i++) {
+      if (ar[i].name.indexof("#player.") != null)
+        ar[i].props.skin = value;
+    }
+  }
+
+  set_mission_settings("coop", get_mission_settings().coop && g_squad_manager.isNotAloneOnline())
+  misBlk.setBool("gt_cooperative", get_mission_settings().coop)
+  misBlk.setBool("gt_versus", (gt & GT_VERSUS))
+
+  if (get_mission_settings().coop) {
+    set_mission_settings("players", 4)
+    misBlk.setInt("_players", 4)
+    misBlk.setInt("maxPlayers", 4)
+    misBlk.setBool("gt_use_lb", gm == GM_EVENT)
+    misBlk.setBool("gt_use_replay", true)
+    misBlk.setBool("gt_use_stats", true)
+    misBlk.setBool("gt_sp_restart", false)
+    misBlk.setBool("isBotsAllowed", true)
+    misBlk.setBool("autoBalance", false)
+  }
+  if (gt & GT_VERSUS) {
+    misBlk.setBool("gt_use_lb", true)
+    misBlk.setBool("gt_use_replay", true)
+    misBlk.setBool("gt_use_stats", true)
+    misBlk.setBool("gt_sp_restart", false)
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_TIME_LIMIT, false)
+  if (value != null)
+    misBlk.setInt("timeLimit", value)
+
+  value = optionsHandler.getOptValue(USEROPT_KILL_LIMIT, false)
+  if (value != null)
+    misBlk.setInt("killLimit", value)
+
+  value = optionsHandler.getOptValue(USEROPT_ROUNDS, false)
+  if (value != null) {
+    misBlk.setInt("rounds", value)
+    set_mission_settings("rounds", value)
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_VERSUS_RESPAWN, false)
+  if (value != null) {
+    misBlk.setInt("maxRespawns", value)
+    set_mission_settings("maxRespawns", value)
+  }
+
+  if (gm == GM_SKIRMISH) {
+    value = optionsHandler.getOptValue(USEROPT_ALLOW_JIP, false)
+    if (value != null) {
+      misBlk.setBool("allowJIP", value)
+      set_mission_settings("allowJIP", value)
+    }
+
+    if (isSkirmishWithKillStreaks(misBlk)) {
+      value = optionsHandler.getOptValue(USEROPT_USE_KILLSTREAKS, false)
+      misBlk.setBool("useKillStreaks", value)
+    }
+  }
+  misBlk.allowEmptyTeams = optionsHandler.getOptValue(USEROPT_ALLOW_EMPTY_TEAMS, false)
+
+  local isBotsAllowed = optionsHandler.getOptValue(USEROPT_IS_BOTS_ALLOWED, false)
+  if (value == null)
+    if (misBlk.paramExists("isBotsAllowed"))
+      isBotsAllowed = misBlk.isBotsAllowed
+    else
+      isBotsAllowed = (gm == GM_DOMINATION || gm == GM_SKIRMISH)
+                      && !(gt & GT_RACE)
+                      && optionsHandler.getOptValue(USEROPT_IS_BOTS_ALLOWED)
+
+  misBlk.setBool("isBotsAllowed", isBotsAllowed)
+  set_mission_settings("isBotsAllowed", isBotsAllowed)
+
+  if (isBotsAllowed)
+    misBlk.useTankBots = optionsHandler.getOptValue(USEROPT_USE_TANK_BOTS, false)
+
+  if (isBotsAllowed)
+    misBlk.useShipBots = optionsHandler.getOptValue(USEROPT_USE_SHIP_BOTS, false)
+
+  misBlk.keepDead = optionsHandler.getOptValue(USEROPT_KEEP_DEAD, true)
+
+  if (gm == GM_SKIRMISH) {
+    value = hasFeature("LiveBroadcast") ? optionsHandler.getOptValue(USEROPT_DEDICATED_REPLAY) : false
+    misBlk.setBool("dedicatedReplay", value)
+    set_mission_settings("dedicatedReplay", value)
+  }
+
+  if (gm == GM_SKIRMISH) {
+    misBlk.setInt("allowWebUi", optionsHandler.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
+    set_mission_settings("allowWebUi", optionsHandler.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
+  }
+
+  if (gm == GM_SKIRMISH) {
+    misBlk.setBool("hasTeamDesignation", optionsHandler.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
+    set_mission_settings("hasTeamDesignation", optionsHandler.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
+  }
+
+  if (!("url" in misBlk))
+    misBlk.setStr("url", "") 
+
+  set_mission_settings("missionURL", misBlk.url)
+  set_mission_settings("sessionPassword", get_option(USEROPT_SESSION_PASSWORD).value)
+
+  if (misBlk.paramExists("autoBalance")) {
+    set_mission_settings("autoBalance", misBlk.getBool("autoBalance", true))
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_MIN_PLAYERS, false)
+  if (value != null)
+    misBlk.setInt("minPlayers", value)
+
+  value = optionsHandler.getOptValue(USEROPT_MAX_PLAYERS, false)
+  if (value != null) {
+    misBlk.setInt("maxPlayers", value)
+    set_mission_settings("players", value)
+    misBlk.setInt("_players", value)
+  }
+  else if (gt & GT_VERSUS) {
+    if (isInSessionRoom.get()) {
+      misBlk.setInt("maxPlayers", getSessionLobbyMaxMembersCount())
+      set_mission_settings("players", getSessionLobbyMaxMembersCount())
+    }
+    else {
+      set_mission_settings("players", MAX_PLAYERS_VERSUS)
+      misBlk.setInt("_players", MAX_PLAYERS_VERSUS)
+    }
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_CLUSTERS, false)
+  if (value != null)
+    set_mission_settings("cluster", value == "auto"
+      ? getClustersList().filter(@(info) info.isDefault)[0].name
+      : value)
+  value = optionsHandler.getOptValue(USEROPT_FRIENDS_ONLY, false)
+  if (value != null) {
+    misBlk.setBool("isPrivate", value)
+    set_mission_settings("friendOnly", value)
+    misBlk.setBool("allowJIP", !value)
+    set_mission_settings("allowJIP", !value)
+  }
+  else if (gm == GM_DYNAMIC) {
+    misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+    misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
+    misBlk.setBool("isBotsAllowed", true)
+    misBlk.setBool("autoBalance", false)
+  }
+  else if ((gm == GM_SINGLE_MISSION) && (optionsHandler.guiScene["coop_mode"] != null)) {
+    misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+    misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
+  }
+  else if ((gm != GM_DYNAMIC) && !isInSessionRoom.get())
+    set_mission_settings("friendOnly", false)
+
+  value = optionsHandler.getOptValue(USEROPT_TIME, false)
+  if (value != null)
+    misBlk.setStr("environment", value)
+
+  value = optionsHandler.getOptValue(USEROPT_CLIME, false)
+  if (value != null)
+    misBlk.setStr("weather", value)
+
+  value = optionsHandler.getOptValue(USEROPT_MISSION_COUNTRIES_TYPE, false)
+  if (value != null)
+    set_mission_settings("countriesType", value)
+
+  foreach (opt in [USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B]) {
+    let option = get_option(opt)
+    let obj = optionsHandler.scene.findObject(option.id)
+    if (obj)
+      set_mission_settings($"{option.sideTag}_bitmask", obj.getValue())
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_BIT_UNIT_TYPES, false)
+  let option = get_option(USEROPT_BIT_UNIT_TYPES)
+  if (value != null && value != option.availableUnitTypesMask)
+    set_mission_settings("userAllowedUnitTypesMask", value)
+
+  let mrankMin = optionsHandler.getOptValue(USEROPT_BR_MIN, 0)
+  let mrankMax = optionsHandler.getOptValue(USEROPT_BR_MAX, 0)
+  fillBlock("ranks", misBlk, { min = mrankMin, max = mrankMax })
+  if (mrankMin > 0 || mrankMax < getMaxEconomicRank()) {
+    set_mission_settings("mrankMin", mrankMin)
+    set_mission_settings("mrankMax", mrankMax)
+  }
+
+  value = optionsHandler.getOptValue(USEROPT_CONTENT_ALLOWED_PRESET, false)
+  if (value != null)
+    misBlk.setStr("allowedTagsPreset", value)
+
+  if (gt & GT_RACE) {
+    misBlk.raceLaps = optionsHandler.getOptValue(USEROPT_RACE_LAPS)
+    misBlk.raceWinners = optionsHandler.getOptValue(USEROPT_RACE_WINNERS)
+    misBlk.raceForceCannotShoot = !optionsHandler.getOptValue(USEROPT_RACE_CAN_SHOOT)
+  }
+
+  misBlk.setInt("_gameMode", gm)
+  if (isInSessionRoom.get()) {
+    misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+    misBlk.setBool("allowJIP", get_mission_settings().allowJIP)
+  }
+
+  if (gm == GM_DYNAMIC || gm == GM_BUILDER)
+    if (misBlk.getStr("restoreType", "attempts") == "tactical control")
+      misBlk.setStr("restoreType", "attempts");
+
+  set_mission_settings("time", misBlk.getStr("environment", ""))
+  set_mission_settings("weather", misBlk.getStr("weather", ""))
+  set_mission_settings("isLimitedFuel", misBlk.getBool("isLimitedFuel", false))
+  set_mission_settings("isLimitedAmmo", misBlk.getBool("isLimitedAmmo", false))
+  set_mission_settings("takeoffMode", optionsHandler.getOptValue(USEROPT_TAKEOFF_MODE, true))
+
+  set_mission_settings("mission", misBlk)
+
+  if (gm == GM_DYNAMIC) {
+    set_mission_settings("missionFull", get_mission_settings().dynlist[get_mission_settings().currentMissionIdx])
+
+    let mode = get_mission_settings().takeoffMode;
+    dynamicSetTakeoffMode(get_mission_settings().missionFull, mode, mode)
+  }
+
+  if (gm == GM_SKIRMISH || gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION)
+    if (misBlk?.name && misBlk?.chapter)
+      add_last_played(misBlk.chapter, misBlk.name, gm, false)
+    else if (misBlk?.url)
+      add_last_played("url", misBlk.url, gm, false)
+
+  if (gm == GM_DYNAMIC)
+    select_mission_full(misBlk, get_mission_settings().missionFull);
+  else
+    select_mission(misBlk, false)
+}
+
 let Briefing = class (GenericOptions) {
   sceneBlkName = "%gui/briefing.blk"
   sceneNavBlkName = "%gui/navBriefing.blk"
@@ -310,307 +608,8 @@ let Briefing = class (GenericOptions) {
   }
 
   function onApply(_obj) {
-    this.finalApply(this.missionBlk)
+    applyMissionOptions(this, this.missionBlk)
     this.onFinalApply2()
-  }
-
-  function finalApply(misBlk) {
-    if (!this.isValid())
-      return
-
-    let gm = get_game_mode()
-    let gt = get_game_type()
-    local value = ""
-
-    if (!misBlk) {
-      misBlk = DataBlock()
-      get_current_mission_info(misBlk)
-    }
-
-    if (gm == GM_DYNAMIC) {
-      let cms = get_mission_settings()
-      let mfull = cms.dynlist[cms.currentMissionIdx]
-      set_mission_settings("missionFull", mfull)
-      misBlk.setFrom(mfull.mission_settings.mission);
-      misBlk.setInt("currentMissionIdx", cms.currentMissionIdx);
-      misBlk.setInt("takeoffMode", cms.takeoffMode);
-    }
-
-    misBlk.setInt("_gameMode", gm)
-
-    if (!("loc_name" in misBlk))
-      misBlk.setStr("loc_name", "")
-
-    set_gui_option(USEROPT_NUM_ATTEMPTS, -1)
-
-    if (gm == GM_DYNAMIC) {
-      misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
-    }
-    else if (this.getObj("difficulty") != null) {
-      set_mission_settings("diff", this.getObj("difficulty").getValue())
-      misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
-    }
-    else
-      set_mission_settings("diff", 0)
-
-    value = this.getOptValue(USEROPT_LIMITED_FUEL, false)
-    if (value != null) {
-      set_mission_settings("isLimitedFuel", value)
-      misBlk.setBool("isLimitedFuel", get_mission_settings().isLimitedFuel)
-    }
-
-    value = this.getOptValue(USEROPT_LIMITED_AMMO, false)
-    if (value != null) {
-      set_mission_settings("isLimitedAmmo", value)
-      misBlk.setBool("isLimitedAmmo", get_mission_settings().isLimitedAmmo)
-    }
-
-    value = this.getOptValue(USEROPT_OPTIONAL_TAKEOFF, false)
-    if (value != null)
-      misBlk.setBool("takeOffOnStart", value && misBlk.getBool("isOptionalTakeOff", false))
-
-    value = this.getOptValue(USEROPT_DISABLE_AIRFIELDS, false)
-    if (value != null)
-      misBlk.setBool("disableAirfields", value)
-
-    value = this.getOptValue(USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, false)
-    if (value != null)
-      misBlk.setBool("spawnAiTankOnTankMaps", value)
-
-    value = this.getOptValue(USEROPT_SKIN, false)
-    if (value != null && (gt & GT_DYNAMIC)) {
-      let ar = get_mission_settings().missionFull.units % "armada";
-      for (local i = 0; i < ar.len(); i++) {
-        if (ar[i].name.indexof("#player.") != null)
-          ar[i].props.skin = value;
-      }
-    }
-
-    set_mission_settings("coop", get_mission_settings().coop && g_squad_manager.isNotAloneOnline())
-    misBlk.setBool("gt_cooperative", get_mission_settings().coop)
-    misBlk.setBool("gt_versus", (gt & GT_VERSUS))
-
-    if (get_mission_settings().coop) {
-      set_mission_settings("players", 4)
-      misBlk.setInt("_players", 4)
-      misBlk.setInt("maxPlayers", 4)
-      misBlk.setBool("gt_use_lb", gm == GM_EVENT)
-      misBlk.setBool("gt_use_replay", true)
-      misBlk.setBool("gt_use_stats", true)
-      misBlk.setBool("gt_sp_restart", false)
-      misBlk.setBool("isBotsAllowed", true)
-      misBlk.setBool("autoBalance", false)
-    }
-    if (gt & GT_VERSUS) {
-      misBlk.setBool("gt_use_lb", true)
-      misBlk.setBool("gt_use_replay", true)
-      misBlk.setBool("gt_use_stats", true)
-      misBlk.setBool("gt_sp_restart", false)
-    }
-
-    value = this.getOptValue(USEROPT_TIME_LIMIT, false)
-    if (value != null)
-      misBlk.setInt("timeLimit", value)
-
-    value = this.getOptValue(USEROPT_KILL_LIMIT, false)
-    if (value != null)
-      misBlk.setInt("killLimit", value)
-
-    value = this.getOptValue(USEROPT_ROUNDS, false)
-    if (value != null) {
-      misBlk.setInt("rounds", value)
-      set_mission_settings("rounds", value)
-    }
-
-    value = this.getOptValue(USEROPT_VERSUS_RESPAWN, false)
-    if (value != null) {
-      misBlk.setInt("maxRespawns", value)
-      set_mission_settings("maxRespawns", value)
-    }
-
-    if (gm == GM_SKIRMISH) {
-      value = this.getOptValue(USEROPT_ALLOW_JIP, false)
-      if (value != null) {
-        misBlk.setBool("allowJIP", value)
-        set_mission_settings("allowJIP", value)
-      }
-
-      if (isSkirmishWithKillStreaks(misBlk)) {
-        value = this.getOptValue(USEROPT_USE_KILLSTREAKS, false)
-        misBlk.setBool("useKillStreaks", value)
-      }
-    }
-    misBlk.allowEmptyTeams = this.getOptValue(USEROPT_ALLOW_EMPTY_TEAMS, false)
-
-    local isBotsAllowed = this.getOptValue(USEROPT_IS_BOTS_ALLOWED, false)
-    if (value == null)
-      if (misBlk.paramExists("isBotsAllowed"))
-        isBotsAllowed = misBlk.isBotsAllowed
-      else
-        isBotsAllowed = (gm == GM_DOMINATION || gm == GM_SKIRMISH)
-                        && !(gt & GT_RACE)
-                        && this.getOptValue(USEROPT_IS_BOTS_ALLOWED)
-
-    misBlk.setBool("isBotsAllowed", isBotsAllowed)
-    set_mission_settings("isBotsAllowed", isBotsAllowed)
-
-    if (isBotsAllowed)
-      misBlk.useTankBots = this.getOptValue(USEROPT_USE_TANK_BOTS, false)
-
-    if (isBotsAllowed)
-      misBlk.useShipBots = this.getOptValue(USEROPT_USE_SHIP_BOTS, false)
-
-    misBlk.keepDead = this.getOptValue(USEROPT_KEEP_DEAD, true)
-
-    if (gm == GM_SKIRMISH) {
-      value = hasFeature("LiveBroadcast") ? this.getOptValue(USEROPT_DEDICATED_REPLAY) : false
-      misBlk.setBool("dedicatedReplay", value)
-      set_mission_settings("dedicatedReplay", value)
-    }
-
-    if (gm == GM_SKIRMISH) {
-      misBlk.setInt("allowWebUi", this.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
-      set_mission_settings("allowWebUi", this.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
-    }
-
-    if (gm == GM_SKIRMISH) {
-      misBlk.setBool("hasTeamDesignation", this.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
-      set_mission_settings("hasTeamDesignation", this.getOptValue(USEROPT_HAS_TEAM_DESIGNATION, false))
-    }
-
-    if (!("url" in misBlk))
-      misBlk.setStr("url", "") 
-
-    set_mission_settings("missionURL", misBlk.url)
-    set_mission_settings("sessionPassword", get_option(USEROPT_SESSION_PASSWORD).value)
-
-    if (misBlk.paramExists("autoBalance")) {
-      set_mission_settings("autoBalance", misBlk.getBool("autoBalance", true))
-    }
-
-    value = this.getOptValue(USEROPT_MIN_PLAYERS, false)
-    if (value != null)
-      misBlk.setInt("minPlayers", value)
-
-    value = this.getOptValue(USEROPT_MAX_PLAYERS, false)
-    if (value != null) {
-      misBlk.setInt("maxPlayers", value)
-      set_mission_settings("players", value)
-      misBlk.setInt("_players", value)
-    }
-    else if (gt & GT_VERSUS) {
-      if (isInSessionRoom.get()) {
-        misBlk.setInt("maxPlayers", getSessionLobbyMaxMembersCount())
-        set_mission_settings("players", getSessionLobbyMaxMembersCount())
-      }
-      else {
-        set_mission_settings("players", MAX_PLAYERS_VERSUS)
-        misBlk.setInt("_players", MAX_PLAYERS_VERSUS)
-      }
-    }
-
-    value = this.getOptValue(USEROPT_CLUSTERS, false)
-    if (value != null)
-      set_mission_settings("cluster", value == "auto"
-        ? getClustersList().filter(@(info) info.isDefault)[0].name
-        : value)
-    value = this.getOptValue(USEROPT_FRIENDS_ONLY, false)
-    if (value != null) {
-      misBlk.setBool("isPrivate", value)
-      set_mission_settings("friendOnly", value)
-      misBlk.setBool("allowJIP", !value)
-      set_mission_settings("allowJIP", !value)
-    }
-    else if (gm == GM_DYNAMIC) {
-      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
-      misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
-      misBlk.setBool("isBotsAllowed", true)
-      misBlk.setBool("autoBalance", false)
-    }
-    else if ((gm == GM_SINGLE_MISSION) && (this.guiScene["coop_mode"] != null)) {
-      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
-      misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
-    }
-    else if ((gm != GM_DYNAMIC) && !isInSessionRoom.get())
-      set_mission_settings("friendOnly", false)
-
-    value = this.getOptValue(USEROPT_TIME, false)
-    if (value != null)
-      misBlk.setStr("environment", value)
-
-    value = this.getOptValue(USEROPT_CLIME, false)
-    if (value != null)
-      misBlk.setStr("weather", value)
-
-    value = this.getOptValue(USEROPT_MISSION_COUNTRIES_TYPE, false)
-    if (value != null)
-      set_mission_settings("countriesType", value)
-
-    foreach (opt in [USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B]) {
-      let option = get_option(opt)
-      let obj = this.scene.findObject(option.id)
-      if (obj)
-        set_mission_settings($"{option.sideTag}_bitmask", obj.getValue())
-    }
-
-    value = this.getOptValue(USEROPT_BIT_UNIT_TYPES, false)
-    let option = get_option(USEROPT_BIT_UNIT_TYPES)
-    if (value != null && value != option.availableUnitTypesMask)
-      set_mission_settings("userAllowedUnitTypesMask", value)
-
-    let mrankMin = this.getOptValue(USEROPT_BR_MIN, 0)
-    let mrankMax = this.getOptValue(USEROPT_BR_MAX, 0)
-    fillBlock("ranks", misBlk, { min = mrankMin, max = mrankMax })
-    if (mrankMin > 0 || mrankMax < getMaxEconomicRank()) {
-      set_mission_settings("mrankMin", mrankMin)
-      set_mission_settings("mrankMax", mrankMax)
-    }
-
-    value = this.getOptValue(USEROPT_CONTENT_ALLOWED_PRESET, false)
-    if (value != null)
-      misBlk.setStr("allowedTagsPreset", value)
-
-    if (gt & GT_RACE) {
-      misBlk.raceLaps = this.getOptValue(USEROPT_RACE_LAPS)
-      misBlk.raceWinners = this.getOptValue(USEROPT_RACE_WINNERS)
-      misBlk.raceForceCannotShoot = !this.getOptValue(USEROPT_RACE_CAN_SHOOT)
-    }
-
-    misBlk.setInt("_gameMode", gm)
-    if (isInSessionRoom.get()) {
-      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
-      misBlk.setBool("allowJIP", get_mission_settings().allowJIP)
-    }
-
-    if (gm == GM_DYNAMIC || gm == GM_BUILDER)
-      if (misBlk.getStr("restoreType", "attempts") == "tactical control")
-        misBlk.setStr("restoreType", "attempts");
-
-    set_mission_settings("time", misBlk.getStr("environment", ""))
-    set_mission_settings("weather", misBlk.getStr("weather", ""))
-    set_mission_settings("isLimitedFuel", misBlk.getBool("isLimitedFuel", false))
-    set_mission_settings("isLimitedAmmo", misBlk.getBool("isLimitedAmmo", false))
-    set_mission_settings("takeoffMode", this.getOptValue(USEROPT_TAKEOFF_MODE, true))
-
-    set_mission_settings("mission", misBlk)
-
-    if (gm == GM_DYNAMIC) {
-      set_mission_settings("missionFull", get_mission_settings().dynlist[get_mission_settings().currentMissionIdx])
-
-      let mode = get_mission_settings().takeoffMode;
-      dynamicSetTakeoffMode(get_mission_settings().missionFull, mode, mode)
-    }
-
-    if (gm == GM_SKIRMISH || gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION)
-      if (misBlk?.name && misBlk?.chapter)
-        add_last_played(misBlk.chapter, misBlk.name, gm, false)
-      else if (misBlk?.url)
-        add_last_played("url", misBlk.url, gm, false)
-
-    if (gm == GM_DYNAMIC)
-      select_mission_full(misBlk, get_mission_settings().missionFull);
-    else
-      select_mission(misBlk, false)
   }
 
   function onFinalApply2() {
@@ -688,7 +687,8 @@ function setUseroptUseroptNamePostfix(value, descr, optionId) {
 
 registerOption(USEROPT_MISSION_NAME_POSTFIX, fillUseroptNamePostfix, setUseroptUseroptNamePostfix)
 
-return {
+return freeze({
   Briefing
   getBriefingOptions
-}
+  applyMissionOptions
+})

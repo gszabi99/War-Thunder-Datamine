@@ -1,14 +1,14 @@
+import "%scripts/seen/seenList.nut" as seenList
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/items/itemsManagerGetters.nut" import getShopList
+from "%scripts/items/itemsChecks.nut" import isItemVisible, checkItemsMaskFeatures
+from "%scripts/items/itemsManagerModule.nut" import getInventoryListByShopMask
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/seen/seenIds.nut" import SEEN
 
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
-let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
-let { getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
 
 let shopSheets = {
   types = []
@@ -80,7 +80,7 @@ shopSheets.addSheets <- function(sheetsTable) {
         this.searchId = this.id
     },
     "id")
-  shopSheets.types.sort(@(a, b) a.sortId <=> b.sortId)
+  shopSheets.types.sortby(@(a) a.sortId)
 
   
   for (local tab = 0; tab < itemsTab.TOTAL; tab++)

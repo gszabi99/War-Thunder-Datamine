@@ -67,7 +67,10 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
                                           ammo_stowage__ammoState : uint;
                                           ammo_stowage__ammoTypeRemap : IPoint4List;
                                           ammo_stowage__weaponsIds : IntList;
+                                          ammo_stowage__weaponTriggers : IntList;
                                           ammo_stowage__relatedPartsIds : PartIdList;
+                                          ammo_stowages__state : UInt32List;
+                                          ammo_stowages__weaponTriggersRange : IPoint2List;
                                           ammo_stowages__clustersRange : IPoint2List;
                                           ammo_clusters__state : UInt32List;
                                           ammo_clusters__typeAndStage : UInt16List;
@@ -80,6 +83,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
                                           >) : tuple<hash : uint; data_range : int2>
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
   let enable_per_ammo_types = get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
+  let backup_manual_loading = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.BACKUP_MANUAL_LOADING)
 
   var stowage_any_parts_broken = false
   var stowage_all_parts_broken = clusters_range.x != clusters_range.y
@@ -125,6 +129,8 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
           uint(AmmoStowagePerAmmoState.EMPTY_SECOND_STAGE)
         )
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_AUTO_LOAD, auto_load_present)
+    set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_NON_AUTO_LOAD, auto_load_present)
+    set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.AUTOLOADER_BROKEN, stowage_has_autoloader_parts && stowage_any_parts_broken)
 
     if ammo_type_remap.x != stowage_id
       
@@ -182,6 +188,16 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
         set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_SECOND_STAGE, false)
       if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.AUTO_LOAD)
         set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_AUTO_LOAD, false)
+      elif cluster_stage == int(AmmoClusterStage.FIRST_STAGE) || cluster_stage == int(AmmoClusterStage.SECOND_STAGE)
+        set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_NON_AUTO_LOAD, false)
+
+  if backup_manual_loading
+    for ammo_type in 0..ammo_type_count
+      let glob_ammo_idx = per_ammo_offset + ammo_type
+      let state = v.ammo_per_type_data__state[glob_ammo_idx]
+      let auto_loader_unusable = get_flag(state, AmmoStowagePerAmmoState.EMPTY_AUTO_LOAD) || get_flag(state, AmmoStowagePerAmmoState.AUTOLOADER_BROKEN)
+      let load_manually = auto_loader_unusable && !get_flag(state, AmmoStowagePerAmmoState.EMPTY_NON_AUTO_LOAD)
+      set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.BACKUP_MANUAL_LOADING, load_manually)
 
   
   
@@ -201,7 +217,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
         continue
       
       
-      if (v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] == 0) != get_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_LOADED_AMMO)
+      if (v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] == 0) != get_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState.EMPTY_LOADED_AMMO) && ammo_stowage_is_bullet_count_known(unit.weap, stowage_id, v)
         need_redistribute_loaded_in_gun_ammo = true
     if need_redistribute_loaded_in_gun_ammo
       

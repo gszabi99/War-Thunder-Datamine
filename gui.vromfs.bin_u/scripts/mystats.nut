@@ -1,7 +1,25 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/crossModuleEvents.nut" import EVENTS_DATA_UPDATED
+from "%scripts/unit/unitClassType.nut" import getUnitClassTypesByEsUnitType
+from "%scripts/firstChoice/firstChoice.nut" import getFirstChosenUnitType
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unit/unitInfo.nut" import getUnitTypeByText
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/user/profileStates.nut" import userIdStr, userIdInt64
+from "%scripts/slotbar/slotbarStateData.nut" import getSlotbarUnitTypes
+from "%scripts/tasker.nut" import addBgTaskCb
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/user/myStatsState.nut" import getNewPlayersBattlesConfig
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "dagor.time" import get_time_msec
 from "console" import register_command
 from "%scripts/dagui_natives.nut" import get_player_public_stats, req_player_public_statinfo
@@ -10,26 +28,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/user/userInfoStats.nut" import getPlayerStatsFromBlk, getPlayerSummary, getPlayerSummaryMode
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
-let { EVENTS_DATA_UPDATED } = require("%scripts/crossModuleEvents.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarStateData.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { getNewPlayersBattlesConfig } = require("%scripts/user/myStatsState.nut")
 
 
 
@@ -79,7 +79,7 @@ function getTitles(showHidden = false) {
 }
 
 function updateMyStats() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   let blk = DataBlock()
@@ -94,7 +94,7 @@ function updateMyStats() {
 }
 
 function requestMyStats() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   let time = get_time_msec()

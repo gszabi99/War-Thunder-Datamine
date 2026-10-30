@@ -1,19 +1,20 @@
 import "chard" as chard
+from "%scripts/tasker.nut" import addTask
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/crew/crew.nut" import getCrewTrainCost, getCrewLevel
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc
+from "%scripts/unit/unitShopInfo.nut" import canSpendGoldOnUnitWithPopup
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "%scripts/dagui_natives.nut" import shop_specialize_crew
 from "%scripts/dagui_library.nut" import *
 
-let { addTask } = require("%scripts/tasker.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc } = require("%scripts/crew/crewSpecType.nut")
-let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -150,7 +151,7 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
   purchaseConfirmation({ id = "purchase_ask", text, callbackYes, mustShowConfirmationWnd }, cost)
 }
 
-return {
+return freeze({
   trainCrewUnitWithoutSwitchCurrUnit
   upgradeUnitSpec
-}
+})

@@ -164,7 +164,7 @@ function devices(width, height, posX = 0, posY = 0) {
   }
 }
 
-return {
+return freeze({
   devices
   devicesSettingUpd
-}
+})

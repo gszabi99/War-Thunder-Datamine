@@ -1,7 +1,44 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "DataBlock" as DataBlock
 import "base64" as base64
 import "%sqstd/ecs.nut" as ecs
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/squads/squadState.nut" import getLeaderUid, getOnlineMembersCount, getSquadMembersDataForContact, isInSquad
+from "%scripts/events/eventTeamsInfo.nut" import getSidesList, getTeamName
+from "%scripts/events/eventTickets.nut" import eventRequiresTicket, hasEventTicket
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/matchingRooms/sessionDebugInfo.nut" import set_last_session_debug_info
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/matching/api.nut" import matchingApiFunc, matchingRpcSubscribe, checkMatchingError
+from "%scripts/utils_sa.nut" import gen_rnd_password, get_array_by_bit_value
+from "%scripts/matchingRooms/sessionLobbyState.nut" import sessionLobbyStatus, getSessionLobbyGameMode, isInSessionRoom, getSessionInfo, getSessionLobbyMissionData, updateSessionLobbyPlayersInfo, isMeSessionLobbyRoomOwner
+  , isInSessionLobbyEventRoom, resetSessionLobbyPlayersInfo, isInJoiningGame, hasSessionInLobby, getSessionLobbyMyState, isWaitForQueueRoom, getSessionLobbyChatRoomPassword
+  , canJoinSession, isRoomInSession, isSessionStartedInRoom, getMembersCount, isMemberHost, isUserMission, getSessionLobbyPublicParam
+  , getSessionLobbyPassword, isSessionCreatedByPlayer
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import haveLobby, getAvailableTeamOfRoom, getRoomTeamData, canSetReadyInLobby, canChangeTeamInLobby, canBeSpectator, getRoomUnitTypesMask, getRoomEvent
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import getRoomMemberPublicParam, isRoomMemberOperator, isRoomMemberInSession
+from "%scripts/matching/serviceNotifications/mroomsApi.nut" import setMemberAttributes, roomSetReadyState, setRoomAttributes, roomSetPassword, requestLeaveRoom, roomStartSession, requestDestroyRoom
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/myStats.nut" import getStats, getMissionsComplete
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/user/profileStates.nut" import userIdInt64, userName, isMyUserId
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
+from "%scripts/statistics/squadIcon.nut" import updateIconPlayersInfo
+from "%scripts/missions/missionsUtilsModule.nut" import getSessionLobbyMissionName, getUrlOrFileMissionMetaInfo
+from "%scripts/slotbar/slotbarOverride.nut" import updateOverrideSlotbar, resetSlotbarOverrided, getSlotbarOverrideCountriesByMissionName
+from "%scripts/contacts/contactsManager.nut" import addRecentContacts
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeCoop
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/missions/missionsStates.nut" import isRemoteMissionVar, is_user_mission
+from "%scripts/userPresence.nut" import setUserPresence
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY
+from "%scripts/options/optionsExt.nut" import registerOption, get_option_in_mode
+from "%scripts/utils/errorMsgBox.nut" import showErrorMessageBox
+from "%scripts/queue/queueBattleData.nut" import needActualizeQueueData, actualizeQueueData, queueProfileJwt
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import search, isEqual, isArray, isDataBlock, isEmpty
 from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank
@@ -23,47 +60,14 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "types" import Array, Table, String
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
-let { getLeaderUid, getOnlineMembersCount, getSquadMembersDataForContact, isInSquad } = require("%scripts/squads/squadState.nut")
-let { getSidesList, getTeamName } = require("%scripts/events/eventTeamsInfo.nut")
-let { eventRequiresTicket, hasEventTicket } = require("%scripts/events/eventTickets.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
-let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { matchingApiFunc, matchingRpcSubscribe, checkMatchingError } = require("%scripts/matching/api.nut")
-let { gen_rnd_password, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
-let { SessionLobbyState, sessionLobbyStatus, getSessionLobbyGameMode, isInSessionRoom, getSessionInfo, getSessionLobbyMissionData, updateSessionLobbyPlayersInfo, isMeSessionLobbyRoomOwner, isInSessionLobbyEventRoom, resetSessionLobbyPlayersInfo, isInJoiningGame, hasSessionInLobby, getSessionLobbyMyState, isWaitForQueueRoom, getSessionLobbyChatRoomPassword, canJoinSession, isRoomInSession, isSessionStartedInRoom, getMembersCount, isMemberHost, isUserMission, getSessionLobbyPublicParam, getSessionLobbyPassword, isSessionCreatedByPlayer } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { haveLobby, getAvailableTeamOfRoom, getRoomTeamData, canSetReadyInLobby, canChangeTeamInLobby, canBeSpectator, getRoomUnitTypesMask, getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getRoomMemberPublicParam, isRoomMemberOperator, isRoomMemberInSession } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { setMemberAttributes, roomSetReadyState, setRoomAttributes, roomSetPassword, requestLeaveRoom, roomStartSession, requestDestroyRoom } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getStats, getMissionsComplete } = require("%scripts/myStats.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { userIdInt64, userName, isMyUserId } = require("%scripts/user/profileStates.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
+let { SessionLobbyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { updateIconPlayersInfo } = require("%scripts/statistics/squadIcon.nut")
-let { getSessionLobbyMissionName, getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { updateOverrideSlotbar, resetSlotbarOverrided, getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
-let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { isRemoteMissionVar, is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setUserPresence } = require("%scripts/userPresence.nut")
-let { USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK,
-  USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
-let { registerOption, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
-let { needActualizeQueueData, actualizeQueueData, queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 
 
@@ -121,7 +125,7 @@ let allowed_mission_settings = {
     environment = "Day"
     weather = "cloudy"
 
-    maxRespawns = -1
+    maxRespawns = RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW
     timeLimit = 0
     killLimit = 0
 
@@ -1215,7 +1219,7 @@ eventbus_subscribe("on_cannot_create_session", function on_cannot_create_session
   add_msg_box("cannot_session", loc("NET_CANNOT_CREATE_SESSION"), [["ok", function() {}]], "ok")
 })
 
-return {
+return freeze({
   setMyTeamInRoom
   setSessionLobbyReady
   switchMyTeamInRoom
@@ -1249,4 +1253,4 @@ return {
   setLastRound = @(v) last_round = v
   setRoomInSession
   prepareSettings
-}
+})

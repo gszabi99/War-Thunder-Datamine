@@ -1,16 +1,15 @@
 import "%sonyLib/webApi.nut" as psn
+from "%appGlobals/clientState/platform.nut" import isPS4PlayerName
+from "%scripts/gameModes/psnActivities.nut" import getActivityByGameMode
+from "%scripts/user/externalIdsService.nut" import reqPlayerExternalIDsByUserId
+from "%scripts/user/profileStates.nut" import isMyUserId
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyMembers, getSessionLobbyMyState, getSessionLobbyPlayerInfoByUid
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_natives.nut" import ps4_get_account_id
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-
-let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
-let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
-let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { isMyUserId } = require("%scripts/user/profileStates.nut")
-let { getSessionLobbyMembers, getSessionLobbyMyState, getSessionLobbyPlayerInfoByUid } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let match = {
   id = null
@@ -169,6 +168,6 @@ function enableMatchesReporting() {
   add_event_listener("BattleEnded", onBattleEnded)
 }
 
-return {
+return freeze({
   enableMatchesReporting
-}
+})

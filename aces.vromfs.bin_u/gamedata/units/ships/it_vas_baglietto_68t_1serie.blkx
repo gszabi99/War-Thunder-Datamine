@@ -1463,6 +1463,7 @@
     "engines": {
       "maxSpeed": 10.55,
       "maxReverseSpeed": 7.0,
+      "horsePowers": 1150.0,
       "speedToTime": {
         "row": [
           [
@@ -1553,6 +1554,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        2.9,
+        0.0
+      ],
+      [
+        5.9,
+        100.0
+      ],
+      [
+        8.8,
+        100.0
+      ],
+      [
+        11.7,
+        200.0
+      ],
+      [
+        14.7,
+        400.0
+      ],
+      [
+        17.6,
+        500.0
+      ],
+      [
+        20.5,
+        800.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        600.0
+      ],
+      [
+        -2.0,
+        300.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
@@ -1587,7 +1646,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1672,7 +1731,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1772,22 +1831,22 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "depth_charges_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_depth_charges_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_depth_charges_torpedoes.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "it_vas_baglietto_68t_1serie_default",
-        "blk": "gameData/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/it_vas_baglietto_68t_1serie_default.blk"
       }
     ]
   },
@@ -2802,23 +2861,27 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -8000.0,
-    "waterMassMult": 150.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 180000.0,
+    "waterMassVel": -17151.0,
+    "waterMassMult": 214.0,
+    "additionalWaterDeathThreshold": 271116.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 32.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 7.6,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.125
   },
   "shipCover": {
     "cover": [
@@ -2835,21 +2898,21 @@
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.7,
+        "weight": 0.8,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.43
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.32
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.43
             }
           ]
         }
@@ -2859,10 +2922,24 @@
         "weight": 0.65,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.85
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.85
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

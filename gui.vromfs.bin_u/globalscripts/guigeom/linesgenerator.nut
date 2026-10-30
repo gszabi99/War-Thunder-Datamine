@@ -1,7 +1,6 @@
+from "%globalScripts/guiGeom/guiBox.nut" import GuiBox
 from "math" import min, max, abs
 from "dagor.math" import Point2
-
-let { GuiBox } = require("%globalScripts/guiGeom/guiBox.nut")
 
 
 
@@ -478,8 +477,8 @@ function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority
   return res
 }
 
-return {
+return freeze({
   LinesPriorities
   createLinkLines
   findGoodPosForBox
-}
+})

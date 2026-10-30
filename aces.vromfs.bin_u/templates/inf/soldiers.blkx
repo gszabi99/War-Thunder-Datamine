@@ -61,7 +61,8 @@
     "_tracked": [
       "bipod__enabled",
       "bipod__placeable",
-      "bipod__adsFocused"
+      "bipod__adsFocused",
+      "bipod__availableMountPoints"
     ],
     "_replicated": [
       "bipod__enabled",
@@ -146,6 +147,18 @@
         "bipod__checkPlacingInterval": 0.025,
         "bipod__nextCheckPlacingAtTime": 0.0,
         "bipod__standStateOnMount": 0,
+        "bipod__scanMountPoint": -1,
+        "bipod__availableMountPoints": 0,
+        "bipod__scanForPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bipod__scanForDir": [
+          0.0,
+          0.0,
+          0.0
+        ],
         "bipod__placeable": false,
         "bipod__placeCrawl": false,
         "bipod__placePos": [
@@ -167,6 +180,7 @@
         "bipod__placeYawLimit": 0.0,
         "bipod__placeRecoilMult": 0.0,
         "bipod__placeIsRest": false,
+        "bipod__placeMountPoint": -1,
         "bipod__solveStep": 0,
         "bipod__solveFunc": 0,
         "bipod__solveIter": 0,
@@ -181,6 +195,7 @@
           0.0
         ],
         "bipod__solveForCrawl": false,
+        "bipod__solveForMountPoint": -1,
         "bipod__solveGunPosHigh": [
           0.0,
           0.0,
@@ -244,6 +259,7 @@
           0.0
         ],
         "bipod__solveBestRecoilMult": 0.0,
+        "bipod__solveBestMountPoint": -1,
         "bipod__rClavicleGunRelTm": [
           [
             -0.764584,
@@ -735,6 +751,9 @@
   },
   "human_control_vehicle": {
     "_use": "human_cam"
+  },
+  "human_seated": {
+    "seatedHuman:tag": {}
   },
   "human_weight_system_realistic": {
     "human_weight_influence__minWeight": 15.0,
@@ -1416,6 +1435,39 @@
     "human_mining_wall__wallEid:eid": {},
     "human_mining_wall__reassemblingEntityId:eid": {}
   },
+  "human_plant_site": {
+    "human_plant_site__actionEndTime": -1.0,
+    "human_plant_site__actionDuration": 0.0,
+    "human_plant_site__isDefusing": false,
+    "_tracked": [
+      "human_plant_site__siteEid",
+      "human_plant_site__actionEndTime",
+      "human_plant_site__actionDuration",
+      "human_plant_site__isDefusing"
+    ],
+    "_replicated": [
+      "human_plant_site__siteEid",
+      "human_plant_site__actionEndTime",
+      "human_plant_site__actionDuration",
+      "human_plant_site__isDefusing"
+    ],
+    "human_plant_site__siteEid:eid": {},
+    "_group": {
+      "_tags": "gameClient",
+      "human_plant_site__usePressed": false,
+      "human_plant_site__checkInterval": 0.2,
+      "human_plant_site__nextCheckTime": 0.0,
+      "human_plant_site__lastSelected:eid": {}
+    }
+  },
+  "human_supply_laptop": {
+    "_group": {
+      "_tags": "gameClient",
+      "human_supply_laptop__checkInterval": 0.5,
+      "human_supply_laptop__nextCheckTime": 0.0,
+      "human_supply_laptop__lastSelected:eid": {}
+    }
+  },
   "human_vehicle": {
     "human_vehicle__isInHatch": false,
     "human_vehicle__canHoldWeapon": false,
@@ -1896,7 +1948,7 @@
     "entity__recreateToOnDeath": "dead_base_equipped_soldier",
     "entity__playerEntityrecreateSubTemplate": "player_human_unit",
     "human__friendlyImpulseToDamageMul": 0.0,
-    "human_segments__template": "%gameBase/gameData/units/humans/humanPhysics/segments_default.blk",
+    "human_segments__template": "%gameBase/gamedata/units/humans/humanPhysics/segments_default.blk",
     "footstep__maxDistanceFromCameraToUpdate": 30.0,
     "footstep__offset": [
       0.0,
@@ -2063,7 +2115,7 @@
     "_group": {
       "_tags": "render",
       "human_bleeding_effect__minIntensity": 0.075,
-      "human_bleeding_effect__maxIntensity": 0.25,
+      "human_bleeding_effect__maxIntensity": 0.7,
       "human_bleeding_effect__current": 0.0,
       "human_bleeding_effect__activate": false
     }
@@ -2110,6 +2162,8 @@
       "human_loot_sound",
       "loc_human_cannon_resupply",
       "human_mining_wall",
+      "human_plant_site",
+      "human_supply_laptop",
       "human_melee_charge",
       "human_locking_door",
       "human_breaking_down_door",

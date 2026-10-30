@@ -4,7 +4,7 @@ let hudState = require("%rGui/hudState.nut")
 
 let airUnitTypes = ["aircraft", "helicopter", "humanDrone", "humanDroneHeli"]
 
-return {
+return freeze({
   isAir            = @() hudState.unitType.get() == "aircraft"
   isTank           = @() hudState.unitType.get() == "tank"
   isShip           = @() hudState.unitType.get() == "ship"
@@ -17,4 +17,4 @@ return {
   isHumanAirDrone  = @() hudState.unitType.get() == "humanDrone"
   isHumanHeliDrone = @() hudState.unitType.get() == "humanDroneHeli"
   isAirUnitType    = @(unitType) airUnitTypes.contains(unitType)
-}
+})

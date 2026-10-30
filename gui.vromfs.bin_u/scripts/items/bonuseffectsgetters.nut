@@ -1,8 +1,7 @@
+from "%scripts/squads/squadState.nut" import getSameCyberCafeMembersNum
 from "%appGlobals/ranks_common_shared.nut" import calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_level
 from "%scripts/dagui_library.nut" import *
-
-let { getSameCyberCafeMembersNum } = require("%scripts/squads/squadState.nut")
 
 function getCyberCafeBonusByEffectType(effectType, cyberCafeLevel = -1) {
   if (cyberCafeLevel < 0)
@@ -20,7 +19,7 @@ function getSquadBonusForSameCyberCafe(effectType, num = -1) {
   return value
 }
 
-return {
+return freeze({
   getCyberCafeBonusByEffectType
   getSquadBonusForSameCyberCafe
-}
+})

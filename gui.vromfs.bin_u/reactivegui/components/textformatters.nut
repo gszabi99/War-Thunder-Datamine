@@ -1,11 +1,10 @@
+import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/style/colors.nut" as colors
 import "%globalScripts/wordHyphenation.nut" as wordHyphenation
 from "eventbus" import eventbus_send
 from "%sqstd/string.nut" import toIntegerSafe
 from "%rGui/globals/ui_library.nut" import *
 from "types" import Array
-
-let fontsState = require("%rGui/style/fontsState.nut")
-let colors = require("%rGui/style/colors.nut")
 
 let blockInterval = fpx(6)
 let headerMargin = 2 * blockInterval
@@ -62,9 +61,7 @@ function url(data, fmtFunc = noTextFormatFunc, style = defStyle) {
       font = defStyle.textFont
       watch = stateFlags
       onElemState = @(sf) stateFlags.set(sf)
-      children = [
-        { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] color = color, size = FLEX },
-      ]
+      children = { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] color = color, size = FLEX }
       onClick = onClick
     }.__update(data)
   }

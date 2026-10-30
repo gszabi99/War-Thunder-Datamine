@@ -1,16 +1,15 @@
+import "%scripts/worldWar/inOperation/wwTransportManager.nut" as transportManager
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
 from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor
 from "worldwar" import wwSetCurrActionType, wwGetCurrActionType, wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius, wwGetUnloadArmyFromTransportError, wwGetLoadArmyToTransportError
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request, ww_find_army_name_by_coordinates
 from "%scripts/dagui_library.nut" import *
-
-let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 function setActionMode(modeId = AUT_None) {
   wwSetCurrActionType(modeId)
@@ -141,9 +140,9 @@ function trySetActionModeOrCancel(modeId) {
   setActionMode(modeId)
 }
 
-return {
+return freeze({
   setActionMode
   trySetActionModeOrCancel
   getCurActionModeId
   getCurActionMode
-}
+})

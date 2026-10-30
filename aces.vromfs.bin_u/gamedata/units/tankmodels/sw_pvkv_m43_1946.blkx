@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "sweden_gunner_char",
@@ -2349,7 +2355,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_Pv_Kan_m43_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_Pv_Kan_m43_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.2,
@@ -2404,7 +2410,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2447,8 +2453,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_pvkv_m43_1946_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_pvkv_m43_1946_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

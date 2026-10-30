@@ -1,22 +1,22 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "DataBlock" as DataBlock
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import actionWithGlobalStatusRequest
+from "%scripts/matching/serviceNotifications/postbox.nut" import notifyMailRead
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass, findInviteClass
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/invites/invites.nut" import updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "app" import draw_attention_to_inactive_window
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox.nut")
-let { registerInviteClass, findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite } = require("%scripts/invites/invites.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 function removeInviteToOperation(operationId) {
   let uid = findInviteClass("Operation")?.getUidByParams({ mail = { operationId = operationId } })

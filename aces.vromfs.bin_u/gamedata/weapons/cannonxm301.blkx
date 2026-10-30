@@ -1,13 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 25.0,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shootingCharge": 5.5,
-  "dragCx": 0.15,
-  "mass": 36.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,8 +14,45 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 25.0,
+  "bullets": 250,
+  "shootingCharge": 5.5,
+  "dragCx": 0.15,
+  "mass": 36.5,
   "iconType": "multibarrel_box",
   "alternativeShotFreq": 12.5,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        7.9,
+        0.02
+      ],
+      [
+        9.0,
+        0.12
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        0.5,
+        1.5
+      ],
+      [
+        2.5,
+        2.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.09979,
@@ -846,7 +874,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2909,7 +2937,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -5793,34 +5821,6 @@
           "tracer": "noColor"
         }
       }
-    ]
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        7.9,
-        0.02
-      ],
-      [
-        9.0,
-        0.12
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        0.5,
-        1.5
-      ],
-      [
-        2.5,
-        2.0
-      ]
     ]
   },
   "M60_new_gun": {

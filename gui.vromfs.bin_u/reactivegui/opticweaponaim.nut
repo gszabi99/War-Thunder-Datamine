@@ -100,7 +100,7 @@ function() {
       commands = isTrack ? (IsPointTrack.get() ? squareMark : trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
       children = [
         {
-          children = (!IsAntiRadiation.get() && !isTrack && show_tps_sight) ? [cornersLines(3 * width, 3 * height, colorTracker)] : null
+          children = (!IsAntiRadiation.get() && !isTrack && show_tps_sight) ? cornersLines(3 * width, 3 * height, colorTracker) : null
         }
         {
           pos = [0, 0 - height * sh(0.5) - hdpx(20)]
@@ -120,9 +120,7 @@ function() {
 
 
   return {
-    children = [
-      aimTracker()
-    ]
+    children = aimTracker()
   }
 }
 
@@ -149,30 +147,26 @@ function() {
 
     return {
       watch = [HudColor, GuidanceLockState, SightSize, SightX, SightY, SightVisible]
-      children = [
-        {
-          halign = ALIGN_LEFT
-          valign = ALIGN_TOP
-          size = const [sw(100), sh(100)]
-          pos = [SightX.get(), SightY.get()]
-          rendObj = ROBJ_VECTOR_CANVAS
-          color = colorSight
-          fillColor = Color(0, 0, 0, 0)
-          lineWidth = hdpx(LINE_WIDTH * 0.25)
-          children = isSightVisible ? [cornersLines(sightWidth, sightHeight, colorSight, 0.056)] : null
-        }
-      ]
+      children = {
+        halign = ALIGN_LEFT
+        valign = ALIGN_TOP
+        size = const [sw(100), sh(100)]
+        pos = [SightX.get(), SightY.get()]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = colorSight
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = hdpx(LINE_WIDTH * 0.25)
+        children = isSightVisible ? cornersLines(sightWidth, sightHeight, colorSight, 0.056) : null
+      }
     }
   }
 
   return {
-    children = [
-      sightTracker()
-    ]
+    children = sightTracker()
   }
 }
 
-return {
+return freeze({
   opticWeaponAim
   opticWeaponSight
-}
+})

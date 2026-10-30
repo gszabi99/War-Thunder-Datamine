@@ -1,14 +1,15 @@
+from "%scripts/userstat/userstat.nut" import userstatUnlocks, receiveUnlockRewards
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks, getStageByIndex
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/unlocks/regionalUnlocks.nut" import unclaimedUnlocks
+from "%scripts/warbonds/warbondsManager.nut" import checkWarbondsOverLimit
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
-let { userstatUnlocks, receiveUnlockRewards, waitingToShowRewardsArray } = require("%scripts/userstat/userstat.nut")
-let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
+let { waitingToShowRewardsArray } = require("%scripts/userstat/userstat.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { unclaimedUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 
 const userstatItemsListLocId = "mainmenu/rewardsList"
@@ -138,7 +139,7 @@ addListenersWithoutEnv({
   SignOut = @(_p) waitingToShowRewardsArray.clear()
 })
 
-return {
+return freeze({
   showRewardWnd
   removeUserstatItemRewardToShow
   userstatItemsListLocId
@@ -146,4 +147,4 @@ return {
   receiveRewards
   rewardsInProgress
   claimRegionalUnlockRewards
-}
+})

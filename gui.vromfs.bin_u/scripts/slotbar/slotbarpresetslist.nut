@@ -1,24 +1,21 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
-from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/touchScreen.nut" import isSmallScreen
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo
+from "%scripts/options/safeAreaMenu.nut" import is_low_width_screen
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsSettingsWnd.nut" import openSlotbarPresetSettings
+from "%scripts/slotbar/slotbarPresets.nut" import MAX_COUNTRY_PRESETS_AMOUNT, canLoadSlotbarPreset, loadSlotbarPreset
+from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx
+from "%scripts/gameModes/gameModeManagerState.nut" import getGameModeById
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut" import isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation, getPresetsDataByCountry, getAbbreviationModeName
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsEdit.nut" import openSlotbarPresetsListEditWnd
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, removeAllListenersByEnv
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { openSlotbarPresetSettings } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsSettingsWnd.nut")
-let { MAX_COUNTRY_PRESETS_AMOUNT, canLoadSlotbarPreset, loadSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
-let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation,
-  getPresetsDataByCountry, getAbbreviationModeName
-} = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { openSlotbarPresetsListEditWnd } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsEdit.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 const MAX_AUTO_TABS_WIDTH_K = 3
 
@@ -63,7 +60,12 @@ let SlotbarPresetsList = class {
     this.scene.getScene().replaceContentFromText(this.scene, blk, blk.len(), this)
     this.update()
 
+    this.scene.getScene().setObjectOwner(this.scene, this)
     subscribe_handler(this, g_listener_priority.DEFAULT)
+  }
+
+  function onSceneDetach() {
+    removeAllListenersByEnv(this)
   }
 
   function destroy() {
@@ -322,6 +324,10 @@ let SlotbarPresetsList = class {
     this.update(true)
   }
 
+  function onEventUnitMrankSelectionChanged(_p) {
+    this.update()
+  }
+
   function getListObj() {
     if (!checkObj(this.scene))
       return null
@@ -365,8 +371,8 @@ function setSlotbarPresetsListAvailable(handler, isAvailable) {
 }
 
 
-return {
+return freeze({
   SlotbarPresetsList
   getSlotbarPresetsList
   setSlotbarPresetsListAvailable
-}
+})

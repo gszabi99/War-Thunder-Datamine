@@ -1,16 +1,14 @@
+from "%scripts/promo/promo.nut" import setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/social/crossplay.nut" import getTextWithCrossplayIcon, needShowCrossPlayInfo
+from "%scripts/worldWar/worldWarGlobalStates.nut" import isWorldWarEnabled, canJoinWorldwarBattle
+from "%scripts/worldWar/worldWarUtils.nut" import openMainWnd, hasNewNearestAvailableMapToBattle
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import isWWSeasonActive
+from "%scripts/worldWar/operations/model/wwOperationView.nut" import getPlayedOperationText
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 from "%scripts/dagui_library.nut" import *
-
-let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks } = require("%scripts/promo/promo.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { openMainWnd, hasNewNearestAvailableMapToBattle } = require("%scripts/worldWar/worldWarUtils.nut")
-let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")

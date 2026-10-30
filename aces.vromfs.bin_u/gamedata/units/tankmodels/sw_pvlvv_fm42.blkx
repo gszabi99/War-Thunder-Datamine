@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "sweden_gunner_char",
@@ -2176,7 +2182,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/20mm_Lva_kan_m40_B_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/20mm_Lva_kan_m40_B_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "useEmitter": true,
       "flash": "emtr_gun_flame",
@@ -2267,8 +2273,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_pvlvv_fm42_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_pvlvv_fm42_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

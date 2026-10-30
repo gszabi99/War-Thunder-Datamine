@@ -1980,7 +1980,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_Bofors_L70_Mk_1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_Bofors_L70_Mk_1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.2,
@@ -2018,13 +2018,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
             "verNode": "bone_roll_01",
             "verLimits": [
@@ -2104,7 +2103,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2157,7 +2156,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_bgm_71_tow_begleitpanzer_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_bgm_71_tow_begleitpanzer_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2217,7 +2216,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2272,8 +2271,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_begleitpanzer_57_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_begleitpanzer_57_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3767,7 +3766,7 @@
         "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": {
-            "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+            "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
             "dmPart": "fire_control_system_dm"
           }
         }
@@ -3859,6 +3858,7 @@
     "ammo1": {
       "removeLoadedAmmo": false,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,
@@ -3866,6 +3866,7 @@
       "shells": [
         {
           "autoLoad": true,
+          "index": 0,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -4013,6 +4014,7 @@
         },
         {
           "reloadTimeMult": 10.0,
+          "index": 1,
           "ammo_body_l_01_dm": {
             "count": 1
           },
@@ -4160,6 +4162,7 @@
         },
         {
           "reloadTimeMult": 15.0,
+          "index": 2,
           "ammo_body_01_dm": {
             "count": 1
           },

@@ -1,3 +1,9 @@
+from "%scripts/hud/baseUnitHud.nut" import BaseUnitHud
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/hud/iconedHints.nut" import initIconedHints
+from "%scripts/hud/hudActionBar.nut" import ActionBar
+from "%scripts/hud/hudDisplayTimers.nut" import hudDisplayTimersInit, hudDisplayTimersReInit
+from "%scripts/hud/hudState.nut" import isInKillerCamera
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
 from "hudTankStates" import uavCameraEnabled, canEnableUavCamera
@@ -6,14 +12,9 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
-let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
-let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
-let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
-let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 function updateTacticalMapSwitchingObj(obj, value) {
   obj.findObject("map_btn").toggled = value ? "no" : "yes"
@@ -32,6 +33,8 @@ function getShortcutIdForSwitchTacticalMap() {
 
 let HudTank = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudTank.blk"
+  killFeedPlace = { height = "0.2@shHud", gap = "0.01@shHud", aboveId = "hud_tank_tactical_map_nest" }
+  hasMpScore = true
 
   needForceUpdateTacticalMapHint = false
 
@@ -42,7 +45,6 @@ let HudTank = class (BaseUnitHud) {
     hudEnemyDamage.init(this.scene)
     let actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.actionBarWeak = actionBar.weakref()
-    this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
     this.updateTacticalMapSwitching()
   }
@@ -77,7 +79,11 @@ let HudTank = class (BaseUnitHud) {
     objMap.setValue(stashBhvValueConfig([
       {
         watch = canEnableUavCamera
-        updateFunc = @(obj, value) obj.show(value)
+        function updateFunc(obj, value) {
+          obj.show(value)
+          obj.getScene().applyPendingChanges(false)
+          handlersManager.updateWidgets()
+        }
       },
       {
         watch = uavCameraEnabled
@@ -104,6 +110,6 @@ let HudTank = class (BaseUnitHud) {
   }
 }
 
-return {
+return freeze({
   HudTank
-}
+})

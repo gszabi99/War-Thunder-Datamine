@@ -1,7 +1,7 @@
 {
   "model": "hudson_mk_v_gear_test",
   "fmFile": "fm/hudson_mk_v.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "type": [
     "typeBomber",
     "typeTransport"
@@ -9,17 +9,17 @@
   "paratrooper": "raf_para",
   "isCapableOfAttackTurn": false,
   "ignoreArcadeWep": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "bayDoorTextureCtrl": true,
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "bomber",
@@ -47,10 +47,10 @@
         "hp": 85.2
       },
       "spar2_l_dm": {
-        "hp": 50.7
+        "hp": 52.0
       },
       "spar2_r_dm": {
-        "hp": 50.7
+        "hp": 52.0
       },
       "spar_l_dm": {
         "hp": 163.0
@@ -70,13 +70,15 @@
       }
     },
     "dural": {
-      "cover1_dm": {
-        "hp": 19.5
-      },
       "cover2_dm": {
         "hp": 19.5
       },
       "cover3_dm": {
+        "hp": 19.5
+      }
+    },
+    "plexiglass_nb": {
+      "cover1_dm": {
         "hp": 19.5
       }
     },
@@ -160,18 +162,18 @@
         "hp": 774.0
       }
     },
-    "protected_controls": {
-      "tailcontrol_dm": {
-        "hp": 80.5
-      },
-      "wingcontrol_dm": {
-        "hp": 59.5
-      },
+    "steel_controls_nb": {
       "wingcontrol_l_dm": {
-        "hp": 59.5
+        "hp": 80.0
       },
       "wingcontrol_r_dm": {
-        "hp": 59.5
+        "hp": 80.0
+      },
+      "wingcontrol_dm": {
+        "hp": 80.0
+      },
+      "tailcontrol_dm": {
+        "hp": 200.0
       }
     },
     "steel": {
@@ -201,16 +203,20 @@
     },
     "steel_pilot": {
       "gunner1_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner2_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 15.0
       },
       "gunner3_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner4_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "pilot_dm": {
         "hp": 20.0,
@@ -2072,28 +2078,41 @@
         "name": "spar_l_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.03
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -2104,27 +2123,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 12.0,
+            "nothing": 50.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 18.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 25.0,
+            "nothing": 45.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -2132,28 +2156,41 @@
         "name": "spar_r_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.03
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -2164,27 +2201,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 12.0,
+            "nothing": 50.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 18.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 25.0,
+            "nothing": 45.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -4245,7 +4287,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "mgun1_dm",
@@ -4254,7 +4296,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "mgun2_dm",
@@ -4263,7 +4305,7 @@
       },
       {
         "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunVikkersK_turret.blk",
+        "blk": "gamedata/weapons/gunVikkersK_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun1",
         "flash": "flare3",
@@ -4292,7 +4334,7 @@
       },
       {
         "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+        "blk": "gamedata/weapons/gunBrowning303_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun2",
         "flash": "flare4",
@@ -4366,7 +4408,7 @@
       },
       {
         "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning303_turret.blk",
+        "blk": "gamedata/weapons/gunBrowning303_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun2",
         "flash": "flare5",
@@ -4441,16 +4483,16 @@
     "preset": [
       {
         "name": "hudson_mk_v_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/hudson_mk_v_bombs.blk"
+        "blk": "gamedata/flightModels/weaponPresets/hudson_mk_v_bombs.blk"
       },
       {
         "name": "hudson_mk_v_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/hudson_mk_v_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/hudson_mk_v_rockets.blk",
         "reqModification": "halker_rc"
       },
       {
         "name": "hudson_mk_v_bombs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/hudson_mk_v_bombs_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/hudson_mk_v_bombs_rockets.blk",
         "reqModification": "halker_rc"
       }
     ]

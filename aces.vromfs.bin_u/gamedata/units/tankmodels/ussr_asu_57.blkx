@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "drowningCheckHeightMultiplier": 0.6,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "ussr_gunner_1972_char",
@@ -2090,7 +2096,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/57mm_Ch51M_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/57mm_Ch51M_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "recoilMultiplier": 0.4,
@@ -2135,8 +2141,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_asu_57_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_asu_57_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "controlDevices": {

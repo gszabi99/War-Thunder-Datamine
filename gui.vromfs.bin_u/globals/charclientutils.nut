@@ -100,7 +100,7 @@ function cut(stream, maxLen) {
   return stream
 }
 
-return {
+return freeze({
   shortValue    = @(value, maxLen = 256) cut(dumpValue(value),    maxLen).as_string()
   shortKeyValue = @(value, maxLen = 512) cut(dumpKeyValue(value), maxLen).as_string()
-}
+})

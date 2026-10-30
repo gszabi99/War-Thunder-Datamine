@@ -1,25 +1,23 @@
 from "%darg/ui_imports.nut" import *
+from "%sqstd/underscore.nut" import isEqual
 
 let entity_editor = require_optional("entity_editor")
 let { fileName } = require("%sqstd/path.nut")
-let { editorIsActive, sceneListUpdateTrigger, edObjectFlagsUpdateTrigger } = require("state.nut")
+let { edObjectFlagsUpdateTrigger, DEPENDS_ON } = require("state.nut")
 let { getScenePrettyName, getSceneLoadTypeText } = require("daeditor_es.nut")
 let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 
-let UNUSED = @(...) null
 
 
-let allScenes = mkWatched(persist, "allScenes", [])
-
-function updateAllScenes() {
-  allScenes.set(entity_editor?.get_instance()?.getSceneImports() ?? [])
-}
+let { sceneTree = Watched(freeze({ scenes = [], entries = {}, entityCounts = {}, freeEntities = [] })) } = entity_editor
 
 
-let sortedScenes = Computed(function() {
-  let scenes = allScenes.get().map(@(scene, index) scene.__merge({ index }))
+
+
+let sortedScenes = Computed(function(prev) {
+  let scenes = sceneTree.get().scenes.map(@(scene, index) scene.__merge({ index }))
   scenes.sort(sortScenesByLoadType)
-  return scenes
+  return isEqual(scenes, prev) ? prev : scenes
 })
 
 let sceneIdMap = Computed(@() sortedScenes.get().map(@(scene) [scene.id, scene]).totable())
@@ -57,27 +55,16 @@ function canSceneBeModified(scene): bool {
   return true
 }
 
-
 let allModifiableScenes = Computed(function() {
-  UNUSED(edObjectFlagsUpdateTrigger)
+  DEPENDS_ON(edObjectFlagsUpdateTrigger)
   return sortedScenes.get().filter(@(scene) canSceneBeModified(scene))
 })
 
-sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) updateAllScenes())
-
-editorIsActive.subscribe_with_nasty_disregard_of_frp_update(function(on) {
-  if (on) {
-    updateAllScenes()
-  }
-})
-updateAllScenes()
-
 return {
-  allScenes
+  sceneTree
   sortedScenes
   sceneIdMap
   allModifiableScenes
-  updateAllScenes
   canSceneBeModified
   sceneToComboboxEntry
   sceneDisplayName

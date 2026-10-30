@@ -1,3 +1,5 @@
+import "%rGui/globalState.nut" as globalState
+import "%rGui/hudUnitType.nut" as hudUnitType
 import "%rGui/widgetsState.nut" as widgetsState
 import "%rGui/shipHud.nut" as shipHud
 import "%rGui/hud/shipHudTouch.nut" as shipHudTouch
@@ -8,16 +10,17 @@ import "%rGui/tankHud.nut" as tankHud
 import "%rGui/infantryDroneHud.nut" as infantryDroneHud
 import "%rGui/wwMap/wwMap.nut" as wwMap
 import "%rGui/weapons/bulletsGraphPanel.nut" as bulletsGraph
+import "%rGui/dargScreens.nut" as dargScreens
 from "%rGui/weapons/bulletsPenetrationGraphPanel.nut" import bulletsPenetrationGraphWidget
 from "%rGui/hudState.nut" import isPlayingReplay, unitType
 from "%rGui/helicopterHud.nut" import helicopterHud
 from "%rGui/infantryHud.nut" import infantryHud
+from "%rGui/hud/actionBarExpandedMenu.nut" import actionBarExpandedMenuComp
 from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/respawnWndState.nut" import isInSpectatorMode
+from "%appGlobals/controls/assignShortcutState.nut" import isWaitingInput
 from "%rGui/globals/ui_library.nut" import *
 
-let globalState = require("%rGui/globalState.nut")
-let hudUnitType = require("%rGui/hudUnitType.nut")
 let shipExHud = require("%rGui/shipExHud.nut")
 let { aircraftHud } = require("%rGui/aircraftHud.nut")
 let changelog = require("%rGui/changelog/changelog.ui.nut")
@@ -39,7 +42,7 @@ let widgetsMap = {
       unitHud = tankHud
     else if (hudUnitType.isShip())
       unitHud = shipHud
-    else if (hudUnitType.isSubmarine() && !isPlayingReplay.get())
+    else if (hudUnitType.isSubmarine())
       unitHud = shipExHud
     else if (hudUnitType.isHuman())
       unitHud = infantryHud
@@ -52,7 +55,7 @@ let widgetsMap = {
     else if (hudUnitType.isHumanHeliDrone())
       unitHud = infantryDroneHud
 
-    return unitHud
+    return unitHud == null ? null : [unitHud, actionBarExpandedMenuComp]
   },
 
   [DargWidgets.HUD_TOUCH] = function() {
@@ -116,12 +119,15 @@ let widgets = @() {
     unitType
     isPlayingReplay
     widgetsState
+    isWaitingInput
   ]
   size = FLEX
   children = widgetsState.get().map(@(widget) {
-    size = widget?.transform.size ?? [sw(100), sh(100)]
-    pos = widget?.transform.pos ?? [0, 0]
-    children = widgetsMap?[widget.widgetId]()
+    size = widget?.transform.size ?? const [sw(100), sh(100)]
+    pos = widget?.transform.pos ?? const [0, 0]
+    children = widget.widgetId != DargWidgets.SCREEN ? widgetsMap?[widget.widgetId]()
+      : isWaitingInput.get() ? null
+      : dargScreens?[widget?.screen]
   }).append(cursor)
 }
 

@@ -1,19 +1,19 @@
+import "%scripts/debugTools/debugWnd.nut" as debugWnd
 import "fonts" as fonts
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/fonts.nut" import getAvailableFonts, getCurrentFontType, setCurrentFontType
 
 
 
-let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let g_font = require("%scripts/options/fonts.nut")
 
 function debug_change_font_size(shouldIncrease = true) {
-  let availableFonts = g_font.getAvailableFonts()
-  let curFont = g_font.getCurrent()
+  let availableFonts = getAvailableFonts()
+  let curFont = getCurrentFontType()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
-  if (g_font.setCurrent(availableFonts[idx]))
+  if (setCurrentFontType(availableFonts[idx]))
     handlersManager.getActiveBaseHandler().fullReloadScene()
   dlog($"Loaded fonts: {availableFonts[idx].id}")
 }

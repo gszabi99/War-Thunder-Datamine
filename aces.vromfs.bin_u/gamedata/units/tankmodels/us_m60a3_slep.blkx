@@ -2392,7 +2392,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_M256_KE_W_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_M256_KE_W_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.15,
@@ -2400,6 +2400,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 45.0,
         "speedPitch": 10.0,
         "fireConeAngle": 1.0,
@@ -2514,7 +2518,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "defaultYaw": 0.0,
@@ -2560,7 +2564,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2605,7 +2609,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_LW25_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_LW25_user_cannon.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
@@ -2672,7 +2676,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_commander",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2702,8 +2706,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_m60a3_slep_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m60a3_slep_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3721,7 +3725,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_M256_KE_W_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_M256_KE_W_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.15,
@@ -3729,6 +3733,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 45.0,
               "speedPitch": 10.0,
               "fireConeAngle": 1.0,
@@ -3843,7 +3851,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M3P_user_machinegun.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "defaultYaw": 0.0,
@@ -3889,7 +3897,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3934,7 +3942,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/25mm_LW25_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/25mm_LW25_user_cannon.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_04",
               "defaultYaw": 0.0,
@@ -4001,7 +4009,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_camera_commander",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4030,7 +4038,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

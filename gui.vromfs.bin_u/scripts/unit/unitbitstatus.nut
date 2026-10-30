@@ -1,15 +1,14 @@
+from "%scripts/unit/unitInfo.nut" import bit_unit_status, getUnitReqExp
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, canBuyNotResearched
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/unit/unitEvents.nut" import hasUnitEvent
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
-
-let { bit_unit_status, getUnitReqExp } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canResearchUnit, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 function getBitStatus(unit, params = {}) {
   let isLocalState = params?.isLocalState ?? true
@@ -72,6 +71,6 @@ function getBitStatus(unit, params = {}) {
   return bitStatus
 }
 
-return {
+return freeze({
   getBitStatus
-}
+})

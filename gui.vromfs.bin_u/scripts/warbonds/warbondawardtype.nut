@@ -1,25 +1,25 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/unlocks/battleTasksState.nut" import isHardTaskIncomplete
+from "%scripts/money.nut" import Balance
+from "%scripts/warbonds/warbondShopState.nut" import getPurchaseLimitWb
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName, getUnlockNameText
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/unit/unitInfo.nut" import getUnitTypeText, image_for_air, getUnitName
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/prizeUtils.nut" import getFullWPIcon
 from "string" import format
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import player_have_attachable, player_have_decal, warbonds_can_buy_battle_task, warbond_get_type_by_name, get_warbond_item_bought_count_with_amount, char_send_blk, get_warbond_item_bought_count_with_name
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasksState.nut")
-let { Balance } = require("%scripts/money.nut")
-let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getUnitTypeText, image_for_air, getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getFullWPIcon } = require("%scripts/items/prizeUtils.nut")
 let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
 
 function requestBuyByName(warbond, blk) {

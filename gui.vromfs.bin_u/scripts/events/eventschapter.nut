@@ -1,11 +1,10 @@
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/events/eventsState.nut" import getEvent, getEventDiffCode, getEventsList
+from "%scripts/events/eventTexts.nut" import getEventNameText
+from "%scripts/events/eventDisplay.nut" import getEventUiSortPriority, getEventsChapter, isEventVisibleInEventsWindow
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
-
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { getEvent, getEventDiffCode, getEventsList } = require("%scripts/events/eventsState.nut")
-let { getEventNameText } = require("%scripts/events/eventTexts.nut")
-let { getEventUiSortPriority, getEventsChapter, isEventVisibleInEventsWindow } = require("%scripts/events/eventDisplay.nut")
 
 let EventChapter = class {
   name = ""

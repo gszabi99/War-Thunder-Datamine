@@ -1,26 +1,26 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/promo/promo.nut" import getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/unlocks/battleTaskDifficulty.nut" import getDefaultDifficultyGroup
+from "%scripts/unlocks/battleTasksState.nut" import getDifficultyTypeByTask
+from "%scripts/unlocks/battleTasks.nut" import isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired, canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward
+  , getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups, requestBattleTaskReward
+from "%scripts/unlocks/battleTasksView.nut" import setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc
+from "%scripts/gameModes/gameModeManagerState.nut" import getGameModeEvent, getCurrentGameMode, getCurrentGameModeId
+from "%scripts/warbonds/warbondsManager.nut" import openWarbondsShop
 from "%sqstd/datablock.nut" import copyParamsToTable
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey } = require("%scripts/promo/promo.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj } = require("%scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { getDefaultDifficultyGroup } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired, canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward, getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups, requestBattleTaskReward } = require("%scripts/unlocks/battleTasks.nut")
-let { setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage } = require("%scripts/unlocks/battleTasksView.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
 
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
@@ -36,7 +36,6 @@ let BattleTasksPromoHandler = class (BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    this.scene.setUserData(this)
     this.updateHandler()
   }
 
@@ -50,7 +49,8 @@ let BattleTasksPromoHandler = class (BaseGuiHandlerWT) {
     
     local reqTask = getBattleTaskWithAvailableAward(tasksArray)
 
-    let currentGameModeId = getCurrentGameModeId()
+    let event = getGameModeEvent(getCurrentGameMode())
+    let currentGameModeId = event?.name ?? getCurrentGameModeId()
     
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = loadLocalAccountSettings(this.savePathBattleTasksDiff,
@@ -180,12 +180,19 @@ let BattleTasksPromoHandler = class (BaseGuiHandlerWT) {
   }
   function onToggleItem(obj) { togglePromoItem(obj) }
 
+  function updateHandlerWhenUnitChanged() {
+    if (getCurrentGameMode()?.isDependsOnUnit)
+      this.updateHandler()
+  }
+
   onEventNewBattleTasksChanged                = @(_p) this.updateHandler()
   onEventBattleTasksFinishedUpdate            = @(_p) this.updateHandler()
   onEventBattleTasksTimeExpired               = @(_p) this.updateHandler()
   onEventCurrentGameModeIdChanged             = @(_p) this.updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(_p) this.updateHandler()
   onEventXboxMultiplayerPrivilegeUpdated      = @(_p) this.updateHandler()
+  onEventCrewChanged                          = @(_p) this.updateHandlerWhenUnitChanged()
+  onEventCountryChanged                       = @(_p) this.updateHandlerWhenUnitChanged()
 }
 register_gui_handler("BattleTasksPromoHandler", BattleTasksPromoHandler)
 

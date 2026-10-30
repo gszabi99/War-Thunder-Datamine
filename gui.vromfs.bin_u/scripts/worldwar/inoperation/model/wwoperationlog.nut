@@ -1,17 +1,17 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "DataBlock" as DataBlock
+from "%scripts/clientState/localProfileDeprecated.nut" import saveLocalByAccount
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import WwArmy
+from "%scripts/tasker.nut" import addTask
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSaveOperationLogId, getOperationObjectives
 from "%sqStdLibs/helpers/u.nut" import copy, search
 from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log, ww_operation_request_log
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
-let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getSaveOperationLogId, getOperationObjectives } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 let logsData = {
@@ -311,7 +311,7 @@ function clearWWLogs() {
   logsData.objectivesStaticBlk = null
 }
 
-return {
+return freeze({
   getWWLogsData
   requestNewWWLogs = requestNewLogs
   getWWLogArmyId = getLogArmyId
@@ -320,4 +320,4 @@ return {
   applyWWLogsFilter = applyLogsFilter
   isWWPlayerWinner = isPlayerWinner
   clearWWLogs
-}
+})

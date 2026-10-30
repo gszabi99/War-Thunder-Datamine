@@ -40,6 +40,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1929,7 +1935,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/106mm_M40A1C_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/106mm_M40A1C_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1981,7 +1987,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_05",
         "aimingFromBoneGun": true,
@@ -2044,7 +2050,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "aimingFromBoneGun": true,
@@ -2089,7 +2095,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_02",
         "flash": "emtr_mg_flame_02",
         "aimingFromBoneGun": true,
@@ -2133,7 +2139,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_03",
         "flash": "emtr_mg_flame_03",
         "aimingFromBoneGun": true,
@@ -2177,7 +2183,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M80_20_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_04",
         "flash": "emtr_mg_flame_04",
         "aimingFromBoneGun": true,
@@ -2222,8 +2228,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_m50_ontos_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m50_ontos_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

@@ -1,4 +1,18 @@
-from "%sqstd/platform.nut" import is_gdk
+import "%scripts/social/crossplay.nut" as crossplayModule
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/squads/squadInviteListWnd.nut" import squadInviteListWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/chat/chatStates.nut" import chatStatesCanUseVoice
+from "%scripts/squads/leaderWwOperationStates.nut" import getSquadLeaderOperation
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/user/playerContextMenu.nut" import showSquadMemberMenu
+from "%scripts/contacts/searchForSquadHandler.nut" import openSearchSquadPlayer
+from "%scripts/globalWorldwarUtils.nut" import joinOperationById
+from "%scripts/contacts/contacts.nut" import getContact
 from "chat" import get_option_voicechat
 from "worldwar" import wwGetOperationId
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, ps4_is_chat_enabled
@@ -7,22 +21,6 @@ from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { squadInviteListWnd } = require("%scripts/squads/squadInviteListWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStates.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
-let { openSearchSquadPlayer } = require("%scripts/contacts/searchForSquadHandler.nut")
-let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -41,8 +39,8 @@ register_gui_handler("SquadWidgetCustomHandler", class (BaseGuiHandlerWT) {
   function getSceneTplView() {
     let readyText = loc("mainmenu/btnReady")
     let notReadyText = loc("multiplayer/btnNotReady")
-    let readyTextWidth = daguiFonts.getStringWidthPx(readyText, "fontNormal", this.guiScene)
-    let notReadyTextWidth = daguiFonts.getStringWidthPx(notReadyText, "fontNormal", this.guiScene)
+    let readyTextWidth = getStringWidthPx(readyText, "fontNormal", this.guiScene)
+    let notReadyTextWidth = getStringWidthPx(notReadyText, "fontNormal", this.guiScene)
     let squadLeaderOperationId = getSquadLeaderOperation()?.id
     let view = {
       readyBtnHiddenText = readyTextWidth > notReadyTextWidth ? readyText : notReadyText
@@ -164,13 +162,6 @@ register_gui_handler("SquadWidgetCustomHandler", class (BaseGuiHandlerWT) {
   }
 
   function onSquadPlus() {
-    if (is_gdk && !hasFeature("SquadInviteIngame")) {
-      
-      
-      
-      return
-    }
-
     openSearchSquadPlayer()
   }
 

@@ -1,6 +1,5 @@
+from "%scripts/money.nut" import Cost
 from "%scripts/dagui_library.nut" import *
-
-let { Cost } = require("%scripts/money.nut")
 
 let boosterEffectType = {
   RP = {

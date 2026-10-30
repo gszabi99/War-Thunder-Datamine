@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2582,7 +2588,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/183mm_QF_L4_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/183mm_QF_L4_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 1.0,
@@ -2610,30 +2616,17 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
-          "linkedAnimPart": [
-            {
-              "verNode": "bone_camera_gunner",
-              "verLimits": [
-                -8.0,
-                15.0
-              ],
-              "verOriginLimits": [
-                -8.0,
-                15.0
-              ]
-            },
-            {
-              "verNode": "mg_twin_01",
-              "verLimits": [
-                -2.5,
-                2.0
-              ],
-              "verOriginLimits": [
-                -7.0,
-                15.0
-              ]
-            }
-          ]
+          "linkedAnimPart": {
+            "verNode": "bone_camera_gunner",
+            "verLimits": [
+              -8.0,
+              15.0
+            ],
+            "verOriginLimits": [
+              -8.0,
+              15.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2649,7 +2642,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2692,8 +2685,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_fv4005_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_fv4005_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "tank_crew": {

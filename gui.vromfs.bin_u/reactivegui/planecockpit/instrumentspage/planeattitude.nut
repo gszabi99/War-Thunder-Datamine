@@ -7,7 +7,7 @@ from "%rGui/globals/ui_library.nut" import *
 function planeAttitude(pos, size) {
   local params = DataBlock()
 
-  let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
+  let fileName = $"gamedata/flightModels/{BlkFileName.get()}.blk"
   let fmBlk = DataBlock()
   tryLoadBlk(fmBlk, fileName)
 

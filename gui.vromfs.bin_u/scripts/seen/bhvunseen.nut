@@ -1,11 +1,10 @@
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/seen/seenListEvents.nut" as seenListEvents
 import "%sqStdLibs/helpers/u.nut" as u
 from "json" import parse_json
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
-
-let seenList = require("%scripts/seen/seenList.nut")
-let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
 
 
@@ -133,8 +132,8 @@ let makeConfigStr = @(listId, entity = null)
   entity ? save_to_json(makeConfig(listId, entity)) : listId
 let makeConfigStrByList = @(unseenList) save_to_json(unseenList)
 
-return {
+return freeze({
   makeConfig
   makeConfigStr
   makeConfigStrByList
-}
+})

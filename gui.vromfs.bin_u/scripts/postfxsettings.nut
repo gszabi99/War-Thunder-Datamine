@@ -1,4 +1,7 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child
 from "chard" import save_profile
 from "eventbus" import eventbus_subscribe
 from "string" import format
@@ -15,9 +18,6 @@ from "postFxSettings" import setPostFxVignetteMultiplier, getPostFxVignetteMulti
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider, create_option_switchbox, create_option_list
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
@@ -394,7 +394,7 @@ function init_postfx() {
 
 eventbus_subscribe("on_renderer_init_environment", @(_) setTonemappingMode(getTonemappingMode()))
 
-return {
+return freeze({
   init_postfx
   guiStartPostfxSettings = @() handlersManager.loadHandler(PostFxSettings)
-}
+})

@@ -1,5 +1,12 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/crossModuleEvents.nut" import CHAT_JOIN_ROOM
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "%sqstd/string.nut" import clearBorderSymbols
@@ -10,13 +17,6 @@ from "%scripts/dagui_library.nut" import *
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { CHAT_JOIN_ROOM } = require("%scripts/crossModuleEvents.nut")
 
 register_gui_handler("CreateRoomWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

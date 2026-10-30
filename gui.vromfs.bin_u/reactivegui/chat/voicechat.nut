@@ -1,21 +1,22 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/chat/voiceChatState.nut" as voiceChatState
+import "%rGui/style/fontsState.nut" as fontsState
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = require("%rGui/style/colors.nut")
-let voiceChatState = require("%rGui/chat/voiceChatState.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
+voiceChatState.voiceChatMembers.subscribe(function(members) {
+  foreach (idx, member in members) {
+    let prevVisIdx = member.visibleIdx
+    member.visibleIdx = idx
+    if (prevVisIdx != idx) {
+      let prefix = idx < prevVisIdx ? "voiceChatMoveBottom" : "voiceChatMoveTop"
+      anim_start($"{prefix}{member.id}")
+    }
+  }
+})
 
 let voiceChatElements = function() {
   let children = []
-  foreach (idx, member in voiceChatState.voiceChatMembers.get()) {
-    let voiceChatMember = member
-    let prevVisIdx = voiceChatMember.visibleIdx
-    let curVisIdx = idx
-    voiceChatMember.visibleIdx = curVisIdx
-    if (prevVisIdx != curVisIdx) {
-      let prefix = curVisIdx < prevVisIdx ? "voiceChatMoveBottom" : "voiceChatMoveTop"
-      anim_start($"{prefix}{voiceChatMember.id}")
-    }
-
+  foreach (voiceChatMember in voiceChatState.voiceChatMembers.get()) {
     children.insert(0, @() {
       watch = voiceChatMember.needShow
       size = [fpx(400), SIZE_TO_CONTENT]
@@ -43,9 +44,9 @@ let voiceChatElements = function() {
       transform = {}
       transitions = [{ prop = AnimProp.opacity, duration = voiceChatMember.animTime, easing = OutCubic }]
       animations = [
-        { prop = AnimProp.translate, from = [0, 28], to = [0, 0], duration = 0.2,
+        { prop = AnimProp.translate, from = const [0, 28], to = const [0, 0], duration = 0.2,
           trigger = $"voiceChatMoveTop{voiceChatMember.id}" }
-        { prop = AnimProp.translate, from = [0, -28], to = [0, 0], duration = 0.2,
+        { prop = AnimProp.translate, from = const [0, -28], to = const [0, 0], duration = 0.2,
           trigger = $"voiceChatMoveBottom{voiceChatMember.id}" }
       ]
     })

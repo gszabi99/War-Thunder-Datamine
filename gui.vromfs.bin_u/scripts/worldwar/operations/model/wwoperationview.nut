@@ -1,10 +1,6 @@
+from "%scripts/worldWar/worldWarCfgState.nut" import getLastPlayedOperationId
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById, getNearestMapToBattle
 from "%scripts/dagui_library.nut" import *
-
-let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getOperationById, getNearestMapToBattle
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-
-
 
 function getOperationNameTextByIdAndMapName(operationId, mapName = null) {
   local res = "".concat(loc("ui/number_sign"), operationId)
@@ -32,7 +28,7 @@ function getPlayedOperationText(needMapName = true) {
 }
 
 
-return {
+return freeze({
   getOperationNameTextByIdAndMapName
   getPlayedOperationText
-}
+})

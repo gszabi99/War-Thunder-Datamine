@@ -1,9 +1,9 @@
+from "%scripts/money.nut" import Cost
+from "%scripts/weaponry/itemInfo.nut" import getAllModsCost
+from "%scripts/weaponry/weaponsPurchase.nut" import weaponsPurchase
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
 from "%scripts/dagui_library.nut" import *
-let { Cost } = require("%scripts/money.nut")
-let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
-let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 local unitsTable = {} 
 
@@ -76,8 +76,8 @@ checkUnboughtMods = function(silent = false) {
       "yes", { cancel_fn = @()clear() })
 }
 
-return {
+return freeze({
   haveUnits         = haveUnits
   addUnit           = addUnit
   checkUnboughtMods = checkUnboughtMods
-}
+})

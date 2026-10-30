@@ -1,8 +1,7 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 
 
@@ -43,7 +42,7 @@ function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   foreach (event in alwaysClearOnEvents)
     u.appendOnce(event, clearOnEvents)
   foreach (event in clearOnEvents)
-    add_event_listener(event, onEventCb, this, g_listener_priority.MEMOIZE_VALIDATION)
+    add_event_listener(event, onEventCb, null, g_listener_priority.MEMOIZE_VALIDATION)
 
   if (hashFunc != null) {
     return function memoizedFuncHash(...) {

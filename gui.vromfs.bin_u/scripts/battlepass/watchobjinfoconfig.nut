@@ -1,15 +1,14 @@
+from "%scripts/battlePass/seasonState.nut" import seasonLevel, todayLoginExp, hasBattlePassReward, loginStreak, tomorowLoginExp, levelExp, seasonEndsTime
+from "%scripts/battlePass/challenges.nut" import mainChallengeOfSeason, hasChallengesReward
+from "%scripts/warbonds/warbondShopState.nut" import leftSpecialTasksBoughtCount
+from "%scripts/userstat/userstat.nut" import isUserstatMissingData
+from "%scripts/unlocks/unlocksConditions.nut" import isBitModeType
+from "%scripts/unlocks/battleTasksState.nut" import isEasyTaskComplete, isMediumTaskComplete
+from "%scripts/unlocks/battleTasks.nut" import getCurrentBattleTasks
+from "%scripts/unlocks/battleTasksView.nut" import getBattleTaskDifficultyImage
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
 from "%sqstd/math.nut" import number_of_set_bits
 from "%scripts/dagui_library.nut" import *
-
-let { seasonLevel, todayLoginExp, hasBattlePassReward, loginStreak, tomorowLoginExp, levelExp, seasonEndsTime } = require("%scripts/battlePass/seasonState.nut")
-let { mainChallengeOfSeason, hasChallengesReward } = require("%scripts/battlePass/challenges.nut")
-let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
-let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isEasyTaskComplete, isMediumTaskComplete } = require("%scripts/unlocks/battleTasksState.nut")
-let { getCurrentBattleTasks } = require("%scripts/unlocks/battleTasks.nut")
-let { getBattleTaskDifficultyImage } = require("%scripts/unlocks/battleTasksView.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 
 let seasonLvlWatchObj = [{
   watch = seasonLevel

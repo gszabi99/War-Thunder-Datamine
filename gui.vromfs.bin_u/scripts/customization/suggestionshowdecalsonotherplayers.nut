@@ -1,19 +1,19 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/shop/shopCountryInfo.nut" import getMaxUnitsRank
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_OTHERS_DECALS
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/customization/decoratorGetters.nut" import getCachedDataByType
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import get_charserver_time_sec
 from "unitCustomization" import get_last_skin
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getMaxUnitsRank } = require("%scripts/shop/shopCountryInfo.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_OTHERS_DECALS } = require("%scripts/options/optionsExtNames.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getCachedDataByType } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
 const SUGGESTED_DELAY_TIME_SEC = 15552000 
@@ -64,9 +64,9 @@ function hasInflictedForbiddenDecal() {
   let decalsData = getCachedDataByType(decoratorTypes.DECALS)
   let decalsList = {}
   foreach (group, _ in checkedDecalsGroups) {
-    let groupDecals = decalsData.catToGroups?.common[group] ?? []
-    foreach (decal in groupDecals)
-      decalsList[decal.id] <- true
+    let groupDecalIds = decalsData.catToGroups?.common[group] ?? []
+    foreach (decalId in groupDecalIds)
+      decalsList[decalId] <- true
   }
 
   if (decalsList.len() == 0)
@@ -124,7 +124,7 @@ function tryShowPeriodicPopupDecalsOnOtherPlayers() {
   showPopupAboutSwithOption()
 }
 
-return {
+return freeze({
   checkDecalsOnOtherPlayersOptions
   tryShowPeriodicPopupDecalsOnOtherPlayers
-}
+})

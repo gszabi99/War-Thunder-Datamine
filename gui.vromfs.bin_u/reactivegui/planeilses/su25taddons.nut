@@ -26,7 +26,7 @@ let enableSu25tAddons = Computed(
     if (BlkFileName.get() == "")
       return false
     let blk = DataBlock()
-    let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
+    let fileName = $"gamedata/flightModels/{BlkFileName.get()}.blk"
     if (!blk.tryLoad(fileName))
       return false
     return blk.getBool("ilsSu25t", false)
@@ -47,19 +47,19 @@ let pitchText = @() {
 }
 
 let pitchBlock = @() {
-  watch = [IlsColor]
+  watch = IlsColor
   size = const [pw(13), ph(13)]
   rendObj = ROBJ_VECTOR_CANVAS
   halign = ALIGN_CENTER
   pos = const [pw(-15), ph(-6)]
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 100, 0],
     [VECTOR_LINE, 100, 0, 100, 100],
     [VECTOR_LINE, 100, 100, 0, 100],
     [VECTOR_LINE, 0, 100, 0, 0],
   ]
-  children = [pitchText]
+  children = pitchText
 }
 
 let AccelWatch = Computed(@() clamp((50.0 - Accel.get() * mpsToKmh), 0, 100).tointeger())
@@ -70,7 +70,7 @@ let accelerationSu25t = @() {
   size = const [pw(10), ph(2)]
   pos = const [pw(17), ph(26)]
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 50, -30, 50, 30]
   ]
   children = @() {
@@ -188,7 +188,7 @@ let lauchPermitedIndicator = @() {
       rendObj = ROBJ_VECTOR_CANVAS
       pos = const [pw(70), ph(85)]
       color = IlsColor.get()
-      commands =  [
+      commands =  const [
         [VECTOR_LINE, 0, 0, 0, 100],
         [VECTOR_LINE, 0, 0, 50, 0],
         [VECTOR_LINE, 0, 100, 50, 100],
@@ -207,7 +207,7 @@ let aamLaunchPermitted = @() {
       rendObj = ROBJ_VECTOR_CANVAS
       pos =  const [pw(70), ph(85)]
       color = IlsColor.get()
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 0, 100],
         [VECTOR_LINE, 0, 0, 50, 0],
         [VECTOR_LINE, 0, 100, 50, 100],
@@ -359,7 +359,7 @@ let curDistArrow = @() {
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
     size = flex()
     color = IlsColor.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 0, 40, -100],
       [VECTOR_LINE, 0, 0, 40, 100],
       [VECTOR_LINE, 40, -100, 40, -50],
@@ -372,7 +372,7 @@ let curDistArrow = @() {
 
 function drawTextPos(x, y, text) {
   return @() {
-    watch = [IlsColor]
+    watch = IlsColor
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
     pos = [pw(x), ph(y)]
@@ -390,7 +390,7 @@ let weaponDistanceGrid = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 100, 0, 100, 100],
     [VECTOR_LINE, 0, 0, 100, 0],
     [VECTOR_LINE, 0, 16, 100, 16],
@@ -441,7 +441,7 @@ function agmLaunchZoneSu25T(width, height) {
   }
 }
 
-return {
+return freeze({
   pitchBlock,
   accelerationSu25t,
   opticsLimitWarning,
@@ -459,4 +459,4 @@ return {
   weaponDistanceGrid,
   bombFlightDistance,
   bombTargetHorDistance,
-}
+})

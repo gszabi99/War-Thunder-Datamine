@@ -78,8 +78,6 @@ def public partial_sort(var a : array<auto(TT)> | #; n : int; cmp : block<(x, y 
 
 
 
-
-
 def public nth_element(var a : array<auto(TT)> | #; n : int) {
     if (length(a) <= 1 || n < 0 || n >= length(a)) return
     static_if (typeinfo is_numeric_comparable(type<TT>)) {
@@ -126,12 +124,6 @@ def public nth_element(var a : array<auto(TT)> | #; n : int; cmp : block<(x, y :
         }
     }
 }
-
-
-
-
-
-
 
 
 def public make_heap(var a : array<auto(TT)> | #) {
@@ -279,12 +271,6 @@ def public pop_heap(var a : array<auto(TT)> | #; cmp : block<(x, y : TT) : bool>
     }
 }
 
-
-
-
-
-
-
 [call_macro(name="qsort")]
 class QsortMacro : AstCallMacro {
     
@@ -293,7 +279,6 @@ class QsortMacro : AstCallMacro {
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting qsort(value, block)")
         if (expr.arguments[0]._type == null || expr.arguments[1]._type == null) return null
-        
         macro_verify(expr.arguments[1]._type.baseType == Type.tBlock, prog, expr.at, "expecting 2nd argument to be block(<a,b:auto(TT)>:bool))")
         if (expr.arguments[0]._type.baseType == Type.tFixedArray || expr.arguments[0]._type.baseType == Type.tArray) {
             var call = new ExprCall(name := "sort", at = expr.at)
@@ -314,7 +299,6 @@ class QsortMacro : AstCallMacro {
         }
     }
 }
-
 
 def private build_dispatch_call(prog : ProgramPtr; var expr : ExprCallMacro?; macroName, opName : string; takesN : bool) : ExpressionPtr {
     let expectedArgs = takesN ? 3 : 2

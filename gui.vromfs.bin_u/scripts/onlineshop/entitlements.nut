@@ -1,3 +1,10 @@
+from "%scripts/money.nut" import Cost
+from "%scripts/onlineShop/entitlementsInfo.nut" import bundlesShopInfo
+from "%scripts/viewUtils/objectTextUpdate.nut" import formatLocalizationArrayToDescription
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
 from "string" import format
 from "dagor.localize" import doesLocTextExist
 from "%sqstd/string.nut" import utf8ToUpper
@@ -7,13 +14,6 @@ from "%sqstd/platform.nut" import isPC
 from "%scripts/dagui_natives.nut" import has_entitlement, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 let exchangedWarpointsExpireDays = {
@@ -328,7 +328,7 @@ function getWarpointsGoldCost(amount) {
   return Cost(0, (entitlementGoldCost.tofloat() * amount / entitlementWpAmount).tointeger())
 }
 
-return {
+return freeze({
   getEntitlementConfig
   getEntitlementLocId
   getEntitlementAmount
@@ -346,4 +346,4 @@ return {
   canBuyEntitlement
   getPremiumAccountDescriptionArr
   getWarpointsGoldCost
-}
+})

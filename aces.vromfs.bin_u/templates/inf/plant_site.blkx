@@ -1,0 +1,145 @@
+{
+  "plant_site": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_replicated": [
+      "transform",
+      "active",
+      "plant_site__destroyed",
+      "plant_site__name",
+      "plant_site__riName",
+      "plant_site__riEid",
+      "plant_site__iconIdx",
+      "bomb_site__plantingTeam",
+      "bomb_site__timeToPlant",
+      "bomb_site__timeToDefuse",
+      "bomb_site__timeToExplosion",
+      "bomb_site__maxDist",
+      "bomb_site__approxRadius",
+      "bomb_site__isBombPlanted",
+      "bomb_site__isPlantingOrReseting",
+      "bomb_site__isDefusing",
+      "bomb_site__operator",
+      "bomb_site__plantedTimeEnd",
+      "bomb_site__defusedTimeEnd",
+      "bomb_site__explosionTimeEnd",
+      "bomb_site__plantProgressPausedAt",
+      "bomb_site__defuseProgressPausedAt",
+      "bomb_site__explosionTimerPausedAtTime"
+    ],
+    "active": true,
+    "plant_site__destroyed": false,
+    "plant_site__name": "",
+    "plant_site__riName": "",
+    "plant_site__riTemplate": "plant_site_rendinst",
+    "plant_site__iconIdx": -1,
+    "plant_site__zoneRadius": 8.0,
+    "bomb_site__plantingTeam": -1,
+    "bomb_site__timeToPlant": 5.0,
+    "bomb_site__timeToDefuse": 10.0,
+    "bomb_site__timeToExplosion": 60.0,
+    "bomb_site__maxDist": 3.0,
+    "bomb_site__approxRadius": 1.5,
+    "bomb_site__stopTimerWhenDefusing": true,
+    "bomb_site__shellActivatorTemplate": "wall_bomb_shell_activator",
+    "bomb_site__shellOffset": [
+      0.0,
+      0.5,
+      0.0
+    ],
+    "bomb_site__plantAnimationTemplate": "bomb_site_plant_animation",
+    "bomb_site__defuseAnimationTemplate": "bomb_site_defuse_animation",
+    "bomb_site__isBombPlanted": false,
+    "bomb_site__isPlantingOrReseting": false,
+    "bomb_site__isDefusing": false,
+    "bomb_site__plantedTimeEnd": -1.0,
+    "bomb_site__defusedTimeEnd": -1.0,
+    "bomb_site__explosionTimeEnd": -1.0,
+    "bomb_site__plantProgressPausedAt": 0.0,
+    "bomb_site__defuseProgressPausedAt": 0.0,
+    "bomb_site__explosionTimerPausedAtTime": 0.0,
+    "_tracked": [
+      "active",
+      "plant_site__destroyed",
+      "plant_site__riEid",
+      "bomb_site__maxDist",
+      "bomb_site__isBombPlanted",
+      "bomb_site__isPlantingOrReseting",
+      "bomb_site__isDefusing",
+      "bomb_site__operator",
+      "bomb_site__plantedTimeEnd",
+      "bomb_site__defusedTimeEnd",
+      "bomb_site__explosionTimeEnd",
+      "bomb_site__plantProgressPausedAt",
+      "bomb_site__defuseProgressPausedAt",
+      "bomb_site__explosionTimerPausedAtTime",
+      "bomb_site__plantProgress",
+      "bomb_site__defuseProgress",
+      "bomb_site__timeToExplosionLeft",
+      "bomb_site__isBombTicking"
+    ],
+    "plantSite:tag": {},
+    "plant_site__riEid:eid": {},
+    "bomb_site__operator:eid": {},
+    "_group": [
+      {
+        "_tags": "sound",
+        "bomb_site_tick_sound__path": "infantry/env_effects/mc_explosive_installed",
+        "bomb_site_tick_sound__event:SoundEvent": {}
+      },
+      {
+        "_tags": "server",
+        "bomb_site__plantProgress": 0.0,
+        "bomb_site__defuseProgress": 0.0,
+        "bomb_site__plantProgressDeltaPerSec": 0.0,
+        "bomb_site__defuseProgressDeltaPerSec": 0.0,
+        "bomb_site__timeToExplosionLeft": -1.0,
+        "bomb_site__isBombTicking": false,
+        "bomb_site__animationAction": 0,
+        "plant_site__planterEid:eid": {},
+        "plant_site__mirrorOperator:eid": {},
+        "plant_site__aiZoneEid:eid": {},
+        "bomb_site__animationOperator:eid": {},
+        "bomb_site__animationEntity:eid": {}
+      }
+    ]
+  },
+  "plant_site_radar_hardware_04": {
+    "_use": "plant_site",
+    "plant_site__riName": "radar_hardware_04_without_antenna"
+  },
+  "plant_site_rendinst": {
+    "_use": "net_rendinst",
+    "_replicated": "plant_site_rendinst__siteEid",
+    "plantSiteRendinst:tag": {},
+    "plant_site_rendinst__siteEid:eid": {}
+  },
+  "plant_site_ai_zone": {
+    "_use": "capture_zone_proxy_sphere",
+    "plant_site_ai_zone__updatePeriod": 0.5,
+    "plant_site_ai_zone__nextUpdateAt": 0.0,
+    "plantSiteAiZone:tag": {},
+    "plant_site_ai_zone__siteEid:eid": {}
+  }
+}

@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/controlsVisual.nut" import getLocalizedControlName, getShortLocalizedControlName, getActivationTypeImg
+from "%scripts/controls/input/inputBase.nut" import InputBase
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
 from "controls" import hasXInputDevice, ActivationCondition
 from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { getLocalizedControlName, getShortLocalizedControlName, getActivationTypeImg } = require("%scripts/controls/controlsVisual.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let Button = class (InputBase) {
   deviceId = -1
@@ -99,4 +99,4 @@ let Button = class (InputBase) {
     return data
   }
 }
-return {Button}
+return freeze({Button})

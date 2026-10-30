@@ -3,8 +3,9 @@ from "auth_wt" import get_player_tags
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let userName = mkWatched(persist, "userName", "")
-let userIdStr = mkWatched(persist, "userIdStr", "-1")
+let hardPersistWatched = mkHardPersistWatched("user.profileStates")
+let userName = hardPersistWatched("userName", "")
+let userIdStr = hardPersistWatched("userIdStr", "-1")
 let userIdInt64 = Computed(@() userIdStr.get().tointeger())
 
 let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
@@ -29,7 +30,7 @@ addListenersWithoutEnv({
   AuthorizeComplete = @(_) updateGuestLogin()
 })
 
-return {
+return freeze({
   userName
   userIdStr
   userIdInt64
@@ -37,4 +38,4 @@ return {
   havePlayerTag
   haveAnyPlayerTag
   isMyUserId
-}
+})

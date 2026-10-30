@@ -25,12 +25,10 @@ const deepBgHeight = hdpxi(80)
 const distanceBgWidth = hdpxi(50)
 const distanceBgHeight = hdpxi(25)
 
-let land_icon = Picture($"ui/gameuiskin#land_icon.svg:{landIconWidth}:{landIconHeight}:P")
-let deep_bg = Picture($"ui/gameuiskin#deep_bg.svg:{deepBgWidth}:{deepBgHeight}:P")
-let bg_distance = Picture($"ui/gameuiskin#bg_distance.svg:{distanceBgWidth}:{distanceBgHeight}:P")
+const colorTransitions = [{ prop = AnimProp.color, duration = 0.3 }]
 
 
-let obstacleDistance = {
+let mkObstacleDistance = @(bg_distance) {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -40,7 +38,7 @@ let obstacleDistance = {
       rendObj = ROBJ_IMAGE
       image = bg_distance
       color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
-      transitions = [{ prop = AnimProp.color, duration = 0.3 }]
+      transitions = colorTransitions
     }
     @() {
       watch = [measureUnitsNames, distanceToObstacle]
@@ -54,7 +52,7 @@ let obstacleDistance = {
   ]
 }
 
-let obstacleDirection = {
+let mkObstacleDirection = @(deep_bg, land_icon) {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -64,7 +62,7 @@ let obstacleDirection = {
       rendObj = ROBJ_IMAGE
       image = deep_bg
       color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
-      transitions = [{ prop = AnimProp.color, duration = 0.3 }]
+      transitions = colorTransitions
       transform = {
         rotate = obstacleAngle.get()
       }
@@ -77,20 +75,25 @@ let obstacleDirection = {
   ]
 }
 
-let obstacleDirectionMark = {
-  halign = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = hdpx(-15) 
-  children = [ obstacleDirection, obstacleDistance]
-  transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = InOutQuad }]
-  behavior = Behaviors.RtPropUpdate
-  function update() {
-    let finalAngle = PI * (obstacleAngle.get() -90)/180.0
-    return {
-      transform = {
-        translate = [ obstacleMarkRadius * cos(finalAngle), obstacleMarkRadius * sin(finalAngle) ]
+function mkObstacleDirectionMark() {
+  let land_icon = Picture($"ui/gameuiskin#land_icon.svg:{landIconWidth}:{landIconHeight}:P")
+  let deep_bg = Picture($"ui/gameuiskin#deep_bg.svg:{deepBgWidth}:{deepBgHeight}:P")
+  let bg_distance = Picture($"ui/gameuiskin#bg_distance.svg:{distanceBgWidth}:{distanceBgHeight}:P")
+  return {
+    halign = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    gap = hdpx(-15) 
+    children = [ mkObstacleDirection(deep_bg, land_icon), mkObstacleDistance(bg_distance)]
+    transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = InOutQuad }]
+    behavior = Behaviors.RtPropUpdate
+    function update() {
+      let finalAngle = PI * (obstacleAngle.get() -90)/180.0
+      return {
+        transform = {
+          translate = [ obstacleMarkRadius * cos(finalAngle), obstacleMarkRadius * sin(finalAngle) ]
+        }
       }
     }
   }
@@ -106,7 +109,7 @@ let obstacleWarningText = @() {
   fontFx = FFT_GLOW
   text = textToShow.get()
   color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
-  transitions = [{ prop = AnimProp.color, duration = 0.3 }]
+  transitions = colorTransitions
 }
 
 return @() {
@@ -114,5 +117,5 @@ return @() {
   size = FLEX
   halign = ALIGN_CENTER
   children = !obstacleIsNear.get() ? null
-    : [obstacleWarningText, obstacleDirectionMark]
+    : [obstacleWarningText, mkObstacleDirectionMark()]
 }

@@ -1,5 +1,4 @@
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
 
 let wpIcons = [
   { value = 1000, icon = "battle_trophy1k" },
@@ -23,7 +22,7 @@ function getFullWPIcon(wp) {
 }
 
 
-return {
+return freeze({
   getFullWPIcon
   getWPIcon
-}
+})

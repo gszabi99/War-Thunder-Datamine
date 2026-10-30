@@ -1,8 +1,8 @@
+from "%scripts/crew/crewSpecType.nut" import getCrewSpecTypeByCode, getTrainedCrewSpecCode
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/dagui_library.nut" import *
-let { getCrewSpecTypeByCode, getTrainedCrewSpecCode } = require("%scripts/crew/crewSpecType.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 function addLegendData(result, specType) {
   foreach (data in result)
@@ -31,7 +31,7 @@ function getLegendView(unit, crewsList) {
     header = loc("mainmenu/selectCrew/qualificationLegend",
       { unitName = colorize("userlogColoredText", getUnitName(unit)) })
     haveLegend = true
-    legendData = legendData.sort(@(a, b) a.specType.code <=> b.specType.code)
+    legendData = legendData.sortby(@(a) a.specType.code)
   }
 }
 

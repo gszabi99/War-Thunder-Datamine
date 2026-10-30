@@ -8,6 +8,18 @@ let TEAM_UNASSIGNED = -1
 def is_teams_friendly(lhs, rhs : int)
   return lhs == rhs && lhs != TEAM_UNASSIGNED && rhs != TEAM_UNASSIGNED
 
+def team_presence_count(team_presence : Object; team : int) : int
+  let arr = get_ecs_array(team_presence, "{team}")
+  return arr != null ? length(*arr) : 0
+
+def has_enemy_in_zone(team_presence : Object; owner : int)
+  var total = 0
+  for presence in team_presence
+    let arr = get_ecs_array(presence.value)
+    if arr != null
+      total += length(*arr)
+  return total > team_presence_count(team_presence, owner)
+
 
 
 

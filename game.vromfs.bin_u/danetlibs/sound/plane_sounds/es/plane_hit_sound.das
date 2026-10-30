@@ -35,49 +35,49 @@ def on_hit(caliber : float; local_pos : float3;
       abandon(handle)
 
 
-[es(tag=sound, REQUIRE=watchedByPlr)]
-def plane_hit_sound_projectile(evt : CmdPlayProjectileHitSound; human_anim__vehicleSelected : EntityId)
-  query(human_anim__vehicleSelected) <| $ [es] (@shared_comp plane_hit_sound__paths : Object;
-                                                sound_tags : Object;
-                                                is_watched_sound : bool;
-                                                transform : float3x4;
-                                                sound_control__state : int;
-                                                plane_hit_sound__caliberToDist : float4;
-                                                plane_hit_sound__caliberToVar : float4;
-                                                var sound_event_group : SoundEventGroup&;
-                                                plane_glassCanopyNodeIds : IntList const?)
-    on_hit(evt.caliber, evt.localHitPos,
-          (plane_glassCanopyNodeIds != null && find_index(*plane_glassCanopyNodeIds, evt.nodeId) >= 0) ? "hitGlass" : "hit",
-          plane_hit_sound__paths,
-          sound_tags,
-          is_watched_sound,
-          transform,
-          sound_control__state,
-          plane_hit_sound__caliberToDist,
-          plane_hit_sound__caliberToVar,
-          sound_event_group)
+[es(tag=sound)]
+def plane_hit_sound_vehicle_projectile(evt : CmdPlayProjectileHitSound;
+                                       @shared_comp plane_hit_sound__paths : Object;
+                                       sound_tags : Object;
+                                       is_watched_sound : bool;
+                                       transform : float3x4;
+                                       sound_control__state : int;
+                                       plane_hit_sound__caliberToDist : float4;
+                                       plane_hit_sound__caliberToVar : float4;
+                                       var sound_event_group : SoundEventGroup&;
+                                       plane_glassCanopyNodeIds : IntList const?)
+  on_hit(evt.caliber, evt.localHitPos,
+        (plane_glassCanopyNodeIds != null && find_index(*plane_glassCanopyNodeIds, evt.nodeId) >= 0) ? "hitGlass" : "hit",
+        plane_hit_sound__paths,
+        sound_tags,
+        is_watched_sound,
+        transform,
+        sound_control__state,
+        plane_hit_sound__caliberToDist,
+        plane_hit_sound__caliberToVar,
+        sound_event_group)
 
 
 [es(tag=sound)]
-def plane_hit_sound_ricochet(evt : CmdPlayProjectileRicochetSound; human_anim__vehicleSelected : EntityId)
-  query(human_anim__vehicleSelected) <| $ [es] (@shared_comp plane_hit_sound__paths : Object;
-                                                sound_tags : Object;
-                                                is_watched_sound : bool;
-                                                transform : float3x4;
-                                                sound_control__state : int;
-                                                plane_hit_sound__caliberToDist : float4;
-                                                plane_hit_sound__caliberToVar : float4;
-                                                var sound_event_group : SoundEventGroup&)
-    on_hit(evt.caliber, evt.localHitPos,
-          "ricochet",
-          plane_hit_sound__paths,
-          sound_tags,
-          is_watched_sound,
-          transform,
-          sound_control__state,
-          plane_hit_sound__caliberToDist,
-          plane_hit_sound__caliberToVar,
-          sound_event_group)
+def plane_hit_sound_vehicle_ricochet(evt : CmdPlayProjectileRicochetSound;
+                                     @shared_comp plane_hit_sound__paths : Object;
+                                     sound_tags : Object;
+                                     is_watched_sound : bool;
+                                     transform : float3x4;
+                                     sound_control__state : int;
+                                     plane_hit_sound__caliberToDist : float4;
+                                     plane_hit_sound__caliberToVar : float4;
+                                     var sound_event_group : SoundEventGroup&)
+  on_hit(evt.caliber, evt.localHitPos,
+        "ricochet",
+        plane_hit_sound__paths,
+        sound_tags,
+        is_watched_sound,
+        transform,
+        sound_control__state,
+        plane_hit_sound__caliberToDist,
+        plane_hit_sound__caliberToVar,
+        sound_event_group)
 
 
 [es(tag=sound, on_event=EventOnCollisionHit)]

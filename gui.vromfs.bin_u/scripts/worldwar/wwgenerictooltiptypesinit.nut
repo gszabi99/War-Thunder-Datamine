@@ -1,23 +1,23 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/tasker.nut" import addTask
+from "%scripts/worldWar/worldWarGlobalStates.nut" import isWorldWarEnabled
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/wwGenericTooltipTypes.nut" import setWwTooltipTypes
+from "%scripts/clans/clanActions.nut" import requestMyClanData
+from "%scripts/worldWar/worldWarState.nut" import getArmyGroups, getBattleById
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSidesOrder
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
+from "%scripts/worldWar/inOperation/model/wwBattlesState.nut" import isStillInOperation, isAutoBattle
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { addTask } = require("%scripts/tasker.nut")
 let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
-let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { setWwTooltipTypes } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { requestMyClanData } = require("%scripts/clans/clanActions.nut")
-let { getArmyGroups, getBattleById } = require("%scripts/worldWar/worldWarState.nut")
-let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { isStillInOperation, isAutoBattle } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 let wwTooltipTypes = {

@@ -1,19 +1,18 @@
+import "%scripts/time.nut" as time
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getMapByName
+from "%scripts/tasker.nut" import addTask
+from "%scripts/worldWar/worldWarCfgState.nut" import getLastPlayedOperationId, getLastPlayedOperationCountry
+from "%scripts/queue/queueState.nut" import getActiveQueueWithType
+from "%scripts/worldWar/operations/model/wwOperationView.nut" import getOperationNameTextByIdAndMapName
+from "%scripts/worldWar/operations/model/wwGlobalStatusType.nut" import setStatusTypeLoadList
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let time = require("%scripts/time.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
-let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-let { setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1

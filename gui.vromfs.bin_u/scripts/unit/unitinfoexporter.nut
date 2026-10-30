@@ -1,8 +1,15 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/unit/unitInfoType.nut" import UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX, processWeaponPresets, processWeaponPilons
+from "%scripts/unit/unitChecks.nut" import checkUnitModsUpdate
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob, touchLangJob
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
-from "language" import getLocalLanguage
 from "dagor.time" import get_time_msec
+from "dagor.workcycle" import defer
 from "string" import format
 from "unitCalculcation" import export_calculations_parameters_for_wta
 from "%sqstd/json.nut" import saveJson
@@ -12,12 +19,7 @@ from "%scripts/webRPC.nut" import webRpcRegister
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX, processWeaponPresets, processWeaponPilons, g_unit_info_type } = require("%scripts/unit/unitInfoType.nut")
-let { checkUnitModsUpdate } = require("%scripts/unit/unitChecks.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { g_unit_info_type } = require("%scripts/unit/unitInfoType.nut")
 
 const ARMY_GROUP = "army"
 const COUNTRY_GROUP = "country"
@@ -38,10 +40,10 @@ class ExporterStatus {
   filename = ""
   status = null
 
-  constructor(filename_, flushPeriodMsec_ = 5000) {
+  constructor(filename_, status_, flushPeriodMsec_ = 5000) {
     this.flushPeriodMsec = flushPeriodMsec_
     this.filename = filename_
-    this.status = {}
+    this.status = status_
   }
 
   function getTargetStatus(target) {
@@ -74,17 +76,13 @@ class ExporterStatus {
 }
 
 class UnitInfoExporter {
-  static EXPORT_TIME_OUT = 20000
   static FRAME_TIME_OUT = 2000
-  static activeUnitInfoExporters = []
   static TARGET_CALCULATION_PARAMETERS = "calculationParameters"
   lastActiveTime = -1
 
   path = "export"
-  langsList = null
-
-  langBeforeExport = ""
   curLang = ""
+  onDone = null
 
   debugLog = dlog 
   isToStringForDebug = true
@@ -96,60 +94,17 @@ class UnitInfoExporter {
 
   status = null
 
-  constructor(genLangsList = ["English", "Russian"], genPath = "export") { 
-    if (!this.isReadyStartExporter())
-      return
-
-    this.activeUnitInfoExporters.append(this)
-    this.updateActive()
-
-    subscribe_handler(this)
-
-    this.langBeforeExport = getLocalLanguage()
-    if (u.isArray(genLangsList))
-      this.langsList = clone genLangsList
-    else if (u.isString(genLangsList))
-      this.langsList = [genLangsList]
-    else
-      this.langsList = getGameLocalizationInfo().map(@(lang) lang.id)
-
-    this.path = genPath
-    this.status = ExporterStatus(this.getStatusFullPath())
-    this.status.setTargetDetails(this.TARGET_CALCULATION_PARAMETERS, "waiting")
-    foreach (lang in this.langsList)
-      this.status.setTargetDetails(lang, "waiting")
-    this.status.forceFlushToFile()
-
-    this.exportCalculationParameters()
-    get_main_gui_scene().performDelayed(this, this.nextLangExport)
+  constructor(jobData) {
+    this.path = jobData.path
+    this.status = ExporterStatus(this.getStatusFullPath(), jobData.status)
   }
 
   function _tostring() {
-    return format("Exporter(%s, '%s')", toString(this.langsList), this.path)
-  }
-
-  function isReadyStartExporter() {
-    if (!this.activeUnitInfoExporters.len())
-      return true
-
-    if (this.activeUnitInfoExporters[0].isStuck()) {
-      this.activeUnitInfoExporters[0].remove()
-      return true
-    }
-
-    this.debugLog("Exporter: Error: Previous exporter not finish process")
-    return false
+    return format("Exporter('%s', '%s')", this.curLang, this.path)
   }
 
   function isValid() {
-    foreach (_idx, exporter in this.activeUnitInfoExporters)
-      if (exporter == this)
-        return true
-    return false
-  }
-
-  function isStuck() {
-    return get_time_msec() - this.lastActiveTime > this.EXPORT_TIME_OUT
+    return this.onDone != null
   }
 
   function isNeedFrame() {
@@ -158,17 +113,7 @@ class UnitInfoExporter {
 
   function updateActive() {
     this.lastActiveTime = get_time_msec()
-  }
-
-  function remove() {
-    let auie = this.activeUnitInfoExporters
-    let l = auie.len()
-    for (local idx=l-1; idx>=0; --idx) {
-      if (auie[idx] == this)
-        auie.remove(idx)
-     }
-
-    setGameLocalization(this.langBeforeExport, false, false)
+    touchLangJob()
   }
 
   
@@ -200,24 +145,25 @@ class UnitInfoExporter {
     }
   }
 
-  function nextLangExport() {
-    if (this.curLang != "") {
-      this.status.finishTarget(this.curLang, this.status.getTargetDetails(this.curLang).failedUnits.len() == 0)
-      this.status.periodicFlushToFile()
-    }
-
-    if (!this.langsList.len()) {
-      this.status.forceFlushToFile()
-      this.remove()
-      this.debugLog("Exporter: DONE.")
-      return
-    }
-
-    this.curLang = this.langsList.pop()
-    setGameLocalization(this.curLang, false, false)
+  function startLangExport(lang, onDone) {
+    this.curLang = lang
+    this.onDone = onDone
+    this.updateActive()
+    subscribe_handler(this)
 
     this.debugLog($"Exporter: gen all units info to {this.getLangFullPath()}")
-    get_main_gui_scene().performDelayed(this, this.startExport) 
+    let exporter = this
+    defer(@() exporter.startExport()) 
+  }
+
+  function finishLangExport() {
+    if (this.onDone == null)
+      return
+    this.status.finishTarget(this.curLang, this.status.getTargetDetails(this.curLang).failedUnits.len() == 0)
+    this.status.periodicFlushToFile()
+    let onDone = this.onDone
+    this.onDone = null
+    onDone()
   }
 
   function getCalculationParemetersFullPath() {
@@ -264,7 +210,8 @@ class UnitInfoExporter {
   function finishExport(fBlk) {
     fBlk["preset_locs"] = this.presetLocs
     fBlk.saveToTextFile(this.getLangFullPath())
-    get_main_gui_scene().performDelayed(this, this.nextLangExport) 
+    let exporter = this
+    defer(@() exporter.finishLangExport()) 
   }
 
   function exportUnitType(fBlk) {
@@ -330,7 +277,8 @@ class UnitInfoExporter {
       return true
 
     if (this.isNeedFrame()) {
-      get_main_gui_scene().performDelayed(this, this.onFrameRedrawnWhileExporting)
+      let exporter = this
+      defer(@() exporter.onFrameRedrawnWhileExporting())
       return false
     }
 
@@ -352,6 +300,13 @@ class UnitInfoExporter {
     let rankId = curUnit.rank.tostring()
 
     let unitBlk = DataBlock()
+    unitBlk.preset_locs = DataBlock()
+    let presetsInfo = curUnit.getWeapons()
+    foreach (preset in presetsInfo) {
+      let displayName = getWeaponNameText(curUnit.name, false, preset.name, ", ")
+      unitBlk.preset_locs[preset.name] = displayName
+      this.presetLocs[preset.name] = displayName
+    }
 
     let configurations = [UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX]
 
@@ -367,12 +322,6 @@ class UnitInfoExporter {
       targetBlk[curUnit.name] = unitBlk
     }
 
-    let presetsInfo = curUnit.getWeapons()
-    foreach (preset in presetsInfo) {
-      let displayName = getWeaponNameText(curUnit.name, false, preset.name, ", ")
-      this.presetLocs[preset.name] = displayName
-    }
-
     return true
   }
 
@@ -384,8 +333,37 @@ class UnitInfoExporter {
   }
 }
 
+const LANG_JOB_ID = "unit.unitInfoExporter"
+
+
+local langExporter = null
+
+function finishUnitInfoExport(jobData) {
+  langExporter = null
+  let exporter = UnitInfoExporter(jobData)
+  exporter.status.forceFlushToFile()
+  exporter.debugLog("Exporter: DONE.")
+}
+
+registerLangJob(LANG_JOB_ID, function(lang, jobData, onDone) {
+  langExporter = UnitInfoExporter(jobData)
+  langExporter.startLangExport(lang, onDone)
+}, finishUnitInfoExport)
+
 function exportUnitInfo(params) {
-  UnitInfoExporter(params["langs"], params["path"])
+  let genLangsList = params["langs"]
+  let langsList = u.isArray(genLangsList) ? genLangsList
+    : u.isString(genLangsList) ? [genLangsList]
+    : getGameLocalizationInfo().map(@(lang) lang.id) 
+  let jobData = { path = params["path"], status = {} }
+  if (startLangJob(LANG_JOB_ID, langsList, jobData)) {
+    let exporter = UnitInfoExporter(jobData)
+    exporter.status.setTargetDetails(exporter.TARGET_CALCULATION_PARAMETERS, "waiting")
+    foreach (lang in langsList)
+      exporter.status.setTargetDetails(lang, "waiting")
+    exporter.status.forceFlushToFile()
+    exporter.exportCalculationParameters()
+  }
   return "ok"
 }
 

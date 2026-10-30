@@ -1,4 +1,4 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
 
 let forceRealTimeRenderIcon = sharedWatched("forceRealTimeRenderIcon", @() null)
 return forceRealTimeRenderIcon

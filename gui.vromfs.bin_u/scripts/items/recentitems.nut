@@ -1,9 +1,9 @@
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList, getItemsSortComparator
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/seen/seenIds.nut" import SEEN
 
 let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
-let { getInventoryList, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
 
 const MAX_RECENT_ITEMS = 4
 

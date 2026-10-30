@@ -1,22 +1,129 @@
+import "%scripts/time.nut" as time
+import "%scripts/items/workshop/workshopPreview.nut" as workshopPreview
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "%sqstd/math.nut" as stdMath
+from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
+from "%scripts/missions/missionsUtilsModule.nut" import getSessionLobbyMissionName
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/mainmenu/benchmarkResultModal.nut" import BenchmarkResultModal
+from "%scripts/statistics/mpStatistics.nut" import MPStatistics
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels, move_mouse_on_child
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/weaponry/weaponryVisual.nut" import updateModItem
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton, setColoredDoubleTextToButton, placePriceTextToButton
+from "%scripts/weaponry/modificationInfo.nut" import isModResearched, getModificationByName, findAnyNotResearchedMod
+from "%sqstd/platform.nut" import isSony
+from "%scripts/login/logout.nut" import needLogoutAfterSession, startLogout, checkLogoutScheduled
+from "%scripts/items/boosterEffect.nut" import getBoostersEffects, getActiveBoostersDescription
+from "%scripts/items/itemVisual.nut" import fillItemDescr
+from "%scripts/viewUtils/interfaceCustomization.nut" import getToBattleLocId
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/user/suggestionRateGame.nut" import setNeedShowRate
+from "%scripts/ranks.nut" import minValuesToShowRewardPremium, maxCountryRank
+from "%scripts/debriefing/debriefingFull.nut" import getDebriefingResult, getDynamicResult, isDebriefingResultFull, gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
+  , updateDebriefingResultGiftItemsInfo, setDebriefingResult, getDebriefingUserLogsList
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName, selectNextAvailCampaignMission, addMissionListFull
+from "%scripts/missions/missionsText.nut" import locCurrentMissionName
+from "%scripts/missions/startMissionsList.nut" import needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions, guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF
+from "%scripts/userLog/userlogUtils.nut" import getTournamentRewardData, getUserLogsList
+from "%scripts/debriefing/toBattleAction.nut" import goToBattleAction, openLastTournamentWnd
+from "%scripts/debriefing/checkRankUpWindow.nut" import checkRankUpWindow
+from "%scripts/user/premium.nut" import havePremium, getRemainingPremiumTime
+from "%scripts/items/everyDayLoginAward.nut" import hasEveryDayLoginAward
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/battlePass/battlePassWnd.nut" import openBattlePassWnd
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient, getFakeUnlockData, combineSimilarAwards
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/missionBuilder/testFlightBQInfo.nut" import sendFinishTestFlightToBq
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask, getBattleTaskById, getBattleTaskNameById
+from "%scripts/unlocks/battleTasks.nut" import isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward, getCurBattleTasksByGm
+  , requestBattleTaskReward, rerollBattleTask, rerollSpecialTask
+from "%scripts/unlocks/battleTasksView.nut" import setBattleTasksUpdateTimer, getBattleTaskView, mkUnlockConfigByBattleTask
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import blendProp
+from "%scripts/sqDagui/guiBhv/bhvAnim.nut" import create_ObjMoveToOBj
+from "%scripts/unit/unitInfo.nut" import getUnitName, image_for_air
+from "%scripts/unit/unitStatus.nut" import isUnitInResearch
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, sessionLobbyStatus, hasSessionInLobby, getSessionLobbyMissionData
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/user/userInfoStats.nut" import getPlayerRankByCountry, getPlayerExpByCountry
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/items/trophyRewardList.nut" import openTrophyRewardsList
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/onlineShop/onlineShopModel.nut" import launchOnlineShop
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/firstChoice/firstChoice.nut" import isCountryAvailable, unlockCountry
+from "%scripts/missionBuilder/testFlightState.nut" import get_last_called_gui_testflight
+from "%scripts/myStats.nut" import isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
+from "%scripts/items/itemsManagerModule.nut" import findItemByUid, findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockIconConfig, fillUnlockBlock, buildUnlockTooltipByConfig
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu, gui_start_mainmenu_reload
+from "%scripts/customization/contentPreview.nut" import gui_start_decals
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
+from "%scripts/wheelmenu/voiceMessages.nut" import closeCurVoicemenu
+from "%scripts/replays/replayScreen.nut" import autosaveReplay, guiModalNameAndSaveReplay
+from "%scripts/items/trophyRewardWnd.nut" import guiStartOpenTrophy
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/utils/genericTooltip.nut" import getTooltipObjId
+from "%scripts/slotbar/crewsList.nut" import invalidateCrewsList
+from "%scripts/dmViewer/hitsAnalysis.nut" import canOpenHitsAnalysisWindow, openHitsAnalysisWindow
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+from "%scripts/globalWorldWarScripts.nut" import saveLastPlayed
+from "%scripts/globalWorldwarUtils.nut" import updateOperationPreviewAndDo, openOperationsOrQueues, openWWMainWnd
+from "%scripts/worldWar/worldWarState.nut" import isLastFlightWasWwBattle
+from "%scripts/missions/missionsStates.nut" import currentCampaignId, currentCampaignMission, get_mission_settings, get_mutable_mission_settings, set_mission_settings, is_user_mission, isCustomMissionFlight
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import haveLobby
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isUsedPlayersOwnUnit
+from "%scripts/statistics/mpStatisticsUtil.nut" import getCurMpTitle, getLocalTeamForMpStats
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
+from "%scripts/items/prizeUtils.nut" import getWPIcon
+from "%scripts/items/prizesView.nut" import getPrizeImageByConfig
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
+from "%scripts/user/playerContextMenu.nut" import showSessionPlayerRClickMenu
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%scripts/userLog/userlogData.nut" import checkNewNotificationUserlogs
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
+from "%scripts/squads/squadUtils.nut" import updateMyCountryData
+from "%scripts/missions/missionProgress.nut" import MIS_PROGRESS
+from "%scripts/replays/backFromReplaysFn.nut" import getBackFromReplaysFn, setBackFromReplaysFn
+from "%scripts/user/newbieTutorialDisplay.nut" import needShowTutorial
 from "%appGlobals/ranks_common_shared.nut" import get_pve_trophy_name, get_mission_mode
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "eventbus" import eventbus_subscribe
 from "dagor.workcycle" import deferOnce
-from "string" import format, split_by_chars
+from "string" import format
 from "math" import ceil, floor
-from "app" import get_game_version, get_game_version_str, is_dev_version
+from "app" import is_dev_version
 from "multiplayer" import is_mplayer_host
 from "replays" import is_replay_turned_on, is_replay_saved, is_replay_present, on_save_replay, on_view_replay
 from "mission" import is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name, GET_MPLAYERS_LIST
 from "guiMission" import MISSION_STATUS_RUNNING, select_mission_full, stat_get_benchmark
 from "dynamicMission" import dynamicGetLayout, dynamicGetList
-from "%sqstd/string.nut" import stripTags, capitalize
+from "%sqstd/string.nut" import capitalize
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "blkGetters" import get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
 from "%globalScripts/unlockConsts.nut" import *
 from "%globalScripts/gameTypeConsts.nut" import *
@@ -29,131 +136,26 @@ from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
-from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 from "chard" import save_profile
 
-let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
-let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BenchmarkResultModal } = require("%scripts/mainmenu/benchmarkResultModal.nut")
-let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { toPixels, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { updateModItem } = require("%scripts/weaponry/weaponryVisual.nut")
-let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isModResearched, getModificationByName, findAnyNotResearchedMod } = require("%scripts/weaponry/modificationInfo.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { needLogoutAfterSession, startLogout, checkLogoutScheduled } = require("%scripts/login/logout.nut")
-let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { getBoostersEffects, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
-let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
-let { minValuesToShowRewardPremium, maxCountryRank } = require("%scripts/ranks.nut")
-let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull, gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById, updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes, getDebriefingUserLogsList } = require("%scripts/debriefing/debriefingFull.nut")
-let { isMissionExtrByName, selectNextAvailCampaignMission, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
-let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions, guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF } = require("%scripts/missions/startMissionsList.nut")
-let { getTournamentRewardData, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { goToBattleAction, openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
-let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
+let { debriefingRows, rewardsBonusTypes } = require("%scripts/debriefing/debriefingFull.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { havePremium, getRemainingPremiumTime } = require("%scripts/user/premium.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { hasEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { reqUnlockByClient, getFakeUnlockData, combineSimilarAwards } = require("%scripts/unlocks/unlocksModule.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
-let { isBattleTask, getBattleTaskById, getBattleTaskNameById } = require("%scripts/unlocks/battleTasksState.nut")
-let { isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward, getCurBattleTasksByGm, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask } = require("%scripts/unlocks/battleTasks.nut")
-let { setBattleTasksUpdateTimer, getBattleTaskView, mkUnlockConfigByBattleTask } = require("%scripts/unlocks/battleTasksView.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { blendProp } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
-let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
-let { isInSessionRoom, sessionLobbyStatus, hasSessionInLobby, getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getPlayerRankByCountry, getPlayerExpByCountry, playerRankByCountries } = require("%scripts/user/userInfoStats.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
+let { playerRankByCountries } = require("%scripts/user/userInfoStats.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { isCountryAvailable, unlockCountry } = require("%scripts/firstChoice/firstChoice.nut")
-let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
-let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockIconConfig, fillUnlockBlock, buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { gui_start_mainmenu, gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { autosaveReplay, guiModalNameAndSaveReplay } = require("%scripts/replays/replayScreen.nut")
-let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
-let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
-let { updateOperationPreviewAndDo, openOperationsOrQueues, openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
-let { isLastFlightWasWwBattle } = require("%scripts/worldWar/worldWarState.nut")
-let { currentCampaignId, currentCampaignMission, get_mission_settings, get_mutable_mission_settings, set_mission_settings, is_user_mission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { haveLobby } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isUsedPlayersOwnUnit } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { getWPIcon } = require("%scripts/items/prizeUtils.nut")
-let { getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
-let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
-let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
-let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
-let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
 const DEBR_MYSTATS_TOP_BAR_GAP_MAX = 6
-const LAST_WON_VERSION_SAVE_ID = "lastWonInVersion"
 const VISIBLE_GIFT_NUMBER = 4
 const KG_TO_TONS = 0.001
 const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
@@ -419,8 +421,6 @@ let DebriefingModal = class (MPStatistics) {
   giftItems = null
   isAllGiftItemsKnown = false
 
-  isFirstWinInMajorUpdate = false
-
   debugUnlocks = 0  
   debriefingResult = null
 
@@ -517,11 +517,6 @@ let DebriefingModal = class (MPStatistics) {
           resReward.__update(victoryBonus)
           resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
         }
-
-        let currentMajorVersion = get_game_version() >> 16
-        let lastWinVersion = loadLocalAccountSettings(LAST_WON_VERSION_SAVE_ID, 0)
-        this.isFirstWinInMajorUpdate = currentMajorVersion > lastWinVersion
-        saveLocalAccountSettings(LAST_WON_VERSION_SAVE_ID, currentMajorVersion)
       }
       else if (mpResult == STATS_RESULT_FAIL) {
         resTitle = this.isCurMissionExtr ? loc("MISSION_FINISHED") : loc("MISSION_FAIL")
@@ -1176,7 +1171,7 @@ let DebriefingModal = class (MPStatistics) {
   }
 
   function playCountSound(play) {
-    if (isPlatformSony)
+    if (isSony)
       return
 
     play = play && !this.isInProgress
@@ -1352,38 +1347,9 @@ let DebriefingModal = class (MPStatistics) {
 
       this.checkPopupWindows()
       this.throwBattleEndEvent()
-      this.guiScene.performDelayed(this, function() { this.ps4SendActivityFeed() })
       let tabsObj = this.getObj("tabs_list")
       move_mouse_on_child(tabsObj, tabsObj.getValue())
     }
-  }
-
-  function ps4SendActivityFeed() {
-    if (!isPlatformSony
-      || !this.isMp
-      || !this.debriefingResult
-      || this.debriefingResult.exp.result != STATS_RESULT_SUCCESS)
-      return
-
-    let config = {
-      locId = "win_session"
-      subType = ps4_activity_feed.MISSION_SUCCESS
-    }
-    let customConfig = {
-      blkParamName = "VICTORY"
-    }
-
-    if (this.isFirstWinInMajorUpdate) {
-      config.locId = "win_session_after_update"
-      config.subType = ps4_activity_feed.MISSION_SUCCESS_AFTER_UPDATE
-      customConfig.blkParamName = "MAJOR_UPDATE"
-      let ver = split_by_chars(get_game_version_str(), ".")
-      customConfig.version <- $"{ver[0]}.{ver[1]}"
-      customConfig.imgSuffix <- $"_{ver[0]}_{ver[1]}"
-      customConfig.shouldForceLogo <- true
-    }
-
-    activityFeedPostFunc(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 
   function updateMyStats(dt) {
@@ -3400,7 +3366,7 @@ let DebriefingModal = class (MPStatistics) {
 
   function initStatsMissionParams() {
     this.gameMode = this.debriefingResult.gm
-    this.isOnline = isLoggedIn.get()
+    this.isOnline = hasFullLoginState.get()
 
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
     if (this.debriefingResult.isInRoom || this.isReplay)

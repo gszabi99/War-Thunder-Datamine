@@ -1,13 +1,13 @@
+from "%scripts/matching/api.nut" import request_matching
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import getCurCraftsInfo
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/globalWorldwarUtils.nut" import defaultDiffCode
+from "%scripts/queue/queue/queueClasses.nut" import registerQueueClass
+from "%scripts/squads/squadUtils.nut" import getSquadMembersFlyoutDataByUnitsGroups
 from "%scripts/dagui_library.nut" import *
 
-let { request_matching } = require("%scripts/matching/api.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { getCurCraftsInfo } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
-let { registerQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { getSquadMembersFlyoutDataByUnitsGroups } = require("%scripts/squads/squadUtils.nut")
 
 let WwBattle = class (BaseQueue) {
   function init() {

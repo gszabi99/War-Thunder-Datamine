@@ -1,8 +1,8 @@
 {
   "model": "mosquito_j30_sweden",
   "fmFile": "fm/mosquito_j30_sweden.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_inline_fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_night_only_start_fx_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_piston_inline_fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_night_only_start_fx_common.blk",
   "gearSinkRangeLR": 0.126,
   "gearSinkRangeC": 0.082,
   "gyroSight": false,
@@ -11,17 +11,17 @@
     "typeTransport"
   ],
   "paratrooper": "raf_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -740,15 +740,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -785,7 +789,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -815,15 +821,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -860,7 +870,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -890,15 +902,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -935,7 +951,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -2588,7 +2606,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/sw_ps_20.blk",
+      "blk": "gamedata/sensors/sw_ps_20.blk",
       "dmPart": "radar_dm"
     }
   },
@@ -2596,7 +2614,7 @@
     "Weapon": [
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m46a.blk",
+        "blk": "gamedata/weapons/cannonAkan_m46a.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "cannon1_dm",
@@ -2606,7 +2624,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m46a.blk",
+        "blk": "gamedata/weapons/cannonAkan_m46a.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "cannon2_dm",
@@ -2616,7 +2634,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m46a.blk",
+        "blk": "gamedata/weapons/cannonAkan_m46a.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "cannon3_dm",
@@ -2625,7 +2643,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m46a.blk",
+        "blk": "gamedata/weapons/cannonAkan_m46a.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "dm": "cannon4_dm",
@@ -2637,7 +2655,7 @@
   "weapon_presets": {
     "preset": {
       "name": "mosquito_j30_sweden_default",
-      "blk": "gameData/FlightModels/weaponPresets/mosquito_j30_sweden_default.blk"
+      "blk": "gamedata/flightModels/weaponPresets/mosquito_j30_sweden_default.blk"
     }
   },
   "turbulence": {
@@ -2712,9 +2730,9 @@
       "invertEnableLogic": false
     },
     "hispano_universal": {},
-    "hispano_ground_targets": {},
     "hispano_air_targets": {},
     "hispano_tracers": {},
+    "hispano_ground_targets": {},
     "hispano_stealth": {},
     "hispano_belt_pack": {
       "tier": 1

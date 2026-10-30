@@ -1,7 +1,7 @@
 {
   "model": "f_105d",
   "fmFile": "fm/f_105d.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -17,16 +17,16 @@
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -574,15 +574,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -625,7 +629,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2015,11 +2021,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_an_asg_19.blk",
+        "blk": "gamedata/sensors/us_an_asg_19.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_25.blk"
+        "blk": "gamedata/sensors/us_an_apr_25.blk"
       }
     ]
   },
@@ -2600,19 +2606,19 @@
     "preset": [
       {
         "name": "f_105d_killstreak_default",
-        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+        "blk": "gamedata/flightModels/weaponPresets/empty.blk"
       },
       {
         "name": "f_105d_killstreak_1xb61",
-        "blk": "gameData/FlightModels/weaponPresets/f_105d_killstreak_1xb61.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_105d_killstreak_1xb61.blk"
       },
       {
         "name": "f_105d_killstreak_b61_5kt_nt",
-        "blk": "gameData/FlightModels/weaponPresets/f_105d_killstreak_b61_5kt_nt.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_105d_killstreak_b61_5kt_nt.blk"
       },
       {
         "name": "f_105d_killstreak_b61_30kt_nt",
-        "blk": "gameData/FlightModels/weaponPresets/f_105d_killstreak_b61_30kt_nt.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_105d_killstreak_b61_30kt_nt.blk"
       }
     ]
   },
@@ -2664,7 +2670,7 @@
           "name": "m61a1_common",
           "Weapon": {
             "trigger": "cannon",
-            "blk": "gameData/Weapons/cannonM61A1.blk",
+            "blk": "gamedata/weapons/cannonM61A1.blk",
             "emitter": "flare1",
             "flash": "flare1",
             "dm": "cannon1_dm",
@@ -2694,7 +2700,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_b61.blk",
+              "blk": "gamedata/weapons/bombguns/us_b61.blk",
               "emitter": "pylon_centr_b_m118",
               "bullets": 1,
               "external": true
@@ -2712,7 +2718,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_b61_5kt.blk",
+              "blk": "gamedata/weapons/bombguns/us_b61_5kt.blk",
               "emitter": "pylon_centr_b_m118",
               "bullets": 1,
               "external": true
@@ -2730,7 +2736,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_b61_30kt.blk",
+              "blk": "gamedata/weapons/bombguns/us_b61_30kt.blk",
               "emitter": "pylon_centr_b_m118",
               "bullets": 1,
               "external": true

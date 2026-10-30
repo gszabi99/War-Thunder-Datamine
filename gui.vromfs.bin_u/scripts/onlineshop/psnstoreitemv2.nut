@@ -2,6 +2,12 @@ import "DataBlock" as DataBlock
 import "sony.store" as psnStore
 import "sony.user" as psnUser
 import "statsd" as statsd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%sqstd/platform.nut" import platformId
+from "%scripts/onlineShop/onlineBundles.nut" import getEntitlementId
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/tasker.nut" import addTask
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/math.nut" import calcPercent
 from "%sonyLib/webApi.nut" import serviceLabel
@@ -10,14 +16,7 @@ from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import ps4_update_purchases_on_auth
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { GUI } = require("%scripts/utils/configs.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 const IMAGE_TYPE = "TAM_JACKET"
 const BQ_DEFAULT_ACTION_ERROR = -1
@@ -119,7 +118,7 @@ local psnV2ShopPurchasableItem = class {
     else if (psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
       this.imagePath = $"!{psnShopBlk.mainPart}{this.id}{psnShopBlk.fileExtension}"
 
-    let customServiceLabelBlk = psnShopBlk?.customServiceLabel[targetPlatform]
+    let customServiceLabelBlk = psnShopBlk?.customServiceLabel[platformId]
     if (customServiceLabelBlk)
       this.srvLabel = customServiceLabelBlk?[this.id] ?? serviceLabel
 

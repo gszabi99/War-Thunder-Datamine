@@ -1,15 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/missions/chooseMissionsListWnd.nut" import ChooseMissionsListWnd
+from "%scripts/genericOptions.nut" import GenericOptionsModal
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/queue/queue/queueClasses.nut" import getQueueClass
+from "%scripts/events/eventRoomCreationContext.nut" import EventRoomCreationContext
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ChooseMissionsListWnd } = require("%scripts/missions/chooseMissionsListWnd.nut")
-let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { EventRoomCreationContext } = require("%scripts/events/eventRoomCreationContext.nut")
 
 register_gui_handler("CreateEventRoomWnd", class (GenericOptionsModal) {
   wndType = handlerType.MODAL
@@ -161,7 +160,7 @@ register_gui_handler("CreateEventRoomWnd", class (GenericOptionsModal) {
     this.updateApplyButton()
   }
 
-  function applyFunc() {
+  function applyFunc(_) {
     this.roomCreationContext.createRoom()
   }
 })

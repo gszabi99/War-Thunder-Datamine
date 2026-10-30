@@ -1,23 +1,23 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/wndLib/multiSelectMenu.nut" import MultiSelectMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/worldWar/wwGenericTooltipTypes.nut" import getWwTooltipType
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/worldWar/inOperation/model/wwOperationLog.nut" import getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark, getUnreadedWWLogsNumber, requestNewWWLogs
+from "%scripts/guiBox.nut" import GuiBox
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/worldWarState.nut" import getBattleById
 from "worldwar" import wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperationLogView.nut")
-let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark, getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { GuiBox } = require("%scripts/guiBox.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -636,4 +636,4 @@ let WwOperationLog = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwOperationLog", WwOperationLog)
 
-return { WwOperationLog }
+return freeze({ WwOperationLog })

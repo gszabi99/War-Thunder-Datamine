@@ -15,6 +15,25 @@
   ],
   "entity": [
     {
+      "_template": "level_environment",
+      "level__latitude": -33.33,
+      "level__longtitude": 44.45,
+      "level__day": 11,
+      "level__month": 8,
+      "level__year": 2000,
+      "level__weatherSeed": -1,
+      "level__cloudsHoleEnabled": true,
+      "level__enableAnimatedDay": false,
+      "level__weatherChoice:object": {
+        "hvg_weather_clear_a:object": {
+          "weight": 1.0,
+          "level__timeVec:array": {
+            "level__timeVec": 10.2
+          }
+        }
+      }
+    },
+    {
       "_template": "volfog_nbs",
       "volfog_nbs__rootGraph": "fog_hvg_al_massa.json"
     },
@@ -27,7 +46,7 @@
     },
     {
       "_template": "door_mult_ent_generator",
-      "ri_extra_gen__blk": "gameData/modern_conflict_doors.blk"
+      "ri_extra_gen__blk": "gamedata/modern_conflict_doors.blk"
     },
     {
       "_template": "destroyable_wall_config"

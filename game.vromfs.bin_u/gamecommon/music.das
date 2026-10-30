@@ -54,7 +54,7 @@ def music_init_es(evt : Event;
     let musicBlk = blk |> datablock_get_block_by_name("music")
     music__battleRadiusAirSq = square(musicBlk |> datablock_getReal("battleRadius", 3000.))
     music__battleRadiusGroundSq = square(musicBlk |> datablock_getReal("battleRadiusGround", 500.))
-    music__battleEnemiesThreshold = musicBlk |> datablock_getInt("battleEnemiesThreshold", 3)
+    music__battleEnemiesThreshold = musicBlk |> datablock_getInt("battleEnemyTreshold", 3)
     music__cooldownCalm = musicBlk |> datablock_getReal("cooldown_calm", 300.)
     music__cooldownBattle = musicBlk |> datablock_getReal("cooldown_battle", 180.)
     music__useHangarMusicForUnitType = musicBlk |> datablock_getBool("use_hangar_music_for_type", false)

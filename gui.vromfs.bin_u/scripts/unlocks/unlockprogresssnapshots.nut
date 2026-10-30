@@ -1,11 +1,10 @@
+from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import get_charserver_time_sec
 from "%sqstd/underscore.nut" import isDataBlock
 from "%sqstd/datablock.nut" import convertBlk
-
-let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const SAVE_ID = "unlock_progress_snapshots"
 
@@ -62,7 +61,7 @@ addListenersWithoutEnv({
   FavoriteUnlocksChanged = onFavoriteUnlocksChanged
 })
 
-return {
+return freeze({
   storeUnlockProgressSnapshot
   getUnlockProgressSnapshot
-}
+})

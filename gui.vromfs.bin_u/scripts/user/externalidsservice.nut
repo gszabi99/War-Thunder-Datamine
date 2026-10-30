@@ -1,11 +1,10 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "steam" import steam_is_running, steam_get_name_by_id
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_my_external_id, req_player_external_ids_by_player_id, req_player_external_ids, get_player_external_ids
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
 
 let updateExternalIDsTable = function(request) {
   let blk = DataBlock()
@@ -71,8 +70,8 @@ function getSelfExternalIds() {
   return table
 }
 
-return {
+return freeze({
   reqPlayerExternalIDsByPlayerId = reqPlayerExternalIDsByPlayerId
   reqPlayerExternalIDsByUserId = reqPlayerExternalIDsByUserId
   getSelfExternalIds = getSelfExternalIds
-}
+})

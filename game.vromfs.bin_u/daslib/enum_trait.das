@@ -10,6 +10,7 @@ module enum_trait shared private
 
 
 
+
 require daslib/ast
 require daslib/ast_boost
 require daslib/templates_boost
@@ -91,13 +92,11 @@ def public enum_to_table(ent : auto(EnumT)) : table<string, EnumT -const -&> {
 [enumeration_macro(name="string_to_enum")]
 class EnumFromStringConstruction : AstEnumerationAnnotation {
     
-    def override apply(var enu : EnumerationPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+    def override apply(var enu : EnumerationPtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {
         
         var enumT = new TypeDecl(baseType = Type.tEnumeration, enumType = enu)
-        
         let varName = "_`enum`table`{enu.name}"
         add_global_private_let(compiling_module(), varName, enu.at, qmacro(enum_to_table(type<$t(enumT)>)))
-        
         var enumFn = qmacro_function("{enu.name}") $(src : string) : $t(enumT) {
             if (!key_exists($i(varName), src)) {
                 panic("string_to_enum: enum value '{src}' not found in enum '{typeinfo typename(type<$t(enumT)>)}'")
@@ -108,7 +107,6 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
         force_at(enumFn, enu.at)
         force_generated(enumFn, true)
         compiling_module() |> add_function(enumFn)
-        
         var enumFnDefault = qmacro_function("{enu.name}") $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
             return $i(varName)?[src] ?? defaultValue
         }

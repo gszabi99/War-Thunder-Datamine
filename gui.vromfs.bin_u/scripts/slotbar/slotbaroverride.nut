@@ -1,23 +1,24 @@
+from "%scripts/events/eventsState.nut" import getEventMission
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo
+from "%scripts/events/eventInfo.nut" import needShowOverrideSlotbar
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, isEmpty, isEqual
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/datablock.nut" import eachBlock, convertBlk
 from "dagor.random" import rnd
+from "packed" import is_view, unpack
 from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
 
-let { getEventMission } = require("%scripts/events/eventsState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
-let overrideSlotbarMissionName = mkWatched(persist, "overrideSlotbarMissionName", "") 
-let overrideSlotbar = persist("overrideSlotbar", @() { value = null }) 
-let overrideSlotMods = persist("overrideSlotMods", @() { value = null }) 
-let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") 
+let overrideSlotbarMissionName = mkHardPersistWatched("slotbar.slotbarOverride")("overrideSlotbarMissionName", "") 
+let overrideSlotbar = mkHardPersist("slotbar.slotbarOverride")("overrideSlotbar", { value = null }) 
+let overrideSlotMods = mkHardPersist("slotbar.slotbarOverride")("overrideSlotMods", { value = null }) 
+let userSlotbarCountry = mkHardPersistWatched("slotbar.slotbarOverride")("userSlotbarCountry", "") 
 let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionName", {})
 
 let makeCrewsCountryData = @(country) { country = country, crews = [] }
@@ -71,7 +72,9 @@ function convertSlotbarDataBlock(blk) {
 
 function calcSlotbarOverrideByMissionName(missionName, event = null) {
   let editSlotBarData = event?.mission_decl.editSlotbar ?? getMissionEditSlotbarBlk(missionName)
-  let editSlotbar = isDataBlock(editSlotBarData) ? convertSlotbarDataBlock(editSlotBarData) : editSlotBarData
+  let editSlotbar = isDataBlock(editSlotBarData) ? convertSlotbarDataBlock(editSlotBarData)
+    : is_view(editSlotBarData) ? unpack(editSlotBarData) 
+    : editSlotBarData
 
   if (!editSlotbar)
     return { ovrSlotBar = null, ovrSlotMod = null }
@@ -227,7 +230,7 @@ function getOverridedSlotbarSkins(missionParams) {
   return res
 }
 
-return {
+return freeze({
   getMissionEditSlotbarBlk
   getSlotbarOverrideCountriesByMissionName
   updateOverrideSlotbar
@@ -238,4 +241,4 @@ return {
   getEventSlotbarHint
   selectCountryForCurrentOverrideSlotbar
   getOverridedSlotbarSkins
-}
+})

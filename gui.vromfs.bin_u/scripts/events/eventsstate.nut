@@ -1,11 +1,11 @@
+from "%scripts/events/eventInfo.nut" import isEventMatchesType, isEventRandomBattles, getEventEconomicName
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount
 from "guiMission" import get_meta_mission_info_by_name
 from "types" import String
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isEventMatchesType, isEventRandomBattles, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 
 
 

@@ -38,7 +38,7 @@ function updateSettings(blk_name) {
   if (blk_name == "")
     return
   let blk = DataBlock()
-  let fileName = $"gameData/flightModels/{blk_name}.blk"
+  let fileName = $"gamedata/flightModels/{blk_name}.blk"
   if (!tryLoadBlk(blk, fileName))
     return
 

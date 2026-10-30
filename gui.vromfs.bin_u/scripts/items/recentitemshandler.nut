@@ -1,22 +1,20 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd
+from "%scripts/items/everyDayLoginAward.nut" import EveryDayLoginAward
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/items/itemVisual.nut" import updateExpireAlarmIcon
+from "%scripts/promo/promo.nut" import getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
+from "%scripts/items/itemsManager.nut" import isItemsManagerEnabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/recentItems.nut" import getRecentItems, getNumOtherItems
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
-let { EveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
-let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
-  togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
-} = require("%scripts/promo/promo.nut")
-let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 
 let RecentItemsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -30,7 +28,6 @@ let RecentItemsHandler = class (BaseGuiHandlerWT) {
   numOtherItems = -1
 
   function initScreen() {
-    this.scene.setUserData(this)
     this.updateHandler(true)
     this.updateVisibility()
   }

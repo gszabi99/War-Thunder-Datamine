@@ -1,19 +1,20 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/guidParser.nut" as guidParser
+from "%scripts/customization/addDecorToCache.nut" import cacheDecor, addDecorToCache, getSingleDecor
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/customization/decorator.nut" import Decorator, DecoratorProbe
+from "%scripts/customization/decoratorTypeUtils.nut" import getDecorTypeBlk
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/customization/skinUtils.nut" import getSkinId, getSkinNameBySkinId
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import add_rta_localization
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let guidParser = require("%scripts/guidParser.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { cacheDecor, addDecorToCache, getSingleDecor } = require("%scripts/customization/addDecorToCache.nut")
 let { decoratorCache, liveDecoratorsCache, waitingItemdefs } = require("%scripts/customization/decoratorCache.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { Decorator } = require("%scripts/customization/decorator.nut")
-let { getDecorTypeBlk } = require("%scripts/customization/decoratorTypeUtils.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getSkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 
 function getDecorCacheByType(typeName) {
@@ -22,15 +23,33 @@ function getDecorCacheByType(typeName) {
   return decoratorCache[typeName]
 }
 
-function getCachedDataByType(decType, unitTypeTag = null) {
+function getCacheId(decType, unitTypeTag = null) {
   let decorClass = decType?.categoryPathPrefix ? "VIEW" : "BASE"
-  let id = unitTypeTag != null
+  return unitTypeTag != null
     ? $"proceedData_{decorClass}_{unitTypeTag}"
     : $"proceedData_{decorClass}"
+}
 
+function getSingleDecorators(decType) {
+  let cachedData = getDecorCacheByType(decType.name)
+  let singleId = decType?.categoryPathPrefix ? "single_VIEW" : "single_BASE"
+  if (singleId not in cachedData)
+    cachedData[singleId] <- {}
+  return cachedData[singleId]
+}
+
+function getCanReceiveByBlkIdx(decType) {
+  let cachedData = getDecorCacheByType(decType.name)
+  if ("canReceiveByBlkIdx" not in cachedData)
+    cachedData.canReceiveByBlkIdx <- array(getDecorTypeBlk(decType.name).blockCount(), null)
+  return cachedData.canReceiveByBlkIdx
+}
+
+function getCachedDataByType(decType, unitTypeTag = null) {
+  let id = getCacheId(decType, unitTypeTag)
   let dCache = getDecorCacheByType(decType.name)
   if (dCache?[id] == null)
-    dCache[id] <- cacheDecor(decType, unitTypeTag)
+    dCache[id] <- cacheDecor(decType, unitTypeTag, getSingleDecorators(decType), getCanReceiveByBlkIdx)
 
   return dCache[id]
 }
@@ -39,33 +58,31 @@ function getCachedOrderByType(decType, unitTypeTag = null) {
   return getCachedDataByType(decType, unitTypeTag).categories
 }
 
-function getCachedDecoratorsListByType(decType) {
-  return getCachedDataByType(decType).decoratorsList
-}
-
-function getCachedDecorator(decId, decType, unitTypeTag = null) {
-  let decorClass = decType?.categoryPathPrefix ? "VIEW" : "BASE"
-  let cachedData = getDecorCacheByType(decType.name)
-
-  let cacheId = unitTypeTag
-    ? $"proceedData_{decorClass}_{unitTypeTag}"
-    : $"proceedData_{decorClass}"
-  let dCache = cachedData?[cacheId]
-  if (dCache)
-    return dCache.decoratorsList?[decId]
-
-  
-  let singleId = $"single_{decorClass}"
-  if (decId in cachedData?[singleId])
-    return cachedData[singleId][decId]
+function getCachedDecorator(decId, decType) {
+  let singleDecorators = getSingleDecorators(decType)
+  let cachedDecorator = singleDecorators?[decId]
+  if (cachedDecorator != null)
+    return cachedDecorator
 
   let decorator = getSingleDecor(decId, decType)
-  if (decorator) {
-    if (singleId not in cachedData)
-      cachedData[singleId] <- {}
-    cachedData[singleId][decId] <- decorator
-  }
+  if (decorator)
+    singleDecorators[decId] <- decorator
   return decorator
+}
+
+function getVisibleDecoratorsByType(decType) {
+  let res = []
+  let singleDecorators = getSingleDecorators(decType)
+  let canReceiveByBlkIdx = getCanReceiveByBlkIdx(decType)
+  let blk = getDecorTypeBlk(decType.name)
+  for (local i = 0; i < blk.blockCount(); ++i) {
+    let dblk = blk.getBlock(i)
+    let decorator = singleDecorators?[dblk.getBlockName()]
+      ?? DecoratorProbe(dblk, decType, i, canReceiveByBlkIdx)
+    if (decorator.isVisible())
+      res.append(getCachedDecorator(decorator.id, decType))
+  }
+  return res.filter(@(d) d != null)
 }
 
 function getSkinsDefaultDecorator(decorId, decType) {
@@ -91,12 +108,12 @@ function getSkinsLiveDecorator(decorId, decType) {
   return liveDecoratorsCache[decorId]
 }
 
-function getDecorator(decorId, decType, unitTypeTag = null) {
+function getDecorator(decorId, decType) {
   if (isEmpty(decorId))
     return null
   let res = getSkinsDefaultDecorator(decorId, decType)
     ?? getSkinsLiveDecorator(decorId, decType)
-    ?? getCachedDecorator(decorId, decType, unitTypeTag)
+    ?? getCachedDecorator(decorId, decType)
   if (!res)
     log($"Decorators Manager: {decorId} was not found in the cache, try updating the cache.")
   return res
@@ -132,7 +149,7 @@ function buildLiveDecoratorFromResource(resource, resourceType, itemDef, unitId 
   let decorator = Decorator(decoratorId, getTypeByResourceType(resourceType))
   decorator.updateFromItemdef(itemDef)
   add_rta_localization($"{decoratorId}", itemDef.name)
-  add_rta_localization($"{decoratorId}/desc", itemDef.description)
+  add_rta_localization($"{decoratorId}/desc", itemDef?.description ?? "")
 
   liveDecoratorsCache[decoratorId] <- decorator
 
@@ -142,17 +159,18 @@ function buildLiveDecoratorFromResource(resource, resourceType, itemDef, unitId 
 }
 
 function updateDecorVisible(decorId, decType) {
-  let decCache = getCachedDataByType(decType)
-  let decorator = decCache.decoratorsList?[decorId]
+  let decorator = getCachedDecorator(decorId, decType)
   if (!decorator || !decorator.isVisible())
     return
 
-  addDecorToCache(decorator, decCache)
+  let builtCaches = getDecorCacheByType(decType.name)
+  let fullCache = builtCaches?[getCacheId(decType)]
+  if (fullCache != null)
+    addDecorToCache(decorator, fullCache)
   foreach (unitType in unitTypes.types) {
-    if (decorator.isAllowedByUnitTypes(unitType.tag)) {
-      let cacheByUnitType = getCachedDataByType(decType, unitType.tag)
+    let cacheByUnitType = builtCaches?[getCacheId(decType, unitType.tag)]
+    if (cacheByUnitType != null && decorator.isAllowedByUnitTypes(unitType.tag))
       addDecorToCache(decorator, cacheByUnitType)
-    }
   }
 }
 
@@ -182,6 +200,7 @@ function onEventItemsShopUpdate(_) {
 function invalidateCache() {
   decoratorCache.clear()
   liveDecoratorsCache.clear()
+  waitingItemdefs.clear()
   broadcastEvent("DecorCacheInvalidate")
 }
 
@@ -203,12 +222,12 @@ addListenersWithoutEnv({
 
 eventbus_subscribe("on_dl_content_skins_invalidate", @(_) invalidateCache())
 
-return {
+return freeze({
   getCachedDataByType
   getCachedOrderByType
-  getCachedDecoratorsListByType
+  getVisibleDecoratorsByType
   getDecorator
   getDecoratorByResource
   getDecoratorById
   buildLiveDecoratorFromResource
-}
+})

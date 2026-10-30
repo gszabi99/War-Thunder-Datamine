@@ -1,4 +1,47 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/clusterSelect.nut" as clustersModule
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/onlineInfo/clustersMenuWnd.nut" as openClustersMenuWnd
 import "DataBlock" as DataBlock
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/wndLib/infoWnd.nut" import InfoWnd
+from "%scripts/options/framedOptionsWnd.nut" import FramedOptionsWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_child
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/social/crossplay.nut" import getTextWithCrossplayIcon, isCrossPlayEnabled, needShowCrossPlayInfo
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%sqstd/platform.nut" import isSony
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/slotbar/slotbarOverride.nut" import resetSlotbarOverrided, updateOverrideSlotbar
+from "%scripts/events/eventInfo.nut" import needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName, isTeamSizeBalancedEvent, isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/promo/promo.nut" import setPromoButtonText, getPromoVisibilityById
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/myStats.nut" import getMissionsComplete
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/clientState/contentPacks.nut" import getPkgLocName, havePackage
+from "%scripts/queue/queue/queueClasses.nut" import getQueueClass
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart, leaveQueue
+from "%scripts/events/eventJoinProcess.nut" import EventJoinProcess
+from "%scripts/events/eventDescription.nut" import create_event_description
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue, isEventQueue
+from "%scripts/queue/queueInfo.nut" import getQueueMode, getQueuePreferredViewClass
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/user/playerCountry.nut" import profileCountrySq, switchProfileCountry
+from "%scripts/sqDagui/framework/msgBox.nut" import remove_scene_box
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
 from "string" import format
 from "%sqstd/datablock.nut" import eachParam
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
@@ -10,52 +53,10 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { InfoWnd } = require("%scripts/wndLib/infoWnd.nut")
-let { FramedOptionsWnd } = require("%scripts/options/framedOptionsWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { getTextWithCrossplayIcon, isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName, isTeamSizeBalancedEvent, isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setPromoButtonText, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getMissionsComplete } = require("%scripts/myStats.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getPkgLocName, havePackage } = require("%scripts/clientState/contentPacks.nut")
-let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { checkQueueAndStart, leaveQueue } = require("%scripts/queue/queueManager.nut")
-let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { create_event_description } = require("%scripts/events/eventDescription.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
-let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
-let { getQueueMode, getQueuePreferredViewClass } = require("%scripts/queue/queueInfo.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { remove_scene_box } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -690,11 +691,13 @@ let EventsHandler = class (BaseGuiHandlerWT) {
     showObjById("btn_rooms_list", isCurItemInFocus && isEvent && isEventWithLobby(event), this.scene)
 
     let pack = isCurItemInFocus && isEvent ? getEventReqPack(event, true) : null
-    let needDownloadPack = pack != null && !havePackage(pack)
+    let missingPacks = pack != null ? pack.filter(@(p) !havePackage(p)) : []
+    let needDownloadPack = missingPacks.len() > 0
     let packBtn = showObjById("btn_download_pack", needDownloadPack, this.scene)
     if (needDownloadPack && packBtn) {
-      packBtn.tooltip = getPkgLocName(pack)
-      packBtn.setValue(" ".concat(loc("msgbox/btn_download"), getPkgLocName(pack, true)))
+      packBtn.tooltip = loc("ui/comma").join(missingPacks.map(@(p) getPkgLocName(p)))
+      packBtn.setValue(" ".concat(loc("msgbox/btn_download"),
+        loc("ui/comma").join(missingPacks.map(@(p) getPkgLocName(p, true)))))
     }
 
     showObjById("btn_queue_options", isCurItemInFocus && isEvent
@@ -703,7 +706,7 @@ let EventsHandler = class (BaseGuiHandlerWT) {
 
   function fillEventsList() {
     let chapters = events.getChapters()
-    let needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
+    let needSkipCrossplayEvent = isSony && !isCrossPlayEnabled()
 
     let view = { items = [] }
     foreach (chapter in chapters) {
@@ -780,6 +783,11 @@ let EventsHandler = class (BaseGuiHandlerWT) {
 
   function onEventCountryChanged(_p) {
     this.updateButtons()
+  }
+
+  function onEventConsolePacksReadyChanged(_p) {
+    if (this.isValid())
+      this.updateWindow()
   }
 
   function onCollapse(obj) {
@@ -867,8 +875,7 @@ addPromoButtonConfig({
     if (show)
       buttonObj = showObjById(id, show, this.scene)
     else {
-      show = hasFeature("Events")
-        && events.getEventsVisibleInEventsWindowCount()
+      show = events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.get()
         && getPromoVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)
@@ -882,7 +889,7 @@ addPromoButtonConfig({
   updateByEvents = ["EventsDataUpdated", "MyStatsUpdated", "UnlockedCountriesUpdate"]
 })
 
-return {
+return freeze({
   EventsHandler
   guiStartModalEvents
-}
+})

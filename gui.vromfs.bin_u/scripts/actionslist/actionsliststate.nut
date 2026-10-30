@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-return {
+return freeze({
   isActionsListOpen = Watched(false)
-}
+})

@@ -1,4 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/contacts/contactsListState.nut" import getContactByName
+from "%scripts/tasker.nut" import addTask
+from "%scripts/contacts/contactPresence.nut" import updateContactPresence
+from "%scripts/contacts/contactsConsts.nut" import contactEvent
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/u.nut" import isInstance
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
@@ -6,14 +13,7 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, find_nicks_by_prefix
 from "%scripts/dagui_library.nut" import *
 
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { addTask } = require("%scripts/tasker.nut")
 let Contact = require("%scripts/contacts/contact.nut")
-let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { contactEvent } = require("%scripts/contacts/contactsConsts.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 function find_contact_by_name_and_do(playerName, func) { 
   let contact = getContactByName(playerName)
@@ -103,8 +103,8 @@ addListenersWithoutEnv({
   UpdateExternalsIDs = @(p) onEventUpdateExternalsIDs(p)
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   find_contact_by_name_and_do
   updateContact
   update_contacts_by_list
-}
+})

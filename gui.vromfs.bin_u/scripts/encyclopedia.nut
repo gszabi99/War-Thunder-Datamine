@@ -1,24 +1,22 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/langUtils/language.nut" import isChineseHarmonized
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_child
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/showImage.nut" import viewFullscreenImage
 from "%sqstd/platform.nut" import platformId
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { viewFullscreenImage } = require("%scripts/showImage.nut")
-
-let persistent = persist("persistent", @() { encyclopediaData = [] })
+let encyclopediaData = []
 
 let initEncyclopediaData = function() {
-  if (persistent.encyclopediaData.len() || !hasFeature("Encyclopedia"))
+  if (encyclopediaData.len() || !hasFeature("Encyclopedia"))
     return
 
   let blk = DataBlock()
@@ -58,7 +56,7 @@ let initEncyclopediaData = function() {
       }
       chapterDesc.articles.append(articleDesc)
     }
-    persistent.encyclopediaData.append(chapterDesc)
+    encyclopediaData.append(chapterDesc)
   }
 }
 
@@ -66,7 +64,7 @@ let initEncyclopediaData = function() {
 let open = function() {
   initEncyclopediaData()
 
-  if (persistent.encyclopediaData.len() == 0)
+  if (encyclopediaData.len() == 0)
     return
 
   loadHandler(get_gui_handler("Encyclopedia"))
@@ -86,11 +84,11 @@ let Encyclopedia = class (BaseGuiHandlerWT) {
       blockObj.show(true)
 
     let view = { tabs = [] }
-    foreach (idx, chapter in persistent.encyclopediaData)
+    foreach (idx, chapter in encyclopediaData)
       view.tabs.append({
         id = chapter.id
         tabName =$"#encyclopedia/{chapter.id}"
-        navImagesText = getNavigationImagesText(idx, persistent.encyclopediaData.len())
+        navImagesText = getNavigationImagesText(idx, encyclopediaData.len())
       })
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
@@ -112,14 +110,14 @@ let Encyclopedia = class (BaseGuiHandlerWT) {
       return
 
     let value = obj.getValue()
-    if (!(value in persistent.encyclopediaData))
+    if (!(value in encyclopediaData))
       return
 
     let objArticles = this.scene.findObject("items_list")
     if (!checkObj(objArticles))
       return
 
-    this.curChapter = persistent.encyclopediaData[value]
+    this.curChapter = encyclopediaData[value]
 
     let view = { items = [] }
     foreach (idx, article in this.curChapter.articles)
@@ -180,6 +178,6 @@ let Encyclopedia = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("Encyclopedia", Encyclopedia)
 
-return {
+return freeze({
   open = open
-}
+})

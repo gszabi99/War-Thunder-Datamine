@@ -30,41 +30,36 @@ function generatePitchLine(num) {
     size = const [pw(80), ph(50)]
     pos = const [pw(10), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -10, 0, 30, 0],
-          [VECTOR_LINE, 70, 0, 110, 0]
-        ]
-        children = [angleTxt(-5, true, 1, pw(16)), angleTxt(-5, false, 1, pw(-18))]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, 30, 5 * sign, 30, 0],
-          [VECTOR_LINE, 0, 0, num < 0 ? 30 : 5, 0],
-          (num > 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
-          (num > 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
-          [VECTOR_LINE, 70, 5 * sign, 70, 0],
-          [VECTOR_LINE, 100, 0, num < 0 ? 70 : 95, 0],
-          (num > 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
-          (num > 0 ? [VECTOR_LINE, 77, 0, 70, 0] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, 1, newNum == 5 ? pw(24) : pw(17)), angleTxt(newNum, false, 1, newNum == 5 ? pw(-24) : pw(-18))] : null
-      }
-    ]
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, -10, 0, 30, 0],
+        [VECTOR_LINE, 70, 0, 110, 0]
+      ]
+      children = [angleTxt(-5, true, 1, pw(16)), angleTxt(-5, false, 1, pw(-18))]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        [VECTOR_LINE, 30, 5 * sign, 30, 0],
+        [VECTOR_LINE, 0, 0, num < 0 ? 30 : 5, 0],
+        (num > 0 ? const [VECTOR_LINE, 10, 0, 17, 0] : const []),
+        (num > 0 ? const [VECTOR_LINE, 23, 0, 30, 0] : const []),
+        [VECTOR_LINE, 70, 5 * sign, 70, 0],
+        [VECTOR_LINE, 100, 0, num < 0 ? 70 : 95, 0],
+        (num > 0 ? const [VECTOR_LINE, 90, 0, 83, 0] : const []),
+        (num > 0 ? const [VECTOR_LINE, 77, 0, 70, 0] : const [])
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, 1, newNum == 5 ? pw(24) : pw(17)), angleTxt(newNum, false, 1, newNum == 5 ? pw(-24) : pw(-18))] : null
+    }
   }
 }
 
@@ -105,7 +100,7 @@ function KaiserTvvLinked(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 50, 50],
           [VECTOR_LINE, -50, 0, -100, 0],
           [VECTOR_LINE, 50, 0, 100, 0],
@@ -167,14 +162,14 @@ function climbSpeed(height){
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = [
-      [VECTOR_LINE, 0, 0, 50, 0],
-      [VECTOR_LINE, 0, 33.3, 100, 33.3],
-      [VECTOR_LINE, 0, 66.67, 50, 66.67],
-      [VECTOR_LINE, 0, 100, 50, 100],
+      const [VECTOR_LINE, 0, 0, 50, 0],
+      const [VECTOR_LINE, 0, 33.3, 100, 33.3],
+      const [VECTOR_LINE, 0, 66.67, 50, 66.67],
+      const [VECTOR_LINE, 0, 100, 50, 100],
       [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 2.0],
-      [VECTOR_LINE, 40, 16.7, 40, 16.7],
-      [VECTOR_LINE, 40, 50, 40, 50],
-      [VECTOR_LINE, 40, 83.3, 40, 83.3]
+      const [VECTOR_LINE, 40, 16.7, 40, 16.7],
+      const [VECTOR_LINE, 40, 50, 40, 50],
+      const [VECTOR_LINE, 40, 83.3, 40, 83.3]
     ]
     children = {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -183,7 +178,7 @@ function climbSpeed(height){
       color = IlsColor.get()
       fillColor = IlsColor.get()
       lineWidth = 1
-      commands = [
+      commands = const [
         [VECTOR_POLY, 0, 0, 100, -100, 100, 100]
       ]
       behavior = Behaviors.RtPropUpdate
@@ -227,7 +222,7 @@ let generateCompassMarkSU145 = function(num, _elemWidth, font) {
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 2.0
         hplace = ALIGN_CENTER
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 90, 0, 90]
         ]
       })
@@ -248,7 +243,7 @@ let gunAimMark = @() {
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 0, 0],
         [VECTOR_ELLIPSE, 0, 0, 100, 100],
         [VECTOR_LINE, -120, 0, -100, 0],
@@ -302,14 +297,14 @@ function impactLine(_width, height) {
     size = FLEX
     color = IlsColor.get()
     commands = [
-      (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get() || RocketMode.get()) ? [VECTOR_LINE, 0, 0, 0, -100] : [])
+      (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get() || RocketMode.get()) ? const [VECTOR_LINE, 0, 0, 0, -100] : const [])
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
         translate = TargetPosValid.get() ? [TargetPos.get()[0], clamp(TargetPos.get()[1], 0, height)] : [TargetPos.get()[0], height]
         rotate = -Roll.get()
-        pivot = [0, 0]
+        pivot = 0
       }
     }
   }
@@ -356,7 +351,7 @@ function KaiserVDO(width, height) {
         color = IlsColor.get()
         lineWidth = 1
         fillColor = IlsColor.get()
-        commands = [
+        commands = const [
           [VECTOR_POLY, 0, 0, 100, 100, -100, 100]
         ]
       }

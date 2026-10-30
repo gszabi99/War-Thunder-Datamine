@@ -1,13 +1,13 @@
+import "%scripts/sqDagui/elemUpdater/elemUpdaterEvents.nut" as elemEvents
 import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/callback.nut" import Callback
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import popBhvValueConfig
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "types" import Integer
 
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let elemEvents = require("%scripts/sqDagui/elemUpdater/elemUpdaterEvents.nut")
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
-let { popBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 local assertOnce = function(_uniqId, errorText) { throw(errorText) }
 
@@ -73,6 +73,6 @@ let BhvUpdater = class {
 
 replace_script_gui_behaviour("bhvUpdater", BhvUpdater)
 
-return {
+return freeze({
   setAssertFunction = @(func) assertOnce = func  
-}
+})

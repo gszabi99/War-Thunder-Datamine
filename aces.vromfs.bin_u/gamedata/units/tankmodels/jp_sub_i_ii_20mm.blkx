@@ -2196,7 +2196,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -2258,7 +2258,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_body_v",
         "flash": "emtr_mg_flame",
         "defaultYaw": 0.0,
@@ -2301,8 +2301,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_sub_i_ii_20mm_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_sub_i_ii_20mm_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2352,7 +2352,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.77,
       "maxBrakeForce": 75000.0,
       "driveGearRadius": 0.29,
       "mainGearRatio": 4.8,
@@ -2396,7 +2399,18 @@
       "wheel_r_drive": 0.27,
       "wheel_l_drive": 0.27,
       "wheel_r_back": 0.26,
-      "wheel_l_back": 0.26
+      "wheel_l_back": 0.26,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     },
     "floats": {
       "volume": [
@@ -3384,7 +3398,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/20mm_Rh_202_Wiesel_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -3446,7 +3460,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
               "emitter": "bone_mg_body_v",
               "flash": "emtr_mg_flame",
               "defaultYaw": 0.0,
@@ -3488,7 +3502,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3673,5 +3687,29 @@
         }
       }
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.875,
+      1.54,
+      1.0947
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

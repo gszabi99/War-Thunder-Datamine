@@ -1,16 +1,25 @@
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import isAvailableBuyUnitOnMarketPlace
 from "%scripts/dagui_library.nut" import *
-let { isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
-let unitsEvents = persist("unitsEvents", @() {})
+let unitEventIds = persist("unitEventIds", @() {})
+let oldUnitsEvents = persist("unitsEvents", @() {})
+foreach (unitName, row in oldUnitsEvents)
+  unitEventIds[unitName] <- row.eventId
+oldUnitsEvents.clear()
 
-let getEventUnitsData = @() unitsEvents.values().filter(@(u) u.unit != null)
+let getEventUnitsData = @() unitEventIds.keys().map(function(unitName) {
+  let unit = getAircraftByName(unitName)
+  if (unit == null)
+    throw null
+  return { unit, eventId = unitEventIds[unitName] }
+})
 let getEventMarkersData = @(countryId) getEventUnitsData().filter(@(u) u.unit.shopCountry == countryId)
 
-return {
-  addUnitEventId = @(unitName, unit, eventId) unitsEvents[unitName] <- { unit, eventId }
-  getUnitEventId = @(unitName) unitsEvents?[unitName].eventId
-  hasUnitEvent = @(unitName) unitsEvents?[unitName].eventId != null
+return freeze({
+  addUnitEventId = @(unitName, eventId) unitEventIds[unitName] <- eventId
+  getUnitEventId = @(unitName) unitEventIds?[unitName]
+  hasUnitEvent = @(unitName) unitEventIds?[unitName] != null
   isUnitOnlyFromEvent = @(unit) unit?.shopEvent != null && !isAvailableBuyUnitOnMarketPlace(unit)
   getEventUnitsData
   getEventMarkersData
-}
+})

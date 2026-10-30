@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "german_summer_1943_gunner_char",
@@ -2355,7 +2361,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/88mm_PaK43_open_turret_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/88mm_PaK43_open_turret_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.15,
@@ -2413,7 +2419,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2455,7 +2461,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_v_02",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 7.0,
@@ -2498,8 +2504,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_panzerjager_nashorn_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_panzerjager_nashorn_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

@@ -1,4 +1,5 @@
-import "%globalScripts/mkWatched.nut" as mkWatched
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "frp" import Watched
@@ -7,30 +8,18 @@ from "%sqstd/platform.nut" import is_windows
 from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import local_player_has_feature, has_ray_query
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-
 let defaults = Watched({  
-             
+  
   SpendGold = true
-  CrewSkills = true
   CrewBuyAllSkills = false
-  UserLog = true
   Voice = true
-  Friends = true
-  Squad = true
-  SquadWidget = true
   SquadTransferLeadership = false
   SquadSizeChange = false
-  SquadInviteIngame = true
-  Clans = true
   Battalions = false
   Radio = true
-  Events = true
   CreateEventRoom = false
   QueueCustomEventRoom = false
   Invites = true
-  Credits = true
   EmbeddedBrowser = is_windows
   EmbeddedBrowserOnlineShop = false
 
@@ -81,15 +70,6 @@ let defaults = Watched({
   Tribunal = false
 
   HideDisabledTopMenuActions = false
-  ModeSkirmish = true
-  ModeBuilder = true
-  ModeDynamic = true
-  ModeSingleMissions = true
-  HistoricalCampaign = true
-  Leaderboards = true
-  HangarWndHelp = true
-  EulaInMenu = true
-  WarpointsInMenu = true
 
   WorldWar = false
   worldWarMaster = false
@@ -105,12 +85,8 @@ let defaults = Watched({
   Human = false
   HumanEventAccess = false
 
-  GraphicsOptions = true
-  Spectator = false
   BuyAllModifications = false
   Packages = true
-  DecalsUse = true
-  AttachablesUse = disableNetwork
   UserSkins = true
   SkinsPreviewOnUnboughtUnits = disableNetwork
   SkinAutoSelect = false
@@ -129,8 +105,6 @@ let defaults = Watched({
   showAllUnitsRanks = false
   EarlyExitCrewUnlock = false
   UnitTooltipImage = true
-
-  ActivityFeedPs4 = false
 
   UnlockAllCountries = false
 
@@ -182,19 +156,13 @@ let defaults = Watched({
   SpectatorUnitDmgIndicator = disableNetwork
 
   ProfileMedals = true
-  UserCards = true
   SlotbarShowBattleRating = true
   GlobalShowBattleRating = false
   VideoPreview = disableNetwork
 
-  ClanRegions = false
-  ClanAnnouncements = false
-  ClanLog = false
-  ClanActivity = false
   ClanSeasonRewardsLog = false
   ClanSeasons_3_0 = false
   ClanChangedInfoData = false
-  ClanSquads = false
   ClanVehicles = false
 
   Warbonds = false
@@ -272,7 +240,7 @@ let defaults = Watched({
   BattleAutoStart = false
 
   PS5HeadTracking = false
-  replayRewind = false
+  replayRewind = disableNetwork
 
   DamageControl = false
 
@@ -290,11 +258,12 @@ let defaults = Watched({
 
   optionGFXAPIVulkan = true
   optionConsolePreset = true
+  DynamicResolution = true
   ReplaySystemWindow = true
   DevFeatures = true
 })
 
-let override = mkWatched(persist, "override", {})
+let override = Watched({})
 let cache = {}
 
 defaults.subscribe(@(...) cache.clear())
@@ -384,7 +353,7 @@ defaults.subscribe(@(...) pushDargFeatures())
 override.subscribe(@(...) pushDargFeatures())
 pushDargFeatures()
 
-return {
+return freeze({
   defaults
   override
 
@@ -394,4 +363,4 @@ return {
   hasFeature
   hasAllFeatures
   hasAnyFeature
-}
+})

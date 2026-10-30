@@ -2,6 +2,7 @@ import "%rGui/globals/extWatched.nut" as extWatched
 from "eventbus" import subscribe, send, eventbus_subscribe, eventbus_send
 from "dagor.workcycle" import resetTimeout
 from "hudActionBar" import getActionBarItems
+from "%sqstd/underscore.nut" import isEqual
 from "%rGui/globals/ui_library.nut" import *
 
 let isActionBarCollapsed = Watched(false)
@@ -14,6 +15,7 @@ let actionBarSize = Watched(null)
 let actionBarActionsCount = Watched(0)
 let actionBarCollapseShText = Watched("")
 let collapseBtnPressedTime = Watched(0)
+let actionBarExpandedMenu = Watched(null)
 
 let actionBarRect = Computed(function calcActionBarRect() {
   if (!isActionBarVisible.get() || isActionBarCollapsed.get())
@@ -104,6 +106,7 @@ function getActionBarItemRectByType(actionType) {
 eventbus_subscribe("onCollapseActionBarBtn", onCollapseShortcutPress)
 subscribe("setIsActionBarVisible", @(v) isActionBarVisible.set(v))
 subscribe("setIsActionBarCollapsed", @(v) isActionBarCollapsed.set(v))
+subscribe("setActionBarExpandedMenu", @(v) actionBarExpandedMenu.set(v))
 subscribe("setActionBarState", function(params) {
   isActionBarCollapsed.set(params?.isCollapsed ?? false)
   isActionBarCollapsable.set(params?.isCollapsable ?? false)
@@ -112,11 +115,14 @@ subscribe("setActionBarState", function(params) {
   actionBarSize.set(params?.size)
   actionBarCollapseShText.set(params?.shortcutText ?? "")
   actionBarActionsCount.set(params?.actionsCount ?? 0)
+  let expandedMenu = params?.expandedMenu
+  if (!isEqual(actionBarExpandedMenu.get(), expandedMenu))
+    actionBarExpandedMenu.set(expandedMenu)
 })
 
 send("getActionBarState", {})
 
-return {
+return freeze({
   collapseBtnPressedTime
   isActionBarCollapsed
   isCollapseBtnHidden
@@ -129,4 +135,5 @@ return {
   actionBarActionsCount
   getActionBarItemRectByType
   actionBarRect
-}
+  actionBarExpandedMenu
+})

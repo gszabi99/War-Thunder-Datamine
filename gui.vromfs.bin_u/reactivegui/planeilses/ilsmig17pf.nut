@@ -14,13 +14,13 @@ let horizontLine = @() {
 
 let horizont = {
   size = FLEX
-  children = [horizontLine]
+  children = horizontLine
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
       translate = [HorizonX.get(), HorizonY.get()]
       rotate = -Roll.get()
-      pivot = [0, 0]
+      pivot = 0
     }
   }
 }
@@ -31,14 +31,14 @@ let target = @() {
   size = const [pw(1.2), ph(1.2)]
   color = IlsColor.get()
   fillColor = IlsColor.get()
-  commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
+  commands = const [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
 }
 
 let targetWrap = @()
 {
   watch = RadarTargetPosValid
   size = FLEX
-  children = [(RadarTargetPosValid.get() ? target : null)]
+  children = (RadarTargetPosValid.get() ? target : null)
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {

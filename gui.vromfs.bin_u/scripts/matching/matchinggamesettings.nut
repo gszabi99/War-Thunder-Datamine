@@ -1,3 +1,4 @@
+from "%scripts/matching/api.nut" import matchingApiFunc, matchingRpcSubscribe
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "matching.errors" import OPERATION_COMPLETE
@@ -5,13 +6,11 @@ from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
-let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
 
 const MAX_FETCH_RETRIES = 5
 
-let matchingGameSettings = mkWatched(persist, "matchingGameSettings", {})
+let matchingGameSettings = mkHardPersistWatched("matching.matchingGameSettings")("matchingGameSettings", {})
 local isFetching = false
 local failedFetches = 0
 

@@ -33,7 +33,7 @@ def public utf8_encode(var dest_array : array<uint8>&; ch : uint) {
         dest_array |> push(uint8(0x80 + (ch & 0x3F)))
     } elif (ch < 0x10000) {
         dest_array |> push(uint8(0xE0 + (ch >> 12u)))
-        dest_array |> push(uint8(0x80 + ((ch >> 6u) & 0x3F)))
+        dest_array |> push(uint8(0x80 + ((ch >> 6u) & 0x3F)))   
         dest_array |> push(uint8(0x80 + (ch & 0x3F)))
     } else {
         dest_array |> push(uint8(0xF0 + (ch >> 18u)))
@@ -139,9 +139,25 @@ def public contains_utf8_bom(utf8_string : string const) : bool {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let shared s_utf8d <-  fixed_array( 
-    
-    
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
@@ -151,8 +167,6 @@ let shared s_utf8d <-  fixed_array(
    8u, 8u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u,  2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u,
   10u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 4u, 3u, 3u, 11u, 6u, 6u, 6u, 5u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u,
 
-  
-  
    0u, 12u, 24u, 36u, 60u, 96u, 84u, 12u, 12u, 12u, 48u, 72u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u,
   12u, 0u, 12u, 12u, 12u, 12u, 12u, 0u, 12u, 0u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 24u, 12u, 12u,
   12u, 12u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u,
@@ -181,8 +195,6 @@ def public is_utf8_string_valid(utf8_string : string const) : bool {
     var codepoint = 0u
     var state = 0u
     for (ch in utf8_string) {
-        
-        
         let byte = uint(uint8(ch))
         let type_ = s_utf8d[byte]
         codepoint = (state != UTF8_ACCEPT) ? (byte & 0x3F) | (codepoint << 6u) : (0xFF >> type_) & byte
@@ -236,12 +248,10 @@ def public utf8_decode(var dest_utf32_string : array<uint>; source_utf8_string :
     }
 }
 
-
-
 let _UTF32_NON_WORD_RANGES <- fixed_array(
     0x0000u, 0x002Fu,
     0x003Au, 0x0040u,
-    0x005Bu, 0x005Eu,   
+    0x005Bu, 0x005Eu,
     0x0060u, 0x0060u,
     0x007Bu, 0x00A9u,
     0x00ABu, 0x00B4u,
@@ -280,15 +290,14 @@ def public utf32_is_word_char(cp : uint) : bool {
     return true
 }
 
-
 let _UTF32_LATIN1_LOWER <- fixed_array(
     0x00E0u, 0x00E1u, 0x00E2u, 0x00E3u, 0x00E4u, 0x00E5u, 0x00E6u, 0x00E7u,
     0x00E8u, 0x00E9u, 0x00EAu, 0x00EBu, 0x00ECu, 0x00EDu, 0x00EEu, 0x00EFu,
-    0x00F0u, 0x00F1u, 0x00F2u, 0x00F3u, 0x00F4u, 0x00F5u, 0x00F6u, 0x00D7u, 
-    0x00F8u, 0x00F9u, 0x00FAu, 0x00FBu, 0x00FCu, 0x00FDu, 0x00FEu, 0x00DFu, 
+    0x00F0u, 0x00F1u, 0x00F2u, 0x00F3u, 0x00F4u, 0x00F5u, 0x00F6u, 0x00D7u,
+    0x00F8u, 0x00F9u, 0x00FAu, 0x00FBu, 0x00FCu, 0x00FDu, 0x00FEu, 0x00DFu,
     0x00E0u, 0x00E1u, 0x00E2u, 0x00E3u, 0x00E4u, 0x00E5u, 0x00E6u, 0x00E7u,
     0x00E8u, 0x00E9u, 0x00EAu, 0x00EBu, 0x00ECu, 0x00EDu, 0x00EEu, 0x00EFu,
-    0x00F0u, 0x00F1u, 0x00F2u, 0x00F3u, 0x00F4u, 0x00F5u, 0x00F6u, 0x00F7u, 
+    0x00F0u, 0x00F1u, 0x00F2u, 0x00F3u, 0x00F4u, 0x00F5u, 0x00F6u, 0x00F7u,
     0x00F8u, 0x00F9u, 0x00FAu, 0x00FBu, 0x00FCu, 0x00FDu, 0x00FEu, 0x00FFu
 )
 
@@ -298,19 +307,14 @@ def public utf32_to_lower(cp : uint) : uint {
     if (cp >= 0x41u && cp <= 0x5Au) return cp + 0x20u
     if (cp < 0xC0u) return cp
     if (cp <= 0xFFu) return _UTF32_LATIN1_LOWER[cp - 0xC0u]
-    
-    
     if (cp >= 0x100u && cp <= 0x137u) return ((cp & 1u) == 0u) ? cp + 1u : cp
     if (cp >= 0x139u && cp <= 0x148u) return ((cp & 1u) == 1u) ? cp + 1u : cp
     if (cp >= 0x14Au && cp <= 0x177u) return ((cp & 1u) == 0u) ? cp + 1u : cp
-    if (cp == 0x178u) return 0xFFu  
+    if (cp == 0x178u) return 0xFFu
     if (cp >= 0x179u && cp <= 0x17Eu) return ((cp & 1u) == 1u) ? cp + 1u : cp
-    
-    
     if ((cp >= 0x391u && cp <= 0x3A1u)
             || (cp >= 0x3A3u && cp <= 0x3ABu)
             || (cp >= 0x410u && cp <= 0x42Fu)) return cp + 0x20u
-    
     if (cp >= 0x400u && cp <= 0x40Fu) return cp + 0x50u
     return cp
 }

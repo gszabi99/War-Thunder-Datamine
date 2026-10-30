@@ -53,9 +53,9 @@ addListenersWithoutEnv({
   DecorCacheInvalidate = @(_) invalidateCache()
 })
 
-return {
+return freeze({
   getCollectionsList = getCollectionsList
   isCollectionPrize = isCollectionPrize
   isCollectionItem = isCollectionItem
   hasAvailableCollections
-}
+})

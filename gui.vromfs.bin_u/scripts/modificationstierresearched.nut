@@ -1,20 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unit/unitInfo.nut" import getUnitTypeTextByUnit, getUnitName, getUnitCountry
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
-from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
-
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-
-let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnitWikiUrl } = require("%scripts/unit/unitWikiInfo.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 
 function guiStartModTierResearched(config) {
   foreach (param, value in config) {
@@ -43,9 +38,6 @@ let ModificationsTierResearched = class (BaseGuiHandlerWT) {
   tier = null
   expReward = null
   unitInResearch = null
-
-  postConfig = null
-  postCustomConfig = null
 
   function initScreen() {
     if (!this.expReward)
@@ -117,22 +109,6 @@ let ModificationsTierResearched = class (BaseGuiHandlerWT) {
       descObj["text-align"] = "center"
       descObj.setValue(msgText)
     }
-
-    if (isLastResearchedModule) {
-      this.postConfig = {
-        locId = "researched_unit"
-        subType = ps4_activity_feed.RESEARCHED_UNIT
-        backgroundPost = true
-      }
-
-      this.postCustomConfig = {
-        requireLocalization = ["unitName", "country"]
-        unitName =$"{this.unit.name}_shop"
-        rank = get_roman_numeral(this.unit?.rank ?? -1)
-        country = getUnitCountry(this.unit)
-        link = getUnitWikiUrl(this.unit.name)
-      }
-    }
   }
 
   function onOk() {
@@ -142,7 +118,6 @@ let ModificationsTierResearched = class (BaseGuiHandlerWT) {
   function afterModalDestroy() {
     broadcastEvent("UpdateResearchingUnit", { unitName = this.unitInResearch })
     checkNonApprovedResearches(true)
-    activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 
   function onUseDecorator() {}
@@ -150,6 +125,6 @@ let ModificationsTierResearched = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ModificationsTierResearched", ModificationsTierResearched)
 
-return {
+return freeze({
   guiStartModTierResearched
-}
+})

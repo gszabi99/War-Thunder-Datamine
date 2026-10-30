@@ -1,3 +1,5 @@
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocksWithBlkOrder
+from "%scripts/streaks.nut" import add_streak_message, getLocForStreak
 from "dagor.random" import frnd, rnd
 from "hudMessages" import HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON
 from "guiMission" import GO_WIN, MISSION_CAPTURING_ZONE, get_player_army_for_hud
@@ -11,8 +13,6 @@ from "%globalScripts/expEventConsts.nut" import *
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
 
 local dbg_msg_obj_counter = 0
 function hud_message_objective_debug(show = true, alwaysShow = false) {
@@ -347,9 +347,9 @@ register_command(show_human_hold_breath_hint, "debug.hud.show_human_hold_breath_
 register_command(show_human_change_scope_hint, "debug.hud.show_human_change_scope_hint")
 register_command(show_human_change_grenade_sight_hint, "debug.hud.show_human_change_grenade_sight_hint")
 
-return {
+return freeze({
   hud_message_objective_debug
   hud_message_player_damage_debug
   hud_message_kill_log_debug
   hud_debug_streak
-}
+})

@@ -23,8 +23,6 @@ def private psh_reserved(name : das_string) : bool {
     return name |> starts_with("__flat_") || name |> starts_with("__ssa_") || name |> starts_with("_preshader_")
 }
 
-
-
 def private name_counter_suffix(name : das_string; prefix : string) : int {
     if (!(name |> starts_with(prefix))) return -1
     let s = slice("{name}", length(prefix))
@@ -32,9 +30,6 @@ def private name_counter_suffix(name : das_string; prefix : string) : int {
     let v = to_int(s)
     return "{v}" == s ? v : -1
 }
-
-
-
 
 def private psh_has_compute(e : ExpressionPtr) : bool {
     if (e == null) return false
@@ -53,18 +48,15 @@ def private psh_has_compute(e : ExpressionPtr) : bool {
 
 struct private PEX {
     paramNames : table<string>
-    localColor : table<string; bool>    
-    mutableVars : table<string>         
-    top : array<ExpressionPtr>          
-    dedup : table<string; string>       
-    rename : table<string; ExpressionPtr>   
+    localColor : table<string; bool>
+    mutableVars : table<string>
+    top : array<ExpressionPtr>
+    dedup : table<string; string>
+    rename : table<string; ExpressionPtr>
     counter : int
     changed : bool
-    noFastMath : bool                       
+    noFastMath : bool
 }
-
-
-
 
 def private hoisted_ref(refName : string; src : ExpressionPtr) : ExpressionPtr {
     var v = new ExprVar(at = src.at, name := refName)
@@ -74,25 +66,20 @@ def private hoisted_ref(refName : string; src : ExpressionPtr) : ExpressionPtr {
     return v
 }
 
-
-
-
 def private is_rcp_candidate(pe : PEX; barriers : table<string>; o : ExprOp2?) : bool {
     return (o.op == "/" && expr_bt(o.right) == Type.tFloat && is_float_valued(o) &&
         !(o.right |> is_expr_const()) && !pex_eligible(pe, barriers, o) &&
         pex_eligible(pe, barriers, o.right))
 }
 
-
-
 def private pex_eligible(pe : PEX; barriers : table<string>; e : ExpressionPtr) : bool {   
     if (e == null) return false
     if (e |> is_expr_const()) return true
     if (e is ExprVar) {
         let nm = "{(e as ExprVar).name}"
-        if (key_exists(pe.mutableVars, nm)) return false   
+        if (key_exists(pe.mutableVars, nm)) return false
         if (key_exists(pe.localColor, nm)) return pe.localColor?[nm] ?? false
-        return !key_exists(pe.paramNames, nm)   
+        return !key_exists(pe.paramNames, nm)
     }
     if (e is ExprRef2Value) return pex_eligible(pe, barriers, (e as ExprRef2Value).subexpr)
     if (e is ExprField) return pex_eligible(pe, barriers, (e as ExprField).value)
@@ -120,7 +107,6 @@ def private pex_eligible(pe : PEX; barriers : table<string>; e : ExpressionPtr) 
     }
     if (e is ExprCall) {
         let c = e as ExprCall
-        
         if (key_exists(barriers, simple_name("{c.name}"))) return false
         for (a in c.arguments) {
             if (!pex_eligible(pe, barriers, a)) return false
@@ -129,8 +115,6 @@ def private pex_eligible(pe : PEX; barriers : table<string>; e : ExpressionPtr) 
     }
     return false
 }
-
-
 
 def private pex_hoist_name(var pe : PEX; var e : ExpressionPtr) : string {
     let key = describe(e)
@@ -143,8 +127,6 @@ def private pex_hoist_name(var pe : PEX; var e : ExpressionPtr) : string {
     return nm
 }
 
-
-
 def private pex_extract(var pe : PEX; barriers : table<string>; var e : ExpressionPtr) : ExpressionPtr {
     if (e == null) return null
     if (psh_has_compute(e) && pex_eligible(pe, barriers, e)) {
@@ -152,7 +134,6 @@ def private pex_extract(var pe : PEX; barriers : table<string>; var e : Expressi
         pe.changed = true
         return hoisted_ref(nm, e)
     }
-    
     if (e is ExprOp2 && !pe.noFastMath && is_rcp_candidate(pe, barriers, e as ExprOp2)) {
         var o = e as ExprOp2
         var one = new ExprConstFloat(at = o.at, value = 1.0)
@@ -161,13 +142,11 @@ def private pex_extract(var pe : PEX; barriers : table<string>; var e : Expressi
         pe.changed = true
         return new ExprOp2(at = o.at, op := "*",
             left = pex_extract(pe, barriers, o.left),
-            right = hoisted_ref(nm, o.right))   
+            right = hoisted_ref(nm, o.right))
     }
     rewrite_children(e) $(var c : ExpressionPtr) { return pex_extract(pe, barriers, c) }
     return e
 }
-
-
 
 def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barriers : table<string>; var counter : int&; no_fast_math : bool) : bool {   
     var pe = PEX(counter = counter, noFastMath = no_fast_math)
@@ -175,7 +154,6 @@ def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barr
         pe.paramNames |> insert("{a.name}")
     }
     pe.mutableVars <- collect_mutable(blk)
-    
     var oldPrefix = 0
     for (s in blk.list) {
         if (s is ExprLet && length((s as ExprLet).variables) == 1 &&
@@ -185,7 +163,6 @@ def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barr
                 pe.dedup["{describe(lv.init)}"] = "{lv.name}"
             }
             pe.localColor["{lv.name}"] = true
-            
             let cnum = name_counter_suffix(lv.name, "_preshader_")
             if (cnum >= pe.counter) {
                 pe.counter = cnum + 1
@@ -212,19 +189,16 @@ def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barr
             var init = lc.variables[0].init
             if (init != null && pex_eligible(pe, barriers, init)) {
                 if (psh_has_compute(init)) {
-                    
                     let nm = pex_hoist_name(pe, init)
                     pe.rename[vname] = hoisted_ref(nm, init)
                     pe.changed = true
                 } else {
-                    
                     pe.rename[vname] = clone_expression(init)
                     pe.changed = true
                 }
                 continue
             }
         }
-        
         if (s is ExprLet) {
             var lc = s as ExprLet
             for (lv in lc.variables) {
@@ -243,7 +217,6 @@ def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barr
         body |> push(s)
     }
     if (pe.changed) {
-        
         while (!empty(blk.list)) {
             blk.list |> erase(length(blk.list) - 1)
         }
@@ -272,12 +245,11 @@ def private extract_preshader(var func : FunctionPtr; var blk : ExprBlock?; barr
 }
 
 class private CseTally : AstVisitor {
-    collectSample : bool        
+    collectSample : bool
     counts : table<string; int>
     sample : table<string; ExpressionPtr>
     mutableVars : table<string>
     def override preVisitExpression(expr : ExpressionPtr) : void {
-        
         if (expr is ExprRef2Value) {
             return
         }
@@ -290,8 +262,6 @@ class private CseTally : AstVisitor {
         }
     }
 }
-
-
 
 def private cse_replace_expr(var e : ExpressionPtr; key, refName : string) : ExpressionPtr {
     if (e == null) return null
@@ -319,9 +289,6 @@ def private cse_replace_stmt(var s : ExpressionPtr; key, refName : string) {
     }
 }
 
-
-
-
 def private cse_tally_stmt(s : ExpressionPtr; a) {
     if (s is ExprLet) {
         for (lv in (s as ExprLet).variables) {
@@ -339,9 +306,6 @@ def private cse_tally_stmt(s : ExpressionPtr; a) {
     }
 }
 
-
-
-
 def private preshader_prefix_len(blk : ExprBlock?) : int {
     var k = 0
     for (s in blk.list) {
@@ -355,12 +319,9 @@ def private preshader_prefix_len(blk : ExprBlock?) : int {
     return k
 }
 
-
-
 def private cse_body(var blk : ExprBlock?; var counter : int&) : bool {   
     var anyChange = false
     var guard = 0
-    
     for (s in blk.list) {
         if (s is ExprLet && length((s as ExprLet).variables) == 1) {
             var cnum = name_counter_suffix((s as ExprLet).variables[0].name, "_preshader_cse_")
@@ -372,11 +333,9 @@ def private cse_body(var blk : ExprBlock?; var counter : int&) : bool {
             }
         }
     }
-    
     var mutableVars <- collect_mutable(blk)
     while (guard < 4096) {
         guard ++
-        
         var counts : table<string; int>
         var sample : table<string; ExpressionPtr>
         var firstStmt : table<string; int>
@@ -398,7 +357,6 @@ def private cse_body(var blk : ExprBlock?; var counter : int&) : bool {
                 delete ct
             }
         }
-        
         var bestKey = ""
         var bestLen = 0
         for (k in keys(counts)) {
@@ -419,7 +377,6 @@ def private cse_body(var blk : ExprBlock?; var counter : int&) : bool {
         let uniform = fi < preshader_prefix_len(blk)
         let nm = uniform ? "_preshader_cse_{counter}" : "_cse_{counter}"
         counter ++
-        
         var src = sample?[bestKey] ?? null
         for (s in blk.list) {
             cse_replace_stmt(s, bestKey, nm)
@@ -451,10 +408,6 @@ def private cse_body(var blk : ExprBlock?; var counter : int&) : bool {
     return anyChange
 }
 
-
-
-
-
 def private cm_key(l, r : ExpressionPtr) : string {
     return "{describe(l)}\t-\t{describe(r)}"
 }
@@ -470,8 +423,6 @@ class private CmTally : AstVisitor {
         }
     }
 }
-
-
 
 def private chain_has_grouped(e : ExpressionPtr; key : string) : bool {
     if (e == null) return false
@@ -489,9 +440,6 @@ def private chain_has_grouped(e : ExpressionPtr; key : string) : bool {
     }
     return false
 }
-
-
-
 
 def private regroup_candidate(var that : ExprOp2?; cm : table<string; int>; mutableVars : table<string>;
                               no_fast_math : bool; var terms : array<ReTerm>; var ci : int&; var xi : int&) : bool {
@@ -598,11 +546,6 @@ def private regroup_to_share(var blk : ExprBlock?; no_fast_math : bool) : bool {
     return ch
 }
 
-
-
-
-
-
 def private alias_source(e : Expression const?) : ExpressionPtr {
     if (e == null) return null
     if (e is ExprRef2Value) return alias_source((e as ExprRef2Value).subexpr)
@@ -615,12 +558,10 @@ def private eliminate_aliases(var blk : ExprBlock?) : bool {
     var body : array<ExpressionPtr>
     var changed = false
     for (s0 in blk.list) {
-        
         var s = !empty(rename) && reads_any(s0, rename) ? subst_consts(s0, rename) : s0
         if (s is ExprLet && length((s as ExprLet).variables) == 1) {
             let lvName = "{(s as ExprLet).variables[0].name}"
             let src = alias_source((s as ExprLet).variables[0].init)
-            
             if (src != null && !key_exists(mutableVars, lvName) &&
                     !key_exists(mutableVars, "{(src as ExprVar).name}")) {
                 rename[lvName] = clone_expression(src)
@@ -646,18 +587,11 @@ def private eliminate_aliases(var blk : ExprBlock?) : bool {
     return changed
 }
 
-
-
-
-
-
 def private pex_residual_expr(pe : PEX; barriers : table<string>; e : ExpressionPtr) : bool {
     if (e == null) return false
     if (psh_has_compute(e) && pex_eligible(pe, barriers, e)) return true
     return fold_children_or(e) $(c) => pex_residual_expr(pe, barriers, c)
 }
-
-
 
 def private rcp_residual_expr(pe : PEX; barriers : table<string>; e : ExpressionPtr) : bool {
     if (e == null) return false
@@ -665,11 +599,11 @@ def private rcp_residual_expr(pe : PEX; barriers : table<string>; e : Expression
     return fold_children_or(e) $(c) => rcp_residual_expr(pe, barriers, c)
 }
 
-def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fast_math : bool = false) : array<string> {   
+def public opt_residuals(var func : FunctionPtr; barriers : table<string>;   
+                         no_fast_math : bool = false; hadd_min_width : int = 3) : array<string> {
     var res : array<string>
     if (func == null || func.body == null || !(func.body is ExprBlock)) return <- res
     var blk = func.body as ExprBlock
-    
     var pe : PEX
     for (a in func.arguments) {
         pe.paramNames |> insert("{a.name}")
@@ -682,7 +616,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
             }
         }
     }
-    
     let prefix = preshader_prefix_len(blk)
     for (i in range(length(blk.list))) {
         if (i < prefix) {
@@ -706,7 +639,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
             break
         }
     }
-    
     if (!no_fast_math) {
         for (i in range(length(blk.list))) {
             if (i < prefix) {
@@ -731,8 +663,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
             }
         }
     }
-    
-    
     var counts : table<string; int>
     for (i in range(length(blk.list))) {
         var ct = new CseTally()
@@ -753,8 +683,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
             break
         }
     }
-    
-    
     var cmt = new CmTally()
     cmt.mutableVars := pe.mutableVars
     make_visitor(*cmt) $(a) {
@@ -777,8 +705,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
     unsafe {
         delete cmt
     }
-    
-    
     for (s in blk.list) {
         if (s is ExprLet && length((s as ExprLet).variables) == 1) {
             let lvName = "{(s as ExprLet).variables[0].name}"
@@ -790,13 +716,11 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
             }
         }
     }
-    
-    
-    
     let cm = fuse_callable(func._module, "mad")
     var fr = new FuseResidualVisitor(checkMad = cm, checkLerp = cm && fuse_callable(func._module, "lerp"),
         checkDot = !no_fast_math && fuse_callable(func._module, "dot", 2),
-        checkHadd = !no_fast_math && fuse_callable(func._module, "hadd", 1), noFastMath = no_fast_math)
+        checkHadd = !no_fast_math && fuse_callable(func._module, "hadd", 1),
+        haddMinWidth = hadd_min_width, noFastMath = no_fast_math)
     make_visitor(*fr) $(a) {
         visit(func.body, a)
     }
@@ -816,7 +740,7 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
         res |> push("an un-fused lane sum ('v.x + v.y + ...' should be dot(v, mask))")
     }
     if (fr.foundHadd) {
-        res |> push("an un-fused scalar sum ('a + b + c + d' should be hadd(float4(...)))")
+        res |> push("an un-fused scalar sum of >= {hadd_min_width} lanes (should be hadd(floatN(...)))")
     }
     unsafe {
         delete fr
@@ -827,8 +751,6 @@ def public opt_residuals(var func : FunctionPtr; barriers : table<string>; no_fa
     delete counts
     return <- res
 }
-
-
 
 def private log_cse_cache(func : FunctionPtr; var blk : ExprBlock?) {
     var mutableVars <- collect_mutable(blk)
@@ -885,9 +807,6 @@ def public flatten_preshade_cse(var func : FunctionPtr; barriers : table<string>
     
     if (!(func.body is ExprBlock)) return false
     var blk = func.body as ExprBlock
-    
-    
-    
     var changed = false
     var guard = 0
     var cseCounter = 0

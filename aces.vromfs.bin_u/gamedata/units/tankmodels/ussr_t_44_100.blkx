@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -2145,6 +2151,12 @@
       "ex_decor_l_03_dm": {
         "armorThickness": 4.0
       },
+      "ex_decor_r_02_dm": {
+        "armorThickness": 4.0
+      },
+      "ex_decor_l_02_dm": {
+        "armorThickness": 4.0
+      },
       "ex_decor_l_05_dm": {
         "armorThickness": 4.0
       },
@@ -2812,7 +2824,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2854,7 +2866,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2897,7 +2909,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2940,7 +2952,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_t_44_100_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_44_100_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_t_44_100_default.blk"
     }
   },
   "ammoStowages": {
@@ -3162,7 +3174,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/100mm_D10T_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3204,7 +3216,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3247,7 +3259,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_aa_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3288,7 +3300,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/t_44_100_smoke_barrel_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/t_44_100_smoke_barrel_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -1,35 +1,35 @@
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/battlePass/seasonState.nut" import seasonLevel, season, seasonMainPrizesData
+from "%scripts/battlePass/seasonStages.nut" import seasonStages, getStageViewData, doubleWidthStagesIcon
+from "%scripts/unlocks/userstatUnlocksState.nut" import unlockProgress, activeUnlocks
+from "%scripts/userstat/userstatItemsRewards.nut" import receiveRewards
+from "%scripts/battlePass/challenges.nut" import updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/battlePass/progressShop.nut" import openBattlePassShopWnd
+from "%scripts/userstat/userstat.nut" import userstatStats, isUserstatMissingData
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj, getSelectedChild, findChildIndex, adjustWindowSize
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/battlePass/unlocksRewardsState.nut" import hasBattlePass
+from "%scripts/unlocks/unlocksConditions.nut" import isBitModeType
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavCheckBox
+from "%scripts/time.nut" import buildDateTimeStr
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/battleTasks.nut" import getCurrentBattleTasks, isBattleTasksAvailable
+from "%scripts/unlocks/battleTasksView.nut" import setBattleTasksUpdateTimer
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "math" import ceil
 from "dagor.random" import rnd
 from "%sqstd/math.nut" import number_of_set_bits
 from "%scripts/dagui_library.nut" import *
 
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
-let { seasonStages, getStageViewData, doubleWidthStagesIcon } = require("%scripts/battlePass/seasonStages.nut")
-let { unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId } = require("%scripts/battlePass/challenges.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj, tomorowLoginExpWatchObj, easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj, seasonTasksProgressWatchObj, leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj, hasChallengesRewardWatchObj } = require("%scripts/battlePass/watchObjInfoConfig.nut")
-let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
-let { userstatStats, isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { move_mouse_on_obj, getSelectedChild, findChildIndex, adjustWindowSize } = require("%scripts/sqDagui/daguiUtil.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { toggleUnlockFavCheckBox } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { buildDateTimeStr } = require("%scripts/time.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getCurrentBattleTasks, isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
-let { setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") 
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
@@ -592,7 +592,7 @@ function openBattlePassWnd(params = {}) {
 
 addPromoAction("battle_pass", @(_handler, _params, _obj) openBattlePassWnd())
 
-return {
+return freeze({
   BattlePassWnd
   openBattlePassWnd
-}
+})

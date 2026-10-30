@@ -2115,7 +2115,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_phalanx_search.blk",
+        "blk": "gamedata/sensors/us_phalanx_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -2125,7 +2125,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/us_phalanx_track.blk",
+        "blk": "gamedata/sensors/us_phalanx_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",
@@ -2139,16 +2139,12 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "aimingFromBoneGun": true,
         "rearmCartridgeTime": 20.0,
-        "recoilMultiplier": [
-          0.7,
-          0.7
-        ],
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
@@ -2157,6 +2153,7 @@
           "power_system_dm"
         ],
         "recoilOffset": 0.05,
+        "recoilMultiplier": 0.7,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
@@ -2188,13 +2185,23 @@
           "loaderDm": "loader_01_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "linkedAnimPart": [
             {
               "verNode": "bone_roll_02",
@@ -2436,7 +2443,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2485,13 +2492,23 @@
           "loaderDm": "loader_02_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2710,7 +2727,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
         "emitter": "emtr_mg_aa_flame_01",
         "flash": "emtr_mg_aa_flame_01",
         "useEmitter": true,
@@ -2912,8 +2929,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_xm246_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_xm246_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4392,7 +4409,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/us_phalanx_search.blk",
+              "blk": "gamedata/sensors/us_phalanx_search.blk",
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
@@ -4402,7 +4419,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/us_phalanx_track.blk",
+              "blk": "gamedata/sensors/us_phalanx_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "antenna_target_tagging_dm",
@@ -4411,7 +4428,7 @@
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }
@@ -4443,16 +4460,12 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "aimingFromBoneGun": true,
               "rearmCartridgeTime": 20.0,
-              "recoilMultiplier": [
-                0.7,
-                0.7
-              ],
               "jammedReloadTime": 15.0,
               "barrelDP": "gun_barrel_01_dm",
               "breechDP": "cannon_breech_01_dm",
@@ -4461,6 +4474,7 @@
                 "power_system_dm"
               ],
               "recoilOffset": 0.05,
+              "recoilMultiplier": 0.7,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
@@ -4492,13 +4506,23 @@
                 "loaderDm": "loader_01_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "linkedAnimPart": [
                   {
                     "verNode": "bone_roll_02",
@@ -4740,7 +4764,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
@@ -4789,13 +4813,23 @@
                 "loaderDm": "loader_02_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -5014,7 +5048,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
               "emitter": "emtr_mg_aa_flame_01",
               "flash": "emtr_mg_aa_flame_01",
               "useEmitter": true,
@@ -5205,7 +5239,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -5392,5 +5426,29 @@
     "hasTargetList": true,
     "hasTurretView": true,
     "hasVerticalView": false
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.215,
+      0.9898,
+      0.7589
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

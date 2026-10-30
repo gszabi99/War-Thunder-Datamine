@@ -1959,7 +1959,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_XM274_Ares_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_XM274_Ares_user_cannon.blk",
         "shotFreq": 1.1667,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -1969,6 +1969,7 @@
         "breechDP": "cannon_breech_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
+          "fire_control_system_01_dm",
           "power_system_dm"
         ],
         "autoLoader": true,
@@ -1996,13 +1997,20 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2087,7 +2095,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2114,7 +2122,19 @@
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2132,7 +2152,7 @@
   "weapon_presets": {
     "preset": {
       "name": "us_rdf_lt_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_rdf_lt_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/us_rdf_lt_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3088,12 +3108,13 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
       "turretIndex": 0,
       "designationTurretIndex": 0,
       "dmPart": [
         "optic_gun_dm",
-        "fire_control_system_dm"
+        "fire_control_system_dm",
+        "fire_control_system_01_dm"
       ]
     }
   },
@@ -3123,7 +3144,10 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "rangefinderDmPart": "fire_control_system_dm",
+        "rangefinderDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
         "distanceError": [
           1.0,
           1.0,
@@ -3167,12 +3191,13 @@
         "rcostAddParam": 0.98,
         "sensors": {
           "sensor": {
-            "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+            "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
             "turretIndex": 0,
             "designationTurretIndex": 0,
             "dmPart": [
               "optic_gun_01_dm",
-              "fire_control_system_dm"
+              "fire_control_system_dm",
+              "fire_control_system_01_dm"
             ]
           }
         }
@@ -3189,7 +3214,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_XM274_Ares_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_XM274_Ares_user_cannon.blk",
               "shotFreq": 1.1667,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
@@ -3199,6 +3224,7 @@
               "breechDP": "cannon_breech_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
+                "fire_control_system_01_dm",
                 "power_system_dm"
               ],
               "autoLoader": true,
@@ -3226,13 +3252,20 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3317,7 +3350,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3344,7 +3377,19 @@
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3360,7 +3405,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3754,5 +3799,29 @@
         "to": "us_camo_modern_winter_tan*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.879,
+      1.3746,
+      1.1
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

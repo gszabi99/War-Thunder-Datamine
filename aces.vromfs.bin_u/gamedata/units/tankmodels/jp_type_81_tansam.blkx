@@ -2224,7 +2224,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/160mm_sam_1c_launcher_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/160mm_sam_1c_launcher_user_cannon.blk",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
       "emitter": "bone_rocket_01",
@@ -2283,14 +2283,23 @@
         "gunnerDm": "commander_dm",
         "verDriveDm": [
           "drive_turret_v_dm",
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
           "drive_turret_v_01_dm",
-          "fire_control_system_dm"
+          "drive_turret_v_02_dm"
         ],
         "horDriveDm": [
           "drive_turret_h_dm",
-          "fire_control_system_dm"
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm",
+          "drive_turret_h_01_dm"
         ],
-        "shootingDmPart": "fire_control_system_dm"
+        "shootingDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ]
       },
       "limits": {
         "yaw": [
@@ -2373,8 +2382,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_81_tansam_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_81_tansam_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4026,7 +4035,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/us_lav_ad_track.blk",
+              "blk": "gamedata/sensors/us_lav_ad_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "optic_gun_dm",
@@ -4034,7 +4043,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]
@@ -4189,7 +4198,7 @@
   ],
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/us_lav_ad_track.blk",
+      "blk": "gamedata/sensors/us_lav_ad_track.blk",
       "turretIndex": 0,
       "dmPart": [
         "optic_gun_dm",

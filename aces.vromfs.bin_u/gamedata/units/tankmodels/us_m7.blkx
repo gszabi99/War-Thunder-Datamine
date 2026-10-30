@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "testFlight": "testFlight_tank_ussr",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1888,7 +1894,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_m3_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_m3_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -1966,7 +1972,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": 0.0,
@@ -2007,7 +2013,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2051,7 +2057,7 @@
   "weapon_presets": {
     "preset": {
       "name": "tank_weapon_preset_default",
-      "blk": "gameData/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2683,7 +2689,7 @@
   },
   "wreckedParts": {
     "part": {
-      "node": "bone_turret_01",
+      "node": "bone_turret",
       "mass": 3300.0,
       "cutDamage": 350.0,
       "deviation": 0.5,

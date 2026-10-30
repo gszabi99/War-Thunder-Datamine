@@ -1,14 +1,13 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/unit/unitInfo.nut" import getUnitName, reUnitLocNameSeparators
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
 
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
 let searchTokensCache = {}
@@ -32,7 +31,7 @@ function clearCache() {
 }
 
 function rebuildCache() {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   clearCache()
@@ -86,8 +85,8 @@ add_event_listener(GAME_LOCALIZATION_CHANGED, @(_p) rebuildCache(),
 add_event_listener("SignOut", @(_p) clearCache(),
   null, g_listener_priority.DEFAULT)
 
-return {
+return freeze({
   findUnitsByLocName
   isUnitLocNameMatchSearchStr
   cacheUnitSearchTokens
-}
+})

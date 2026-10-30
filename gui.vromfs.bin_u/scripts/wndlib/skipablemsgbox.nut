@@ -1,12 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, getSelectedChild, findChild, findChildIndex
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, getSelectedChild, findChild, findChildIndex
-} = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let SkipableMsgBox = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -97,4 +95,4 @@ let SkipableMsgBox = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("SkipableMsgBox", SkipableMsgBox)
 
-return { SkipableMsgBox }
+return freeze({ SkipableMsgBox })

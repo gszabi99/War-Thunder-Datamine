@@ -1,10 +1,10 @@
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "string" import format
 from "dagor.time" import get_time_msec
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { open_url_by_obj } = require("open_url_by_obj.nut")
 
 let scene_msg_boxes_list = [] 
@@ -262,8 +262,11 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
       let animParams = needAnim ? "color-factor:t='0';" : ""
       foreach (btn in buttons) {
         if (btn[0] != "") {
-          let locTxtId = (btn[0].slice(0, 1) == "#") ? btn[0] : $"#msgbox/btn_{btn[0]}"
-          local btnText = "".concat("text:t='", locTxtId, "'; id:t='", btn[0], "'; on_click:t='onButton';")
+          let rawText = btn?[3]
+          let txtProp = rawText != null
+            ? stripTags(rawText)
+            : ((btn[0].slice(0, 1) == "#") ? btn[0] : $"#msgbox/btn_{btn[0]}")
+          local btnText = "".concat("text:t='", txtProp, "'; id:t='", btn[0], "'; on_click:t='onButton';")
           if (buttons.len() == 1)
             btnText = "".concat(btnText, "btnName:t='AB'; ") 
           blkText = "".concat(blkText, "Button_text { ", animParams, btnText, "}")

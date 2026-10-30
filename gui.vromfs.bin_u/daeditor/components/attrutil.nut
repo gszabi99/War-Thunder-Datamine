@@ -2,10 +2,11 @@ import "dagor.math" as dagorMath
 import "math" as math
 from "string" import regexp, strip, format
 from "%sqstd/string.nut" import tostring_r
-from "console" import command
 from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
 from "types" import String
+
+let entity_editor = require_optional("entity_editor")
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 let rexInt = regexp(@"[\+\-]?[0-9]+")
 let tofloat = @(v): float v.tofloat()
@@ -90,7 +91,7 @@ let convertTextToValFuncs = {
   }
 }
 
-function convertTextToVal(cur_value, comp_type, text) {
+function convertTextToVal(comp_type, text) {
   if (convertTextToValFuncs?[comp_type] != null)
     return convertTextToValFuncs[comp_type](text)
 
@@ -114,11 +115,8 @@ function convertTextToVal(cur_value, comp_type, text) {
     return res
   }
 
-  if (comp_type == "TMatrix") {
-    let res = cur_value
-    res[3] = convertTextToValForDagorClass("Point3", fields.map(pipe(strip, tofloat)))
-    return res
-  }
+  if (comp_type == "TMatrix") 
+    return convertTextToValForDagorClass("Point3", fields.map(pipe(strip, tofloat)))
 
   return null
 }
@@ -202,6 +200,15 @@ function isCompReadOnly(eid, comp_name){
 }
 
 
+
+function mkCompPathKey(cname, cpath) {
+  local key = cname
+  foreach (k in (cpath ?? []))
+    key = $"{key}.{k}"
+  return key
+}
+
+
 function valueAtPath(object, path) {
   local res = object
   foreach (key in (path ?? [])) {
@@ -212,47 +219,45 @@ function valueAtPath(object, path) {
   return res
 }
 
-function getValFromObj(eid, comp_name, path=null){
-  let object = _dbg_get_comp_val_inspect(eid, comp_name)
-  return valueAtPath(object?.getAll() ?? object, path)
-}
 
-function setValToObj(eid, comp_name, path, val){
+
+function writeComponent(eid, comp_name, path, val): bool {
   let comp = _dbg_get_comp_val_inspect(eid, comp_name)
   if (comp?.isReadOnly() ?? false)
-    return
-  let object = comp.getAll()
-  local res = object
-  let lastkey = path?[path.len()-1]
-  if (lastkey == null)
-    return
-  foreach (idx, key in path) {
-    if (idx < path.len()-1) {
+    return false
+  local object = val
+  if ((path?.len() ?? 0) > 0) {
+    object = comp?.getAll() ?? comp 
+    local res = object
+    foreach (key in path.slice(0, -1)) {
       if (!(res?[key] != null || key in res || res?.contains(key)))
-        return
+        return false
       res = res[key]
     }
-    else {
-      res[lastkey] = val
-      obsolete_dbg_set_comp_val(eid, comp_name, object)
-      break
-    }
+    res[path.top()] = val
   }
-}
-
-function updateComp(eid, comp_name){
-  command?($"ecs.update_component {eid} {comp_name}")
+  local written = false
+  try {
+    
+    written = obsolete_dbg_set_comp_val(eid, comp_name, object) == true
+  }
+  catch (e) {
+    logerr($"Failed to write component {comp_name} of {eid}, reason: {e}")
+  }
+  if (!written)
+    return false
+  entity_editor?.save_component(eid, comp_name)
+  return true
 }
 
 let exports = {
   isCompReadOnly
+  mkCompPathKey
   valueAtPath
-  getValFromObj
-  setValToObj
+  writeComponent
   isValueTextValid
   convertTextToVal
   compValToString
-  updateComp
 
   ecsTypeToSquirrelType = {
     

@@ -36,7 +36,7 @@ subscribe("updateChangeLogsStates", function(data) {
 
 send("getChangeLogsStates", {})
 
-return {
+return freeze({
   versions
   curPatchnote
   curPatchnoteIdx
@@ -50,4 +50,4 @@ return {
   needShowSteamReviewBtn
   isNews
   isEvent
-}
+})

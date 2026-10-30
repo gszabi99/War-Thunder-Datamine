@@ -1,14 +1,14 @@
+import "%scripts/guidParser.nut" as guidParser
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "%sqstd/string.nut" as string
 import "%sqstd/math.nut" as stdMath
+from "%scripts/customization/skinUtils.nut" import getSkinNameBySkinId
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqstd/datablock.nut" import blkFromPath
 from "%scripts/dagui_library.nut" import *
 
-let guidParser = require("%scripts/guidParser.nut")
 let { liveDecoratorsCache } = require("%scripts/customization/decoratorCache.nut")
-let { getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 
 const MAX_LOCATION_TYPES = 64
 
@@ -134,7 +134,7 @@ function getBestSkinsList(skinsList, unitName, level) {
     if (match)
       res.append({match, skin})
   }
-  return res.sort(@(a, b) b.match <=> a.match).map(@(i) i.skin)
+  return res.sortby(@(a) -a.match).map(@(i) i.skin)
 }
 
 function getIconTypeByMask(mask) {
@@ -145,7 +145,7 @@ function getIconTypeByMask(mask) {
   return "forest"
 }
 
-return {
+return freeze({
   getLocationTypeId
   getSkinLocationsMask = getSkinLocationsMask
   getSkinLocationsMaskBySkinId = getSkinLocationsMaskBySkinId
@@ -154,4 +154,4 @@ return {
   getLocationsLoc = getLocationsLoc
   getIconTypeByMask = getIconTypeByMask
   debugLocationMask = debugLocationMask
-}
+})

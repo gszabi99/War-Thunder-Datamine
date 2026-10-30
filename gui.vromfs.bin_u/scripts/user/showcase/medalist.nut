@@ -1,20 +1,20 @@
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/selectionWindow.nut" import openSelectionWindow
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder, getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksState.nut" import getUnlockableMedalImage, getUnlockNameText
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
 from "%sqstd/underscore.nut" import isArray
 from "%sqstd/string.nut" import utf8ToLower
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { openSelectionWindow } = require("%scripts/selectionWindow.nut")
-let { getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockableMedalImage, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 
 const MEDALS_SLOTS_COUNT = 10
 const MEDALIST_EDIT_CONTAINER_ID = "medalist_container_edit"
@@ -90,7 +90,7 @@ function getFiltersView() {
   foreach (country in filtersData.countries)
     view.checkbox.append(country)
 
-  view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+  view.checkbox.sortby(@(a) a.idx)
   if (view.checkbox.len() > 0)
     view.checkbox.top().isLastCheckBox <- true
   res.append(view)

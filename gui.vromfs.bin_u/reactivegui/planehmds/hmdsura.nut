@@ -25,7 +25,7 @@ function crosshair(width, _height) {
       || (HmdDesignation.get()
         && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING
         && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL)
-      ? [
+      ? const [
           [VECTOR_ELLIPSE, 0, 0, 25, 25],
           [VECTOR_ELLIPSE, 0, 0, 50, 50],
           [VECTOR_LINE, 0, -15, 0, -85],
@@ -35,7 +35,7 @@ function crosshair(width, _height) {
         ]
       : GuidanceLockState.get() >= GuidanceLockResult.RESULT_WARMING_UP
         && CurWeaponGidanceType.get() == GuidanceType.TYPE_OPTICAL
-      ? [
+      ? const [
           [VECTOR_SECTOR, 0, 0, 50, 50, 5, 85],
           [VECTOR_SECTOR, 0, 0, 50, 50, 95, 175],
           [VECTOR_SECTOR, 0, 0, 50, 50, 185, 270],
@@ -45,7 +45,7 @@ function crosshair(width, _height) {
           [VECTOR_SECTOR, 0, 0, 30, 30, 188, 267],
           [VECTOR_SECTOR, 0, 0, 30, 30, 283, 352]
         ]
-      : [
+      : const [
           [VECTOR_ELLIPSE, 0, 0, 30, 30],
           [VECTOR_ELLIPSE, 0, 0, 50, 50],
           [VECTOR_LINE, 0, -19, 0, -85],
@@ -114,16 +114,14 @@ let radarTargetData = @(){
   size = const [pw(10), ph(4)]
   watch = HaveRadarTarget
   flow = FLOW_VERTICAL
-  children = HaveRadarTarget.get() ? [
-    @(){
-      rendObj = ROBJ_TEXT
-      watch = RadarTargetDist
-      text = string.format("%d", round(RadarTargetDist.get() * 0.001))
-      color = Color(202, 30, 10, 120)
-      font = Fonts.hud
-      fontSize = 19
-    }
-   ] : null
+  children = HaveRadarTarget.get() ? @(){
+    rendObj = ROBJ_TEXT
+    watch = RadarTargetDist
+    text = string.format("%d", round(RadarTargetDist.get() * 0.001))
+    color = Color(202, 30, 10, 120)
+    font = Fonts.hud
+    fontSize = 19
+  } : null
 }
 
 function SuraZoom(width, height) {

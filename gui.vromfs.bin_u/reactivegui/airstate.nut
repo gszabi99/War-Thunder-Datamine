@@ -1,7 +1,6 @@
 import "%rGui/interopGen.nut" as interopGen
 from "hudState" import NUM_ENGINES_MAX
 from "%rGui/globals/ui_library.nut" import *
-from "dagor.workcycle" import setTimeout, clearTimer, hasTimer
 
 let { interop } = require("%rGui/globals/interop.nut")
 
@@ -18,8 +17,8 @@ let BombReleaseBlockedStates =
   bombBay = 2
 }
 
-local IndicatorsVisible = Watched(false)
-local CurrentTime = Watched(false)
+let IndicatorsVisible = Watched(false)
+let CurrentTime = Watched(false)
 
 let DistanceToGround = Watched(0.0)
 let RadarAltitude = Watched(0.0)
@@ -30,6 +29,9 @@ let VerticalSpeed = Watched(0.0)
 let RocketAimX = Watched(0.0)
 let RocketAimY = Watched(0.0)
 let RocketAimVisible = Watched(false)
+let HmdRocketAimX = Watched(0.0)
+let HmdRocketAimY = Watched(0.0)
+let HmdRocketAimVisible = Watched(false)
 let RocketSightMode = Watched(0) 
 let RocketSightSizeFactor = Watched(0.0)
 
@@ -93,6 +95,13 @@ let HudParamColor = Watched(Color(240, 240, 240, 240))
 let AlertColorLow = Watched(Color(220, 220, 220, 240))
 let AlertColorMedium = Watched(Color(220, 120, 120, 240))
 let AlertColorHigh = Watched(Color(230, 0, 0, 240))
+let AlertColorCrit = Watched(Color(230, 0, 0, 240))
+
+
+let TempColorLow = Watched(Color(255, 255, 255, 240))
+let TempColorMedium = Watched(Color(255, 255, 255, 240))
+let TempColorHigh = Watched(Color(255, 128, 0, 240))
+let TempColorCrit = Watched(Color(255, 0, 0, 240))
 let MfdColor = Watched(Color(71, 232, 39, 240))
 let PassivColor = Watched(Color(160, 160, 160, 240))
 let TargetPodHudColor = Watched(Color(71, 232, 39, 240))
@@ -102,11 +111,6 @@ let Trt = []
 let IsEnginesControled = Watched(false)
 let isEngineControled = []
 let ThrottleState = []
-
-const THROTTLE_DEBOUNCE_SEC = 0.05
-let throttlePendingTrt = array(NUM_ENGINES_MAX, 0)
-let throttlePendingMode = array(NUM_ENGINES_MAX, 0)
-let throttleDebounceTimerIds = array(NUM_ENGINES_MAX).map(@(_, i) $"throttleDebounce{i}")
 
 let Rpm = Watched(0)
 let Spd = Watched(0)
@@ -131,17 +135,17 @@ let InstructorForced = Watched(false)
 let StaminaValue  = Watched(0.0)
 let StaminaState = Watched(0)
 
-local BombReleaseVisible = Watched(false)
-local BombReleaseBlockedState = Watched(0)
+let BombReleaseVisible = Watched(false)
+let BombReleaseBlockedState = Watched(0)
 let BombReleaseMachLimit = Watched(0.0)
-local BombReleaseBlockedTextPosX = Watched(0)
-local BombReleaseBlockedTextPosY = Watched(0)
-local BombReleaseDirX = Watched(0)
-local BombReleaseDirY = Watched(0)
-local BombReleaseOpacity = Watched(0.0)
-local BombReleaseRelativToTarget = Watched(0.0)
+let BombReleaseBlockedTextPosX = Watched(0)
+let BombReleaseBlockedTextPosY = Watched(0)
+let BombReleaseDirX = Watched(0)
+let BombReleaseDirY = Watched(0)
+let BombReleaseOpacity = Watched(0.0)
+let BombReleaseRelativToTarget = Watched(0.0)
 
-local BombReleasePoints = Watched(array(NUM_BOMB_RELEASE_POINT, 0.0))
+let BombReleasePoints = Watched(array(NUM_BOMB_RELEASE_POINT, 0.0))
 
 let CanonSightOpacity = Watched(1.0)
 let RocketSightOpacity = Watched(1.0)
@@ -173,16 +177,19 @@ let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
 let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.get().contains(false))
 
 let BombsState = Watched({
-  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1, isActiveBombsAutoRelease = false })
+  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1, envelopeBlocked = false })
 let RocketsState = Watched({                                                      
-  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
+  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1, envelopeBlocked = false })
 let TorpedoesState = Watched({                                                    
-  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
+  count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1, envelopeBlocked = false })
 let AdditionalCannonsState = Watched({ count = 0, seconds = -1, mode = 0, selected = false, name = "" })
 let AgmState = Watched({
-  count = 0, seconds = -1, timeToHit = -1, timeToWarning = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1 })
-let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1 })
-let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1, timeToWarning = -1, weaponIdx = -1})
+  count = 0, seconds = -1, timeToHit = -1, timeToWarning = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1,
+  envelopeBlocked = false })
+let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1,
+  envelopeBlocked = false })
+let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1, timeToWarning = -1, weaponIdx = -1,
+  envelopeBlocked = false })
 let FlaresState = Watched({ count = 0, mode = 0, seconds = -1 })
 let ChaffsState = Watched({ count = 0, mode = 0, seconds = -1 }) 
 let TowedDecoysState = Watched({ count = 0, seconds = -1 })
@@ -225,6 +232,10 @@ let TurretsVisible = []
 let OilTemperature = []
 let WaterTemperature = []
 let EngineTemperature = []
+
+let OilTimeToDie = []
+let WaterTimeToDie = []
+let EngineTimeToDie = []
 
 let OilState = []
 let WaterState = []
@@ -295,6 +306,9 @@ let helicopterState = {
   RocketAimX,
   RocketAimY,
   RocketAimVisible,
+  HmdRocketAimX,
+  HmdRocketAimY,
+  HmdRocketAimVisible,
   RocketSightMode,
   RocketSightSizeFactor,
 
@@ -370,6 +384,11 @@ let helicopterState = {
   AlertColorLow,
   AlertColorMedium,
   AlertColorHigh,
+  AlertColorCrit,
+  TempColorLow,
+  TempColorMedium,
+  TempColorHigh,
+  TempColorCrit,
   MfdColor,
   PassivColor,
   TargetPodHudColor,
@@ -416,6 +435,7 @@ let helicopterState = {
   AgmName = Computed(@() AgmState.get().name),
   AgmSelected = Computed(@() AgmState.get().selected),
   AgmWeaponIdx = Computed(@() AgmState.get().weaponIdx),
+  AgmEnvelopeBlocked = Computed(@() AgmState.get().envelopeBlocked),
 
   AamCount = Computed(@() AamState.get().count),
   AamSeconds = Computed(@() AamState.get().seconds),
@@ -424,6 +444,7 @@ let helicopterState = {
   AamName = Computed(@() AamState.get().name),
   AamSelected = Computed(@() AamState.get().selected),
   AamWeaponIdx = Computed(@() AamState.get().weaponIdx),
+  AamEnvelopeBlocked = Computed(@() AamState.get().envelopeBlocked),
 
   GuidedBombsCount = Computed(@() GuidedBombsState.get().count),
   GuidedBombsSeconds = Computed(@() GuidedBombsState.get().seconds),
@@ -434,6 +455,7 @@ let helicopterState = {
   GuidedBombsSelected = Computed(@() GuidedBombsState.get().selected),
   GuidedBombsTimeToWarning = Computed(@() GuidedBombsState.get().timeToWarning),
   GuidedBombsWeaponIdx = Computed(@() GuidedBombsState.get().weaponIdx),
+  GuidedBombsEnvelopeBlocked = Computed(@() GuidedBombsState.get().envelopeBlocked),
 
   FlaresCount = Computed(@() FlaresState.get().count),
   FlaresMode = Computed(@() FlaresState.get().mode),
@@ -461,7 +483,7 @@ let helicopterState = {
   BombsName = Computed(@() BombsState.get().name),
   BombsActualCount = Computed(@() BombsState.get().actualCount),
   BombsWeaponIdx = Computed(@() BombsState.get().weaponIdx),
-  isActiveBombsAutoRelease = Computed(@() BombsState.get()?.isActiveBombsAutoRelease ?? false),
+  BombsEnvelopeBlocked = Computed(@() BombsState.get().envelopeBlocked),
 
   RocketsCount = Computed(@() RocketsState.get().count),
   RocketsSeconds = Computed(@() RocketsState.get().seconds),
@@ -471,6 +493,7 @@ let helicopterState = {
   RocketsName = Computed(@() RocketsState.get().name),
   RocketsActualCount = Computed(@() RocketsState.get().actualCount),
   RocketsWeaponIdx = Computed(@() RocketsState.get().weaponIdx),
+  RocketsEnvelopeBlocked = Computed(@() RocketsState.get().envelopeBlocked),
 
   TorpedoesCount = Computed(@() TorpedoesState.get().count),
   TorpedoesSeconds = Computed(@() TorpedoesState.get().seconds),
@@ -479,6 +502,7 @@ let helicopterState = {
   TorpedoesSalvo = Computed(@() TorpedoesState.get().salvo),
   TorpedoesName = Computed(@() TorpedoesState.get().name),
   TorpedoesActualCount = Computed(@() TorpedoesState.get().actualCount),
+  TorpedoesEnvelopeBlocked = Computed(@() TorpedoesState.get().envelopeBlocked),
 
   IsCanAdditionalEmpty,
   IsRktEmpty,
@@ -515,6 +539,10 @@ let helicopterState = {
   OilTemperature,
   WaterTemperature,
   EngineTemperature,
+
+  OilTimeToDie,
+  WaterTimeToDie,
+  EngineTimeToDie,
 
   OilState,
   WaterState,
@@ -664,27 +692,28 @@ interop.updateAdditionalCannons <- function(tb) {
 }
 
 interop.updateAgm <- function(tb) {
-  let { count, seconds, timeToHit, timeToWarning, selected, name, actualCount } = tb
+  let { count, seconds, timeToHit, timeToWarning, selected, name, actualCount, envelopeBlocked } = tb
   let curVal = AgmState.get()
   if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit
     || curVal.timeToWarning != timeToWarning || curVal.selected != selected || curVal.name != name
-    || curVal.actualCount != actualCount)
+    || curVal.actualCount != actualCount || curVal.envelopeBlocked != envelopeBlocked)
     AgmState.set(tb)
 }
 
 interop.updateAam <- function(tb) {
-  let { count, seconds, timeToHit, selected, name, actualCount } = tb
+  let { count, seconds, timeToHit, selected, name, actualCount, envelopeBlocked } = tb
   let curVal = AamState.get()
   if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit || curVal.selected != selected
-    || curVal.name != name || curVal.actualCount != actualCount)
+    || curVal.name != name || curVal.actualCount != actualCount || curVal.envelopeBlocked != envelopeBlocked)
     AamState.set(tb)
 }
 
 interop.updateGuidedBombs <- function(tb) {
-  let { count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning } = tb
+  let { count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning, envelopeBlocked } = tb
   let curVal = GuidedBombsState.get()
   if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit || curVal.mode != mode ||
-    curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected || curVal.timeToWarning != timeToWarning)
+    curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected || curVal.timeToWarning != timeToWarning
+    || curVal.envelopeBlocked != envelopeBlocked)
     GuidedBombsState.set(tb)
 }
 
@@ -727,6 +756,10 @@ for (local i = 0; i < NUM_ENGINES_MAX; ++i) {
   WaterTemperature.append(Watched(0))
   EngineTemperature.append(Watched(0))
 
+  OilTimeToDie.append(Watched(0.0))
+  WaterTimeToDie.append(Watched(0.0))
+  EngineTimeToDie.append(Watched(0.0))
+
   OilState.append(Watched(0))
   WaterState.append(Watched(0))
   EngineState.append(Watched(0))
@@ -760,18 +793,21 @@ interop.updateTurrets <- function (X, Y, overheat, isReloading, empty, visible, 
   TurretsVisible[index].set(visible)
 }
 
-interop.updateOilTemperature <- function (temperature, state, index) {
+interop.updateOilTemperature <- function (temperature, state, timeToDie, index) {
   OilTemperature[index].set(temperature)
+  OilTimeToDie[index].set(timeToDie)
   OilState[index].set(state)
 }
 
-interop.updateWaterTemperature <- function (temperature, state, index) {
+interop.updateWaterTemperature <- function (temperature, state, timeToDie, index) {
   WaterTemperature[index].set(temperature)
+  WaterTimeToDie[index].set(timeToDie)
   WaterState[index].set(state)
 }
 
-interop.updateEngineTemperature <- function (temperature, state, index) {
+interop.updateEngineTemperature <- function (temperature, state, timeToDie, index) {
   EngineTemperature[index].set(temperature)
+  EngineTimeToDie[index].set(timeToDie)
   EngineState[index].set(state)
 }
 
@@ -795,33 +831,10 @@ interop.updateEngineAlert <- function (value, index) {
   EngineAlert[index].set(value)
 }
 
-
-
-
 interop.updateEnginesThrottle <- function(mode, trt, state, index) {
+  TrtMode[index].set(mode)
+  Trt[index].set(trt)
   ThrottleState[index].set(state)
-
-  let lastAccepted = Trt[index].get()
-  let timerId = throttleDebounceTimerIds[index]
-  if (trt >= lastAccepted) {
-    clearTimer(timerId)
-    TrtMode[index].set(mode)
-    Trt[index].set(trt)
-    return
-  }
-
-  throttlePendingTrt[index] = trt
-  throttlePendingMode[index] = mode
-  if (hasTimer(timerId))
-    return
-
-  setTimeout(THROTTLE_DEBOUNCE_SEC,
-    function() {
-      TrtMode[index].set(throttlePendingMode[index])
-      Trt[index].set(throttlePendingTrt[index])
-    },
-    timerId
-  )
 }
 
 interop.updateEngineControl <- function(index, is_controlled) {

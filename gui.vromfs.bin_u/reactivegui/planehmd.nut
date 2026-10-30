@@ -188,7 +188,7 @@ let root = @() {
   children = isVisible.get() ? planeHmdElement : null
 }
 
-return {
+return freeze({
   planeHmdElem = root
   hmdSettingsUpd
-}
+})

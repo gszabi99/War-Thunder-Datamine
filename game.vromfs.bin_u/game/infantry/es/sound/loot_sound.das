@@ -41,7 +41,7 @@ def loot_sound_drop(evt : EventOnLootDrop; eid : EntityId; transform : float3x4;
 def loot_sound_inventory_pickup(evt : CmdInventoryPickup)
   query(evt.itemEid) <| $ [es] (item__isInUse = false)
     if !item__isInUse
-      sendEvent(evt.itemEid, CmdPlaySoundSimple(hash = sound_hash("inventoryPickup")))
+      sendEvent(evt.itemEid, CmdPlaySoundInTransform(hash = sound_hash("inventoryPickup")))
 
 [es(tag=sound)]
 def ammo_box_resupply_play_sound(evt : CmdPlayItemUseSound;

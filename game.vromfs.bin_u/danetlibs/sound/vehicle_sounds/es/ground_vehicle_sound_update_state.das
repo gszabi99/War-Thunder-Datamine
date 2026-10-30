@@ -30,19 +30,15 @@ def ground_vehicle_engine_sound_update_state(evt : Event;
   set_vehicle_engine_started(isStarted, eid, vehicle_engine_sound_state__isStarted, vehicle_engine_sound_state__isInited)
 
 
-[es(tag=sound, after=(vehicle_phys_es, sound_control_update, sound_begin_update_es), before=(vehicle_collision_sound, sound_end_update_es))]
+[es(tag=sound, after=(vehicle_phys_es, sound_control_update, sound_begin_update_es), before=(vehicle_collision_sound, vehicle_sound_phys_state_update_es, sound_end_update_es))]
 def ground_vehicle_sound_update_state(info : ParallelUpdateFrameDelayed;
                                       vehicle_net_phys : VehiclePhysActor;
                                       var vehicle_sound_phys_state__isOnGround : bool&;
                                       var vehicle_tracks_sound_state__slip : float&;
-                                      vehicle_sound_speed_state__speed : float;
                                       var vehicle_sound_phys__prevSoundShockSummary : float&;
                                       var vehicle_sound_phys_state__deltaShock : float&;
-                                      vehicle_sound_phys__noiseReductionDecayPeriod : float;
-                                      vehicle_sound_phys__noiseDeltaShockThreshold : float;
-                                      vehicle_sound_phys__noiseSpeedThreshold : float;
-                                      var vehicle_sound_phys__noiseReductionTimer : float&;
-                                      var vehicle_sound_phys_state__noiseReduction : float&;
+                                      var vehicle_sound_phys__prevTreeShockSummary : float&;
+                                      var vehicle_sound_phys_state__deltaTreeShock : float&;
                                       transform : float3x4)
 
   assume phys = vehicle_net_phys.phys
@@ -53,9 +49,8 @@ def ground_vehicle_sound_update_state(info : ParallelUpdateFrameDelayed;
   vehicle_sound_phys_state__deltaShock = vehicle_sound_phys__prevSoundShockSummary >= 0. && currentState.soundShockSummary > vehicle_sound_phys__prevSoundShockSummary ? currentState.soundShockSummary - vehicle_sound_phys__prevSoundShockSummary : 0.
   vehicle_sound_phys__prevSoundShockSummary = currentState.soundShockSummary
 
-  let loud = vehicle_sound_phys_state__deltaShock >= vehicle_sound_phys__noiseDeltaShockThreshold || vehicle_sound_speed_state__speed >= vehicle_sound_phys__noiseSpeedThreshold
-  vehicle_sound_phys__noiseReductionTimer = loud ? 0. : min(vehicle_sound_phys__noiseReductionTimer + info.dt, vehicle_sound_phys__noiseReductionDecayPeriod)
-  vehicle_sound_phys_state__noiseReduction = 1. - safediv(vehicle_sound_phys__noiseReductionTimer, vehicle_sound_phys__noiseReductionDecayPeriod)
+  vehicle_sound_phys_state__deltaTreeShock = vehicle_sound_phys__prevTreeShockSummary >= 0. && currentState.treeShockSummary > vehicle_sound_phys__prevTreeShockSummary ? currentState.treeShockSummary - vehicle_sound_phys__prevTreeShockSummary : 0.
+  vehicle_sound_phys__prevTreeShockSummary = currentState.treeShockSummary
 
   let speed = dot(float3(currentState.velocity), transform[0])
   if currentState.leftTrack.isOnGround

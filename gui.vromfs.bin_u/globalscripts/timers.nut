@@ -16,7 +16,7 @@ function mkCountdownTimer(endTimeWatch, timeProcess = @(v) v, step = 1.0, curTim
   return countdownTimer
 }
 
-return {
+return freeze({
   mkCountdownTimer
   mkCountdownTimerSec = @(endTimeWatch, step = 1.0) mkCountdownTimer(endTimeWatch, @(v) ceil(0.001 * v).tointeger(), step)
-}
+})

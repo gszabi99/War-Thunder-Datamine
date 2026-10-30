@@ -26,16 +26,15 @@ require math
 
 [macro_function]
 def for_each_subrange(total : int; blk : block<(r : range) : void>) {
-    let MAX_ARGUMENTS = DAS_MAX_FUNCTION_ARGUMENTS - 2  
+    let MAX_FIELD_BLOCKS_PER_HELPER = DAS_MAX_FUNCTION_ARGUMENTS - 2
     var i = 0
     while (i < total) {
         let fromI = i
-        let toI = min(i + MAX_ARGUMENTS, total)
+        let toI = min(i + MAX_FIELD_BLOCKS_PER_HELPER, total)
         blk |> invoke(range(fromI, toI))
         i = toI
     }
 }
-
 
 [macro_function]
 def private field_rtti_annotations(fld : FieldDeclaration) : ExpressionPtr {
@@ -58,7 +57,6 @@ def private field_rtti_annotations(fld : FieldDeclaration) : ExpressionPtr {
     return qmacro($v(rttiAnnValues))
 }
 
-
 [macro_function]
 def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fieldType : TypeDeclPtr;
                                isConst : bool; hasExtraArg : bool; var annExpr : ExpressionPtr;
@@ -66,7 +64,6 @@ def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fie
     var res = clone_expression(blk)
     var imb = res as ExprMakeBlock
     var rblk = imb._block as ExprBlock
-    
     var vtype = clone_type(fieldType)
     vtype.flags.ref = true
     if (isConst) {
@@ -80,7 +77,6 @@ def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fie
         _type <- vtype,
         init <- access,
         flags = VariableFlags.can_shadow | VariableFlags.generated | VariableFlags.capture_as_ref)
-    
     if (hasExtraArg) {
         var aAnn = new ExprAssume(at = blk.at, alias := rblk.arguments[2].name, subexpr <- annExpr)
         rblk.list |> emplace(aAnn, 0)
@@ -94,7 +90,6 @@ def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fie
     }
     return imb._block
 }
-
 
 [macro_function]
 def generateApplyVisitStruct(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>; hasExtraArg : bool) {
@@ -116,7 +111,7 @@ def generateApplyVisitStruct(stype : TypeDeclPtr; frange : range; fnname : strin
             } else {
                 blkList |> push(qmacro(invoke($i("__arg_{fld.name}"), _`_self.$f(fld.name))))
             }
-            var argT = new TypeDecl(baseType = Type.tBlock, at = at)                      
+            var argT = new TypeDecl(baseType = Type.tBlock, at = at)
             var fldT = clone_type(fld._type)
             if (stype.flags.constant) {
                 fldT.flags.constant = true
@@ -165,7 +160,7 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; frange : range; fnname : string
             let fldname = length(stype.argNames) == length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
             names |> push(fldname)
             blkList |> push(qmacro(invoke($i("__arg_{fldname}"), _`_self.$f(fldname))))
-            var argT = new TypeDecl(baseType = Type.tBlock, at = at)                      
+            var argT = new TypeDecl(baseType = Type.tBlock, at = at)
             var fldT = clone_type(flda)
             if (stype.flags.constant) {
                 fldT.flags.constant = true
@@ -195,7 +190,6 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; fnname : string; at : LineInfo)
     return <- names
 }
 
-
 [macro_function]
 def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tVariant)
@@ -218,7 +212,7 @@ def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : stri
                 }
             }
             blkList |> emplace(vexpr)
-            var argT = new TypeDecl(baseType = Type.tBlock, at = at)                      
+            var argT = new TypeDecl(baseType = Type.tBlock, at = at)
             var fldT = clone_type(flda)
             if (stype.flags.constant) {
                 fldT.flags.constant = true
@@ -248,8 +242,6 @@ def generateApplyVisitVariant(stype : TypeDeclPtr; fnname : string; at : LineInf
     return <- names
 }
 
-
-
 [macro_function]
 def clone_block_with_name(name : string; blk : ExpressionPtr; hasExtraArg : bool) {
     macro_verify(blk is ExprMakeBlock, this_program(), blk.at, "expecting make block, i.e. $(..)")
@@ -271,7 +263,6 @@ def clone_block_with_name(name : string; blk : ExpressionPtr; hasExtraArg : bool
     return <- res
 }
 
-
 [macro]
 class FindEscapingReturn : AstVisitor {
     found : bool
@@ -279,10 +270,9 @@ class FindEscapingReturn : AstVisitor {
         found = true
     }
     def override canVisitMakeBlockBody(expr : ExprMakeBlock?) : bool {
-        return false  
+        return false
     }
 }
-
 
 [macro_function]
 def private apply_block_inline_safe(blk : ExpressionPtr) : bool {
@@ -300,12 +290,12 @@ def private apply_block_inline_safe(blk : ExpressionPtr) : bool {
     return !escaping
 }
 
-[call_macro(name = "apply")]  
+[call_macro(name = "apply")]
 class ApplyMacro : AstCallMacro {
     
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting apply(value, block)")
-        if (expr.arguments[0]._type == null) {  
+        if (expr.arguments[0]._type == null) {
             return null
         }
         var argT = clone_type(expr.arguments[0]._type)
@@ -330,18 +320,13 @@ class ApplyMacro : AstCallMacro {
     }
 }
 
-
-
-
 [macro_function]
 def private inline_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtraArg : bool) : ExpressionPtr {
     let selfIsConst = argT.flags.constant
-    
     var selfPeeled = expr.arguments[0]
     while (selfPeeled != null && selfPeeled is ExprRef2Value) {
         selfPeeled = (selfPeeled as ExprRef2Value).subexpr
     }
-    
     let selfIsRef = selfPeeled != null && (selfPeeled is ExprVar || selfPeeled is ExprField
         || selfPeeled is ExprSafeField || selfPeeled is ExprAt || selfPeeled is ExprSafeAt || selfPeeled is ExprSwizzle)
     let selfName = "__apply_self`{expr.at.line}`{expr.at.column}"
@@ -386,12 +371,12 @@ def private inline_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtra
             var scope = inline_apply_field(fname, access, tt.argTypes[fldi], isConst, false, noAnn, expr.arguments[1])
             outer.list |> emplace(scope)
         }
-    } else {  
+    } else {
         let vt = expr.arguments[0]._type
         let nfields = length(vt.argTypes)
         var chain : ExpressionPtr
         for (ri in range(nfields)) {
-            let fldi = nfields - 1 - ri  
+            let fldi = nfields - 1 - ri
             let fname = length(vt.argNames) == length(vt.argTypes) ? string(vt.argNames[fldi]) : "_{fldi}"
             var access = qmacro($i(selfName) as $f(fname))
             let isConst = selfIsConst || vt.argTypes[fldi].flags.constant
@@ -407,25 +392,23 @@ def private inline_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtra
     return outer
 }
 
-
-
 [macro_function]
 def private invoke_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtraArg : bool) : ExpressionPtr {
     var callName : string
     var nfields : int
     var names : array<string>
     if (argT.baseType == Type.tStructure) {
-        callName = "apply`struct`{argT.structType.name}`{expr.at.line}"
+        callName = "apply`struct`{argT.structType.name}`{expr.at.line}`{expr.at.column}"
         nfields = argT.structType.fields |> length
-        names <- generateApplyVisitStruct(expr.arguments[0]._type, callName, expr.at, hasExtraArg)
+        names <- generateApplyVisitStruct(expr.arguments[0]._type, callName, expr.at, hasExtraArg)  
     } elif (argT.baseType == Type.tTuple) {
-        callName = "apply`tuple`{expr.arguments[0]._type.get_mnh}`{expr.at.line}"
+        callName = "apply`tuple`{expr.arguments[0]._type.get_mnh}`{expr.at.line}`{expr.at.column}"
         nfields = length(argT.argTypes)
-        names <- generateApplyVisitTuple(expr.arguments[0]._type, callName, expr.at)
-    } else {  
-        callName = "apply`variant`{expr.arguments[0]._type.get_mnh}`{expr.at.line}"
+        names <- generateApplyVisitTuple(expr.arguments[0]._type, callName, expr.at)  
+    } else {
+        callName = "apply`variant`{expr.arguments[0]._type.get_mnh}`{expr.at.line}`{expr.at.column}"
         nfields = length(argT.argTypes)
-        names <- generateApplyVisitVariant(expr.arguments[0]._type, callName, expr.at)
+        names <- generateApplyVisitVariant(expr.arguments[0]._type, callName, expr.at)  
     }
     var calls : array<ExpressionPtr>
     for_each_subrange(nfields) $(frange) {
@@ -446,15 +429,12 @@ def private invoke_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtra
     return <- callblock
 }
 
-
-
 [macro_function]
 def private inline_apply_imm_field(fldname : string; var fieldAccess : ExpressionPtr; hasExtraArg : bool;
                                    var annExpr : ExpressionPtr; blk : ExpressionPtr) : ExpressionPtr {
     var res = clone_expression(blk)
     var imb = res as ExprMakeBlock
     var rblk = imb._block as ExprBlock
-    
     if (hasExtraArg) {
         var aAnn = new ExprAssume(at = blk.at, alias := rblk.arguments[2].name, subexpr <- annExpr)
         rblk.list |> emplace(aAnn, 0)
@@ -470,12 +450,12 @@ def private inline_apply_imm_field(fldname : string; var fieldAccess : Expressio
     return imb._block
 }
 
-[call_macro(name = "apply_imm")]  
+[call_macro(name = "apply_imm")]
 class ApplyImmMacro : AstCallMacro {
     
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting apply_imm(value, block)")
-        if (expr.arguments[0]._type == null) {  
+        if (expr.arguments[0]._type == null) {
             return null
         }
         var argT = clone_type(expr.arguments[0]._type)

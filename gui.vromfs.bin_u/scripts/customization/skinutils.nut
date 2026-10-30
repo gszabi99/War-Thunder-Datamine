@@ -1,11 +1,10 @@
+from "%scripts/money.nut" import Cost
 from "string" import split_by_chars
 from "%scripts/dagui_natives.nut" import get_skin_cost_wp, get_skin_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-
 const DEFAULT_SKIN_NAME = "default"
-let approversUnitToPreviewLiveResource = Watched(null)
+let approversUnitToPreviewLiveResource = mkWatchedClearedOnReload(null)
 
 let namesBySkinId = {}
 
@@ -33,7 +32,7 @@ function getSkinCost(skinId) {
   return Cost(max(0, get_skin_cost_wp(unitName, skinId)), max(0, get_skin_cost_gold(unitName, skinId)))
 }
 
-return {
+return freeze({
   getSkinId
   getSkinCost
   getPlaneBySkinId
@@ -41,4 +40,4 @@ return {
   isDefaultSkin
   DEFAULT_SKIN_NAME
   approversUnitToPreviewLiveResource
-}
+})

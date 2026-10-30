@@ -17,7 +17,7 @@ class AstAot : AstSimulateMacro {
         
         return true if (is_in_completion() || is_compiling_macros() || is_folding())
         let res = run_aot(prog, ctx, prog.policies)
-        var is_ok = res |> !empty(res)
+        var is_ok = !empty(res)
         if (is_ok) {
             let fileName = "{prog.policies.aot_result}"
             print("Aot to {fileName}\n")

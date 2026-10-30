@@ -12,14 +12,14 @@ options _comment_hygiene = true
 require strings public
 require daslib/strings_boost
 require daslib/option public
-require daslib/rtti               
+require daslib/rtti
 require daslib/ast_boost
 require daslib/macro_boost
 require daslib/templates
 require daslib/templates_boost
 require daslib/sql public
 require daslib/sql_provider public
-require daslib/sql_boost public   
+require daslib/sql_boost public
 
 
 
@@ -43,8 +43,6 @@ def private _sql_migrate_register_providers {
     sql_register_present_providers()
 }
 
-
-
 struct PendingMigration {
     
     
@@ -62,8 +60,6 @@ struct MigrationRecord {
     applied_at : int64
 }
 
-
-
 typedef public MigrationBodyCarrier = function<() : void>
 
 
@@ -76,19 +72,10 @@ struct private MigrationEntry {
     body : MigrationBodyCarrier
     func_name : string
     module_name : string
-    stream : string           
+    stream : string
 }
 
-
-
-
-
 let private AUDIT_CREATE_DDL = "CREATE TABLE IF NOT EXISTS __schema_version (version INTEGER PRIMARY KEY, description TEXT NOT NULL DEFAULT '', applied_at BIGINT NOT NULL)"
-
-
-
-
-
 
 var private _registry : array<MigrationEntry>
 
@@ -133,40 +120,33 @@ def private _registry_find_description(stream : string; version : int) : string 
     return ""
 }
 
-def private _verify_no_duplicate_versions(stream : string) : void {
-    
+def private _duplicate_version_error(stream : string) : string {
     var seen : table<int; string>
     for (e in _registry) {
         if (e.stream != stream) continue
         if (key_exists(seen, e.version)) {
             let prev = seen[e.version]
-            panic("duplicate [sql_migration(version={e.version})] at runtime: '{prev}' and '{e.func_name}' (in '{e.module_name}')")
+            return "duplicate [sql_migration(version={e.version})] at runtime: '{prev}' and '{e.func_name}' (in '{e.module_name}')"
         }
         seen |> insert(e.version, "{e.func_name} (in '{e.module_name}')")
     }
+    return ""
 }
-
-
 
 let private ADOPTION_HINT = "this DB has existing tables/views/indexes but __schema_version is empty (no migration history yet). If your first migration creates tables that already exist, it will fail. To adopt migrations on an existing DB, call `db |> baseline(version = N)` before `migrate_to_latest()` to mark v1..vN as already applied. See tut 43 section \"Adopting migrations on an existing DB\"."
 
 def private _scalar_int_or_zero(db; sql : string) : int {
-    
-    
     let r = db |> _::_migration_query_int(sql)
     return (r |> is_ok) ? (r |> unwrap) : 0
 }
 
 def private _audit_insert(db; version : int; description : string) : SqlError {
-    
-    
     return db |> _::try_exec(
         "INSERT INTO __schema_version (version, description, applied_at) VALUES (?, ?, ?)",
         version, description, int64(get_clock()))
 }
 
 def private _format_versions_csv(pending : array<MigrationEntry>; applied_count : int) : string {
-    
     var parts : array<string>
     let limit = applied_count + 1
     var i = 0
@@ -193,23 +173,17 @@ def private _log_warn_on_some(err : SqlError) : void {
     }
 }
 
-
-
 def private _migrate_inner(db; blocking : bool) : Result<int, string> {   
     let stream = _::_migration_stream_key(db)
-    
     let create_err = db |> _::try_exec(AUDIT_CREATE_DDL)
     if (create_err |> is_some) return err(create_err |> unwrap, type<int>)
-    
     let audit_was_empty_before = _scalar_int_or_zero(db, "SELECT COUNT(*) FROM __schema_version") == 0
     let max_registered = _registry_max_version(stream)
-    
     if (audit_was_empty_before && max_registered > 0 && _::_migration_has_user_objects(db)) {
         to_log(LOG_WARNING, "{ADOPTION_HINT}\n")
     }
-    
-    _verify_no_duplicate_versions(stream)
-    
+    let dup_err = _duplicate_version_error(stream)
+    if (!empty(dup_err)) return err(dup_err, type<int>)
     let current = _scalar_int_or_zero(db, "SELECT COALESCE(MAX(version), 0) FROM __schema_version")
     if (current > max_registered) {
         let bin_max = max_registered
@@ -226,12 +200,8 @@ def private _migrate_inner(db; blocking : bool) : Result<int, string> {
         }
     }
     if (pending |> empty) return ok(0, type<string>)
-    
-    
-    
     let begin_err = _::_migration_begin(db, blocking)
     if (begin_err |> is_some) return err(begin_err |> unwrap, type<int>)
-    
     let current_locked = _scalar_int_or_zero(db, "SELECT COALESCE(MAX(version), 0) FROM __schema_version")
     if (current_locked != current) {
         pending_idx = 0
@@ -243,13 +213,11 @@ def private _migrate_inner(db; blocking : bool) : Result<int, string> {
             }
         }
         if (pending |> empty) {
-            
             db |> _::try_exec("COMMIT") |> _log_warn_on_some
             _::_migration_end(db)
             return ok(0, type<string>)
         }
     }
-    
     var applied_count = 0
     var any_vacuum = false
     var any_analyze = false
@@ -262,10 +230,10 @@ def private _migrate_inner(db; blocking : bool) : Result<int, string> {
             to_log(LOG_INFO, "applying migration v{m.version}: {m.description}\n")
             failed_version = m.version
             failed_desc = m.description
-            _::_migration_invoke_body(db, m.body)   
+            _::_migration_invoke_body(db, m.body)
             let ins_err = _audit_insert(db, m.version, m.description)
             if (ins_err |> is_some) {
-                panic(ins_err |> unwrap)        
+                panic(ins_err |> unwrap)
             }
             applied_count++
             any_vacuum ||= m.vacuum
@@ -284,11 +252,9 @@ def private _migrate_inner(db; blocking : bool) : Result<int, string> {
         let layer2_hint = audit_was_empty_before && (failed_version == pending[0].version)
         inner_err = _build_enriched_err(failed_version, failed_desc, underlying, rolled_back_str, layer2_hint)
     }
-    
     _::_migration_end(db)
     if (!empty(commit_err)) return err(commit_err, type<int>)
     if (!empty(inner_err)) return err(inner_err, type<int>)
-    
     if (any_analyze) {
         (db |> _::try_exec("ANALYZE")) |> _log_warn_on_some
     }
@@ -299,11 +265,7 @@ def private _migrate_inner(db; blocking : bool) : Result<int, string> {
     return ok(applied_count, type<string>)
 }
 
-
-
-
 def private _audit_table_exists(db) : bool {
-    
     let r <- _::_migration_audit_exists(db)
     return (r |> is_ok) && (r |> unwrap)
 }
@@ -369,8 +331,6 @@ def migration_history(db) : array<MigrationRecord> {
     return <- r._value
 }
 
-
-
 def migrate_to_latest(db) : int {
     
     
@@ -389,10 +349,7 @@ def try_migrate_to_latest(db) : Result<int, string> {
     return <- _migrate_inner(db, false)
 }
 
-
-
 def private _audit_has_version(db; version : int) : bool {
-    
     return _scalar_int_or_zero(db, "SELECT COUNT(*) FROM __schema_version WHERE version = {version}") > 0
 }
 
@@ -403,7 +360,6 @@ def private _baseline_inner(db; version : int; blocking : bool) : Result<int, st
     if (version > max_reg) return err("baseline(version={version}) is above the highest registered migration (v{max_reg}) - looks like a typo", type<int>)
     let create_err = db |> _::try_exec(AUDIT_CREATE_DDL)
     if (create_err |> is_some) return err(create_err |> unwrap, type<int>)
-    
     let begin_err = _::_migration_begin(db, blocking)
     if (begin_err |> is_some) return err(begin_err |> unwrap, type<int>)
     var stamped = 0
@@ -416,7 +372,7 @@ def private _baseline_inner(db; version : int; blocking : bool) : Result<int, st
             let desc = empty(desc_from_reg) ? "[baseline]" : desc_from_reg
             let ins_err = _audit_insert(db, v, desc)
             if (ins_err |> is_some) {
-                panic(ins_err |> unwrap)        
+                panic(ins_err |> unwrap)
             }
             stamped++
         }
@@ -452,13 +408,11 @@ def baseline(db; version : int) : void {
     }
 }
 
-
-
 struct private RegisteredMigration {
     version : int
     fn_name : string
     mod_name : string
-    stream : string           
+    stream : string
 }
 
 [macro_function]
@@ -470,7 +424,6 @@ def private _stream_key_of_arg0(f : FunctionPtr) : string {
 }
 
 def private _collect_registered_migrations(var out : array<RegisteredMigration>) : void {
-    
     let prog = compiling_program() |> get_ptr()
     prog |> for_each_module_no_order($(mod) {
         mod |> for_each_module_function($(var f : FunctionPtr) {
@@ -489,20 +442,17 @@ def private _collect_registered_migrations(var out : array<RegisteredMigration>)
     })
 }
 
-
-
 [function_macro(name="sql_migration")]
 class SqlMigrationMacro : AstFunctionAnnotation {
     
     
     
-    def override apply(var func : FunctionPtr; var group : ModuleGroup;   
-                       args : AnnotationArgumentList; var errors : das_string) : bool {
+    def override apply(var func : FunctionPtr; var group : ModuleGroup;
+                       var args : AnnotationArgumentList; var errors : das_string) : bool {
         if (func.fromGeneric != null) {
             errors := "[sql_migration] is not supported on generic functions"
             return false
         }
-        
         let versionArg = args |> find_arg("version")
         if (!(versionArg is tInt)) {
             errors := "[sql_migration]: version=<int> is required (positive integer)"
@@ -537,7 +487,6 @@ class SqlMigrationMacro : AstFunctionAnnotation {
             errors := "[sql_migration]: analyze= must be a bool literal (true/false)"
             return false
         }
-        
         let nArgs = func.arguments |> length
         if (nArgs != 1) {
             errors := "[sql_migration] '{func.name}' must take exactly one argument (a SQL provider runner, e.g. SqlRunner); got {nArgs}"
@@ -556,25 +505,19 @@ class SqlMigrationMacro : AstFunctionAnnotation {
         let streamKey = "{arg0Type.structType._module.name}::{arg0Type.structType.name}"
         let funcDasName = "{func.name}"
         let modName = "{compiling_module().name}"
-        
-        
-        
         var registered : array<RegisteredMigration>
         _collect_registered_migrations(registered)
         for (e in registered) {
-            
             if (e.version != version || empty(e.stream) || e.stream != streamKey || (e.fn_name == funcDasName && e.mod_name == modName)) continue
             errors := "duplicate [sql_migration(version={version})] for runner {streamKey}:\n  registered: {e.fn_name} in module '{e.mod_name}'\n  duplicate:  {funcDasName} in module '{modName}'\nhint: pick a different version number for one of them, or merge the bodies"
             return false
         }
-        
         var fnType = new TypeDecl(at = func.at, baseType = Type.tFunction)
         for (a in func.arguments) {
             fnType.argTypes |> emplace_new <| clone_type(a._type)
         }
         fnType.firstType = clone_type(func.result)
         var fnAddr = new ExprAddr(at = func.at, target := "__::{funcDasName}", funcType <- fnType)
-        
         var reg <- setup_call_list("register`sql`migrations", func.at, true, true)
         reg.list |> emplace_new <| qmacro_block() {
             sql_migrate::_add_migration_entry($v(version), $v(description), $v(vacuum), $v(analyze),
@@ -583,9 +526,6 @@ class SqlMigrationMacro : AstFunctionAnnotation {
         return true
     }
 }
-
-
-
 
 def struct_convert_field(var dst : auto(SCF_T)&; src : SCF_T) : void {
     
@@ -615,9 +555,6 @@ def struct_convert_field(var dst : Option<auto(SCF_T)>&; src : Option<auto(SCF_S
         dst = none(type<SCF_T>)
     }
 }
-
-
-
 
 def struct_convert_field(var dst : int&; src : auto(SCF_S)) : void {
     static_if (typeinfo is_int(src)) {
@@ -650,8 +587,6 @@ def struct_convert_field(var dst : double&; src : auto(SCF_S)) : void {
 def struct_convert_field(var dst : string&; src : auto(SCF_S)) : void {
     dst = "{src}"
 }
-
-
 
 def struct_convert_field(var dst : int&; src : Option<auto(SCF_T)>) : void {
     static_if (typeinfo is_int(type<SCF_T>)) {
@@ -686,11 +621,7 @@ def struct_convert_field(var dst : string&; src : Option<auto(SCF_T)>) : void {
 }
 
 
-
-
 class private OverrideCollector : AstVisitor {
-    
-    
     target_var_name : string
     overrides : table<string; bool>
     def OverrideCollector(name : string) {
@@ -731,7 +662,6 @@ def private collect_overrides(var body : ExpressionPtr; target_var_name : string
 def private make_struct_convert_helper(var src_st : StructurePtr; var tgt_st : StructurePtr;
                                        fn_name : string; var auto_exprs : array<ExpressionPtr>;
                                        at : LineInfo) : FunctionPtr {
-    
     var fn = qmacro_function(fn_name) $(src : $t(src_st); var tgt : $t(tgt_st)) : void {
         $b(auto_exprs)
     }
@@ -757,12 +687,11 @@ class SqlStructConvertMacro : AstFunctionAnnotation {
     
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup;   
-                       args : AnnotationArgumentList; var errors : das_string) : bool {
+                       var args : AnnotationArgumentList; var errors : das_string) : bool {
         if (func.fromGeneric != null) {
             errors := "[struct_convert]: not supported on generic functions"
             return false
         }
-        
         let nArgs = func.arguments |> length
         if (nArgs != 2) {
             errors := "[struct_convert] '{func.name}': must take exactly two arguments - `old : S` and `var new : T`. Got {nArgs}."
@@ -790,47 +719,32 @@ class SqlStructConvertMacro : AstFunctionAnnotation {
             errors := "[struct_convert] '{func.name}': body must be a brace-block (the macro prepends auto-fill statements). Use `def {func.name}(...) \{ ... \}`, not the `=> expr` short form."
             return false
         }
-        
-        
-        
         var src_st : StructurePtr = unsafe(reinterpret<StructurePtr>(arg0_type.structType))
         var tgt_st : StructurePtr = unsafe(reinterpret<StructurePtr>(arg1_type.structType))
         let new_param_name = string(func.arguments[1].name)
 
-        
         let overrides <- collect_overrides(func.body, new_param_name)
 
-        
-        
-        
         var auto_exprs : array<ExpressionPtr>
         auto_exprs |> reserve(length(tgt_st.fields))
-        var failed = false
         for (t_field in tgt_st.fields) {
-            if (failed) break
             let tname = string(t_field.name)
             if (key_exists(overrides, tname)) continue
-            
             let renamed_arg = find_arg(t_field.annotation, "sql_renamed_from")
             let renamed_from = renamed_arg is tString ? (renamed_arg as tString) : ""
             let lookup_name = empty(renamed_from) ? tname : renamed_from
             let t_type = t_field._type
             let t_is_option = is_option_field_type(t_type)
-            
             var s_found = false
             for (s_field in src_st.fields) {
                 if (s_field.name != lookup_name) continue
                 s_found = true
-                
-                
                 auto_exprs |> push(qmacro_expr(${
                     _::struct_convert_field(tgt.$f(tname), src.$f(lookup_name));
                 }))
                 break
             }
-            if (failed) break
             if (!s_found) {
-                
                 if (t_field.init != null) {
                     let init_expr = t_field.init
                     auto_exprs |> push(qmacro_expr(${
@@ -843,20 +757,15 @@ class SqlStructConvertMacro : AstFunctionAnnotation {
                     }))
                 } else {
                     errors := "[struct_convert] '{func.name}': new field '{tname}' has no default initializer and is not Option<T>. Provide a default like `{tname} : {describe(t_type)} = ...` on the struct, or write `{new_param_name}.{tname} = ...` in the body."
-                    failed = true
+                    return false
                 }
             }
         }
-        if (failed) return false
 
-        
         let helper_name = "_struct_convert_helper`{func.name}"
         var helper_fn = make_struct_convert_helper(src_st, tgt_st, helper_name, auto_exprs, func.at)
         compiling_module() |> add_function(helper_fn)
 
-        
-        
-        
         let call_args <- array<ExpressionPtr>(
             new ExprVar(at = func.at, name := func.arguments[0].name),
             new ExprVar(at = func.at, name := func.arguments[1].name)
@@ -873,17 +782,12 @@ class SqlStructConvertMacro : AstFunctionAnnotation {
         func.body = combined
         func.body |> force_at(func.at)
 
-        
         var sct_fn = make_sct_dispatch(src_st, tgt_st, string(func.name), func.at)
         compiling_module() |> add_function(sct_fn)
 
         return true
     }
 }
-
-
-
-
 
 [unused_argument(t1, t2), template(t1, t2)]
 def convert(db; t1 : type<auto(SS)>; t2 : type<auto(TT)>) : void {
@@ -918,9 +822,6 @@ def convert_and_rename(db; t1 : type<auto(SS)>; t2 : type<auto(TT)>) : void {
         panic("convert_and_rename: source '{source}' and target '{target}' must share the same [sql_table(name=...)]. Use `db |> convert(type<S>, type<T>, name=...)` for cross-table conversions.")
     }
     let staging = "{target}_new"
-    
-    
-    
     db |> _::exec(_::_sql_create_table_sql(default<TT>, staging))
     db |> convert(type<SS>, type<TT>, staging)
     db |> _::exec("DROP TABLE {sql_quote_id(target)}")

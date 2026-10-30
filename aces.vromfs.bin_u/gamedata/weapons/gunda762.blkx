@@ -1,10 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 1,
-  "maxDeltaAngle": 0.22,
-  "shotFreq": 8.3,
-  "traceFreq": 4,
-  "bullets": 750,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.22,
+  "shotFreq": 8.3,
+  "bullets": 750,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        9.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.00955,
@@ -427,7 +439,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "black"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -3711,7 +3723,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
     ]
@@ -4123,7 +4135,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4531,7 +4543,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4939,7 +4951,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -5359,25 +5371,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "degtyaryov_gun_outside",
-    "cockpit": "degtyaryov_gun_inside",
-    "ai": "degtyaryov_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        9.0,
-        0.05
-      ]
-    ]
-  },
   "shkas_turret_new_gun": {
     "maxDeltaAngle": 0.66,
     "overheat": {
@@ -5392,5 +5385,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "degtyaryov_gun_outside",
+    "cockpit": "degtyaryov_gun_inside",
+    "ai": "degtyaryov_gun_ai"
   }
 }

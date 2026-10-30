@@ -1,10 +1,10 @@
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 
 
 let Warbonds = class (ItemCouponBase) {

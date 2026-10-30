@@ -1,19 +1,18 @@
+from "%scripts/userstat/userstatItemsRewards.nut" import removeUserstatItemRewardToShow
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import resetTimeout
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-
 
 
 const MAX_DELAYED_TIME_SEC = 10
 const PROGRESS_BOX_BUTTONS_DELAY_SEC = 15
 
-let delayedTrophies = persist("delayedTrophies", @() [])
+let delayedTrophies = mkHardPersist("items.showExternalTrophyRewardWnd")("delayedTrophies", [])
 
 local currentProgressBox = null
 
@@ -133,7 +132,7 @@ addListenersWithoutEnv({
   SignOut = @(_p) delayedTrophies.clear()
 })
 
-return {
+return freeze({
   showExternalTrophyRewardWnd
   checkShowExternalTrophyRewardWnd
-}
+})

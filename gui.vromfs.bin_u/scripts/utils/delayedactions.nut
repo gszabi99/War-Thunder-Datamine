@@ -96,7 +96,7 @@ function testDelayedAction() {
 
 register_command(testDelayedAction, "debug.testDelayedAction")
 
-return {
+return freeze({
   addDelayedAction
   LOST_DELAYED_ACTION_MSEC
-}
+})

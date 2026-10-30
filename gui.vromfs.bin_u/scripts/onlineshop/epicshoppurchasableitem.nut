@@ -1,11 +1,10 @@
 import "statsd" as statsd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
 from "%scripts/dagui_natives.nut" import epic_buy_item
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { GUI } = require("%scripts/utils/configs.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 local EpicShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"

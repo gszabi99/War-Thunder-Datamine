@@ -1,12 +1,16 @@
 from "math" import round
 from "string" import format, split_by_chars
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%sqstd/datablock.nut" import convertBlk
 from "%sqstd/underscore.nut" import isDataBlock
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
 let { GUI } = require("%scripts/utils/configs.nut")
+
+
+
+
 
 
 
@@ -52,7 +56,7 @@ const iconLayer = @"iconLayer {
   {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
   background-image:t='{image}'; background-svg-size:t='{texSize}'; {props} }"
 
-let LayersIconState = persist("LayersIconState", @() {config = null})
+local layersIconConfig = null
 
 let LayersIcon = {
   function replaceIconByIconData(iconObj, iconData) {
@@ -65,7 +69,7 @@ let LayersIcon = {
 }
 
 LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
-  if (LayersIconState.config)
+  if (layersIconConfig)
     return
 
   if (!blk)
@@ -75,11 +79,11 @@ LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
     config.styles <- {}
   if (!("layers" in config))
     config.layers <- {}
-  LayersIconState.config = config
+  layersIconConfig = config
 }
 
 LayersIcon.refreshConfig <- function refreshConfig() {
-  LayersIconState.config = null
+  layersIconConfig = null
   LayersIcon.initConfigOnce(null)
 }
 
@@ -88,7 +92,7 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = 
   this.initConfigOnce()
 
   local data = ""
-  let styles = LayersIconState.config.styles
+  let styles = layersIconConfig.styles
   let styleCfg = iconConfig ? iconConfig
     : iconStyle && (iconStyle in styles) && styles[iconStyle]
   let defStyleCfg = defStyle && (defStyle in styles) && styles[defStyle]
@@ -127,9 +131,10 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = 
         : [ ratio * containerSizePx, containerSizePx ]
       texSize = ", ".join(texSz.map(@(v) round(v)))
     }
+    let { imageProps = "" } = iconParams
     data = iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize,
       posX = "(pw-w)/2", posY = "(ph-h)/2",
-      pos = "absolute", image, props = "" })
+      pos = "absolute", image, props = imageProps })
   }
 
   return data
@@ -142,23 +147,26 @@ LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size, 
 }
 
 LayersIcon.findLayerCfg <- function findLayerCfg(id) {
-  return "layers" in LayersIconState.config ? LayersIconState.config.layers?[id.tolower()] : null
+  this.initConfigOnce()
+  return "layers" in layersIconConfig ? layersIconConfig.layers?[id.tolower()] : null
 }
 
 LayersIcon.findStyleCfg <- function findStyleCfg(id) {
-  return "styles" in LayersIconState.config ? LayersIconState.config?.styles?[id.tolower()] : null
+  this.initConfigOnce()
+  return "styles" in layersIconConfig ? layersIconConfig?.styles?[id.tolower()] : null
 }
 
-function calcLayerBaseParams(layerCfg, containerSizePx) {
+function calcLayerBaseParams(layerCfg, overrideCfg, containerSizePx) {
   let res = {}
 
   foreach (paramName, table in layersCfgParams) {
     local result = table?.defaultValue ?? ""
-    if (paramName in layerCfg) {
-      if (layerCfg[paramName] instanceof String)
-        result = layerCfg[paramName]
+    let param = overrideCfg?[paramName] ?? layerCfg?[paramName]
+    if (param != null) {
+      if (param instanceof String)
+        result = param
       else if ("formatValue" in table)
-        result = format(table.formatValue, layerCfg[paramName].tofloat())
+        result = format(table.formatValue, param.tofloat())
     }
     res[table.returnParamName] <- result
   }
@@ -174,9 +182,9 @@ function calcLayerBaseParams(layerCfg, containerSizePx) {
   return res
 }
 
-LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  
+LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0, overrideCfg = null) {  
                                      
-  let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
+  let baseParams = calcLayerBaseParams(layerCfg, overrideCfg, containerSizePx)
 
   let offsetX = (layerCfg?.offsetX ?? "")
   let offsetY = (layerCfg?.offsetY ?? "")
@@ -245,4 +253,4 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
 
 LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : max(minOffset, maxOffset / (itemsLen - 1))
 
-return {LayersIcon = freeze(LayersIcon)}
+return freeze({LayersIcon = freeze(LayersIcon)})

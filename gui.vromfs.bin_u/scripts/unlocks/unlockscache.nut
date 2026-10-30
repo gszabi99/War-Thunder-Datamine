@@ -1,218 +1,335 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "packed" as packed
+from "%scripts/unlocks/regionalUnlocks.nut" import regionalUnlocks
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "blkGetters" import get_unlocks_blk, get_personal_unlocks_blk
 from "chard" import get_updated_unlocks_ids
+from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 
-let unlocksCacheById = persist("unlocksCacheById", @() {})
-let personalUnlocksCacheById = persist("personalUnlocksCacheById", @() {})
-let regionalUnlocksCacheById = persist("regionalUnlocksCacheById", @() {})
-let unlocksCacheArray = persist("unlocksCacheArray", @() [])
-let personalUnlocksCacheArray = persist("personalUnlocksCacheArray", @() [])
-let regionalUnlocksCacheArray = persist("regionalUnlocksCacheArray", @() [])
 
-let unlocksCacheByType = persist("unlocksCacheByType", @() {})
-let personalUnlocksCacheByType = persist("personalUnlocksCacheByType", @() {})
-let regionalUnlocksCacheByType = persist("regionalUnlocksCacheByType", @() {})
-let unlocksCacheIdxsById = persist("unlocksCacheIdxsById", @() {})
-let personalUnlocksCacheIdxsById = persist("personalUnlocksCacheIdxsById", @() {})
-let regionalUnlocksCacheIdxsById = persist("regionalUnlocksCacheIdxsById", @() {})
 
-let isCacheValid = persist("unlocksIsCacheValid", @() { value = false })
 
-local combinedCacheById = null
-local combinedCacheArray = null
-let combinedCacheByType = {}
+let INDEX_FIELDS = ["chapter", "battlePassSeason", "shouldMarkUnits", "manualOpen"]
 
-let unlocksCaches = {
-  charUnlocks = {
-    cacheById = unlocksCacheById
-    cacheArray = unlocksCacheArray
-    cacheByType = unlocksCacheByType
-    cacheIdxs = unlocksCacheIdxsById
+let mkQuery = @(condition) {
+  positions = packed.query($"[*] ? {condition}")
+  blkIdxs = packed.query($"[*] ? {condition} select blkIdx")
+}
+let qAll = { blkIdxs = packed.query("[*] select blkIdx") }
+let qByType = mkQuery("type == $type")
+let qIdsByType = packed.query("[*] ? type == $type select id")
+let qBlkIdxById = packed.query("[*] ? id == $id select blkIdx")
+let qLastBlkIdxById = packed.query("[*] ? id == $id order by @key desc select blkIdx")
+let qIds = packed.query("[*] select id")
+let queriesByCondition = {}
+let idParams = { id = null }
+
+function hasId(unlock) {
+  if (unlock?.id != null)
+    return true
+  script_net_assert_once("missing id in unlock",
+    $"Unlocks: Missing id in unlock. Cannot cache unlock. /*unlockConfigString = {toString(unlock, 2)}*/")
+  return false
+}
+
+function mkRow(unlock) {
+  let row = { id = unlock.id, type = unlock.type }
+  foreach (field in INDEX_FIELDS) {
+    let value = unlock?[field]
+    if (value != null && type(value) != "instance")
+      row[field] <- value
   }
-  personalUnlocks = {
-    cacheById = personalUnlocksCacheById
-    cacheArray = personalUnlocksCacheArray
-    cacheByType = personalUnlocksCacheByType
-    cacheIdxs = personalUnlocksCacheIdxsById
+  return row
+}
+
+function mkCharPart(rows, hasDupIds, hasAllUnlockables) {
+  let index = packed.pack(rows)
+  let len = rows.len()
+  let qById = hasDupIds ? qLastBlkIdxById : qBlkIdxById
+  function unlocksWhere(query, params) {
+    let blk = get_unlocks_blk()
+    return query.blkIdxs.all(index, params).map(@(blkIdx) blk.getBlock(blkIdx))
   }
-  regionalUnlocks = {
-    cacheById = regionalUnlocksCacheById
-    cacheArray = regionalUnlocksCacheArray
-    cacheByType = regionalUnlocksCacheByType
-    cacheIdxs = regionalUnlocksCacheIdxsById
+  return {
+    index
+    len
+    isChar = true
+    hasDupIds
+    unlocksWhere
+    function getAll() {
+      let list = hasAllUnlockables ? get_unlocks_blk() % "unlockable" : []
+      if (list.len() < len)
+        return unlocksWhere(qAll, null)
+      list.resize(len)
+      return list
+    }
+    function findById(id) {
+      idParams.id = id
+      let blkIdx = qById.first(index, idParams)
+      return blkIdx == null ? null : get_unlocks_blk().getBlock(blkIdx)
+    }
   }
 }
 
-function addUnlockToCache(unlock, unlocksId) {
-  if (unlock?.id == null) {
-    script_net_assert_once("missing id in unlock",
-      $"Unlocks: Missing id in unlock. Cannot cache unlock. /*unlockConfigString = {toString(unlock, 2)}*/")
+function mkListPart(unlocks) {
+  let byId = {}
+  let list = []
+  let rows = []
+  foreach (unlock in unlocks)
+    if (hasId(unlock)) {
+      byId[unlock.id] <- unlock
+      list.append(unlock)
+      rows.append(mkRow(unlock))
+    }
+  let index = packed.pack(rows)
+  return {
+    index
+    len = list.len()
+    isChar = false
+    list
+    unlocksWhere = @(query, params) query.positions.keys(index, params).map(@(pos) list[pos])
+    getAll = @() clone list
+    findById = @(id) byId?[id]
+  }
+}
+
+let emptyPart = mkListPart([])
+local charPart = emptyPart
+local charAddedRows = []
+local charAddedPart = emptyPart
+local personalPart = emptyPart
+local regionalPart = emptyPart
+let getParts = @() [charPart, charAddedPart, personalPart, regionalPart]
+
+local isCacheValid = false
+local isClearPending = false
+
+function cacheCharUnlocks() {
+  let blk = get_unlocks_blk()
+  let rows = []
+  let ids = {}
+  local hasDupIds = false
+  local hasAllUnlockables = !blk.paramExists("unlockable")
+  for (local i = 0, n = blk.blockCount(); i < n; i++) {
+    let unlock = blk.getBlock(i)
+    if (unlock.getBlockName() != "unlockable")
+      continue
+    if (!hasId(unlock)) {
+      hasAllUnlockables = false
+      continue
+    }
+    let row = mkRow(unlock).__update({ blkIdx = i })
+    if (row.id in ids)
+      hasDupIds = true
+    ids[row.id] <- true
+    rows.append(row)
+  }
+  charPart = mkCharPart(rows, hasDupIds, hasAllUnlockables)
+  charAddedRows = []
+  charAddedPart = emptyPart
+}
+
+
+function addUpdatedCharUnlocks(updatedIds) {
+  let newIds = {}
+  foreach (id in updatedIds)
+    if (charPart.findById(id) == null && charAddedPart.findById(id) == null)
+      newIds[id] <- true
+  if (newIds.len() == 0)
     return
+
+  let blk = get_unlocks_blk()
+  let addedRowById = {}
+  for (local i = 0, n = blk.blockCount(); i < n; i++) {
+    let unlock = blk.getBlock(i)
+    if (unlock.getBlockName() != "unlockable" || unlock?.id not in newIds)
+      continue
+    let row = mkRow(unlock).__update({ blkIdx = i })
+    if (row.id in addedRowById)
+      addedRowById[row.id].__update(row)
+    else {
+      addedRowById[row.id] <- row
+      charAddedRows.append(row)
+    }
   }
-
-  let { cacheById, cacheArray, cacheByType, cacheIdxs } = unlocksCaches[unlocksId]
-  cacheById[unlock.id] <- unlock
-  let typeName = unlock.type
-  if (typeName not in cacheByType)
-    cacheByType[typeName] <- []
-
-  cacheIdxs[unlock.id] <- { idxInArray = cacheArray.len(), idxInType = cacheByType[typeName].len() }
-  cacheArray.append(unlock)
-  cacheByType[typeName].append(unlock)
+  if (addedRowById.len() > 0)
+    charAddedPart = mkCharPart(charAddedRows, false, false)
 }
-
-function clearCachesUnlocks(caches) {
-  let { cacheById, cacheArray, cacheByType, cacheIdxs } = caches
-  cacheById.clear()
-  cacheArray.clear()
-  cacheByType.clear()
-  cacheIdxs.clear()
-}
-
-function cacheProfileUnlocks(blk, unlocksId) {
-  clearCachesUnlocks(unlocksCaches[unlocksId])
-  foreach (unlock in (blk % "unlockable"))
-    addUnlockToCache(unlock, unlocksId)
-}
-
-function clearCombinedCache() {
-  combinedCacheById = null
-  combinedCacheArray = null
-  combinedCacheByType.clear()
-}
-
-let cacheCharUnlocks = @() cacheProfileUnlocks(get_unlocks_blk(), "charUnlocks")
 
 function updateCacheCharUnlocks() {
-  let { cacheById, cacheArray, cacheByType, cacheIdxs } = unlocksCaches.charUnlocks
-  if (cacheById.len() == 0) {
+  if (charPart.len == 0) {
     cacheCharUnlocks()
     return
   }
 
   let { updated_unlocks, overflowed } = get_updated_unlocks_ids()
-  if (overflowed) {
+  if (overflowed)
     cacheCharUnlocks()
+  else
+    addUpdatedCharUnlocks(updated_unlocks)
+}
+
+function applyPendingClear() {
+  if (!isClearPending)
     return
+  isClearPending = false
+  charPart = emptyPart
+  charAddedRows = []
+  charAddedPart = emptyPart
+  personalPart = emptyPart
+}
+
+local frameMemo = null
+
+function clearFrameMemo() {
+  frameMemo = null
+}
+
+function getFrameMemo() {
+  if (frameMemo == null) {
+    frameMemo = { byId = {}, byType = {}, all = null }
+    deferOnce(clearFrameMemo)
   }
-
-  let updatedUnlocksTbl = {}
-  updated_unlocks.each(@(v) updatedUnlocksTbl[v] <- true)
-  let unlocks = get_unlocks_blk() % "unlockable"
-  foreach (unlock in unlocks) {
-    let { id = null } = unlock
-    if (id not in updatedUnlocksTbl)
-      continue
-
-    if (id not in cacheById) {
-      addUnlockToCache(unlock, "charUnlocks")
-    }
-
-    cacheById[id] = unlock
-    let { idxInArray, idxInType } = cacheIdxs[id]
-    cacheArray[idxInArray] = unlock
-    cacheByType[unlock.type][idxInType] = unlock
-  }
+  return frameMemo
 }
 
 function cache() {
-  if (isCacheValid.value)
+  if (isCacheValid)
     return
 
-  isCacheValid.value = true
-  clearCombinedCache()
+  isCacheValid = true
+  frameMemo = null
+  applyPendingClear()
   updateCacheCharUnlocks()
   if (!isProfileReceived.get())
     return
 
-  cacheProfileUnlocks(get_personal_unlocks_blk(), "personalUnlocks")
+  personalPart = mkListPart(get_personal_unlocks_blk() % "unlockable")
 }
 
 function invalidateCache() {
-  isCacheValid.value = false
+  isCacheValid = false
   broadcastEvent("UnlocksCacheInvalidate")
 }
 
-function clearAllCacheSilent() {
-  foreach (caches in unlocksCaches)
-    clearCachesUnlocks(caches)
+
+function clearProfileCachesSilent() {
+  isClearPending = true
 }
 
-function clearAllCache() {
-  clearAllCacheSilent()
+function clearProfileCaches() {
+  clearProfileCachesSilent()
   invalidateCache()
 }
 
-function getAllUnlocks() {
+function getUnlocksWhereInBlkOrder(condition, params = {}) {
+  if (condition not in queriesByCondition)
+    queriesByCondition[condition] <- mkQuery(condition)
   cache()
-  if (combinedCacheById == null)
-    combinedCacheById = unlocksCaches.reduce(@(res, v) res.__update(v.cacheById), {})
-  return combinedCacheById
+  let res = []
+  foreach (part in getParts())
+    if (part.len > 0)
+      res.extend(part.unlocksWhere(queriesByCondition[condition], params))
+  return res
+}
+
+
+function getUnlocksByTypeInBlkOrder(typeName) {
+  cache()
+  let { byType, byId } = getFrameMemo()
+  if (typeName in byType)
+    return byType[typeName]
+
+  let params = { type = typeName }
+  let res = []
+  foreach (part in getParts()) {
+    if (part.len == 0)
+      continue
+    let unlocks = part.unlocksWhere(qByType, params)
+    if (part.isChar && !part.hasDupIds)
+      foreach (i, id in qIdsByType.all(part.index, params))
+        if (id not in byId && regionalPart.findById(id) == null && personalPart.findById(id) == null)
+          byId[id] <- unlocks[i]
+    res.extend(unlocks)
+  }
+  byType[typeName] <- res
+  return res
 }
 
 function getAllUnlocksWithBlkOrder() {
   cache()
-  if (combinedCacheArray == null)
-    combinedCacheArray = unlocksCaches.reduce(@(res, v) res.extend(v.cacheArray), [])
-  return combinedCacheArray
+  let memo = getFrameMemo()
+  if (memo.all == null) {
+    let res = []
+    foreach (part in getParts())
+      if (part.len > 0) {
+        let unlocks = part.getAll()
+        foreach (i, id in qIds.all(part.index))
+          memo.byId[id] <- unlocks[i]
+        res.extend(unlocks)
+      }
+    memo.all = res
+  }
+  return memo.all
 }
 
-let getUnlockById = @(unlockId) getAllUnlocks()?[unlockId]
+function getAllUnlocks() {
+  let res = {}
+  foreach (unlock in getAllUnlocksWithBlkOrder())
+    res[unlock.id] <- unlock
+  return res
+}
 
-function getUnlocksByTypeInBlkOrder(typeName) {
+function getUnlockById(unlockId) {
   cache()
-  if (typeName not in combinedCacheByType)
-    combinedCacheByType[typeName] <- unlocksCaches.reduce(@(res, v) res.extend(v.cacheByType?[typeName] ?? []), [])
-  return combinedCacheByType[typeName]
+  if (unlockId == null)
+    return null
+  let { byId } = getFrameMemo()
+  if (unlockId not in byId)
+    byId[unlockId] <- regionalPart.findById(unlockId) ?? personalPart.findById(unlockId)
+      ?? charAddedPart.findById(unlockId) ?? charPart.findById(unlockId)
+  return byId[unlockId]
 }
 
 regionalUnlocks.subscribe(function(_) {
-  let { cacheById, cacheArray, cacheByType, cacheIdxs } = unlocksCaches.regionalUnlocks
+  let actualUnlocks = regionalUnlocks.get()
   
-  local isChanged = false
-  for (local i = cacheArray.len() - 1; i >= 0; --i) {
-    let unlock = cacheArray[i]
-    if (unlock.id in regionalUnlocks.get())
-      continue 
-
-    isChanged = true
-    cacheArray.remove(i)
-    cacheById.$rawdelete(unlock.id)
-    let { idxInType } = cacheIdxs[unlock.id]
-    cacheByType[unlock.type].remove(idxInType)
-  }
-
-  foreach (unlock in regionalUnlocks.get())
-    if (unlock.id not in cacheById) {
+  let unlocks = regionalPart.list.filter(@(unlock) unlock.id in actualUnlocks)
+  let cachedIds = {}
+  unlocks.each(@(unlock) cachedIds[unlock.id] <- true)
+  local isChanged = unlocks.len() != regionalPart.len
+  foreach (unlock in actualUnlocks)
+    if (unlock.id not in cachedIds) {
       isChanged = true
-      addUnlockToCache(unlock, "regionalUnlocks")
+      cachedIds[unlock.id] <- true
+      unlocks.append(unlock)
     }
 
   if (!isChanged)
     return
 
-  clearCombinedCache()
+  frameMemo = null
+  regionalPart = mkListPart(unlocks)
   broadcastEvent("RegionalUnlocksChanged")
 })
 
 addListenersWithoutEnv({
-  SignOut = @(_) clearAllCache()
-  ProfileReceived = @(_) clearAllCache()
+  SignOut = @(_) clearProfileCaches()
+  ProfileReceived = @(_) clearProfileCaches()
   
-  RefreshProfileOnLogin = @(_) clearAllCacheSilent() 
+  RefreshProfileOnLogin = @(_) clearProfileCachesSilent() 
   ProfileUpdated = @(_) invalidateCache()
-  BlksDataStorageLoaded = @(_) clearAllCache()
+  BlksDataStorageLoaded = @(_) clearProfileCaches()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getAllUnlocks
   getAllUnlocksWithBlkOrder
   getUnlockById
   getUnlocksByTypeInBlkOrder
-}
+  getUnlocksWhereInBlkOrder
+})

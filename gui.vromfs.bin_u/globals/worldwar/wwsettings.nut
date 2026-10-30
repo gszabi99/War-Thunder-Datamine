@@ -1,7 +1,7 @@
 import "DataBlock" as DataBlock
 from "worldwar" import wwGetOperationMapName
 
-const WW_SETTINGS_BLK_FILENAME = "worldWar/worldwar.blk";
+const WW_SETTINGS_BLK_FILENAME = "worldwar/worldwar.blk";
 local isMapSettingsLoaded = false
 let mapSettingsBlk = DataBlock()
 let settingsCache = {}

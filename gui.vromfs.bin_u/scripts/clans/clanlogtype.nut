@@ -1,8 +1,7 @@
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/profileStates.nut" import userIdStr
 from "%sqStdLibs/helpers/enums.nut" import getCachedType, enumsAddTypes
 from "%scripts/dagui_library.nut" import *
-
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let g_clan_log_type = {
   types = []

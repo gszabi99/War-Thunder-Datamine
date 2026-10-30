@@ -1,5 +1,36 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/money.nut" import zero_money
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/matchingRooms/mRoomMembersWnd.nut" import MRoomMembersWnd
+from "%scripts/events/eventRewardsWnd.nut" import EventRewardsWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%sqstd/platform.nut" import isXbox, isSony
+from "%scripts/events/eventInfo.nut" import isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData
+from "%scripts/events/eventRewards.nut" import haveRewards, getBaseVictoryReward
+from "%scripts/missions/mapPreview.nut" import setMapPreview
+from "%scripts/options/optionsExtNames.nut" import USEROPT_TIME_LIMIT
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/leaderboard/leaderboardCategoryType.nut" import getLbCategoryTypeByField
+from "%scripts/matchingRooms/mRoomInfoManager.nut" import getMroomInfo
+from "%scripts/user/profileHandler.nut" import guiStartProfile
+from "%scripts/items/workshop/workshopCraftTreeWnd.nut" import loadCustomCraftTree
+from "%scripts/items/workshop/workshop.nut" import getSetById
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getRoomSessionStartTime
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit, getRoomSpecialRules, getRoomRequiredCrafts, getMembersCountByTeams
+from "%scripts/missions/missionsUtilsModule.nut" import getSessionLobbyMissionName
+from "%scripts/onlineInfo/onlineInfo.nut" import getMatchingServerTime
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/leaderboard/leaderboard.nut" import gui_modal_event_leaderboards
+from "%scripts/help/helpWnd.nut" import gui_modal_help
+from "%scripts/matchingRooms/fillCountriesList.nut" import fillCountriesList
+from "%scripts/missions/missionsUtils.nut" import getLevelMapBackgroundColors
+from "%scripts/userstat/userstat.nut" import addTimerForRefreshStatsWhenTableEnd, actualizeStats, getTableActiveIndex
 from "string" import format
 from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_library.nut" import *
@@ -7,41 +38,12 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
 from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "%scripts/utils_sa.nut" import buildTableRow
+from "%scripts/unlocks/battleTasksHandler.nut" import guiStartBattleTasksWnd
+from "%scripts/unlocks/battleTasks.nut" import isBattleTasksAvailable, getCurBattleTasksByGm
 
-let { zero_money } = require("%scripts/money.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MRoomMembersWnd } = require("%scripts/matchingRooms/mRoomMembersWnd.nut")
-let { EventRewardsWnd } = require("%scripts/events/eventRewardsWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
-let { isPlatformXbox, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
-let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
-let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
-let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { loadCustomCraftTree } = require("%scripts/items/workshop/workshopCraftTreeWnd.nut")
-let { getSetById } = require("%scripts/items/workshop/workshop.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getRoomSessionStartTime } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit, getRoomSpecialRules, getRoomRequiredCrafts, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
-let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { addTimerForRefreshStatsWhenTableEnd, actualizeStats, getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -235,7 +237,14 @@ let EventDescription = class (BaseGuiHandlerWT) {
 
     showObjById("players_list_btn", !!this.room, this.scene)
     showObjById("help_btn", this.selectedEvent?.helpBlkPath != null, this.scene)
+    this.updateBattleTaskBtn()
     this.updateCostText()
+  }
+
+  function updateBattleTaskBtn() {
+    let eventName = this.selectedEvent?.name
+    let isVisibleTasksBtn = eventName != null && isBattleTasksAvailable() && getCurBattleTasksByGm(eventName).len() > 0
+    showObjById("btn_battleTask", isVisibleTasksBtn, this.scene)
   }
 
   function _updateContent() {
@@ -475,7 +484,7 @@ let EventDescription = class (BaseGuiHandlerWT) {
   }
 
   function checkLbTableVisible(lb_rows, lbCategory) {
-    if (isPlatformSony || isPlatformXbox || lbCategory == null || lb_rows.len() == 0)
+    if (isSony || isXbox || lbCategory == null || lb_rows.len() == 0)
       return false
 
     return true
@@ -596,6 +605,8 @@ let EventDescription = class (BaseGuiHandlerWT) {
     MRoomMembersWnd.open(this.room)
   }
 
+  onBattleTask = @() guiStartBattleTasksWnd()
+
   function onHelp() {
     if (this.selectedEvent?.helpBlkPath == null)
       return
@@ -637,9 +648,11 @@ let EventDescription = class (BaseGuiHandlerWT) {
       return
     this.fetchLbData()
   }
+
+  onEventBattleTasksFinishedUpdate = @(_) this.updateBattleTaskBtn()
 }
 register_gui_handler("EventDescription", EventDescription)
 
-return {
+return freeze({
   create_event_description
-}
+})

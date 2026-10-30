@@ -600,6 +600,18 @@ def ammo_stowage_iter_stowage_weapons(weap : WeaponController const?; stowage_id
       if weapon != null
         fn |> invoke(weapon)
 
+[with_bundle(v)]
+def ammo_stowage_is_bullet_count_known(weap : WeaponController const?; stowage_id : int;
+                                       v : tuple<
+                                         ammo_stowages__weaponTriggersRange : IPoint2List;
+                                         ammo_stowage__weaponTriggers : IntList
+                                         >) : bool
+  var is_known = true
+  ammo_stowage_iter_stowage_weapons(weap, stowage_id, v) <| $(weapon : Weapon?)
+    if !(*weapon) |> isBulletCountKnown()
+      is_known = false
+  return is_known
+
 def ammo_stowage_change_weapon_ammo_for_weapon(weap : WeaponController const?; weapon_idx : int; bullet_set_idx : int; initial_count : bool; value : int;
                                                var bullet_mod_id : int&) : int
   if weapon_idx < 0 || value == 0

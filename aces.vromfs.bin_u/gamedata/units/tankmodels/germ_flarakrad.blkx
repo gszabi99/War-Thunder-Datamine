@@ -1982,7 +1982,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun",
         "circleAim": true,
         "aimForOperatedShell": true,
@@ -2045,7 +2045,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
         "flash": "bone_rocket_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2119,16 +2119,26 @@
           "head": "bone_turret",
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2350,8 +2360,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_flarakrad_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_flarakrad_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3925,7 +3935,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/de_roland_sr.blk",
+              "blk": "gamedata/sensors/de_roland_sr.blk",
               "turretIndex": 1,
               "designationFromBody": true,
               "designationTurretIndex": 1,
@@ -3936,7 +3946,7 @@
               "radarParkingAzimuth": 180.0
             },
             {
-              "blk": "gameData/sensors/de_flarakrad_fr.blk",
+              "blk": "gamedata/sensors/de_flarakrad_fr.blk",
               "turretIndex": 1,
               "dmPart": [
                 "antenna_target_tagging_dm",
@@ -3945,7 +3955,7 @@
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]
@@ -3968,7 +3978,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_gun",
               "circleAim": true,
               "aimForOperatedShell": true,
@@ -4031,7 +4041,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -4105,16 +4115,26 @@
                 "head": "bone_turret",
                 "gun": "bone_gun_01",
                 "gunnerDm": "gunner_dm",
+                "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_v_01_dm",
+                  "drive_turret_v_02_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm",
+                  "drive_turret_h_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
-                "rotatedTurret": "bone_turret"
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4326,7 +4346,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4603,7 +4623,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/de_roland_sr.blk",
+        "blk": "gamedata/sensors/de_roland_sr.blk",
         "turretIndex": 1,
         "designationFromBody": true,
         "designationTurretIndex": 1,
@@ -4614,7 +4634,7 @@
         "radarParkingAzimuth": 180.0
       },
       {
-        "blk": "gameData/sensors/de_flarakrad_fr.blk",
+        "blk": "gamedata/sensors/de_flarakrad_fr.blk",
         "turretIndex": 1,
         "dmPart": [
           "antenna_target_tagging_dm",

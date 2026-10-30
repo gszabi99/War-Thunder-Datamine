@@ -60,7 +60,7 @@ function updateWatches() {
   updateOperationState()
 }
 
-return {
+return freeze({
   zonesSides
   zonesConnectedToRear
   zonesHighlightedFlag
@@ -70,4 +70,4 @@ return {
   stopUpdates = @() clearTimer(updateWatches)
   cursorPosition
   isShiftPressed
-}
+})

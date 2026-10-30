@@ -1,3 +1,18 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/weaponry/weaponWarningHandler.nut" import WeaponWarningHandler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import countSizeInItems
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/weaponry/weaponryVisual.nut" import updateModItem, createModItemLayout, updateItemBulletsSlider
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, isDefaultTorpedoes, getOverrideBullets, isWeaponUnavailableInMission
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
+from "%scripts/weaponry/shipWeaponsTutor.nut" import checkShowShipWeaponsTutor
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/weaponry/weaponrySelectModal.nut" import guiStartChooseUnitWeapon
+from "%scripts/weaponry/weaponryTypes.nut" import getWeaponryGroupHeader
+from "%scripts/weaponry/ammoInfo.nut" import bulletsAmountState
 from "math" import ceil
 from "%sqstd/string.nut" import cutPrefix
 from "gameplayBinding" import isInFlight
@@ -5,22 +20,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WeaponWarningHandler } = require("%scripts/weaponry/weaponWarningHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { updateModItem, createModItemLayout, updateItemBulletsSlider } = require("%scripts/weaponry/weaponryVisual.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, isDefaultTorpedoes, getOverrideBullets, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
-let { getWeaponryGroupHeader } = require("%scripts/weaponry/weaponryTypes.nut")
-let { bulletsAmountState } = require("%scripts/weaponry/ammoInfo.nut")
 
 let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER,
   ES_UNIT_TYPE_HUMAN
@@ -53,6 +53,7 @@ let unitWeaponsHandler = class (BaseGuiHandlerWT) {
   enableLoneFightersMode = null
 
   fixedSizeForItem = false
+  isTooltipOnIcon = false
 
   function initScreen() {
     this.bulletsManager = UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
@@ -79,6 +80,7 @@ let unitWeaponsHandler = class (BaseGuiHandlerWT) {
     canModifyCustomPrests = false
     curEdiff = this.getCurrentEdiff?()
     maxSoldiersActive = this.enableLoneFightersMode ? 1 : null
+    isTooltipOnIcon = this.isTooltipOnIcon
   }
 
   getShowSelectorItemParams = @()
@@ -682,4 +684,4 @@ let unitWeaponsHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("unitWeaponsHandler", unitWeaponsHandler)
 
-return { unitWeaponsHandler }
+return freeze({ unitWeaponsHandler })

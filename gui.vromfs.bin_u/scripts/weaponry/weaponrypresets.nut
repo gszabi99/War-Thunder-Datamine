@@ -1,8 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitBlkCache.nut" import blkOptFromPathCachedByUnit
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "%scripts/dagui_library.nut" import *
-
-let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MIN_TIERS_COUNT = 13
 const MAX_PRESETS_NUM = 20

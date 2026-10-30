@@ -1,22 +1,22 @@
 {
   "fmFile": "fm/hurricanemkii.blk",
   "model": "hurricane_mk2b",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "500kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -642,15 +642,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -663,36 +667,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -725,15 +739,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -776,7 +794,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2231,7 +2251,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2242,7 +2262,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "shell": "emtr_shellrejection2",
@@ -2254,7 +2274,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2266,7 +2286,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection4",
@@ -2278,7 +2298,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare5",
         "flash": "flare5",
         "shell": "emtr_shellrejection5",
@@ -2290,7 +2310,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare6",
         "flash": "flare6",
         "shell": "emtr_shellrejection6",
@@ -2302,7 +2322,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare7",
         "flash": "flare7",
         "shell": "emtr_shellrejection7",
@@ -2314,7 +2334,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare8",
         "flash": "flare8",
         "shell": "emtr_shellrejection8",
@@ -2326,7 +2346,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare9",
         "flash": "flare9",
         "shell": "emtr_shellrejection9",
@@ -2338,7 +2358,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare10",
         "flash": "flare10",
         "shell": "emtr_shellrejection10",
@@ -2350,7 +2370,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare11",
         "flash": "flare11",
         "shell": "emtr_shellrejection11",
@@ -2362,7 +2382,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "blk": "gamedata/weapons/gunBrowning303_raf.blk",
         "emitter": "flare12",
         "flash": "flare12",
         "shell": "emtr_shellrejection12",
@@ -2378,20 +2398,33 @@
     "preset": [
       {
         "name": "hurricane_real",
-        "blk": "gameData/FlightModels/weaponPresets/hurricane_real.blk"
+        "blk": "gamedata/flightModels/weaponPresets/hurricane_real.blk"
       },
       {
         "name": "hurricane_real_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/hurricane_real_bombs.blk",
+        "blk": "gamedata/flightModels/weaponPresets/hurricane_real_bombs.blk",
         "reqModification": "halker_sbc"
       },
       {
+        "name": "hurricane_real_500lb_bombs",
+        "blk": "gamedata/flightModels/weaponPresets/hurricane_real_500lb_bombs.blk",
+        "reqModification": "halker_mbc"
+      },
+      {
+        "name": "hurricane_real_500lb_ap_bombs",
+        "blk": "gamedata/flightModels/weaponPresets/hurricane_real_500lb_ap_bombs.blk",
+        "reqModification": "halker_mbc",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "hurricane_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/hurricanerockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/hurricanerockets.blk",
         "reqModification": "halker_rc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+            "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
             "amountPerTier": 1.0,
             "iconType": "rockets_he_small"
           }
@@ -2451,6 +2484,11 @@
     "halker_sbc": {
       "modClass": "weapon",
       "tier": 3
+    },
+    "halker_mbc": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "halker_sbc"
     },
     "halker_rc": {
       "modClass": "weapon",

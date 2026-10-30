@@ -90,7 +90,7 @@ return function mkScoreboard() {
 
     transform = {
       scale = [hudScale.get(), hudScale.get()]
-      pivot = [0.5, 0]
+      pivot = const [0.5, 0]
     }
   }
 }

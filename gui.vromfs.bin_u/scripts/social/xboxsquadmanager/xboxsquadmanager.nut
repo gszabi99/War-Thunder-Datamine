@@ -1,3 +1,15 @@
+from "%scripts/squads/squadState.nut" import getLeaderUid, getMaxSquadSize, getSquadSize, getState, isInSquad, isSquadLeader
+from "%scripts/crossModuleEvents.nut" import SQUAD_JOIN_REQUESTED
+from "%scripts/contacts/externalContactsService.nut" import requestUnknownXboxIds
+from "%scripts/invites/invitesClasses.nut" import findInviteClass
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box
+from "%scripts/hud/startHud.nut" import quitMission
+from "%scripts/contacts/contactsListState.nut" import findContactByXboxId
+from "%scripts/invites/invites.nut" import findInviteByUid
+from "%scripts/gdk/permissions.nut" import check_multiplayer_sessions_privilege
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%gdkLib/mpa.nut" import set_activity, clear_activity, send_invitations, JoinRestriction
@@ -6,22 +18,10 @@ from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState
 
-let { getLeaderUid, getMaxSquadSize, getSquadSize, getState, isInSquad, isSquadLeader } = require("%scripts/squads/squadState.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
-let { SQUAD_JOIN_REQUESTED } = require("%scripts/crossModuleEvents.nut")
-let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
-let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { quitMission } = require("%scripts/hud/startHud.nut")
-let { findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
-let { findInviteByUid } = require("%scripts/invites/invites.nut")
-let { check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 local needCheckSquadInvites = false 
-let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
+let postponedInvitation = mkHardPersistWatched("social.xboxSquadManager.xboxSquadManager")("postponedInvitation", "0")
 
 let getCurSquadId = @() isInSquad() ? getLeaderUid().tostring() : userIdStr.get()
 
@@ -185,7 +185,7 @@ addListenersWithoutEnv({
   LoginComplete  = @(...) updateActivity()
 })
 
-return {
+return freeze({
   sendInvitation
   onSystemInviteAccept
   sendSystemInvite = @(uid, name) requestPlayerAndDo(uid, name, sendInvitation)
@@ -194,4 +194,4 @@ return {
   checkAfterFlight = @() postponedInvitation.get() == "0"
     ? null
     : requestXboxPlayerAndDo(postponedInvitation.get(), acceptExistingIngameInvite)
-}
+})

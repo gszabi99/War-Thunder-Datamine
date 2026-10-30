@@ -6,8 +6,8 @@ local setShortcutOn = @(shortcutName) activateShortcut(shortcutName, true, false
 
 local setShortcutOff = @(shortcutName) activateShortcut(shortcutName, false, false)
 
-return {
+return freeze({
   toggleShortcut
   setShortcutOn
   setShortcutOff
-}
+})

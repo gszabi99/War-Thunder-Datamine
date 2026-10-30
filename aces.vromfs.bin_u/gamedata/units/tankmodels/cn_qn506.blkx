@@ -1924,7 +1924,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
       "turretIndex": 0,
       "designationTurretIndex": 0,
       "dmPart": "optic_gun_dm"
@@ -1945,7 +1945,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2043,7 +2043,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2087,7 +2087,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/70mm_QN201DD_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/70mm_QN201DD_rocket_launcher.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_gun_01",
@@ -2101,7 +2101,8 @@
         "stopForFire": true,
         "maxSpeedForFire": 6.0,
         "circleAim": false,
-        "speedYaw": 40.0,
+        "staticElevation": 1.1625,
+        "speedYaw": 0.0,
         "speedPitch": 15.0,
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -2134,7 +2135,7 @@
             180.0
           ],
           "pitch": [
-            -5.0,
+            0.0,
             30.0
           ]
         }
@@ -2142,7 +2143,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/151mm_QN502CDD_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/151mm_QN502CDD_rocket_launcher.blk",
         "flash": "emtr_gun_flame_05",
         "emitter": "bone_gun_01",
         "emitterGenRange": [
@@ -2153,11 +2154,12 @@
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.1,
         "circleAim": false,
+        "staticElevation": 1.1625,
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 0.0,
-        "speedPitch": 0.0,
+        "speedPitch": 15.0,
         "isBulletBelt": true,
         "fireConeAngle": 1.0,
         "bullets": 4,
@@ -2183,11 +2185,11 @@
         },
         "limits": {
           "yaw": [
-            180.0,
-            180.0
+            0.0,
+            0.0
           ],
           "pitch": [
-            -5.0,
+            0.0,
             30.0
           ]
         },
@@ -2228,7 +2230,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2327,8 +2329,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_qn506_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_qn506_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2389,7 +2391,10 @@
       "model": "12150L"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.42,
       "maxBrakeForce": 144000.0,
       "driveGearRadius": 0.28345,
       "mainGearRatio": 4.84,
@@ -2421,7 +2426,18 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_front": 0.255,
-      "wheel_l_front": 0.255
+      "wheel_l_front": 0.255,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -3793,7 +3809,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3891,7 +3907,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3935,7 +3951,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/70mm_QN201DD_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/70mm_QN201DD_rocket_launcher.blk",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_gun_01",
@@ -3949,7 +3965,8 @@
               "stopForFire": true,
               "maxSpeedForFire": 6.0,
               "circleAim": false,
-              "speedYaw": 40.0,
+              "staticElevation": 1.1625,
+              "speedYaw": 0.0,
               "speedPitch": 15.0,
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -3982,7 +3999,7 @@
                   180.0
                 ],
                 "pitch": [
-                  -5.0,
+                  0.0,
                   30.0
                 ]
               }
@@ -3990,7 +4007,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/151mm_QN502CDD_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/151mm_QN502CDD_rocket_launcher.blk",
               "flash": "emtr_gun_flame_05",
               "emitter": "bone_gun_01",
               "emitterGenRange": [
@@ -4001,11 +4018,12 @@
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
               "circleAim": false,
+              "staticElevation": 1.1625,
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 0.0,
-              "speedPitch": 0.0,
+              "speedPitch": 15.0,
               "isBulletBelt": true,
               "fireConeAngle": 1.0,
               "bullets": 4,
@@ -4031,11 +4049,11 @@
               },
               "limits": {
                 "yaw": [
-                  180.0,
-                  180.0
+                  0.0,
+                  0.0
                 ],
                 "pitch": [
-                  -5.0,
+                  0.0,
                   30.0
                 ]
               },
@@ -4076,7 +4094,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4131,7 +4149,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4318,13 +4336,13 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
               "turretIndex": 0,
               "designationTurretIndex": 0,
               "dmPart": "optic_gun_dm"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk"
+              "blk": "gamedata/sensors/it_ralm-101.blk"
             }
           ]
         }

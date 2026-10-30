@@ -1,4 +1,10 @@
-from "%sqstd/platform.nut" import isPC
+from "%sqstd/platform.nut" import isPC, isSony, isXbox, is_steam_deck
+from "%scripts/controls/controlsUtils.nut" import getMouseUsageMask, checkOptionValue
+from "%scripts/options/optionsExtNames.nut" import USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_AILERONS_MULTIPLIER, USEROPT_ELEVATOR_MULTIPLIER, USEROPT_RUDDER_MULTIPLIER
+  , USEROPT_INVERTX, USEROPT_INVERTY, USEROPT_JOYFX, USEROPT_FORCE_GAIN, USEROPT_GUNNER_VIEW_SENSE, USEROPT_GUNNER_VIEW_ZOOM_SENS, USEROPT_GUNNER_INVERTY
+  , USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
+from "%scripts/controls/shortcutsUtils.nut" import hasMappedSecondaryWeaponSelector
+from "%scripts/controls/controlsManager.nut" import commitControls
 from "globalEnv" import ControlHelpersMode
 from "gameparams" import get_game_params
 from "gameOptions" import get_option_multiplier, set_option_multiplier, get_option_int, set_option_int, OPTION_MOUSE_JOYSTICK_DEADZONE, OPTION_MOUSE_JOYSTICK_SCREENSIZE, OPTION_MOUSE_JOYSTICK_SENSITIVITY
@@ -13,15 +19,10 @@ from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, MAX_CAMERA_S
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
-let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_AILERONS_MULTIPLIER, USEROPT_ELEVATOR_MULTIPLIER, USEROPT_RUDDER_MULTIPLIER, USEROPT_INVERTX, USEROPT_INVERTY, USEROPT_JOYFX, USEROPT_FORCE_GAIN, USEROPT_GUNNER_VIEW_SENSE, USEROPT_GUNNER_VIEW_ZOOM_SENS, USEROPT_GUNNER_INVERTY, USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY } = require("%scripts/options/optionsExtNames.nut")
-let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
-let needFullGunnerSettings = @() isPlatformSony || isPlatformXbox
-  || isPlatformSteamDeck || !isMouseAimSelected()
+let needFullGunnerSettings = @() isSony || isXbox
+  || is_steam_deck || !isMouseAimSelected()
 
 return [
   {
@@ -780,13 +781,13 @@ return [
   {
     id = "ID_AIM_CAMERA"
     checkAssign = false,
-    condition = @() isPlatformSony || isPlatformXbox
+    condition = @() isSony || isXbox
   }
   {
     id = "target_camera"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXbox
+    condition = @() isSony || isXbox
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {

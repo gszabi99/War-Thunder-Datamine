@@ -1,15 +1,14 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "regexp2" as regexp2
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/dirtyWordsFilter.nut" import isNamePassing
+from "%appGlobals/user/nickTools.nut" import cutPlayerNamePrefix, cutPlayerNamePostfix
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqstd/underscore.nut" import isDataBlock
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
-let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const CUSTOM_NICKS_SAVE_ID = "contacts/custom_nicks"
 const CUSTOM_NICK_MARKER = "*"
@@ -90,8 +89,8 @@ addListenersWithoutEnv({
   SignOut = @(_p) invalidateCache()
 })
 
-return {
+return freeze({
   openNickEditBox
   changeCustomNick
   getCustomNick
-}
+})

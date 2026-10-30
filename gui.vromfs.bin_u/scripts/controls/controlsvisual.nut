@@ -1,12 +1,12 @@
-from "%sqstd/string.nut" import stripTags
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%sqstd/platform.nut" import isSony
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%globalScripts/inputDeviceConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locCtrlId
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
-
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let imageByActivationType = {
   [ActivationCondition.TAPPED_TWICE] = "dbl_click_sign.svg",
@@ -25,7 +25,7 @@ function getLocalizedShortcutName(shortcutId) {
 
 let axisModifiers = ["_rangeMin", "_rangeMax"]
 
-let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
+let getLocaliazedPS4ControlName = @(text) locCtrlId($"xinp/{text}", "")
 
 function getLocalizedXinpControlName(text, deviceId) {
   if (deviceId != STD_KEYBOARD_DEVICE_ID)
@@ -161,7 +161,7 @@ function getShortLocalizedControlName(preset, deviceId, buttonId) {
 }
 
 function hackTextAssignmentForR2buttonOnPS4(mainText) {
-  if (isPlatformSony) {
+  if (isSony) {
     let hack = "".concat(getLocaliazedPS4ControlName("R2"), " + ", getLocaliazedPS4ControlName("MouseLB"))
     if (mainText.len() >= hack.len()) {
       let replaceButtonText = getLocaliazedPS4ControlName("R2")
@@ -174,7 +174,7 @@ function hackTextAssignmentForR2buttonOnPS4(mainText) {
   return mainText
 }
 
-return {
+return freeze({
   getLocalizedShortcutName
   getAxisTextOrAxisName
   getLocaliazedPS4ControlName
@@ -185,4 +185,4 @@ return {
   addHotkeyTxt
   hackTextAssignmentForR2buttonOnPS4
   getActivationTypeImg = @(activationType) imageByActivationType?[activationType]
-}
+})

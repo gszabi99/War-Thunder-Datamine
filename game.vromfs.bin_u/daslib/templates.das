@@ -60,9 +60,7 @@ class TemplateMacro : AstFunctionAnnotation {
         }
         if (taidx == -1) return expr
         var ffunc = expr.func
-        
         var newcall = unsafe(reinterpret<ExprCallFunc?>(clone_expression(expr)))
-        
         var fclone = clone_function(ffunc)
         fclone.fromGeneric = ffunc
         fclone.flags.privateFunction = true
@@ -94,7 +92,6 @@ class TemplateMacro : AstFunctionAnnotation {
             newcall.arguments |> erase(argidx)
         }
         fclone.annotations |> erase(taidx)
-        
         let extra = build_string() $(var w) {
             for (h in hashes) {
                 w |> write("`{h}")
@@ -102,7 +99,6 @@ class TemplateMacro : AstFunctionAnnotation {
         }
         fclone.name := "`template{extra}`{fclone.name}"
         newcall.name := "_::{fclone.name}"
-        
         compiling_module() |> add_function(fclone)
         return <- newcall
     }

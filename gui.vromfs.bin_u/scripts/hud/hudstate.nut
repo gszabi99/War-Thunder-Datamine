@@ -19,8 +19,8 @@ function updateHudStatesSubscribes() {
   isPlayerAlive.set(is_player_unit_alive())
 }
 
-return {
+return freeze({
   isInKillerCamera
   isPlayerAlive
   updateHudStatesSubscribes
-}
+})

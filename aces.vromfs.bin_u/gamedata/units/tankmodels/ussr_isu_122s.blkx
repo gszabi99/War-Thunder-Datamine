@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "sound": {
     "EngineName": "engine_su100",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -111,7 +117,10 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 2.6,
@@ -146,7 +155,18 @@
         150000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -2029,7 +2049,9 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm"
       ],
       "effect": [
         {
@@ -2759,7 +2781,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/122mm_D25S_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/122mm_D25S_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "allowableDelta": 20.0,
@@ -2814,7 +2836,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2856,8 +2878,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_isu_122s_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_isu_122s_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "cockpit": {

@@ -1,3 +1,5 @@
+from "%scripts/clientState/clientStates.nut" import isInMenu, isMatchingOnline
+from "%scripts/onlineInfo/clusterHosts.nut" import clusterHosts
 from "chard" import get_charserver_time_millisec
 from "eventbus" import subscribe, unsubscribe
 from "string" import format
@@ -12,8 +14,6 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
 
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
-let { isInMenu, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
-let { clusterHosts } = require("%scripts/onlineInfo/clusterHosts.nut")
 
 const CLIENT_SOCKET_ID = "udp-echo-client-socket"
 const ECHO_PORT = 3843
@@ -33,8 +33,9 @@ const MINOR_MS = 1000
 
 let optimalClusters = hardPersistWatched("optimalClusters", {})
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
-let hostsCfg = persist("hostsCfg", @() {})
-let clusterStats = persist("clusterStats", @() [])
+
+let hostsCfg = mkHardPersist("onlineInfo.optimalClusters")("hostsCfg", {})
+let clusterStats = []
 let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
 
 

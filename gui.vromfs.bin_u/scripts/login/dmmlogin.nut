@@ -1,27 +1,26 @@
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "statsd" as statsd
+from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%scripts/login/loginManager.nut" import addLoginState
+from "%scripts/viewUtils/projectAwards.nut" import setProjectAwards
+from "%scripts/utils/errorMsgBox.nut" import showErrorMessageBox
 from "auth_wt" import checkLoginPass, setLoginPass
 from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import dgs_get_argv
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { addLoginState } = require("%scripts/login/loginManager.nut")
-let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
-let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
-
 register_gui_handler("LoginWndHandlerDMM", class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
     animBgLoad()
-    setVersionText()
+    setVersionText(this.scene)
     setProjectAwards(this)
 
     let isAutologin = !get_disable_autorelogin_once()

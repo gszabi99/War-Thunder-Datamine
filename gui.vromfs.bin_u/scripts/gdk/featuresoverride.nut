@@ -1,9 +1,8 @@
+from "%scripts/user/features.nut" import setOverrideFeature
 from "%scripts/dagui_library.nut" import *
-
-let { setOverrideFeature } = require("%scripts/user/features.nut")
 
 let gdkOverrides = {
   AchievementsUrl = false
 }
 
-gdkOverrides.map(setOverrideFeature)
+gdkOverrides.each(setOverrideFeature)

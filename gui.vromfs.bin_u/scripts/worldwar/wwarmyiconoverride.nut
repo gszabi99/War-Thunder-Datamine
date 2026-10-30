@@ -19,6 +19,6 @@ function getIcon(name, overrideIconId, loadedArmyType, hasArtilleryAbility) {
   return iconData?[$"iconName{suff}"] ?? ""
 }
 
-return {
+return freeze({
   getIcon
-}
+})

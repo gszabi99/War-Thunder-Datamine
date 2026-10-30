@@ -1,15 +1,14 @@
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/worldWarGlobalStates.nut" import getPlayWorldwarConditionText
+from "%scripts/squads/squadUtils.nut" import getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getPlayWorldwarConditionText } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 
 let WwSquadList = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -131,4 +130,4 @@ let WwSquadList = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwSquadList", WwSquadList)
 
-return { WwSquadList }
+return freeze({ WwSquadList })

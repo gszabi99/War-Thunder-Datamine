@@ -1,27 +1,17 @@
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%scripts/money.nut" import Cost
+from "%scripts/weaponry/bulletsInfo.nut" import isBullets, getBulletGroupIndex
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, getAmmoMaxAmount, getAmmoWarningMinimum
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, isWeaponEnabled, isWeaponUnlocked, getLastPrimaryWeapon
+from "%scripts/weaponry/modificationInfo.nut" import canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked, getModificationByName, isModificationEnabled
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
+from "%scripts/weaponry/weaponryTypes.nut" import getUpgradeTypeByItem
+from "%scripts/weaponry/weaponryPresets.nut" import EMPTY_PRESET_NAME
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modification_level, shop_get_module_exp, wp_get_modification_max_count, shop_get_module_research_status
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { Cost } = require("%scripts/money.nut")
-
-let { isBullets,
-        getBulletGroupIndex } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO,
-        getAmmoAmount,
-        getAmmoMaxAmount,
-        getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getLastWeapon,
-        isWeaponEnabled,
-        isWeaponUnlocked,
-        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
-  getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
-let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
-let { EMPTY_PRESET_NAME } = require("%scripts/weaponry/weaponryPresets.nut")
 
 function getItemAmount(unit, item) {
   return getUpgradeTypeByItem(item).getAmount(unit, item)
@@ -341,7 +331,7 @@ function getAllModsCost(unit, open = false) {
   return modsCost
 }
 
-return {
+return freeze({
   getItemAmount         = getItemAmount
   isResearchableItem    = isResearchableItem
   canBeResearched       = canBeResearched
@@ -359,4 +349,4 @@ return {
   getRepairCostCoef     = getRepairCostCoef
   getDiscountPath       = getDiscountPath
   getAllModsCost        = getAllModsCost
-}
+})

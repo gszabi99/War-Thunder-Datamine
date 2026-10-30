@@ -1,13 +1,12 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/control/gui_buttons.nut" as JB
 from "%rGui/globals/ui_library.nut" import *
-
-let colors = require("%rGui/style/colors.nut")
-let JB = require("%rGui/control/gui_buttons.nut")
 
 let closeButtonHeight = scrn_tgt(0.045)
 function closeBtn(override) {
   let stateFlags = Watched(0)
   return @() {
-    size = [closeButtonHeight, closeButtonHeight]
+    size = closeButtonHeight
     rendObj = ROBJ_SOLID
     watch = stateFlags
     color = stateFlags.get() & S_ACTIVE ? colors.menu.buttonCloseColorPushed

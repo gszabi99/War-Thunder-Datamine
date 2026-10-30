@@ -1,7 +1,6 @@
+from "%scripts/features/devFeatures.nut" import getDevFeatures
 from "guiOptions" import addOptionMode, addUserOption
 from "%scripts/dagui_library.nut" import *
-
-let { getDevFeatures } = require("%scripts/features/devFeatures.nut")
 
 let export = {
   userOptionNameByIdx = {}
@@ -299,7 +298,6 @@ let optList = [
   "USEROPT_TORPEDO_AUTO_SWITCH"
   "USEROPT_DEFAULT_TORPEDO_FORESTALL_ACTIVE"
   "USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN"
-  "USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN"
   "USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON"
   "USEROPT_IGNORE_BAD_WEATHER"
   "USEROPT_SAVE_AIRCRAFT_SPAWN"
@@ -441,6 +439,7 @@ let optList = [
   "USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS"
   "USEROPT_ALLOW_ADDED_TO_LEADERBOARDS"
   "USEROPT_ENABLE_SOUND_SPEED"
+  "USEROPT_ALLOW_RWR_CUSTOM_SFX"
   "USEROPT_VWS_ONLY_IN_COCKPIT"
   "USEROPT_SOUND_RESET_VOLUMES"
   "USEROPT_AIR_RADAR_SIZE"
@@ -522,6 +521,7 @@ let optList = [
   "USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT"
   "USEROPT_ENABLE_HUMAN_AIM_ASSIST"
   "USEROPT_XRAY_FILTER_AIR"
+  "USEROPT_VOICE_DIRECT_PEERS"
 ]
 
 local lastIdx = 0

@@ -1,9 +1,8 @@
+from "%scripts/items/itemsManagerModule.nut" import getItemsList, getInventoryList
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
 from "%scripts/dagui_natives.nut" import have_you_valid_tournament_ticket
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-
-let { getItemsList, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 
 
@@ -28,9 +27,9 @@ function getEventActiveTicket(event) {
 }
 let hasEventTicket = @(event) getEventActiveTicket(event) != null
 
-return {
+return freeze({
   getEventTickets
   eventRequiresTicket
   getEventActiveTicket
   hasEventTicket
-}
+})

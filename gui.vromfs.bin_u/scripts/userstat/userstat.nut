@@ -1,5 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "userstat" as userstat
 import "DataBlock" as DataBlock
+import "packed" as packed
+from "%scripts/tasker.nut" import TASK_CB_TYPE, addTask
+from "%scripts/langUtils/language.nut" import getCurrentSteamLanguage
+from "%scripts/matching/serviceNotifications/mrpc.nut" import mnSubscribe
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "eventbus" import eventbus_subscribe
@@ -17,11 +23,6 @@ from "%scripts/leaderboard/leaderboardConsts.nut" import APP_ID_CUSTOM_LEADERBOA
 from "types" import Table
 
 let logU = log_with_prefix("[userstat] ")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
-let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
-let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
@@ -47,7 +48,9 @@ function updateGetUnlocksValue(watchValue, response) {
   }
 }
 
-function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
+let toPlainData = @(v) packed.is_view(v) ? packed.unpack(v) : v
+
+function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}, isPacked = false) {
   let data = Watched(clone defValue)
   let lastTime = Watched({ request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.get().request > lastTime.get().update
@@ -69,6 +72,8 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
       if (response.len() > 0)
         data.mutate(@(v) updateGetUnlocksValue(v, response))
     }
+    else if (isPacked && result?.response instanceof Table)
+      data.set(packed.pack(result.response))
     else
       data.set(result?.response ?? (clone defValue))
   }
@@ -131,7 +136,8 @@ let descListUpdatable = makeUpdatable("GetUserStatDescList",
     action = "GetUserStatDescList"
   }, cb),
   {},
-  { GameLocalizationChanged = true, LoginComplete = true })
+  { GameLocalizationChanged = true, LoginComplete = true },
+  true)
 
 let statsUpdatable = makeUpdatable("GetStats",
   @(cb) userstat.request({
@@ -140,7 +146,8 @@ let statsUpdatable = makeUpdatable("GetStats",
       action = "GetStats"
     }, cb),
   {},
-  { LoginComplete = true })
+  { LoginComplete = true },
+  true)
 
 local unlocksUpdatable
 unlocksUpdatable = makeUpdatable("GetUnlocks",
@@ -336,7 +343,7 @@ mnSubscribe("userStat", function(ev) {
 eventbus_subscribe("userstatsDataUpdated", @(_p) userstatsDataUpdated())
 
 
-let waitingToShowRewardsArray = persist("waitingToShowRewardsArray", @() [])
+let waitingToShowRewardsArray = mkHardPersist("userstat.userstat")("waitingToShowRewardsArray", [])
 let getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
   @(itemData) itemData.itemId == itemId)
 
@@ -359,4 +366,5 @@ return {
   getUserstatItemRewardData
   addTimerForRefreshStatsWhenTableEnd
   actualizeStats
+  toPlainData
 }

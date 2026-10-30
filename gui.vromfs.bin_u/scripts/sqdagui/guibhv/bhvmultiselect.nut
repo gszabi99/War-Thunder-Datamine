@@ -85,4 +85,4 @@ let MultiSelect = class (posNavigator) {
 
 replace_script_gui_behaviour("MultiSelect", MultiSelect)
 
-return {MultiSelect}
+return freeze({MultiSelect})

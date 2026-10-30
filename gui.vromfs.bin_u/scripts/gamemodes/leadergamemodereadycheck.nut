@@ -1,10 +1,9 @@
+from "%scripts/crossModuleEvents.nut" import LEADER_GAME_MODE_APPLIED, SQUAD_SET_READY_REQUESTED
+from "%scripts/squads/squadState.nut" import isSquadMember, isMeReady
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/events/eventUnitsAvail.nut" import checkRequiredUnits, getCountryRepairInfo
+from "%scripts/user/playerCountry.nut" import profileCountrySq
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-
-let { LEADER_GAME_MODE_APPLIED, SQUAD_SET_READY_REQUESTED } = require("%scripts/crossModuleEvents.nut")
-let { isSquadMember, isMeReady } = require("%scripts/squads/squadState.nut")
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { checkRequiredUnits, getCountryRepairInfo } = require("%scripts/events/eventUnitsAvail.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 
 

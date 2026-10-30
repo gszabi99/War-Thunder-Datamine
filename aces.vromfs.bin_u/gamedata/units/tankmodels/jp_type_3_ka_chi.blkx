@@ -46,6 +46,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "steeringAnimVar": "steering_param",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1888,7 +1894,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1994,7 +2000,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
         "emitter": "bone_mg_h_01",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2038,8 +2044,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_3_ka_chi_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_3_ka_chi_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2079,7 +2085,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.43,
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 1.04,
@@ -2126,6 +2135,17 @@
           -0.14,
           -0.11,
           0.07
+        ]
+      },
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
         ]
       }
     },
@@ -3450,7 +3470,7 @@
         "commonWeapons": {
           "Weapon": {
             "trigger": "gunner0",
-            "blk": "gameData/Weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
+            "blk": "gamedata/weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
             "emitter": "bone_gun_barrel",
             "flash": "emtr_gun_flame",
             "defaultYaw": 0.0,

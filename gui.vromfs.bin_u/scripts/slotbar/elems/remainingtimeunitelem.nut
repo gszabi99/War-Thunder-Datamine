@@ -1,20 +1,20 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/unit/remainingTimeUnit.nut" import promoteUnits
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/markers/markerTooltipUtils.nut" import getSortedUnits, createMoreText, maxElementsInSimpleTooltip
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/markers/markerUtils.nut" import buildTimeTextValue
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getSortedUnits, createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { buildTimeTextValue } = require("%scripts/markers/markerUtils.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 elemModelType.addTypes({
   REMAINING_TIME_UNIT = {
@@ -197,4 +197,4 @@ addTooltipTypes({
   }
 })
 
-return {}
+return freeze({})

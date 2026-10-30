@@ -73,6 +73,9 @@ function mfdRwrSettingsUpd(page_blk) {
 let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.get() * min(RwrSignalHoldTimeInv.get(), MlwsLwsSignalHoldTimeInv.get()), 1.0)))
 
 function centeredIcon(colorWatched, centralCircleSizeMult) {
+  let circleCommands = [
+    [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
+  ]
   return {
     size = FLEX
     children = [
@@ -84,9 +87,7 @@ function centeredIcon(colorWatched, centralCircleSizeMult) {
         color = colorWatched.get()
         opacity = targetsCommonOpacity.get()
         lineWidth = scaleLineWidth
-        commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
-        ]
+        commands = circleCommands
       },
       @() {
         watch = colorWatched
@@ -99,7 +100,7 @@ function centeredIcon(colorWatched, centralCircleSizeMult) {
         size = [pw(10 * centralCircleSizeMult), ph(10 * centralCircleSizeMult)]
         pos = const [0, 0]
         opacity = RADAR_LINES_OPACITY
-        commands = [
+        commands = const [
           [VECTOR_LINE, 10, 50, 90, 50],
           [VECTOR_LINE, 50, 10, 50, 90]
         ]
@@ -164,6 +165,9 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
     opacity = RADAR_LINES_OPACITY
     commands = aircraftVectorImageCommands
   }
+  let circleCommands = [
+    [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
+  ]
 
   return {
     size = FLEX
@@ -176,9 +180,7 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
         color = colorWatched.get()
         opacity = targetsCommonOpacity.get()
         lineWidth = scaleLineWidth
-        commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
-        ]
+        commands = circleCommands
       },
       aircraftIcon
     ]
@@ -299,6 +301,11 @@ let rocketVector =
 
 const sectorOpacityMult = 0.25
 
+let lswTargetTransform = {
+  pivot = 0.0
+  rotate = 135.0 
+}
+
 function createMlwsTarget(index, colorWatch) {
   let target = mlwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.get(), 1.0)) * targetsOpacityMult.get())
@@ -312,10 +319,7 @@ function createMlwsTarget(index, colorWatch) {
     lineWidth = targetLineWidth
     fillColor = 0
     opacity = targetOpacity.get()
-    transform = {
-      pivot = [0.0, 0.0]
-      rotate = 135 
-    }
+    transform = lswTargetTransform
     commands = rocketVector
     children = target.enemy ? null
       : {
@@ -325,12 +329,15 @@ function createMlwsTarget(index, colorWatch) {
           fillColor = backgroundColor
           opacity = targetOpacity.get()
           size = FLEX
-          commands = [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
+          commands = const [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
         }
   }
 
   local sector = null
   if (target.sector > 2.0) {
+    let commands = [
+      [VECTOR_SECTOR, 0, 0, 143, 143, 45 - target.sector, 45 + target.sector]
+    ]
     sector = @() {
       watch = [targetOpacity, colorWatch]
       color = isColorOrWhite(colorWatch.get())
@@ -339,9 +346,7 @@ function createMlwsTarget(index, colorWatch) {
       lineWidth = sectorLineWidth
       fillColor = 0
       opacity = targetOpacity.get() * sectorOpacityMult
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 143, 143, 45 - target.sector, 45 + target.sector]
-      ]
+      commands
     }
   }
 
@@ -349,7 +354,7 @@ function createMlwsTarget(index, colorWatch) {
     size = FLEX
     pos = const [pw(50), ph(50)]
     transform = {
-      pivot = [0.0, 0.0]
+      pivot = 0.0
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
     }
     children = [
@@ -373,11 +378,6 @@ let cmdsLwsTargetNonTank = freeze([
   [VECTOR_LINE, -6, 10, -15, 10],
   [VECTOR_LINE, 6, 10, 15, 10]
 ])
-
-let lswTargetTransform = {
-  pivot = [0.0, 0.0]
-  rotate = 135.0 
-}
 
 function createLwsTarget(index, colorWatched, isForTank = false) {
   let target = lwsTargets[index]
@@ -403,12 +403,15 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
           fillColor = backgroundColor
           opacity = targetOpacity.get()
           size = FLEX
-          commands = [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
+          commands = const [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
         }
   }
 
   local sector = null
   if (target.sector > 2.0) {
+    let commands = [
+      [VECTOR_SECTOR, 0, 0, 143, 143, -90 - target.sector, -90 + target.sector]
+    ]
     sector = @() {
       watch = [targetOpacity, colorWatched]
       color = isColorOrWhite(colorWatched.get())
@@ -417,9 +420,7 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
       lineWidth = sectorLineWidth
       fillColor = 0
       opacity = targetOpacity.get() * sectorOpacityMult
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 143, 143, -90 - target.sector, -90 + target.sector]
-      ]
+      commands
       transform = lswTargetTransform
     }
   }
@@ -428,7 +429,7 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
     size = FLEX
     pos = const [pw(50), ph(50)]
     transform = {
-      pivot = [0.0, 0.0]
+      pivot = 0.0
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
     }
     children = [
@@ -445,7 +446,7 @@ let cmdsRwrTarget = [
 ]
 
 let rwrTargetTransform = {
-  pivot = [0.0, 0.0]
+  pivot = 0.0
   rotate = 45.0
 }
 
@@ -496,7 +497,7 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = priorityTargetLineWidth
             size = FLEX
-            commands = [[VECTOR_LINE, -20, -40, -20, 40]]
+            commands = const [[VECTOR_LINE, -20, -40, -20, 40]]
           }
       }
 
@@ -522,6 +523,9 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
   local sector = null
   if (target.sector > 2.0) {
     let lineWidth = hdpx(35)
+    let commands = [
+      [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
+    ]
     sector = @() {
       watch = [targetOpacityRwr, colorWatched]
       color = isColorOrWhite(colorWatched.get())
@@ -530,9 +534,7 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
       lineWidth
       fillColor = 0
       opacity = targetOpacityRwr.get() * priorityTargetOpacity
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
-      ]
+      commands
       transform = rwrTargetTransform
     }
   }
@@ -564,63 +566,52 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
       fillColor = 0
       size = FLEX
       pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
-      commands = [[VECTOR_LINE, 40, 35, 60, 35]]
+      commands = const [[VECTOR_LINE, 40, 35, 60, 35]]
     }
   }
 
   local elevationMark = null
-  if (target.priority) {
-    if (target.elev > 0.1)
-      elevationMark = @() {
-        watch = [targetOpacityRwr, colorWatched]
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color = colorWatched.get()
-        fillColor = 0
-        opacity = targetOpacityRwr.get()
-        lineWidth = scaleLineWidth * 4
-        commands = [
-          [VECTOR_SECTOR, 50, 50, indicatorRadius * 0.2 * centralCircleSizeMult, indicatorRadius * 0.2 * centralCircleSizeMult, 180, 360]
-        ]
-      }
-    else if (target.elev < -0.1)
-      elevationMark = @() {
-        watch = [targetOpacityRwr, colorWatched]
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color = colorWatched.get()
-        fillColor = 0
-        opacity = targetOpacityRwr.get()
-        lineWidth = scaleLineWidth * 4
-        commands = [
-          [VECTOR_SECTOR, 50, 50, indicatorRadius * 0.2 * centralCircleSizeMult, indicatorRadius * 0.2 * centralCircleSizeMult, 0, 180]
-        ]
-      }
+  if (target.priority && math.fabs(target.elev) > 0.1) {
+    let elevationMarkRadius = indicatorRadius * 0.2 * centralCircleSizeMult
+    let start = target.elev > 0.1 ? 180 : 0
+    let commands = [[VECTOR_SECTOR, 50, 50, elevationMarkRadius, elevationMarkRadius, start, start + 180]]
+    elevationMark = @() {
+      watch = [targetOpacityRwr, colorWatched]
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = FLEX
+      color = colorWatched.get()
+      fillColor = 0
+      opacity = targetOpacityRwr.get()
+      lineWidth = scaleLineWidth * 4
+      commands
+    }
   }
+
+  let targetChildren = [
+    {
+      pos = const [pw(50), ph(50)]
+      size = FLEX
+      transform = {
+        pivot = 0.0
+        rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45.0
+      }
+      children = [
+        trackLine,
+        sector,
+        targetComponent,
+        newTarget 
+      ]
+    },
+    targetType,
+    iffMark,
+    elevationMark
+  ]
 
   return @() {
     watch = targetOpacityRwr
     size = FLEX
     opacity = targetOpacityRwr.get()
-    children = [
-      {
-        pos = const [pw(50), ph(50)]
-        size = FLEX
-        transform = {
-          pivot = [0.0, 0.0]
-          rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45.0
-        }
-        children = [
-          trackLine,
-          sector,
-          targetComponent,
-          newTarget 
-        ]
-      },
-      targetType,
-      iffMark,
-      elevationMark
-    ]
+    children = targetChildren
   }
 }
 
@@ -648,7 +639,7 @@ function createRwrTargetPresence(index, colorWatched) {
     lineWidth = priorityLineWidth
     color = isColorOrWhite(colorWatched.get())
     fillColor = 0
-    commands = [
+    commands = const [
       [VECTOR_RECTANGLE, 10, 30, 80, 40]
     ]
   }
@@ -762,7 +753,7 @@ function rwrTargetsState(colorWatched) {
     opacity = rwrTargetsStateOpacity.get()
     children = rwrTargetsStateOpacity.get() > 0.01
       ? [ targetsState, targetsStateBorder ]
-      : []
+      : null
   }
 }
 
@@ -858,7 +849,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
         halign = ALIGN_CENTER
         transform = {
           rotate = i * angleStep
-          pivot = [0.5, 0.5 + 0.33]
+          pivot = const [0.5, 0.5 + 0.33]
         }
       })
     }
@@ -894,7 +885,7 @@ function centralCross(colorWatched, centralCircleSizeMult) {
     hplace = ALIGN_CENTER
     size = [pw(20 * centralCircleSizeMult), ph(20 * centralCircleSizeMult)]
     opacity = RADAR_LINES_OPACITY
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 50, 100, 50],
       [VECTOR_LINE, 50, 0, 50, 100]
     ]
@@ -912,7 +903,7 @@ function centralBigCross(colorWatched, _centralCircleSizeMult) {
     hplace = ALIGN_CENTER
     size = FLEX
     opacity = RADAR_LINES_OPACITY
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 50, 100, 50],
       [VECTOR_LINE, 50, 0, 50, 100]
     ]
@@ -996,9 +987,9 @@ let twsDas = kwarg(function(colorWatched, posWatched, sizeWatched) {
   }
 })
 
-return {
+return freeze({
   tws
   twsDas
   mfdRwrSettings
   mfdRwrSettingsUpd
-}
+})

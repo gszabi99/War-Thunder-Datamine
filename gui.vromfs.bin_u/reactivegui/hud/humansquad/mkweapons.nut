@@ -1,11 +1,12 @@
 import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%rGui/style/colors.nut" import hud, white
 from "%rGui/hud/humanSquad/humanConst.nut" import heroStateWidth, actionBarItemHeight
 from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunStaticInfo, humanCurGunInfo, humanCurGunModeInfo, getLauncherNextUseAtTime
-from "%rGui/style/colors.nut" import white
 from "%rGui/hud/state/grenades_es.nut" import grenades
 from "%rGui/hud/state/medkits_es.nut" import selfHealMedkits
-from "%rGui/hud/humanSquad/grenadeIcon.nut" import grenadeIcon, getGrenadeType
+from "%rGui/hud/humanSquad/grenadeIcon.nut" import grenadeIconName, getGrenadeType
+from "%rGui/utils/cacheByKey.nut" import cacheByKey
 from "dagor.math" import Color4
 from "math" import ceil
 from "mission" import get_mission_time
@@ -14,7 +15,6 @@ from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
 
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryHudCommonColor, infantryHudDisabledColor } = hud
 
 
@@ -63,7 +63,7 @@ function launcherEidCheck(eid) {
     setInterval(1, updateCooldownTime)
 }
 
-function mkWeaponImage() {
+let mkWeaponImage = @(getPicture) function() {
   if (humanCurGunStaticInfo.get()?.iconTemplate == null)
     return { watch = humanCurGunStaticInfo }
 
@@ -71,7 +71,7 @@ function mkWeaponImage() {
     return {
       watch = [humanCurGunStaticInfo, isWeaponEnabled]
       rendObj = ROBJ_IMAGE
-      image = Picture(overrideItemIcon[humanCurGunStaticInfo.get().iconTemplate])
+      image = getPicture(overrideItemIcon[humanCurGunStaticInfo.get().iconTemplate])
       color = isWeaponEnabled.get() ? infantryHudCommonColor : infantryHudDisabledColor
       size = [ weaponImageSize[1], weaponImageSize[1] ]
     }
@@ -81,7 +81,7 @@ function mkWeaponImage() {
     size = weaponImageSize
     rendObj = ROBJ_IMAGE
     color = isWeaponEnabled.get() ? white : infantryHudDisabledColor
-    image = Picture(icon3dByGameTemplate(humanCurGunStaticInfo.get().iconTemplate, {
+    image = getPicture(icon3dByGameTemplate(humanCurGunStaticInfo.get().iconTemplate, {
       width = weaponImageSize[0]
       height = weaponImageSize[1]
       silhouetteColor = whiteColor4
@@ -94,12 +94,12 @@ function mkWeaponImage() {
 }
 
 
-let mkAmmoTypeImage = {
+let mkAmmoTypeImage = @(getPicture) {
   rendObj = ROBJ_IMAGE
   color = infantryHudCommonColor
   size = rifleGrenadeSize
   vplace = ALIGN_CENTER
-  image = Picture($"ui/gameuiskin#icon_rifle_grenade.svg:{rifleGrenadeSize[0]}:{rifleGrenadeSize[1]}:P")
+  image = getPicture($"ui/gameuiskin#icon_rifle_grenade.svg:{rifleGrenadeSize[0]}:{rifleGrenadeSize[1]}:P")
 }
 
 let bigText = @(textWatch, color = white) @() {
@@ -156,7 +156,7 @@ function mkAdditionalWeaponInfo() {
   }
 }
 
-function mkAmmoBlock() {
+function mkAmmoBlock(getPicture) {
   let haveAmmo = Computed(@() humanCurGunStaticInfo.get()?.haveAmmo ?? false)
   let curGunMod = Computed(@() humanCurGunModeInfo.get()?.modWeapon)
   let isModActive = Computed(@() curGunMod.get()?.isModActive ?? false)
@@ -164,21 +164,19 @@ function mkAmmoBlock() {
   let curWeaponTotalAmmo = Computed(@() humanCurGunInfo.get()?.totalAmmo ?? 0)
   let curWeaponAltAmmo = Computed(@() curGunMod.get()?.modCurAmmo ?? 0)
   let curWeaponAltTotalAmmo = Computed(@() curGunMod.get()?.modTotalAmmo ?? 0)
+  let altWeaponAmmo = mkWeaponAmmo(curWeaponAltAmmo, curWeaponAltTotalAmmo, mkAmmoTypeImage(getPicture))
+  let weaponAmmo = mkWeaponAmmo(curWeaponAmmo, curWeaponTotalAmmo, mkAdditionalWeaponInfo)
 
   return @() {
     watch = [haveAmmo, isModActive]
     size = FLEX_H
     vplace = ALIGN_TOP
-    children = [
-      !haveAmmo.get() ? null : isModActive.get()
-        ? mkWeaponAmmo(curWeaponAltAmmo, curWeaponAltTotalAmmo, mkAmmoTypeImage)
-        : mkWeaponAmmo(curWeaponAmmo, curWeaponTotalAmmo, mkAdditionalWeaponInfo)
-    ]
+    children = !haveAmmo.get() ? null : isModActive.get() ? altWeaponAmmo : weaponAmmo
   }
 }
 
-function medkitsBlock() {
-  let icon = Picture($"ui/gameuiskin#first_aid_kit.svg:{iconSize[0]}:{iconSize[1]}:P")
+let mkMedkitsBlock = @(getPicture) function() {
+  let icon = getPicture($"ui/gameuiskin#first_aid_kit.svg:{iconSize[0]}:{iconSize[1]}:P")
 
   return {
     watch = selfHealMedkits
@@ -193,7 +191,7 @@ function medkitsBlock() {
   }
 }
 
-function grenadesBlock() {
+function grenadesBlock(getPicture) {
   let grenadeType = Computed(function() {
     let t = getGrenadeType(grenades.get().keys())
     return t == null || t == "wall_bomb" ? null : t
@@ -207,7 +205,7 @@ function grenadesBlock() {
     gap = itemGap
     children = [
       mkIcon(
-        grenadeIcon(grenadeType.get(), iconSize[0]),
+        getPicture(grenadeIconName(grenadeType.get(), iconSize[0])),
         grenadesCount.get() > 0 ? white : infantryHudInactiveColor
       )
       bigTextFixed(grenadesCount.get(),
@@ -216,7 +214,7 @@ function grenadesBlock() {
   }
 }
 
-return {
+let mkCurWeapon = @(getPicture) {
   size = [ heroStateWidth, actionBarItemHeight ]
   children = [
     hudBlurPanel
@@ -224,14 +222,12 @@ return {
       size = FLEX
       padding = weaponBlockPadding
       children = [
-        mkAmmoBlock()
+        mkAmmoBlock(getPicture)
         {
           size = FLEX
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
-          children = [
-            mkWeaponImage
-          ]
+          children = mkWeaponImage(getPicture)
         }
         {
           flow = FLOW_HORIZONTAL
@@ -239,9 +235,9 @@ return {
           vplace = ALIGN_BOTTOM
           size = FLEX_H
           children = [
-            grenadesBlock()
+            grenadesBlock(getPicture)
             { size = [FLEX, 0] }
-            medkitsBlock
+            mkMedkitsBlock(getPicture)
           ]
         }
       ]
@@ -256,3 +252,5 @@ return {
     clearTimer(updateCooldownTime)
   }
 }
+
+return @() mkCurWeapon(cacheByKey(Picture))

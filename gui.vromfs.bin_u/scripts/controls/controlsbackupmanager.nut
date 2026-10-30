@@ -1,21 +1,25 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/fileDialog/saveDataDialog.nut" import SaveDataDialog
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/controls/controlsState.nut" import isPresetChanged
+from "%scripts/utils/nativeRequests.nut" import mkNativeResultReceiver
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { request_load_controls_backup = @(...) null, request_save_controls_backup= @(...) null, request_delete_controls_backup= @(...) null, request_list_controls_backup= @(...) null } = require("controls")
+let { request_load_controls_backup = @(...) 0, request_save_controls_backup= @(...) 0, request_delete_controls_backup= @(...) 0, request_list_controls_backup= @(...) 0 } = require("controls")
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SaveDataDialog } = require("%scripts/fileDialog/saveDataDialog.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPresetChanged } = require("%scripts/controls/controlsState.nut")
+
+const BACKUP_RESULT_EVENT = "controlsBackupResult"
+let onBackupResult = mkNativeResultReceiver(BACKUP_RESULT_EVENT)
 
 let ControlsBackupManager = class (SaveDataDialog) {
   function initScreen() {
     if (!this.isAvailable())
       return
 
-    this.getSaveDataContents = request_list_controls_backup
+    this.getSaveDataContents = @(cb) onBackupResult(request_list_controls_backup(BACKUP_RESULT_EVENT), cb)
     base.initScreen()
   }
 
@@ -26,8 +30,7 @@ let ControlsBackupManager = class (SaveDataDialog) {
     blk.comment = descr.comment
     blk.path = descr.path
 
-    let cb = Callback(this.onBackupSaved, this)
-    request_save_controls_backup(@(result) cb(result), blk)
+    onBackupResult(request_save_controls_backup(BACKUP_RESULT_EVENT, blk), Callback(this.onBackupSaved, this))
   }
 
 
@@ -45,8 +48,7 @@ let ControlsBackupManager = class (SaveDataDialog) {
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = Callback(this.onBackupLoaded, this)
-    request_load_controls_backup(@(result) cb(result), blk)
+    onBackupResult(request_load_controls_backup(BACKUP_RESULT_EVENT, blk), Callback(this.onBackupLoaded, this))
   }
 
 
@@ -68,8 +70,7 @@ let ControlsBackupManager = class (SaveDataDialog) {
     blk.path = descr.path
     blk.comment = descr.comment
 
-    let cb = Callback(this.onBackupDeleted, this)
-    request_delete_controls_backup(@(result) cb(result), blk)
+    onBackupResult(request_delete_controls_backup(BACKUP_RESULT_EVENT, blk), Callback(this.onBackupDeleted, this))
   }
 
 
@@ -80,7 +81,7 @@ let ControlsBackupManager = class (SaveDataDialog) {
 
 
   static function isAvailable() {
-    return (isPlatformSony || isPlatformXbox) && request_list_controls_backup != null
+    return (isSony || isXbox) && request_list_controls_backup != null
   }
 
 
@@ -90,4 +91,4 @@ let ControlsBackupManager = class (SaveDataDialog) {
 }
 register_gui_handler("ControlsBackupManager", ControlsBackupManager)
 
-return { ControlsBackupManager }
+return freeze({ ControlsBackupManager })

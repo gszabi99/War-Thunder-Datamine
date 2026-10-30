@@ -1,9 +1,8 @@
+import "%globalScripts/iconRender/icon3d.nut" as mkIcon3d
+import "%globalScripts/sharedWatched.nut" as sharedWatched
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%globalScripts/templates.nut" import getTemplate, getTemplateCompValue
 from "language" import getLocalLanguage
-
-let mkIcon3d = require("%globalScripts/iconRender/icon3d.nut")
-let { getTemplate, getTemplateCompValue } = require("%globalScripts/templates.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 
 let cachedRendered3dIcons = sharedWatched("cachedRendered3dIcons", @() {})
 
@@ -90,6 +89,7 @@ function getIconInfoByGameTemplate(gametemplate, params = {}) {
     shading = params?.shading ?? getTemplateParam("item__shading")
 
     swapYZ = params?.swapYZ ?? getTemplateParam("item__swapYZ")
+    recalcAnimation = params?.recalcAnimation ?? getTemplateParam("item__iconRecalcAnim")
 
     contrast = params?.contrast ?? getTemplateParam("item__contrast")
 

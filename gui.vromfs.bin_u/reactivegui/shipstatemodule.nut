@@ -1,3 +1,4 @@
+from "%rGui/style/colors.nut" import hud
 from "%rGui/shipState.nut" import brokenEnginesCount, enginesInCooldown, enginesCount, transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount
   , brokenTorpedosCount, artilleryType, artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire
   , aiGunnersState, buoyancy, steering, sightAngle, fwdAngle, hasAiGunners, fov
@@ -14,7 +15,6 @@ from "%globalScripts/weaponConsts.nut" import *
 
 let dmModule = require("%rGui/dmModule.nut")
 let { crewLifebar } = require("%rGui/crewLifebar.nut")
-let { hud } = require("%rGui/style/colors.nut")
 
 const STATE_ICON_SIZE = 54
 const FIRE_ICON_SIZE = 24
@@ -179,7 +179,7 @@ function aiGunners() {
       }
       {
         prop = AnimProp.scale
-        from = [1.5, 1.5]
+        from = const [1.5, 1.5]
         easing = InOutCubic
         duration = 0.2
         trigger = aiGunnersState
@@ -256,13 +256,15 @@ let fovPos = Computed(@() [0.5 * shipDmgIndicatorSize.get()[0] - 0.5 * fovSize.g
   0.5 * shipDmgIndicatorSize.get()[1] - 0.5 * fovSize.get()[1] + fovTopOffset.get()])
 
 let dollFov = @() {
-  watch = [fwdAngle, sightAngle, fov, fovSize, fovPos]
+  watch = [fovSize, fovPos]
   pos = fovPos.get()
   size = fovSize.get()
-  transform = {
-    pivot = [0.5, 0.5]
-    rotate = sightAngle.get() - fwdAngle.get()
-    scale = [sin(fov.get()), 1.0]
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = sightAngle.get() - fwdAngle.get()
+      scale = [sin(fov.get()), 1.0]
+    }
   }
   children = [
     {
@@ -294,7 +296,7 @@ function makeFireIcons(burningPartsTable, dollSizeVals, iconFireSizeVal) {
     icons.append({
       key = $"fireOutline_{partId}"
       pos = [x, y]
-      size = [iconFireSizeVal, iconFireSizeVal]
+      size = iconFireSizeVal
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#fire_indicator_outline.avif:{iconFireSizeVal}:{iconFireSizeVal}")
       color =  damageModule.fire
@@ -328,7 +330,7 @@ function makeFireIcons(burningPartsTable, dollSizeVals, iconFireSizeVal) {
     icons.append({
       key = $"fireIcon_{partId}"
       pos = [x, y]
-      size = [iconFireSizeVal, iconFireSizeVal]
+      size = iconFireSizeVal
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#fire_indicator.svg:{iconFireSizeVal}:{iconFireSizeVal}:K")
       color =  damageModule.fire
@@ -367,7 +369,7 @@ let rightBlock = @() {
   flow = FLOW_VERTICAL
   children = [
     stateBlock
-    { size = FLEX_V }
+    const { size = FLEX_V }
     hasAiGunners.get() ? aiGunners : null
     driverIndicator
   ]

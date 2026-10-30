@@ -19,7 +19,7 @@ def is_temp_safe(expr : ExpressionPtr) : bool {
     
     
     if (expr is ExprVar) {
-        return (expr as ExprVar).varFlags.local 
+        return (expr as ExprVar).varFlags.local
     } elif (expr is ExprAt) {
         let ea = expr as ExprAt
         if (ea.subexpr._type != null && ea.subexpr._type.baseType == Type.tFixedArray) return is_temp_safe(ea.subexpr)
@@ -27,8 +27,8 @@ def is_temp_safe(expr : ExpressionPtr) : bool {
         let ef = expr as ExprField
         if (!(ef.value._type.baseType == Type.tHandle) || (ef.value._type.isLocal)) return is_temp_safe(ef.value)
     } elif (expr is ExprSwizzle) {
-        return is_temp_safe((expr as ExprSwizzle).value)    
-    } elif (expr is ExprCall) return expr._type.isRef                             
+        return is_temp_safe((expr as ExprSwizzle).value)
+    } elif (expr is ExprCall) return expr._type.isRef
     return false;
 }
 

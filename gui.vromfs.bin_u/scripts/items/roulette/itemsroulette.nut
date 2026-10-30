@@ -1,17 +1,17 @@
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import updateTransparencyRecursive
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getItemGenerator
+from "%scripts/items/prizesView.nut" import getContentFixedAmount, getPrizeImageByConfig
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType, isRewardItem
 from "%sqStdLibs/helpers/u.nut" import isArray
 from "math" import pow
 from "dagor.random" import frnd
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
-let { updateTransparencyRecursive } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let { findItemById, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
-let { getContentFixedAmount, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 
 
 
@@ -519,7 +519,7 @@ function skipItemsRouletteAnimation(obj) {
     mainAnimationTimerWeekref.ref().destroy()
 }
 
-return {
+return freeze({
   initItemsRoulette
   skipItemsRouletteAnimation
-}
+})

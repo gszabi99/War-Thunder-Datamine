@@ -6,14 +6,14 @@ from "%rGui/globals/ui_library.nut" import *
 
 let baseLineWidth = floor(2 * LINE_WIDTH + 0.5)
 
-local airSymbol = @() {
+let airSymbol = @() {
   watch = VdiColor
   size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   color = VdiColor.get()
   fillColor = VdiColor.get()
   lineWidth = baseLineWidth * 2
-  commands = [
+  commands = const [
     [VECTOR_ELLIPSE, 50, 50, 1, 1],
     [VECTOR_LINE, 0, 50, 13, 50],
     [VECTOR_LINE, 32, 50, 42, 50],
@@ -62,7 +62,7 @@ let compass = function(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = VdiColor.get()
         lineWidth = baseLineWidth
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 100, -100, 0],
           [VECTOR_LINE, 0, 100, 100, 0]
         ]
@@ -75,46 +75,38 @@ function generatePitchLine(num, width) {
   let sign = num > 0 ? 1 : -1
   return {
     size = const [pw(100), ph(100)]
-    children = num == 0 ?
-    [
-      {
-        size = const [pw(400), ph(10)]
-        pos = const [pw(-150), 0]
-        rendObj = ROBJ_SOLID
-        lineWidth = baseLineWidth
-        color = Color(0, 0, 0, 255)
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
+    children = num == 0 ? {
+      size = const [pw(400), ph(10)]
+      pos = const [pw(-150), 0]
+      rendObj = ROBJ_SOLID
+      lineWidth = baseLineWidth
+      color = Color(0, 0, 0, 255)
+    } : @() {
+      size = FLEX
+      watch = VdiColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = VdiColor.get()
+      commands = [
+        sign > 0 && num % 30 != 0 ? const [VECTOR_LINE, 25, 0, 75, 0] : const [],
+        sign > 0 && num % 30 == 0 ? const [VECTOR_LINE, -20, 0, 35, 0] : const [],
+        sign > 0 && num % 30 == 0 ? const [VECTOR_LINE, 65, 0, 120, 0] : const [],
+        sign < 0 && num % 30 != 0 ? [VECTOR_LINE_DASHED, 25, 0, 75, 0, width * 0.06, width * 0.01] : [],
+        sign < 0 && num % 30 == 0 ? [VECTOR_LINE_DASHED, -20, 0, 35, 0, width * 0.10, width * 0.02] : [],
+        sign < 0 && num % 30 == 0 ? [VECTOR_LINE_DASHED, 65, 0, 120, 0, width * 0.10, width * 0.02] : [],
+      ]
+      children = num % 30 == 0 ? @() {
         watch = VdiColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
+        pos = const [0, ph(-25)]
+        rendObj = ROBJ_TEXT
+        vplace = ALIGN_TOP
+        hplace = ALIGN_CENTER
         color = VdiColor.get()
-        commands = [
-          sign > 0 && num % 30 != 0 ? [VECTOR_LINE, 25, 0, 75, 0] : [],
-          sign > 0 && num % 30 == 0 ? [VECTOR_LINE, -20, 0, 35, 0] : [],
-          sign > 0 && num % 30 == 0 ? [VECTOR_LINE, 65, 0, 120, 0] : [],
-          sign < 0 && num % 30 != 0 ? [VECTOR_LINE_DASHED, 25, 0, 75, 0, width * 0.06, width * 0.01] : [],
-          sign < 0 && num % 30 == 0 ? [VECTOR_LINE_DASHED, -20, 0, 35, 0, width * 0.10, width * 0.02] : [],
-          sign < 0 && num % 30 == 0 ? [VECTOR_LINE_DASHED, 65, 0, 120, 0, width * 0.10, width * 0.02] : [],
-        ]
-        children = num % 30 == 0 ? [
-          @() {
-            watch = VdiColor
-            pos = const [0, ph(-25)]
-            rendObj = ROBJ_TEXT
-            vplace = ALIGN_TOP
-            hplace = ALIGN_CENTER
-            color = VdiColor.get()
-            fontSize = 22
-            font = Fonts.usa_ils
-            text = (num / 10).tostring()
-          }
-        ] : null
-      }
-    ]
+        fontSize = 22
+        font = Fonts.usa_ils
+        text = (num / 10).tostring()
+      } : null
+    }
   }
 }
 

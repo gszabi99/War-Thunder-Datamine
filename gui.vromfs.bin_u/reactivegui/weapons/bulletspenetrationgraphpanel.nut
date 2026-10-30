@@ -90,7 +90,7 @@ let bulletsPenetrationGraphPanel = @() {
   children = hasGraphPanel.get() ? panelHost : null
 }
 
-return {
+return freeze({
   bulletsPenetrationGraphPanel
   bulletsPenetrationGraphWidget = graphComp
-}
+})

@@ -1,3 +1,25 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_child_by_value
+from "%scripts/battlePass/seasonState.nut" import maxSeasonLvl, battlePassShopConfig, season
+from "%scripts/battlePass/unlocksRewardsState.nut" import hasBattlePass
+from "%scripts/userstat/userstat.nut" import isUserstatMissingData
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/clientState/clientStates.nut" import isInBattleState
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, isUnlockOpened
+from "%scripts/unlocks/unlocksAction.nut" import buyUnlock
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerState.nut" import itemsShopListVersion, inventoryListVersion
+from "%scripts/items/prizesView.nut" import getPrizeText, getPrizeTypeName
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "frp" import FRP_INITIAL
@@ -5,39 +27,15 @@ from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
-let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/itemsManagerState.nut")
-let { getPrizeText, getPrizeTypeName } = require("%scripts/items/prizesView.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
 let getSortedAdditionalTrophyItems = @(additionalTrophy) additionalTrophy
   .map(@(itemId) findItemById(to_integer_safe(itemId, itemId, false)))
-  .sort(@(a, b) (a?.getCost() ?? 0) <=> (b?.getCost() ?? 0))
+  .sortby(@(a) a?.getCost() ?? 0)
 
 let getAdditionalTrophyItemForBuy = @(additionalTrophyItems) (additionalTrophyItems
   .filter(@(item) item?.isCanBuy() && item?.canBuyTrophyByLimit()))?[0]
@@ -340,6 +338,6 @@ function openBattlePassShopWnd() {
 
 eventbus_subscribe("battlePass.openShopWnd", @(_) openBattlePassShopWnd())
 
-return {
+return freeze({
   openBattlePassShopWnd
-}
+})

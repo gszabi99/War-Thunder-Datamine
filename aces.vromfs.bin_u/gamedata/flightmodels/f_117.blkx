@@ -1,7 +1,7 @@
 {
   "model": "f_117",
   "fmFile": "fm/f_117.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.25,
   "gearSinkRangeC": 0.16,
@@ -26,17 +26,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -572,15 +572,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -623,7 +627,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2304,11 +2310,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "blk": "gamedata/sensors/ir_tracker_tgp.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
         "node": "optic1_gun"
       }
     ]
@@ -2323,35 +2329,35 @@
     "preset": [
       {
         "name": "f_117_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_default.blk"
       },
       {
         "name": "f_117_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_mk83.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_mk83.blk"
       },
       {
         "name": "f_117_mk84",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_mk84.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_mk84.blk"
       },
       {
         "name": "f_117_gbu_16",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_gbu_16.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_gbu_16.blk"
       },
       {
         "name": "f_117_gbu_27",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_gbu_27.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_gbu_27.blk"
       },
       {
         "name": "f_117_gbu_10",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_gbu_10.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_gbu_10.blk"
       },
       {
         "name": "f_117_jdam_38",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_jdam_38.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_jdam_38.blk"
       },
       {
         "name": "f_117_jdam_31",
-        "blk": "gameData/FlightModels/weaponPresets/f_117_jdam_31.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f_117_jdam_31.blk"
       }
     ]
   },
@@ -2371,7 +2377,7 @@
             "dummy": true,
             "trigger": "gunner0",
             "triggerGroup": "primary",
-            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "blk": "gamedata/weapons/dummy_weapon.blk",
             "emitter": "optic1_gun",
             "defaultYaw": 0.0,
             "defaultPitch": 0.0,
@@ -2407,7 +2413,7 @@
             "name": "mk82",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2421,7 +2427,7 @@
             "reqModification": "us_1000lb_mk83",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_1000lb_mk_83_ldgp.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2434,7 +2440,7 @@
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_mk_84_ldgp.blk",
               "emitter": "gbu_10_001",
               "external": false,
               "separate": true,
@@ -2447,7 +2453,7 @@
             "name": "gbu12",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_12_paveway_2.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2461,7 +2467,7 @@
             "reqModification": "us_gbu_16",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_16_paveway_2.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2475,7 +2481,7 @@
             "reqModification": "us_gbu_10",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_10_paveway_2.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2489,7 +2495,7 @@
             "reqModification": "us_gbu_27",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_27.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_gbu_27.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2502,7 +2508,7 @@
             "name": "jdam38",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_gbu38_usaf.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2516,7 +2522,7 @@
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_gbu31_usaf.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2536,7 +2542,7 @@
             "name": "mk82",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_mk_82_ldgp.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2550,7 +2556,7 @@
             "reqModification": "us_1000lb_mk83",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_1000lb_mk_83_ldgp.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2563,7 +2569,7 @@
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_mk_84_ldgp.blk",
               "emitter": "gbu_10_002",
               "external": false,
               "separate": true,
@@ -2576,7 +2582,7 @@
             "name": "gbu12",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_12_paveway_2.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2590,7 +2596,7 @@
             "reqModification": "us_gbu_16",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_16_paveway_2.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2604,7 +2610,7 @@
             "reqModification": "us_gbu_10",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "blk": "gamedata/weapons/bombguns/us_gbu_10_paveway_2.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2618,7 +2624,7 @@
             "reqModification": "us_gbu_27",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_27.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_gbu_27.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2631,7 +2637,7 @@
             "name": "jdam38",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "blk": "gamedata/weapons/bombguns/us_500lb_gbu38_usaf.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2645,7 +2651,7 @@
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "blk": "gamedata/weapons/bombguns/us_2000lb_gbu31_usaf.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,

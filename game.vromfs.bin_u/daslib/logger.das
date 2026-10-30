@@ -39,6 +39,10 @@ module logger shared public
 
 
 
+
+
+
+
 require daslib/json public
 require daslib/fio public
 require strings
@@ -51,14 +55,30 @@ require daslib/rtti
 var private log_file : FILE const? = null
 var private log_path : string
 var private log_name : string
-var private log_open_attempted = false
 var private log_open_failed = false
-var private log_min_level = LOG_INFO
+var private log_min_level = env_min_level()
 var private log_category_overrides : table<string; int>
 var private log_fallback_to_stderr = true
 var private log_tee = false
+var private log_echo_stderr = false
 
-
+def private env_min_level() : int {
+    var text = get_env_variable("DAS_LOGGER_LEVEL")
+    if (empty(text)) {
+        text = get_env_variable("DAS_LOG_LEVEL")
+    }
+    if (empty(text)) {
+        return LOG_WARNING
+    }
+    let name = to_lower(text)
+    if (name == "trace") return LOG_TRACE
+    if (name == "debug") return LOG_DEBUG
+    if (name == "info") return LOG_INFO
+    if (name == "warning") return LOG_WARNING
+    if (name == "error") return LOG_ERROR
+    if (name == "critical") return LOG_CRITICAL
+    return to_int(name)
+}
 
 def private level_name(level : int) : string {
     return "critical" if (level >= LOG_CRITICAL)
@@ -69,18 +89,25 @@ def private level_name(level : int) : string {
     return "trace"
 }
 
-
-
-
 def private resolve_level(category : string) : int {
-    var probe = category
-    while (true) {
-        if (key_exists(log_category_overrides, probe)) return log_category_overrides[probe]
-        let dot = probe |> rfind(".")
-        break if (dot < 0)
-        probe = probe |> slice(0, dot)
+    if (key_exists(log_category_overrides, category)) return log_category_overrides[category]
+    var found = false
+    var level = 0
+    peek_data(category) $(d) {
+        var end = length(d)
+        while (true) {
+            let dot = rfind(d, ".", end - 1)
+            break if (dot < 0)
+            let probe = slice(d, 0, dot)
+            if (key_exists(log_category_overrides, probe)) {
+                level = log_category_overrides[probe]
+                found = true
+                return
+            }
+            end = dot
+        }
     }
-    return log_min_level
+    return found ? level : log_min_level
 }
 
 def private should_log(level : int; category : string) : bool {
@@ -97,16 +124,12 @@ def private ensure_dir(path : string) {
 
 def private ensure_open() {
     return if (log_file != null || log_open_failed || empty(log_path))
-    log_open_attempted = true
     ensure_dir(log_path)
     log_file = fopen(log_path, "ab")
     if (log_file == null) {
         log_open_failed = true
     }
 }
-
-
-
 
 def private write_record(var w : StringBuilderWriter; ts, lvl, cat, msg : string; fields : JsonValue?) {
     w |> write("\{\"ts\":\"")
@@ -119,7 +142,6 @@ def private write_record(var w : StringBuilderWriter; ts, lvl, cat, msg : string
     write_escape_string(w, msg)
     if (fields != null) {
         w |> write("\",\"fields\":")
-        
         w |> write(compact_json_whitespace(write_json(fields)))
         w |> write("}\n")
     } else {
@@ -136,15 +158,15 @@ def private emit(level : int; category, message : string; fields : JsonValue?) {
     if (log_file != null) {
         fwrite(log_file, line)
         fflush(log_file)
+        if (log_echo_stderr) {
+            fwrite(fstderr(), "[{level_name(level)}] {strip_right(message)}\n")   
+        }
         return
     }
-    
     if (log_fallback_to_stderr) {
         fwrite(fstderr(), line)
     }
 }
-
-
 
 def logger_set_name(name : string) {
     
@@ -164,11 +186,7 @@ def logger_set_path(path : string) {
         log_file = null
     }
     log_path = path
-    
-    
-    
     log_name = ""
-    log_open_attempted = false
     log_open_failed = false
 }
 
@@ -184,6 +202,7 @@ def logger_get_name() : string {
 }
 
 def logger_set_min_level(level : int) {
+    
     
     
     log_min_level = level
@@ -204,14 +223,19 @@ def logger_clear_category_levels() {
     log_category_overrides |> clear
 }
 
+def logger_set_echo_stderr(enabled : bool) {
+    
+    
+    
+    log_echo_stderr = enabled
+}
+
 def logger_set_stderr_fallback(enabled : bool) {
     
     
     
     log_fallback_to_stderr = enabled
 }
-
-
 
 def logger_log(level : int; category, message : string; fields : JsonValue? = null) {
     
@@ -248,8 +272,6 @@ def logger_critical(category, message : string; fields : JsonValue? = null) {
     emit(LOG_CRITICAL, category, message, fields)
 }
 
-
-
 def logger_flush() {
     
     
@@ -264,24 +286,20 @@ def logger_close() {
         fclose(log_file)
         log_file = null
     }
-    log_open_attempted = false
     log_open_failed = false
 }
-
-
 
 let private LOGGER_AGENT_CATEGORY = "daslib_logger"
 
 class private LogHookAgent : DapiDebugAgent {
     def override onLog(context : Context?; at : LineInfo const?; level : int; text : string#) : bool {
-        
         if (empty(log_path) && !log_fallback_to_stderr) return false
         var fields : JsonValue? = null
         if (at != null && at.fileInfo != null) {
-            fields = JV({"at" => JV("{at.fileInfo.name}:{at.line}")})
+            fields = JV({"at" => JV("{at.fileInfo.name}:{int(at.line)}")})
         }
         emit(level, "runtime", string(text), fields)
-        return !log_tee   
+        return !log_tee
     }
 }
 
@@ -296,6 +314,16 @@ def logger_install_hook() {
     
     return if (has_debug_agent_context(LOGGER_AGENT_CATEGORY))
     install_new_debug_agent(new LogHookAgent(), LOGGER_AGENT_CATEGORY)
+}
+
+def logger_capture_diagnostics() {
+    
+    
+    
+    if (empty(log_path) ||
+        !diagnostics_to_file(replace_extension(log_path, ".diag.log"))) {
+        diagnostics_to_stderr()
+    }
 }
 
 def logger_init(name : string) {

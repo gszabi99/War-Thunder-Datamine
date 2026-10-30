@@ -1,5 +1,15 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child
+from "%scripts/matchingRooms/mRoomInfoManager.nut" import getMroomInfo
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import getRoomMembersInfoList
+from "%scripts/statistics/mpStatisticsUtil.nut" import setMpTable, buildMpTable, updateTeamCssLabel
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teams.nut" import g_team
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyGameType
 
 
 
@@ -16,15 +26,8 @@ from "%scripts/teams.nut" import g_team
 
 
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { getRoomMembersInfoList } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { setMpTable, buildMpTable, updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
+require("%scripts/matchingRooms/sessionLobbyPlayerTooltip.nut")
 
 let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -34,6 +37,7 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
   teams = null
   room = null
   columnsList = ["team", "country", "name", "status"]
+  hasPlayerTooltip = false
 
   onPlayerSelectCb = null
   onPlayerDblClickCb = null
@@ -61,7 +65,7 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
     }
 
     let markupData = {
-      tr_size = "pw, @baseTrHeight"
+      tr_size = "pw, @rows16height"
       trOnHover = "onPlayerHover"
       columns = {
         name = { width = "fw" }
@@ -73,7 +77,7 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
       {
         isFirst = idx == 0
         tableId = this.getTeamTableId(team)
-        content = buildMpTable([], markupData, this.columnsList)
+        content = buildMpTable([], markupData, this.columnsList, 1, { hasCustomTooltip = this.hasPlayerTooltip })
       })
     }
     return view
@@ -108,7 +112,6 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
   }
 
 
-
   
   
   
@@ -133,7 +136,10 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
 
     let teamList = team == g_team.ANY ? playersList
       : playersList.filter(@(p) p.team.tointeger() == team.code)
-    setMpTable(objTbl, teamList, {handler = this})
+
+    let isTeamplay = isModeWithTeams(getSessionLobbyGameType(this.room))
+    setMpTable(objTbl, teamList, { handler = this, isTeamplay,
+      hasCustomTooltip = this.hasPlayerTooltip, playerTooltipType = "SESSION_LOBBY_PLAYER" })
     updateTeamCssLabel(objTbl)
 
     this.playersInTeamTables[team] <- teamList
@@ -174,6 +180,7 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
 
   function onTableDblClick()    { if (this.onPlayerDblClickCb) this.onPlayerDblClickCb(this.getSelectedPlayer()) }
   function onTableRClick()      { if (this.onPlayerRClickCb)   this.onPlayerRClickCb(this.getSelectedPlayer()) }
+  function onUserRClick(_obj)   { this.onTableRClick() }
   function onTableHover(obj)    { if (this.onTablesHoverChange) this.onTablesHoverChange(obj.id, obj.isHovered()) }
 
   function onPlayerHover(obj) {
@@ -219,4 +226,4 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MRoomPlayersListWidget", MRoomPlayersListWidget)
 
-return { MRoomPlayersListWidget }
+return freeze({ MRoomPlayersListWidget })

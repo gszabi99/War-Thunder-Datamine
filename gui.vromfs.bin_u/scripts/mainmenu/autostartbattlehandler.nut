@@ -1,3 +1,19 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+import "%scripts/time.nut" as time
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/queue/waitIconImage.nut" import getQueueWaitIconImageMarkup
+from "%scripts/queue/curEsUnitTypesMask.nut" import getCurEsUnitTypesMask
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION
+from "%scripts/matchingRooms/sessionLobbyState.nut" import sessionLobbyStatus
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart, leaveAllQueuesSilent
+from "%scripts/events/eventJoinProcess.nut" import EventJoinProcess
+from "%scripts/queue/queueState.nut" import isQueueActive, isQueuesEqual, findQueue, checkQueueType
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode, getGameModeEvent
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
 from "string" import format
 from "chard" import get_charserver_time_sec
@@ -5,24 +21,8 @@ from "%scripts/dagui_natives.nut" import set_presence_to_player, is_online_avail
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
-let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
-let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { checkQueueAndStart, leaveAllQueuesSilent } = require("%scripts/queue/queueManager.nut")
-let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
 
-let { getCurrentGameMode, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 class AutoStartBattleHandler (BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -200,4 +200,4 @@ class AutoStartBattleHandler (BaseGuiHandlerWT) {
 
 register_gui_handler("AutoStartBattleHandler", AutoStartBattleHandler)
 
-return { AutoStartBattleHandler }
+return freeze({ AutoStartBattleHandler })

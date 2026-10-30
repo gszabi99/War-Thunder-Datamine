@@ -1,63 +1,54 @@
 import "DataBlock" as DataBlock
-from "dagor.workcycle" import defer
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo
+from "%scripts/langUtils/langJobs.nut" import registerLangJob, startLangJob
+from "%scripts/customization/decoratorGetters.nut" import getVisibleDecoratorsByType
 from "language" import getLocalLanguage
 from "%sqstd/json.nut" import saveJson
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
 from "%scripts/webRPC.nut" import webRpcRegister
-let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
+
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { getCachedDecoratorsListByType } = require("%scripts/customization/decoratorGetters.nut")
 
 function genAllSkinLocksToBlkCurLang(path) {
   let fullPath = $"{path}/skins{getLocalLanguage()}.blk"
   log($"GP: gen all loc skins to {fullPath}")
 
   let res = DataBlock()
-  let skins = getCachedDecoratorsListByType(decoratorTypes.SKINS)
-
-  foreach (id, skin in skins) {
-    if (!skin || !skin.isVisible())
-      continue
-
+  foreach (skin in getVisibleDecoratorsByType(decoratorTypes.SKINS)) {
     let blk = DataBlock()
     blk.title = skin.getLocalizedName()
     blk.desc = skin.getDesc()
-    res[id] = blk
+    res[skin.id] = blk
   }
 
   mkpath(fullPath)
   res.saveToTextFile(fullPath)
 }
 
-function makeLoc(path, langsInfo, curLang, status = {}) {
-  status = clone status
-  let makeLocImp = callee()
-  let lang = langsInfo.pop()
-  setGameLocalization(lang.id, false, false)
+const LANG_JOB_ID = "exportInfo.skinsLocExporter"
+
+function makeLoc(lang, data, onDone) {
+  let { path, status } = data
   try {
     genAllSkinLocksToBlkCurLang(path)
-    status[lang.id] <- {
+    status[lang] <- {
       success=true
     }
   } catch (e) {
     logerr($"Failed to get skins list blk for '{lang}' lang")
-    status[lang.id] <- {
+    status[lang] <- {
       success=false
     }
   }
-
-  if (!langsInfo.len()) {
-    saveJson($"{path}/status.json", status)
-    return setGameLocalization(curLang, false, false)
-  }
-
-  defer(@() makeLocImp(path, langsInfo, curLang, status))
+  onDone()
 }
 
+registerLangJob(LANG_JOB_ID, makeLoc, @(data) saveJson($"{data.path}/status.json", data.status))
+
 function exportSkinsInfo(params) {
-  let info = getGameLocalizationInfo().filter(@(value) params.langs.contains(value.id))
-  makeLoc(params.path, info, getLocalLanguage())
+  let langs = getGameLocalizationInfo().filter(@(value) params.langs.contains(value.id)).map(@(lang) lang.id)
+  startLangJob(LANG_JOB_ID, langs, { path = params.path, status = {} })
   return "ok"
 }
 

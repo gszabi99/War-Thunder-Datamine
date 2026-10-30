@@ -109,7 +109,7 @@ function specialShipsFilter(crafts) {
 }
 
 function calcCraftsRanks(crafts, rankCalcMode) {
-  crafts.sort(@(a, b) b.mrank <=> a.mrank)
+  crafts.sortby(@(a) -a.mrank)
   let mrank0 = crafts[0].mrank
 
   if (rankCalcMode == "average") {
@@ -159,6 +159,6 @@ function calculateBR(userData, gameMode) {
   return calcCraftsRanks(filtered, gameMode.rankCalcMode)
 }
 
-return {
+return freeze({
   calculateBR
-}
+})

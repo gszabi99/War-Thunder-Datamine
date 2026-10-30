@@ -43,4 +43,4 @@ let WwPathTracker = class {
     return this.currentPosition
   }
 }
-return { WwPathTracker }
+return freeze({ WwPathTracker })

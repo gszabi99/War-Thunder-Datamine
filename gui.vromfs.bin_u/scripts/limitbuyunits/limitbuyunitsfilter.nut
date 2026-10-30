@@ -1,11 +1,11 @@
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
+from "%scripts/ranks.nut" import maxCountryRank
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
@@ -90,12 +90,13 @@ function fillAvailability() {
   return res
 }
 
+let hardPersist = mkHardPersist("limitBuyUnits.limitBuyUnitsFilter")
 let filterNames = [
-  { name = "country", fillFunction = fillCountries, selectedArr = persist("limitBuyFilterCountry", @() []) }
-  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = persist("limitBuyFilterUnitType", @() []) }
-  { name = "rank", fillFunction = fillRanks, selectedArr = persist("limitBuyFilterRank", @() []) }
-  { name = "buyType", fillFunction = fillBuyType, selectedArr = persist("limitBuyFilterBuyType", @() []) }
-  { name = "availability", fillFunction = fillAvailability, selectedArr = persist("limitBuyFilterAvailability", @() []) }
+  { name = "country", fillFunction = fillCountries, selectedArr = hardPersist("limitBuyFilterCountry", []) }
+  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = hardPersist("limitBuyFilterUnitType", []) }
+  { name = "rank", fillFunction = fillRanks, selectedArr = hardPersist("limitBuyFilterRank", []) }
+  { name = "buyType", fillFunction = fillBuyType, selectedArr = hardPersist("limitBuyFilterBuyType", []) }
+  { name = "availability", fillFunction = fillAvailability, selectedArr = hardPersist("limitBuyFilterAvailability", []) }
 ]
 
 function getFiltersView() {
@@ -116,7 +117,7 @@ function getFiltersView() {
           value = selectedArr.indexof(key) != null
         })
 
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+      view.checkbox.sortby(@(a) a.idx)
       return view
     })
 }
@@ -155,8 +156,8 @@ function applyFilterChange(objId, tName, value) {
   }
 }
 
-return {
+return freeze({
   getFiltersView
   applyFilterChange
   getSelectedFilters
-}
+})

@@ -24,7 +24,7 @@ function canBailout() {
     && get_mission_status() == MISSION_STATUS_RUNNING
 }
 
-return {
+return freeze({
   canRestart = canRestart
   canBailout = canBailout
-}
+})

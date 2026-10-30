@@ -37,7 +37,7 @@ function getMissionTeamCountries(layout) {
   return res
 }
 
-return {
+return freeze({
   isDynamicCountryAllowed
   getMissionTeamCountries
-}
+})

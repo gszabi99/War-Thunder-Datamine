@@ -1,10 +1,9 @@
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
 from "%appGlobals/worldWar/wwMapFilters.nut" import setWWMapFilter
 from "%sqstd/math.nut" import is_bit_set, change_bit
 from "worldwarConst" import RenderCategory
 from "%scripts/dagui_natives.nut" import ww_enable_render_map_category, ww_enable_render_map_category_for_preveiw
 from "%scripts/dagui_library.nut" import *
-
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 
 const WW_ENABLE_RENDER_CATEGORY_ID = "ww_enable_render_category_bitmask"
 
@@ -34,10 +33,10 @@ function init() {
     setCategory(cat, isCategoryEnabled(cat))
 }
 
-return {
+return freeze({
   init,
   isCategoryEnabled,
   setCategory,
   isCategoryVisible = @(_category) true,
   setPreviewCategories
-}
+})

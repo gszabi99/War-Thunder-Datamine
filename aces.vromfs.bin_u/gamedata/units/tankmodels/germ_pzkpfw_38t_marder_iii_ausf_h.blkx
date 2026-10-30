@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "german_summer_1943_gunner_char",
@@ -2272,7 +2278,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_PaK40_3_L46_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_PaK40_3_L46_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.2,
@@ -2342,7 +2348,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_ZB_VZ37_user_machinegun.blk",
         "emitter": "bone_mg_body_h_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2385,8 +2391,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_pzkpfw_38t_Marder_III_ausf_H_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_pzkpfw_38t_Marder_III_ausf_H_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "ammoStowages": {

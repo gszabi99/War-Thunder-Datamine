@@ -1,9 +1,8 @@
+from "%scripts/money.nut" import Cost
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
 from "%scripts/dagui_natives.nut" import get_spare_aircrafts_count
-
-let { Cost } = require("%scripts/money.nut")
 
 let weaponryTypes = {
   types = []
@@ -52,9 +51,9 @@ function addEnumWeaponryTypes(types) {
   enumsAddTypes(weaponryTypes, types, null, "typeName")
 }
 
-return {
+return freeze({
   addEnumWeaponryTypes
   getUpgradeTypeByItem
   getWeaponryGroupHeader
   getSpareAvailableAmount
-}
+})

@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "controlDevices": {
     "device": [
       {
@@ -2980,7 +2986,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_50_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_SA_50_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -3056,7 +3062,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -3098,7 +3104,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/136mm_HOT_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/136mm_HOT_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -3165,8 +3171,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_amx_13_hot_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_amx_13_hot_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "ammoStowages": {
@@ -3326,7 +3332,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_SA_50_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_SA_50_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3402,7 +3408,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_5mm_MAC_31_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3444,7 +3450,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/136mm_HOT_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/136mm_HOT_rocket_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3502,7 +3508,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

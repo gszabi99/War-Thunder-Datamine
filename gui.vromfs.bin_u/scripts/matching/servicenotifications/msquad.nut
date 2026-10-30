@@ -1,12 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/squads/squadApplications.nut" as squadApplications
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/matching/api.nut" import matchingRpcSubscribe
+from "%scripts/user/profileStates.nut" import userIdStr, userIdInt64
+from "%scripts/invites/invites.nut" import removeInviteToSquad, addInviteToSquad
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { removeInviteToSquad, addInviteToSquad } = require("%scripts/invites/invites.nut")
 
 matchingRpcSubscribe("msquad.notify_invite", function(params) {
   let replaces = (params?.replaces ?? "").tostring()

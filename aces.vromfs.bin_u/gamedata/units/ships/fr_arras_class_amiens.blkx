@@ -1533,6 +1533,7 @@
     "engines": {
       "maxSpeed": 11.32,
       "maxReverseSpeed": 2.32,
+      "horsePowers": 6900.0,
       "speedToTime": {
         "row": [
           [
@@ -1619,7 +1620,7 @@
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.133
+    "shipDamageControlCoeff": 0.239
   },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
@@ -2644,23 +2645,27 @@
   },
   "breaches": {
     "repairSpeed": 30.0,
-    "waterMassVel": -8000.0,
-    "waterMassMult": 23.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      120.0,
-      500.0
+      7.5,
+      150.0,
+      1401.0
     ],
-    "additionalWaterDeathThreshold": 800000.0,
+    "waterMassVel": -23066.0,
+    "waterMassMult": 96.0,
+    "additionalWaterDeathThreshold": 3554743.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 37.0,
+    "maxHeelingAngle": 31.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.65,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 3.1,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18,
+    "sideCenterOfMassOffsetPercent": 0.318,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.2,
     "deadCoverCounterfloodingRel": 0.5,
@@ -4324,6 +4329,64 @@
       "texture": "ship_flag_genoa_city_01_c*"
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.1,
+        200.0
+      ],
+      [
+        6.3,
+        400.0
+      ],
+      [
+        9.4,
+        600.0
+      ],
+      [
+        12.6,
+        1000.0
+      ],
+      [
+        15.7,
+        1600.0
+      ],
+      [
+        18.9,
+        2500.0
+      ],
+      [
+        22.0,
+        3500.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        500.0
+      ],
+      [
+        -2.0,
+        300.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        100.0
+      ],
+      [
+        5.0,
+        100.0
+      ]
+    ]
+  },
   "attach": {
     "Bip01 Pelvis_1": "french_sailor_standing",
     "Bip01 Pelvis_2": "french_sailor_standing",
@@ -4880,7 +4943,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/138mm_55_model_1910_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/138mm_55_model_1910_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -5014,7 +5077,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/75mm_35_model_1897_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/75mm_35_model_1897_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -5184,7 +5247,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/37mm_70_model1935_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/37mm_70_model1935_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -5307,7 +5370,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/37mm_70_model1935_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/37mm_70_model1935_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -5430,7 +5493,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -5545,7 +5608,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -5660,7 +5723,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/8mm_hotchkiss_1914_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -5759,7 +5822,7 @@
   "weapon_presets": {
     "preset": {
       "name": "arras_class_amiens_default",
-      "blk": "gameData/units/ships/weaponPresets/fr_arras_class_amiens_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/fr_arras_class_amiens_default.blk"
     }
   },
   "shipCover": {
@@ -5771,34 +5834,34 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.37
             },
             {
               "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.37
             }
           ]
         }
       },
       {
         "part": "cover_03_dm",
-        "weight": 1.0,
+        "weight": 0.59,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.48
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.48
             }
           ]
         }
@@ -5811,18 +5874,18 @@
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.18
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.18
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0
       },
       {

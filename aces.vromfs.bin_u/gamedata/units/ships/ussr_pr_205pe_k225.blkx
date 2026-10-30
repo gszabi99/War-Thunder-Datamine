@@ -1347,6 +1347,7 @@
     "engines": {
       "maxSpeed": 18.52,
       "maxReverseSpeed": 7.6,
+      "horsePowers": 15000.0,
       "speedToTime": {
         "row": [
           [
@@ -1514,9 +1515,67 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.1,
+        100.0
+      ],
+      [
+        10.3,
+        200.0
+      ],
+      [
+        15.4,
+        600.0
+      ],
+      [
+        20.6,
+        1100.0
+      ],
+      [
+        25.7,
+        1400.0
+      ],
+      [
+        30.9,
+        1500.0
+      ],
+      [
+        36.0,
+        1700.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        1000.0
+      ],
+      [
+        -2.0,
+        500.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/naval/su_mr_104_rys.blk",
+      "blk": "gamedata/sensors/naval/su_mr_104_rys.blk",
       "dmPart": "antenna_target_tagging_mount_01_dm"
     }
   },
@@ -1538,7 +1597,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/57mm_ak_157_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/57mm_ak_157_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1793,7 +1852,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2094,7 +2153,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_pr_205pe_k225_default",
-      "blk": "gameData/units/ships/weaponPresets/ussr_pr_205pe_k225_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/ussr_pr_205pe_k225_default.blk"
     }
   },
   "cockpit": {
@@ -3097,34 +3156,38 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -18000.0,
-    "waterMassMult": 50.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 900000.0,
+    "waterMassVel": -14958.0,
+    "waterMassMult": 93.0,
+    "additionalWaterDeathThreshold": 999299.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 37.0,
+    "maxHeelingAngle": 28.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 6.8,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25
+    "sideCenterOfMassOffsetPercent": 0.545
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.4,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0
       },
       {
@@ -3135,18 +3198,18 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.34
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.34
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -3156,15 +3219,29 @@
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.29
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.06
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.06
             }
           ]
         }
       },
       {
         "part": "compartment_05_dm",
-        "weight": 0.4,
-        "maxWaterAlive": 1.0
+        "weight": 0.15,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "transmission_02_dm",
+            "critWaterLevel": 0.04
+          }
+        }
       }
     ]
   },

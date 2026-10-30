@@ -1,8 +1,6 @@
+from "%scripts/unlocks/userstatUnlocksState.nut" import getStageByIndex
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%scripts/dagui_library.nut" import *
-
-let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-
 
 function getUnlockReward(userstatUnlock) {
   let rewardMarkUp = { rewardText = "", itemMarkUp = "" }
@@ -36,7 +34,7 @@ function getUnlockRewardMarkUp(userstatUnlock) {
 }
 
 
-return {
+return freeze({
   getUnlockReward
   getUnlockRewardMarkUp
-}
+})

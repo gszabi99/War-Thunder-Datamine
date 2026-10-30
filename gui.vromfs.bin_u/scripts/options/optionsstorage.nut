@@ -4,7 +4,7 @@ let crosshair_icons = persist("crosshair_icons", @() [])
 let thermovision_colors = persist("thermovision_colors", @() [])
 let available_ship_hit_notifications = persist("available_ship_hit_notifications", @() {})
 
-return {
+return freeze({
   get_bullets_locId_by_caliber = @() freeze(bullets_locId_by_caliber)
   set_bullets_locId_by_caliber = @(v) bullets_locId_by_caliber.replace(v)
   get_modifications_locId_by_caliber = @() freeze(modifications_locId_by_caliber)
@@ -18,5 +18,5 @@ return {
     available_ship_hit_notifications.clear()
     available_ship_hit_notifications.__update(v)
   }
- }
+ })
 

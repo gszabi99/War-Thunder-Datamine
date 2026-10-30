@@ -191,22 +191,20 @@ let mkTankSight = @(isPreviewMode = false)
           let newSize = get_tank_sight_elem_size(TSO_VERT_DIST)
           vertDistState.set({pos = [sw(50) - newPos.x, sh(50) + hdpx(newPos.y)], size = [newSize.x, newSize.y]})
         }
-        children = [
-          function () {
-            let isSellected = get_tank_sight_highlight_obj() == TSO_VERT_DIST
-            return {
-              watch = highlightedObjectWatch
-              rendObj = ROBJ_VECTOR_CANVAS
-              color = highlightColor
-              fillColor = E3DCOLOR(0x00000000)
-              size = FLEX
-              lineWidth = hdpx(lineWidth)
-              commands = isSellected ? [
-                [VECTOR_RECTANGLE, -50, 0, 150, 100],
-              ] : []
-            }
+        children = function () {
+          let isSellected = get_tank_sight_highlight_obj() == TSO_VERT_DIST
+          return {
+            watch = highlightedObjectWatch
+            rendObj = ROBJ_VECTOR_CANVAS
+            color = highlightColor
+            fillColor = E3DCOLOR(0x00000000)
+            size = FLEX
+            lineWidth = hdpx(lineWidth)
+            commands = isSellected ? const [
+              [VECTOR_RECTANGLE, -50, 0, 150, 100],
+            ] : const []
           }
-        ]
+        }
       } : null
     ]
   }

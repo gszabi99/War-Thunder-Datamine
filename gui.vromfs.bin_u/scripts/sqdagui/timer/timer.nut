@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/callback.nut" import Callback
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let Timer = class {
   onTimeOut   = null
@@ -63,4 +62,4 @@ let Timer = class {
     return check_obj(this.timerGuiObj)
   }
 }
-return {Timer}
+return freeze({Timer})

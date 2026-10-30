@@ -1,14 +1,3 @@
-@const mis_chapter_font:          @fontMedium;
-@const mis_chapter_selected_font: @fontMedium;
-@const mis_item_font:             @fontNormal;
-@const mis_item_selected_font:    @fontNormal;
-@const shopItemFont:              @fontSmall;
-@const slotItemFont:              @fontSmall;
-
-@const missionBoxImageOffsetX: 12*@sf/@pf_outdated;
-@const missionItemTextPaddingLeft: 3@sf/@pf;
-@const bigMedalPlaceYpos: 2@scrn_tgt/100.0;
-
 mission_item_text
 {
   behaviour:textArea;
@@ -28,7 +17,7 @@ mission_item_text
   move-start:no;
 }
 
-:current mission_item_text, :hover mission_item_text {
+[selected=yes] mission_item_text, :hover mission_item_text {
   move-start:yes;
 }
 
@@ -48,16 +37,15 @@ mission_item:hover {
   background-color:@listboxHoverOptionColor;
 }
 
-[show_console_buttons=yes] mission_item:hover
-{
+[show_console_buttons=yes] mission_item:hover {
   needFocusBorder:yes;
 }
 
-mission_item:current {
+mission_item[selected=yes] {
   background-color:@listboxSelOptionColor;
 }
 
-[show_console_buttons=yes] :focus > mission_item:current
+[show_console_buttons=yes] :focus > mission_item[selected=yes]
 {
   re-type:9rect;
   foreground-color: @gamepadFocusFrameColor;
@@ -78,7 +66,7 @@ mission_item:hover mission_item_text {
   color:@missionUnlockedHoverColor;
 }
 
-mission_item:current mission_item_text {
+mission_item[selected=yes] mission_item_text {
   color:@missionUnlockedSelectColor;
 
   font:@mis_item_selected_font;
@@ -102,7 +90,7 @@ mission_item[missionItemType=locked]:hover mission_item_text
   color:@missionLockedHoverColor;
 }
 
-mission_item[missionItemType=locked]:current mission_item_text
+mission_item[missionItemType=locked][selected=yes] mission_item_text
 {
   color:@missionLockedSelectColor;
   font:@mis_item_selected_font;
@@ -115,7 +103,7 @@ mission_item[missionItemType=chapterUnlocked] mission_item_text
   font:@mis_item_font;
 }
 
-mission_item[missionItemType=chapterUnlocked]:current mission_item_text
+mission_item[missionItemType=chapterUnlocked][selected=yes] mission_item_text
 {
   color:@chapterUnlockedSelectColor;
 
@@ -130,7 +118,7 @@ mission_item > discount {
 
 mission_item[missionItemType=campaign]
 {
-  margin-top:10*@sf/@pf_outdated;
+  margin-top:1@campaignMarginTop;
   margin-left:3*@sf/@pf_outdated;
 }
 
@@ -216,10 +204,6 @@ img[difficulty=1] {
 img[difficulty=2] {
   background-image:#ui/gameuiskin#mission_complete_simulator;
 }
-
-@const unlockIconSize: 4.44*@scrn_tgt/100.0;
-@const unlockHeaderIconSize: 4.44*@scrn_tgt/100.0;
-@const unlockBlockInterval: (12@sf/@pf) \ 1;
 
 unlockCondition {
   width:pw-@unlockHeaderIconSize;
@@ -317,7 +301,7 @@ mission_item > ButtonImg
   display:show;
 }
 
-[show_console_buttons=yes] [move-only-hover=yes] > mission_item:current > ButtonImg
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item[selected=yes] > ButtonImg
 {
   display:hide;
 }

@@ -126,5 +126,5 @@ elemViewType.addTypes({
   }
 })
 
-return {
-}
+return freeze({
+})

@@ -1,8 +1,8 @@
 {
   "model": "p_47d_23_re",
   "fmFile": "fm/p-47d_23_re.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.139,
   "gearSinkRangeC": 0.076,
   "gyroSight": false,
@@ -11,17 +11,17 @@
     "typeStormovik"
   ],
   "paratrooper": "usa_para",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "700kph",
   "fightAiBehaviour": "fighter",
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
@@ -589,15 +589,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -610,35 +614,45 @@
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 50.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 70.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -665,15 +679,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -2158,7 +2176,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2169,7 +2187,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "mgun2_dm",
@@ -2180,7 +2198,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "mgun3_dm",
@@ -2191,7 +2209,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "dm": "mgun4_dm",
@@ -2204,7 +2222,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare5",
         "flash": "flare5",
         "dm": "mgun5_dm",
@@ -2216,7 +2234,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare6",
         "flash": "flare6",
         "dm": "mgun6_dm",
@@ -2227,7 +2245,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare7",
         "flash": "flare7",
         "dm": "mgun7_dm",
@@ -2238,7 +2256,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning50_M2_late.blk",
+        "blk": "gamedata/weapons/gunBrowning50_M2_late.blk",
         "emitter": "flare8",
         "flash": "flare8",
         "shell": "emtr_shellrejection2",
@@ -2254,21 +2272,21 @@
     "preset": [
       {
         "name": "P_47D_default",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_default.blk"
       },
       {
         "name": "P_47D_1x_500",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_1x_500.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_1x_500.blk",
         "reqModification": "fmbc_mk1"
       },
       {
         "name": "P_47D_2x_1000",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_2x_1000.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_2x_1000.blk",
         "reqModification": "flbc_mk1"
       },
       {
         "name": "P_47D_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_bombs.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_bombs.blk",
         "reqModification": [
           "fmbc_mk1",
           "flbc_mk1"
@@ -2276,12 +2294,12 @@
       },
       {
         "name": "P_47D_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_rockets.blk",
         "reqModification": "frc_mk2"
       },
       {
         "name": "P_47D_rockets_1x_500",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_1x_500.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_rockets_1x_500.blk",
         "reqModification": [
           "frc_mk2",
           "fmbc_mk1"
@@ -2289,7 +2307,7 @@
       },
       {
         "name": "P_47D_rockets_2x_1000",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_rockets_2x_1000.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_rockets_2x_1000.blk",
         "reqModification": [
           "frc_mk2",
           "flbc_mk1"
@@ -2297,7 +2315,7 @@
       },
       {
         "name": "P_47D_bombs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/p-47d_bombs_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/p-47d_bombs_rockets.blk",
         "reqModification": [
           "frc_mk2",
           "fmbc_mk1",

@@ -1,5 +1,20 @@
-from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, subscribe_handler
-from "controlsMask" import setAllowedControlsMask
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getWeaponryByPresetInfo
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/utils/genericTooltip.nut" import openGenericTooltip, closeGenericTooltip
+from "%scripts/wheelmenu/multifuncMenuTools.nut" import getMfmHandler
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/shortcutsList/shortcutsList.nut" import getShortcutById
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/controls/controlsCompatibility.nut" import getShortcuts
+from "%scripts/viewUtils/bhvHint.nut" import bhvHintForceUpdateValuePID
+from "%scripts/respawn/weaponSelectorUtils.nut" import updateTierStats, preparePresetData, updateTierStatsNoSlots
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, subscribe_handler, removeAllListenersByEnv
+from "controlsMask" import setAllowedControlsMaskDagui
 from "weaponSelector" import get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset, COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF
   , has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector, get_periodic_countermeasure_enabled, get_secondary_weapons_selector_enabled
 from "eventbus" import eventbus_subscribe
@@ -11,23 +26,8 @@ from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
-let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
-let { updateTierStats, preparePresetData, updateTierStatsNoSlots } = require("%scripts/respawn/weaponSelectorUtils.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 const SELECTOR_PIN_STATE_SAVE_ID = "airWeaponSelectorState"
@@ -120,6 +120,7 @@ class HudAirWeaponSelector {
     cachedSelectorState = loadLocalAccountSettings(SELECTOR_PIN_STATE_SAVE_ID, SelectorState.NONE)
     if (cachedSelectorState & SelectorState.PINNED)
       this.pinToScreen(true)
+    this.guiScene.setObjectOwner(this.nestObj, this)
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     if ((cachedSelectorState & SelectorState.OPENED_AND_PINNED) == SelectorState.OPENED_AND_PINNED)
       deferOnce(@() getCurrentHandler()?.open())
@@ -219,6 +220,7 @@ class HudAirWeaponSelector {
   }
 
   isValid = @() this.nestObj?.isValid() ?? false
+  onSceneDetach = @() removeAllListenersByEnv(this)
 
   function updateUnitAndPreset() {
     let hudUnit = getPlayerCurUnit()
@@ -653,7 +655,7 @@ class HudAirWeaponSelector {
       : CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
        | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
        | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
-    setAllowedControlsMask(wndControlsAllowMaskWhenActive)
+    setAllowedControlsMaskDagui(wndControlsAllowMaskWhenActive)
   }
 
   function onPinBtn(_btn) {
@@ -921,9 +923,9 @@ eventbus_subscribe("onLaunchCountermeasure", function (_evt) {
   deferOnce(updateCounterMeasuresData)
 })
 
-return {
+return freeze({
   HudAirWeaponSelector
   isVisualHudAirWeaponSelectorOpened
   setWeaponSelectorAttachedToActionBar
   isWeaponSelectorSavedPinnedState
-}
+})

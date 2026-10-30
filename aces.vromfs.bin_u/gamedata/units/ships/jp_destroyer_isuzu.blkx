@@ -1921,6 +1921,7 @@
     "engines": {
       "maxSpeed": 13.37,
       "maxReverseSpeed": 7.5,
+      "horsePowers": 8000.0,
       "speedToTime": {
         "row": [
           [
@@ -2015,20 +2016,78 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.7,
+        200.0
+      ],
+      [
+        7.4,
+        500.0
+      ],
+      [
+        11.2,
+        700.0
+      ],
+      [
+        14.9,
+        1000.0
+      ],
+      [
+        18.6,
+        1500.0
+      ],
+      [
+        22.3,
+        2200.0
+      ],
+      [
+        26.0,
+        3100.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        2000.0
+      ],
+      [
+        -2.0,
+        1100.0
+      ],
+      [
+        -1.0,
+        500.0
+      ],
+      [
+        0.0,
+        200.0
+      ],
+      [
+        5.0,
+        200.0
+      ]
+    ]
+  },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/jp_ops_16_radar.blk",
+        "blk": "gamedata/sensors/naval/jp_ops_16_radar.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/jp_ops_2_radar.blk",
+        "blk": "gamedata/sensors/naval/jp_ops_2_radar.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_02_dm"
       },
       {
-        "blk": "gameData/sensors/naval/ship_optical_sight.blk",
+        "blk": "gamedata/sensors/naval/ship_optical_sight.blk",
         "dmPart": "fire_director_01_dm"
       }
     ],
@@ -2062,7 +2121,7 @@
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.348
+    "shipDamageControlCoeff": 0.39
   },
   "commonWeapons": {
     "animatedBones": {
@@ -2077,7 +2136,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2367,7 +2426,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2657,7 +2716,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2957,7 +3016,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -3260,39 +3319,39 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_torpedoes.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_torpedoes.blk"
       },
       {
         "name": "bomb_mortar",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "rocket_launcher",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher.blk"
       },
       {
         "name": "bomb_mortar_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_torpedoes.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "bomb_mortar_rocket_launcher",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "rocket_launcher_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher_torpedoes.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_rocket_launcher_torpedoes.blk"
       },
       {
         "name": "bomb_mortar_rocket_launcher_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_bomb_mortar_rocket_launcher_torpedoes.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "jp_destroyer_isuzu_default",
-        "blk": "gameData/units/ships/weaponPresets/jp_destroyer_isuzu_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_destroyer_isuzu_default.blk"
       }
     ]
   },
@@ -5063,23 +5122,27 @@
   },
   "breaches": {
     "repairSpeed": 30.0,
-    "waterMassVel": -65000.0,
-    "waterMassMult": 80.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      120.0,
-      500.0
+      7.5,
+      150.0,
+      1401.0
     ],
-    "additionalWaterDeathThreshold": 5000000.0,
+    "waterMassVel": -35062.0,
+    "waterMassMult": 146.0,
+    "additionalWaterDeathThreshold": 6833091.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 35.0,
+    "maxHeelingAngle": 33.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.65,
     "maxCriticalHeelingTime": 8.0,
+    "maxTrimmingAngle": 3.4,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.32,
+    "sideCenterOfMassOffsetPercent": 0.239,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.2,
     "deadCoverCounterfloodingRel": 0.5,
@@ -5089,12 +5152,12 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.2,
+        "weight": 0.09,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -5105,8 +5168,14 @@
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.8,
-        "maxWaterAlive": 1.0
+        "weight": 0.6,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "fire_control_room_01_dm",
+            "critWaterLevel": 0.72
+          }
+        }
       },
       {
         "part": "cover_04_dm",
@@ -5116,26 +5185,26 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.28
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.28
             },
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.15
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.16
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 1.0,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -5146,7 +5215,7 @@
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.4,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]

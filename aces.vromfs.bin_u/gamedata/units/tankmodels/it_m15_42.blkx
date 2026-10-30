@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1619,10 +1625,7 @@
         "tank_gunner",
         "commander"
       ],
-      "substitute": [
-        "machine_gunner",
-        "loader"
-      ]
+      "substitute": "loader"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1911,7 +1914,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/47mm_Ansaldo_47_40_M38_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/47mm_Ansaldo_47_40_M38_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "shotFreq": 0.34,
@@ -1940,7 +1943,8 @@
         "turret": {
           "head": "bone_turret_01",
           "gun": "bone_gun_01",
-          "barrel": "bone_gun_barrel_01"
+          "barrel": "bone_gun_barrel_01",
+          "gunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -1956,7 +1960,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -1984,7 +1988,7 @@
         "turret": {
           "head": "bone_mg_gun_twin",
           "gun": "bone_mg_gun_twin",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -2000,7 +2004,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2043,8 +2047,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_m15_42_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_m15_42_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3248,7 +3252,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/47mm_Ansaldo_47_40_M38_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/47mm_Ansaldo_47_40_M38_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "shotFreq": 0.34,
@@ -3277,7 +3281,8 @@
               "turret": {
                 "head": "bone_turret_01",
                 "gun": "bone_gun_01",
-                "barrel": "bone_gun_barrel_01"
+                "barrel": "bone_gun_barrel_01",
+                "gunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [
@@ -3293,7 +3298,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3321,7 +3326,7 @@
               "turret": {
                 "head": "bone_mg_gun_twin",
                 "gun": "bone_mg_gun_twin",
-                "gunnerDm": "gunner_dm"
+                "gunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [
@@ -3337,7 +3342,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/8mm_Breda_Mod38_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_aa_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3379,7 +3384,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

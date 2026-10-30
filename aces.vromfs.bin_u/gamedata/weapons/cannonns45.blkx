@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 4.3,
-  "traceFreq": 2,
-  "bullets": 30,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,44 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 4.3,
+  "bullets": 30,
+  "overheat": {
+    "overheat": [
+      [
+        1.5,
+        0.0
+      ],
+      [
+        8.0,
+        0.5
+      ],
+      [
+        12.5,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 1.065,
@@ -456,7 +488,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     },
     {
@@ -894,7 +926,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     },
     {
@@ -1333,7 +1365,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   ],
@@ -1773,7 +1805,7 @@
         ],
         "traceFreq": 1,
         "tracer": "37mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   },
@@ -2197,7 +2229,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   },
@@ -2638,48 +2670,9 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "ns45_gun_outside",
-    "cockpit": "ns45_gun_inside",
-    "ai": "ns45_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        1.5,
-        0.0
-      ],
-      [
-        8.0,
-        0.5
-      ],
-      [
-        12.5,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
   },
   "ns45_new_gun": {
     "maxDeltaAngle": 0.13,
@@ -2699,5 +2692,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "ns45_gun_outside",
+    "cockpit": "ns45_gun_inside",
+    "ai": "ns45_gun_ai"
   }
 }

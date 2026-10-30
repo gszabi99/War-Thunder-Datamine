@@ -21,4 +21,4 @@ interopGen({
 
 register_command(@(val) crewState.aliveCrewMembersCount.set(crewState.aliveCrewMembersCount.get() - val), "hud.shipCrewDamage")
 
-return crewState
+return freeze(crewState)

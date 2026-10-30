@@ -1,12 +1,12 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon, getRoleText
+from "%scripts/unit/unitClassType.nut" import getUnitClassTypeByExpClass
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/weaponry/weaponryInfo.nut" import get_weapon_icons_text
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let { getUnitRoleIcon, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let UnitLimitBase = class {
   name = ""
@@ -102,10 +102,10 @@ let UnitLimitByUnitType = class (UnitLimitBase) {
   }
 }
 
-return {
+return freeze({
   UnitLimitByUnitName
   UnitLimitByUnitRole
   UnitLimitByUnitExpClass
   ActiveLimitByUnitExpClass
   UnitLimitByUnitType
-}
+})

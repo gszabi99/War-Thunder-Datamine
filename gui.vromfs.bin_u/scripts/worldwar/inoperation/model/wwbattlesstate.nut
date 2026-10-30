@@ -1,4 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/user/userUtils.nut" import getMyStateData
+from "%scripts/worldWar/worldWarState.nut" import getBattles
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/queue/queueState.nut" import findQueueByName
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/worldWar/worldWarGlobalStates.nut" import getPlayWorldwarConditionText, canJoinWorldwarBattle
+from "%scripts/squads/squadUtils.nut" import getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "worldwar" import wwGetPlayerSide
 from "%globalScripts/wwNativeConsts.nut" import *
@@ -7,15 +16,6 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { getMyStateData } = require("%scripts/user/userUtils.nut")
-let { getBattles } = require("%scripts/worldWar/worldWarState.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { findQueueByName } = require("%scripts/queue/queueState.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 
 
 function isStillInOperation(wwBattle) {
@@ -247,10 +247,10 @@ function getBattleStatusWithCanJoinText(wwBattleView) {
 }
 
 
-return {
+return freeze({
   isStillInOperation
   isAutoBattle
   getCantJoinReasonData
   getBattleStatusWithCanJoinText
   tryToJoin
-}
+})

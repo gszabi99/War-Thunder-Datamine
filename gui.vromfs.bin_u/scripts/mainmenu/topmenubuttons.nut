@@ -1,8 +1,8 @@
+import "%scripts/mainmenu/topMenuButtonsList.nut" as topMenuButtonsList
+from "%scripts/options/handlers/optionsWnd.nut" import openOptionsWnd
+from "%scripts/controls/startControls.nut" import gui_start_controls
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
-let topMenuButtonsList = require("%scripts/mainmenu/topMenuButtonsList.nut")
-let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
-let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 
 let cache = { byId = {} }
 
@@ -65,7 +65,7 @@ let defaultButtonsConfig = {
 
 defaultButtonsConfig.each(addButtonConfig)
 
-return {
+return freeze({
   getButtonConfigById = getButtonConfigById
   addButtonConfig
-}
+})

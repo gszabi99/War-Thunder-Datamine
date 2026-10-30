@@ -19,9 +19,9 @@ let dominationColor = Computed(@() totalDomTeam.get() == localTeam.get()
 
 
 let dominationNotification = @() !totalDomEnabled.get()
-  ? { watch = [ totalDomEnabled ] }
+  ? { watch = totalDomEnabled }
   : {
-      watch = [ totalDomEnabled ]
+      watch = totalDomEnabled
       hplace = ALIGN_CENTER
       opacity = 0
       animations

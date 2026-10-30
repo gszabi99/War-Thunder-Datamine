@@ -69,7 +69,7 @@ function createCompass(gridStyle, radius, useFlexSize = false) {
     return {
       watch = CompassValue
       rendObj = ROBJ_VECTOR_CANVAS,
-      size = useFlexSize ? FLEX : [ph(100), ph(100)]
+      size = useFlexSize ? FLEX : const ph(100)
       color = color,
       lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
       fillColor = backGroundColor,
@@ -80,7 +80,7 @@ function createCompass(gridStyle, radius, useFlexSize = false) {
   }
 }
 
-function calcRwrTargetRadius(target) {
+function [pure, nodiscard] calcRwrTargetRadius(target) {
   return 0.1 + target.rangeRel * 0.9
 }
 

@@ -3115,6 +3115,7 @@
     "engines": {
       "maxSpeed": 14.14,
       "maxReverseSpeed": 6.0,
+      "horsePowers": 32000.0,
       "speedToTime": {
         "row": [
           [
@@ -3222,6 +3223,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.9,
+        400.0
+      ],
+      [
+        7.9,
+        900.0
+      ],
+      [
+        11.8,
+        1600.0
+      ],
+      [
+        15.7,
+        2900.0
+      ],
+      [
+        19.7,
+        4700.0
+      ],
+      [
+        23.6,
+        6900.0
+      ],
+      [
+        27.5,
+        8300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        3200.0
+      ],
+      [
+        -2.0,
+        1600.0
+      ],
+      [
+        -1.0,
+        700.0
+      ],
+      [
+        0.0,
+        200.0
+      ],
+      [
+        5.0,
+        200.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.6,
     "headPos": [
@@ -3283,7 +3342,7 @@
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.092
+    "shipDamageControlCoeff": 0.107
   },
   "commonWeapons": {
     "animatedBones": {
@@ -3296,7 +3355,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3368,7 +3427,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3440,7 +3499,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -3518,7 +3577,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -3596,7 +3655,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -3680,7 +3739,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -3764,7 +3823,7 @@
       {
         "trigger": "gunner6",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -3836,7 +3895,7 @@
       {
         "trigger": "gunner7",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/150mm_45_skl_45_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
@@ -3908,7 +3967,7 @@
       {
         "trigger": "gunner8",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_10",
         "flash": "emtr_gun_flame_10",
         "useEmitter": true,
@@ -3986,7 +4045,7 @@
       {
         "trigger": "gunner9",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_09",
         "flash": "emtr_gun_flame_09",
         "useEmitter": true,
@@ -4082,7 +4141,7 @@
       {
         "trigger": "gunner11",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_12",
         "flash": "emtr_gun_flame_12",
         "useEmitter": true,
@@ -4172,7 +4231,7 @@
       {
         "trigger": "gunner10",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/52mm_55_skl55_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
         "useEmitter": true,
@@ -4265,12 +4324,12 @@
     "preset": [
       {
         "name": "germ_cruiser_elbing_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/germ_cruiser_elbing_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/germ_cruiser_elbing_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "germ_cruiser_elbing_default",
-        "blk": "gameData/units/ships/weaponPresets/germ_cruiser_elbing_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/germ_cruiser_elbing_default.blk"
       }
     ]
   },
@@ -6002,23 +6061,27 @@
   },
   "breaches": {
     "repairSpeed": 25.0,
-    "waterMassVel": -110000.0,
-    "waterMassMult": 200.0,
     "sizeToRepair": [
       0.01,
-      15.0,
-      130.0,
-      1300.0
+      7.5,
+      150.0,
+      845.0
     ],
-    "additionalWaterDeathThreshold": 12000000.0,
+    "waterMassVel": -114836.0,
+    "waterMassMult": 287.0,
+    "additionalWaterDeathThreshold": 17014600.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 45.0,
-    "maxHeelingAngle": 36.0,
+    "maxHeelingAngle": 31.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
+    "maxTrimmingAngle": 3.0,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.1,
+    "sideCenterOfMassOffsetPercent": 0.27,
     "minCaliberToBreach": 0.1,
     "minExplRadiusToBreach": 0.4,
     "deadCoverCounterfloodingRel": 0.5,
@@ -6033,17 +6096,17 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.65,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.28
             },
             {
               "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.28
             }
           ]
         }
@@ -6056,66 +6119,54 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.38
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.38
             }
           ]
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 0.8,
+        "weight": 0.58,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.34
             },
             {
               "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.34
             },
             {
               "partNo": "engine_room_03_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.4
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.35,
-        "maxWaterAlive": 1.0,
-        "innerParts": {
-          "part": [
-            {
-              "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.9
-            }
-          ]
-        }
+        "weight": 0.39,
+        "maxWaterAlive": 1.0
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.8,
+        "weight": 0.75,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.4
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.4
             },
             {
               "partNo": "ammunition_storage_aux_01_dm",
@@ -6126,17 +6177,17 @@
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.4,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_charges_03_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.4
             },
             {
               "partNo": "ammunition_storage_shells_03_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.4
             }
           ]
         }

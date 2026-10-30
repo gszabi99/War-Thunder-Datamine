@@ -1,19 +1,21 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "dagor.webpoll" as api
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%scripts/webRPC.nut" import webRpcRegister
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
 const VOTED_POLLS_SAVE_ID = "voted_polls"
+const CAN_VOTE_RESULT_EVENT = "webPollCanVoteResult"
 
 let cachedTokenById = {}
 let tokenInvalidationTimeById = {}
@@ -85,6 +87,8 @@ function onCanVoteResponse(response) {
         webpollEvent(id, data?.disposable_token, data?.has_vote ?? false)
 }
 
+eventbus_subscribe(CAN_VOTE_RESULT_EVENT, onCanVoteResponse)
+
 function onSurveyVoteResult(params) {
   webpollEvent(params.survey_id, "", params.has_vote)
 }
@@ -130,7 +134,7 @@ function requestPolls() {
   }
 
   foreach (baseUrl, pollsArray in pollsForRequestByBaseUrl) {
-    api.canVote($"{baseUrl}/api/v1/survey/can_vote/", pollsArray, onCanVoteResponse)
+    api.canVote($"{baseUrl}/api/v1/survey/can_vote/", pollsArray, CAN_VOTE_RESULT_EVENT)
   }
 }
 
@@ -185,11 +189,11 @@ subscriptions.addListenersWithoutEnv({
 
 webRpcRegister("survey_vote_result", onSurveyVoteResult)
 
-return {
+return freeze({
   setPollBaseUrl
   getPollIdByFullUrl
   generatePollUrl
   isPollVoted
   clearOldVotedPolls
   invalidateTokensCache
-}
+})

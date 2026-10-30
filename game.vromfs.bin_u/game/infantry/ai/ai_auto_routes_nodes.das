@@ -82,3 +82,41 @@ class TryFollowSquadAutoRoute : BehNodeAdapter
           squad__autoRouteIdx = -1
           squad__autoRouteEid = INVALID_ENTITY_ID
     return res
+
+
+[beh_node(name="followScriptedRoute")]
+class FollowScriptedRoute : BehNodeAdapter
+  outPosParam : int = -1
+  reachDist : float = 2.0
+
+  def override loadFromBlk(data : DataBlock) : void
+    outPosParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outPosParam", ""), float3())
+    reachDist = data |> datablock_getReal("reachDist", reachDist)
+
+  def override update(dt : float) : EBehResult
+    var res = EBehResult.ER_FAILED
+    let agentEid = beh_tree_eid(owner)
+    query(agentEid) <| $ [es] (scripted_bot__waypoints : Point3List;
+                               scripted_bot__wayLooped : bool;
+                               transform : float3x4;
+                               var scripted_bot__routeCursor : int&)
+      let count = length(scripted_bot__waypoints)
+      if count <= 0
+        owner.blackBoard |> set(outPosParam, transform[3])
+        return
+      if scripted_bot__routeCursor < 0 || scripted_bot__routeCursor >= count
+        scripted_bot__routeCursor = 0
+      let ourPos = transform[3]
+      let curPos = scripted_bot__waypoints[scripted_bot__routeCursor]
+      var routeDone = false
+      if distance_sq(ourPos, curPos) < square(reachDist)
+        if scripted_bot__routeCursor + 1 < count
+          scripted_bot__routeCursor += 1
+        elif scripted_bot__wayLooped
+          scripted_bot__routeCursor = 0
+        else
+          routeDone = true
+      owner.blackBoard |> set(outPosParam, scripted_bot__waypoints[scripted_bot__routeCursor])
+      if !routeDone
+        res = EBehResult.ER_SUCCESS
+    return res

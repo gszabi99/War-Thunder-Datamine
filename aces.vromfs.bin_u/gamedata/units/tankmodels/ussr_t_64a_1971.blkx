@@ -531,6 +531,9 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -606,6 +609,14 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -983,10 +994,6 @@
   "xrayOverride": {
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
-      "hideDescription": true
-    },
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
       "hideDescription": true
     }
   },
@@ -1874,6 +1881,22 @@
         "loader_03_dm",
         "radio_station_dm",
         "driver_controls_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -2127,7 +2150,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/125mm_2A26_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/125mm_2A26_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -2135,6 +2158,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "autoLoader": true,
         "recoilOffset": 0.325,
         "speedYaw": 20.0,
@@ -2266,7 +2293,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKT_user_machinegun.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2308,7 +2335,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2337,8 +2364,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "t_64a_1971_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_64a_1971_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2435,7 +2462,12 @@
         120000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 1000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0
+      }
     }
   },
   "PhysSys": {
@@ -3413,6 +3445,7 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "removeLoadedAmmo": true,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -3421,10 +3454,13 @@
       "shells": [
         {
           "autoLoad": true,
+          "autoloader": [
+            "autoloader_dm",
+            "power_system_dm"
+          ],
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "autoloader": "autoloader_dm",
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -3547,6 +3583,10 @@
       "charges": [
         {
           "autoLoad": true,
+          "autoloader": [
+            "autoloader_dm",
+            "power_system_dm"
+          ],
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,

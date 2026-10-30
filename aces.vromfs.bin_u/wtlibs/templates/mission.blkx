@@ -285,6 +285,9 @@
       "capzone__outsideNavmeshPositions:list<p3>": {}
     }
   },
+  "navmesh_disabler": {
+    "navmeshDisabler:tag": {}
+  },
   "capture_zone_proxy_sphere": {
     "_use": "base_capture_zone_proxy",
     "sphere_zone__radius": 8.0
@@ -303,6 +306,238 @@
     "_use": "base_capture_zone_proxy",
     "capzone__approximateRadius": -1.0
   },
+  "supply_graph_node": {
+    "supply_graph__name": "",
+    "supply_graph__linkNames:list<t>": {},
+    "_group": {
+      "_tags": "server",
+      "supply_graph__linkedEids:list<eid>": {},
+      "supply_graph__laptopEids:list<eid>": {}
+    }
+  },
+  "supply_terminal": {
+    "supply_terminal__transports:shared:array": {
+      "transport:object": [
+        {
+          "entityTemplate": "hummer_h1",
+          "unitClass": "tankModels/us_hummer_h1",
+          "name": "supply/transport/jeep",
+          "cost": 300
+        },
+        {
+          "entityTemplate": "hummer_h1",
+          "unitClass": "tankModels/us_hummer_h1",
+          "name": "supply/transport/truck",
+          "cost": 500
+        }
+      ]
+    },
+    "_group": {
+      "_tags": "server",
+      "supply_terminal__transportSpawnTm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "supply_terminal__transportSpawnFreeRadius": 6.0
+    }
+  },
+  "supply_node": {
+    "_use": [
+      "replicating",
+      "supply_graph_node",
+      "supply_terminal"
+    ],
+    "supply_node__maxPoints": 0.0,
+    "supply_node__pointsPerMinute": 0.0,
+    "supply_node__points": 0.0,
+    "supply_node__spawnCost": 10.0,
+    "supply_node__supplyTransportArea": "",
+    "_tracked": "supply_node__points",
+    "_replicated": "supply_node__points"
+  },
+  "supply_base": {
+    "_use": [
+      "replicating",
+      "supply_graph_node",
+      "supply_terminal"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "team": 0,
+    "supply_base__updatePeriod": 60.0,
+    "supply_base__nextUpdateAt": -1.0,
+    "_replicated": [
+      "team",
+      "supply_graph__name"
+    ],
+    "supply_base__loadArea": "",
+    "supplyBase:tag": {}
+  },
+  "supply_laptop": {
+    "_use": [
+      "replicating",
+      "animchar"
+    ],
+    "_replicated": [
+      "transform",
+      "supply_laptop__nodeEid",
+      "supply_laptop__team"
+    ],
+    "animchar_render__enabled": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "animchar__res": "military_laptop_equiped_char",
+    "supply_laptop__useDist": 2.5,
+    "supply_laptop__approxRadius": 0.4,
+    "supply_laptop__team": -1,
+    "_tracked": "supply_laptop__team",
+    "supplyLaptop:tag": {},
+    "supply_laptop__nodeEid:eid": {},
+    "_group": {
+      "_tags": "render",
+      "hud_icon__mapScale": 0.25
+    }
+  },
+  "capture_zone_proxy_strongpoint": {
+    "_use": "supply_node",
+    "supply_node__maxPoints": 150.0,
+    "supply_node__pointsPerMinute": 10.0,
+    "strongpoint:tag": {}
+  },
+  "capture_zone_proxy_sectored": {
+    "_use": [
+      "capture_zone_proxy_polygon",
+      "supply_node"
+    ],
+    "sectored_capzone__nextUpdateAt": 0.0,
+    "sectored_capzone__lastUpdateAt": 0.0,
+    "sectored_capzone__updatePeriod": 1.0,
+    "sectored_capzone__canCaptureByVehicles": true,
+    "supply_node__maxPoints": 400.0,
+    "supply_node__pointsPerMinute": 20.0,
+    "sectoredCapzone:tag": {},
+    "sectored_capzone__sectorEids:list<eid>": {}
+  },
+  "capzone_sector": {
+    "_use": [
+      "replicating",
+      "objective_zone_navmesh"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "capzone_sector__bottomY": 0.0,
+    "capzone_sector__topY": 0.0,
+    "capzone_sector__index": -1,
+    "capzone_sector__zoneId": -1,
+    "capzone_sector__strongpointName": "",
+    "capzone_sector__captureTime": 15.0,
+    "capzone_sector__timeMultiplier": 1.0,
+    "capzone_sector__owningTeam": -1,
+    "capzone_sector__capTeam": -1,
+    "capzone_sector__progress": 0.0,
+    "_tracked": [
+      "capzone_sector__owningTeam",
+      "capzone_sector__capTeam",
+      "capzone_sector__progress"
+    ],
+    "_replicated": [
+      "capzone_sector__owningTeam",
+      "capzone_sector__capTeam",
+      "capzone_sector__progress"
+    ],
+    "active": false,
+    "capzone__owningTeam": -1,
+    "capzone__capTeam": -1,
+    "capzone__progress": 0.0,
+    "capzone__approximateRadius": -1.0,
+    "capzoneSector:tag": {},
+    "capzone_sector__points:list<p2>": {},
+    "capzone_sector__parentEid:eid": {},
+    "teamPresence:object": {},
+    "_group": {
+      "_tags": "server",
+      "capzone_sector__neighborEids:list<eid>": {},
+      "capzone_sector__strongpointEid:eid": {}
+    }
+  },
   "infantry_spawn_zone_proxy": {
     "_use": "replicating",
     "capture_zone__zoneId": -1,
@@ -310,6 +545,7 @@
       "capture_zone__zoneId",
       "infantry_spawn__owningTeam",
       "capzone__hasEnemyInside",
+      "infantry_spawn__hasEnoughSuppliesForSpawn",
       "dynamic_respawn__prevPositionsClient"
     ],
     "infantry_spawn__zoneName": "",
@@ -339,9 +575,11 @@
     "_tracked": [
       "infantry_spawn__owningTeam",
       "capzone__hasEnemyInside",
+      "infantry_spawn__hasEnoughSuppliesForSpawn",
       "dynamic_respawn__prevPositionsClient"
     ],
     "capzone__hasEnemyInside": false,
+    "infantry_spawn__hasEnoughSuppliesForSpawn": true,
     "dynamic_respawn__selected": false,
     "dynamic_respawn__selectedSpawnPos": [
       0.0,
@@ -516,6 +754,24 @@
       0.0,
       0.0
     ]
+  },
+  "mission_score": {
+    "_singleton": true,
+    "mission_score__scoreTeamA": 0,
+    "mission_score__scoreTeamB": 0,
+    "mission_score__ticketsTeamA": 0,
+    "mission_score__ticketsTeamB": 0,
+    "_tracked": [
+      "mission_score__scoreTeamA",
+      "mission_score__scoreTeamB",
+      "mission_score__ticketsTeamA",
+      "mission_score__ticketsTeamB",
+      "mission_score__bases",
+      "mission_score__captureZones"
+    ],
+    "missionObject:tag": {},
+    "mission_score__bases:array": {},
+    "mission_score__captureZones:array": {}
   },
   "pickup_zone_airdrop_base": {
     "pickup_zone__zoneId": -1,

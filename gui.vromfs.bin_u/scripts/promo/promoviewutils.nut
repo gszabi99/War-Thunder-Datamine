@@ -72,7 +72,7 @@ function getVisibleCollapsedTextObj(scene, blockId) {
   return scene.findObject("".concat(blockId, collapsedTextBlocksAnim[idx].blockEnding))
 }
 
-return {
+return freeze({
   animSwitchCollapsedText,
   getVisibleCollapsedTextObj
-}
+})

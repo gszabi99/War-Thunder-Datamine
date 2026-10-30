@@ -1,15 +1,15 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/user/clanName.nut" import getMyClanName
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import char_send_clan_oneway_blk, clan_get_my_clan_id, clan_get_admin_editor_mode, clan_request_log, clan_get_clan_log, clan_request_membership_request, clan_get_my_clan_name, clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { addTask } = require("%scripts/tasker.nut")
 let { g_clan_log_type } = require("%scripts/clans/clanLogType.nut")
-let time = require("%scripts/time.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { getMyClanName } = require("%scripts/user/clanName.nut")
 
 function prepareCreateRequest(clanType, name, tag, slogan, description, announcement, region) {
   let requestData = DataBlock()
@@ -168,7 +168,7 @@ function cancelMembership() {
   membershipRequestSend("")
 }
 
-return {
+return freeze({
   prepareCreateRequest
   prepareEditRequest
   prepareUpgradeRequest
@@ -177,4 +177,4 @@ return {
   membershipRequestSend
   requestMembership
   cancelMembership
-}
+})

@@ -1,11 +1,37 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "DataBlock" as DataBlock
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%scripts/hangarModelLoadManager.nut" import hasLoadedModel
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS
+from "%scripts/unit/unitChecks.nut" import checkUnitModsUpdate, checkSecondaryWeaponModsRecount
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/myStats.nut" import isStatsLoaded, isMeNewbieOnUnitType
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/optionsExt.nut" import get_option, set_option
+from "%scripts/options/optionsExtNames.nut" import USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP, USEROPT_XRAY_FILTER_AIR
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter, RESET_ID, SELECT_ALL_ID
+from "%scripts/dmViewer/xrayAmmoLoadWidget.nut" import openXrayAmmoLoad
+from "%scripts/sqDagui/framework/gui_handlers.nut" import is_gui_handler_instance
+from "%scripts/weaponry/dmgModel.nut" import getTankXrayFilter
+from "%scripts/weaponry/weaponryInfo.nut" import getCommonWeapons, getLastPrimaryWeapon, getLastWeapon
+from "%scripts/weaponry/weaponryPresets.nut" import getPresetWeapons
+from "%scripts/weaponry/modificationInfo.nut" import isModificationEnabled
+from "%scripts/unit/unitBlkCache.nut" import blkOptFromPathCachedByUnit
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/dmViewer/modeXrayUtils.nut" import getSimpleUnitType, getDescriptionInXrayMode
 from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, getPartType, getPartNameLocText, getPartNameDescLocText
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "console" import register_command
 from "string" import format
 from "math" import round
-from "hangar" import hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY, DM_VIEWER_CREW, hangar_get_dm_viewer_parts_count, set_xray_parts_filter
+from "hangar" import hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY, DM_VIEWER_CREW, hangar_get_dm_viewer_parts_count, set_xray_parts_filter, hangar_set_xray_ammo_counts
 from "%sqstd/datablock.nut" import blkOptFromPath
 from "%sqstd/string.nut" import cutPrefix
 from "chard" import get_charserver_time_sec
@@ -15,27 +41,12 @@ from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { GAMEPAD_ENTER_SHORTCUT } = require("%scripts/controls/rawShortcuts.nut")
-let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { get_option, set_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP, USEROPT_XRAY_FILTER_AIR } = require("%scripts/options/optionsExtNames.nut")
-let { openPopupFilter, RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode } = require("%scripts/dmViewer/modeXrayUtils.nut")
+let { xrayCommonGetters } = require("%scripts/dmViewer/modeXrayUtils.nut")
+let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
+
+let isWeaponrySelectModal = @(handler) is_gui_handler_instance(handler, "WeaponrySelectModal")
 
 
 
@@ -180,7 +191,7 @@ function mkUnitXrayData(unit, unitBlk) {
   }
 }
 
-let dmViewerStorage = persist("dmViewerStorage", @() {
+let dmViewerStorage = mkHardPersist("dmViewer.dmViewer")("dmViewerStorage", {
   view_mode = DM_VIEWER_NONE
   _currentViewMode = DM_VIEWER_NONE
   viewModeForRestore = null
@@ -202,6 +213,7 @@ dmViewer = {
   ediff = null
   difficulty = null
   filtersWidget = null
+  ammoLoadWidgets = []
 
   modes = {
     [DM_VIEWER_NONE]  = "none",
@@ -226,6 +238,11 @@ dmViewer = {
   xrayDescriptionCache = {}
   dockedUnitsXrayData = {}
   isDebugBatchExportProcess = false
+  bulletsManager = null
+  loadedAmmo = null
+  appliedXrayAmmo = null
+  isXrayBreechShown = false
+  isLoadedAmmoLoading = false
   isSecondaryModsValid = false
 
   function getCurrentViewMode() { return dmViewerStorage._currentViewMode }
@@ -317,7 +334,7 @@ dmViewer = {
   }
 
   function reinit() {
-    if (!isLoggedIn.get())
+    if (!hasFullLoginState.get())
       return
 
     this.updateUnitInfo()
@@ -334,6 +351,7 @@ dmViewer = {
     if (this.unit && unitId == this.unit.name)
       return
     this.unit = getAircraftByName(unitId)
+    this.loadedAmmo = null
     if (! this.unit)
       return
     this.ediff = getCurrentGameModeEdiff()
@@ -367,7 +385,7 @@ dmViewer = {
 
   function collectArmorClassToSteelMuls() {
     let res = {}
-    let armorClassesBlk = blkOptFromPath("gameData/damage_model/armor_classes.blk")
+    let armorClassesBlk = blkOptFromPath("gamedata/damage_model/armor_classes.blk")
     let steelArmorQuality = armorClassesBlk?.ship_structural_steel.armorQuality ?? 0
     if (this.unitBlk?.DamageParts == null || steelArmorQuality == 0)
       return res
@@ -407,7 +425,7 @@ dmViewer = {
   function update() {
     this.updateNoPartsNotification()
 
-    local newActive = this.canUse() && !handlersManager.isAnyModalHandlerActive()
+    local newActive = this.canUse() && !handlersManager.isAnyModalHandlerActive(isWeaponrySelectModal)
     if (!newActive && !dmViewerStorage.active) 
       return false
 
@@ -427,6 +445,155 @@ dmViewer = {
 
   function needShowExtHints() {
     return loadLocalAccountSettings("dmViewer/needShowExtHints", true)
+  }
+
+  function needShowLoadedAmmo() {
+    return loadLocalAccountSettings("dmViewer/showLoadedAmmo", false)
+  }
+
+  function canShowLoadedAmmo() {
+    return hasFeature("DmViewerXrayLoadedAmmo") && (this.unit?.isTank() ?? false)
+      && this.getStowagesBlk() != null
+  }
+
+  function getLoadedAmmo() {
+    if (this.loadedAmmo != null)
+      return this.loadedAmmo
+    if (this.isLoadedAmmoLoading)
+      return { weapons = [], counts = {}, mainGun = null, breechTriggers = [], hasRoundInGun = false }
+    this.isLoadedAmmoLoading = true
+    if (this.bulletsManager == null)
+      this.bulletsManager = UnitBulletsManager(this.unit)
+    else
+      this.bulletsManager.setUnit(this.unit, true)
+    let bulGroups = this.bulletsManager.getBulletsGroups()
+    this.isLoadedAmmoLoading = false
+    let countByGun = {}
+    foreach (bulGroup in bulGroups) {
+      let gunIdx = bulGroup.gunInfo?.gunIdx
+      if (bulGroup.active && gunIdx != null)
+        countByGun[gunIdx] <- (countByGun?[gunIdx] ?? 0) + max(0, bulGroup.bulletsCount) * bulGroup.cartridgesPerStep
+    }
+    let stowageByTrigger = this.getStowageByTrigger()
+    let unitWeapons = this.getUnitWeapons()
+    let triggerByBlk = {}
+    foreach (weapon in unitWeapons)
+      if (weapon.blk not in triggerByBlk)
+        triggerByBlk[weapon.blk] <- weapon.trigger
+    let weapons = []
+    let counts = {}
+    foreach (gunIdx, gunCount in countByGun) {
+      let gunInfo = this.bulletsManager.gunsInfo?[gunIdx]
+      let trigger = triggerByBlk?[gunInfo?.blk]
+      if (trigger == null || trigger not in stowageByTrigger)
+        continue
+      let cartridge = gunInfo?.cartridge ?? 1
+      let guns = gunInfo?.guns ?? 1
+      counts[trigger] <- gunCount
+      weapons.append({
+        trigger
+        count = gunCount
+        loadedShells = cartridge * guns
+        shells = gunCount * cartridge
+        totalShells = (gunInfo?.total ?? 0) * (gunInfo?.cartridgesPerStep ?? guns) * cartridge
+        isShellGun = !(gunInfo?.isBulletBelt ?? true)
+      })
+    }
+    weapons.sort(@(a, b) a.trigger <=> b.trigger)
+    let mainGun = weapons?[0]
+    let breechTriggers = []
+    foreach (weapon in unitWeapons) {
+      let trigger = weapon.trigger
+      let stowage = stowageByTrigger?[trigger]
+      if (stowage != null && stowage.removeLoadedAmmo && !stowage.hasLoadedInGunCluster
+          && !(blkOptFromPathCachedByUnit(weapon.blk, this.unit.name)?.isBulletBelt ?? true)
+          && !breechTriggers.contains(trigger))
+        breechTriggers.append(trigger)
+    }
+    this.loadedAmmo = {
+      weapons
+      counts
+      mainGun
+      breechTriggers
+      hasRoundInGun = (mainGun?.isShellGun ?? false) && (stowageByTrigger?[mainGun?.trigger]?.removeLoadedAmmo ?? false)
+        && (mainGun?.count ?? 0) > 0
+    }
+    return this.loadedAmmo
+  }
+
+  function getAmmoLoadWidget(nestObj) {
+    this.ammoLoadWidgets = this.ammoLoadWidgets.filter(@(w) w?.isValid() ?? false)
+    return this.ammoLoadWidgets.findvalue(@(w) w.scene.isEqual(nestObj))
+  }
+
+  function getUnitWeapons() {
+    let unitName = this.unit.name
+    let presetName = getLastWeapon(unitName)
+    let preset = this.unit.getWeapons().findvalue(@(w) w.name == presetName)
+    let weapons = []
+    weapons.extend(getCommonWeapons(this.unitBlk, getLastPrimaryWeapon(this.unit), unitName))
+    weapons.extend(getPresetWeapons(this.unitBlk, preset, unitName))
+    return weapons.filter(@(w) w?.blk != null && w?.trigger != null && !(w?.dummy ?? false))
+  }
+
+  function getStowagesBlk() {
+    let res = this.unitBlk?.ammoStowages
+    let mods = this.unitBlk?.modifications
+    if (mods == null)
+      return res
+    for (local i = 0; i < mods.blockCount(); i++) {
+      let mod = mods.getBlock(i)
+      let modStowages = mod?.effects.ammoStowages
+      if (modStowages != null && isModificationEnabled(this.unit.name, mod.getBlockName()))
+        return modStowages
+    }
+    return res
+  }
+
+  function getStowageByTrigger() {
+    let res = {}
+    let stowages = this.getStowagesBlk()
+    if (stowages == null)
+      return res
+    for (local i = 0; i < stowages.blockCount(); i++) {
+      let stowage = stowages.getBlock(i)
+      local hasLoadedInGunCluster = false
+      for (local j = 0; j < stowage.blockCount(); j++)
+        if (stowage.getBlock(j)?.ammoLoadedInGun ?? false) {
+          hasLoadedInGunCluster = true
+          break
+        }
+      foreach (trigger in (stowage % "weaponTrigger"))
+        res[trigger] <- { removeLoadedAmmo = stowage?.removeLoadedAmmo ?? true, hasLoadedInGunCluster }
+    }
+    return res
+  }
+
+  function isAmmoOnlyXrayFilter() {
+    let option = getXrayFilterOption()
+    let ammoBit = getTankXrayFilter(this.unit?.name).findvalue(@(f) f.name == "ammo")?.bit
+    return option != null && ammoBit != null && option.value == ammoBit
+  }
+
+  function updateXrayAmmoCount() {
+    let isXray = hasLoadedModel() && this.isDmModeValidForXrayView()
+    let ammo = this.canShowLoadedAmmo() ? this.getLoadedAmmo() : null
+    let isShow = isXray && ammo != null && this.needShowLoadedAmmo()
+    let counts = (ammo?.counts ?? {}).map(@(count) isShow ? count : -1)
+    let breechTriggers = !isXray || !this.isAmmoOnlyXrayFilter() ? []
+      : (ammo?.breechTriggers ?? []).filter(@(t) !isShow || (counts?[t] ?? 1) > 0)
+    let showBreech = breechTriggers.len() > 0
+    let triggers = counts.keys()
+    triggers.sort()
+    let applied = "".concat(", ".join(triggers.map(@(t) $"{t}={counts[t]}")), "/", ",".join(breechTriggers))
+    if (applied == this.appliedXrayAmmo)
+      return
+    this.appliedXrayAmmo = applied
+    if (showBreech != this.isXrayBreechShown) {
+      this.isXrayBreechShown = showBreech
+      this.resetXrayCache()
+    }
+    hangar_set_xray_ammo_counts(counts, breechTriggers)
   }
 
   function checkShowViewModeTutor(modeId) {
@@ -487,6 +654,8 @@ dmViewer = {
   }
 
   function repaint() {
+    if (hasFullLoginState.get())
+      this.updateUnitInfo()
     let handler = handlersManager.getActiveBaseHandler()
     if (!handler)
       return
@@ -532,6 +701,7 @@ dmViewer = {
             onChangeFn = applyXrayFilter
             filterTypesFn = getXrayFilterList
             closeAsPopup = false
+            hasBtnIcon = false
           })
           this.filtersWidget = popupFilterHandler.weakref()
         }
@@ -552,6 +722,30 @@ dmViewer = {
       if (isShowOption)
         obj.setValue(this.needShowExtHints())
     }
+
+    obj = handler.scene.findObject("ammo_load_nest")
+    if (obj?.isValid()) {
+      let isShowOption = this.isDmModeValidForXrayView() && this.canShowLoadedAmmo()
+      obj.show(isShowOption)
+      if (isShowOption) {
+        local widget = this.getAmmoLoadWidget(obj)
+        if (widget == null && obj.childrenCount() == 0) {
+          widget = openXrayAmmoLoad({
+            scene = obj
+            btnWidth = "1@airInfoPanelDmSwitcherWidth"
+            onShowLoadedAmmoChangeFn = function(value) {
+              saveLocalAccountSettings("dmViewer/showLoadedAmmo", value)
+              dmViewer.repaint()
+            }
+          })
+          this.ammoLoadWidgets.append(widget.weakref())
+        }
+        widget?.updateAmmo(this.unit, this.getLoadedAmmo(), this.needShowLoadedAmmo())
+      }
+      else
+        this.getAmmoLoadWidget(obj)?.closePopup()
+    }
+    this.updateXrayAmmoCount()
 
     
     obj = handler.scene.findObject("btn_dm_viewer")
@@ -751,6 +945,12 @@ dmViewer = {
     if (partType == "")
       return res
 
+    if (this.isXrayBreechShown && partType == "cannon_breech" && this.isDmModeValidForXrayView(viewMode))
+      return res.__update({
+        title = loc("xray/ammo/loaded_in_gun")
+        desc = [loc("xray/ammo/loaded_in_gun/desc")]
+      })
+
     local partLocId = partType
     let { overrideTitle = "", hideDescription = false } = unitBlk?.xrayOverride[params.name]
 
@@ -777,8 +977,8 @@ dmViewer = {
       }.__update(xrayCommonGetters))
 
       partLocId = descData.partLocId
-      if (!hideDescription && hasFeature("XRayDescription"))
-        res.desc = descData.desc
+      res.desc = !hideDescription && hasFeature("XRayDescription") ? descData.desc
+        : descData.desc.filter(@(v) v?.isDevParam ?? false)
       res.animation = this.getDmPartAnimationSrc(params.name, unit, unitBlk)
       res.__update(this.getExtendedHintInfo(partType, params))
     }
@@ -905,6 +1105,7 @@ dmViewer = {
   }
 
   function onEventActiveHandlersChanged(_p) {
+    this.loadedAmmo = null
     this.update()
   }
 
@@ -913,20 +1114,39 @@ dmViewer = {
   }
 
   function onEventHangarModelLoaded(_p) {
+    this.appliedXrayAmmo = null
     this.reinit()
   }
+
+  function onEventXrayFilterChanged(_p) {
+    this.updateUnitInfo()
+    this.updateXrayAmmoCount()
+  }
+
+  function onUnitBulletsEvent(p) {
+    if (p?.unit != this.unit || this.isLoadedAmmoLoading)
+      return
+    this.loadedAmmo = null
+    this.repaint()
+  }
+
+  onEventBulletsCountChanged = @(p) this.onUnitBulletsEvent(p)
+  onEventUnitBulletsChanged = @(p) this.onUnitBulletsEvent(p)
+  onEventBulletsGroupsChanged = @(p) this.onUnitBulletsEvent(p)
 
   function onEventUnitModsRecount(p) {
     if (p?.unit != this.unit)
       return
     this.updateSecondaryMods()
     this.resetXrayCache()
+    this.loadedAmmo = null
   }
 
   function onEventUnitWeaponChanged(p) {
     if (!this.unit || p?.unitName != this.unit.name)
       return
     this.resetXrayCache()
+    this.loadedAmmo = null
   }
 
   function onEventCurrentGameModeIdChanged(_p) {
@@ -935,8 +1155,12 @@ dmViewer = {
     this.resetXrayCache()
   }
 
+  function onEventModificationChanged(_p) {
+    this.resetXrayCache()
+    this.loadedAmmo = null
+  }
+
   onEventGameLocalizationChanged = @(_p) this.resetXrayCache()
-  onEventModificationChanged = @(_p) this.resetXrayCache()
   onEventDebugXrayModeChange = @(_p) this.resetXrayCache()
   onEventMainMenuReturn = @(_p) this.restoreSavedViewMode()
   function onEventSignOut(_p) {

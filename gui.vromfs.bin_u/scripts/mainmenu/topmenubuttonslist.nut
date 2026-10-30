@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-let topMenuButtonsList = Watched({})
+let topMenuButtonsList = mkWatchedClearedOnReload({})
 
 return topMenuButtonsList

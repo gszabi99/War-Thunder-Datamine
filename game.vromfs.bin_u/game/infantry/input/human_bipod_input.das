@@ -21,6 +21,145 @@ let
   BIPOD_MIN_MOVING_BODY_DIR_YAW_DELTA   = 0.2
   BIPOD_AIM_BODY_DIR_DEVIATION_X        = 0.5
 
+
+def private next_mount_point(from_point : int; skip_point : int; mount_points_num : int) : int
+  let next = (from_point + 1) % mount_points_num
+  return next == skip_point ? (next + 1) % mount_points_num : next
+
+
+def private set_mounted_point(gun_eid : EntityId; mount_point : int)
+  query(gun_eid) <| $ [es] (var gun__curMountPoint : int&)
+    gun__curMountPoint = mount_point
+
+
+def private try_mount_bipod(eid : EntityId; mount_point : int) : bool
+  var mounted = false
+  query(eid) <| $ [es] (human_weap__currentGunEid : EntityId;
+                        human__aimTm : float3x4;
+                        human_input__aimAngle : float2;
+                        human_net_phys : HumanActor;
+                        human_cam__calculatedOffset : DPoint3 const?;
+                        human_cam__offsetMult : float = 1.0;
+                        var human_input__standState : int&;
+                        var bipod__standStateOnMount : int&;
+                        var bipod__placeable : bool&;
+                        var bipod__placeCrawl : bool&;
+                        var bipod__placePos : float3&;
+                        var bipod__placeHeight : float&;
+                        var bipod__placeOffset : float3&;
+                        var bipod__placeNormal : float3&;
+                        var bipod__placeYawLimit : float&;
+                        var bipod__placeRecoilMult : float&;
+                        var bipod__placeIsRest : bool&;
+                        var bipod__enabled : bool&;
+                        var bipod__validateTimer : float&;
+                        var bipod__isCrawl : bool&;
+                        var bipod__anchorPos : float3&;
+                        var bipod__anchorDir : float3&;
+                        var bipod__anchorHeight : float&;
+                        var bipod__anchorOffset : float3&;
+                        var bipod__anchorNormal : float3&;
+                        var bipod__anchorYawLimit : float2&;
+                        var bipod__recoilMult : float&;
+                        var bipod__isRest : bool&;
+                        var bipod__pitchLimit : float2&;
+                        var bipod__prevAngle : float2&;
+                        var bipod__lastValidAngle : float2&;
+                        var bipod__offsetMult : float&)
+    let saved_placeable       = bipod__placeable
+    let saved_placeCrawl      = bipod__placeCrawl
+    let saved_placePos        = bipod__placePos
+    let saved_placeHeight     = bipod__placeHeight
+    let saved_placeOffset     = bipod__placeOffset
+    let saved_placeNormal     = bipod__placeNormal
+    let saved_placeYawLimit   = bipod__placeYawLimit
+    let saved_placeRecoilMult = bipod__placeRecoilMult
+    let saved_placeIsRest     = bipod__placeIsRest
+
+    let isRemount = bipod__enabled
+    solve_bipod_placing(eid, true, mount_point)
+
+    if isRemount && !bipod__placeable
+      return
+
+    if saved_placeable && !bipod__placeable
+      bipod__placeable       = saved_placeable
+      bipod__placeCrawl      = saved_placeCrawl
+      bipod__placePos        = saved_placePos
+      bipod__placeHeight     = saved_placeHeight
+      bipod__placeOffset     = saved_placeOffset
+      bipod__placeNormal     = saved_placeNormal
+      bipod__placeYawLimit   = saved_placeYawLimit
+      bipod__placeRecoilMult = saved_placeRecoilMult
+      bipod__placeIsRest     = saved_placeIsRest
+
+    if !bipod__placeable
+      return
+
+    let isCrawl = human_input__standState == int(HumanPhysControlType.HCT_CRAWL)
+    if isCrawl != bipod__placeCrawl
+      return
+
+    bipod__enabled        = true
+    bipod__isCrawl        = bipod__placeCrawl
+    bipod__recoilMult     = bipod__placeRecoilMult
+    bipod__isRest         = bipod__placeIsRest
+    bipod__anchorPos      = bipod__placePos
+    bipod__anchorDir      = calc_anchor_dir(bipod__isCrawl, bipod__placeNormal, human__aimTm)
+    bipod__lastValidAngle = dir_to_angles(bipod__anchorDir)
+    bipod__anchorHeight   = bipod__placeHeight
+    bipod__anchorOffset   = bipod__placeOffset
+    bipod__anchorNormal   = bipod__isCrawl ? bipod__placeNormal : float3(0.0, 1.0, 0.0)
+    bipod__anchorYawLimit = float2(-bipod__placeYawLimit, bipod__placeYawLimit)
+
+    var humanTm, gunTm : float3x4
+    location_toTM(human_net_phys.phys.previousState.location, humanTm)
+    calc_gun_tm(gunTm, human_net_phys, humanTm, 0.)
+
+    if human_cam__calculatedOffset != null
+      gunTm[3] += float3(*human_cam__calculatedOffset * human_cam__offsetMult)
+
+    let rotateRadius = length(inverse(humanTm) * gunTm * bipod__anchorOffset)
+    bipod__offsetMult = safediv(BIPOD_MIN_INIT_RADIUS, clamp(rotateRadius, BIPOD_MIN_INIT_RADIUS, BIPOD_MAX_INIT_RADIUS))
+    if bipod__isCrawl
+      bipod__anchorYawLimit *= bipod__offsetMult
+
+    bipod__pitchLimit     = float2(BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
+    bipod__validateTimer  = BIPOD_WAIT_BEFORE_VALIDATE
+
+    if !isRemount
+      bipod__standStateOnMount = human_input__standState
+      if human_input__standState == int(HumanPhysControlType.HCT_CROUCH)
+        human_input__standState = 0
+
+    bipod__prevAngle  = human_input__aimAngle
+    set_mounted_point(human_weap__currentGunEid, get_int(eid, "bipod__placeMountPoint") ?? -1)
+    mounted = true
+  return mounted
+
+
+def private reset_bipod_scan_results(eid : EntityId)
+  query(eid) <| $ [es] (var bipod__placeable : bool&;
+                        var bipod__scanMountPoint : int&;
+                        var bipod__availableMountPoints : int&)
+    bipod__placeable = false
+    bipod__scanMountPoint = -1
+    bipod__availableMountPoints = 0
+
+
+def private remount_bipod_on_next_mount_point(eid : EntityId; gun_eid : EntityId)
+  var mountPointsNum = 0
+  var candidate = -1
+  query(gun_eid) <| $ [es] (@shared_comp gun__mountPoints : Array; gun__curMountPoint : int)
+    mountPointsNum = length(gun__mountPoints)
+    candidate = gun__curMountPoint
+  for _i in range(1, mountPointsNum)
+    candidate = next_mount_point(candidate, -1, mountPointsNum)
+    if try_mount_bipod(eid, candidate)
+      reset_bipod_scan_results(eid)
+      return
+
+
 [es(tag=input, REQUIRE=hero, before=human_common_input_action_triggered_es)]
 def human_bipod_input_reset_es(evt : EventOnKeyDown;
                                var bipod__enabled : bool&;
@@ -31,48 +170,27 @@ def human_bipod_input_reset_es(evt : EventOnKeyDown;
     return
 
   let action = int(evt.eventId)
-  if action ==  int(ShortcutEventId.ID_HUMAN_JUMP) || action ==  int(ShortcutEventId.ID_HUMAN_MELEE) || action ==  int(ShortcutEventId.ID_HUMAN_CRAWL) || action ==  int(ShortcutEventId.ID_HUMAN_CROUCH)
+  if action == int(ShortcutEventId.ID_HUMAN_JUMP) || action == int(ShortcutEventId.ID_HUMAN_MELEE) || action == int(ShortcutEventId.ID_HUMAN_CRAWL) || action == int(ShortcutEventId.ID_HUMAN_CROUCH)
     bipod__enabled = false
     bipod__placeable = false
     if action == int(ShortcutEventId.ID_HUMAN_JUMP) || action == int(ShortcutEventId.ID_HUMAN_CRAWL)
       bipod__standStateOnMount = 0
 
-[es(tag=input, after=human_common_input_action_triggered_es)]
+
+[es(tag=input, REQUIRE=hero)]
+def change_bipod_selected_mount_point(evt : EventOnKeyDown;
+                                      eid : EntityId;
+                                      bipod__enabled : bool;
+                                      human_weap__currentGunEid : EntityId)
+  if bipod__enabled && int(evt.eventId) == int(ShortcutEventId.ID_HUMAN_CHANGE_BIPOD_MOUNT_POINT)
+    remount_bipod_on_next_mount_point(eid, human_weap__currentGunEid)
+
+
+[es(tag=input, REQUIRE=hero, after=human_common_input_action_triggered_es)]
 def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
                                           eid : EntityId;
                                           input__enabled : bool = true;
-                                          
-                                          human__aimTm : float3x4;
-                                          human_input__aimAngle : float2;
-                                          human_net_phys : HumanActor;
-                                          human_cam__calculatedOffset : DPoint3 const?;
-                                          human_cam__offsetMult : float = 1.0;
-                                          var human_input__standState : int&;
-                                          var bipod__standStateOnMount : int&;
-                                          var bipod__placeable : bool&;
-                                          var bipod__placeCrawl : bool&;
-                                          var bipod__placePos : float3&;
-                                          var bipod__placeHeight : float&;
-                                          var bipod__placeOffset : float3&;
-                                          var bipod__placeNormal : float3&;
-                                          var bipod__placeYawLimit : float&;
-                                          var bipod__placeRecoilMult : float&;
-                                          var bipod__placeIsRest : bool&;
-                                          var bipod__enabled : bool&;
-                                          var bipod__validateTimer : float&;
-                                          var bipod__isCrawl : bool&;
-                                          var bipod__anchorPos : float3&;
-                                          var bipod__anchorDir : float3&;
-                                          var bipod__anchorHeight : float&;
-                                          var bipod__anchorOffset : float3&;
-                                          var bipod__anchorNormal : float3&;
-                                          var bipod__anchorYawLimit : float2&;
-                                          var bipod__recoilMult : float&;
-                                          var bipod__isRest : bool&;
-                                          var bipod__pitchLimit : float2&;
-                                          var bipod__prevAngle : float2&;
-                                          var bipod__lastValidAngle : float2&;
-                                          var bipod__offsetMult : float&)
+                                          var bipod__enabled : bool&)
   if !input__enabled || int(evt.eventId) != int(ShortcutEventId.ID_HUMAN_BIPODTOGGLE)
     return
 
@@ -80,68 +198,54 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
     bipod__enabled = false
     return
 
-  let saved_placeable       = bipod__placeable
-  let saved_placeCrawl      = bipod__placeCrawl
-  let saved_placePos        = bipod__placePos
-  let saved_placeHeight     = bipod__placeHeight
-  let saved_placeOffset     = bipod__placeOffset
-  let saved_placeNormal     = bipod__placeNormal
-  let saved_placeYawLimit   = bipod__placeYawLimit
-  let saved_placeRecoilMult = bipod__placeRecoilMult
-  let saved_placeIsRest     = bipod__placeIsRest
+  try_mount_bipod(eid, -1)
 
-  solve_bipod_placing(eid, true)
-
-  if saved_placeable && !bipod__placeable
-    bipod__placeable       = saved_placeable
-    bipod__placeCrawl      = saved_placeCrawl
-    bipod__placePos        = saved_placePos
-    bipod__placeHeight     = saved_placeHeight
-    bipod__placeOffset     = saved_placeOffset
-    bipod__placeNormal     = saved_placeNormal
-    bipod__placeYawLimit   = saved_placeYawLimit
-    bipod__placeRecoilMult = saved_placeRecoilMult
-    bipod__placeIsRest     = saved_placeIsRest
-
-  if !bipod__placeable
+[es(tag=input, REQUIRE=hero, before=start_async_phys_sim_es)]
+def human_bipod_scan_mount_points_es(info : ParallelUpdateFrameDelayed;
+                                     eid : EntityId;
+                                     bipod__enabled : bool;
+                                     bipod__checkPlacingInterval : float;
+                                     human_weap__currentGunEid : EntityId;
+                                     var bipod__nextCheckPlacingAtTime : float&;
+                                     bipod__solveForPos : float3;
+                                     bipod__solveForDir : float3;
+                                     var bipod__scanForPos : float3&;
+                                     var bipod__scanForDir : float3&;
+                                     var bipod__scanMountPoint : int&;
+                                     var bipod__availableMountPoints : int&)
+  if !bipod__enabled
     return
 
-  let isCrawl = human_input__standState == int(HumanPhysControlType.HCT_CRAWL)
-  if isCrawl != bipod__placeCrawl
+  if bipod__nextCheckPlacingAtTime > 0.0 && bipod__nextCheckPlacingAtTime >= info.curTime
+    return
+  bipod__nextCheckPlacingAtTime = info.curTime + bipod__checkPlacingInterval
+
+  var mountPointsNum = 0
+  var curMountPoint = -1
+  query(human_weap__currentGunEid) <| $ [es] (@shared_comp gun__mountPoints : Array; gun__curMountPoint : int)
+    mountPointsNum = length(gun__mountPoints)
+    curMountPoint = gun__curMountPoint
+  if mountPointsNum < 2 || curMountPoint < 0 || curMountPoint >= mountPointsNum
+    bipod__availableMountPoints = 0
     return
 
-  bipod__enabled        = true
-  bipod__isCrawl        = bipod__placeCrawl
-  bipod__recoilMult     = bipod__placeRecoilMult
-  bipod__isRest         = bipod__placeIsRest
-  bipod__anchorPos      = bipod__placePos
-  bipod__anchorDir      = calc_anchor_dir(bipod__isCrawl, bipod__placeNormal, human__aimTm)
-  bipod__lastValidAngle = dir_to_angles(bipod__anchorDir)
-  bipod__anchorHeight   = bipod__placeHeight
-  bipod__anchorOffset   = bipod__placeOffset
-  bipod__anchorNormal   = bipod__isCrawl ? bipod__placeNormal : float3(0.0, 1.0, 0.0)
-  bipod__anchorYawLimit = float2(-bipod__placeYawLimit, bipod__placeYawLimit)
+  if bipod__scanMountPoint < 0 || bipod__scanMountPoint == curMountPoint
+    bipod__scanMountPoint = next_mount_point(curMountPoint, curMountPoint, mountPointsNum)
 
-  var humanTm, gunTm : float3x4
-  location_toTM(human_net_phys.phys.previousState.location, humanTm)
-  calc_gun_tm(gunTm, human_net_phys, humanTm, 0.)
+  let wasIdle = is_bipod_solver_idle(eid)
+  solve_bipod_placing(eid, false, bipod__scanMountPoint)
+  if is_bipod_context_moved(bipod__solveForPos, bipod__solveForDir, bipod__scanForPos, bipod__scanForDir)
+    bipod__availableMountPoints = 0
+    bipod__scanForPos = bipod__solveForPos
+    bipod__scanForDir = bipod__solveForDir
+  if wasIdle || !is_bipod_solver_idle(eid)
+    return
 
-  if human_cam__calculatedOffset != null
-    gunTm[3] += float3(*human_cam__calculatedOffset * human_cam__offsetMult)
+  let scannedBit = 1 << bipod__scanMountPoint
+  let isPlaceable = get_bool(eid, "bipod__placeable") ?? false
+  bipod__availableMountPoints = isPlaceable ? (bipod__availableMountPoints | scannedBit) : (bipod__availableMountPoints & ~scannedBit)
+  bipod__scanMountPoint = next_mount_point(bipod__scanMountPoint, curMountPoint, mountPointsNum)
 
-  let rotateRadius = length(inverse(humanTm) * gunTm * bipod__anchorOffset)
-  bipod__offsetMult = safediv(BIPOD_MIN_INIT_RADIUS, clamp(rotateRadius, BIPOD_MIN_INIT_RADIUS, BIPOD_MAX_INIT_RADIUS))
-  if bipod__isCrawl
-    bipod__anchorYawLimit *= bipod__offsetMult
-
-  bipod__pitchLimit     = float2(BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
-  bipod__validateTimer  = BIPOD_WAIT_BEFORE_VALIDATE
-
-  bipod__standStateOnMount = human_input__standState
-  if human_input__standState == int(HumanPhysControlType.HCT_CROUCH)
-    human_input__standState = 0
-
-  bipod__prevAngle  = human_input__aimAngle
 
 [es(tag=input, REQUIRE=hero, before=start_async_phys_sim_es)] 
 def human_bipod_check_es(info : ParallelUpdateFrameDelayed;
@@ -316,9 +420,10 @@ def human_bipod_reset_es(evt : Event; var bipod__enabled : bool&; var bipod__pla
   bipod__placeable = false
 
 [es(tag=input, track=bipod__enabled)]
-def human_bipod_reset_aim_es(evt : Event; bipod__enabled : bool; var human_net_phys : HumanActor)
+def human_bipod_reset_aim_es(evt : Event; eid : EntityId; bipod__enabled : bool; var human_net_phys : HumanActor)
   if !bipod__enabled
     human_net_phys.phys.producedCT |> human_control_state_set_control_bit(HumanPhysControlType.HCT_AIM, false)
+    reset_bipod_scan_results(eid)
 
 [es(tag=input, track=(isDowned, isAlive))]
 def human_bipod_reset_on_death_es(evt : Event; isDowned, isAlive : bool; var bipod__enabled : bool&; var bipod__placeable : bool&)
@@ -326,7 +431,7 @@ def human_bipod_reset_on_death_es(evt : Event; isDowned, isAlive : bool; var bip
     bipod__enabled = false
     bipod__placeable = false
 
-[es(tag=netClient, REQUIRE=hero, track=bipod__enabled)]
+[es(tag=netClient, REQUIRE=hero, track=(bipod__enabled, bipod__anchorPos))]
 def human_request_placing_es(evt : Event;
                              eid : EntityId;
                              bipod__enabled : bool;

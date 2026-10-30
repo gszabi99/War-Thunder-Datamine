@@ -1,4 +1,16 @@
-from "%sqstd/platform.nut" import isPC
+import "%scripts/captcha/captchaCache.nut" as getCaptchaCache
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/utils/screenUtils.nut" import sfpf
+from "%sqstd/platform.nut" import isPC, is_steam_deck
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/userstat/userstatCaptcha.nut" import increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlockCounter, captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter, captchFailsBanCounter
+  , resetCaptchaFailsBanCounter, setLastAttemptTime
+from "%scripts/time.nut" import secondsToString
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/shop/shopCountryInfo.nut" import getMaxUnitsRank
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
 from "dagor.random" import frnd, rnd, rnd_int
 from "math" import floor, abs
 from "console" import register_command
@@ -6,19 +18,7 @@ from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_player_complaint_counts, char_ban_user
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let getCaptchaCache = require("%scripts/captcha/captchaCache.nut")
-let { sfpf } = require("%scripts/utils/screenUtils.nut")
-let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlockCounter, captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter, captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getMaxUnitsRank } = require("%scripts/shop/shopCountryInfo.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 
 
 let Rectangle = class {
@@ -276,7 +276,7 @@ const minComplaintsCountForShowCaptcha = 5
 const minVehicleRankForShowCaptcha = 2
 
 function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
-  let isCaptchaNotAllowed = !isPC || isPlatformSteamDeck
+  let isCaptchaNotAllowed = !isPC || is_steam_deck
     || (!hasFeature("CaptchaAllowed") && getInventoryItemById(SHOW_CAPTCHA_ITEM_ID) == null)
     ||  getMaxUnitsRank() < minVehicleRankForShowCaptcha
   if (isCaptchaNotAllowed) {

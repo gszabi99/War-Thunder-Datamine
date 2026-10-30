@@ -1,9 +1,8 @@
+from "%scripts/guiBox.nut" import GuiBox, getBlockFromObjData, getBoxBlkText
 from "%globalScripts/guiGeom/linesGenerator.nut" import LinesPriorities, createLinkLines, findGoodPosForBox
 from "dagor.math" import Point2
 from "string" import format
 from "%scripts/dagui_library.nut" import *
-
-let { GuiBox, getBlockFromObjData, getBoxBlkText } = require("%scripts/guiBox.nut")
 
 function getHelpDotMarkup(point  , tag = "helpLineDot") {
   return format("%s { pos:t='%d-0.5w, %d-0.5h'; position:t='absolute' } ", tag, point.x.tointeger(), point.y.tointeger())
@@ -90,8 +89,8 @@ function getLinkLinesMarkup(config) {
   return generateLinkLinesMarkup(links, boxList, lineInterval, lineWidth)
 }
 
-return {
+return freeze({
   getLinkLinesMarkup
   generateLinkLinesMarkup
   findGoodPos
-}
+})

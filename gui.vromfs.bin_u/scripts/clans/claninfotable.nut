@@ -1,5 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/clans/clanTextInfo.nut" import getClanCreationDateText, getClanInfoChangeDateText, amendUGCText, getClanMembersCountText, getRegionUpdateCooldownTime, checkClanTagForDirtyWords
+from "%scripts/clans/clanSeasonPlaceTitle.nut" import createSeasonRewardFromClanReward
+from "%scripts/user/clanName.nut" import getMyClanTag, getMyClanName
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%sqstd/platform.nut" import isSony
 from "math" import round
 from "%sqstd/datablock.nut" import convertBlk, copyParamsToTable, eachBlock
 from "chard" import get_charserver_time_sec
@@ -9,12 +15,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { getClanCreationDateText, getClanInfoChangeDateText, amendUGCText, getClanMembersCountText, getRegionUpdateCooldownTime, checkClanTagForDirtyWords } = require("%scripts/clans/clanTextInfo.nut")
-let { createSeasonRewardFromClanReward } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
-let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 const ranked_column_prefix = "dr_era5"  
 
@@ -88,10 +88,6 @@ let clanInfoTemplate = {
     return getClanMembersCountText(this)
   }
 
-  function canShowActivity() {
-    return hasFeature("ClanActivity")
-  }
-
   function getActivity() {
     return this.astat?.activity ?? 0 
   }
@@ -116,7 +112,7 @@ function getFilteredClanData(clanData, isUgcAllowed, author = "") {
   ]
 
   local isPlayerBlocked = false
-  if (isPlatformSony) {
+  if (isSony) {
     
     if (author == "") {
       author = clanData?.changedByNick ?? ""
@@ -277,8 +273,8 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
   return getFilteredClanData(clan, isUgcAllowed)
 }
 
-return {
+return freeze({
   ranked_column_prefix
   get_clan_info_table
   getFilteredClanData
-}
+})

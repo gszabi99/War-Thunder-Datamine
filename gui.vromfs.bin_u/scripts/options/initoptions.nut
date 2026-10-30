@@ -1,23 +1,23 @@
+import "%scripts/options/optionsMeasureUnits.nut" as optionsMeasureUnits
 import "DataBlock" as DataBlock
+from "%scripts/options/optionsStorage.nut" import set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber, set_available_ship_hit_notifications
+from "%scripts/postFxSettings.nut" import init_postfx
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/weaponry/bulletsVisual.nut" import initBulletIcons
+from "%scripts/weaponry/weaponsParams.nut" import initWeaponParams
+from "%scripts/missions/missionsUtils.nut" import clearMapsCache
+from "%scripts/ranks.nut" import updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank, calculateMaxRank
+from "%scripts/langUtils/localization.nut" import setUnlocksPunctuationWithoutSpace
+from "%scripts/unit/initUnits.nut" import initAllUnits, updateAllUnits
+from "%scripts/options/initOptionsState.nut" import hasOptionsInitialized
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber, set_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
-let { init_postfx } = require("%scripts/postFxSettings.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
-let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
-let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
-let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank, calculateMaxRank } = require("%scripts/ranks.nut")
-let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { initAllUnits, updateAllUnits } = require("%scripts/unit/initUnits.nut")
-let { hasOptionsInitialized } = require("%scripts/options/initOptionsState.nut")
 
 let initOptionsSteps = [
   initAllUnits

@@ -41,8 +41,8 @@ function setValue(clanData, value, handler) {
   }
 }
 
-return {
+return freeze({
   canChange = canChange
   getValue = getValue
   setValue = setValue
-}
+})

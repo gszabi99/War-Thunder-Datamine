@@ -1,14 +1,13 @@
 import "DataBlock" as DataBlock
+from "%scripts/matching/serviceNotifications/postbox.nut" import notifyMailRead
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import actionWithGlobalStatusRequest
+from "%scripts/invites/invitesClasses.nut" import findInviteClass
+from "%scripts/invites/invites.nut" import registerInviteUserlogHandler, findInviteByUid, addInvite
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
-
-let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { registerInviteUserlogHandler, findInviteByUid, addInvite } = require("%scripts/invites/invites.nut")
 
 function checkOperationParams(params) {
   if (params.operationId < 0)

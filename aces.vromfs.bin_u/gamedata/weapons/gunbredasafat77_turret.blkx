@@ -1,11 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 1,
-  "maxDeltaAngle": 0.19,
-  "shotFreq": 15.0,
-  "traceFreq": 4,
-  "bullets": 500,
-  "recoilMultiplier": 0.35,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,25 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.19,
+  "shotFreq": 15.0,
+  "bullets": 500,
+  "recoilMultiplier": 0.35,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        9.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0095,
@@ -426,7 +438,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmBrightRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2467,7 +2479,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmBrightRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4105,7 +4117,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmBrightRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -5340,25 +5352,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bereda-safat_77_gun_outside",
-    "cockpit": "bereda-safat_77_gun_inside",
-    "ai": "bereda-safat_77_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        9.0,
-        0.05
-      ]
-    ]
-  },
   "safat7_turret_new_gun": {
     "maxDeltaAngle": 0.4,
     "overheat": {
@@ -5373,5 +5366,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bereda-safat_77_gun_outside",
+    "cockpit": "bereda-safat_77_gun_inside",
+    "ai": "bereda-safat_77_gun_ai"
   }
 }

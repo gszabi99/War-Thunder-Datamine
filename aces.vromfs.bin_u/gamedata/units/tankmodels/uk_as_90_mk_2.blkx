@@ -2049,7 +2049,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/155mm_L_31_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/155mm_L_31_user_cannon.blk",
         "shotFreq": 0.2,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -2083,17 +2083,11 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm",
             "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm",
             "turret_hydraulics_dm"
-          ],
-          "shootingDmPart": [
-            "fire_control_system_dm",
-            "fire_control_system_dm"
           ],
           "linkedAnimPart": {
             "verNode": "bone_roll_05",
@@ -2121,7 +2115,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2172,8 +2166,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_as_90_mk_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_as_90_mk_2_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3260,7 +3254,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/155mm_L_31_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/155mm_L_31_user_cannon.blk",
               "shotFreq": 0.2,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
@@ -3294,17 +3288,11 @@
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm",
                   "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm",
                   "turret_hydraulics_dm"
-                ],
-                "shootingDmPart": [
-                  "fire_control_system_dm",
-                  "fire_control_system_dm"
                 ],
                 "linkedAnimPart": {
                   "verNode": "bone_roll_05",
@@ -3332,7 +3320,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A2_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame_01",
               "useEmitter": true,
@@ -3379,7 +3367,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3449,6 +3437,7 @@
       "shells": [
         {
           "firstStage": true,
+          "index": 0,
           "ammo_turret_47_dm": {
             "count": 1
           },
@@ -3458,6 +3447,7 @@
         },
         {
           "reloadTimeMult": 1.33,
+          "index": 1,
           "ammo_turret_32_dm": {
             "count": 1
           },
@@ -3509,6 +3499,7 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "index": 2,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -3607,6 +3598,7 @@
       "charges": [
         {
           "firstStage": true,
+          "index": 0,
           "ammo_body_47_dm": {
             "count": 1
           },
@@ -3616,6 +3608,7 @@
         },
         {
           "reloadTimeMult": 1.33,
+          "index": 1,
           "ammo_body_31_dm": {
             "count": 1
           },
@@ -3667,6 +3660,7 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "index": 2,
           "ammo_body_01_dm": {
             "count": 1
           },
@@ -3825,5 +3819,29 @@
         "to": "uk_camo_winter_modern_bicolor*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.432,
+      1.337,
+      1.606
+    ],
+    "lightInfluenceSize": [
+      0.3,
+      0.2,
+      0.3
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.25
+  }
 }

@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 4.3333335,
-  "traceFreq": 2,
-  "bullets": 32,
-  "reloadSpeedK": 1.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,45 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 4.3333335,
+  "bullets": 32,
+  "reloadSpeedK": 1.5,
+  "overheat": {
+    "overheat": [
+      [
+        2.0,
+        0.0
+      ],
+      [
+        7.0,
+        0.5
+      ],
+      [
+        12.5,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.76,
@@ -1877,45 +1909,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "ns37_gun_outside",
-    "cockpit": "ns37_gun_inside",
-    "ai": "ns37_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        2.0,
-        0.0
-      ],
-      [
-        7.0,
-        0.5
-      ],
-      [
-        12.5,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
-  },
   "ns37_new_gun": {
     "maxDeltaAngle": 0.15,
     "overheat": {
@@ -1934,5 +1927,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "ns37_gun_outside",
+    "cockpit": "ns37_gun_inside",
+    "ai": "ns37_gun_ai"
   }
 }

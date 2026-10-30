@@ -1,4 +1,13 @@
+import "%scripts/items/itemsTransfer.nut" as itemTransfer
 import "DataBlock" as DataBlock
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/squads/squadState.nut" import getMaxSquadSize
+from "%scripts/items/itemGeneratorsManager.nut" import addItemGenerator
+from "%scripts/items/itemsManagerState.nut" import getInventoryItemType, setExtInventoryUpdateTime, setShouldCheckAutoConsume
+from "%scripts/items/itemsManagerDbgState.nut" import incDbgUpdateInternalItemsCount
+from "%scripts/items/itemsTypeClasses.nut" import createItem
+from "%scripts/unlocks/unlockSmoke.nut" import shopSmokeItems
+from "%scripts/items/bonusEffectsGetters.nut" import getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
 from "%appGlobals/ranks_common_shared.nut" import get_cyber_cafe_max_level
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "dagor.time" import get_time_msec
@@ -9,18 +18,11 @@ from "%scripts/dagui_natives.nut" import get_item_data_by_uid, get_items_blk, ge
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
-let { itemType } = require("%scripts/items/itemsConsts.nut")
-let { getMaxSquadSize } = require("%scripts/squads/squadState.nut")
-let { addItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { itemsListInternal, itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId, rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime, setShouldCheckAutoConsume } = require("%scripts/items/itemsManagerState.nut")
-let { dbgTrophiesListInternal, incDbgUpdateInternalItemsCount } = require("%scripts/items/itemsManagerDbgState.nut")
-let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
-let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
-let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
+let { itemsListInternal, itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId, rawInventoryItemAmountsByItemdefId } = require("%scripts/items/itemsManagerState.nut")
+let { dbgTrophiesListInternal } = require("%scripts/items/itemsManagerDbgState.nut")
 
 
 const FAKE_ITEM_CYBER_CAFE_BOOSTER_UID = -1
@@ -301,7 +303,7 @@ function needIgnoreItemLimits() {
   return ignoreItemLimits
 }
 
-return {
+return freeze({
   setReqUpdateList = @(v) reqUpdateList = v
   getReqUpdateItemDefsList = @() reqUpdateItemDefsList
   setReqUpdateItemDefsList = @(v) reqUpdateItemDefsList = v
@@ -312,4 +314,4 @@ return {
   checkUpdateList
   checkInventoryUpdate
   needIgnoreItemLimits
-}
+})

@@ -1,17 +1,17 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/nationBonuses/nationBonuses.nut" import getUnitsWithNationBonuses, getNationBonusMarkState
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes, getTooltipType
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/markers/markerTooltipUtils.nut" import createMoreText, maxElementsInSimpleTooltip
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getUnitsWithNationBonuses, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
 elemModelType.addTypes({
@@ -126,4 +126,4 @@ addTooltipTypes({
   }
 })
 
-return {}
+return freeze({})

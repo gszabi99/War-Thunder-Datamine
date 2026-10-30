@@ -3,3 +3,12 @@ language:t=""
 "@override:graphics" {
   contactShadowsQuality:i=1
 }
+
+"@override:shadows" {
+  "@override:ps4shadows" {
+    swrtShadows { // SWRT shadows of aircraft: the PS5 already has half-res contact shadows
+      blasLeafSkipDist:r = 6
+      aircraft { enabled:b = yes }
+    }
+  }
+}

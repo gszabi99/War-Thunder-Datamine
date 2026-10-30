@@ -1,25 +1,26 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/wndLib/multiSelectMenu.nut" import MultiSelectMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%sqstd/datablock.nut" import convertBlk
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
-let chatDefaultCategoryName = persist("chatDefaultCategoryName", @() {val = ""})
-let getChatDefaultCategoryName = @() chatDefaultCategoryName.val
-let setChatDefaultCategoryName = @(v) chatDefaultCategoryName.val = v
+local chatDefaultCategoryName = ""
+let getChatDefaultCategoryName = @() chatDefaultCategoryName
+function setChatDefaultCategoryName(v) { chatDefaultCategoryName = v }
 
-let chatCategoriesList = persist("chatCategoriesList", @() {})
-let chatCategoriesListSorted = persist("chatCategoriesListSorted", @() [])
-let searchChatCategories = persist("searchChatCategories", @() [])
+let chatCategoriesList = {}
+let chatCategoriesListSorted = []
+let searchChatCategories = []
 
 let g_chat_categories = {
   list = chatCategoriesList
@@ -162,4 +163,6 @@ g_chat_categories._setSearchCategories <- function _setSearchCategories(newValue
 }
 
 subscribe_handler(g_chat_categories, g_listener_priority.DEFAULT_HANDLER)
+if (hasFullLoginState.get()) 
+  g_chat_categories.initThreadCategories()
 return { g_chat_categories }

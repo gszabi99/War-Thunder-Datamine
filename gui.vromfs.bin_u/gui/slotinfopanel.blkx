@@ -102,6 +102,7 @@
             "Button_text": {
               "margin-top": "@blockInterval",
               "width": "pw",
+              "id": "btn_achievements_all",
               "on_click": "onAchievementsButtonClicked",
               "text": "#mainmenu/btnUnlockAchievementsAll",
               "showConsoleImage": "no"
@@ -215,11 +216,20 @@
                     "CheckBoxImg": {}
                   }
                 ],
-                "tdiv": {
-                  "id": "buttons_place",
-                  "flow": "vertical",
-                  "width": "pw"
-                }
+                "tdiv": [
+                  {
+                    "id": "ammo_load_nest",
+                    "width": "pw",
+                    "flow": "vertical",
+                    "margin-bottom": "3@dp",
+                    "display": "hide"
+                  },
+                  {
+                    "id": "buttons_place",
+                    "flow": "vertical",
+                    "width": "pw"
+                  }
+                ]
               }
             ]
           }

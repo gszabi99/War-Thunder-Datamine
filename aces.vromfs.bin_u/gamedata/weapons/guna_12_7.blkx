@@ -1,12 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 18.3,
-  "alternativeShotFreq": 13.3,
-  "traceFreq": 4,
-  "bullets": 200,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,26 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 18.3,
+  "alternativeShotFreq": 13.3,
+  "bullets": 200,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        25.0,
+        0.0
+      ],
+      [
+        28.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0495,
@@ -6114,25 +6126,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "a127_gun_outside",
-    "cockpit": "a127_gun_inside",
-    "ai": "a127_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        25.0,
-        0.0
-      ],
-      [
-        28.0,
-        0.05
-      ]
-    ]
-  },
   "YaK-B_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -6147,5 +6140,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "a127_gun_outside",
+    "cockpit": "a127_gun_inside",
+    "ai": "a127_gun_ai"
   }
 }

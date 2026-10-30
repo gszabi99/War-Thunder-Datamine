@@ -1,5 +1,43 @@
+import "%scripts/time.nut" as time
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/worldWar/wwAnimBg.nut" as wwAnimBgLoad
+import "%scripts/worldWar/operations/handler/wwVehicleSetModal.nut" as wwVehicleSetModal
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/worldWar/operations/handler/wwOperationsListModal.nut" import WwOperationsListModal
+from "%scripts/worldWar/operations/handler/wwMapDescription.nut" import WwMapDescription
+from "%scripts/mainmenu/topMenuButtonsHandler.nut" import TopMenuButtonsHandler
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, getObjValidIndex
+from "%scripts/worldWar/unlocks/wwUnlocks.nut" import getAllUnlocks, unlocksChapterName
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps, getOperationById, isWWSeasonActive
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import refreshGlobalStatusData, actionWithGlobalStatusRequest
+from "%scripts/leaderboard/leaderboardView.nut" import addClanTagToNameInLeaderbord
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/unlocks/unlocksState.nut" import getUnlockLocName, getUnlockMainCondDesc, getUnlockNameText, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockImageConfig
+from "%scripts/worldWar/operations/handler/wwClustersList.nut" import addPopupOptList
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/unlocks/unlocksConditions.nut" import getMainProgressCondition
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockComplete
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_CLUSTERS
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/tasker.nut" import charRequestJson
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/user/profileHandler.nut" import guiStartProfile
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry
+from "%scripts/clans/clanInfo.nut" import hasRightsToQueueWWar
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
+from "%scripts/options/optionsExt.nut" import get_option
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "string" import format
@@ -9,47 +47,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WwOperationsListModal } = require("%scripts/worldWar/operations/handler/wwOperationsListModal.nut")
-let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
-let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let time = require("%scripts/time.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
-let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps, getOperationById, isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData, actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getUnlockLocName, getUnlockMainCondDesc, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
-let { addPopupOptList } = require("%scripts/worldWar/operations/handler/wwClustersList.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
-let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { charRequestJson } = require("%scripts/tasker.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
 let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
@@ -325,7 +325,7 @@ register_gui_handler("WwOperationsMapsHandler", class (BaseGuiHandlerWT) {
         mainCond, unlConf.curVal, unlConf.maxVal, { isProgressTextOnly = true })
       let isComplete = isUnlockComplete(unlConf)
       res.append({
-        descTooltipText = unlConf.locId != "" ? getUnlockLocName(unlConf)
+        descTooltipText = (unlConf.locId != "" || (unlConf?.name ?? "") != "") ? getUnlockLocName(unlConf)
           : getUnlockNameText(unlConf.unlockType, unlConf.id)
         progressTxt = progressTxt
         rewardImage = LayersIcon.getIconData(

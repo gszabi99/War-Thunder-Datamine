@@ -1,3 +1,10 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
+from "%scripts/login/loginState.nut" import set_disable_autorelogin_once
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import get_current_base_gui_handler
+from "%scripts/hud/startHud.nut" import quitMission
+from "%scripts/login/loginManager.nut" import resetLogin
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box, remove_scene_box
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu, disableNetwork
@@ -9,15 +16,9 @@ from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { handlersManager, get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { quitMission } = require("%scripts/hud/startHud.nut")
-let { resetLogin } = require("%scripts/login/loginManager.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { add_msg_box, remove_scene_box } = require("%scripts/sqDagui/framework/msgBox.nut")
+let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 
-let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
+let needLogoutAfterSession = mkHardPersistWatched("login.logout")("needLogoutAfterSession", false)
 
 
 function canLogout() {
@@ -96,9 +97,9 @@ function checkLogoutScheduled() {
 eventbus_subscribe("PsnLoginStateChanged", @(p) p?.isSignedIn ? null : on_lost_psn())
 eventbus_subscribe("request_logout", @(...) startLogout())
 
-return {
+return freeze({
   canLogout
   startLogout
   needLogoutAfterSession
   checkLogoutScheduled
-}
+})

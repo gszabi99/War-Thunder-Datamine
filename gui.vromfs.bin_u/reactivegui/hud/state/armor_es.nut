@@ -1,6 +1,5 @@
 import "%sqstd/ecs.nut" as ecs
 import "console" as console
-from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "dasevents" import EventPlayerOwnedUnitChanged, EventPlayerControlledUnitChanged, EventArmorInfoChanged
 from "%rGui/globals/ui_library.nut" import *
 
@@ -23,10 +22,6 @@ ecs.register_es("human_armor_changed_es",
   }
 )
 
-add_event_listener("BattleEnded", @(_) armorState.set({}))
-add_event_listener("PlayerQuitMission", @(_) armorState.set({}))
-
-
 console.register_command(@(part, damage_val = 1.0) armorState.mutate(@(v) v[part] <- { value = damage_val }), "debug.armor.set_damage")
 console.register_command(@(damage_val = 1.0) armorState.mutate(function(v) {
   v["helmet"] <- { value = damage_val }
@@ -45,4 +40,4 @@ console.register_command(@(damage_val = 1.0) armorState.mutate(function(v) {
 console.register_command(@(part) armorState.mutate(@(v) v.$rawdelete(part) ), "debug.armor.delete_part")
 console.register_command(@() armorState.mutate(@(v) v.clear() ), "debug.armor.delete_all_parts")
 
-return { armorState }
+return freeze({ armorState })

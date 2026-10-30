@@ -27,8 +27,8 @@ ecs.register_es("dedic_logerr_listener_es",
 register_command(@() onLogerr("Some test dedicated logerr happen.\nIt even multiline logerr if you really want to see many lines\nAnd even more lines of the logerr."),
   "debug.dedicLogerrView")
 
-return {
+return freeze({
   enableDedicLogerr
   subscribeDedicLogerr
   unsubscribeDedicLogerr
-}
+})

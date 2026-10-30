@@ -1,3 +1,15 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/gamepadIcons.nut" import getGamepadAxisTexture, getButtonNameByIdx
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/controls/shortcutsUtils.nut" import getComplexAxesId, isComponentsAssignedToSingleInputItem
+from "%scripts/hud/hudUnitType.nut" import unitTypeByHudUnitType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/hud/hudActionBarType.nut" import getHudKillStreakShortcutId
+from "%scripts/joystickInterface.nut" import getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo, getAxisData
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "%appGlobals/hud/hudState.nut" import isWheelMenuActive
 from "hudState" import getHudUnitType
 from "math" import PI
@@ -8,19 +20,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getGamepadAxisTexture, getButtonNameByIdx } = require("%scripts/controls/gamepadIcons.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getComplexAxesId, isComponentsAssignedToSingleInputItem } = require("%scripts/controls/shortcutsUtils.nut")
-let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut")
-let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo, getAxisData } = require("%scripts/joystickInterface.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -415,8 +415,8 @@ register_gui_handler("wheelMenuHandler", wheelMenuHandler)
 
 isInBattleState.subscribe(@(_) isWheelMenuActive.set(false))
 
-return {
+return freeze({
   wheelMenuHandler
   guiStartWheelmenu
   closeCurWheelmenu
-}
+})

@@ -53,26 +53,27 @@
                 "display": "hide"
               },
               {
+                "id": "listbox_filter_holder",
+                "width": "pw",
+                "pos": "1@blockInterval, 0",
+                "position": "relative"
+              },
+              {
                 "id": "chapters_list_place",
                 "size": "pw, fh",
                 "flow": "vertical",
-                "popupFilter": {
-                  "margin-left": "1@buttonMargin"
-                },
                 "tdiv": {
-                  "id": "listbox_filter_holder",
-                  "width": "pw",
-                  "pos": "1@blockInterval, 0",
-                  "position": "relative"
-                },
-                "listbox": {
-                  "id": "items_list",
+                  "id": "items_list_nest",
                   "size": "pw, fh",
-                  "flow": "vertical",
-                  "move-only-hover": "yes",
-                  "navigatorShortcuts": "yes",
-                  "on_select": "onItemSelect",
-                  "_on_dbl_click": "onItemDblClick"
+                  "listbox": {
+                    "id": "items_list",
+                    "size": "pw, ph",
+                    "flow": "vertical",
+                    "move-only-hover": "yes",
+                    "navigatorShortcuts": "yes",
+                    "on_select": "onItemSelect",
+                    "_on_dbl_click": "onItemDblClick"
+                  }
                 },
                 "textAreaCentered": {
                   "id": "items_list_msg",
@@ -90,7 +91,10 @@
                   "display": "hide"
                 }
               }
-            ]
+            ],
+            "popupFilter": {
+              "margin-left": "1@buttonMargin"
+            }
           },
           "chapterSeparator": {
             "margin": "1@blockInterval, 0"

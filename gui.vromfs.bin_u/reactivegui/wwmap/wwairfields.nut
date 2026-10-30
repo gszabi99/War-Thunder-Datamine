@@ -57,6 +57,6 @@ let mkAirfields = @() {
   children = airfieldsInfo.get().map(@(airfieldInfo) mkAirfield(airfieldInfo, activeAreaBounds.get()))
 }
 
-return {
+return freeze({
   mkAirfields
-}
+})

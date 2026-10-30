@@ -1,6 +1,5 @@
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
 from "%scripts/dagui_library.nut" import *
-
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 
 function addClanTagToNameInLeaderbord(lbNest, clansInfoList) {
   if (!checkObj(lbNest) || clansInfoList.len() == 0)
@@ -22,6 +21,6 @@ function addClanTagToNameInLeaderbord(lbNest, clansInfoList) {
   }
 }
 
-return {
+return freeze({
   addClanTagToNameInLeaderbord
-}
+})

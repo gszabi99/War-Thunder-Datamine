@@ -1399,6 +1399,7 @@
     "engines": {
       "maxSpeed": 22.12,
       "maxReverseSpeed": 9.0,
+      "horsePowers": 2300.0,
       "waterResistanceAtStopK": 0.3,
       "speedToTime": {
         "row": [
@@ -1532,6 +1533,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        6.1,
+        0.0
+      ],
+      [
+        12.3,
+        100.0
+      ],
+      [
+        18.4,
+        200.0
+      ],
+      [
+        24.6,
+        400.0
+      ],
+      [
+        30.7,
+        600.0
+      ],
+      [
+        36.9,
+        900.0
+      ],
+      [
+        43.0,
+        1300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
@@ -1566,7 +1625,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
+      "blk": "gamedata/weapons/navalModels_weapons/20mm_65_breda_naval_user_cannon.blk",
       "emitter": "emtr_gun_flame_01",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
@@ -1689,22 +1748,22 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_mas_classe500_3_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_mas_classe500_3_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/it_mas_classe500_3_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_mas_classe500_3_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "depth_charges_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_mas_classe500_3_depth_charges_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_mas_classe500_3_depth_charges_torpedoes.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "it_mas_classe500_3_default",
-        "blk": "gameData/units/ships/weaponPresets/it_mas_classe500_3_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/it_mas_classe500_3_default.blk"
       }
     ]
   },
@@ -2708,29 +2767,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -8000.0,
-    "waterMassMult": 40.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 140000.0,
+    "waterMassVel": -3551.0,
+    "waterMassMult": 44.0,
+    "additionalWaterDeathThreshold": 166247.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 33.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.6,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.324
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.7,
+        "weight": 0.64,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -2753,19 +2816,31 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.38
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.38
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.7,
-        "maxWaterAlive": 1.0
+        "weight": 0.53,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.11
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.11
+            }
+          ]
+        }
       }
     ]
   },

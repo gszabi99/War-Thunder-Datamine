@@ -3,7 +3,6 @@ from "%darg/ui_imports.nut" import *
 from "types" import Integer
 
 let entity_editor = require_optional("entity_editor")
-let { selectedEntity, selectedEntities, selectedCompName, markedScenes } = require("state.nut")
 let ecs = require("%sqstd/ecs.nut")
 
 
@@ -23,17 +22,6 @@ let {
 } = require_optional("das.daeditor")
 
 
-selectedEntities.subscribe_with_nasty_disregard_of_frp_update(function(val) {
-  if (val.len() == 1)
-    selectedEntity.set(val.keys()[0])
-  else
-    selectedEntity.set(INVALID_ENTITY_ID)
-})
-
-selectedEntity.subscribe_with_nasty_disregard_of_frp_update(function(_eid) {
-  selectedCompName.set(null)
-})
-
 function getEntityExtraName(eid): string|null {
   let extraName = get_entity_extra_name?(eid) ?? ""
 
@@ -49,22 +37,6 @@ function getSceneLoadTypeText(v): string {
     "UNKNOWN"
   )
   return loadType
-}
-
-function getNumMarkedScenes(): int {
-  local nSel = 0
-  foreach (_sceneId, marked in markedScenes.get()) {
-    if (marked)
-      ++nSel
-  }
-  return nSel
-}
-
-function matchEntityByScene(eid) {
-  local id = entity_editor?.get_instance().getEntityRecordSceneId(eid)
-  if (markedScenes.get()?[id])
-    return true
-  return entity_editor?.get_instance().isSceneEntity(eid)
 }
 
 function getScenePrettyName(index) {
@@ -88,9 +60,6 @@ return {
   getEntityExtraName
 
   getSceneLoadTypeText
-
-  getNumMarkedScenes
-  matchEntityByScene
 
   getScenePrettyName
   isEntityInLockedHierarchy

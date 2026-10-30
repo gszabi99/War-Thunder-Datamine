@@ -1,11 +1,11 @@
-from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, removeAllListenersByEnv
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 from "types" import String, Function
 
 let { handlerType } = require("handlerType.nut")
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { open_url_by_obj } = require("open_url_by_obj.nut")
 let { gui_scene_boxes, scene_msg_box } = require("msgBox.nut")
 
@@ -90,6 +90,7 @@ let BaseGuiHandler = class {
 
   function initScreen() {}
   function onDestroy()  {}
+  function onSceneDetach() { removeAllListenersByEnv(this) }
 
   function isValid() {
     return check_obj(this.scene)
@@ -289,9 +290,9 @@ let BaseGuiHandler = class {
     this.subHandlers.append(handler.weakref())
   }
 
-  _tostring = @() $"BaseGuiHandler(sceneBlkName = {this.sceneBlkName})"
+  _tostring = @() $"BaseGuiHandler(scene = {this.sceneBlkName ?? this.sceneTplName})"
 }
 
-return {
+return freeze({
   BaseGuiHandler
-}
+})

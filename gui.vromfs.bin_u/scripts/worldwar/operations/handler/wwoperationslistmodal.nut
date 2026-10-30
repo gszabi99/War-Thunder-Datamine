@@ -1,20 +1,17 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/worldWar/operations/handler/wwMapDescription.nut" import WwMapDescription
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/operations/model/wwOperationsGroup.nut" import getOperationGroupByMapId
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import actionWithGlobalStatusRequest, setDeveloperMode
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getOperationById
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
-let { actionWithGlobalStatusRequest,
-  setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwOperationsListModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -333,4 +330,4 @@ let WwOperationsListModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwOperationsListModal", WwOperationsListModal)
 
-return { WwOperationsListModal }
+return freeze({ WwOperationsListModal })

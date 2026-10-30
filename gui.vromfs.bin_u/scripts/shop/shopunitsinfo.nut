@@ -1,12 +1,11 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/time.nut" import getTimestampFromStringUtc
+from "%scripts/unit/unitStatus.nut" import isUnitDefault
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "blkGetters" import get_shop_blk
 from "chard" import getUnitPurchasePeriod
 from "%scripts/dagui_library.nut" import *
-
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null
@@ -138,8 +137,8 @@ addListenersWithoutEnv({
   PriceUpdated = @(_) refillPromoteUnitsList()
 })
 
-return {
+return freeze({
   hasDefaultUnitsInCountry
   generateUnitShopInfo
   shopPromoteUnits
-}
+})

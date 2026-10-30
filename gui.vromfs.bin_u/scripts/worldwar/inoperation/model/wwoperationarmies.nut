@@ -1,9 +1,8 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import WwArmy, getArmyByName
 from "worldwar" import wwGetArmiesNames
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwOperationArmies = class {
   armiesByNameCache = null
@@ -67,8 +66,8 @@ let WwOperationArmies = class {
 
     if (changedArmies.len() > 0 || armiesCountChanged) {
       foreach (_status, cacheData in this.armiesByStatusCache) {
-        cacheData.common.sort(WwArmy.sortArmiesByUnitType)
-        cacheData.surrounded.sort(WwArmy.sortArmiesByUnitType)
+        cacheData.common.sortby(WwArmy.sortArmiesByUnitType)
+        cacheData.surrounded.sortby(WwArmy.sortArmiesByUnitType)
       }
 
       wwEvent("MapArmiesByStatusUpdated", { armies = changedArmies })
@@ -120,4 +119,4 @@ let WwOperationArmies = class {
       }
   }
 }
-return { WwOperationArmies }
+return freeze({ WwOperationArmies })

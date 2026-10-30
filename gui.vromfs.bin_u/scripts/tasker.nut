@@ -1,4 +1,5 @@
 import "DataBlock" as DataBlock
+from "%scripts/hud/serverMessages.nut" import getErrorText
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER
 from "chard" import charRequestJwtFromServer
 from "eventbus" import eventbus_subscribe
@@ -6,8 +7,6 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
-
-let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 
 enum TASK_CB_TYPE {
   BASIC,
@@ -200,7 +199,7 @@ addListenersWithoutEnv({
   LoginStateChanged = @(_) restoreCharCallback()
 }, DEFAULT_HANDLER)
 
-return {
+return freeze({
   charSimpleAction
   charRequestBlk
   charRequestJson
@@ -210,4 +209,4 @@ return {
   addBgTaskCb
   restoreCharCallback
   charCallback
-}
+})

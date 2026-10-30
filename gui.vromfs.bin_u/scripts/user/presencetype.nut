@@ -1,23 +1,23 @@
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/events/eventTexts.nut" import getNameByEconomicName
+from "%scripts/squads/squadState.nut" import getWwOperationBattle, getWwOperationCountry, getWwOperationId
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyOperationId, getSessionLobbyWwBattleId
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/queue/queue/queueClasses.nut" import getQueueClass
+from "%scripts/worldWar/operations/model/wwOperationView.nut" import getOperationNameTextByIdAndMapName
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive, getActiveQueueWithType
+from "%scripts/queue/queueInfo.nut" import getQueueEvent, getQueueCountry, getQueueOperationId
 from "string" import format
 from "mission" import get_game_mode
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_game_mode_name
 from "%scripts/dagui_library.nut" import *
 
-let { getNameByEconomicName } = require("%scripts/events/eventTexts.nut")
-let { getWwOperationBattle, getWwOperationCountry, getWwOperationId } = require("%scripts/squads/squadState.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isInSessionRoom, getSessionLobbyOperationId, getSessionLobbyWwBattleId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, getQueueCountry, getQueueOperationId } = require("%scripts/queue/queueInfo.nut")
 let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 enum presenceCheckOrder {
@@ -207,7 +207,7 @@ enums.addTypes(presenceTypes, {
   }
 }, null, "typeName")
 
-presenceTypes.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+presenceTypes.types.sortby(@(a) a.checkOrder)
 
 function getCurrentPresenceType() {
   foreach (presenceType in presenceTypes.types)

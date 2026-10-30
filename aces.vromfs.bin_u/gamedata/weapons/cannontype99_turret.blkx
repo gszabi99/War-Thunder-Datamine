@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.099999994,
-  "shotFreq": 8.916,
-  "traceFreq": 4,
-  "bullets": 60,
-  "preciseGun": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,13 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.099999994,
+  "shotFreq": 8.916,
+  "bullets": 60,
+  "preciseGun": true,
   "gunSound": {
     "path": "sounds/guns",
     "pathStudio": "aircraft/weapon",
@@ -429,7 +429,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmBrightRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1748,7 +1748,7 @@
         "speed": 600.0,
         "Cx": 0.45,
         "maxDistance": 2000.0,
-        "explosiveType": "pentolite",
+        "explosiveType": "detonite",
         "explosiveMass": 0.004,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -1772,11 +1772,12 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 1.0,
+        "checkIntegrityAfterExplosion": true,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
-        "checkIntegrityAfterExplosion": true,
+        "recoilMultiplier": 0.3,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1810,24 +1811,10 @@
             ]
           ]
         },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
-          ],
-          "HitPower1000m": [
-            0.9,
-            0.0
-          ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
-          ]
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 1.0,
+            "demarrePenetrationK": 0.9,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -1863,6 +1850,20 @@
               ]
             }
           }
+        },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            0.0
+          ],
+          "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
+            0.8,
+            10000.0
+          ]
         },
         "collisions": {
           "default": {
@@ -2595,7 +2596,7 @@
         "speed": 600.0,
         "Cx": 0.45,
         "maxDistance": 2000.0,
-        "explosiveType": "pentolite",
+        "explosiveType": "detonite",
         "explosiveMass": 0.004,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -2619,11 +2620,12 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 1.0,
+        "checkIntegrityAfterExplosion": true,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
-        "checkIntegrityAfterExplosion": true,
+        "recoilMultiplier": 0.3,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -2657,24 +2659,10 @@
             ]
           ]
         },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
-          ],
-          "HitPower1000m": [
-            0.9,
-            0.0
-          ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
-          ]
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 1.0,
+            "demarrePenetrationK": 0.9,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -2710,6 +2698,20 @@
               ]
             }
           }
+        },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            0.0
+          ],
+          "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
+            0.8,
+            10000.0
+          ]
         },
         "collisions": {
           "default": {
@@ -4769,7 +4771,7 @@
         "speed": 600.0,
         "Cx": 0.45,
         "maxDistance": 2000.0,
-        "explosiveType": "pentolite",
+        "explosiveType": "detonite",
         "explosiveMass": 0.004,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -4793,11 +4795,12 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 1.0,
+        "checkIntegrityAfterExplosion": true,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
-        "checkIntegrityAfterExplosion": true,
+        "recoilMultiplier": 0.3,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -4831,24 +4834,10 @@
             ]
           ]
         },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            0.0
-          ],
-          "HitPower1000m": [
-            0.9,
-            0.0
-          ],
-          "HitPower10000m": [
-            0.8,
-            10000.0
-          ]
-        },
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 1.0,
+            "demarrePenetrationK": 0.9,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -4884,6 +4873,20 @@
               ]
             }
           }
+        },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            0.0
+          ],
+          "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
+            0.8,
+            10000.0
+          ]
         },
         "collisions": {
           "default": {

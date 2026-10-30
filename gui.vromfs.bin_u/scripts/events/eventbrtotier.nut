@@ -34,4 +34,4 @@ function getTierByMaxBr(maxBR) {
   return res
 }
 
-return { getTierByMaxBr }
+return freeze({ getTierByMaxBr })

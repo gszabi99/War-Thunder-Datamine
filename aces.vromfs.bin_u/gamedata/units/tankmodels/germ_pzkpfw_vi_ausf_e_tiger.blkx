@@ -43,6 +43,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2136,7 +2142,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2211,7 +2217,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2254,7 +2260,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_aa_barrel",
         "flash": "emtr_mg_flame_03",
         "useEmitter": true,
@@ -2298,8 +2304,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_pzkpfw_VI_ausf_e_tiger_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_pzkpfw_VI_ausf_e_tiger_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3389,7 +3395,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3464,7 +3470,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3507,7 +3513,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
               "emitter": "bone_mg_aa_barrel",
               "flash": "emtr_mg_flame_03",
               "useEmitter": true,
@@ -3550,7 +3556,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

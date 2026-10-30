@@ -2273,13 +2273,17 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/105mm_OTO_Melara_ROMOR_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/105mm_OTO_Melara_ROMOR_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 22.8,
         "speedPitch": 8.0,
         "fireConeAngle": 1.0,
@@ -2305,13 +2309,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2392,7 +2395,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2446,7 +2449,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2503,7 +2506,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_03",
         "defaultYaw": 0.0,
@@ -2560,7 +2563,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2621,8 +2624,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_vrcc_centauro_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_vrcc_centauro_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "attachables": {
@@ -4137,13 +4140,17 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/105mm_OTO_Melara_ROMOR_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/105mm_OTO_Melara_ROMOR_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame_01",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 22.8,
               "speedPitch": 8.0,
               "fireConeAngle": 1.0,
@@ -4169,13 +4176,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4256,7 +4262,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -4310,7 +4316,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -4367,7 +4373,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_03",
               "defaultYaw": 0.0,
@@ -4424,7 +4430,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4478,7 +4484,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

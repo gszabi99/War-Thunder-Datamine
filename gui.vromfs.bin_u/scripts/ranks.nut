@@ -1,10 +1,9 @@
 from "dagor.time" import get_time_msec
 from "blkGetters" import get_warpoints_blk, get_ranks_blk
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/unit/unitsData.nut" import getAllUnits
 require("%appGlobals/ranks_common_shared.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let maxCountryRank = Watched(0)
 
@@ -21,11 +20,6 @@ function calculateMaxRank() {
 let ranksPersist = persist("ranksPersist", @() { max_player_rank = 100 })
 let expPerRank = persist("expPerRank", @() [])
 let prestigeByRank = persist("prestigeByRank", @() [])
-let discounts = persist("discounts", @() {}) 
-let eventMuls = persist("eventMuls", @() {
-  xpFirstWinInDayMul = 1.0
-  wpFirstWinInDayMul = 1.0
-})
 
 function loadPlayerExpTable() {
   let ranks_blk = get_ranks_blk()
@@ -83,18 +77,7 @@ function updateAircraftWarpoints(maxCallTimeMsec = 0) {
       return PT_STEP_STATUS.SUSPEND
   }
 
-  
   let ws = get_warpoints_blk()
-  foreach (name, _value in discounts) {
-    let k = $"{name}DiscountMul"
-    if (ws?[k] != null)
-      discounts[name] = (100.0 * (1.0 - ws[k]) + 0.5).tointeger()
-  }
-  
-  foreach (name, _value in eventMuls)
-    if (ws?[name] != null)
-      eventMuls[name] = ws[name]
-
   minValuesToShowRewardPremium.set({
     wp  = ws?.wp_to_show_premium_reward ?? 0
     exp = ws?.exp_to_show_premium_reward ?? 0

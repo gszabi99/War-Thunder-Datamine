@@ -1,3 +1,7 @@
+from "%scripts/unit/unitStatus.nut" import isUnitGroup
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
+from "%scripts/unit/unitInfo.nut" import image_for_air
+from "%scripts/ranks.nut" import maxCountryRank
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
@@ -5,11 +9,6 @@ from "dagor.debug" import fatal
 from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
 from "types" import Integer
-
-let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
@@ -566,7 +565,7 @@ function checkShopBlk() {
     fatal($"Incorrect shop.blk!\n{resText}")
 }
 
-return {
+return freeze({
   generateTreeData
   checkShopBlk
-}
+})

@@ -1,3 +1,15 @@
+import "%scripts/seen/seenList.nut" as seenList
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED, INVENTORY_UPDATE
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/items/itemsChecks.nut" import isItemVisible, checkItemsMaskFeatures
+from "%scripts/items/itemsManagerState.nut" import itemsShopListVersion, inventoryListVersion, setShouldCheckAutoConsume, shopVisibleSeenIds
+from "%scripts/items/itemsManagerChecks.nut" import genericItemsForCyberCafeLevel, setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate, setNeedInventoryUpdate
+from "%scripts/items/itemsManagerGetters.nut" import getShopList, getInventoryItemById
+from "%scripts/items/itemsTypeClasses.nut" import createItem
+from "%scripts/unlocks/unlockSmoke.nut" import shopSmokeItems
+from "%scripts/items/itemsManagerModule.nut" import findItemById, findItemByUid, getInventoryListByShopMask, getItemGenerator
 from "%sqStdLibs/helpers/u.nut" import isDataBlock
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -10,20 +22,9 @@ from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/utils/delayedActions.nut" import addDelayedAction, LOST_DELAYED_ACTION_MSEC
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { GAME_LOCALIZATION_CHANGED, INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
-let { itemsShopListVersion, inventoryListVersion, inventory, itemsByItemdefId, setShouldCheckAutoConsume, rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds, itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
-let { genericItemsForCyberCafeLevel, setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate, setNeedInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
-let { getShopList, getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
-let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
-let { findItemById, findItemByUid, getInventoryListByShopMask, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
+let { inventory, itemsByItemdefId, rawInventoryItemAmountsByItemdefId, itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
 
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
@@ -294,7 +295,7 @@ function onItemsLoaded() {
 eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 
 
-return {
+return freeze({
   isInventoryFullUpdated = @() isInventoryFullUpdate
   getBestItemSpecialOfferByUnit
   isItemsManagerEnabled
@@ -303,4 +304,4 @@ return {
   markInventoryUpdateDelayed
   getItemOrRecipeBundleById
   getRawInventoryItemAmount
-}
+})

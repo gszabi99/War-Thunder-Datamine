@@ -1,3 +1,4 @@
+from "%scripts/options/optionsExtNames.nut" import USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%appGlobals/ranks_common_shared.nut" import EDIFF_SHIFT
 from "guiOptions" import get_cd_preset
@@ -7,8 +8,6 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
-
-let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR } = require("%scripts/options/optionsExtNames.nut")
 
 let g_difficulty_cache = {
   byDiffCode = {}
@@ -189,11 +188,7 @@ enumsAddTypes(g_difficulty, {
   }
 })
 
-g_difficulty.types.sort(function(a, b) {
-  if (a.diffCode != b.diffCode)
-    return a.diffCode > b.diffCode ? 1 : -1
-  return 0
-})
+g_difficulty.types.sortby(@(a) a.diffCode)
 
 
 function get_battle_type_by_ediff(ediff) {

@@ -9,4 +9,4 @@ enum handlerType {
   ANY
 }
 
-return { handlerType }
+return freeze({ handlerType })

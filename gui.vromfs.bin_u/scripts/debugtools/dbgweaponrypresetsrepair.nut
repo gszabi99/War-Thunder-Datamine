@@ -1,9 +1,8 @@
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import setDebugPresetsOverride, clearDebugPresetsOverride, invalidateUnitCache
+from "%scripts/weaponry/weaponryPresetsRepair.nut" import searchAndRepairInvalidPresets, DBG_REPAIR_PRESET_MODE
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-
-let { setDebugPresetsOverride, clearDebugPresetsOverride, invalidateUnitCache } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { searchAndRepairInvalidPresets, DBG_REPAIR_PRESET_MODE } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
 
 
 

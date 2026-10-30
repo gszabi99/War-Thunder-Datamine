@@ -429,6 +429,51 @@ class Component : Canvas
     let padding = float2(toRelX(hdpx(4.0)), toRelY(hdpx(9.0)))
     drawBBoxPadded(strBox, padding)
 
+
+  def drawDircmTurrets()
+    let vertDeadzoneSq = 0.2 * 0.2
+    let alignedDistSq = 0.035 * 0.035
+    let startDistance = innerCircleSizeMult * centralMarkRadius
+    let centralMarkGap = startDistance * (1.0 - innerCircleSizeMult)
+    let endDistance = 0.5 * innerCircleSizeMult - centralMarkGap
+
+    setLineWidth(props.lineWidth)
+    setColor(props.textColor)
+    setFillColor(TRANSPARENT)
+
+    for turret in hud.dircmTurrets
+      let hasTurretDir = length_sq(turret.turretDir) > vertDeadzoneSq
+      let turretDir = fast_normalize(turret.turretDir)
+      if hasTurretDir
+        drawLine(turretDir * startDistance, turretDir * endDistance)
+
+      if length_sq(turret.threatDir) > vertDeadzoneSq
+        let threatDir = fast_normalize(turret.threatDir)
+        if !hasTurretDir || length_sq(threatDir - turretDir) > alignedDistSq
+          drawDashedLine(threatDir * startDistance, threatDir * endDistance, toRelY(hdpx(5.0)), toRelY(hdpx(3.0)))
+
+
+  def drawJamIndicator()
+    let stateOpacity = length(hud.dircmTurrets) > 0 ? blinkFade : 0.0
+    if stateOpacity <= 0.01
+      return
+
+    let text = loc("hud/jam")
+    let borderWidth = 2.0
+
+    let boxPadding = float2(toRelX(hdpx(4.0)), toRelY(hdpx(9.0)))
+    let rowOffset = getStringSize(text).y + toRelY(hdpx(9.0) * 2.0 + hdpx(6.0))
+    let statePos = float2(0.5, toRelPos(stateAbsPos).y - rowOffset)
+    let fxColor = color_mult4(props.fontFxColor, stateOpacity)
+    *ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, fxColor, props.fontFxFactor)
+    setColor(color_mult4(props.color, stateOpacity))
+    let strBox = drawStrAnchored(statePos, text, AnchorHorz.Center, AnchorVert.Bottom)
+
+    setLineWidth(borderWidth)
+    setFillColor(TRANSPARENT)
+    drawBBoxPadded(strBox, boxPadding)
+
+
   def drawRwrTargetsPresence()
     assume presenceMap = hud.rwrHudProperties.presenceMap
     let presenceCount = min(length(hud.rwrTargetsPresence), length(presenceMap.presences))
@@ -514,6 +559,7 @@ class Component : Canvas
 
     drawLwsTargets()
     drawMlwsTargets()
+    drawDircmTurrets()
 
     pushLocalAxes(float2(0.0), float2(innerCircleSizeMult))
 
@@ -537,6 +583,7 @@ class Component : Canvas
     drawRwrTargetsState()
     drawLwsTargetsState()
     drawMlwsTargetsState()
+    drawJamIndicator()
 
     drawRwrTargetsPresence()
 

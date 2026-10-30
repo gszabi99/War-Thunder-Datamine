@@ -1,7 +1,7 @@
 {
   "model": "saab_105oe",
   "fmFile": "fm/saab_105oe.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -12,17 +12,17 @@
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "900kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -696,15 +696,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -747,7 +751,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2556,35 +2562,35 @@
     "preset": [
       {
         "name": "saab_105oe_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_akankapsel_30.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_akankapsel_30.blk"
       },
       {
         "name": "saab_105oe_rb24",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_rb24.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_rb24.blk"
       },
       {
         "name": "saab_105oe_75mm_srak_m55",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_75mm_srak_m55.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_75mm_srak_m55.blk"
       },
       {
         "name": "saab_105oe_135mm_srak_m56d",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_135mm_srak_m56d.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_135mm_srak_m56d.blk"
       },
       {
         "name": "saab_105oe_145mm_psrak_m49_56",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_145mm_psrak_m49_56.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_145mm_psrak_m49_56.blk"
       },
       {
         "name": "saab_105oe_rb_05a",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_rb_05a.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_rb_05a.blk"
       },
       {
         "name": "saab_105oe_rb24_rb_05a",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_rb24_rb_05a.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_rb24_rb_05a.blk"
       },
       {
         "name": "saab_105oe_rb24_akankapsel_30",
-        "blk": "gameData/FlightModels/weaponPresets/saab_105oe_rb24_akankapsel_30.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_105oe_rb24_akankapsel_30.blk"
       }
     ]
   },
@@ -2653,7 +2659,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24.blk",
               "emitter": "aim_9_001",
               "bullets": 1
             }
@@ -2673,7 +2679,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_7",
                 "bullets": 1,
                 "order": 11
@@ -2682,7 +2688,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_13",
                 "bullets": 1,
                 "order": 13
@@ -2691,7 +2697,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_19",
                 "bullets": 1,
                 "order": 15
@@ -2710,7 +2716,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_001",
                 "bullets": 1,
                 "minSize": [
@@ -2725,7 +2731,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_001",
                 "bullets": 1,
                 "minSize": [
@@ -2749,7 +2755,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_001",
               "bullets": 1,
               "minSize": [
@@ -2783,7 +2789,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_3",
                 "bullets": 1,
                 "order": 17
@@ -2792,7 +2798,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_9",
                 "bullets": 1,
                 "order": 19
@@ -2801,7 +2807,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_15",
                 "bullets": 1,
                 "order": 21
@@ -2810,7 +2816,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_21",
                 "bullets": 1,
                 "order": 23
@@ -2829,7 +2835,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_003",
                 "bullets": 1,
                 "minSize": [
@@ -2844,7 +2850,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_003",
                 "bullets": 1,
                 "minSize": [
@@ -2868,7 +2874,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_003",
               "bullets": 1,
               "minSize": [
@@ -2892,7 +2898,7 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb_05a.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_05a.blk",
               "emitter": "rb_05a_001",
               "bullets": 1,
               "external": true,
@@ -2916,7 +2922,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55_underwing.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2949,7 +2955,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_5",
                 "bullets": 1,
                 "order": 25
@@ -2958,7 +2964,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_11",
                 "bullets": 1,
                 "order": 27
@@ -2967,7 +2973,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_17",
                 "bullets": 1,
                 "order": 29
@@ -2976,7 +2982,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_23",
                 "bullets": 1,
                 "order": 31
@@ -2995,7 +3001,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_005",
                 "bullets": 1,
                 "minSize": [
@@ -3010,7 +3016,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_005",
                 "bullets": 1,
                 "minSize": [
@@ -3034,7 +3040,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_005",
               "bullets": 1,
               "minSize": [
@@ -3068,7 +3074,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_6",
                 "bullets": 1,
                 "order": 26
@@ -3077,7 +3083,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_12",
                 "bullets": 1,
                 "order": 28
@@ -3086,7 +3092,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_18",
                 "bullets": 1,
                 "order": 30
@@ -3095,7 +3101,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_24",
                 "bullets": 1,
                 "order": 32
@@ -3114,7 +3120,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_006",
                 "bullets": 1,
                 "minSize": [
@@ -3129,7 +3135,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_006",
                 "bullets": 1,
                 "minSize": [
@@ -3153,7 +3159,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_006",
               "bullets": 1,
               "minSize": [
@@ -3187,7 +3193,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_4",
                 "bullets": 1,
                 "order": 18
@@ -3196,7 +3202,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_10",
                 "bullets": 1,
                 "order": 20
@@ -3205,7 +3211,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_16",
                 "bullets": 1,
                 "order": 22
@@ -3214,7 +3220,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_22",
                 "bullets": 1,
                 "order": 24
@@ -3233,7 +3239,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_004",
                 "bullets": 1,
                 "minSize": [
@@ -3248,7 +3254,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_004",
                 "bullets": 1,
                 "minSize": [
@@ -3272,7 +3278,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_004",
               "bullets": 1,
               "minSize": [
@@ -3296,7 +3302,7 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/swd_rb_05a.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_05a.blk",
               "emitter": "rb_05a_002",
               "bullets": 1,
               "external": true,
@@ -3320,7 +3326,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55_underwing.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -3352,7 +3358,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24.blk",
               "emitter": "aim_9_002",
               "bullets": 1
             }
@@ -3372,7 +3378,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_8",
                 "bullets": 1,
                 "order": 12
@@ -3381,7 +3387,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_14",
                 "bullets": 1,
                 "order": 14
@@ -3390,7 +3396,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_75mm_frida.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_75mm_frida.blk",
                 "emitter": "75mm_srak_m55_20",
                 "bullets": 1,
                 "order": 16
@@ -3409,7 +3415,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_down_002",
                 "bullets": 1,
                 "minSize": [
@@ -3424,7 +3430,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_135mm_srak_m56d.blk",
                 "emitter": "135mm_srak_m56d_up_002",
                 "bullets": 1,
                 "minSize": [
@@ -3448,7 +3454,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
               "emitter": "145mm_psrak_m49_002",
               "bullets": 1,
               "minSize": [

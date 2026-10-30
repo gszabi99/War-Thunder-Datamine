@@ -1,24 +1,19 @@
+import "%scripts/time.nut" as time
+import "%scripts/promo/promoConditions.nut" as promoConditions
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/promo/promo.nut" import checkPromoBlockUnlock, checkPromoBlockReqEntitlement, checkPromoBlockReqFeature, isPromoVisibleByAction
+from "%scripts/web/webpoll.nut" import isPollVoted
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/user/profileStates.nut" import userName, userIdStr
+from "%scripts/langUtils/language.nut" import isAvailableForCurLang, getLocTextFromConfig
+from "%scripts/user/partnerUnlocks.nut" import isPartnerUnlockAvailable
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "string" import split_by_chars
-from "app" import get_game_version_str
-from "%sqstd/string.nut" import startsWith
 from "chard" import get_charserver_time_sec
 from "blkGetters" import get_gui_regional_blk
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-from "%scripts/social/psConsts.nut" import ps4_activity_feed
-
-let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement, checkPromoBlockReqFeature, isPromoVisibleByAction } = require("%scripts/promo/promo.nut")
-let time = require("%scripts/time.nut")
-let promoConditions = require("%scripts/promo/promoConditions.nut")
-let { isPollVoted } = require("%scripts/web/webpoll.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
-let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -26,41 +21,11 @@ enum POPUP_VIEW_TYPES {
   EVERY_DAY = "every_day"
   ONCE = "once"
 }
-let passedPopups = persist("passedPopups", @() {})
+let passedPopups = mkHardPersist("utils.popupMessages")("passedPopups", {})
 
 function getTimeIntByString(stringDate, defaultValue = 0) {
   let t = stringDate ? time.getTimestampFromStringUtc(stringDate) : -1
   return t >= 0 ? t : defaultValue
-}
-
-function ps4ActivityFeedFromPopup(blk) {
-  if (blk?.ps4ActivityFeedType != "update")
-    return null
-
-  let ver = split_by_chars(get_game_version_str(), ".")
-  let feed = {
-    config = {
-      locId = "major_update"
-      subType = ps4_activity_feed.MAJOR_UPDATE
-    }
-    params = {
-      blkParamName = "MAJOR_UPDATE"
-      imgSuffix = "".concat("_", ver[0], "_", ver[1])
-      forceLogo = true
-      captions = { en = blk.name }
-      condensedCaptions = { en = blk.name }
-    }
-  }
-
-  foreach (name, val in blk) {
-    if (startsWith(name, "name_")) {
-      let lang = name.slice(5)
-      feed.params.captions[lang] <- val
-      feed.params.condensedCaptions[lang] <- val
-    }
-  }
-
-  return feed
 }
 
 function verifyPopupBlk(blk, days, hasModalObject, needDisplayCheck = true) {
@@ -140,10 +105,6 @@ function verifyPopupBlk(blk, days, hasModalObject, needDisplayCheck = true) {
   if (blk?.qrUrl != null)
     popupTable.qrUrl <- blk.qrUrl
 
-  let ps4ActivityFeedData = ps4ActivityFeedFromPopup(blk)
-  if (ps4ActivityFeedData)
-    popupTable.ps4ActivityFeedData <- ps4ActivityFeedData
-
   return popupTable
 }
 
@@ -197,6 +158,6 @@ function showPopupDebug(dbgId) {
 
 register_command(showPopupDebug, "debug.show_popup")
 
-return {
+return freeze({
   showPopupWndIfNeed
-}
+})

@@ -1,3 +1,4 @@
+from "%scripts/items/itemsChecks.nut" import isItemdefId
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqstd/string.nut" import startsWith
@@ -5,7 +6,6 @@ from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 
 let DEFAULT_BRANCH_CONFIG = {
   locId = ""

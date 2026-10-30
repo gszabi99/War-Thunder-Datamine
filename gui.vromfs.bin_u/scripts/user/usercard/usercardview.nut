@@ -1,12 +1,9 @@
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
 from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-
 function gui_modal_userCard(playerInfo) {  
-  if (!hasFeature("UserCards"))
-    return
   let guiScene = get_gui_scene()
   if (guiScene?.isInAct()) {
     defer(@() loadHandler(get_gui_handler("UserCardHandler"), { info = playerInfo }))
@@ -15,6 +12,6 @@ function gui_modal_userCard(playerInfo) {
   loadHandler(get_gui_handler("UserCardHandler"), { info = playerInfo })
 }
 
-return {
+return freeze({
   gui_modal_userCard
-}
+})

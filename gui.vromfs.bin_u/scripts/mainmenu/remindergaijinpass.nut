@@ -1,13 +1,12 @@
+import "%scripts/mainmenu/reminderGaijinPassModal.nut" as reminderGaijinPassModal
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/user/profileStates.nut" import havePlayerTag
+from "%scripts/time.nut" import getUtcDays
+from "%scripts/myStats.nut" import isMeNewbie
 from "%sqstd/platform.nut" import isPC
 from "blkGetters" import get_game_settings_blk
 from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
-let { havePlayerTag } = require("%scripts/user/profileStates.nut")
-let { getUtcDays } = require("%scripts/time.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
 
 function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")
@@ -32,6 +31,6 @@ function checkGaijinPassReminder() {
   }
 }
 
-return {
+return freeze({
   checkGaijinPassReminder = checkGaijinPassReminder
-}
+})

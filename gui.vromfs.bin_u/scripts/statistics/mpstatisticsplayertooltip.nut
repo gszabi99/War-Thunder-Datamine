@@ -1,3 +1,18 @@
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyPlayersInfo
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/statistics/squadIcon.nut" import getSquadInfo
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
+from "%scripts/debriefing/debriefingFull.nut" import getDebriefingResult
+from "%scripts/user/profileStates.nut" import userIdStr, userName
+from "%scripts/user/clanName.nut" import getMyClanTag
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "mission" import get_mplayer_by_userid
 from "matching.errors" import INVALID_SQUAD_ID
@@ -6,23 +21,9 @@ from "string" import format
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getSquadInfo } = require("%scripts/statistics/squadIcon.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
-let { userIdStr, userName } = require("%scripts/user/profileStates.nut")
-let { getMyClanTag } = require("%scripts/user/clanName.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let formatFloat = @(f) format("%.1f", f)
 let sortUnits = @(u1, u2) u1.rating <=> u2.rating || u1.rankUnused <=> u2.rankUnused
@@ -113,10 +114,12 @@ function getTooltipView(playerUserId, params) {
 
   let isMe = userInfo?.uid == userIdStr.get()
     || userInfo?.name == userName.get()
+  let { frame = "" } = userInfo
+  let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(frame)
 
   return {
     name = colorize("@white", utf8(getPlayerName(player.name)))
-    clanTag = hasFeature("Clans") && player?.clanTag
+    clanTag = player?.clanTag
       ? isMe
         ? getMyClanTag()
         : colorize("@white", player.clanTag)
@@ -126,8 +129,8 @@ function getTooltipView(playerUserId, params) {
     icon = userInfo?.pilotIcon
       ? $"#ui/images/avatars/{getAvatarIconIdByUserInfo(userInfo)}.avif"
       : null
-    hasAvatarFrame = (userInfo?.frame ?? "") != ""
-    frame = userInfo?.frame
+    frameImagePath
+    framesCount
 
     headerBackground = (userInfo?.background ?? "") != ""
       ? userInfo.background

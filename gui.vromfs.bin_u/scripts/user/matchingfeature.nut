@@ -1,7 +1,6 @@
+import "%scripts/matching/matchingGameSettings.nut" as matchingGameSettings
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-
-let matchingGameSettings = require("%scripts/matching/matchingGameSettings.nut")
 
 let defaults = {  
              
@@ -27,6 +26,6 @@ defaults.each(@(_, key)
     log($"toggleMatchingFeature {key}: {toggleFeatures.get()[key]}")
   }, $"debug.toggleMatchingFeature.{key}"))
 
-return defaults.map(@(v, k) Computed(
+return freeze(defaults.map(@(v, k) Computed(
   @() (toggleFeatures.get()?[k] ?? false) == !(matchingGameSettings.get()?.features[k] ?? v)
-))
+)))

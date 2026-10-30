@@ -3,6 +3,7 @@ import "%rGui/hudLogs.nut" as hudLogs
 import "%rGui/submarineFireControl.nut" as fireControl
 import "%rGui/chat/voiceChat.nut" as voiceChat
 import "%rGui/shipObstacleRangefinder.nut" as shipObstacleRf
+import "%rGui/shipExWeaponsStatus.nut" as shipExWeaponsStatus
 import "string" as string
 from "%rGui/options/measureUnits.nut" import DISTANCE_SHORT
 from "%rGui/activeOrder.nut" import activeOrderComps
@@ -12,11 +13,9 @@ from "%rGui/shellState.nut" import isAimCamera, GimbalX, GimbalY, GimbalSize, al
   , TrackerY, IsTrackerVisible
 from "%rGui/style/screenState.nut" import safeAreaSizeHud
 from "%rGui/hud/depthRoulette.nut" import depthRoulette
+from "%rGui/shipHudComponents.nut" import sonarComponent
 from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
-
-
-
 
 let styleShipHudText = {
   rendObj = ROBJ_TEXT
@@ -46,7 +45,7 @@ let shellAimGimbal = function(line_style, color_func) {
     transform = {
       translate = [GimbalX.get(), GimbalY.get()]
     }
-    children = IsGimbalVisible.get() ? [circle] : null
+    children = IsGimbalVisible.get() ? circle : null
   }
 }
 
@@ -69,7 +68,7 @@ let shellAimTracker = function(line_style, color_func) {
     transform = {
       translate = [TrackerX.get(), TrackerY.get()]
     }
-    children = IsTrackerVisible.get() ? [circle] : null
+    children = IsTrackerVisible.get() ? circle : null
   }
 }
 function mkShellComp(watches, textCtor) {
@@ -154,9 +153,7 @@ let aimHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
-  children = [
-    ShipShellAimState
-  ]
+  children = ShipShellAimState
 }
 
 return {
@@ -164,11 +161,10 @@ return {
   children = [
     shipHud
     fireControl
+    shipExWeaponsStatus
     depthRoulette
     ShipShellState
-
-
-
+    sonarComponent
     aimHud
     shipObstacleRf
   ]

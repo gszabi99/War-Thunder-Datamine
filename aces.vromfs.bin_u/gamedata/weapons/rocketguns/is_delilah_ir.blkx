@@ -112,6 +112,11 @@
         "massLost": 49.0
       }
     },
+    "signature": {
+      "infraRed": {
+        "rocketEngineBand": 1
+      }
+    },
     "fpvModeSettings": {
       "hasNightVision": true,
       "hasFPVMode": true,
@@ -148,18 +153,12 @@
       "designationError": 7.0,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
-        "rangeBand8": [
-          200.0,
-          200.0
-        ],
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "constantDesignationSourceType": "",
         "fov": 0.1,
-        "minAngleToSun": 1.0,
         "targetRadiusMin": 1.5,
-        "rangeBand0": 20000.0,
         "rangeMax": 120000.0,
         "rangeSurface": 120000.0,
         "lockAngleMax": 30.0,
@@ -171,7 +170,10 @@
           "camera",
           "shellFpv"
         ],
-        "rangeBand1": 20000.0
+        "rangeBand0": 20000.0,
+        "rangeBand1": 20000.0,
+        "rangeBand8": 1000.0,
+        "minAngleToSun": 1.0
       },
       "guidanceAutopilot": {
         "altitudeHoldEnabled": true,

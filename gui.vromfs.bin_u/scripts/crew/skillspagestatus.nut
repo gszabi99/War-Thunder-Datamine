@@ -1,8 +1,5 @@
+from "%scripts/crew/crew.nut" import getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep, getNextCrewSkillStepCost
 from "%scripts/dagui_library.nut" import *
-
-let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep,
-  getNextCrewSkillStepCost
-} = require("%scripts/crew/crew.nut")
 
 function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   local needShowAdvice = false
@@ -41,6 +38,6 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   }
 }
 
-return {
+return freeze({
   getPageStatus
-}
+})

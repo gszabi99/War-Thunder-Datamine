@@ -1,8 +1,8 @@
+import "%rGui/style/colors.nut" as colors
 import "%rGui/components/focusBorder.nut" as focusBorder
 from "%rGui/globals/ui_library.nut" import *
 
 let textInput = require("%rGui/components/textInputBase.nut")
-let colors = require("%rGui/style/colors.nut")
 
 
 let hudFrame = @(inputObj, group, sf) {

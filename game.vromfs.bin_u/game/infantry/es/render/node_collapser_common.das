@@ -6,6 +6,7 @@ require ecs.soa_template
 
 require app
 require WTCamera
+require RenderModule
 
 let MAX_COLLAPSE_NODES = 4
 
@@ -18,6 +19,15 @@ struct AnimcharNodeCollapser
 
 
 def get_fov_threshold_mult() : float
+  if is_lens_only_zoom_enabled()
+    var mainViewFovDeg = 0.f
+    let found = find_query() <| $ [es] (camera__active : bool; fovSettings : float)
+      if !camera__active
+        return false
+      mainViewFovDeg = fovSettings
+      return true
+    if found
+      return 90.f / max(mainViewFovDeg, 1.f)
   let app = get_app()
   if app == null || app.flightControlMode == null
     return 1.f

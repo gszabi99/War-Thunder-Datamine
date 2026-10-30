@@ -14,11 +14,11 @@ addListenersWithoutEnv({
   MainMenuReturn = @(_) resetNameMapping()
 })
 
-return {
+return freeze({
   updateNameMapping = @(r, f) nameMapping.mutate(function(v) {
     v.r[f] <- r
     v.f[r] <- f
   })
   getRealName = @(n) nameMapping.get().r?[n]
   getFakeName = @(n) nameMapping.get().f?[n]
-}
+})

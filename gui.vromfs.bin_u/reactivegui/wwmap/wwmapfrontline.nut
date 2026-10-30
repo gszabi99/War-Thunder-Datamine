@@ -86,7 +86,7 @@ function joinFrontLine(lines) {
 }
 
 function findCommonPart(zone1, zone2) {
-  let hash = ".".join([zone1.id, zone2.id].sort(@(v1, v2) v1 <=> v2))
+  let hash = ".".join([zone1.id, zone2.id].sort())
   if (partsCache?[hash] != null)
     return null
   partsCache[hash] <- true
@@ -169,6 +169,6 @@ let mkMapFrontLine = function() {
   }
 }
 
-return {
+return freeze({
   mkMapFrontLine
-}
+})

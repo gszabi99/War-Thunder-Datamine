@@ -1,9 +1,8 @@
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getArmiesByStatus
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "math" import ceil
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { getArmiesByStatus } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 let g_ww_map_armies_status_tab_type = {
   types = []

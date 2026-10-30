@@ -63,9 +63,9 @@ let clearExcessiveWhitespace = @(name) "".join(getUnicodeCharsArray(name)
   .reduce(@(res, c) (c != " " || (res?[res.len() - 1] ?? " ") != " ") ? res.append(c) : res, [])
 ).strip().replace(" ", "\u00A0")
 
-return {
+return freeze({
   isNameNormallyVisible
   clearAllWhitespace
   clearExcessiveWhitespace
   getUnicodeCharsArray
-}
+})

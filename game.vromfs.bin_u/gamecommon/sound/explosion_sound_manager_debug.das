@@ -40,13 +40,14 @@ def get_camera_dir_angle_xz() : float
 [console_cmd(name="snd.test_explosion", hint="Play random explosion sound at random pos inside lod, in front of the camera. Usage: snd.test_explosion <lod>")]
 def explosion_sound_manager_test_explosion(lod_no : int)
   query() <| $ [es] (explosion_sound_manager__lodRadiusSq : FloatList;
-                     explosion_sound_manager__typeNames : StringList)
+                     explosion_sound_manager__typeHashes : UInt32List;
+                     explosion_sound_manager__eventNames : StringList)
     let numLods = length(explosion_sound_manager__lodRadiusSq)
     if lod_no < 0 || lod_no >= numLods
       console_print("snd.test_explosion: lod {lod_no} is out of range, lods count is {numLods}")
       return
 
-    let numTypes = length(explosion_sound_manager__typeNames)
+    let numTypes = length(explosion_sound_manager__typeHashes)
     if numTypes == 0
       console_print("snd.test_explosion: explosion sound types are not configured")
       return
@@ -56,10 +57,10 @@ def explosion_sound_manager_test_explosion(lod_no : int)
     let radius = innerRadius + gfrnd() * (outerRadius - innerRadius)
     let angle = get_camera_dir_angle_xz() + (gfrnd() * 2.0 - 1.0) * EXPLOSION_TEST_CONE_HALF_ANGLE
     let pos = get_cached_listener_pos() + float3(sin(angle) * radius, 0.0, cos(angle) * radius)
-    let explosionSoundType = string(explosion_sound_manager__typeNames[rnd_int(0, numTypes - 1)])
+    let typeNo = rnd_int(0, numTypes - 1)
 
-    broadcastEvent(EventPlayExplosionSound(pos = pos, explosionSoundType = explosionSoundType))
-    console_print("snd.test_explosion lod={lod_no} type={explosionSoundType} dist={radius}")
+    broadcastEvent(EventPlayExplosionSound(pos = pos, explosionSoundTypeHash = explosion_sound_manager__typeHashes[typeNo]))
+    console_print("snd.test_explosion lod={lod_no} event={explosion_sound_manager__eventNames[typeNo]} dist={radius}")
 
 
 [es(tag=sound, no_order)]

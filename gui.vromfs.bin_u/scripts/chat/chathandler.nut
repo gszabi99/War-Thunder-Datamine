@@ -1,7 +1,7 @@
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let menuChatHandler = Watched(null)
+let menuChatHandler = mkWatchedClearedOnReload(null)
 
 let lastChatSceneShow = Watched(null)
 eventbus_subscribe("on_sign_out", @(_p) lastChatSceneShow.set(false))

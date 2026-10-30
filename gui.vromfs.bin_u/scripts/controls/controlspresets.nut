@@ -1,9 +1,7 @@
 import "DataBlock" as DataBlock
-from "%sqstd/platform.nut" import platformId
+from "%sqstd/platform.nut" import platformId, is_steam_deck
 from "string" import regexp
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 
 
@@ -50,7 +48,7 @@ function getControlsPresetsList() {
   if (presetsListCached == null) {
     let blk = DataBlock()
     blk.load("config/hotkeys/list.blk")
-    local platform = isPlatformSteamDeck ? "steamdeck" : platformId
+    local platform = is_steam_deck ? "steamdeck" : platformId
     presetsListCached = (blk?[platform] != null)
       ? blk[platform] % "preset"
       : blk % "preset"
@@ -117,11 +115,11 @@ function getHighestVersionControlsPreset(preset) {
   return highestVersionPreset
 }
 
-return {
+return freeze({
   getNullControlsPresetInfo
   getControlsPresetsList
   getControlsPresetFilename
   parseControlsPresetFileName
   parseControlsPresetName
   getHighestVersionControlsPreset
-}
+})

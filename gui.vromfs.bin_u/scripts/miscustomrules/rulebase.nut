@@ -1,6 +1,20 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/teams.nut" import g_team
+from "%scripts/weaponry/weaponryInfo.nut" import get_weapon_icons_text
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoCost
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeVersus
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/respawn/respawnState.nut" import isCrewAvailableInSession
+from "%scripts/misCustomRules/missionCustomState.nut" import registerMissionRules
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, getCrewsListByCountry
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/unit/randomUnitsForceWeapon.nut" import getRandomUnitsForceWeapon
 from "%appGlobals/ranks_common_shared.nut" import get_team_name_by_mp_team
+from "%appGlobals/missions/respawnCountModes.nut" import getSpawnsLimitByMissionParam
 from "string" import format
 from "guiRespawn" import getAvailableRespawnBases
 from "mission" import get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team, get_user_custom_state, get_mission_custom_state
@@ -13,22 +27,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let { g_team } = require("%scripts/teams.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
-let { get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
-let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
-let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
-let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
-let { getRandomUnitsForceWeapon } = require("%scripts/unit/randomUnitsForceWeapon.nut")
 
 
 let Base = class {
@@ -83,13 +84,14 @@ let Base = class {
   }
 
   function getLeftRespawns() {
-    local res = RESPAWNS_UNLIMITED
-    let maxResp = this.missionParams?.maxRespawns ?? 0
-    if (!this.isScoreRespawnEnabled && maxResp > 0)
-      res = get_respawns_left() 
-    if (maxResp > 0 && get_respawns_total_count() >= maxResp)
-      res = 0
-    return res
+    let spawnsLimit = getSpawnsLimitByMissionParam(this.missionParams.maxRespawns)
+    if (spawnsLimit == null)
+      return RESPAWNS_UNLIMITED
+    if (get_respawns_total_count() >= spawnsLimit)
+      return 0
+    if (this.isScoreRespawnEnabled)
+      return RESPAWNS_UNLIMITED
+    return get_respawns_left()
   }
 
   function hasCustomUnitRespawns() {

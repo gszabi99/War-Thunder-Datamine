@@ -1,18 +1,18 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/unlocks/personalUnlocks.nut" import getMarkerUnlocks
+from "%scripts/unit/unitBitStatus.nut" import getBitStatus
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/unlocks/unlocksConditions.nut" import getUnlockConditions, getTimeRangeCondition
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import canDoUnlock
+from "%scripts/unit/unitInfo.nut" import bit_unit_status
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/underscore.nut" import isEqualSimple
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { getUnlockConditions, getTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null 
@@ -100,7 +100,7 @@ function cache(ediff) {
   if (ediff == null)
     return null
 
-  if (ediff in cacheByEdiff || !isLoggedIn.get())
+  if (ediff in cacheByEdiff || !hasFullLoginState.get())
     return cacheByEdiff?[ediff]
 
   let curCache = {
@@ -192,7 +192,7 @@ addListenersWithoutEnv({
   ShopDiffCodeChanged = @(_p) seenList.onListChanged()
 })
 
-return {
+return freeze({
   hasActiveUnlock
   getUnitListByUnlockId
   hasMarkerByUnitName
@@ -202,4 +202,4 @@ return {
   getUnlockIdsByCountry
   getUnlockIdsByArmyId
   getUnitsWithUnlock
-}
+})

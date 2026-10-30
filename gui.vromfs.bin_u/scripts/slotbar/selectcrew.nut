@@ -1,35 +1,35 @@
+import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
+import "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" as slotbarPresets
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
+import "%scripts/slotbar/fillSlotbarLegend.nut" as fillSlotbarLegend
+import "%scripts/slotbar/selectCrewSlotbarBaseCfg.nut" as slotbarBaseCfg
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/slotbar/slotbarWidget.nut" import SlotbarWidget
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels, move_mouse_on_child_by_value
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/options/safeAreaMenu.nut" import getSafearea
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/user/balance.nut" import get_gui_balance
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText
+from "%scripts/slotbar/slotbarStateData.nut" import getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
 from "%scripts/dagui_natives.nut" import get_crew_count, get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/tutorials/newbieTutorialBqLog.nut" import sendSlotTutorialBqEvent
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { toPixels, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot } = require("%scripts/slotbar/slotbarStateData.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 
 const CREWS_COUNT_TO_USE_REPLACE_HINT = 3

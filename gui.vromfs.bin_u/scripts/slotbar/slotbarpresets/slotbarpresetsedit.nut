@@ -1,23 +1,20 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb, select_editbox
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut" import getPresetsDataByCountry, isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation, getAbbreviationModeName
+from "%scripts/gameModes/gameModeManagerState.nut" import getGameModeById
+from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getDefaultPresetName
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/slotbar/slotbarPresets.nut" import canEraseSlotbarPreset, canCreateSlotbarPreset, createSlotbarPreset, copySlotbarPreset, eraseSlotbarPreset, moveSlotbarPreset, renameSlotbarPreset
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "string" import format
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getDaguiObjAabb, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getPresetsDataByCountry, isShowModes, isShowTitles, isShowRatings, isAbbreviateModes,
-  isAutoAbbreviation, getAbbreviationModeName
-} = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
-let { getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { getDefaultPresetName } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { canEraseSlotbarPreset, canCreateSlotbarPreset, createSlotbarPreset, copySlotbarPreset, eraseSlotbarPreset,
-  moveSlotbarPreset, renameSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 
 const MAX_NEW_PRESET_NAME_LEN = 16
@@ -228,7 +225,7 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
 
   function getPresetObjectsSortedByPos() {
     let res = this.getPresetObjects()
-    return res.sort(@(p1, p2) p1.getPosRC()[1] <=> p2.getPosRC()[1])
+    return res.sortby(@(p1) p1.getPosRC()[1])
   }
 
   function onPresetMoveStart(obj) {
@@ -429,8 +426,8 @@ function closeSlotbarPresetsListEditWnd() {
 
 profileCountrySq.subscribe(@(_c) closeSlotbarPresetsListEditWnd())
 
-return {
+return freeze({
   openSlotbarPresetsListEditWnd = @(initialButton, owner)
     handlersManager.loadHandler(SlotbarPresetsListEdit, {initialButton, ownerWeak = owner })
   closeSlotbarPresetsListEditWnd
-}
+})

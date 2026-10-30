@@ -1,16 +1,16 @@
 import "DataBlock" as DataBlock
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/crossModuleEvents.nut" import INVENTORY_UPDATE
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/items/startItemsShop.nut" import gui_start_items_list
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getInventoryList
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 
 
 const ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
@@ -96,6 +96,6 @@ add_event_listener(INVENTORY_UPDATE, function(_p) {
   addItemsInOfferBuyList()
 })
 
-return {
+return freeze({
   checkOfferToBuyAtExpiration = checkOfferToBuyAtExpiration
-}
+})

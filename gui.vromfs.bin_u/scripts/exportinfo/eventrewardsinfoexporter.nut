@@ -1,4 +1,10 @@
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocksWithBlkOrder
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockImageConfig
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "console" import register_command
 from "%sqstd/json.nut" import saveJson
 from "%globalScripts/unlockConsts.nut" import *
@@ -6,12 +12,6 @@ from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/webRPC.nut" import webRpcRegister
-let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let unlockTypesToShow = [
   UNLOCKABLE_TROPHY

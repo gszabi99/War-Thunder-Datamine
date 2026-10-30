@@ -26,4 +26,4 @@ interopGen({
   postfix = "Update"
 })
 
-return guidedBombsAimState
+return freeze(guidedBombsAimState)

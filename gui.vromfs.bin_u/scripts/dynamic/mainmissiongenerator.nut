@@ -1,16 +1,15 @@
+from "%scripts/dynamic/headtohead.nut" import genHeadToHeadMission
+from "%scripts/dynamic/combat_patrol.nut" import genCombatPatrolMission
+from "%scripts/dynamic/bombing.nut" import genBombingVehiclesMission, genBombingAntiTankMission, genBombingBuildingsMission, genBombingShipsMission, genBombingCarrierMission
+from "%scripts/dynamic/freeflight.nut" import genFreeFlightMission
+from "%scripts/dynamic/waypointflight.nut" import genWayPointFlightMission
+from "%scripts/dynamic/bombing_intercept.nut" import genInterceptBombingMission
+from "%scripts/dynamic/cover_bombers.nut" import genCoverMission
+from "%scripts/dynamic/bombing_defense.nut" import genBombingDefenseMission
+from "%scripts/dynamic/assault_defense.nut" import genAssaultDefenseMission
+from "%scripts/dynamic/assault.nut" import genAssaultFirstMission, genAssaultSecondMission, genAssaultThirdMission
+from "%scripts/dynamic/cover_assault.nut" import genCoverGattackMission
 from "scriptRespondent" import registerRespondent
-
-let { genHeadToHeadMission } = require("%scripts/dynamic/headtohead.nut")
-let { genCombatPatrolMission } = require("%scripts/dynamic/combat_patrol.nut")
-let { genBombingVehiclesMission, genBombingAntiTankMission, genBombingBuildingsMission, genBombingShipsMission, genBombingCarrierMission } = require("%scripts/dynamic/bombing.nut")
-let { genFreeFlightMission } = require("%scripts/dynamic/freeflight.nut")
-let { genWayPointFlightMission } = require("%scripts/dynamic/waypointflight.nut")
-let { genInterceptBombingMission } = require("%scripts/dynamic/bombing_intercept.nut")
-let { genCoverMission } = require("%scripts/dynamic/cover_bombers.nut")
-let { genBombingDefenseMission } = require("%scripts/dynamic/bombing_defense.nut")
-let { genAssaultDefenseMission } = require("%scripts/dynamic/assault_defense.nut")
-let { genAssaultFirstMission, genAssaultSecondMission, genAssaultThirdMission } = require("%scripts/dynamic/assault.nut")
-let { genCoverGattackMission } = require("%scripts/dynamic/cover_assault.nut")
 
 let missionGenFunctions = [
   genHeadToHeadMission

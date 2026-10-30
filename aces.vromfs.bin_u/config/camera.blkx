@@ -3601,7 +3601,6 @@
       },
       "shot5": {
         "focus": true,
-        "showFx": true,
         "points": {
           "p1": [
             {
@@ -5107,7 +5106,9 @@
         "tps_ship",
         "aim_ground",
         "aim_ground_from_sight",
-        "weapon_aim_camera"
+        "weapon_aim_camera",
+        "hydrophone",
+        "sonar"
       ]
     },
     "specialCamerasList": {
@@ -5220,5 +5221,41 @@
         "blur": false
       }
     ]
+  },
+  "hydrophone": {
+    "type": "HydrophoneCam",
+    "gainModeHorizontalSpeedMult": 0.15,
+    "gainMouseSpeed": 0.05,
+    "gainGamepadSpeed": 2.5,
+    "isMouseView": true,
+    "fov": 80.0,
+    "zoomFov": 80.0,
+    "defaultZoom": 1.0,
+    "clipType": "trace",
+    "useCockpitOffsets": true,
+    "fovVertAnglesOffsetPart": -0.15,
+    "cameraShakeMultiplier": 0.8,
+    "cameraShakeMultiplierOnShooting": 0.2,
+    "tiltShakeMultiplierForShips": 0.0,
+    "transitionFadeInTime": 0.12,
+    "transitionFadeOutTime": 0.2,
+    "viscosity": 0.1,
+    "condition": {
+      "isShip": {}
+    }
+  },
+  "sonar": {
+    "type": "SonarCam",
+    "fov": 60.0,
+    "horizontalSpeedSpeed": 2.0,
+    "verticalSpeed": 2.0,
+    "useOffset": true,
+    "clipType": "depth",
+    "isMouseView": true,
+    "cameraControlViewRadius": 0.0,
+    "cameraUpOffset": -5.0,
+    "condition": {
+      "isShip": {}
+    }
   }
 }

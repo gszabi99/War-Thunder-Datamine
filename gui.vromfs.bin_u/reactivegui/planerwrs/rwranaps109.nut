@@ -49,13 +49,11 @@ function createRwrTarget(index, settings, objectStyle) {
 
   return @() {
     size = FLEX
-    children = [
-      {
-        pos = const [pw(50), ph(50)]
-        size = FLEX
-        children = azimuth
-      }
-    ]
+    children = {
+      pos = const [pw(50), ph(50)]
+      size = FLEX
+      children = azimuth
+    }
   }
 }
 
@@ -102,9 +100,7 @@ function scope(scale, style) {
     size = [pw(scale * 0.85 * style.grid.scale), ph(scale * 0.85 * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      rwrTargetsComponent(style.object)
-    ]
+    children = rwrTargetsComponent(style.object)
   }
 }
 

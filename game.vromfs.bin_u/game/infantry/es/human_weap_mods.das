@@ -260,6 +260,19 @@ def human_optics_init_cam_node(evt : Event;
     if gunmod__frontsightCamNodeId < 0
       logerr("node '{gunmod__frontsightCamNode}' not found in animchar of gun '{getEntityTemplateName(eid)}'")
 
+[es(tag=gameClient, on_appear)]
+def human_optics_init_lens_only_zoom_cam_shift(evt : Event;
+                                               gunmod__camShiftMin : float;
+                                               var gunmod__lensOnlyZoomCamShift : float&;
+                                               gunmod__variableZoomOptions : Array const?)
+  if gunmod__lensOnlyZoomCamShift >= 0.0
+    return
+  gunmod__lensOnlyZoomCamShift = gunmod__camShiftMin
+  if gunmod__variableZoomOptions != null
+    for zoomOption in *gunmod__variableZoomOptions
+      let camShiftMin = (zoomOption as Object)?.gunmod__camShiftMin ?? gunmod__lensOnlyZoomCamShift
+      gunmod__lensOnlyZoomCamShift = min(gunmod__lensOnlyZoomCamShift, camShiftMin)
+
 [es(tag=gameClient)]
 def human_weap_change_zoom_to_next(evt : NextVariableZoomGunScope;
                                    human_weap__currentScope : EntityId;

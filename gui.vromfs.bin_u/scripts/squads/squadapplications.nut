@@ -1,13 +1,12 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/squads/squadState.nut" import isInSquad
+from "%scripts/user/usersInfoManager.nut" import requestUsersInfo
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { isInSquad } = require("%scripts/squads/squadState.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-
-let applicationsList = persist("applicationsList", @() {})
+let applicationsList = mkHardPersist("squads.squadApplications")("applicationsList", {})
 let pendingUsersIds = {}
 
 const popupTextColor = "@chatTextInviteColor"
@@ -152,5 +151,7 @@ let SquadApplicationsList = freeze({
 })
 
 subscribe_handler(SquadApplicationsList, g_listener_priority.DEFAULT_HANDLER)
+foreach (application in applicationsList) 
+  SquadApplicationsList.updateApplication(application)
 
 return SquadApplicationsList

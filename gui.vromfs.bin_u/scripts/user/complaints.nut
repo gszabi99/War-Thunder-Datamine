@@ -1,9 +1,8 @@
+from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "dagor.time" import get_time_msec
 from "multiplayer" import get_mp_session_id_str
 from "%scripts/dagui_library.nut" import *
-
-let { is_myself_anyof_moderators } = require("%scripts/utils_sa.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const timeToComplainExpiredMS = 900000 
 
@@ -59,7 +58,7 @@ function checkCanComplainAndProceed(uid, isOkFunction) {
     showModalWndCantComplainReason(canComplain)
 }
 
-return {
+return freeze({
   cacheComplaintOnUser
   checkCanComplainAndProceed
-}
+})

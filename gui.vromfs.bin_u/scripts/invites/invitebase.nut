@@ -1,21 +1,21 @@
+from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName, isPS4PlayerName
+import "%scripts/social/crossplay.nut" as crossplayModule
+from "%scripts/chat/chatStates.nut" import checkChatEnableWithPlayer, isCrossNetworkMessageAllowed
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/contacts/contactsInfo.nut" import colorizeWhitePsnIcon
+from "%scripts/invites/invites.nut" import INVITE_CHAT_LINK_PREFIX, openInviteWnd, updateNewInvitesAmount, broadcastInviteReceived, removeInvite
+from "%scripts/popups/popups.nut" import addPopup, removePopupByHandler
+from "%scripts/user/playerContextMenu.nut" import showChatPlayerRClickMenu
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/chat/chatUtils.nut" import isUserBlockedByPrivateSetting
 from "dagor.time" import get_time_msec
 from "chard" import get_charserver_time_sec
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { checkChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
-let { INVITE_CHAT_LINK_PREFIX, openInviteWnd, updateNewInvitesAmount, broadcastInviteReceived, removeInvite } = require("%scripts/invites/invites.nut")
-let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
-let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { isUserBlockedByPrivateSetting } = require("%scripts/chat/chatUtils.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
@@ -82,6 +82,8 @@ let BaseInvite = class {
     this.isDelayed = inviteBeforeReload.isDelayed
     this.isAutoAccepted = inviteBeforeReload.isAutoAccepted
     this.isRejected = inviteBeforeReload.isRejected
+    this.timedShowStamp = inviteBeforeReload.timedShowStamp
+    this.timedExpireStamp = inviteBeforeReload.timedExpireStamp
   }
 
   function updateCustomParams(_params, _initial = false) {
@@ -242,8 +244,8 @@ let BaseInvite = class {
 
   function isAvailableByCrossPlay() {
     return crossplayModule.isCrossPlayEnabled()
-           || platformModule.isXBoxPlayerName(this.inviterName)
-           || platformModule.isPS4PlayerName(this.inviterName)
+           || isXBoxPlayerName(this.inviterName)
+           || isPS4PlayerName(this.inviterName)
   }
 
   function isAvailableByChatRestriction() {

@@ -113,7 +113,7 @@ enum AIR_MOUSE_USAGE {
   VIEW        = 0x0010
 }
 
-return {
+return freeze({
   MAX_DEADZONE
   MAX_NONLINEARITY
   MAX_CAMERA_SMOOTH
@@ -134,4 +134,4 @@ return {
 
   optionControlType
   AIR_MOUSE_USAGE
-}
+})

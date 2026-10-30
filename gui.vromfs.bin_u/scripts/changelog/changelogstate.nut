@@ -1,3 +1,11 @@
+import "%scripts/wndLib/emptySceneWithDarg.nut" as emptySceneWithDarg
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%sqstd/platform.nut" import platformId
+from "%scripts/clientState/clientStates.nut" import isInBattleState, getFromSettingsBlk
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/langUtils/language.nut" import getCurLangShortName
+from "%scripts/myStats.nut" import isNewbieInited, isMeNewbie
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -12,16 +20,9 @@ from "json" import parse_json
 from "%scripts/dagui_library.nut" import *
 from "frp" import this_subscriber_call_may_take_up_to_usec
 from "types" import String
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { isInBattleState, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -36,15 +37,15 @@ let ERROR_PAGE = {
   content = [ { v = loc("matching/SERVER_ERROR_INTERNAL") } ]
 }
 let chosenPatchnote = Watched(null)
-let chosenPatchnoteLoaded = mkWatched(persist, "chosenPatchnoteLoaded", false)
-let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "", eventId = null })
-let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
-let patchnotesCache = mkWatched(persist, "patchnotesCache", {})
-let versions = mkWatched(persist, "versions", [])
-let isNews = mkWatched(persist, "isNews", false)
-let isEvent = mkWatched(persist, "isEvent", false)
-let unitNews = mkWatched(persist, "unitNews", [])
-let requestMadeTime = persist("requestMadeTime", @() { value = null })
+let chosenPatchnoteLoaded = Watched(false)
+let chosenPatchnoteContent = Watched({ title = "", text = "", eventId = null })
+let patchnotesReceived = Watched(false)
+let patchnotesCache = Watched({})
+let versions = Watched([])
+let isNews = Watched(false)
+let isEvent = Watched(false)
+let unitNews = Watched([])
+local requestMadeTime = null
 let lastSeenVersionInfoNum = Watched(-1)
 let lastLoadedVersionInfoNum = Watched(-1)
 
@@ -75,7 +76,7 @@ function logError(event, params = {}) {
 let remapPlatform = @(v) platformMap?[v] ?? v
 
 let getUrl = @(p = "")
-  $"{BASE_URL}{getCurLangShortName()}{p}/?platform={remapPlatform(targetPlatform)}"
+  $"{BASE_URL}{getCurLangShortName()}{p}/?platform={remapPlatform(platformId)}"
 
 function mkVersion(v) {
   local tVersion = v?.version ?? ""
@@ -151,9 +152,11 @@ function processPatchnotesList(response) {
 }
 
 function requestAllPatchnotes() {
+  if (disableNetwork)
+    return
   let currTimeMsec = get_time_msec()
-  if (requestMadeTime.value
-    && (currTimeMsec - requestMadeTime.value < MSEC_BETWEEN_REQUESTS))
+  if (requestMadeTime
+    && (currTimeMsec - requestMadeTime < MSEC_BETWEEN_REQUESTS))
     return
   let request = {
     method = "GET"
@@ -163,11 +166,11 @@ function requestAllPatchnotes() {
 
   patchnotesReceived.set(false)
   httpRequest(request)
-  requestMadeTime.value = currTimeMsec
+  requestMadeTime = currTimeMsec
 }
 
 function clearCache() {
-  requestMadeTime.value = null
+  requestMadeTime = null
   patchnotesCache.set({})
 }
 
@@ -359,11 +362,11 @@ eventbus_subscribe(PatchnoteIds, processPatchnotesList)
 eventbus_subscribe(PatchnoteReceived, cachePatchnote)
 eventbus_subscribe("closePatchnote", @(_) [isEvent, isNews].each(@(w)w.set(false)))
 
-return {
+return freeze({
   openChangelog
   needShowChangelog
   requestAllPatchnotes
   unitNews
   openUnitNews
   openUnitEventNews
-}
+})

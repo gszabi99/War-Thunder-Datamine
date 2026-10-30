@@ -1,4 +1,23 @@
+import "%scripts/time.nut" as time
+import "%scripts/replays/replayMetadata.nut" as replayMetadata
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/missions/missionsText.nut" import getMissionName, getMissionTimeText, getWeatherLocName
+from "%scripts/sqDagui/daguiUtil.nut" import countSizeInItems, move_mouse_on_child_by_value, select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/dmViewer/hitsAnalysis.nut" import canOpenHitsAnalysisWindow, openHitsAnalysisWindow
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/matchingRooms/sessionLobbyState.nut" import resetSessionLobbyPlayersInfo
+from "%scripts/statistics/buildMpTables.nut" import buildMpTable
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/replays/backFromReplaysFn.nut" import setBackFromReplaysFn
 from "%sqstd/platform.nut" import is_windows
 from "string" import format
 from "replays" import is_replay_turned_on, is_replay_saved, get_replays_dir, get_new_replay_filename, on_save_replay, on_view_replay, get_replays_list
@@ -15,25 +34,7 @@ from "%scripts/utils_sa.nut" import buildTableRowNoPad
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let replayMetadata = require("%scripts/replays/replayMetadata.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { countSizeInItems, move_mouse_on_child_by_value, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { buildMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -47,7 +48,7 @@ const autosaveReplayMaxCount = 100
 const autosaveReplayPrefix = "#"
 const replayFileExt = "wrpl"
 
-let currentReplay = persist("currentReplay", @() { path = "" })
+let currentReplay = mkHardPersist("replays.replayScreen")("currentReplay", { path = "" })
 
 function guiStartReplays() {
   loadHandler(get_gui_handler("ReplayScreen"))
@@ -56,6 +57,11 @@ function guiStartReplays() {
 function guiStartMenuReplays() {
   gui_start_mainmenu()
   guiStartReplays()
+}
+
+function backToReplays() {
+  resetSessionLobbyPlayersInfo()
+  guiStartMenuReplays()
 }
 
 function getReplayUrlBySessionId(sessionId) {
@@ -564,10 +570,7 @@ let ReplayScreen = class (BaseGuiHandlerWT) {
         return
 
       log("gui_nav backFromReplaysFn = guiStartReplays");
-      setBackFromReplaysFn(function() {
-        resetSessionLobbyPlayersInfo()
-        guiStartMenuReplays()
-      })
+      setBackFromReplaysFn(backToReplays, true)
       reqUnlockByClient("view_replay")
       currentReplay.path = this.replays[index].path
       on_view_replay(currentReplay.path)
@@ -719,6 +722,7 @@ register_gui_handler("RenameReplayHandler", RenameReplayHandler)
 return {
   guiStartReplayBattle
   guiStartReplays
+  backToReplays
   autosaveReplay
   guiModalNameAndSaveReplay
   currentReplay

@@ -24,4 +24,4 @@ let inventoryItemTypeByTag = {
   profile_icon        = itemType.PROFILE_ICON
 }
 
-return inventoryItemTypeByTag
+return freeze(inventoryItemTypeByTag)

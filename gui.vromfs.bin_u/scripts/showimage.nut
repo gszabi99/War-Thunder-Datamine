@@ -1,11 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
@@ -197,7 +197,7 @@ let ShowImageSimple = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ShowImageSimple", ShowImageSimple)
 
-return {
+return freeze({
   guiStartImageWnd
   viewFullscreenImage = @(obj) handlersManager.loadHandler(ShowImage, { showObj = obj })
-}
+})

@@ -1,4 +1,36 @@
-from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne, isPlayerFromPS4
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, isPs4XboxOneInteractionAvailable, canInteractCrossConsole
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/chat/chatStates.nut" import isChatEnabled
+from "%scripts/user/viralAcquisition.nut" import showViralAcquisitionWnd
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/user/matchingFeature.nut" import hasMenuChatPrivate
+from "%scripts/user/profileStates.nut" import isGuestLogin
+from "%scripts/contacts/contactsListState.nut" import contactsWndSizes
+from "%scripts/contacts/contactsState.nut" import searchContactsResults, searchContacts, addContact, removeContact
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/clientState/localProfile.nut" import loadLocalByScreenSize, saveLocalByScreenSize
+from "%scripts/contacts/contactsHandlerState.nut" import setContactsHandlerClass, getLastContactsSceneShow, setLastContactsSceneShow
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_child_by_value
+from "%scripts/contacts/customNicknames.nut" import getCustomNick, openNickEditBox
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/wishlist/friendsWishlistManager.nut" import tryOpenFriendWishlist
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled, isWwOperationInviteEnable
+from "%scripts/globalWorldwarUtils.nut" import inviteToWwOperation
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/squads/squadUtils.nut" import canSquad
+from "%appGlobals/user/nickTools.nut" import cutPlayerNamePrefix, cutPlayerNamePostfix
+from "%globalScripts/loc_helpers.nut" import getVendorLocId, locByVendor
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/chat/openChat.nut" import openChatPrivate
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
 from "%sqstd/string.nut" import clearBorderSymbols, utf8ToLower
@@ -10,41 +42,10 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
 from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, contactsGroupWithoutMaxCount, getMaxContactsByGroup
+from "%scripts/controls/activeInputDevice.nut" import isGamepadInputActive
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
-let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
-let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
-let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { contactsWndSizes, contactsGroups, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
-let { searchContactsResults, searchContacts, addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByScreenSize, saveLocalByScreenSize } = require("%scripts/clientState/localProfile.nut")
-let { setContactsHandlerClass, getLastContactsSceneShow, setLastContactsSceneShow } = require("%scripts/contacts/contactsHandlerState.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
-let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
-let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
-let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { canSquad } = require("%scripts/squads/squadUtils.nut")
-let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { openChatPrivate } = require("%scripts/chat/openChat.nut")
+let { contactsGroups, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 
 let contactsPrevScenes = [] 
 
@@ -100,7 +101,6 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
 
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
-    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     this.visibleContactsByGroup = {}
     this.contactsArrByGroups = {}
   }
@@ -290,6 +290,18 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
 
   function createPlayersObjInList(gObj, count) {
     this.guiScene.createMultiElementsByObject(gObj, "%gui/contacts/playerList.blk", "contactItem", count, this)
+    let total = gObj.childrenCount()
+    let tooltips = {
+      btn_friendAdd = locByVendor("contacts/friendlist/add")
+      btn_friendRemove = locByVendor("contacts/friendlist/remove")
+      btn_usercard = locByVendor("mainmenu/btnProfile")
+    }
+    for (local i = total - count; i < total; i++)
+      foreach (id, text in tooltips) {
+        let btn = gObj.getChild(i).findObject(id)
+        if (btn?.isValid())
+          btn.tooltip = text
+      }
   }
 
   function getContactsTotalText(gName) {
@@ -458,18 +470,16 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
     let isMe = contact ? contact.isMe() : false
     let contactName = contact?.name ?? ""
 
-    let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
-    let canBlock = !isPlayerFromXboxOne
-    let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
-    let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
-                                     || platformModule.isPlayerFromPS4(contactName)
-                                     || isPlayerFromXboxOne
+    let isPlayerFromXboxOneValue = isPlayerFromXboxOne(contactName)
+    let canBlock = !isPlayerFromXboxOneValue
+    let canInteractCrossConsoleValue = canInteractCrossConsole(contactName)
+    let canInteractCrossPlatform = isCrossPlayEnabled() || isPlayerFromPS4(contactName) || isPlayerFromXboxOneValue
 
     let canChat = hasMenuChatPrivate.get() && (contact ? contact.canChat(comms_state) : true)
     let canInvite = contact ? contact.canInvite(comms_state) : true
 
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
-    showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
+    showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsoleValue, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
     showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console && isInMenu.get(), contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
@@ -481,10 +491,9 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
     showObjById("btn_ww_invite", isWorldWarEnabled()
       && isWwOperationInviteEnable(), contact_buttons_holder)
 
-    let showSquadInvite = hasFeature("SquadInviteIngame")
-      && !isMe
+    let showSquadInvite = !isMe
       && !isBlock
-      && canInteractCrossConsole
+      && canInteractCrossConsoleValue
       && canInteractCrossPlatform
       && g_squad_manager.canInviteMember(contact?.uid ?? "")
       && g_squad_manager.canInviteMemberByPlatform(contactName)
@@ -496,7 +505,7 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
     if (btnObj && showSquadInvite && contact?.uidInt64)
       this.updateButtonInviteText(btnObj, contact.uidInt64)
 
-    showObjById("btn_usercard", hasFeature("UserCards"), contact_buttons_holder)
+    showObjById("btn_usercard", true, contact_buttons_holder)
     showObjById("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 
@@ -602,7 +611,7 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
     if (!editBoxObj?.isValid())
       return
 
-    let needShowSearchAdvice = !showConsoleButtons.get() && editBoxObj.isFocused()
+    let needShowSearchAdvice = !isGamepadInputActive.get() && editBoxObj.isFocused()
     showObjById("searchAdvice", needShowSearchAdvice, this.scene)
   }
 
@@ -679,7 +688,7 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.get() || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      data = "".concat(data, format(this.groupFormat, $"#contacts/{gName}",
+      data = "".concat(data, format(this.groupFormat, $"#{getVendorLocId($"contacts/{gName}")}",
         gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
         $"group_{gName}", activateEvent, this.buildPlayersListInfo(gName)))
     }
@@ -1154,7 +1163,7 @@ let ContactsHandler = class (BaseGuiHandlerWT) {
     foreach (uid, nick in searchRes) {
       let contact = getContact(uid, nick)
       if (contact) {
-        if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name)) {
+        if (!contact.isMe() && !contact.isInFriendGroup() && isPs4XboxOneInteractionAvailable(contact.name)) {
           contactsByGroups[EPLX_SEARCH][uid] <- contact
           this.contactsArrByGroups[EPLX_SEARCH].append(contact)
         }

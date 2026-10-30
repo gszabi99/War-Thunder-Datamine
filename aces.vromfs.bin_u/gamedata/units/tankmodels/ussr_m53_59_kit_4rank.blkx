@@ -2059,6 +2059,31 @@
     },
     "closed_fightning_compartment": {
       "part": [
+        "gunner_dm",
+        "ammo_body_01_dm",
+        "ammo_turret_01_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
+        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
+      "part": [
         "driver_dm",
         "loader_dm",
         "commander_dm",
@@ -2068,23 +2093,7 @@
         "ammo_body_03_dm",
         "radiator_dm",
         "radio_station_dm",
-        "engine_dm",
-        "fuel_tank_dm",
-        "fuel_tank_01_dm",
-        "fuel_tank_02_dm",
-        "fuel_tank_03_dm",
-        "fuel_tank_04_dm",
-        "fuel_tank_05_dm",
-        "fuel_tank_r_01_dm",
-        "fuel_tank_r_02_dm",
-        "fuel_tank_r_03_dm",
-        "fuel_tank_r_04_dm",
-        "fuel_tank_r_05_dm",
-        "fuel_tank_l_01_dm",
-        "fuel_tank_l_02_dm",
-        "fuel_tank_l_03_dm",
-        "fuel_tank_l_04_dm",
-        "fuel_tank_l_05_dm"
+        "engine_dm"
       ],
       "effect": [
         {
@@ -2115,7 +2124,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_ZK_453_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_ZK_453_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "useEmitter": true,
         "flash": "emtr_gun_flame_01",
@@ -2215,7 +2224,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_ZK_453_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_ZK_453_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "useEmitter": true,
         "flash": "emtr_gun_flame_02",
@@ -2308,7 +2317,7 @@
   "weapon_presets": {
     "preset": {
       "name": "tank_weapon_preset_default",
-      "blk": "gameData/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4125,5 +4134,29 @@
       20.0,
       60.0
     ]
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.476,
+      1.0728,
+      0.895
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

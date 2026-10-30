@@ -1,17 +1,16 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitBlkCache.nut" import blkOptFromPathCachedByUnit
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData, getModificationBulletsEffect
+from "%scripts/weaponry/weaponryInfo.nut" import getUnitWeaponry
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "string" import format
 from "math" import floor
 from "unitCalculcation" import calculate_tank_bullet_parameters
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
-let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getUnitWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let uintModificationsCache = {}
 let unitBulletsCache = {}
@@ -64,7 +63,7 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = fa
     getLocName = @() isShip ? loc($"{bulletType}/name/short") : $"{format(loc("caliber/mm"), caliber * 1000)} {loc($"{bulletType}/name/short")}"
     caliber
     tooltipId = getTooltipType("SINGLE_BULLET").getTooltipId(unit.name, bulletType, {
-      modName = bulletType
+      modName = bulletSetName
       bSet
       bulletParams
     })
@@ -188,6 +187,6 @@ function getUnitBulletsMarkup(unitName, unitType) {
   return handyman.renderCached("%gui/unitInfo/unitBullets.tpl", { items, isTooltipByHold = showConsoleButtons.get() })
 }
 
-return {
+return freeze({
   getUnitBulletsMarkup
-}
+})

@@ -1,4 +1,27 @@
 import "DataBlock" as DataBlock
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/missionBuilder/missionBuilderTuner.nut" import MissionBuilderTuner
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/genericOptions.nut" import GenericOptions, GenericOptionsModal
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/missions/dynCampaingState.nut" import dynamicInitAsync
+from "%scripts/missions/mapPreview.nut" import setSummaryPreview
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND, USEROPT_DMP_MAP, USEROPT_FRIENDLY_SKILL, USEROPT_ENEMY_SKILL
+  , USEROPT_DIFFICULTY, USEROPT_TIME, USEROPT_CLIME, USEROPT_TAKEOFF_MODE, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_WEAPONS
+  , USEROPT_SKIN, USEROPT_DYN_ALLIES, USEROPT_DYN_ENEMIES
+from "%scripts/options/optionsExt.nut" import create_options_container, get_option
+from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unit/unitInfo.nut" import getBattleTypeByUnit
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitAvailableForGM
+from "%scripts/missions/missionsUtils.nut" import addMissionListFull, getMaxPlayersForGamemode
+from "%scripts/clientState/contentPacks.nut" import checkDiffPkg
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "dagor.random" import rnd
 from "guiOptions" import get_gui_option, getCdBaseDifficulty
@@ -9,28 +32,8 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_list
 
-let { currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MissionBuilderTuner } = require("%scripts/missionBuilder/missionBuilderTuner.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { GenericOptions, GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { dynamicInitAsync } = require("%scripts/missions/dynCampaingState.nut")
-let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
-let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND, USEROPT_DMP_MAP, USEROPT_FRIENDLY_SKILL, USEROPT_ENEMY_SKILL, USEROPT_DIFFICULTY, USEROPT_TIME, USEROPT_CLIME, USEROPT_TAKEOFF_MODE, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES, USEROPT_DYN_ENEMIES } = require("%scripts/options/optionsExtNames.nut")
-let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getBattleTypeByUnit } = require("%scripts/unit/unitInfo.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { addMissionListFull, getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { missionBuilderVehicleConfigForBlk } = require("%scripts/missionBuilder/testFlightState.nut")
 
 function mergeToBlk(sourceTable, blk) {
@@ -46,8 +49,6 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
   wndOptionsMode = OPTIONS_MODE_DYNAMIC
 
   applyAtClose = false
-  can_generate_missions = true 
-  
   isInRandomizeOptionsProcess = false
   needSlotbar = true
 
@@ -166,8 +167,6 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
   }
 
   function generate_builder_list(wait) {
-    if (!this.can_generate_missions)
-      return
     if (showedUnit.get() == null)
       return
 
@@ -260,7 +259,7 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
       this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
   }
 
-  function setRandomOpt(optName) {
+  function getRandomizableOpt(optName) {
     let desc = get_option(optName)
     let obj = this.scene.findObject(desc.id)
 
@@ -285,11 +284,17 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
       let values = toString(desc.values)
       script_net_assert_once("MissionBuilder",
         $"ERROR: Empty value in options. /*settings = {settings}, currentUnit = {currentUnit}, slotbarUnit = {slotbarUnit}, optId = {optId}, values = {values}*/")
-      return false
+      return null
     }
 
-    if (!obj?.isValid())
+    return obj?.isValid() ? { desc, obj } : null
+  }
+
+  function setRandomOpt(optName) {
+    let opt = this.getRandomizableOpt(optName)
+    if (opt == null)
       return false
+    let { desc, obj } = opt
     let newValue = rnd() % desc.values.len()
     if (newValue == desc.value)
       return false
@@ -297,11 +302,20 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
     return true
   }
 
+  function setRandomOptSilently(optName) {
+    let opt = this.getRandomizableOpt(optName)
+    if (opt == null)
+      return
+    let { desc, obj } = opt
+    
+    let txt = create_option_list(desc.id, desc.items, rnd() % desc.values.len(), desc.cb, false)
+    this.guiScene.replaceContentFromText(obj, txt, txt.len(), this)
+  }
+
   function randomize_builder_options() {
     if (!checkObj(this.scene))
       return
 
-    this.can_generate_missions = false
     this.isInRandomizeOptionsProcess = true
 
     let hasChaged = this.setRandomOpt(USEROPT_DYN_MAP)
@@ -309,38 +323,7 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
       this.onLayoutChange()
   }
 
-  function continueRandomizingOptions() {
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.setRandomOpt(USEROPT_DYN_ZONE)
-
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
-        return
-
-      foreach (o in [USEROPT_TIME, USEROPT_CLIME])
-        this.setRandomOpt(o)
-
-      this.can_generate_missions = true
-      local hasChaged = this.setRandomOpt(USEROPT_DYN_SURROUND)
-      if (!hasChaged)
-        this.onSectorChange(this.scene.findObject("dyn_surround"))
-
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isValid())
-          return
-
-        hasChaged = this.setRandomOpt(USEROPT_DMP_MAP)
-
-        this.isInRandomizeOptionsProcess = false
-        this.guiScene.setUpdatesEnabled(true, true)
-
-        if (!hasChaged)
-          this.update_takeoff()
-      })
-    })
-  }
-
-  function applyFunc() {
+  function applyFunc(_) {
     if (!canJoinFlightMsgBox({
         maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
@@ -412,10 +395,17 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
   function onEventDynamicCampaignInited(_) {
     let obj = this.scene.findObject("dyn_map")
     this.updateOptionDescr(obj, this.update_dynamic_layout)
-    if (this.isInRandomizeOptionsProcess)
-      this.continueRandomizingOptions()
-    else
-      this.updateOptionDescr(obj, this.update_dynamic_sector)
+    let needRandomize = this.isInRandomizeOptionsProcess
+    this.isInRandomizeOptionsProcess = false
+    if (needRandomize) {
+      let optionsRebuildingMissionList = [ USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND ]
+      foreach (o in optionsRebuildingMissionList)
+        this.setRandomOptSilently(o)
+    }
+    this.updateOptionDescr(obj, this.update_dynamic_sector)
+    if (needRandomize)
+      foreach (o in [USEROPT_TIME, USEROPT_CLIME, USEROPT_DMP_MAP])
+        this.setRandomOpt(o)
   }
 
   function onMissionChange(_obj) {

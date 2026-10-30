@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/input/inputBase.nut" import InputBase
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
 let InputImage = class (InputBase) {
   image = ""
@@ -32,6 +31,6 @@ let InputImage = class (InputBase) {
     }
   }
 }
-return {
+return freeze({
   InputImage
-}
+})

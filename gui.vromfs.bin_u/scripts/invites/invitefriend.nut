@@ -1,12 +1,12 @@
+from "%scripts/contacts/contactsState.nut" import addContact, rejectContact
+from "%scripts/invites/invitesClasses.nut" import registerInviteClass
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInContacts
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { addContact, rejectContact } = require("%scripts/contacts/contactsState.nut")
-let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let Friend = class (BaseInvite) {
   static function getUidByParams(params) {

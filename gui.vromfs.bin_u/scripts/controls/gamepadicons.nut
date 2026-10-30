@@ -1,7 +1,6 @@
+from "%sqstd/platform.nut" import isSony
+from "%scripts/controls/controlsConsts.nut" import AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 
 const ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 const ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
@@ -159,7 +158,7 @@ let gamepadAxesImages = {
   [GAMEPAD_AXIS.RIGHT_STICK] = "r_stick_4",
   [GAMEPAD_AXIS.LEFT_TRIGGER] = "l_trigger",
   [GAMEPAD_AXIS.RIGHT_TRIGGER] = "r_trigger",
-  [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX] = isPlatformSony ? "sensor_x" : "l_r_trigger",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX] = isSony ? "sensor_x" : "l_r_trigger",
 
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MIN] = "l_stick_down",
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MAX] = "l_stick_up",
@@ -171,7 +170,7 @@ let gamepadAxesImages = {
   [GAMEPAD_AXIS.RIGHT_STICK_HORIZONTAL | AXIS_MODIFIERS.MAX] = "r_stick_right",
   [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX | AXIS_MODIFIERS.MIN] = "l_trigger",
   [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX | AXIS_MODIFIERS.MAX] = "r_trigger",
-}.__update(isPlatformSony ? sonyOnlyAxesImages : {})
+}.__update(isSony ? sonyOnlyAxesImages : {})
 
 let mouseAxesImages = {
   [MOUSE_AXIS.NOT_AXIS] = "",
@@ -188,7 +187,7 @@ let mouseAxesImages = {
   [MOUSE_AXIS.VERTICAL_AXIS | AXIS_MODIFIERS.MAX] = "mouse_move_up",
 }
 
-let curPreset = isPlatformSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
+let curPreset = isSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
 
 let getTexture = @(id, preset = curPreset) (id in controlsList) ? "".concat(preset, id, SVG_EXT) : ""
 let getTextureByButtonIdx = @(idx) getTexture(btnNameByIndex?[idx])

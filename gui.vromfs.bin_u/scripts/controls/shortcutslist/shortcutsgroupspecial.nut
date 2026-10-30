@@ -1,15 +1,15 @@
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AxisDirection
+from "%scripts/controls/controlsManager.nut" import commitControls
+from "%scripts/options/optionsExtNames.nut" import USEROPT_HUMAN_MOUSE_SENSE, USEROPT_INVERTY_HUMAN
 from "controls" import hasXInputDevice, isXInputDevice
 from "globalEnv" import ControlHelpersMode
 from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_HUMAN, OPTION_AIM_ACCELERATION_DELAY_HUMAN
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 
-let { USEROPT_HUMAN_MOUSE_SENSE, USEROPT_INVERTY_HUMAN } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -130,6 +130,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_HUMAN_CHANGE_BIPOD_MOUNT_POINT"
+    needShowInHelp = true
+    checkAssign = false
+  }
+  {
     id = "ID_HUMAN_NEXT_ZOOM"
     checkAssign = false
     needShowInHelp = true
@@ -137,6 +142,11 @@ return [
   {
     id = "ID_HUMAN_THROW"
     checkAssign = true
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_COOK_GRENADE"
+    checkAssign = false
     needShowInHelp = true
   }
   {
@@ -382,6 +392,11 @@ return [
   }
   {
     id = "ID_HUMAN_ARTILLERY_STRIKE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_HUMAN_UAV_NIGHT_VISION"
     checkAssign = false
     needShowInHelp = true
   }

@@ -888,6 +888,16 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
+      }
     }
   },
   "DamageEffects": {
@@ -1903,7 +1913,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_OBL_Tk_L11_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_OBL_Tk_L11_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2024,7 +2034,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L8A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L8A1_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2068,7 +2078,7 @@
         "trigger": "gunner2",
         "triggerGroup": "secondary",
         "circleAim": false,
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
         "emitter": "bone_mg_turret_01",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_02_dm",
@@ -2113,7 +2123,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
         "emitter": "emtr_mg_flame_04",
         "flash": "emtr_mg_flame_04",
         "barrelDP": "gun_barrel_03_dm",
@@ -2157,7 +2167,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2187,8 +2197,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_chieftain_mk_5_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_chieftain_mk_5_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2241,16 +2251,21 @@
     },
     "engine": {
       "horsePowers": 760.0,
-      "maxRPM": 2550.0,
-      "minRPM": 850.0
+      "maxRPM": 2250.0,
+      "minRPM": 600.0,
+      "manufacturer": "leyland",
+      "model": "l60_mk_7"
     },
     "mechanics": {
+      "sideGearRatio": 0.934,
+      "maxBrakeForce": 228800.0,
+      "driveGearRadius": 0.3,
+      "mainGearRatio": 4.122,
+      "neutralGearRatio": 17.8,
+      "manufacturer": "david_brown",
+      "model": "tn_12_mk3",
+      "type": "auto",
       "steerType": "clutch_braking",
-      "maxBrakeForce": 220000.0,
-      "driveGearRadius": 0.299,
-      "mainGearRatio": 3.93,
-      "sideGearRatio": 1.0,
-      "neutralGearRatio": 15.0,
       "gearRatios": {
         "ratio": [
           -6.58,
@@ -2308,6 +2323,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -3215,7 +3242,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_OBL_Tk_L11_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_OBL_Tk_L11_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3336,7 +3363,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L8A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L8A1_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_01_dm",
@@ -3380,7 +3407,7 @@
               "trigger": "gunner2",
               "triggerGroup": "secondary",
               "circleAim": false,
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
               "emitter": "bone_mg_turret_01",
               "flash": "emtr_mg_flame_02",
               "barrelDP": "gun_barrel_02_dm",
@@ -3425,7 +3452,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
               "emitter": "emtr_mg_flame_04",
               "flash": "emtr_mg_flame_04",
               "barrelDP": "gun_barrel_03_dm",
@@ -3469,7 +3496,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3498,7 +3525,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

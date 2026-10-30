@@ -1353,12 +1353,12 @@
           }
         ],
         "triggerEnable": {
-          "target": "torpedoing_start"
+          "target": "damage_hud_start"
         }
       },
       "else_actions": {}
     },
-    "torpedoing_start": {
+    "damage_hud_start": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1389,7 +1389,7 @@
           },
           {
             "hintType": "tutorialHint",
-            "name": "hints/tutorialDestr_fifth_target_lock",
+            "name": "hints/tutorialDestr_damage_hud_aim_target_lock",
             "action": "show",
             "shouldFadeOut": false,
             "isOverFade": false,
@@ -1432,12 +1432,12 @@
           "object_var_value": 0
         },
         "triggerEnable": {
-          "target": "torpedoing_use_torpedo_sight"
+          "target": "damage_hud_aim"
         }
       },
       "else_actions": {}
     },
-    "torpedoing_use_torpedo_sight": {
+    "damage_hud_aim": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1472,6 +1472,688 @@
           },
           {
             "hintType": "tutorialHint",
+            "name": "hints/tutorialDestr_second_target_binoculars",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW_SHIP"
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "damage_hud_info01"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_info01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW_SHIP"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialDestr_damage_hud_aim_info01",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_TOGGLE_VIEW_SHIP"
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "damage_hud_info02"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_info02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialDestr_damage_hud_aim_info02",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "damage_hud_attack_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_attack_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "missions/tutorial_boat_battle/shoot_guns",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_WEAPON_ALL"
+          }
+        ],
+        "wait": {
+          "time": 0.5
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "unitSetProperties": {
+          "object": "target_ship03",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "isImmortal": false
+        },
+        "triggerEnable": {
+          "target": "damage_hud_hit_target01"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_hit_target01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_ship03"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_press_id_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "wait": [
+          {
+            "time": 2.0
+          },
+          {
+            "time": 3.0
+          }
+        ],
+        "hudElementShow": {
+          "element": "hud_tutorial_ship_damage_icon_1",
+          "show": true,
+          "time": -1
+        },
+        "__playHint": {
+          "hintType": "tutorialHint",
+          "name": "missions/tutorialDestr_damage_hud_aim_neh",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "damage_hud_hit_target02"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_hit_target02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "hudElementShow": [
+          {
+            "element": "hud_tutorial_ship_damage_icon_1",
+            "show": false,
+            "time": -1
+          },
+          {
+            "element": "hud_tutorial_ship_damage_icon_2",
+            "show": true,
+            "time": -1
+          }
+        ],
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_press_id_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "triggerEnable": {
+          "target": "damage_hud_hit_target03"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_hit_target03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "hudElementShow": [
+          {
+            "element": "hud_tutorial_ship_damage_icon_2",
+            "show": false,
+            "time": -1
+          },
+          {
+            "element": "hud_tutorial_ship_damage_icon_3",
+            "show": true,
+            "time": -1
+          }
+        ],
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_press_id_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "triggerEnable": {
+          "target": "damage_hud_hit_xray"
+        }
+      },
+      "else_actions": {}
+    },
+    "damage_hud_hit_xray": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "hudElementShow": {
+          "element": "hud_tutorial_ship_damage_icon_3",
+          "show": false,
+          "time": -1
+        },
+        "unitShowXray": [
+          {
+            "show": true,
+            "object": "target_ship03",
+            "part": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "engine_room_01_dm",
+              "engine_room_02_dm",
+              "transmission_01_dm",
+              "transmission_02_dm"
+            ]
+          },
+          {
+            "show": true,
+            "object": "target_ship03",
+            "part": [
+              "ammunition_storage_shells_01_dm",
+              "ammunition_storage_shells_02_dm"
+            ]
+          }
+        ],
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "missions/tutorialDestr_damage_hud_aim_xray_info01",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "missions/tutorialDestr_damage_hud_aim_xray_info02",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_WEAPON_ALL"
+          }
+        ],
+        "wait": {
+          "time": 5.0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "triggerEnable": {
+          "target": "torpedoing_start"
+        }
+      },
+      "else_actions": {}
+    },
+    "torpedoing_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SHIP_WEAPON_ALL"
+        }
+      },
+      "actions": {
+        "wait": [
+          {
+            "time": 5.0
+          },
+          {
+            "time": 0.5
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "missions/tutorialDestr_torpedo_info",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_CONTINUE"
+          }
+        ],
+        "triggerEnable": {
+          "target": "torpedoing_binocular_off"
+        }
+      },
+      "else_actions": {}
+    },
+    "torpedoing_binocular_off": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_CONTINUE"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialDestr_torpedo_binocular_off",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        ],
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_TOGGLE_VIEW_SHIP"
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "torpedoing_use_torpedo_sight"
+        }
+      },
+      "else_actions": {}
+    },
+    "torpedoing_use_torpedo_sight": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_TOGGLE_VIEW_SHIP"
+        }
+      },
+      "actions": {
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 100,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
             "name": "hints/tutorialDestr_fifth_target_torpedo_sight",
             "action": "show",
             "shouldFadeOut": false,
@@ -1484,6 +2166,22 @@
             "object_var_value": 0
           }
         ],
+        "unitShowXray": {
+          "show": false,
+          "object": "target_ship03",
+          "part": [
+            "compartment_01_dm",
+            "compartment_02_dm",
+            "compartment_03_dm",
+            "compartment_04_dm",
+            "engine_room_01_dm",
+            "engine_room_02_dm",
+            "transmission_01_dm",
+            "transmission_02_dm",
+            "ammunition_storage_shells_01_dm",
+            "ammunition_storage_shells_02_dm"
+          ]
+        },
         "wait": {
           "time": 0.5
         },

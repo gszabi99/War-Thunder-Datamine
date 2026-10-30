@@ -1,13 +1,13 @@
+import "%scripts/controls/help/controlsHelpTabs.nut" as helpTabs
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/help/helpWnd.nut" import helpWndModalHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/controls/controlsState.nut" import getPreviewControlsPreset
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { helpWndModalHandler } = require("%scripts/help/helpWnd.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
-let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let helpPreviewHandler = class (helpWndModalHandler) {
   wndType = handlerType.CUSTOM
@@ -35,8 +35,8 @@ let helpPreviewHandler = class (helpWndModalHandler) {
 }
 register_gui_handler("helpPreviewHandler", helpPreviewHandler)
 
-return {
+return freeze({
   function getHelpPreviewHandler(params) {
     return handlersManager.loadHandler(helpPreviewHandler, params)
   }
-}
+})

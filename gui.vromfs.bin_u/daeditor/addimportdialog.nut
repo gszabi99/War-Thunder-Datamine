@@ -3,9 +3,8 @@ from "%darg/laconic.nut" import *
 from "dagor.system" import argv
 
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
-let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let textButton = require("components/textButton.nut")
-let nameFilter = require("components/nameFilter.nut")
+let { mkFilteredList, mkListFilter, rowText } = require("components/mkFilteredList.nut")
 let { colors } = require("components/style.nut")
 let {scan_folder, mkpath, file_exists, resolve_mountpoint} = require("dagor.fs")
 let textInput = require("%daeditor/components/textInput.nut")
@@ -20,16 +19,7 @@ let resMountPoint = isSandbox() ? "%ugm" : "%gameBase"
 
 const imporSceneUID = "import_scene_modal_window"
 
-let addImportFilter = nameFilter(filterImportString, {
-  placeholder = "Filter by name"
-  onChange = @(text) filterImportString.set(text)
-  onEscape = @() set_kb_focus(null)
-  onReturn = @() set_kb_focus(null)
-  onClear = function() {
-    filterImportString.set("")
-    set_kb_focus(null)
-  }
-})
+let addImportFilter = mkListFilter(filterImportString)
 
 function mkTabButtons() {
   return @() {
@@ -63,28 +53,6 @@ function mkTabButtons() {
       }
     ]
   }
-}
-
-function listImportSceneRow(scene, index) {
-  return watchElemState(function(sf) {
-    return {
-      rendObj = ROBJ_SOLID
-      size = FLEX_H
-      color = selectedImport.get() == scene ? colors.Active : sf & S_TOP_HOVER ? colors.GridRowHover : colors.GridBg[index % colors.GridBg.len()]
-      scene
-      behavior = Behaviors.Button
-      watch = selectedImport
-
-      onClick = @() selectedImport.set(scene)
-
-      children = {
-        rendObj = ROBJ_TEXT
-        text = scene
-        color = colors.TextDefault
-        margin = fsh(0.5)
-      }
-    }
-  })
 }
 
 function mkAcceptSceneControl(onImportAdd, close) {
@@ -157,17 +125,12 @@ function mkExistinTabContent(onImportAdd, close) {
     return scenesCopy
   })
 
-  function listImportContent() {
-    let sRows = filteredImports.get().map(@(scene, index) listImportSceneRow(scene, index))
-
-    return {
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      children = sRows
-      behavior = Behaviors.Button
-      watch = filteredImports
-    }
-  }
+  let importsList = mkFilteredList({
+    items = filteredImports
+    selected = selectedImport
+    mkRow = @(scene, _row) rowText(scene)
+    onClick = @(scene, _evt) selectedImport.set(scene)
+  })
 
   return {
     size = flex()
@@ -189,7 +152,7 @@ function mkExistinTabContent(onImportAdd, close) {
           }
         ]
       }
-      makeVertScroll(listImportContent)
+      importsList
     ]
   }
 }

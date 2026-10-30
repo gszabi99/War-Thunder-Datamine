@@ -1,13 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/guiBox.nut" import getBlockFromObjData, createHighlight
+from "%scripts/linesGenerator.nut" import getLinkLinesMarkup
 from "%globalScripts/guiGeom/hintPlacement.nut" import findPlaceForHintByRect
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
-let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 
 
@@ -131,8 +131,8 @@ let HelpInfoHandlerModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("HelpInfoHandlerModal", HelpInfoHandlerModal)
 
-return {
+return freeze({
   HelpInfoHandlerModal
   findPlaceForHint
   updateHintPosition
-}
+})

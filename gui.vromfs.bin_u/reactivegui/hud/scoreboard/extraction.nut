@@ -251,15 +251,11 @@ let mkFireIcon = @(isLeft = false) @() {
   image = Picture($"ui/gameuiskin#fire_fury_{isLeft ? "left" : "right"}.svg:{FIRE_ICON_WIDTH}:{FIRE_ICON_HEIGHT}:P")
   opacity = isFuryProgressCompleted.get() ? 1 : 0
   transform = isFuryProgressCompleted.get()
-  ? {
-      translate = [0, 0]
-      rotate = 0
-      scale = [1,1]
-    }
+  ? true
   : {
       translate = [isLeft ? -50 : 50, 0]
       rotate = isLeft ? -45 : 45
-      scale = [2,2]
+      scale = 2
     }
   transitions = [AnimProp.opacity, AnimProp.translate, AnimProp.rotate, AnimProp.scale].map(@(prop) {
     prop
@@ -291,7 +287,7 @@ let skullFuryIndicatorComp = @() {
   children = [
     isFuryProgressCompleted.get() ? furySkullGlowAnim : null
     {
-      size = [SKULL_CIRCLE_SIZE, SKULL_CIRCLE_SIZE]
+      size = SKULL_CIRCLE_SIZE
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#elipse_fury.avif:{SKULL_CIRCLE_SIZE}:{SKULL_CIRCLE_SIZE}:P")
     }
@@ -315,16 +311,16 @@ let skullFuryIndicatorComp = @() {
       animations = [
         {
           prop = AnimProp.scale
-          from = [1, 1]
-          to = [1.2, 1.2]
+          from = const [1, 1]
+          to = const [1.2, 1.2]
           duration = FURY_COMPLETE_ANIM_DURATION / 2
           easing = FURY_COMPLETE_ANIM_EASING
           trigger = SKULL_FURY_ANIM_TRIGGER
         }
         {
           prop = AnimProp.scale
-          from = [1.2, 1.2]
-          to =[1,1]
+          from = const [1.2, 1.2]
+          to = const [1,1]
           delay = FURY_COMPLETE_ANIM_DURATION / 2
           duration = FURY_COMPLETE_ANIM_DURATION / 2
           easing = FURY_COMPLETE_ANIM_EASING
@@ -359,7 +355,7 @@ let skullFuryIndicatorComp = @() {
     keepAspect = true
     color =  lootState.Rage.get() >= i + 1 ? 0xFFFFFFFF : FURY_PROGRESS_INACTIVE_COLOR
     transitions = [
-      { prop = AnimProp.color, duratiuon = 0.2, easing = InOutQuad }
+      { prop = AnimProp.color, easing = InOutQuad }
     ]
   }.__update(bar)))
 }

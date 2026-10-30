@@ -51,7 +51,7 @@ enum DamageType {
   DM_COUNT
 }
 
-return {
+return freeze({
   HitResult
   SquadBehaviourEnum
   SquadFormationSpreadEnum
@@ -60,4 +60,4 @@ return {
   ATTACK_RES
   AiActionEnum
   DamageType
-}
+})

@@ -1546,6 +1546,7 @@
     "engines": {
       "maxSpeed": 28.29,
       "maxReverseSpeed": 12.2,
+      "horsePowers": 2000.0,
       "waterResistanceAtStopK": 0.4,
       "speedToTime": {
         "row": [
@@ -1692,6 +1693,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        7.9,
+        0.0
+      ],
+      [
+        15.7,
+        100.0
+      ],
+      [
+        23.6,
+        200.0
+      ],
+      [
+        31.5,
+        400.0
+      ],
+      [
+        39.3,
+        600.0
+      ],
+      [
+        47.2,
+        1000.0
+      ],
+      [
+        55.1,
+        1300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "sound": {
     "EngineName": "engine_ctr01",
     "EngineNameAi": "engine_ctr_ai",
@@ -1726,7 +1785,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_25",
         "flash": "emtr_gun_flame_25",
         "useEmitter": true,
@@ -1797,7 +1856,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_26",
         "flash": "emtr_gun_flame_26",
         "useEmitter": true,
@@ -1871,12 +1930,12 @@
     "preset": [
       {
         "name": "rocket_launcher",
-        "blk": "gameData/units/ships/weaponPresets/ussr_g5_rct_rocket_launcher.blk",
+        "blk": "gamedata/units/ships/weaponPresets/ussr_g5_rct_rocket_launcher.blk",
         "reqModification": "ship_rocket_launcher"
       },
       {
         "name": "ussr_g5_rct_default",
-        "blk": "gameData/units/ships/weaponPresets/ussr_g5_rct_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/ussr_g5_rct_default.blk"
       }
     ]
   },
@@ -2984,29 +3043,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -2500.0,
-    "waterMassMult": 40.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 65000.0,
+    "waterMassVel": -1536.0,
+    "waterMassMult": 19.0,
+    "additionalWaterDeathThreshold": 82544.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 30.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.0,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.41
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.3,
+        "weight": 0.25,
         "maxWaterAlive": 1.0
       },
       {
@@ -3017,18 +3080,26 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.49
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.41
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.02
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.7,
+        "weight": 0.33,
         "maxWaterAlive": 1.0
       }
     ]

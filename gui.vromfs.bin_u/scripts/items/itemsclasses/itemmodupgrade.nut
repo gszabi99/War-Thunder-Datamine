@@ -1,14 +1,14 @@
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/tasker.nut" import addTask
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "blkGetters" import get_modifications_blk
 from "%scripts/dagui_natives.nut" import char_send_blk, get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ModUpgrade = class (BaseItemModClass) {
   static iType = itemType.MOD_UPGRADE

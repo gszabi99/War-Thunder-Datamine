@@ -1,9 +1,4 @@
 {
-  "weaponType": 1,
-  "maxDeltaAngle": 0.32,
-  "shotFreq": 16.666666,
-  "shotFreqRndK": 0.1,
-  "bullets": 500,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -19,6 +14,23 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.32,
+  "shotFreq": 16.666666,
+  "shotFreqRndK": 0.1,
+  "bullets": 500,
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        8.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0095,
@@ -426,7 +438,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmYellow",
-        "trail": "thin"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2887,7 +2899,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4953,7 +4965,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "thin"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -6610,25 +6622,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m1919_high_rate_gun_outside",
-    "cockpit": "m1919_high_rate_gun_inside",
-    "ai": "m1919_high_rate_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        8.0,
-        0.05
-      ]
-    ]
-  },
   "bmg303_new_gun": {
     "maxDeltaAngle": 0.18,
     "overheat": {
@@ -6643,5 +6636,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m1919_high_rate_gun_outside",
+    "cockpit": "m1919_high_rate_gun_inside",
+    "ai": "m1919_high_rate_gun_ai"
   }
 }

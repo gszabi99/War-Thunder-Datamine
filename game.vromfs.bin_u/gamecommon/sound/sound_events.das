@@ -5,7 +5,7 @@ require DagorDataBlock
 [cpp_event(broadcast, with_scheme)]
 struct EventPlayExplosionSound
   pos : float3
-  explosionSoundType : string
+  explosionSoundTypeHash : uint
 
 [cpp_event(unicast)]
 struct CmdEngineStartSound

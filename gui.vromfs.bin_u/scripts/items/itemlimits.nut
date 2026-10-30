@@ -1,12 +1,11 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import get_items_count_for_limits_result, get_items_count_for_limits
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
 
 
 const ITEM_REFRESH_TIME = 60
@@ -109,9 +108,9 @@ function requestLimitsForItem(itemId) {
   requestLimits()
 }
 
-return {
+return freeze({
   getLimitDataByItemName
   enqueueItem
   requestLimits
   requestLimitsForItem
-}
+})

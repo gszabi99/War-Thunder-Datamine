@@ -35,9 +35,9 @@ function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "") {
 
 let isMaxPlayersInContactList = @(groupName) contactsByGroups[groupName].len() >= getMaxContactsByGroup(groupName)
 
-return {
+return freeze({
   isPlayerInContacts
   isPlayerNickInContacts
   isPlayerInFriendsGroup
   isMaxPlayersInContactList
-}
+})

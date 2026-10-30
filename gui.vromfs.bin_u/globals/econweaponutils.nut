@@ -78,7 +78,7 @@ function getWeaponDamage(unitName, presetName, weaponTable) {
   return weaponDamage
 }
 
-return {
+return freeze({
   getPresetRewardMul
   getWeaponDamage
-}
+})

@@ -36,6 +36,46 @@ def force_crosshair_debug_cmd()
   if !exists
     createEntity("crosshair_debug_draw")
 
+[ecs_template]
+struct screen_cross_debug_draw
+  screenCrossDebug : Tag
+  screenCross__fullScreen : bool = false
+  screenCross__lineLength : float = 50f
+  screenCross__lineThickness : float = 3f
+  screenCross__lineColor : E3DCOLOR = E3DCOLOR(0xFFF9F9F9)
+
+
+[console_cmd(name="hud.screen_cross")]
+def screen_cross_debug_cmd(full_screen : bool = false)
+  var sameMode = false
+  find_query() <| $ [es(REQUIRE=screenCrossDebug)] (eid : EntityId; screenCross__fullScreen : bool)
+    sameMode = screenCross__fullScreen == full_screen
+    destroyEntity(eid)
+    return true
+  if !sameMode
+    createEntity("screen_cross_debug_draw") <| $(var init : ComponentsInitializer)
+      set(init, "screenCross__fullScreen", full_screen)
+
+[es(tag=dev, REQUIRE=screenCrossDebug)]
+def ui_screen_cross_debug_draw_es(evt : RenderEventUI;
+                                  screenCross__fullScreen : bool;
+                                  screenCross__lineLength : float;
+                                  screenCross__lineThickness : float;
+                                  screenCross__lineColor : E3DCOLOR)
+  let screenSize = StdGuiRender_screen_size()
+  let center = screenSize / 2.0
+  let noIdent = float2(0f, 0f)
+
+  if screenCross__fullScreen
+    StdGuiRender_render_line_aa(float2(0f, center.y), float2(screenSize.x, center.y), false, screenCross__lineThickness, noIdent, screenCross__lineColor)
+    StdGuiRender_render_line_aa(float2(center.x, 0f), float2(center.x, screenSize.y), false, screenCross__lineThickness, noIdent, screenCross__lineColor)
+    return
+
+  let lineDirRight = float2(1f, 0f)
+  let lineDirUp = float2(0f, 1f)
+  StdGuiRender_render_line_aa(center - lineDirRight * screenCross__lineLength, center + lineDirRight * screenCross__lineLength, false, screenCross__lineThickness, noIdent, screenCross__lineColor)
+  StdGuiRender_render_line_aa(center - lineDirUp * screenCross__lineLength, center + lineDirUp * screenCross__lineLength, false, screenCross__lineThickness, noIdent, screenCross__lineColor)
+
 [es(tag=dev, REQUIRE=crosshairDebug)]
 def ui_crosshair_debug_draw_es(evt : RenderEventUI;
                                crosshair__lineLength : float;

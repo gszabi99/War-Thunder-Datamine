@@ -1,3 +1,7 @@
+from "%scripts/weaponry/weaponryPresets.nut" import getWeaponParamsByWeaponBlkPath
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect
+from "%scripts/modalInfo/modalInfo.nut" import openModalInfo, destroyModalInfo, getModalInfoByUnitId, isUseGamePad
+from "%scripts/utils/delayedTooltip.nut" import delayedTooltipOnHover
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "%sqstd/string.nut" import endsWith
@@ -9,11 +13,7 @@ from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { openModalInfo, destroyModalInfo, getModalInfoByUnitId, isUseGamePad } = require("%scripts/modalInfo/modalInfo.nut")
-let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 
 let shellFocusedInHangar = Watched("")
 
@@ -327,8 +327,8 @@ addListenersWithoutEnv({
   HangarModelLoading = @(_p) hideAllHints()
 })
 
-return {
+return freeze({
   initBackgroundModelHint
   updateBackgroundModelHint
   openPresetWndForShell
-}
+})

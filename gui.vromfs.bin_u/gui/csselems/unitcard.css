@@ -1,76 +1,3 @@
-@const slotShadeColor:   #66060808;
-
-@const slotBgColor                  :#B21A2228; 
-@const slotBorderColor              :#ff233844;
-@const slotTopLineColor             :#ff2f4b5c;
-
-@const slotEmptyBgColor             :#B20D2F42; 
-@const slotEmptyBorderColor         :#ff13445f;
-@const slotEmptyTopLineColor        :#ff164d6c;
-
-@const slotWaitingBgColor           :#B20B1E29; 
-@const slotWaitingBorderColor       :#B21E2829;
-@const slotWaitingTopLineColor      :#ff4a5d5b;
-
-@const slotLockedBgColor            :#b21c0000; 
-@const slotLockedBorderColor        :#B231090B;
-@const slotLockedTopLineColor       :#ff781511;
-
-@const slotDisabledBgColor          :#B2101514; 
-@const slotDisabledBorderColor      :#ff2b2c27;
-@const slotDisabledTopLineColor     :#ff43463b;
-
-@const slotOwnedBgColor             :#B225333B; 
-@const slotOwnedBorderColor         :#ff3e5159;
-@const slotOwnedTopLineColor        :#ff57767e;
-
-@const slotPremiumBgColor           :#b2191107; 
-@const slotPremiumBorderColor       :#ff3b2e19;
-@const slotPremiumTopLineColor      :#ff5b4622;
-
-@const slotOwnedPremiumBgColor      :#b22d250f; 
-@const slotOwnedPremiumBorderColor  :#ff5b471f;
-@const slotOwnedPremiumTopLineColor :#ff7b591f;
-
-@const slotSquadronBgColor          :#b218231a; 
-@const slotSquadronBorderColor      :#B2263125;
-@const slotSquadronTopLineColor     :#ff4c6045;
-
-@const slotOwnedSquadronBgColor     :#b2263a1c; 
-@const slotOwnedSquadronBorderColor :#ff3e5c2c;
-@const slotOwnedSquadronTopLineColor:#ff4b712f;
-
-@const slotBrokenBgColor            :#b21c0000; 
-@const slotBrokenBorderColor        :#B231090B;
-@const slotBrokenTopLineColor       :#ff781511;
-
-@const slotSquadronWaitingBgColor     :#b218231a; 
-@const slotSquadronWaitingBorderColor :#ff374736;
-@const slotSquadronWaitingTopLineColor:#ff4c6045;
-
-@const shopInServiceImgBgColor: #ff232C35;
-@const shopInServiceImgBorderColor: #ff3b4a51;
-
-@const slotbarItemHoverColor:#FFFFFF;
-@const extraInfoBlockBorderColor:#404E57;
-@const extraInfoBlockBgColor:#2B3B45;
-
-@const shopItemPad: 4*@sf/@pf;
-@const slotExtraInfoSidePad: (0.05@slot_button_fullWidth)\1;
-@const rentIconSize: 26@sf/@pf\2*2;
-@const slotBorderSize: 1@dp;
-@const slotbarBottomLineHeight: 1@sf/@pf;
-@const slotTopLineHeight: 2@dp;
-@const unitTooltipTopLineHeight: 3@dp;
-@const unitTooltipTopLinePad: -1@dp; 
-@const slotBottomShadeHeight: 2@sf/@pf;
-@const slotGroupTagHeight: 4@dp;
-@const groupUnfoldMarkWidth: 29@sf/@pf \ 1;
-@const groupUnfoldMarkHeight: 20@sf/@pf \ 1;
-@const swapCrewsHeaderHeight: 30@sf/@pf \ 1;
-@const topUnitsBonusHeight:0.5@shop_height;
-@const unitTrashBinPosY:sh - 1@slotbarOffset - 1@slotbarHeight - 1@slotbarTop - h - 30@sf/@pf;
-
 unitItemContainer {
   css-hier-invalidate:yes;
   padding:1@slotPaddingNoTable;
@@ -341,11 +268,13 @@ shopAirImg {
   position:absolute;
 }
 
-slotbarTable[highlightSelected=yes] unitCell {
+slotbarTable[highlightSelected=yes] unitCell,
+slotbarTable[highlightSelected=yes] unitItemContainer {
   behaviour: massTransparency;
 }
 
-slotbarTable[highlightSelected=yes] unitCell[selected=no] {
+slotbarTable[highlightSelected=yes] unitCell[selected=no],
+slotbarTable[highlightSelected=yes] unitItemContainer[selected=no] {
   transp-base: 50;
   transp-end: 50;
 }
@@ -712,20 +641,8 @@ firstChoiceItem > slotHoverHighlight {
   size:pw, ph-(@sf/@pf)/2;
 }
 
-firstChoiceItem > slotTopGradientLine {
-  size:pw, 2@slotTopLineHeight;
-}
-
-firstChoiceItem > slotBottomGradientLine {
-  size:pw, 2@slotbarBottomLineHeight;
-}
-
 unitCell[selected=yes] > shopItem > slotSelectionRectangle,
 unitCell[selected=no] > shopItem:hover > slotBottomGradientLine,
-firstChoiceItem[selected=yes] > slotHoverHighlight,
-firstChoiceItem[selected=yes] > slotTopGradientLine,
-firstChoiceItem[selected=yes] > slotBottomGradientLine,
-firstChoiceItem:hover > slotHoverHighlight,
 unitCell > shopItem:hover > slotHoverHighlight,
 unitItemContainer[chosen=yes] > shopItem > slotSelectionRectangle,
 unitItemContainer[chosen=no] > shopItem:hover > slotBottomGradientLine,
@@ -915,6 +832,8 @@ shopItemText[tinyFont=yes] {
 
 unitCell[selected=yes] shopItemText,
 unitCell[selected=yes] shopItemPrice,
+unitItemContainer[selected=yes] shopItemText,
+unitItemContainer[selected=yes] shopItemPrice,
 unitItemContainer[chosen=yes] shopItemText,
 unitItemContainer[chosen=yes] shopItemPrice,
 shopItem:hover shopItemText,
@@ -964,6 +883,8 @@ bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect] {
 
 unitCell[selected=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitCell[selected=yes] topline > shopItemText,
+unitItemContainer[selected=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
+unitItemContainer[selected=yes] topline > shopItemText,
 unitItemContainer[chosen=yes] bottomline > tdiv > shopItemText[autoScrollText=hoverOrSelect],
 unitItemContainer[chosen=yes] topline > shopItemText,
 unitItemContainer[chosen=yes] topline > shopItemDiv,
@@ -1168,7 +1089,7 @@ slotMissionHintContainer > slotBottomGradientLine {
 }
 
 slotMissionHintContainer:hover,
-extraInfoBlockTop[hasInfo=yes]:hover > slotMissionHintContainer,
+extraInfoBlockTop[hasInfo=yes]:hover > slotMissionHintContainer[hasInfo=yes],
 extraInfoBlock:hover > content > slotHoverHighlight,
 extraInfoBlock:hover > content > slotBottomGradientLine {
   display:show;
@@ -1478,7 +1399,7 @@ unitCell > shopItem:hover Button_text.bottomAirItem,
 [showButtonsForSelectedChild=yes] unitItemContainer[selected=yes] > shopItem:hover Button_text.bottomAirItem,
 weapon_item_unit:hover Button_text.bottomAirItem,
 shopItem Button_text.bottomAirItem:hover,
-[chosen=yes] > shopItem Button_text.battle {
+[chosen=yes] > shopItem Button_text.battle[hasToBattleButton=yes]{
   display:show;
   enable:yes;
 }
@@ -1994,4 +1915,40 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock {
 
 slotbarTable[noHoverHighlight=yes] > unitItemContainer > shopItem > slotSelectionRectangle {
   display: hide;
+}
+
+shopItem[isEmptySlot=yes] > itemWinkBlock {
+  display: hide;
+}
+
+
+shopItem > crewImage {
+  position: absolute;
+  pos: -@blockInterval, ph-h-@slotBottomShadeHeight;
+  size: 2.074ph, 1.037ph;
+  background-repeat: aspect-ratio;
+  background-svg-size: 2.074ph, 1.037ph;
+  background-align: left;
+  background-color: @white;
+}
+
+unitItemContainer[isCrewRecruit=yes] > shopItem > crewImage {
+  background-color: #808080;
+}
+
+shopItem[isEmptySlot=yes] > topline > shopItemDiv > shopItemText {
+  position: relative;
+  right: 0;
+  margin-right: 0.008@sf;
+  text-align: right;
+  header: no;
+  translucent: no;
+}
+
+shopItem[isEmptySlot=yes] > bottomline > shopItemPrice {
+  position: relative;
+  tinyFont: no;
+  right: 0;
+  header: yes;
+  padding-right: 0;
 }

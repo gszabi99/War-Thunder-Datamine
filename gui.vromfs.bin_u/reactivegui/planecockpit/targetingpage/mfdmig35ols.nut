@@ -46,7 +46,7 @@ let lockFrame = @() {
     rendObj = ROBJ_VECTOR_CANVAS
     color = whiteColor
     lineWidth = baseLineWidth
-    commands = [
+    commands = const [
       [VECTOR_LINE, 40, 42, 44, 42],
       [VECTOR_LINE, 40, 42, 40, 45],
       [VECTOR_LINE, 60, 42, 56, 42],
@@ -135,10 +135,10 @@ let distScale = {
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth
-      commands = DistValid.get() ? [
+      commands = DistValid.get() ? const [
         [VECTOR_LINE, 0, 0, 20, 0],
         [VECTOR_POLY, 20, 0, 50, -100, 50, -40, 100, -40, 100, 40, 50, 40, 50, 100]
-      ] : []
+      ] : const []
     }
   ]
 }

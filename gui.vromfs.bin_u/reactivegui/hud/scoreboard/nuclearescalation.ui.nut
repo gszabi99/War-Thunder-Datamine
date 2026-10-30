@@ -50,7 +50,7 @@ let mkNuclearIcon = @(progressFillW) @() {
   bgColor = ESCALATION_BG_COLOR
   image = Picture($"ui/gameuiskin#basezone_small_nuclear_escalate.svg:{NUCLEAR_ICON_SIZE}:P")
   
-  children = progressFillW.get() == 1.0 ? {
+  children = progressFillW.get() == 1.0 ? const {
     size = NUCLEAR_ICON_SIZE + NUCLEAR_ICON_BORDER_SIZE
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
@@ -175,18 +175,16 @@ return function mkNuclearEscalationHud() {
 
   return {
     flow = FLOW_VERTICAL
-    children = [
-      {
-        size = FLEX_H
-        flow = FLOW_HORIZONTAL
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = [
-          mkTeamProgress(true, localTeamTicketsW, scoreLimit, ANIM_TRIGGER_ALLY)
-          nuclearIconsBlock
-          mkTeamProgress(false, enemyTeamTicketsW, scoreLimit, ANIM_TRIGGER_ENEMY)
-        ]
-      }
-    ]
+    children = {
+      size = FLEX_H
+      flow = FLOW_HORIZONTAL
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = [
+        mkTeamProgress(true, localTeamTicketsW, scoreLimit, ANIM_TRIGGER_ALLY)
+        nuclearIconsBlock
+        mkTeamProgress(false, enemyTeamTicketsW, scoreLimit, ANIM_TRIGGER_ENEMY)
+      ]
+    }
   }
 }

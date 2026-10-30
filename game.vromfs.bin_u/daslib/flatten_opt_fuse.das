@@ -21,11 +21,11 @@ require daslib/flatten_opt_common
 
 
 def private negate_const(e : ExpressionPtr) : ExpressionPtr {
-    if (e is ExprConstDouble) return new ExprConstDouble(at = e.at, value = -(e as ExprConstDouble).value)   
+    if (e is ExprConstDouble) return new ExprConstDouble(at = e.at, value = -(e as ExprConstDouble).value)
     var L = const_lanes(e)
     if (L.kind == CK_FLOAT) { L.f = -L.f; return make_const_lanes(L, e.at) }
     if (L.kind == CK_INT) { L.i = -L.i; return make_const_lanes(L, e.at) }
-    return null   
+    return null
 }
 
 def private has_arity_named(mod : Module?; fname : string; argc : int) : bool {
@@ -55,14 +55,11 @@ def public fuse_callable(mod : Module?; fname : string; argc : int = 3) : bool {
     return found
 }
 
-
-
-
 def private match_mad(var that : ExprOp2?; var ma, mb, mc : ExpressionPtr&) : bool {
     if (that == null) return false
     var fa, fb, other : ExpressionPtr
-    var negOther = false        
-    var negFactor = false       
+    var negOther = false
+    var negFactor = false
     if (qmatch(that, $e(fa) * $e(fb) + $e(other)).matched) {
         pass
     } elif (qmatch(that, $e(other) + $e(fa) * $e(fb)).matched) {
@@ -74,7 +71,6 @@ def private match_mad(var that : ExprOp2?; var ma, mb, mc : ExpressionPtr&) : bo
     } else {
         return false
     }
-    
     var bta = expr_bt(fa)
     var btb = expr_bt(fb)
     let btc = expr_bt(other)
@@ -92,7 +88,6 @@ def private match_mad(var that : ExprOp2?; var ma, mb, mc : ExpressionPtr&) : bo
         other = negate_const(other)
         if (other == null) return false
     }
-    
     if (vec_elem_bt(btb) != Type.none && bta == vec_elem_bt(btb)) {
         var tmp = fa
         fa = fb
@@ -108,24 +103,18 @@ def private match_mad(var that : ExprOp2?; var ma, mb, mc : ExpressionPtr&) : bo
     return true
 }
 
-
-
-
 def private match_neg_add(var that : ExprOp2?; var pos, neg : ExpressionPtr&) : bool {
     if (that == null || !is_mad_elem(expr_bt(that))) return false
-    return (qmatch(that, -$e(neg) + $e(pos)).matched ||    
-        qmatch(that, $e(pos) + -$e(neg)).matched)           
+    return (qmatch(that, -$e(neg) + $e(pos)).matched ||
+        qmatch(that, $e(pos) + -$e(neg)).matched)
 }
-
-
-
 
 def private match_lerp(var cll : ExprCall?; var la, lb, lt : ExpressionPtr&) : bool {
     if (cll == null) return false
     var da, db, aa, tt : ExpressionPtr
     if (!qmatch(cll, mad($e(db) - $e(da), $e(tt), $e(aa))).matched &&     
-        !qmatch(cll, mad(-$e(da) + $e(db), $e(tt), $e(aa))).matched &&    
-        !qmatch(cll, mad($e(db) + -$e(da), $e(tt), $e(aa))).matched) return false  
+        !qmatch(cll, mad(-$e(da) + $e(db), $e(tt), $e(aa))).matched &&
+        !qmatch(cll, mad($e(db) + -$e(da), $e(tt), $e(aa))).matched) return false
     if (describe(da) != describe(aa) ||
         !lerp_shape(expr_bt(da), expr_bt(db), expr_bt(tt))) return false
     la = aa
@@ -135,12 +124,9 @@ def private match_lerp(var cll : ExprCall?; var la, lb, lt : ExpressionPtr&) : b
 }
 
 let private SIDE_NONE = 0
-let private SIDE_EQUAL = 1       
-let private SIDE_COMPONENT = 2   
-let private SIDE_GATHER = 3      
-
-
-
+let private SIDE_EQUAL = 1
+let private SIDE_COMPONENT = 2
+let private SIDE_GATHER = 3
 
 def private vectorize_side(var that : ExprCall?; d : int; takeLeft : bool; var node : ExpressionPtr&) : int {
     var sides : array<ExpressionPtr>
@@ -149,7 +135,6 @@ def private vectorize_side(var that : ExprCall?; d : int; takeLeft : bool; var n
         var li = that.arguments[i] as ExprOp2
         sides |> push(takeLeft ? li.left : li.right)
     }
-    
     if (expr_bt(sides[0]) == Type.tFloat) {
         let key0 = describe(sides[0])
         var eq = true
@@ -167,7 +152,6 @@ def private vectorize_side(var that : ExprCall?; d : int; takeLeft : bool; var n
             return SIDE_EQUAL
         }
     }
-    
     var baseKey = ""
     var base : ExpressionPtr
     var mask = ""
@@ -196,7 +180,6 @@ def private vectorize_side(var that : ExprCall?; d : int; takeLeft : bool; var n
         }
         return SIDE_COMPONENT
     }
-    
     var lanes <- [for (sd in sides); clone_expression(sd)]
     node = make_float_ctor(d, that.at, lanes)
     unsafe {
@@ -206,10 +189,7 @@ def private vectorize_side(var that : ExprCall?; d : int; takeLeft : bool; var n
     return SIDE_GATHER
 }
 
-def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : ExpressionPtr {
-    let d = ctor_dim_by_name(that)
-    if (d < 2 || !is_float_vec(expr_bt(that))) return null
-    
+def private ctor_fuse_same_op(var that : ExprCall?; d : int) : ExpressionPtr {
     var sameOp = ""
     if (that.arguments[0] is ExprOp2) {
         let op0 = "{(that.arguments[0] as ExprOp2).op}"
@@ -223,73 +203,69 @@ def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : Expre
             }
         }
     }
-    if (sameOp != "") {
-        var aN : ExpressionPtr
-        var bN : ExpressionPtr
-        let ka = vectorize_side(that, d, true, aN)
-        let kb = vectorize_side(that, d, false, bN)
-        
-        if (ka == SIDE_COMPONENT || kb == SIDE_COMPONENT) {
-            
-            if (ka == SIDE_EQUAL && (sameOp == "+" || sameOp == "-")) {
-                aN = make_float_splat(d, that.at, aN)
-            }
-            if (kb == SIDE_EQUAL && (sameOp == "+" || sameOp == "-")) {
-                bN = make_float_splat(d, that.at, bN)
-            }
-            return new ExprOp2(at = that.at, op := sameOp, left = aN, right = bN)
-        }
+    if (sameOp == "") return null
+    var aN : ExpressionPtr
+    var bN : ExpressionPtr
+    let ka = vectorize_side(that, d, true, aN)
+    let kb = vectorize_side(that, d, false, bN)
+    if (ka != SIDE_COMPONENT && kb != SIDE_COMPONENT) return null
+    if (ka == SIDE_EQUAL && (sameOp == "+" || sameOp == "-")) {
+        aN = make_float_splat(d, that.at, aN)
     }
-    
-    if (that.arguments[0] is ExprOp2) {
-        var l0 = that.arguments[0] as ExprOp2
-        if (l0.op == "*" || l0.op == "/") {
-            for (ci in range(l0.op == "*" ? 2 : 1)) {
-                var cand = (l0.op == "/" || ci == 1) ? l0.right : l0.left
-                if (expr_bt(cand) != Type.tFloat) {
-                    continue
-                }
-                let key = describe(cand)
-                var rests : array<ExpressionPtr>
-                var allMatch = true
-                for (i in range(d)) {
-                    var ok = false
-                    if (that.arguments[i] is ExprOp2) {
-                        var li = that.arguments[i] as ExprOp2
-                        if (li.op == l0.op) {
-                            if (li.op == "*" && describe(li.left) == key && expr_bt(li.left) == Type.tFloat) {
-                                rests |> push(clone_expression(li.right))
-                                ok = true
-                            } elif (describe(li.right) == key && expr_bt(li.right) == Type.tFloat) {
-                                rests |> push(clone_expression(li.left))
-                                ok = true
-                            }
-                        }
+    if (kb == SIDE_EQUAL && (sameOp == "+" || sameOp == "-")) {
+        bN = make_float_splat(d, that.at, bN)
+    }
+    return new ExprOp2(at = that.at, op := sameOp, left = aN, right = bN)
+}
+
+def private ctor_fuse_shared_factor(var that : ExprCall?; d : int) : ExpressionPtr {
+    if (!(that.arguments[0] is ExprOp2)) return null
+    var l0 = that.arguments[0] as ExprOp2
+    if (l0.op != "*" && l0.op != "/") return null
+    for (ci in range(l0.op == "*" ? 2 : 1)) {
+        var cand = (l0.op == "/" || ci == 1) ? l0.right : l0.left
+        if (expr_bt(cand) != Type.tFloat) {
+            continue
+        }
+        let key = describe(cand)
+        var rests : array<ExpressionPtr>
+        var allMatch = true
+        for (i in range(d)) {
+            var ok = false
+            if (that.arguments[i] is ExprOp2) {
+                var li = that.arguments[i] as ExprOp2
+                if (li.op == l0.op) {
+                    if (li.op == "*" && describe(li.left) == key && expr_bt(li.left) == Type.tFloat) {
+                        rests |> push(clone_expression(li.right))
+                        ok = true
+                    } elif (describe(li.right) == key && expr_bt(li.right) == Type.tFloat) {
+                        rests |> push(clone_expression(li.left))
+                        ok = true
                     }
-                    if (!ok) {
-                        allMatch = false
-                        break
-                    }
                 }
-                if (allMatch) {
-                    var nc = make_float_ctor(d, that.at, rests)
-                    var sc = clone_expression(cand)
-                    unsafe {
-                        delete rests
-                    }
-                    return new ExprOp2(at = that.at, op := l0.op, left = nc, right = sc)
-                }
-                unsafe {
-                    delete rests
-                }
+            }
+            if (!ok) {
+                allMatch = false
+                break
             }
         }
+        if (allMatch) {
+            var nc = make_float_ctor(d, that.at, rests)
+            var sc = clone_expression(cand)
+            unsafe {
+                delete rests
+            }
+            return new ExprOp2(at = that.at, op := l0.op, left = nc, right = sc)
+        }
+        unsafe {
+            delete rests
+        }
     }
-    
-    if (no_fast_math) return null
-    var laneC : array<float>
-    var laneV : array<float>
-    var laneE : array<ExpressionPtr>
+    return null
+}
+
+def private lane_const_factors(var that : ExprCall?; d : int; var laneC, laneV : array<float>;
+                               var laneE : array<ExpressionPtr>) {
     for (i in range(d)) {
         var cv = 0.0
         if (scalar_float_const(that.arguments[i], cv)) {
@@ -316,7 +292,9 @@ def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : Expre
         laneV |> push(0.0)
         laneE |> push(ei)
     }
-    var bestC = 0.0
+}
+
+def private majority_factor(laneC : array<float>; laneE : array<ExpressionPtr>; d : int; var bestC : float&) : int {
     var bestN = 0
     for (i in range(d)) {
         if (laneE[i] == null || laneC[i] == 1.0 || laneC[i] == 0.0) {
@@ -333,14 +311,16 @@ def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : Expre
             bestC = laneC[i]
         }
     }
-    if (bestN < 2) {
-        delete laneC
-        delete laneV
-        unsafe {
-            delete laneE
-        }
-        return null
-    }
+    return bestN
+}
+
+def private ctor_fuse_majority_const(var that : ExprCall?; d : int) : ExpressionPtr {
+    var laneC : array<float>
+    var laneV : array<float>
+    var laneE : array<ExpressionPtr>
+    lane_const_factors(that, d, laneC, laneV, laneE)
+    var bestC = 0.0
+    let bestN = majority_factor(laneC, laneE, d, bestC)
     var before = 0
     var after = 1
     for (i in range(d)) {
@@ -351,42 +331,50 @@ def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : Expre
             after ++
         }
     }
-    if (after >= before) {
-        delete laneC
-        delete laneV
+    var res : ExpressionPtr = null
+    if (bestN >= 2 && after < before) {
+        var lanes : array<ExpressionPtr>
+        for (i in range(d)) {
+            if (laneE[i] == null) {
+                lanes |> push(new ExprConstFloat(at = that.at, value = laneV[i] / bestC))
+            } elif (laneC[i] == bestC) {
+                lanes |> push(clone_expression(laneE[i]))
+            } else {
+                var comp : ExpressionPtr = new ExprConstFloat(at = that.at, value = laneC[i] / bestC)
+                lanes |> push(new ExprOp2(at = that.at, op := "*", left = clone_expression(laneE[i]), right = comp))
+            }
+        }
+        var nc = make_float_ctor(d, that.at, lanes)
+        res = new ExprOp2(at = that.at, op := "*", left = nc, right = new ExprConstFloat(at = that.at, value = bestC))
         unsafe {
-            delete laneE
-        }
-        return null
-    }
-    var lanes : array<ExpressionPtr>
-    for (i in range(d)) {
-        if (laneE[i] == null) {
-            lanes |> push(new ExprConstFloat(at = that.at, value = laneV[i] / bestC))
-        } elif (laneC[i] == bestC) {
-            lanes |> push(clone_expression(laneE[i]))
-        } else {
-            var comp : ExpressionPtr = new ExprConstFloat(at = that.at, value = laneC[i] / bestC)
-            lanes |> push(new ExprOp2(at = that.at, op := "*", left = clone_expression(laneE[i]), right = comp))
+            delete lanes
         }
     }
-    var nc = make_float_ctor(d, that.at, lanes)
     delete laneC
     delete laneV
     unsafe {
-        delete lanes
         delete laneE
     }
-    return new ExprOp2(at = that.at, op := "*", left = nc, right = new ExprConstFloat(at = that.at, value = bestC))
+    return res
+}
+
+def private ctor_fuse_rewrite(var that : ExprCall?; no_fast_math : bool) : ExpressionPtr {
+    let d = ctor_dim_by_name(that)
+    if (d < 2 || !is_float_vec(expr_bt(that))) return null
+    var r = ctor_fuse_same_op(that, d)
+    if (r != null) return r
+    r = ctor_fuse_shared_factor(that, d)
+    if (r != null) return r
+    if (no_fast_math) return null
+    return ctor_fuse_majority_const(that, d)
 }
 
 struct private DotGroup {
-    base : ExpressionPtr        
+    base : ExpressionPtr
     dim : int
     weights : float4
     nterms : int
 }
-
 
 def private dot_term_lane(var e : ExpressionPtr; var baseKey : string&; var base : ExpressionPtr&;
                           var lane : int&; var w : float&) : bool {
@@ -397,7 +385,7 @@ def private dot_term_lane(var e : ExpressionPtr; var baseKey : string&; var base
         return true
     }
     var l, r : ExpressionPtr
-    if (!qmatch(e, $e(l) * $e(r)).matched) return false    
+    if (!qmatch(e, $e(l) * $e(r)).matched) return false
     var c = 0.0
     if (scalar_float_const(r, c) && component_read_of(l, baseKey, base, comp)) {
         lane = lane_index(comp)
@@ -412,22 +400,19 @@ def private dot_term_lane(var e : ExpressionPtr; var baseKey : string&; var base
     return false
 }
 
-
-
-
 def private dot_chain_groups(var terms : array<ReTerm>; var groups : table<string; DotGroup>;
                              var tKey : array<string>) : bool {
     tKey |> resize(length(terms))
-    for (i in range(length(terms))) {
+    for (t, key in terms, tKey) {
         var baseKey = ""
         var base : ExpressionPtr
         var lane = 0
         var w = 0.0
-        if (!dot_term_lane(terms[i].e, baseKey, base, lane, w)) {
+        if (!dot_term_lane(t.e, baseKey, base, lane, w)) {
             continue
         }
-        tKey[i] = baseKey
-        if (terms[i].neg) {
+        key = baseKey
+        if (t.neg) {
             w = -w
         }
         if (!key_exists(groups, baseKey)) {
@@ -460,9 +445,6 @@ def private has_unfused_lane_dot(var that : ExprOp2?) : bool {
     return any
 }
 
-
-
-
 def private dot_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>) : ExpressionPtr {
     var groups : table<string; DotGroup>
     var tKey : array<string>
@@ -475,15 +457,14 @@ def private dot_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>) 
     }
     var emitted : table<string>
     var newTerms : array<ReTerm>
-    for (i in range(length(terms))) {
-        let k = tKey[i]
+    for (t, k in terms, tKey) {
         if (k == "") {
-            newTerms |> push(terms[i])
+            newTerms |> push(t)
             continue
         }
         var g = groups?[k] ?? default<DotGroup>
         if (g.nterms < 2) {
-            newTerms |> push(terms[i])
+            newTerms |> push(t)
             continue
         }
         if (key_exists(emitted, k)) {
@@ -514,9 +495,6 @@ def private dot_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>) 
     return r
 }
 
-
-
-
 def private dot_fold_expr(var e : ExpressionPtr; var changed : bool&) : ExpressionPtr {
     if (e == null) return null
     if (e is ExprOp2) {
@@ -525,7 +503,6 @@ def private dot_fold_expr(var e : ExpressionPtr; var changed : bool&) : Expressi
             var terms : array<ReTerm>
             collect_add(e, false, terms)
             for (t in terms) {
-                
                 dot_fold_expr(t.e, changed)
             }
             var r = dot_fold_chain(e, terms)
@@ -617,8 +594,7 @@ class private LerpFuseVisitor : AstVisitor {
     }
 }
 
-
-def private reduce_lane(var t : ReTerm; var s : ExpressionPtr&; var w : float&; var stripped : bool&) : bool {   
+def private reduce_lane(var t : ReTerm; var s : ExpressionPtr&; var w : float&; var stripped : bool&) : bool {
     if (t.neg) return false
     var e = t.e
     w = 1.0
@@ -635,7 +611,7 @@ def private reduce_lane(var t : ReTerm; var s : ExpressionPtr&; var w : float&; 
             w = c
             stripped = true
         } else {
-            return false   
+            return false
         }
     }
     if (is_all_const(e) || expr_bt(e) != Type.tFloat) return false
@@ -647,15 +623,10 @@ def private reduce_lane(var t : ReTerm; var s : ExpressionPtr&; var w : float&; 
     return true
 }
 
-
-
-
-
 let private ELEMENTWISE_UNARY : table<string> <- {
     "sin", "cos", "sqrt", "exp", "log", "abs", "frac", "floor", "ceil",
     "sign", "saturate", "radians", "degrees", "one_minus"
 }
-
 
 def private shared_elementwise_unary(lanes : array<ExpressionPtr>) : string {
     var g = ""
@@ -664,7 +635,7 @@ def private shared_elementwise_unary(lanes : array<ExpressionPtr>) : string {
         let c = e as ExprCall
         if (length(c.arguments) != 1 || expr_bt(c.arguments[0]) != Type.tFloat) return ""
         let fullname = "{c.name}"
-        if (find(fullname, 58, 0) >= 0) return ""   
+        if (find(fullname, ':', 0) >= 0) return ""
         let nm = simple_name(fullname)
         if (!key_exists(ELEMENTWISE_UNARY, nm)) return ""
         if (g == "") {
@@ -686,9 +657,6 @@ def private mod_has_unary_vec(mod : Module?; fname : string; want : Type) : bool
     return found
 }
 
-
-
-
 def private has_unary_vec_overload(mod : Module?; fname : string; want : Type) : bool {
     if (mod == null) return false
     if (mod_has_unary_vec(mod, fname, want)) return true
@@ -705,8 +673,6 @@ def private float_vec_type(dim : int) : Type {
     return dim == 2 ? Type.tFloat2 : (dim == 3 ? Type.tFloat3 : Type.tFloat4)
 }
 
-
-
 def private make_hadd_arg(var lanes : array<ExpressionPtr>; w : int; at : LineInfo; mod : Module?) : ExpressionPtr {
     let g = shared_elementwise_unary(lanes)
     if (g == "" || !has_unary_vec_overload(mod, g, float_vec_type(w))) {
@@ -715,7 +681,7 @@ def private make_hadd_arg(var lanes : array<ExpressionPtr>; w : int; at : LineIn
     var args : array<ExpressionPtr>
     args |> reserve(w)
     for (ln in lanes) {
-        args |> push(clone_expression((ln as ExprCall).arguments[0]))   
+        args |> push(clone_expression((ln as ExprCall).arguments[0]))
     }
     var argCtor = make_float_ctor(w, at, args)
     var gcall = new ExprCall(at = at, name := g)
@@ -726,14 +692,9 @@ def private make_hadd_arg(var lanes : array<ExpressionPtr>; w : int; at : LineIn
     return gcall
 }
 
-
-def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>; minWidth : int; mod : Module?) : ExpressionPtr {
-    
-    let dotCallable = fuse_callable(mod, "dot", 2)
-    var cand : array<int>
-    var laneScalar : array<ExpressionPtr>
-    var laneWeight : array<float>
-    var laneStripped : array<bool>
+def private collect_reduce_lanes(var terms : array<ReTerm>; dotCallable : bool; var cand : array<int>;
+                                 var laneScalar : array<ExpressionPtr>; var laneWeight : array<float>;
+                                 var laneStripped : array<bool>) {
     for (i in range(length(terms))) {
         var s : ExpressionPtr
         var w = 1.0
@@ -748,12 +709,64 @@ def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>;
             laneStripped |> push(stripped)
         }
     }
+}
+
+def private make_reduce_group_call(var terms : array<ReTerm>; cand : array<int>;
+                                   laneScalar : array<ExpressionPtr>; laneWeight : array<float>;
+                                   laneStripped : array<bool>; o, w : int; at : LineInfo;
+                                   mod : Module?) : ExpressionPtr {
+    var weighted = false
+    for (li in range(w)) {
+        if (laneStripped[o + li] || laneWeight[o + li] != 1.0) {
+            weighted = true
+        }
+    }
+    if (weighted) {
+        var scalars : array<ExpressionPtr>
+        var weights : array<ExpressionPtr>
+        scalars |> reserve(w)
+        weights |> reserve(w)
+        for (li in range(w)) {
+            scalars |> push(clone_expression(laneScalar[o + li]))
+            weights |> push(new ExprConstFloat(at = at, value = laneWeight[o + li]))
+        }
+        var vecArg = make_float_ctor(w, at, scalars)
+        var mask = make_float_ctor(w, at, weights)
+        var dcll = new ExprCall(at = at, name := "dot")
+        emplace(dcll.arguments, vecArg)
+        emplace(dcll.arguments, mask)
+        unsafe {
+            delete scalars
+            delete weights
+        }
+        return dcll
+    }
+    var lanes : array<ExpressionPtr>
+    lanes |> reserve(w)
+    for (li in range(w)) {
+        lanes |> push(terms[cand[o + li]].e)
+    }
+    var ctor = make_hadd_arg(lanes, w, at, mod)
+    var hcll = new ExprCall(at = at, name := "hadd")
+    emplace(hcll.arguments, ctor)
+    unsafe {
+        delete lanes
+    }
+    return hcll
+}
+
+def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>; minWidth : int; mod : Module?) : ExpressionPtr {
+    var cand : array<int>
+    var laneScalar : array<ExpressionPtr>
+    var laneWeight : array<float>
+    var laneStripped : array<bool>
+    collect_reduce_lanes(terms, fuse_callable(mod, "dot", 2), cand, laneScalar, laneWeight, laneStripped)
     var groups <- plan_groups(length(cand), minWidth)
     var covered = 0
     for (w in groups) {
         covered += w
     }
-    if (covered == 0) {     
+    if (covered == 0) {
         delete cand
         delete laneWeight
         delete laneStripped
@@ -763,7 +776,6 @@ def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>;
         }
         return null
     }
-    
     var headGroup : table<int; int>
     var groupOff : array<int>
     groupOff |> reserve(length(groups))
@@ -783,49 +795,8 @@ def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>;
         if (key_exists(dropped, i)) continue
         if (key_exists(headGroup, i)) {
             let gi = headGroup[i]
-            let w = groups[gi]
-            let o = groupOff[gi]
-            var weighted = false
-            for (li in range(w)) {
-                if (laneStripped[o + li] || laneWeight[o + li] != 1.0) {
-                    weighted = true
-                }
-            }
-            var cll : ExpressionPtr
-            if (weighted) {
-                
-                var scalars : array<ExpressionPtr>
-                var weights : array<ExpressionPtr>
-                scalars |> reserve(w)
-                weights |> reserve(w)
-                for (li in range(w)) {
-                    scalars |> push(clone_expression(laneScalar[o + li]))
-                    weights |> push(new ExprConstFloat(at = that.at, value = laneWeight[o + li]))
-                }
-                var vecArg = make_float_ctor(w, that.at, scalars)
-                var mask = make_float_ctor(w, that.at, weights)
-                var dcll = new ExprCall(at = that.at, name := "dot")
-                emplace(dcll.arguments, vecArg)
-                emplace(dcll.arguments, mask)
-                cll = dcll
-                unsafe {
-                    delete scalars
-                    delete weights
-                }
-            } else {
-                var lanes : array<ExpressionPtr>
-                lanes |> reserve(w)
-                for (li in range(w)) {
-                    lanes |> push(terms[cand[o + li]].e)   
-                }
-                var ctor = make_hadd_arg(lanes, w, that.at, mod)   
-                var hcll = new ExprCall(at = that.at, name := "hadd")
-                emplace(hcll.arguments, ctor)
-                cll = hcll
-                unsafe {
-                    delete lanes
-                }
-            }
+            var cll = make_reduce_group_call(terms, cand, laneScalar, laneWeight, laneStripped,
+                groupOff[gi], groups[gi], that.at, mod)
             newTerms |> push(ReTerm(neg = false, e = cll))
         } else {
             newTerms |> push(terms[i])
@@ -846,7 +817,6 @@ def private hadd_fold_chain(var that : ExpressionPtr; var terms : array<ReTerm>;
     return r
 }
 
-
 def private hadd_fold_expr(var e : ExpressionPtr; var changed : bool&; minWidth : int; mod : Module?) : ExpressionPtr {
     if (e == null) return null
     if (e is ExprOp2) {
@@ -855,7 +825,6 @@ def private hadd_fold_expr(var e : ExpressionPtr; var changed : bool&; minWidth 
             var terms : array<ReTerm>
             collect_add(e, false, terms)
             for (t in terms) {
-                
                 hadd_fold_expr(t.e, changed, minWidth, mod)
             }
             var r = hadd_fold_chain(e, terms, minWidth, mod)
@@ -892,8 +861,7 @@ def private hadd_fold_stmt(var s : ExpressionPtr; var changed : bool&; minWidth 
     }
 }
 
-
-def private has_unfused_hadd(var that : ExprOp2?; dotCallable : bool) : bool {
+def private has_unfused_hadd(var that : ExprOp2?; dotCallable : bool; minWidth : int) : bool {
     if (that == null || !(that.op == "+" || that.op == "-") || expr_bt(that) != Type.tFloat) return false
     var terms : array<ReTerm>
     collect_add(that, false, terms)
@@ -904,7 +872,7 @@ def private has_unfused_hadd(var that : ExprOp2?; dotCallable : bool) : bool {
         var stripped = false
         if (reduce_lane(t, s, w, stripped)) {
             if (stripped && !dotCallable) {
-                continue   
+                continue
             }
             n ++
         }
@@ -912,17 +880,15 @@ def private has_unfused_hadd(var that : ExprOp2?; dotCallable : bool) : bool {
     unsafe {
         delete terms
     }
-    return n >= 3
+    return n >= minWidth
 }
-
-
-
 
 class public FuseResidualVisitor : AstVisitor {
     checkMad : bool
     checkLerp : bool
     checkDot : bool
     checkHadd : bool
+    haddMinWidth : int
     noFastMath : bool
     foundMad : bool
     foundLerp : bool
@@ -934,7 +900,7 @@ class public FuseResidualVisitor : AstVisitor {
         if (checkDot && has_unfused_lane_dot(expr)) {
             foundDot = true
         }
-        if (checkHadd && has_unfused_hadd(expr, checkDot)) {   
+        if (checkHadd && has_unfused_hadd(expr, checkDot, haddMinWidth)) {
             foundHadd = true
         }
         if (!checkMad) {
@@ -971,7 +937,6 @@ def public fuse_body(var func : FunctionPtr; no_fast_math : bool = false; hadd_m
     
     if (!(func.body is ExprBlock)) return false
     var changed = false
-    
     if (!no_fast_math && fuse_callable(func._module, "dot", 2)) {
         var blk = func.body as ExprBlock
         var dchanged = false
@@ -982,9 +947,6 @@ def public fuse_body(var func : FunctionPtr; no_fast_math : bool = false; hadd_m
             changed = true
         }
     }
-    
-    
-    
     var cv = new CtorFuseVisitor()
     cv.noFastMath = no_fast_math
     make_visitor(*cv) $(adapter) {
@@ -996,7 +958,6 @@ def public fuse_body(var func : FunctionPtr; no_fast_math : bool = false; hadd_m
     unsafe {
         delete cv
     }
-    
     if (!no_fast_math && fuse_callable(func._module, "hadd", 1)) {
         var blk = func.body as ExprBlock
         var hchanged = false
@@ -1018,8 +979,6 @@ def public fuse_body(var func : FunctionPtr; no_fast_math : bool = false; hadd_m
     unsafe {
         delete v
     }
-    
-    
     if (fuse_callable(func._module, "lerp")) {
         var lv = new LerpFuseVisitor()
         make_visitor(*lv) $(adapter) {

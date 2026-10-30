@@ -1,13 +1,12 @@
+import "%scripts/time.nut" as time
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/queue/queueState.nut" import isQueueActive
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let time = require("%scripts/time.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { isQueueActive } = require("%scripts/queue/queueState.nut")
 
 let BaseQueue = class {
   id = 0

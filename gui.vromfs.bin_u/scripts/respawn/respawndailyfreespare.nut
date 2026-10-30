@@ -1,10 +1,9 @@
+from "%scripts/respawn/respawnState.nut" import hasDailyFreeSpares, getDailyFreeSparesLeftCount
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%scripts/time.nut" import buildTimeStr, getUtcMidnight
 from "guiRespawn" import getNumFreeSparesPerDay
 from "%scripts/dagui_library.nut" import *
-
-let { hasDailyFreeSpares, getDailyFreeSparesLeftCount } = require("%scripts/respawn/respawnState.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 
 const DAILY_FREE_SPARE_UID = "daily_free_spare"
 
@@ -66,7 +65,7 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   createDailyFreeSpareItem
   DAILY_FREE_SPARE_UID
-}
+})

@@ -1,16 +1,16 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "math" import round
 from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 function guiStartClanActivityWnd(uid = null, clanData = null) {
@@ -56,9 +56,7 @@ let clanActivityModal = class (BaseGuiHandlerWT) {
     foreach (day, data in history) {
       historyArr.append({ day = day.tointeger(), data = data })
     }
-    historyArr.sort(function(left, right) {
-      return right.day - left.day
-    })
+    historyArr.sortby(@(left) -left.day)
 
     let tableHeaderObj = this.scene.findObject("clan_member_activity_history_table_header");
     local rowIdx = 1
@@ -129,6 +127,6 @@ let clanActivityModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("clanActivityModal", clanActivityModal)
 
-return {
+return freeze({
   guiStartClanActivityWnd
-}
+})

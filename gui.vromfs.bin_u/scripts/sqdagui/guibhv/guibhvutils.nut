@@ -1,8 +1,7 @@
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%sqstd/functools.nut" import memoize
 from "math" import fabs
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 function getNearestSelectableChildIndex(listObj, curIndex, way) {
   if (!check_obj(listObj))
@@ -93,7 +92,7 @@ function updateTransparencyRecursive(obj, transpNew) {
     updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
 }
 
-return {
+return freeze({
   isObjHaveActiveChilds
   getNearestSelectableChildIndex
   markChildrenInteractive
@@ -105,4 +104,4 @@ return {
   blendProp
   setTranspRecursive
   updateTransparencyRecursive
-}
+})

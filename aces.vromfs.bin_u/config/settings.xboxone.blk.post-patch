@@ -64,11 +64,21 @@ dx12{
   "@override:dynamicLightsShadows" {
     "@override:dynamicShadowsMaxUpdatePerFrame":i = 1
   }
+  "@override:swrtShadows" { // weak GPU: both SWRT shadow approximations
+    boxDistRef:r = 100
+    blasLeafSkipDist:r = 6
+  }
   "@override:medium" {
     "@override:dynamicLightsShadows" {
       "@override:infantry" {
         "@override:shadowQuality":i = 0
       }
+    }
+    "@override:contactShadows" { // weak GPU: no contact and SWRT shadows on aircraft
+      "@override:aircraft" { "@override:contactShadowsQuality":i = 0 }
+    }
+    "@override:swrtShadows" {
+      "@override:aircraft" { "@override:enabled":b = no }
     }
   }
 }

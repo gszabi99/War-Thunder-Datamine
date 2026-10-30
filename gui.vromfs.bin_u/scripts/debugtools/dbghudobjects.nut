@@ -1,9 +1,9 @@
+from "%scripts/hud/hud.nut" import Hud
 from "dagor.random" import frnd
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
-let { Hud } = require("%scripts/hud/hud.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let dbgHudObjectTypes = require("%scripts/debugTools/dbgHudObjectTypes.nut")

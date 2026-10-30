@@ -2,6 +2,7 @@ require ecs
 require app
 require ecs.common
 require %game.events
+require %appGame.wt_events
 require %appGame.infantry.es.grenade_thrower_common
 require DngWeapon
 require DngHuman
@@ -12,8 +13,40 @@ require WeapHelpers
 require DagorSystem
 require PropsManager
 
+
 def is_in_range(val : float; min : float; max : float)
   return val > min && val <= max
+
+
+[es]
+def grenade_start_cooking_es(evt : CmdStartCookingGrenade;
+                             shell__explosionTimer : float;
+                             var shell__explTime : float&;
+                             var active : bool&)
+  if shell__explTime > 0.0
+    return
+  active = true
+  shell__explTime = evt.atTime + shell__explosionTimer
+
+
+[es(tag=server, REQUIRE=human_weap__grenadeThrower, before=grenade_thrower_launch_shell_on_server)]
+def grenade_thrower_cook_on_client_throw(evt : CmdThrowGrenadeFromClient)
+  query(evt.gunEid) <| $ [es] (grenade_thrower__projectileEntity : EntityId;
+                               grenade_thrower : GrenadeThrower;
+                               var grenade_thrower__cookRequestAt : float&)
+    var cookAt = evt.atTime
+    let requestAt = grenade_thrower__cookRequestAt
+    if requestAt > 0.0 && requestAt >= grenade_thrower.stateStart && requestAt <= evt.atTime
+      cookAt = requestAt
+    grenade_thrower__cookRequestAt = 0.0
+    sendEventImmediate(grenade_thrower__projectileEntity, CmdStartCookingGrenade(atTime = cookAt))
+
+
+[es(tag=server)]
+def grenade_cook_request_es(evt : RequestCookGrenade;
+                            human_weap__grenadeThrower : EntityId)
+  query(human_weap__grenadeThrower) <| $ [es] (var grenade_thrower__cookRequestAt : float&)
+    grenade_thrower__cookRequestAt = evt.atTime
 
 
 [es]
@@ -23,12 +56,13 @@ def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
                             gun__curShellId : PropsId;
                             grenade_throw__drawTime : float;
                             grenade_throw__throwTime : float;
-                            grenade_throw__cookProgressTime : float;
-                            grenade_throw__throwProgressTime : float;
-                            grenade_throw__fastThrowCookProgressTime : float;
-                            grenade_throw__fastThrowProgressTime : float;
+                            grenade_throw__cookAtProgress : float;
+                            grenade_throw__throwAtProgress : float;
+                            grenade_throw__fastThrowCookAtProgress : float;
+                            grenade_throw__fastThrowAtProgress : float;
                             grenade_thrower__projectileEntity : EntityId = INVALID_ENTITY_ID;
                             grenade_throw__attachWaitTimeout : float = 1.0;
+                            var grenade_thrower__cookRequestAt : float?;
                             var grenade_thrower : GrenadeThrower&)
   let isForReal = evt.isForReal
   if !isForReal
@@ -103,32 +137,32 @@ def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
     let prevThrowProgress = grenade_thrower.throwProgress
     grenade_thrower.throwProgress = calc_grenade_throw_progress(grenade_thrower, atTime + dt)
 
+    if grenade_thrower__cookRequestAt != null && *grenade_thrower__cookRequestAt > 0.0 && grenade_thrower.state == GrenadeThrowState.GTS_DRAW
+      if *grenade_thrower__cookRequestAt < grenade_thrower.stateStart
+        *grenade_thrower__cookRequestAt = 0.0
+      elif *grenade_thrower__cookRequestAt <= atTime && grenade_thrower__projectileEntity != INVALID_ENTITY_ID
+        sendEventImmediate(grenade_thrower__projectileEntity, CmdStartCookingGrenade(atTime = *grenade_thrower__cookRequestAt))
+        *grenade_thrower__cookRequestAt = 0.0
+
     if grenade_thrower__projectileEntity != INVALID_ENTITY_ID
-      let cookProgressTime = human_weap__fastThrowExclusive ? grenade_throw__fastThrowCookProgressTime : grenade_throw__cookProgressTime
-      if is_in_range(cookProgressTime, prevThrowProgress, grenade_thrower.throwProgress)
-        
-        query(grenade_thrower__projectileEntity) <| $ [es] (
-                                                            shell__explosionTimer : float;
-                                                            var shell__explTime : float&;
-                                                            var active : bool&)
-          if active
-            return
-          active = true
-          shell__explTime = atTime + shell__explosionTimer
-          
-          
-          
+      let cookAtProgress = human_weap__fastThrowExclusive ? grenade_throw__fastThrowCookAtProgress : grenade_throw__cookAtProgress
+      if is_in_range(cookAtProgress, prevThrowProgress, grenade_thrower.throwProgress)
+        sendEventImmediate(grenade_thrower__projectileEntity, CmdStartCookingGrenade(atTime = atTime))
 
     if !human_gun_attached
       return
 
     
-    let throwProgressTime = human_weap__fastThrowExclusive ? grenade_throw__fastThrowProgressTime : grenade_throw__throwProgressTime
+    let throwAtProgress = human_weap__fastThrowExclusive ? grenade_throw__fastThrowAtProgress : grenade_throw__throwAtProgress
     let isThrow = (grenade_thrower.state == GrenadeThrowState.GTS_THROW &&
-                  is_in_range(throwProgressTime,
+                  is_in_range(throwAtProgress,
                               prevThrowProgress,
                               grenade_thrower.throwProgress))
     gctrl.shoot = isThrow
+
+    if isThrow && grenade_thrower__projectileEntity != INVALID_ENTITY_ID
+      
+      sendEventImmediate(grenade_thrower__projectileEntity, CmdStartCookingGrenade(atTime = atTime))
 
     let rndSeed = phys_time_to_seed(atTime)
     sendEventImmediate(eid, CmdGunUpdate(atTime = atTime, isForReal = isForReal, seed = rndSeed, gctrl = gctrl, gloc = gloc))

@@ -65,12 +65,16 @@ def vehicle_local_horn_control_on_request(evt : CmdVehicleHornRequest;
 
 [es(tag=sound, no_order)]
 def vehicle_local_horn_control_update(info : ParallelUpdateFrameDelayed;
-                                      vehicle_seats__seatEids : EidList&;
-                                      var vehicle_horn_control__localPlayer : EntityId&;
-                                      var vehicle_horn_control__localSeat : EntityId&;
+                                      eid : EntityId;
+                                      vehicle_seats__seatEids : EidList;
+                                      vehicle_horn_control__localPlayer : EntityId;
+                                      vehicle_horn_control__localSeat : EntityId;
                                       vehicle_horn_control__endTime : float;
                                       isAlive : bool)
   if !!vehicle_horn_control__localPlayer
     if !isAlive || info.curTime >= vehicle_horn_control__endTime || vehicle_horn_control__localSeat != get_player_seat(vehicle_horn_control__localPlayer, vehicle_seats__seatEids)
-      vehicle_horn_control__localPlayer = INVALID_ENTITY_ID
-      vehicle_horn_control__localSeat = INVALID_ENTITY_ID
+      
+      query(eid) <| $ [es] (var vehicle_horn_control__localPlayer aka rw_vehicle_horn_control__localPlayer : EntityId&;
+                            var vehicle_horn_control__localSeat aka rw_vehicle_horn_control__localSeat : EntityId&)
+        rw_vehicle_horn_control__localPlayer = INVALID_ENTITY_ID
+        rw_vehicle_horn_control__localSeat = INVALID_ENTITY_ID

@@ -1,13 +1,13 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/string.nut" import clearBorderSymbols
 from "chat" import is_chat_message_empty
 from "%scripts/dagui_natives.nut" import edit_internet_radio_station, get_internet_radio_stations, get_internet_radio_path, add_internet_radio_station
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let AddRadioModalHandler = class (BaseGuiHandlerWT) {
@@ -92,9 +92,9 @@ let AddRadioModalHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("AddRadioModalHandler", AddRadioModalHandler)
 
-return {
+return freeze({
   openAddRadioWnd = @(editStationName = "") handlersManager.loadHandler(
     AddRadioModalHandler,
     { editStationName = editStationName }
   )
-}
+})

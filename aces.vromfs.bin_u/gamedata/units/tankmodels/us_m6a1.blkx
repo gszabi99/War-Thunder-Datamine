@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1866,7 +1872,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_M7_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_M7_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": 0.0,
@@ -1937,7 +1943,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_M3_user_cannon_for_M6A1.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_M3_user_cannon_for_M6A1.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "defaultYaw": 0.0,
@@ -2012,7 +2018,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
@@ -2054,7 +2060,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2098,7 +2104,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "emtr_mg_flame_02",
         "flash": "emtr_mg_flame_02",
         "useEmitter": true,
@@ -2144,7 +2150,7 @@
   "weapon_presets": {
     "preset": {
       "name": "us_m6a1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_m6a1_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/us_m6a1_default.blk"
     }
   },
   "VehiclePhys": {

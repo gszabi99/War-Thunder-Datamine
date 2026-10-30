@@ -1,5 +1,14 @@
 import "personalOffers" as personalOffers
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType
+from "%scripts/discounts/discountsState.nut" import getUnitDiscount
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "json" import parse_json
 from "dagor.workcycle" import setTimeout, clearTimer
@@ -10,18 +19,10 @@ from "types" import String
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
-let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
-let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
-let checkedOffers = mkWatched(persist, "checkedOffers", {})
+let curPersonalOffer = Watched(null)
+let checkedOffers = Watched({})
 
 let isInProgressOfferValidation = Watched(false)
 
@@ -298,10 +299,10 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   curPersonalOffer
   cachePersonalOfferIfNeed
   markSeenPersonalOffer
   isSeenOffer
   clearOfferCache
-}
+})

@@ -1,9 +1,8 @@
+from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
 from "steam" import steam_is_overlay_active
 from "%scripts/dagui_natives.nut" import periodic_task_register, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
-
-let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1
 local refreshActiveAppTask = -1

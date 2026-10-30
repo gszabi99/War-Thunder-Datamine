@@ -1,6 +1,5 @@
+from "%scripts/slotInfoPanel/slotInfoPanelButtons.nut" import slotInfoPanelButtons
 from "%scripts/dagui_library.nut" import *
-
-let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 
 slotInfoPanelButtons.set([
   {

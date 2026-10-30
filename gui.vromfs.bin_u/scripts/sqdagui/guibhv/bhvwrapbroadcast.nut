@@ -18,4 +18,4 @@ let wrapBroadcast = class {
 
 replace_script_gui_behaviour("wrapBroadcast", wrapBroadcast)
 
-return { wrapBroadcast }
+return freeze({ wrapBroadcast })

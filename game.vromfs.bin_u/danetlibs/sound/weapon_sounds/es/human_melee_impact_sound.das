@@ -10,7 +10,8 @@ require sound_utils.modules.sound_occlusion_common
 def human_melee_impact_sound(evt : CmdStartActionSfx;
                              human_melee_impact_sound__path : string;
                              human_weap__gunEids : EidList const?;
-                             human_weap__currentGunSlot = -1)
+                             human_weap__currentGunSlot = -1;
+                             human_sound_occlusion__blob : SoundOcclusionBlob const?)
   if has(evt.targetEid, "humanHitSound") || has(evt.targetEid, "human")
     return
   let smid = max(0, get_human_melee_impact_sound_material_id(evt.pmid))
@@ -19,4 +20,7 @@ def human_melee_impact_sound(evt : CmdStartActionSfx;
     let gunEid = (*human_weap__gunEids)[human_weap__currentGunSlot]
     query(gunEid) <| $ [es] (meleeImpactSoundPath : string)
       path = meleeImpactSoundPath
-  oneshot("[mat={smid}]{path}", prevent_wall_sound_occlusion(evt.pos, evt.norm, get_listener_pos()))
+  var handle = play("[mat={smid}]{path}", "", prevent_wall_sound_occlusion(evt.pos, evt.norm, get_listener_pos()))
+  if human_sound_occlusion__blob != null && is_valid_handle_value(*human_sound_occlusion__blob)
+    attach_to_blob(handle, *human_sound_occlusion__blob)
+  abandon(handle)

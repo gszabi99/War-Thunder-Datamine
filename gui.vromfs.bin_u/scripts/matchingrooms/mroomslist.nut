@@ -1,7 +1,14 @@
+import "%scripts/social/crossplay.nut" as crossplayModule
 import "%sqstd/underscore.nut" as u
+from "%scripts/matching/api.nut" import checkMatchingError
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%scripts/matching/serviceNotifications/mroomsApi.nut" import fetchRoomsList
+from "%scripts/matching/matchingGameModes.nut" import getGameModeIdsByEconomicName
+from "%scripts/contacts/contactsChecks.nut" import isPlayerInContacts
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getRoomMembersCnt, getRoomCreatorUid
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getMisListType
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%sqstd/platform.nut" import is_gdk
 from "dagor.time" import get_time_msec
 from "string" import format
 from "%globalScripts/externalPlayerListConsts.nut" import *
@@ -9,15 +16,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "types" import Array
 
-let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { getGameModeIdsByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
-let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getRoomMembersCnt, getRoomCreatorUid } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 
@@ -152,7 +151,7 @@ MRoomsList = class {
         }
       }
     }
-    else if (isPlatformSony) {
+    else if (isSony) {
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"

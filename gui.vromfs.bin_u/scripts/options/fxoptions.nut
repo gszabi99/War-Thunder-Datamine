@@ -1,13 +1,13 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
 from "chard" import save_profile
 from "graphicsOptions" import getPaperWhiteNits, setPaperWhiteNits, getDefaultPaperWhiteNits, getHdrBrightness, setHdrBrightness, getDefaultHdrBrightness, getHdrShadows
   , setHdrShadows, getDefaultHdrShadows, isHdrEnabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 
 
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
@@ -130,7 +130,7 @@ function openHdrSettings() {
   })
 }
 
-return {
+return freeze({
   openHdrSettings
   needShowHdrSettingsOnStart = @() isHdrEnabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
-}
+})

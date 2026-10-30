@@ -1,40 +1,40 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/options/optionsCustomDifficulty.nut" import OptionsCustomDifficultyModal
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler, get_cur_base_gui_handler
+from "%sqstd/platform.nut" import isSony
+from "%appGlobals/clientState/platform.nut" import isPs4VsyncEnabled
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyMissionParam
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/ranksAllowed.nut" import isRanksAllowed
+from "%scripts/matching/serviceNotifications/mroomsState.nut" import isHostInRoom
+from "%scripts/missions/missionsStates.nut" import get_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId
+from "%scripts/missions/urlMission.nut" import UrlMission
+from "%scripts/missions/missionsUtils.nut" import getMaxPlayersForGamemode
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import createSessionLobbyRoom, startCoopBySquad
+from "%scripts/options/options.nut" import getOptionsMode
+from "%scripts/clientState/contentPacks.nut" import checkGamemodePkg, checkPackageAndAskDownloadByTimes
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "eventbus" import eventbus_subscribe
 from "guiMission" import get_mission_difficulty, do_start_flight
-from "guiOptions" import get_gui_option, set_cd_preset
+from "guiOptions" import set_cd_preset
 from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, set_context_to_player
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "mission" import get_game_mode, get_game_type
 from "%scripts/webRPC.nut" import webRpcRegister
+
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { OptionsCustomDifficultyModal } = require("%scripts/options/optionsCustomDifficulty.nut")
-let { Briefing } = require("%scripts/briefing.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlersManager, loadHandler, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, isPs4VsyncEnabled } = require("%scripts/clientState/platform.nut")
-let { isInSessionRoom, getSessionLobbyMissionParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
-let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
-let { UrlMission } = require("%scripts/missions/urlMission.nut")
-let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { createSessionLobbyRoom, startCoopBySquad } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { getOptionsMode } = require("%scripts/options/options.nut")
-let { checkGamemodePkg, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
 
 let needCheckForVictory = Watched(false)
-let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { eventbusName = "gui_start_mainmenu"})
 
 function guiStartSessionList() {
   loadHandler(get_gui_handler("SessionsList"),
@@ -146,6 +146,9 @@ function briefingOptionsApply() {
   let gm = get_game_mode()
   if (gm == GM_SINGLE_MISSION || gm == GM_DYNAMIC) {
     if (isInSessionRoom.get()) {
+      if (!canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+        return
+
       if (!isHostInRoom())
         continueCoopWithSquad(get_mission_settings());
       else
@@ -204,30 +207,9 @@ function guiStartCdOptions(afterApplyFunc, owner = null) {
   })
 }
 
-function guiStartBriefing() {
-  
-  let startParams = handlersManager.getLastBaseHandlerStartParams()
-  if (startParams != null && !isInArray(startParams?.handlerName ?? "",
-      ["MPLobby", "SessionsList", "DebriefingModal"]))
-    backFromBriefingParams.set(startParams)
-
-  let params = {
-    backSceneParams = backFromBriefingParams.get()
-    isRestart = false
-  }
-  params.applyFunc <- function() {
-    if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
-      guiStartCdOptions(briefingOptionsApply, this)
-    else
-      briefingOptionsApply.call(this)
-  }
-  handlersManager.loadHandler(Briefing)
-}
-
 eventbus_subscribe("guiStartSkirmish", guiStartSkirmish)
 eventbus_subscribe("guiStartMislist", @(_) guiStartMislist())
 eventbus_subscribe("guiStartDynamicSummary", guiStartDynamicSummary)
-eventbus_subscribe("gui_start_briefing", @(_) guiStartBriefing())
 
 function guiStartCampaignNoPack() {
   guiStartMislist(true, GM_CAMPAIGN)
@@ -239,7 +221,7 @@ function guiStartCampaignNoPack() {
 }
 
 function guiStartCampaign() {
-  return checkPackageAndAskDownloadByTimes("hc_pacific", guiStartCampaignNoPack)
+  return checkPackageAndAskDownloadByTimes("hc_pacific", guiStartCampaignNoPack, null, null, true)
 }
 
 function guiStartMenuCampaign() {
@@ -270,7 +252,7 @@ function guiCreateSkirmish() {
 }
 
 function guiStartBenchmark() {
-  if (isPlatformSony) {
+  if (isSony) {
     isPs4VsyncEnabled.set(d3d_get_vsync_enabled?() ?? false)
     d3d_enable_vsync?(false)
   }
@@ -291,24 +273,14 @@ function guiStartBuilder(params = {}) {
 
 function startCreateWndByGamemode(_handler, _obj) {
   let gm = matchSearchGm.get()
-  if (gm == GM_EVENT)
-    guiStartBriefing()
-  else if (gm == GM_DYNAMIC)
+  if (gm == GM_DYNAMIC)
     guiStartDynamicLayouts()
-  else if (gm == GM_BUILDER) {
-    set_mission_settings("coop", true)
-    guiStartBuilder()
-  }
   else if (gm == GM_SINGLE_MISSION)
     guiStartSingleMissions()
   else if (gm == GM_USER_MISSION)
     guiStartUserMissions()
   else if (gm == GM_SKIRMISH)
     guiCreateSkirmish()
-  else if (gm == GM_DOMINATION || gm == GM_TOURNAMENT)
-    guiStartMislist()
-  else 
-    guiStartDynamicLayouts()
   
   
   updateGamercards()
@@ -320,20 +292,15 @@ function buildCheckTable(session, gm = 0) {
   if (session)
     gm = session.gameModeInt
 
-  if (gm == GM_BUILDER) {
-    ret.silentFeature <- "ModeBuilder"
-  }
-  else if (gm == GM_DYNAMIC) {
+  if (gm == GM_DYNAMIC) {
     if (session) {
       ret.minRank <- DYNAMIC_REQ_COUNTRY_RANK
       ret.rankCountry <- session.country
     }
-    ret.silentFeature <- "ModeDynamic"
   }
   else if (gm == GM_SINGLE_MISSION) {
     if (session)
       ret.unlock <- "/".concat(session.chapter, session.map)
-    ret.silentFeature <- "ModeSingleMissions"
   }
 
   return ret
@@ -352,7 +319,7 @@ function checkAndCreateGamemodeWnd(handler, gm) {
 }
 
 
-return {
+return freeze({
   DYNAMIC_REQ_COUNTRY_RANK
   needCheckForVictory
   guiStartSessionList
@@ -372,4 +339,4 @@ return {
   guiStartFlight
   briefingOptionsApply
   guiStartCdOptions
-}
+})

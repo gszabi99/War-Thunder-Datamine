@@ -1,7 +1,7 @@
 import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 
-let randomUnitsForceWeaponCache = persist("randomUnitsForceWeaponCache", @() {})
+let randomUnitsForceWeaponCache = {}
 
 function cacheRandomUnitsForceWeapon() {
   let gameplayBlk = DataBlock()
@@ -44,6 +44,6 @@ function getRandomUnitsForceWeapon(eventName, unitName) {
   return randomUnitsForceWeaponCache?[eventName][unitName]
 }
 
-return {
+return freeze({
   getRandomUnitsForceWeapon
-}
+})

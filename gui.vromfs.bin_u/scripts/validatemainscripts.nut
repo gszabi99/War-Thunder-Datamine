@@ -1,8 +1,7 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import each_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "dagor.fs" import file_exists
 from "%scripts/dagui_library.nut" import *
-
-let { each_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 
 require("%scripts/main.nut")

@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 3.0,
-  "shotFreqRndK": 0.1,
-  "traceFreq": 2,
-  "bullets": 41,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,29 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 3.0,
+  "shotFreqRndK": 0.1,
+  "bullets": 41,
+  "overheat": {
+    "overheat": [
+      [
+        9.0,
+        0.0
+      ],
+      [
+        11.0,
+        0.02
+      ],
+      [
+        13.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 2.45,
@@ -1515,7 +1531,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   ],
@@ -2460,32 +2476,9 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmLightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "ns45_gun_outside",
-    "cockpit": "ns45_gun_inside",
-    "ai": "ns45_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        9.0,
-        0.0
-      ],
-      [
-        11.0,
-        0.02
-      ],
-      [
-        13.0,
-        0.05
-      ]
-    ]
   },
   "akan_m47_57mm_new_gun": {
     "maxDeltaAngle": 0.15,
@@ -2501,5 +2494,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "ns45_gun_outside",
+    "cockpit": "ns45_gun_inside",
+    "ai": "ns45_gun_ai"
   }
 }

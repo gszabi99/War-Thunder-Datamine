@@ -1,13 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.2,
-  "shotFreq": 13.33,
-  "alternativeShotFreq": 5.0,
-  "traceFreq": 4,
-  "bullets": 1000,
-  "shouldCollideWithRendinsts": true,
-  "mass": 45.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,7 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.2,
+  "shotFreq": 13.33,
+  "alternativeShotFreq": 5.0,
+  "bullets": 1000,
+  "shouldCollideWithRendinsts": true,
+  "mass": 45.5,
   "iconType": "cannon_inner",
+  "overheat": {
+    "overheat": [
+      [
+        21.3,
+        0.0
+      ],
+      [
+        32.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.106,
@@ -404,7 +416,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1668,7 +1680,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     }
   ],
@@ -2494,7 +2506,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       }
     ]
@@ -4203,7 +4215,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       }
     ]
@@ -4588,7 +4600,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     }
   },
@@ -5035,25 +5047,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_giat_type_30_M780_outside",
-    "cockpit": "cannon_giat_type_30_M780_inside",
-    "ai": "cannon_giat_type_30_M780_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        21.3,
-        0.0
-      ],
-      [
-        32.0,
-        0.05
-      ]
-    ]
-  },
   "t_160_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -5068,5 +5061,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_giat_type_30_M780_outside",
+    "cockpit": "cannon_giat_type_30_M780_inside",
+    "ai": "cannon_giat_type_30_M780_ai"
   }
 }

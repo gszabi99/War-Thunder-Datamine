@@ -1,0 +1,55 @@
+{
+  "type": "mlws",
+  "name": "MLWS",
+  "targetSignatureType": "radar",
+  "rcs": 0.0136,
+  "range": 5000.0,
+  "matchSector": 10.0,
+  "signalHoldTime": 3.0,
+  "closureRateMin": 100.0,
+  "targetClosureRateMin": 200.0,
+  "angularRateMax": 10.0,
+  "targetRangeFinder": true,
+  "targetRange": [
+    100.0,
+    10000.0
+  ],
+  "signalSfxName": "alarm_launch_detected_ch_mlws",
+  "threatFlag": "MLWS MISSILE",
+  "automaticFlares": true,
+  "flaresSeriesInterval": 1.0,
+  "numFlares": 4,
+  "flaresInterval": 0.1,
+  "receivers": {
+    "receiver": [
+      {
+        "azimuth": 45.0,
+        "elevation": 0.0,
+        "azimuthWidth": 90.0,
+        "elevationWidth": 60.0,
+        "angleFinder": true
+      },
+      {
+        "azimuth": -45.0,
+        "elevation": 0.0,
+        "azimuthWidth": 90.0,
+        "elevationWidth": 60.0,
+        "angleFinder": true
+      },
+      {
+        "azimuth": 135.0,
+        "elevation": 0.0,
+        "azimuthWidth": 90.0,
+        "elevationWidth": 60.0,
+        "angleFinder": true
+      },
+      {
+        "azimuth": -135.0,
+        "elevation": 0.0,
+        "azimuthWidth": 90.0,
+        "elevationWidth": 60.0,
+        "angleFinder": true
+      }
+    ]
+  }
+}

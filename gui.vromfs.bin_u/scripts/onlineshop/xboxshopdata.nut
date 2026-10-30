@@ -1,30 +1,27 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/sqDagui/framework/progressMsg.nut" as progressMsg
 import "DataBlock" as DataBlock
-import "statsd" as statsd
 from "%sqstd/platform.nut" import is_gdk
 from "%gdkLib/impl/store.nut" import gather_products_list
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 
-let itemsList = persist("itemsList", @() {})
+let itemsList = {}
 
 let visibleSeenIds = []
-let xboxProceedItems = Watched({})
+let xboxProceedItems = mkWatchedClearedOnReload({})
 
 local onReceiveCatalogCb = null
-local statsdMetric = "unknown"
 local reqProgressMsg = false
-local invalidateSeenList = false
 local haveItemDiscount = null
 
 function on_xbox_products_list_update(success, products) {
@@ -59,29 +56,21 @@ function on_xbox_products_list_update(success, products) {
 
   xboxProceedItems.set(xbItems)
 
-  if (invalidateSeenList) {
-    visibleSeenIds.clear()
-    seenList.onListChanged()
-  }
-  invalidateSeenList = false
-
-  statsd.send_counter("sq.ingame_store.open", 1, { catalog = statsdMetric })
+  visibleSeenIds.clear()
+  seenList.onListChanged()
   if (onReceiveCatalogCb)
     onReceiveCatalogCb()
   onReceiveCatalogCb = null
-  statsdMetric = "unknown"
 
   broadcastEvent("XboxShopDataUpdated")
 }
 
-let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown") {
+let requestData = function(isSilent = false, cb = null) {
   if (!is_gdk)
     return
 
   onReceiveCatalogCb = cb
-  statsdMetric = metric
   reqProgressMsg = !isSilent
-  invalidateSeenList = invSeenList
   haveItemDiscount = null
 
   if (reqProgressMsg)
@@ -106,7 +95,7 @@ local isItemsInitedOnce = false
 let initXboxItemsListAfterLogin = function() {
   if (canUseIngameShop() && !isItemsInitedOnce) {
     isItemsInitedOnce = true
-    requestData(true, null, true)
+    requestData(true)
   }
 }
 
@@ -149,7 +138,7 @@ subscriptions.addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   canUseIngameShop
   requestData
   xboxProceedItems
@@ -157,4 +146,4 @@ return {
   haveDiscount
   getShopItem = @(id) itemsList?[id]
   needEntStoreDiscountIcon = true
-}
+})

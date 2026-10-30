@@ -1,17 +1,16 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
 
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 
 let WwMapDescription = class (BaseGuiHandlerWT) {
@@ -155,4 +154,4 @@ let WwMapDescription = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwMapDescription", WwMapDescription)
 
-return { WwMapDescription }
+return freeze({ WwMapDescription })

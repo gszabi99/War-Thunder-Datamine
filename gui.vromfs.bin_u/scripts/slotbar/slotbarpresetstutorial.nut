@@ -1,20 +1,20 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/slotbar/slotbarView.nut" import getSlotObj
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getRequiredUnitTypes, getGameModeItemId, isUnitAllowedForGameMode
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getCurrentSlotbarPreset
+from "%scripts/slotbar/slotbarPresetsList.nut" import getSlotbarPresetsList
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
 
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getRequiredUnitTypes, getGameModeItemId, isUnitAllowedForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
-let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { slotbarPresetsByCountry, slotbarPresetsSeletected } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 let SlotbarPresetsTutorial = class {

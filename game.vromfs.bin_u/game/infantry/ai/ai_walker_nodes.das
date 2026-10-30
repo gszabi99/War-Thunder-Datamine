@@ -38,12 +38,13 @@ require DngHuman
 require vehicle
 require RendInst
 require Unit
+require IGroundModel
 require %appGame.infantry.es.pathfinder_common
 require %appGame.infantry.ai.ai_recons_common
 require human_net_speech.modules.human_net_speech_events
 require walkerai
 require %appGame.infantry.es.battle_area_common
-require %appGame.infantry.ai.ai_team_danger_zones_common
+require %appGame.infantry.ai.ai_team_nav_zones_common
 require %appGame.infantry.es.ai_dangers_attack_debug_common
 require strings
 
@@ -2583,6 +2584,9 @@ class FindCoverAroundPoint : BehNodeAdapter
 
   avoidLeaderActing : LeaderActingInfo
 
+  avoidTeamGroupingZones : bool = false
+  maxAvoidGroupingZonesChecks : int = 8
+
   def override loadFromBlk(var data : DataBlock) : void
     radius = datablock_getReal(data, "radius", 5.)
     minDist = datablock_getReal(data, "minDist", 0.0)
@@ -2605,6 +2609,9 @@ class FindCoverAroundPoint : BehNodeAdapter
     traceVisible = datablock_getBool(data, "traceVisible", traceVisible)
     keepIndoor = datablock_getBool(data, "keepIndoor", keepIndoor)
 
+    avoidTeamGroupingZones = datablock_getBool(data, "avoidTeamGroupingZones", avoidTeamGroupingZones)
+    maxAvoidGroupingZonesChecks = datablock_getInt(data, "maxAvoidGroupingZonesChecks", maxAvoidGroupingZonesChecks)
+
   def override init()
     if possibleAngleParam >= 0
       possibleCosAngle = cos(deg_to_rad(datablock_getReal(owner.blackBoard, possibleAngleParam)))
@@ -2624,10 +2631,17 @@ class FindCoverAroundPoint : BehNodeAdapter
       query(agentEid) <| $ [es] (walker_agent : EntityAgent;
                                  team : int = TEAM_UNASSIGNED;
                                  squad_member__squad : EntityId = INVALID_ENTITY_ID;
-                                 var cover_updater__heldCovers : IPoint2List&)
+                                 var cover_updater__heldCovers : IPoint2List&;
+                                 human_grouping__team : int = -1;
+                                 human_grouping__zone : int = -1)
         var prevCoverId = int2(-1, 0)
         if length(cover_updater__heldCovers) > 0
           prevCoverId = cover_updater__heldCovers[0]
+
+        var agentTeamEid = INVALID_ENTITY_ID
+        query() <| $ [es] (eid aka team_eid : EntityId; team__id : int)
+          if team__id == team
+            agentTeamEid = team_eid
 
         var allowTight = false
         query(squad_member__squad) <| $ [es] (squad__formationSpread : int)
@@ -2658,6 +2672,8 @@ class FindCoverAroundPoint : BehNodeAdapter
         var bestTight = true
         var bestOKDir = false
         var bestFound = false
+
+        var avoidGroupsChecksLeft = avoidTeamGroupingZones ? maxAvoidGroupingZonesChecks : 0
 
         var dangerPoints : array<float3>
         get_danger_points(dangerPoints, agentEid, team, walker_agent.pos, 0.0, 2.0)
@@ -2748,11 +2764,16 @@ class FindCoverAroundPoint : BehNodeAdapter
             assume coverDesc2 = covers.coverDescs[slotBestCoverId.x]
             let coverAIPos = get_cover_slot_pos(cover2, coverDesc2, covers, slotBestCoverId.y)
             if check_cover_pos_valid(coverAIPos)
-              bestDistSq = slotBestDistSq
-              bestCoverId = slotBestCoverId
-              bestScore = slotBestScore
-              bestTight = slotBestTight
-              bestOKDir = slotBestOKDir
+              var posOK = true
+              if avoidGroupsChecksLeft > 0 && !isPrevCover
+                --avoidGroupsChecksLeft
+                posOK = !is_point_in_nav_grouping_zone(coverAIPos, team, agentTeamEid, human_grouping__team, human_grouping__zone)
+              if posOK
+                bestDistSq = slotBestDistSq
+                bestCoverId = slotBestCoverId
+                bestScore = slotBestScore
+                bestTight = slotBestTight
+                bestOKDir = slotBestOKDir
 
         if bestCoverId.x != -1
           assume cover     = covers.list[bestCoverId.x]
@@ -3315,11 +3336,14 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
                             path_blocker__distRange : float2;
                             path_blocker__distRange2 : float2;
                             path_blocker__preGoalDist : float;
+                            path_blocker__minGoalDist : float;
                             path_blocker__radius : float;
                             path_blocker__radius2 : float;
+                            path_blocker__radius3 : float;
                             path_blocker__heights : float2;
                             path_blocker__weight : float;
                             path_blocker__weight2 : float;
+                            path_blocker__weight3 : float;
                             var path_blocker__areaIds : IntList&;
                             var path_blocker__positions : Point3List&;
                             var path_blocker__types : IntList&;
@@ -3356,11 +3380,11 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
         for i in range(numBlockers)
           let blockerType = path_blocker__types[i]
           if blockerType > 0
-            let areaRadius = blockerType == 1 ? path_blocker__radius : path_blocker__radius2
+            let areaRadius = blockerType == 1 ? path_blocker__radius : blockerType == 2 ? path_blocker__radius2 : path_blocker__radius3
             let areaRadiusHeight = float2(areaRadius, areaHeight * 0.5)
             var pos = path_blocker__positions[i]
             pos.y += path_blocker__heights.x + areaHeight * 0.5
-            let areaWeight = blockerType == 1 ? path_blocker__weight : path_blocker__weight2
+            let areaWeight = blockerType == 1 ? path_blocker__weight : blockerType == 2 ? path_blocker__weight2 : path_blocker__weight3
             walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, path_blocker__areaIds[i], pos, areaRadiusHeight, areaWeight, areaWeight, true)
             
 
@@ -3388,17 +3412,19 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
           goalDist += distance(path[i - 1], path[i])
         let targetDistRange = addSpawnBlocker ? path_blocker__distRange : path_blocker__distRange2
         let targetDist = rnd_float(targetDistRange.x, min(targetDistRange.y, max(0.0, goalDist - 0.01)))
-        goalDist = max(0.0, goalDist - path_blocker__preGoalDist)
+        goalDist = max(0.0, goalDist - path_blocker__minGoalDist)
+        let preDist = path_blocker__preGoalDist - path_blocker__minGoalDist
         for i in range(1, pathLen)
           let segLen = distance(path[i - 1], path[i])
           if segLen > 0.001 && accDist + segLen >= targetDist && accDist + segLen < goalDist
+            let type3 = accDist + segLen > goalDist - preDist
             let ratio = clamp(safediv(targetDist - accDist, segLen), 0.0, 1.0)
             let blockerPos = lerp(path[i - 1], path[i], ratio)
             var tooNear = false
             for j in iter_range(path_blocker__positions)
               let blockerType = path_blocker__types[j]
               if blockerType > 0
-                let tooNearRadius = (blockerType == 1 ? path_blocker__radius : path_blocker__radius2) * 1.5
+                let tooNearRadius = (blockerType == 1 ? path_blocker__radius : blockerType == 2 ? path_blocker__radius2 : path_blocker__radius3) * 1.5
                 if distance_sq(blockerPos, path_blocker__positions[j]) < square(tooNearRadius)
                   tooNear = true
                   --nearTries
@@ -3413,7 +3439,7 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
                     break
                 path_blocker__positions |> erase(delIdx)
                 path_blocker__types |> erase(delIdx)
-              let blockerType = addSpawnBlocker ? 1 : 2
+              let blockerType = addSpawnBlocker ? 1 : type3 ? 3 : 2
               path_blocker__positions |> push(blockerPos)
               path_blocker__types |> push(blockerType)
               query(agentEid) <| $ [es] (var agent_dangers__homeSpawns : int&)
@@ -4427,6 +4453,24 @@ class IsTestPerfOrSimplifiedAI : BehNodeAdapter
     return result ? EBehResult.ER_SUCCESS : EBehResult.ER_FAILED
 
 
+[beh_node(name="getUnitFireType")]
+class GetUnitFireType : BehNodeAdapter
+  outParam : int = -1
+
+  def override loadFromBlk(data : DataBlock) : void
+    outParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outParam", ""), int(GroundModelFireType.FT_FIRE_ANY))
+
+  def override update(dt : float) : EBehResult
+    var fireType = int(GroundModelFireType.FT_FIRE_ANY)
+    let agentEid = beh_tree_eid(owner)
+    query(agentEid) <| $ [es] (unit__ref : UnitRef)
+      var gm = unit__ref.unit |> as_gm()
+      if gm != null
+        fireType = int(gm.fireType)
+    owner.blackBoard |> set(outParam, fireType)
+    return EBehResult.ER_SUCCESS
+
+
 [beh_node(name="extinguish")]
 class Extinguish : BehNodeAdapter
   eventSent : bool = false
@@ -4547,3 +4591,23 @@ class WaitForLeaderChangeOrStop : BehNodeAdapter
       result = EBehResult.ER_RUNNING
 
     return result
+
+
+[beh_node(name="updateGroupMask")]
+class UpdateGroupMask : BehNodeAdapter
+  customNavUsageMaskParam : int = -1
+  def override loadFromBlk(var data : DataBlock) : void
+    customNavUsageMaskParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "customNavUsageMaskParam", ""), 0)
+  def override update(dt : float) : EBehResult
+    if customNavUsageMaskParam >= 0
+      let agentEid = beh_tree_eid(owner)
+      var usageMask = 0
+      query(agentEid) <| $ [es] (team : int; isAlive : bool;
+                                 human_grouping__team : int;
+                                 human_grouping__zone : int)
+        usageMask = team_nav_grouping_zones_usage_team_mask(team)
+        if isAlive && team == human_grouping__team
+          let excludeSelfGroupMask = team_nav_grouping_zones_usage_mask(team, human_grouping__zone)
+          usageMask &= ~excludeSelfGroupMask
+      owner.blackBoard |> set(customNavUsageMaskParam, usageMask)
+    return EBehResult.ER_SUCCESS

@@ -1,34 +1,34 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, adjustWindowSizeByConfig, countSizeInItems
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTitle
+from "%scripts/unlocks/unlocksConditions.nut" import getUnlockConditions
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, isUnlockOpened
+from "%scripts/unlocks/unlocksAction.nut" import buyUnlock
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/viewUtils/paginator.nut" import generatePaginator, paginator_set_unseen
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrames, getProfileAvatars
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
 from "math" import ceil
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_child, adjustWindowSizeByConfig, countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
-let { getProfileAvatarFrames, getProfileAvatars } = require("%scripts/user/profileAppearance.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 function gui_choose_image(applyFunc, owner, scene, onCloseFunc) {
   handlersManager.loadHandler(get_gui_handler("ChooseImage"),
@@ -172,6 +172,7 @@ let ChooseImage = class (BaseGuiHandlerWT) {
           enabled = item?.enabled
           tooltipId = item?.tooltipId
           haveCustomTooltip = false
+          framesCount = item?.framesCount
         }
         avatarFrames.append(frame)
       }
@@ -487,6 +488,6 @@ let ChooseImage = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ChooseImage", ChooseImage)
 
-return {
+return freeze({
   gui_choose_image
-}
+})

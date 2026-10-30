@@ -2094,6 +2094,7 @@
     "engines": {
       "maxSpeed": 26.2,
       "maxReverseSpeed": 12.2,
+      "horsePowers": 2000.0,
       "waterResistanceAtStopK": 0.4,
       "speedToTime": {
         "row": [
@@ -2240,6 +2241,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        7.3,
+        0.0
+      ],
+      [
+        14.6,
+        100.0
+      ],
+      [
+        21.9,
+        200.0
+      ],
+      [
+        29.1,
+        300.0
+      ],
+      [
+        36.4,
+        500.0
+      ],
+      [
+        43.7,
+        800.0
+      ],
+      [
+        51.0,
+        1200.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -2247,7 +2306,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
+      "blk": "gamedata/weapons/navalModels_weapons/12_7mm_dshk_1938_naval_user_machinegun.blk",
       "emitter": "emtr_gun_flame",
       "flash": "emtr_gun_flame",
       "useEmitter": true,
@@ -2321,7 +2380,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_g5_mtb_landing_craft_default",
-      "blk": "gameData/units/ships/weaponPresets/ussr_g5_mtb_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/ussr_g5_mtb_default.blk"
     }
   },
   "cockpit": {
@@ -3300,14 +3359,14 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -2500.0,
-    "waterMassMult": 40.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
+    "waterMassVel": -2500.0,
+    "waterMassMult": 80.0,
     "additionalWaterDeathThreshold": 70000.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
@@ -3315,6 +3374,10 @@
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 14.0,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.35
   },

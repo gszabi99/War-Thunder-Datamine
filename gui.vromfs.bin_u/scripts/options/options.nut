@@ -37,8 +37,8 @@ function set_gui_option_in_mode(optionId, value, mode) {
   setGuiOptionsMode(mainOptionsMode)
 }
 
-return {
+return freeze({
   get_gui_option_in_mode
   set_gui_option_in_mode
   getOptionsMode
-}
+})

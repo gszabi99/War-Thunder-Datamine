@@ -1,47 +1,26 @@
 from "%darg/ui_imports.nut" import *
-from "%sqstd/ecs.nut" import *
 from "style.nut" import colors, gridHeight, gridMargin
 
-let entity_editor = require_optional("entity_editor")
-let { compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly } = require("attrUtil.nut")
+let { compValToString, isValueTextValid, convertTextToVal } = require("attrUtil.nut")
 
-let getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : _dbg_get_comp_val_inspect(eid, comp_name)
 
-function fieldEditText_(params={}) {
-  let {eid, comp_name, compVal, setVal, path, rawComponentName=null} = params
-  local curRO = isCompReadOnly(eid, rawComponentName)
 
-  let curText = Watched(compValToString(compVal))
+
+function fieldEditText(desc) {
+  let { eid, key, value, setValue, readOnly, sqType } = desc
+
+  let curText = Watched("")
   let isFocus = Watched(false)
   let group = ElemGroup()
-  let compType = typeof compVal
   let stateFlags = Watched(0)
-  let isValid = Computed(@() isValueTextValid(compType, curText.get()))
+  
+  
+  let text = Computed(@() isFocus.get() ? curText.get() : compValToString(value.get()))
+  let isValid = Computed(@() isValueTextValid(sqType, text.get()))
+  let okTrigger = $"ok:{eid}:{key}"
+  let failTrigger = $"fail:{eid}:{key}"
 
-  function updateTextFromEcs() {
-    let val = getCompVal(eid, rawComponentName, path)
-    let compTextVal = compValToString(val)
-    curText.set(compTextVal)
-  }
-
-  let uniqueTimerKey = $"{eid}, {comp_name}, {path}, {rawComponentName}"
-  function updateTextFromEcsTimeout() {
-    updateTextFromEcs()
-    if (!isFocus.get())
-      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
-  }
-
-  function updateComponentByTimer() {
-    if (rawComponentName == "transform") {
-      if (isFocus.get())
-        gui_scene.clearTimer(uniqueTimerKey)
-      else
-        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
-    }
-  }
-
-  isFocus.subscribe(@(_v) updateComponentByTimer())
-  updateComponentByTimer()
+  let resetText = @() curText.set(compValToString(value.get()))
 
   function frame() {
     let frameColor = (stateFlags.get() & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
@@ -52,27 +31,26 @@ function fieldEditText_(params={}) {
   }
 
   function doApply() {
-    if (curRO)
+    if (readOnly)
       return
-    let checkVal = getCompVal(eid, rawComponentName, path)
-    let checkValText = compValToString(checkVal)
-    if (checkValText == curText.get())
+    let cur = value.get()
+    let typed = curText.get()
+    if (compValToString(cur) == typed)
       return
-    if (isValid.get()) {
+    
+    if (isValueTextValid(sqType, typed)) {
       local val = null
       try {
-        val = convertTextToVal(checkVal, compType, curText.get())
+        val = convertTextToVal(sqType, typed)
       } catch(e) {
         val = null
       }
-      if (val != null && setVal(val)) {
-        anim_start($"{comp_name}{"".join(path??[])}")
-        gui_scene.clearTimer(uniqueTimerKey)
-        gui_scene.resetTimeout(0.1, updateTextFromEcs) 
+      if (val != null && setValue(val)) {
+        anim_start(okTrigger)
         return
       }
     }
-    anim_start($"!{comp_name}{"".join(path??[])}")
+    anim_start(failTrigger)
   }
 
   function textInput() {
@@ -83,15 +61,15 @@ function fieldEditText_(params={}) {
 
       color = !isValid.get()
                 ? colors.TextError
-                : curRO
+                : readOnly
                   ? colors.TextReadOnly
                   : colors.TextDefault
 
-      text = curText.get()
-      behavior = curRO ? null : Behaviors.TextInput
+      text = text.get()
+      behavior = readOnly ? null : Behaviors.TextInput
       group = group
-      watch = [curText, isValid]
-      onChange = @(text) curText.set(text)
+      watch = [text, isValid]
+      onChange = @(t) curText.set(t)
       onReturn = function() {
         isFocus.set(false)
         doApply()
@@ -99,12 +77,12 @@ function fieldEditText_(params={}) {
       }
       onEscape = function() {
         isFocus.set(false)
-        updateTextFromEcs()
+        resetText()
         set_kb_focus(null)
       }
       onFocus = function() {
         isFocus.set(true)
-        updateTextFromEcs()
+        resetText()
       }
       onBlur = function() {
         isFocus.set(false)
@@ -113,17 +91,15 @@ function fieldEditText_(params={}) {
     }
   }
 
-
   return {
-    key = $"{eid}:{comp_name}{"".join(path??[])}"
+    key = $"{eid}:{key}"
     size = FLEX_H
     rendObj = ROBJ_SOLID
     color = colors.ControlBg
-    onDetach = @() gui_scene.clearTimer(uniqueTimerKey)
 
     animations = [
-      { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=$"{comp_name}{"".join(path??[])}" }
-      { prop=AnimProp.color, from=colors.HighlightFailure, duration=0.5, trigger=$"!{comp_name}{"".join(path??[])}" }
+      { prop=AnimProp.color, from=colors.HighlightSuccess, duration=0.5, trigger=okTrigger }
+      { prop=AnimProp.color, from=colors.HighlightFailure, duration=0.5, trigger=failTrigger }
     ]
 
     children = {
@@ -134,38 +110,6 @@ function fieldEditText_(params={}) {
       ]
     }
   }
-}
-
-function fieldEditText(params={}){
-  let {eid, comp_name, rawComponentName, path=null, onChange=null} = params
-  function setVal(val) {
-    if (path != null) {
-      setValToObj(eid, rawComponentName, path, val)
-      entity_editor?.save_component(eid, rawComponentName)
-      onChange?()
-      return true
-    }
-    else {
-      local ok = false
-      try {
-        obsolete_dbg_set_comp_val(eid, comp_name, val)
-        onChange?()
-        ok = true
-      }
-      catch (e) {
-        ok = false
-      }
-      if (ok)
-        entity_editor?.save_component(eid, rawComponentName)
-      return ok
-    }
-  }
-
-  params = params.__merge({
-    compVal = getCompVal(eid, rawComponentName, path)
-    setVal = setVal
-  })
-  return fieldEditText_(params)
 }
 
 return fieldEditText

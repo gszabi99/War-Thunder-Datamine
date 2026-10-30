@@ -1,7 +1,6 @@
+import "%rGui/style/colors.nut" as colors
 from "%rGui/globals/ui_library.nut" import *
 from "types" import Function
-
-let colors = require("%rGui/style/colors.nut")
 
 const MAX_DOST = 5
 
@@ -12,15 +11,25 @@ let images = {
 
 
 let moduleIconConstructor = function (params) {
+  let { brokenCountState, cooldownState = null } = params
   let iconPath = params.icon instanceof Function
     ? @() params.icon(params.iconWatch.get())
     : @() params.icon
+  let playStateAnim = @(_) anim_start(brokenCountState)
   return @(color) @() {
     rendObj = ROBJ_IMAGE
     color =  color
     watch = [params.iconSizeWatch, params?.iconWatch]
     image = Picture($"{iconPath()}:{params.iconSizeWatch.get()}:{params.iconSizeWatch.get()}")
     size = params.iconSizeWatch.get()
+    function onAttach() {
+      brokenCountState.subscribe(playStateAnim)
+      cooldownState?.subscribe(playStateAnim)
+    }
+    function onDetach() {
+      brokenCountState.unsubscribe(playStateAnim)
+      cooldownState?.unsubscribe(playStateAnim)
+    }
 
     transform = {}
     animations = [
@@ -33,7 +42,7 @@ let moduleIconConstructor = function (params) {
       }
       {
         prop = AnimProp.scale
-        from = [1.3, 1.3]
+        from = const [1.3, 1.3]
         easing = InOutCubic
         duration = 0.15
         trigger = params.brokenCountState
@@ -120,7 +129,6 @@ let dmModule = function (params) {
       color = colors.hud.damageModule.dmModuleDestroyed
     else if (brokenCountState.get() > 0)
       color = colors.hud.damageModule.dmModuleDamaged
-    anim_start(brokenCountState)
 
     let children = [moduleIcon(color)]
     if (totalCountState.get() > 1) {

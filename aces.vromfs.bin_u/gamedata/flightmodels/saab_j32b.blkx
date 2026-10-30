@@ -2,7 +2,7 @@
   "model": "saab_j32b",
   "fmFile": "fm/saab_j32b.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -12,17 +12,17 @@
   "gyroSight": true,
   "type": "typeFighter",
   "advancedInstructor": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "fighter",
   "paratrooper": "usa_irvin_5000_ejection_para",
@@ -634,15 +634,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -685,7 +689,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2489,11 +2495,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/sw_ps-42_search.blk",
+        "blk": "gamedata/sensors/sw_ps-42_search.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/sw_ps-42_track.blk",
+        "blk": "gamedata/sensors/sw_ps-42_track.blk",
         "dmPart": "radar_dm"
       }
     ]
@@ -2508,27 +2514,39 @@
     "preset": [
       {
         "name": "saab_j32b_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_j32b_default.blk"
-      },
-      {
-        "name": "saab_j32b_default_rb24_missiles",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_default_rb24_missiles.blk"
-      },
-      {
-        "name": "saab_j32b_rb24_missiles",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_rb24_missiles.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_default.blk"
       },
       {
         "name": "saab_j32b_75mm_srak_m57b",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_75mm_srak_m57b.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_75mm_srak_m57b.blk"
+      },
+      {
+        "name": "saab_j32b_145mm_psrak_m49a",
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_145mm_psrak_m49a.blk"
+      },
+      {
+        "name": "saab_j32b_150mm_srak_m51",
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_150mm_srak_m51.blk"
+      },
+      {
+        "name": "saab_j32b_180mm_hpsrak_m49",
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_180mm_hpsrak_m49.blk"
+      },
+      {
+        "name": "saab_j32b_default_rb24_missiles",
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_default_rb24_missiles.blk"
+      },
+      {
+        "name": "saab_j32b_rb24_missiles",
+        "blk": "gamedata/flightModels/weaponPresets/saab_j32b_rb24_missiles.blk"
       }
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 520.0,
-    "maxloadMassLeftConsoles": 260.0,
-    "maxloadMassRightConsoles": 260.0,
-    "maxDisbalance": 210.0,
+    "maxloadMass": 1560.0,
+    "maxloadMassLeftConsoles": 780.0,
+    "maxloadMassRightConsoles": 780.0,
+    "maxDisbalance": 350.0,
     "HideNodes": {
       "node": [
         "aero_3b_001",
@@ -2602,7 +2620,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2611,7 +2629,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -2620,7 +2638,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "cannon3_dm",
@@ -2629,7 +2647,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "blk": "gamedata/weapons/cannonAkan_m55.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "cannon4_dm",
@@ -2641,31 +2659,518 @@
       },
       {
         "index": 1,
-        "tier": 8,
+        "tier": 12,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air",
-          "name": "rb24_default",
-          "ShowNodes": {
-            "node": [
-              "s_balk4_l",
-              "aero_3b_001"
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_l",
+                "a_balk6_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
             ]
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/swd_rb24_default.blk",
-            "emitter": "us_aim_9e_001",
-            "bullets": 1
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_l",
+                "a_balk6_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_l",
+                "a_balk6_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_001",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
-        "tier": 7,
+        "tier": 11,
         "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_l",
+                "a_balk5_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_l",
+                "a_balk5_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_l",
+                "a_balk5_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_002",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 10,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24_default",
+            "ShowNodes": {
+              "node": [
+                "s_balk4_l",
+                "aero_3b_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24_default.blk",
+              "emitter": "us_aim_9e_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_l",
+                "a_balk4_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_l",
+                "a_balk4_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_l",
+                "a_balk4_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_003",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 9,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_l",
+                "a_balk3_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_l",
+                "a_balk3_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_l",
+                "a_balk3_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_004",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 8,
+        "order": 9,
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
@@ -2681,7 +3186,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24.blk",
               "emitter": "us_aim_9e_002",
               "bullets": 1
             }
@@ -2695,17 +3200,379 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "blk": "gamedata/weapons/containers/swd_arak_m57b.blk",
               "emitter": "rakkaps_m57_b001",
               "external": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_l",
+                "a_balk2_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_l",
+                "a_balk2_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_l",
+                "a_balk2_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_005",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
             }
           }
         ]
       },
       {
-        "index": 3,
+        "index": 6,
+        "tier": 7,
+        "order": 11,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_l",
+                "a_balk1_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_l",
+                "a_balk1_add_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_l",
+                "a_balk1_add_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_006",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 7,
         "tier": 5,
-        "order": 4,
+        "order": 12,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_r",
+                "a_balk1_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_007",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_007",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_r",
+                "a_balk1_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_007",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_007",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk1_r",
+                "a_balk1_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_007",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "tier": 4,
+        "order": 10,
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
@@ -2721,7 +3588,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24.blk",
               "emitter": "us_aim_9e_003",
               "bullets": 1
             }
@@ -2735,35 +3602,638 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "blk": "gamedata/weapons/containers/swd_arak_m57b.blk",
               "emitter": "rakkaps_m57_b002",
               "external": true
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_r",
+                "a_balk2_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_008",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_008",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_r",
+                "a_balk2_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_008",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_008",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk2_r",
+                "a_balk2_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_008",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
             }
           }
         ]
       },
       {
-        "index": 4,
-        "tier": 4,
-        "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air",
-          "name": "rb24_default",
-          "ShowNodes": {
-            "node": [
-              "s_balk4_r",
-              "aero_3b_004"
+        "index": 9,
+        "tier": 3,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_r",
+                "a_balk3_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_009",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_009",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
             ]
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/swd_rb24_default.blk",
-            "emitter": "us_aim_9e_004",
-            "bullets": 1
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_r",
+                "a_balk3_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_009",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_009",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk3_r",
+                "a_balk3_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_009",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
           }
-        }
+        ]
+      },
+      {
+        "index": 10,
+        "tier": 2,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24_default",
+            "ShowNodes": {
+              "node": [
+                "s_balk4_r",
+                "aero_3b_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_rb24_default.blk",
+              "emitter": "us_aim_9e_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_r",
+                "a_balk4_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_010",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_010",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_r",
+                "a_balk4_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_010",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_010",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk4_r",
+                "a_balk4_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_010",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "tier": 1,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_r",
+                "a_balk5_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_011",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_011",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_r",
+                "a_balk5_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_011",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_011",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk5_r",
+                "a_balk5_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_011",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
+      },
+      {
+        "index": 12,
+        "tier": 0,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "psrak_m49a",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_r",
+                "a_balk6_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "emitter": "145mm_psrak_m49a_down_012",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "145mm_psrak_m49a_up_012",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "psrak_m51",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_r",
+                "a_balk6_add_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "emitter": "150mm_srak_m51_down_012",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "150mm_srak_m51_up_012",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "hpsrak_m49",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": [
+                "a_balk6_r",
+                "a_balk6_add_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "180mm_hpsrak_m49_012",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            }
+          }
+        ]
       }
     ]
   },
@@ -2846,14 +4316,29 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
-    "swe_m57b": {
-      "modClass": "weapon",
-      "tier": 2
-    },
     "swe_rb24": {
       "tier": 4,
       "modClass": "weapon",
+      "prevModification": "aden_new_gun"
+    },
+    "swe_m57b": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "swd_j29_145mm_m49a": {
+      "modClass": "weapon",
+      "tier": 2,
       "reqModification": "swe_m57b"
+    },
+    "swd_j29_150mm_m51": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "swd_j29_145mm_m49a"
+    },
+    "swd_j29_180mm_m49": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "swd_j29_150mm_m51"
     }
   },
   "default_skin_tomoe": {

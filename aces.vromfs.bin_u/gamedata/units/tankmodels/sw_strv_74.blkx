@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1971,7 +1977,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_kan_strv_74_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_kan_strv_74_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.6,
@@ -2038,7 +2044,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2080,7 +2086,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_03_dm",
@@ -2123,8 +2129,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_strv_74_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_strv_74_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3224,7 +3230,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_kan_strv_74_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_kan_strv_74_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.6,
@@ -3291,7 +3297,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin_01",
               "flash": "emtr_mg_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3333,7 +3339,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_flame_02",
               "barrelDP": "gun_barrel_03_dm",
@@ -3375,7 +3381,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

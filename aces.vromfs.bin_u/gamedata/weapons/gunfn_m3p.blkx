@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.21,
-  "shotFreq": 17.08,
-  "shotFreqRndK": 0.15,
-  "traceFreq": 4,
-  "bullets": 400,
-  "dragCx": 0.003,
-  "mass": 89.0,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.21,
+  "shotFreq": 17.08,
+  "shotFreqRndK": 0.15,
+  "bullets": 400,
+  "dragCx": 0.003,
+  "mass": 89.0,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        7.3,
+        0.0
+      ],
+      [
+        11.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.03965693,
@@ -7895,25 +7907,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m2_gun_outside",
-    "cockpit": "m2_gun_inside",
-    "ai": "m2_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        7.3,
-        0.0
-      ],
-      [
-        11.0,
-        0.05
-      ]
-    ]
-  },
   "bmg50_new_gun": {
     "maxDeltaAngle": 0.35,
     "overheat": {
@@ -7928,5 +7921,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m2_gun_outside",
+    "cockpit": "m2_gun_inside",
+    "ai": "m2_gun_ai"
   }
 }

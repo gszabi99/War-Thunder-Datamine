@@ -1,11 +1,12 @@
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksViewModule.nut" import getConditionsToUnlockShowcaseById
+from "%scripts/user/showcase/showcaseValues.nut" import getUnitFromTerseInfo
 from "%sqstd/underscore.nut" import isArray
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { showcaseValues, getUnitFromTerseInfo } = require("%scripts/user/showcase/showcaseValues.nut")
+let { showcaseValues } = require("%scripts/user/showcase/showcaseValues.nut")
 
 const COLLECTOR_UNITS_COUNT = 3
 

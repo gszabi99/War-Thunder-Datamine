@@ -412,7 +412,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 74000.0,
+        "maxValue": 150000.0,
         "width": 500.0
       },
       "dopplerSpeed": {
@@ -432,7 +432,7 @@
       "distance": {
         "presents": true,
         "minValue": 5000.0,
-        "maxValue": 150000.0,
+        "maxValue": 300000.0,
         "width": 2000.0
       },
       "dopplerSpeed": {
@@ -488,7 +488,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 74000.0,
+        "maxValue": 150000.0,
         "width": 150.0
       },
       "dopplerSpeed": {
@@ -509,7 +509,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 100000.0,
+        "maxValue": 300000.0,
         "width": 500.0
       },
       "dopplerSpeed": {
@@ -532,7 +532,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 74000.0,
+        "maxValue": 150000.0,
         "width": 150.0
       },
       "dopplerSpeed": {
@@ -561,7 +561,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 100000.0,
+        "maxValue": 300000.0,
         "width": 500.0
       },
       "dopplerSpeed": {
@@ -643,6 +643,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
@@ -658,6 +659,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
@@ -715,10 +717,10 @@
               -40.0,
               100.0
             ],
-            "azmithWidth": 1.5,
+            "azimuthWidth": 1.5,
             "distanceRange": [
               0.0,
-              92500.0
+              148000.0
             ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
@@ -3550,6 +3552,10 @@
       ]
     },
     {
+      "name": "hud/su_15",
+      "targetType": "su_15tm"
+    },
+    {
       "name": "hud/su_17",
       "targetType": [
         "su_17m2",
@@ -3934,7 +3940,9 @@
         "f_15c_baz_msip",
         "f_15c_golden_eagle",
         "f_15e",
-        "f_15i_raam"
+        "f_15i_raam",
+        "f_15ex",
+        "f_15ia"
       ]
     },
     {
@@ -3992,7 +4000,8 @@
         "cf_188a_canada",
         "fa_18e_block_2",
         "fa_18d_late_malaysia",
-        "fa_18f_block_2_raaf"
+        "fa_18f_block_2_raaf",
+        "fa_18d_late"
       ]
     },
     {
@@ -4133,6 +4142,7 @@
       "targetType": [
         "q_5_early",
         "q_5a",
+        "q_5d",
         "q_5l",
         "a_5c"
       ]
@@ -4355,7 +4365,8 @@
         "saab_jas39c_thailand",
         "saab_jas39c",
         "saab_jas39e",
-        "saab_jas39d"
+        "saab_jas39d",
+        "saab_jas39_pre_serie"
       ]
     }
   ]

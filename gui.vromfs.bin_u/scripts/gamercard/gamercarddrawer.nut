@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 
 enum GamercardDrawerState {
   STATE_CLOSED
@@ -176,4 +175,4 @@ let GamercardDrawer = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("GamercardDrawer", GamercardDrawer)
 
-return { GamercardDrawer }
+return freeze({ GamercardDrawer })

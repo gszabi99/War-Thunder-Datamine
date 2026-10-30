@@ -1,9 +1,8 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/customization/skinUtils.nut" import DEFAULT_SKIN_NAME, getPlaneBySkinId, getSkinNameBySkinId
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { DEFAULT_SKIN_NAME, getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 
 let prioritySkins = hardPersistWatched("prioritySkins", {})
 
@@ -49,9 +48,9 @@ addListenersWithoutEnv({
   LoginComplete = @(_p) loadPrioritySkins()
 })
 
-return {
+return freeze({
   isPrioritySkin
   hasPrioritySkin
   setPrioritySkin
   getPrioritySkin
-}
+})

@@ -1716,6 +1716,7 @@
     "engines": {
       "maxSpeed": 18.52,
       "maxReverseSpeed": 7.0,
+      "horsePowers": 10000.0,
       "speedToTime": {
         "row": [
           [
@@ -1817,6 +1818,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.1,
+        100.0
+      ],
+      [
+        10.3,
+        100.0
+      ],
+      [
+        15.4,
+        300.0
+      ],
+      [
+        20.6,
+        500.0
+      ],
+      [
+        25.7,
+        800.0
+      ],
+      [
+        30.9,
+        1300.0
+      ],
+      [
+        36.0,
+        1800.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "sound": {
     "EngineName": "engine_shiplight01",
     "EngineNameAi": "engine_shiplight_ai",
@@ -1851,7 +1910,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1937,7 +1996,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2026,12 +2085,12 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_mc490_folgore_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_mc490_folgore_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "it_mc490_folgore_default",
-        "blk": "gameData/units/ships/weaponPresets/it_mc490_folgore_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/it_mc490_folgore_default.blk"
       }
     ]
   },
@@ -3037,34 +3096,38 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -9000.0,
-    "waterMassMult": 30.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 450000.0,
+    "waterMassVel": -6838.0,
+    "waterMassMult": 43.0,
+    "additionalWaterDeathThreshold": 927125.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 30.0,
+    "maxHeelingAngle": 33.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.9,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25
+    "sideCenterOfMassOffsetPercent": 0.228
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.5,
+        "weight": 0.14,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.8,
+        "weight": 0.52,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3081,27 +3144,47 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.3
+              "critWaterLevel": 0.42
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.37
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.42
             },
             {
               "partNo": "engine_04_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.37
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.07
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.08
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.75,
-        "maxWaterAlive": 1.0
+        "weight": 0.51,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_04_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
+        }
       }
     ]
   },

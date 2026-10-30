@@ -1,4 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/teams.nut" import g_team
+from "%scripts/unit/unitInfo.nut" import getUnitTypeByText
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/events/eventsState.nut" import getEvent, getEventDifficulty
 from "%appGlobals/ranks_common_shared.nut" import getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank
 from "string" import format
 from "%scripts/dagui_library.nut" import *
@@ -6,11 +10,7 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import UnitRelevance
 
-let { g_team } = require("%scripts/teams.nut")
-let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getEvent, getEventDifficulty } = require("%scripts/events/eventsState.nut")
 
 
 
@@ -345,7 +345,7 @@ function getMaxBrText(event) {
   }
   return  loc("mainmenu/maxBR", { br = format("%.1f", calcBattleRatingFromRank(maxBR)) })
 }
-return {
+return freeze({
   allUnitTypesMask
   getTeamData
   isTeamDataPlayable
@@ -377,4 +377,4 @@ return {
   isUnitAllowedForEvent
   checkUnitRelevanceForEvent
   getMaxBrText
-}
+})

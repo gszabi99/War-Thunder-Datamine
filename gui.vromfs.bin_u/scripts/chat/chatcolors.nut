@@ -1,10 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { userName } = require("%scripts/user/profileStates.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let chatColors = freeze({ 
   sender =         { [false] = "@mChatSenderColorDark",        [true] = "@mChatSenderColor" }
@@ -25,7 +24,7 @@ function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false,
     return chatColors.senderFriend[isHighlighted]
   return u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
 }
-return {
+return freeze({
   getSenderColor
   chatColors
-}
+})

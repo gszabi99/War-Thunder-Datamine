@@ -1,7 +1,7 @@
 {
   "model": "ah_56a",
   "fmFile": "fm/ah_56a.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.253,
   "gearSinkRangeC": 0.188,
@@ -44,16 +44,16 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_ah_56a.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map_ah_56a.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map_ah_56a.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map_ah_56a.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
@@ -386,7 +386,9 @@
             "damage": 200.0,
             "tail_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ],
@@ -1653,11 +1655,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_flir.blk",
+        "blk": "gamedata/sensors/us_flir.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+        "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
         "node": "optic1_gun"
       }
     ]
@@ -1695,15 +1697,15 @@
     "preset": [
       {
         "name": "ah_56a_default",
-        "blk": "gameData/flightModels/weaponPresets/ah_56a_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_56a_default.blk"
       },
       {
         "name": "ah_56a_rocket_ffar",
-        "blk": "gameData/flightModels/weaponPresets/ah_56a_rocket_ffar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_56a_rocket_ffar.blk"
       },
       {
         "name": "ah_56a_tow",
-        "blk": "gameData/flightModels/weaponPresets/ah_56a_tow.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ah_56a_tow.blk"
       }
     ]
   },
@@ -1746,7 +1748,7 @@
                 "dummy": true,
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -1772,7 +1774,7 @@
               },
               {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/gunM134_Minigun_ah_56.blk",
+                "blk": "gamedata/weapons/gunM134_Minigun_ah_56.blk",
                 "emitter": "flare1",
                 "flash": "flare1",
                 "turret": [
@@ -1807,7 +1809,7 @@
               },
               {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonXM140.blk",
+                "blk": "gamedata/weapons/cannonXM140.blk",
                 "emitter": "flare2",
                 "flash": "flare2",
                 "turret": [
@@ -1853,7 +1855,7 @@
                 "dummy": true,
                 "trigger": "gunner0",
                 "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
                 "emitter": "optic1_gun",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -1879,7 +1881,7 @@
               },
               {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/grenade_launcher_M129.blk",
+                "blk": "gamedata/weapons/grenade_launcher_M129.blk",
                 "breechInCockpit": true,
                 "emitter": "flare3",
                 "flash": "flare3",
@@ -1912,7 +1914,7 @@
               },
               {
                 "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonXM140.blk",
+                "blk": "gamedata/weapons/cannonXM140.blk",
                 "emitter": "flare2",
                 "flash": "flare2",
                 "turret": [
@@ -1957,7 +1959,7 @@
             "name": "m157",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "aero_7_l_b001",
               "external": true
             }
@@ -1967,7 +1969,7 @@
             "name": "m157_x3",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/ter_lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "ter9a_ah_56a_001",
               "external": true
             }
@@ -1984,7 +1986,7 @@
             "name": "m157",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "aero_7_l_b002",
               "external": true
             }
@@ -1995,7 +1997,7 @@
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/us_bgm_71c_tow_x3_default.blk",
+              "blk": "gamedata/weapons/containers/us_bgm_71c_tow_x3_default.blk",
               "emitter": "ah_56_container_tow_1",
               "external": true,
               "separate": true,
@@ -2014,7 +2016,7 @@
             "name": "m157",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "aero_7_l_b003",
               "external": true
             }
@@ -2026,7 +2028,7 @@
             "remotelyGuidedWeaponsMax": 1,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/us_bgm_71c_tow_x3.blk",
+              "blk": "gamedata/weapons/containers/us_bgm_71c_tow_x3.blk",
               "emitter": "ah_56_container_tow_2",
               "external": true,
               "separate": true,
@@ -2045,7 +2047,7 @@
             "name": "m157",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "aero_7_l_b004",
               "external": true
             }
@@ -2055,7 +2057,7 @@
             "name": "m157_x3",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse_green.blk",
+              "blk": "gamedata/weapons/containers/ter_lau_3a_ffar_mighty_mouse_green.blk",
               "emitter": "ter9a_ah_56a_002",
               "external": true
             }

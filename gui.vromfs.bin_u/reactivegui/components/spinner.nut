@@ -1,6 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let pic = Picture($"ui/gameuiskin#throbber.svg:{fpx(44)}:{fpx(44)}:K")
 return kwarg(function mkSpinner(height = fpx(44), color = Color(0, 0, 0, 0), duration = 3) {
   return {
     rendObj = ROBJ_SOLID
@@ -9,15 +8,13 @@ return kwarg(function mkSpinner(height = fpx(44), color = Color(0, 0, 0, 0), dur
     valign = ALIGN_CENTER
 
     children = {
-      size = [height, height]
+      size = height
       rendObj = ROBJ_IMAGE
-      image = pic
-      key = pic
+      image = Picture($"ui/gameuiskin#throbber.svg:{fpx(44)}:{fpx(44)}:K")
+      key = "spinner"
       keepAspect = true
 
-      transform = {
-        pivot = [0.5, 0.5]
-      }
+      transform = true
 
       animations = [
         { prop = AnimProp.rotate, from = 0, to = 360, duration = duration,

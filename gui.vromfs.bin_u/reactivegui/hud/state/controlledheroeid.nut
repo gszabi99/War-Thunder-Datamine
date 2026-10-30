@@ -35,6 +35,6 @@ ecs.register_es("controlled_hero_eid_es", {
   }
 }, {})
 
-return {
+return freeze({
   controlledHeroEid
-}
+})

@@ -1,9 +1,7 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/style/fontsState.nut" as fontsState
 import "%rGui/components/tabsBase.nut" as tabsBase
 from "%rGui/globals/ui_library.nut" import *
-
-let colors = require("%rGui/style/colors.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
-
 
 function tabCtor(tab, is_current, handler) {
   let grp = ElemGroup()

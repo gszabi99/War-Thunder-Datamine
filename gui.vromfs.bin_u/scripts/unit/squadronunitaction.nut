@@ -1,12 +1,11 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/unit/unitInfo.nut" import getUnitExp
+from "%scripts/unit/unitStatus.nut" import canResearchUnit
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
 from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
-
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let isAllClanUnitsResearched = @() getAllUnits().findvalue(
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && canResearchUnit(unit)
@@ -42,8 +41,8 @@ function isHaveNonApprovedClanUnitResearches() {
   return needChooseClanUnitResearch()
 }
 
-return {
+return freeze({
   isAllClanUnitsResearched
   isHaveNonApprovedClanUnitResearches
   needChooseClanUnitResearch
-}
+})

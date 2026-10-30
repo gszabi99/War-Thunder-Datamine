@@ -1,17 +1,17 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/unlocks/regionalUnlocks.nut" import acceptRegionalUnlock, regionalPromos
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/promo/promo.nut" import getPromoVisibilityById
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { acceptRegionalUnlock, regionalPromos } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let promoSeenList = require("%scripts/seen/seenList.nut").get(SEEN.REGIONAL_PROMO)
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 class RegionalUnlocksPromoWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

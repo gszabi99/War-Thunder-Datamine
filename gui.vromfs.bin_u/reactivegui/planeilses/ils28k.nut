@@ -27,7 +27,7 @@ let rollIndicator = @(){
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, -80, 0],
     [VECTOR_LINE, 100, 0, 80, 0],
     [VECTOR_LINE, -86.6, 50, -69.3, 40],
@@ -40,31 +40,29 @@ let rollIndicator = @(){
     [VECTOR_LINE, -63.6, 63.6, -56.6, 56.6],
     [VECTOR_LINE, 0, 0, 0, 0]
   ]
-  children = [
-    {
-      size = const [pw(70), ph(70)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      color = IlsColor.get()
-      commands = [
-        [VECTOR_LINE, -100, 0, -60, 0],
-        [VECTOR_LINE, -60, 0, -50, 10],
-        [VECTOR_LINE, -50, 10, -40, 0],
-        [VECTOR_LINE, -40, 0, -20, 0],
-        [VECTOR_LINE, 20, 0, 40, 0],
-        [VECTOR_LINE, 60, 0, 50, 10],
-        [VECTOR_LINE, 50, 10, 40, 0],
-        [VECTOR_LINE, 60, 0, 100, 0]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          rotate = Roll.get()
-          pivot = [0, 0]
-        }
+  children = {
+    size = const [pw(70), ph(70)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    color = IlsColor.get()
+    commands = const [
+      [VECTOR_LINE, -100, 0, -60, 0],
+      [VECTOR_LINE, -60, 0, -50, 10],
+      [VECTOR_LINE, -50, 10, -40, 0],
+      [VECTOR_LINE, -40, 0, -20, 0],
+      [VECTOR_LINE, 20, 0, 40, 0],
+      [VECTOR_LINE, 60, 0, 50, 10],
+      [VECTOR_LINE, 50, 10, 40, 0],
+      [VECTOR_LINE, 60, 0, 100, 0]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        rotate = Roll.get()
+        pivot = 0
       }
     }
-  ]
+  }
 }
 
 let ClimbSpeedDir = Computed(@() ClimbSpeed.get() >= 0.0 ? 1 : -1)
@@ -261,7 +259,7 @@ let compass = function(width, height) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 100, -100, 0],
           [VECTOR_LINE, 0, 100, 100, 0],
           [VECTOR_LINE, 100, 0, -100, 0]
@@ -285,7 +283,7 @@ let compass = function(width, height) {
         commands = [
           [VECTOR_RECTANGLE, 0, 0, 100, 100]
         ]
-        children = [@(){
+        children = @(){
           watch = CompassVal
           size = SIZE_TO_CONTENT
           pos = const [0, ph(10)]
@@ -294,7 +292,7 @@ let compass = function(width, height) {
           fontSize = 40
           font = Fonts.ils31
           text = CompassVal.get().tostring()
-        }]
+        }
       }
     ]
   }
@@ -307,82 +305,78 @@ let SpiMode = Computed(@() GunMode.get() && AimLockValid.get())
 let reticle = @() {
   size = FLEX
   watch = [TargetPosValid, AimLockValid, AtgmMode, isAAMMode, GunMode]
-  children = !isAAMMode.get() && (AtgmMode.get() || (GunMode.get() && AimLockValid.get()) ? AimLockValid.get() : TargetPosValid.get()) ? [
-    @(){
-      size = ph(2)
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      fillColor = Color(0, 0, 0, 0)
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100],
-        [VECTOR_LINE, 0, 0, 0, 0]
-      ]
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [pw(130), ph(-90)]
-          rendObj = ROBJ_TEXT
-          color = IlsColor.get()
-          fontSize = 40
-          font = Fonts.ils31
-          text = GunHasShell.get() ? "ПР" : ""
-          behavior = Behaviors.RtPropUpdate
-          update = @(){
-            text = GunHasShell.get() && (!SpiMode.get() || AimLockPos[0] > IlsPosSize[2] * 0.35 ) ? "ПР" : ""
-          }
+  children = !isAAMMode.get() && (AtgmMode.get() || (GunMode.get() && AimLockValid.get()) ? AimLockValid.get() : TargetPosValid.get()) ? @(){
+    size = ph(2)
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    fillColor = Color(0, 0, 0, 0)
+    commands = [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100],
+      [VECTOR_LINE, 0, 0, 0, 0]
+    ]
+    children = [
+      {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(130), ph(-90)]
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        fontSize = 40
+        font = Fonts.ils31
+        text = GunHasShell.get() ? "ПР" : ""
+        behavior = Behaviors.RtPropUpdate
+        update = @(){
+          text = GunHasShell.get() && (!SpiMode.get() || AimLockPos[0] > IlsPosSize[2] * 0.35 ) ? "ПР" : ""
         }
-        @(){
-          watch = DistValue
-          size = SIZE_TO_CONTENT
-          pos = const [pw(-150), ph(-300)]
-          rendObj = ROBJ_TEXT
-          color = IlsColor.get()
-          fontSize = 40
-          font = Fonts.ils31
-          text = GunMode.get() ? DistValue.get().tostring() : ""
-        }
-      ]
-      animations = [
-        { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "reticle_limit" }
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = function() {
-        local target = AtgmMode.get() || (GunMode.get() && AimLockValid.get()) ? AimLockPos : [TargetPos.get()[0], TargetPos.get()[1]]
-        let leftBorder = IlsPosSize[2] * 0.04
-        let rightBorder = IlsPosSize[2] * 0.9
-        let topBorder = IlsPosSize[3] * 0.02
-        let bottomBorder = IlsPosSize[3] * 0.95
-        if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
-          anim_start("reticle_limit")
-        else
-          anim_request_stop("reticle_limit")
-        target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
-        return {
-          color = IlsColor.get()
-          transform = {
-            translate = target
-          }
+      }
+      @(){
+        watch = DistValue
+        size = SIZE_TO_CONTENT
+        pos = const [pw(-150), ph(-300)]
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        fontSize = 40
+        font = Fonts.ils31
+        text = GunMode.get() ? DistValue.get().tostring() : ""
+      }
+    ]
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "reticle_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      local target = AtgmMode.get() || (GunMode.get() && AimLockValid.get()) ? AimLockPos : [TargetPos.get()[0], TargetPos.get()[1]]
+      let leftBorder = IlsPosSize[2] * 0.04
+      let rightBorder = IlsPosSize[2] * 0.9
+      let topBorder = IlsPosSize[3] * 0.02
+      let bottomBorder = IlsPosSize[3] * 0.95
+      if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+        anim_start("reticle_limit")
+      else
+        anim_request_stop("reticle_limit")
+      target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+      return {
+        color = IlsColor.get()
+        transform = {
+          translate = target
         }
       }
     }
-  ] : null
+  } : null
 }
 
 let spiLimits = @(){
   watch = SpiMode
   size = FLEX
-  children = SpiMode.get() ? [
-    {
-      size = FLEX
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
-        [VECTOR_LINE, 35, 0, 35, 100]
-      ]
-    }
-  ] : null
+  children = SpiMode.get() ? {
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+    commands = const [
+      [VECTOR_LINE, 35, 0, 35, 100]
+    ]
+  } : null
 }
 
 let shellName = @(){
@@ -411,18 +405,16 @@ let shellCnt = @() {
 let rateOfFire = @() {
   watch = GunMode
   size = FLEX
-  children = GunMode.get() ? [
-    @() {
-      watch = [IlsColor, IsHighRateOfFire]
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      pos = const [pw(78), ph(85)]
-      color = IlsColor.get()
-      fontSize = 35
-      font = Fonts.ils31
-      text = IsHighRateOfFire.get() ? "БТ" : "МТ"
-    }
-  ] : null
+  children = GunMode.get() ? @() {
+    watch = [IlsColor, IsHighRateOfFire]
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = const [pw(78), ph(85)]
+    color = IlsColor.get()
+    fontSize = 35
+    font = Fonts.ils31
+    text = IsHighRateOfFire.get() ? "БТ" : "МТ"
+  } : null
 }
 
 function getBurstLength(is_atgm, is_rocket, rocket_salvo, is_aam, is_bomb, bomb_salvo) {
@@ -517,61 +509,55 @@ let atgmLaunchPermitted = @() {
 let pilotControl = @() {
   watch = TriggerPulled
   size = FLEX
-  children = TriggerPulled.get() ? [
-    {
-      size = ph(2)
-      pos= const [pw(27), ph(88)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.75
-      fillColor = Color(0, 0, 0, 0)
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100],
-        [VECTOR_LINE, -70.7, -70.7, 70.7, 70.7],
-        [VECTOR_LINE, -70.7, 70.7, 70.7, -70.7]
-      ]
-    }
-  ] : null
+  children = TriggerPulled.get() ? {
+    size = ph(2)
+    pos= const [pw(27), ph(88)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get() * 0.75
+    fillColor = Color(0, 0, 0, 0)
+    commands = const [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100],
+      [VECTOR_LINE, -70.7, -70.7, 70.7, 70.7],
+      [VECTOR_LINE, -70.7, 70.7, 70.7, -70.7]
+    ]
+  } : null
 }
 
 let distToTarget = @() {
   size = FLEX
   watch = [GunMode, isAAMMode, AtgmMode, AimLockValid]
-  children = !GunMode.get() && !isAAMMode.get() && (!AtgmMode.get() || AimLockValid.get()) ? [
-    @() {
-      watch = DistValue
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      pos = const [pw(47), ph(82)]
-      color = IlsColor.get()
-      fontSize = 40
-      font = Fonts.hud
-      text = DistValue.get()
-    }
-  ] : null
+  children = !GunMode.get() && !isAAMMode.get() && (!AtgmMode.get() || AimLockValid.get()) ? @() {
+    watch = DistValue
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = const [pw(47), ph(82)]
+    color = IlsColor.get()
+    fontSize = 40
+    font = Fonts.hud
+    text = DistValue.get()
+  } : null
 }
 
 let aamReticle = @() {
   watch = [isAAMMode, IlsTrackerVisible]
   size = FLEX
-  children = isAAMMode.get() && IlsTrackerVisible.get() ? [
-    {
-      size = ph(5)
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = [IlsTrackerX.get(), IlsTrackerY.get()]
-        }
+  children = isAAMMode.get() && IlsTrackerVisible.get() ? {
+    size = ph(5)
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = const [
+      [VECTOR_ELLIPSE, 0, 0, 100, 100]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [IlsTrackerX.get(), IlsTrackerY.get()]
       }
     }
-  ] : null
+  } : null
 }
 
 let aamMode = @() {
@@ -579,35 +565,31 @@ let aamMode = @() {
   size = const [pw(100), SIZE_TO_CONTENT]
   pos = const [0, ph(78)]
   halign = ALIGN_CENTER
-  children = isAAMMode.get() && !RocketMode.get() && !BombCCIPMode.get() ? [
-    @() {
-      watch = GuidanceLockState
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      font = Fonts.ils31
-      fontSize = 45
-      text = GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? "ПР" :
-       GuidanceLockState.get() == GuidanceLockResult.RESULT_LOCKING ? "ГОТОВ" :
-       GuidanceLockState.get() <= GuidanceLockResult.RESULT_WARMING_UP ? "НАКОЛИ НИП" : ""
-    }
-  ] : null
+  children = isAAMMode.get() && !RocketMode.get() && !BombCCIPMode.get() ? @() {
+    watch = GuidanceLockState
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    color = IlsColor.get()
+    font = Fonts.ils31
+    fontSize = 45
+    text = GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? "ПР" :
+     GuidanceLockState.get() == GuidanceLockResult.RESULT_LOCKING ? "ГОТОВ" :
+     GuidanceLockState.get() <= GuidanceLockResult.RESULT_WARMING_UP ? "НАКОЛИ НИП" : ""
+  } : null
 }
 
 let TAMark = @(){
   watch = AimLockValid
   size = FLEX
-  children = AimLockValid.get() ? [
-    @(){
-      size = SIZE_TO_CONTENT
-      pos = const [pw(23), ph(23)]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      font = Fonts.ils31
-      fontSize = 40
-      text = "ТА ИД"
-    }
-  ] : null
+  children = AimLockValid.get() ? @(){
+    size = SIZE_TO_CONTENT
+    pos = const [pw(23), ph(23)]
+    rendObj = ROBJ_TEXT
+    color = IlsColor.get()
+    font = Fonts.ils31
+    fontSize = 40
+    text = "ТА ИД"
+  } : null
 }
 
 let maneuverDir = Watched(0)
@@ -623,76 +605,70 @@ let maneuverOrientation = @() {
     setInterval(1.0, updManeuverDir)
   }
   onDetach = @() clearTimer(updManeuverDir)
-  children = AimLockValid.get() && maneuverDir.get() != 0 ? [
-    @() {
-      watch = maneuverDir
-      rendObj = ROBJ_VECTOR_CANVAS
+  children = AimLockValid.get() && maneuverDir.get() != 0 ? @() {
+    watch = maneuverDir
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+    size = const [pw(5), ph(5)]
+    commands = maneuverDir.get() > 0 ? const [
+      [VECTOR_LINE, 0, 0, 40, 0],
+      [VECTOR_LINE, 0, 0, 20, 20],
+      [VECTOR_LINE, 0, 0, 20, -20]
+    ] : const [
+      [VECTOR_LINE, 100, 0, 60, 0],
+      [VECTOR_LINE, 100, 0, 80, 20],
+      [VECTOR_LINE, 100, 0, 80, -20]
+    ]
+    children = {
+      size = SIZE_TO_CONTENT
+      pos = const [0, ph(30)]
+      rendObj = ROBJ_TEXT
       color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      size = const [pw(5), ph(5)]
-      commands = maneuverDir.get() > 0 ? [
-        [VECTOR_LINE, 0, 0, 40, 0],
-        [VECTOR_LINE, 0, 0, 20, 20],
-        [VECTOR_LINE, 0, 0, 20, -20]
-      ] : [
-        [VECTOR_LINE, 100, 0, 60, 0],
-        [VECTOR_LINE, 100, 0, 80, 20],
-        [VECTOR_LINE, 100, 0, 80, -20]
-      ]
-      children = [
-        {
-          size = SIZE_TO_CONTENT
-          pos = const [0, ph(30)]
-          rendObj = ROBJ_TEXT
-          color = IlsColor.get()
-          font = Fonts.ils31
-          fontSize = 40
-          text = "ОМ"
-        }
-      ]
+      font = Fonts.ils31
+      fontSize = 40
+      text = "ОМ"
     }
-  ] : null
+  } : null
 }
 
 let aimLockPosMark = @() {
   watch = [AimLockValid, AtgmMode, GunMode]
   size = FLEX
-  children = !AtgmMode.get() && AimLockValid.get() && !GunMode.get() ? [
-    @(){
-      watch = IlsColor
-      size = pw(2)
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_LINE, -100, -100, -30, -30],
-        [VECTOR_LINE, -100, 100, -30, 30],
-        [VECTOR_LINE, 100, 100, 30, 30],
-        [VECTOR_LINE, 100, -100, 30, -30]
-      ]
-      animations = [
-        { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = function() {
-        local target = AimLockPos
-        let leftBorder = IlsPosSize[2] * 0.08
-        let rightBorder = IlsPosSize[2] * 0.9
-        let topBorder = IlsPosSize[3] * 0.04
-        let bottomBorder = IlsPosSize[3] * 0.95
-        if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
-          anim_start("aim_lock_limit")
-        else
-          anim_request_stop("aim_lock_limit")
-        target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
-        return {
-          transform = {
-            translate = target
-          }
+  children = !AtgmMode.get() && AimLockValid.get() && !GunMode.get() ? @(){
+    watch = IlsColor
+    size = pw(2)
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = const [
+      [VECTOR_LINE, -100, -100, -30, -30],
+      [VECTOR_LINE, -100, 100, -30, 30],
+      [VECTOR_LINE, 100, 100, 30, 30],
+      [VECTOR_LINE, 100, -100, 30, -30]
+    ]
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      local target = AimLockPos
+      let leftBorder = IlsPosSize[2] * 0.08
+      let rightBorder = IlsPosSize[2] * 0.9
+      let topBorder = IlsPosSize[3] * 0.04
+      let bottomBorder = IlsPosSize[3] * 0.95
+      if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+        anim_start("aim_lock_limit")
+      else
+        anim_request_stop("aim_lock_limit")
+      target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+      return {
+        transform = {
+          translate = target
         }
       }
     }
-  ] : null
+  } : null
 }
 
 function Ils28K(width, height) {

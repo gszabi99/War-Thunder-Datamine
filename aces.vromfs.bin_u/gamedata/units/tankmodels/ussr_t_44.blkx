@@ -43,13 +43,20 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
       "superstructure_front_dm": {
-        "armorThickness": 90.0
+        "armorThickness": 90.0,
+        "variableThickness": true
       },
       "superstructure_bottom_dm": {
         "armorThickness": 30.0
@@ -124,7 +131,9 @@
     "mask": {
       "gun_mask_dm": {
         "armorThickness": 120.0,
-        "hp": 10000.0
+        "hp": 10000.0,
+        "variableThickness": true,
+        "armorClass": "CHA_tank"
       },
       "gun_mask_shield_dm": {
         "armorThickness": 200.0,
@@ -152,7 +161,8 @@
       "ex_decor_l_05_dm": {},
       "ex_decor_l_06_dm": {},
       "ex_decor_l_08_dm": {},
-      "ex_decor_l_09_dm": {}
+      "ex_decor_l_09_dm": {},
+      "ex_decor_01_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -2073,7 +2083,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/85mm_ZiS_S_53_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/85mm_ZiS_S_53_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2115,7 +2125,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2159,8 +2169,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_t_44_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_44_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

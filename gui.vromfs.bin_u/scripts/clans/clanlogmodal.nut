@@ -1,20 +1,20 @@
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clans/clanRequests.nut" import requestClanLog
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/clans/clanTextInfo.nut" import checkUGCAllowed
+from "%scripts/clans/clanInfoTable.nut" import getFilteredClanData
 from "string" import format
 from "dagor.fs" import read_text_from_file
 from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
-let { requestClanLog } = require("%scripts/clans/clanRequests.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
-let { getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
 
 const CLAN_LOG_ROWS_IN_PAGE = 10
 
@@ -146,6 +146,6 @@ register_gui_handler("clanLogModal", clanLogModal)
 
 let openClanLogWnd = @(clanId) loadHandler(clanLogModal, { clanId = clanId })
 
-return {
+return freeze({
   openClanLogWnd
-}
+})

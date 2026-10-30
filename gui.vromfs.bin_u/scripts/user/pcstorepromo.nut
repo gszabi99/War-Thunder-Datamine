@@ -1,5 +1,5 @@
+from "%scripts/unlocks/showUnlockWnd.nut" import showUnlockWnd
 from "%scripts/dagui_library.nut" import *
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 function showPcStorePromo() {
   showUnlockWnd({
@@ -11,6 +11,6 @@ function showPcStorePromo() {
   })
 }
 
-return {
+return freeze({
   showPcStorePromo
-}
+})

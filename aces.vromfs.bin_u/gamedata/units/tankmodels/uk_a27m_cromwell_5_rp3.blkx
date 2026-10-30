@@ -45,6 +45,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1964,7 +1970,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2026,7 +2032,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_01_flame",
         "defaultYaw": 0.0,
@@ -2068,7 +2074,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_RP3_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/152mm_RP3_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2124,8 +2130,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_a27m_cromwell_5_rp3_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_a27m_cromwell_5_rp3_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3129,7 +3135,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_QQF_MkV_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3191,7 +3197,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_01_flame",
               "defaultYaw": 0.0,
@@ -3233,7 +3239,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/152mm_RP3_rocket_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/152mm_RP3_rocket_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3288,7 +3294,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

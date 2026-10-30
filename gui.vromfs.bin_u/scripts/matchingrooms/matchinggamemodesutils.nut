@@ -52,8 +52,8 @@ function getCustomDifficultyOptions() {
     ]
 }
 
-return {
+return freeze({
   isGameModeCoop
   isGameModeVersus
   getCustomDifficultyOptions
-}
+})

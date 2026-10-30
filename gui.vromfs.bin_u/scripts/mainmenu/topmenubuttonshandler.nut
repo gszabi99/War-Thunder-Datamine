@@ -1,18 +1,17 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
 import "%sqStdLibs/helpers/u.nut" as u
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/mainmenu/topMenuButtons.nut" import getButtonConfigById
+from "%scripts/mainmenu/topMenuSections.nut" import getTopMenuSectionsOrder
+from "%scripts/queue/queueState.nut" import isAnyQueuesActive
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
-let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 const SEPARATOR_POSTFIX = "_separator"
 
@@ -33,7 +32,7 @@ let TopMenuButtonsHandler = class (BaseGuiHandlerWT) {
   ON_ESC_SECTION_OPEN = "menu"
 
   static function create(nestObj, parentHandler, sectionsStructure, objForWidth = null) {
-    if (!isLoggedIn.get())
+    if (!hasFullLoginState.get())
       return null
 
     if (!checkObj(nestObj))
@@ -373,4 +372,4 @@ let TopMenuButtonsHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("TopMenuButtonsHandler", TopMenuButtonsHandler)
 
-return { TopMenuButtonsHandler }
+return freeze({ TopMenuButtonsHandler })

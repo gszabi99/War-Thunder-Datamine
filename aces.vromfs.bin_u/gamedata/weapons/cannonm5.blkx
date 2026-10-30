@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 0.3,
-  "traceFreq": 1,
-  "bullets": 13,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,40 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_80mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 1,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 0.3,
+  "bullets": 13,
+  "overheat": {
+    "overheat": [
+      [
+        120.0,
+        0.0
+      ],
+      [
+        160.0,
+        0.05
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "bulletCount": 25,
@@ -158,7 +186,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -1012,7 +1040,7 @@
         ],
         "traceFreq": 1,
         "tracer": "76mmBrightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   ],
@@ -1154,7 +1182,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -2010,44 +2038,9 @@
         ],
         "traceFreq": 1,
         "tracer": "76mmBrightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m5_gun_outside",
-    "cockpit": "m5_gun_inside",
-    "ai": "m5_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        120.0,
-        0.0
-      ],
-      [
-        160.0,
-        0.05
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
   },
   "m4_75mm_new_gun": {
     "maxDeltaAngle": 0.15,
@@ -2063,5 +2056,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m5_gun_outside",
+    "cockpit": "m5_gun_inside",
+    "ai": "m5_gun_ai"
   }
 }

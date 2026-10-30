@@ -1,4 +1,15 @@
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/statistics/mpStatistics.nut" import MPStatistics
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/unlocks/personalTasks.nut" import openPersonalTasks
+from "%scripts/sqDagui/guiBhv/bhvAnim.nut" import create_ObjMoveToOBj
+from "%scripts/items/orders.nut" import showActivateOrderButton, orderCanBeActivated
+from "%scripts/statistics/mpStatisticsUtil.nut" import getCurMpTitle
+from "%scripts/hud/dargHudLayers.nut" import mkMpScoreWidget
+from "%scripts/replays/replayMetadata.nut" import updateReplayMatchingPlayersInfoFromMplayerList
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "mission" import get_game_type
 from "guiMission" import MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL, quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete, get_mission_status
 from "scriptRespondent" import registerRespondent
@@ -8,21 +19,12 @@ from "%scripts/dagui_library.nut" import *
 from "gameplayBinding" import closeIngameGui, inFlightMenu, setMuteSoundInFlightMenu
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
-let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
-let { showActivateOrderButton, orderCanBeActivated } = require("%scripts/items/orders.nut")
-let { getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { updateReplayMatchingPlayersInfoFromMplayerList } = require("%scripts/replays/replayMetadata.nut")
 
 let MPStatisticsModal = class (MPStatistics) {
   sceneBlkName = "%gui/mpStatistics.blk"
   sceneNavBlkName = "%gui/navMpStat.blk"
+  getWidgetsList = @() [mkMpScoreWidget("@titleLogoPlateHeight + 1@bh + 0.02@scrn_tgt")]
   shouldBlurSceneBgFn = needUseHangarDof
   keepLoaded = true
 
@@ -189,7 +191,7 @@ let MPStatisticsModal = class (MPStatistics) {
 register_gui_handler("MPStatisticsModal", MPStatisticsModal)
 
 registerRespondent("is_mpstatscreen_active", function is_mpstatscreen_active() { 
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return false
   let curHandler = handlersManager.getActiveBaseHandler()
   return curHandler != null && (curHandler instanceof MPStatisticsModal)

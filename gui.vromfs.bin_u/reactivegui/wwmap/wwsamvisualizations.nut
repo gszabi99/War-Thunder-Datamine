@@ -2,7 +2,7 @@ from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import samStrikesInfo
 from "%appGlobals/worldWar/wwSettings.nut" import getSettings
 from "%rGui/wwMap/wwMapUtils.nut" import convertColor4
 from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds, mapZoom
-from "%rGui/wwMap/wwArmyStates.nut" import movingArmiesPositions, getArmyByName
+from "%rGui/wwMap/wwArmyStates.nut" import mkArmyMapPosition
 from "%rGui/globals/ui_library.nut" import *
 
 local samLineColor = null
@@ -11,15 +11,13 @@ local samLineWidthK = null
 
 function mkSamVisualization(strikeInfo, areaBounds, mpZoom) {
   let { army, forcedTargetArmyName, radius } = strikeInfo
-  let forcedTargetPosition = Computed(function() {
-    local pos = movingArmiesPositions.get()?[forcedTargetArmyName]
-    if (pos != null)
-      return pos
-    let forcedTarget = getArmyByName(forcedTargetArmyName)
-    return convertToRelativeMapCoords(forcedTarget.pathTracker.pos)
-  })
+  let forcedTargetPosition = mkArmyMapPosition(forcedTargetArmyName)
 
   return function() {
+    let targetPos = forcedTargetPosition.get()
+    if (targetPos == null)
+      return { watch = forcedTargetPosition }
+
     let artilleryPosition = convertToRelativeMapCoords(army.pathTracker.pos)
     let artilleryStrikeSettings = getSettings("artilleryStrike")
 
@@ -32,7 +30,7 @@ function mkSamVisualization(strikeInfo, areaBounds, mpZoom) {
 
     let circleBlinkPeriod = artilleryStrikeSettings.circleBlinkPeriod
     let strikeSize = radius * 2 * mpZoom
-    let command = [VECTOR_LINE, 100 * artilleryPosition.x, 100 * artilleryPosition.y, 100 * forcedTargetPosition.get().x, 100 * forcedTargetPosition.get().y]
+    let command = [VECTOR_LINE, 100 * artilleryPosition.x, 100 * artilleryPosition.y, 100 * targetPos.x, 100 * targetPos.y]
 
     return {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -56,6 +54,6 @@ let samVisualizations = @() {
       .map(@(samStrikeInfo) mkSamVisualization(samStrikeInfo, activeAreaBounds.get(), mapZoom.get()))
   }
 
-return {
+return freeze({
   samVisualizations
-}
+})

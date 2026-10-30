@@ -1,5 +1,24 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/unit/unitInfo.nut" import image_for_air
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, isWeaponVisible
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, getWeaponNameText, makeWeaponInfoData
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/missions/mapPreview.nut" import setMapPreview
+from "%scripts/customization/skins.nut" import getLastSkin, getSkinsOption
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
+from "%scripts/missions/startMissionsList.nut" import guiStartFlight, guiStartCdOptions
+from "%scripts/missions/missionsStates.nut" import get_mutable_mission_settings, get_mission_settings
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import guiStartMpLobby
+from "%scripts/missions/missionsUtils.nut" import getMaxPlayersForGamemode
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "guiOptions" import get_gui_option
@@ -11,26 +30,6 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
-
-let { image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
-let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { guiStartFlight, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
-let { get_mutable_mission_settings, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
-let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let MissionBuilderTuner = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -370,4 +369,4 @@ let MissionBuilderTuner = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("MissionBuilderTuner", MissionBuilderTuner)
 
-return { MissionBuilderTuner }
+return freeze({ MissionBuilderTuner })

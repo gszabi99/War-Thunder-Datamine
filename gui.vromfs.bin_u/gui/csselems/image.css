@@ -227,8 +227,8 @@ imgSelectable.collectionPrize {
   interactive:yes;
 }
 imgSelectable.collectionPrize > img {
-  size:0.7@p.p.w, 0.7@p.p.w;
-  background-svg-size:0.7@p.p.w, 0.7@p.p.w;
+  size:0.7*pw, 0.7*pw;
+  background-svg-size:0.7*pw, 0.7*pw;
 }
 
 imgSelectable:hover {
@@ -294,7 +294,7 @@ avatarImg[selected=yes] {
 
 imgGradient {
   position:absolute;
-  background-repeat:repeat-x;
+  background-repeat:stretch;
   background-svg-size:4, 32;
   background-image:#ui/gameuiskin#wnd_gradient@@ss.svg;
   input-transparent:yes;

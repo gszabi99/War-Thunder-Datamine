@@ -9,6 +9,6 @@ function canShowUnitContextMenu(obj) {
   return true
 }
 
-return {
+return freeze({
   canShowUnitContextMenu
-}
+})

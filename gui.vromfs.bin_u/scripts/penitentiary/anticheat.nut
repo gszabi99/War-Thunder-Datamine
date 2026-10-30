@@ -1,11 +1,9 @@
+from "%sqstd/platform.nut" import is_windows, is_steam_deck
+from "%scripts/battleRatingState.nut" import recentBR
+from "%scripts/squads/squadState.nut" import getLeaderBattleRating, isSquadMember
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
-from "%sqstd/platform.nut" import is_windows
 from "%scripts/dagui_natives.nut" import restart_game, is_eac_inited
 from "%scripts/dagui_library.nut" import *
-
-let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { recentBR } = require("%scripts/battleRatingState.nut")
-let { getLeaderBattleRating, isSquadMember } = require("%scripts/squads/squadState.nut")
 
 function isEventMrankConditionComplete(event) {
   if ((event?.antiCheatEnableMrank ?? -1) >= 0) {
@@ -27,7 +25,7 @@ function showMsgboxIfEacInactive(event) {
   if (is_eac_inited() || !shouldUseEac(event))
     return true
 
-  let eac = isPlatformSteamDeck && is_windows
+  let eac = is_steam_deck && is_windows
     ? "eac/eac_for_linux"
     : "eac/eac_not_inited_restart"
 
@@ -39,7 +37,7 @@ function showMsgboxIfEacInactive(event) {
   return false
 }
 
-return {
+return freeze({
   showMsgboxIfEacInactive = showMsgboxIfEacInactive
   shouldUseEac = shouldUseEac
-}
+})

@@ -1,11 +1,10 @@
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
+from "%scripts/options/options.nut" import get_gui_option_in_mode
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import gchat_is_connected
 from "%scripts/dagui_library.nut" import *
-
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const CHAT_SYSTEM_MESSAGE_TIMEOUT_MSEC = 60000
 const SYSTEM_COLOR = "@chatInfoColor"
@@ -31,7 +30,7 @@ function checkChatConnected() {
   return false
 }
 
-return {
+return freeze({
   checkChatConnected
   systemMessage
-}
+})

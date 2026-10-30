@@ -37,11 +37,11 @@ enum squadStatusUpdateState {
 const SQUADS_VERSION = 2
 const SQUAD_REQEST_TIMEOUT = 45000
 
-return {
+return freeze({
   squadMemberState
   memberStatus
   squadState
   squadStatusUpdateState
   SQUADS_VERSION
   SQUAD_REQEST_TIMEOUT
-}
+})

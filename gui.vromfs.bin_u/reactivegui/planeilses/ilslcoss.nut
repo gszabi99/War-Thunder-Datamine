@@ -57,16 +57,16 @@ let LCOSSCrosshair = @() {
   lineWidth = baseLineWidth * IlsLineScale.get()
   fillColor = Color(0, 0, 0, 0)
   commands = [
-    [VECTOR_ELLIPSE, 0, 0, 90, 90],
-    [VECTOR_SECTOR, 0, 0, 50, 50, -125, -55],
-    [VECTOR_SECTOR, 0, 0, 50, 50, -35, 35],
-    [VECTOR_SECTOR, 0, 0, 50, 50, 55, 125],
-    [VECTOR_SECTOR, 0, 0, 50, 50, 145, 215],
+    const [VECTOR_ELLIPSE, 0, 0, 90, 90],
+    const [VECTOR_SECTOR, 0, 0, 50, 50, -125, -55],
+    const [VECTOR_SECTOR, 0, 0, 50, 50, -35, 35],
+    const [VECTOR_SECTOR, 0, 0, 50, 50, 55, 125],
+    const [VECTOR_SECTOR, 0, 0, 50, 50, 145, 215],
     [VECTOR_WIDTH, baseLineWidth * 3 * IlsLineScale.get()],
-    [VECTOR_LINE, 0, 0, 0, 0],
-    [VECTOR_LINE, 92, 0, 97, 0],
-    [VECTOR_LINE, -92, 0, -97, 0],
-    [VECTOR_LINE, 0, -92, -0, -97]
+    const [VECTOR_LINE, 0, 0, 0, 0],
+    const [VECTOR_LINE, 92, 0, 97, 0],
+    const [VECTOR_LINE, -92, 0, -97, 0],
+    const [VECTOR_LINE, 0, -92, -0, -97]
   ]
 }
 
@@ -90,7 +90,7 @@ let LCOSSRadarRangeVis =  Computed(@() RadarTargetDist.get() > 0.0 || BombingMod
 let LCOSSRadarRange = @() {
   watch = LCOSSRadarRangeVis
   size = FLEX
-  children = LCOSSRadarRangeVis.get() ? [LCOSSRadarRangeMark] : null
+  children = LCOSSRadarRangeVis.get() ? LCOSSRadarRangeMark : null
 }
 
 let ccrpVisible = Computed(@() BombingMode.get() && TimeBeforeBombRelease.get() > 0.0)
@@ -121,49 +121,47 @@ let ASG23MainReticle = @(){
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
   fillColor = Color(0, 0, 0, 0)
   commands = [
-    [VECTOR_ELLIPSE, 0, 0, 60, 60],
-    [VECTOR_ELLIPSE, 0, 0, 100, 100],
-    [VECTOR_LINE, 52, 0, 75, 0],
-    [VECTOR_LINE, -52, 0, -75, 0],
-    [VECTOR_LINE, 0, -52, 0, -60],
-    [VECTOR_LINE, 0, -100, 0, -120],
-    [VECTOR_LINE, -100, 0, -120, 0],
-    [VECTOR_LINE, -86.6, 50, -104, 60],
-    [VECTOR_LINE, -50, 86.6, -60, 104],
-    [VECTOR_LINE, -38.27, 92.39, -42.1, 101.63],
-    [VECTOR_LINE, -26, 96.6, -31, 115.9],
-    [VECTOR_LINE, -13, 99.14, -14.36, 109.06],
-    [VECTOR_LINE, 0, 100, 0, 120],
-    [VECTOR_LINE, 13, 99.14, 14.36, 109.06],
-    [VECTOR_LINE, 26, 96.6, 31, 115.9],
-    [VECTOR_LINE, 38.27, 92.39, 42.1, 101.63],
-    [VECTOR_LINE, 50, 86.6, 60, 104],
-    [VECTOR_LINE, 86.6, 50, 104, 60],
-    [VECTOR_LINE, 100, 0, 120, 0],
+    const [VECTOR_ELLIPSE, 0, 0, 60, 60],
+    const [VECTOR_ELLIPSE, 0, 0, 100, 100],
+    const [VECTOR_LINE, 52, 0, 75, 0],
+    const [VECTOR_LINE, -52, 0, -75, 0],
+    const [VECTOR_LINE, 0, -52, 0, -60],
+    const [VECTOR_LINE, 0, -100, 0, -120],
+    const [VECTOR_LINE, -100, 0, -120, 0],
+    const [VECTOR_LINE, -86.6, 50, -104, 60],
+    const [VECTOR_LINE, -50, 86.6, -60, 104],
+    const [VECTOR_LINE, -38.27, 92.39, -42.1, 101.63],
+    const [VECTOR_LINE, -26, 96.6, -31, 115.9],
+    const [VECTOR_LINE, -13, 99.14, -14.36, 109.06],
+    const [VECTOR_LINE, 0, 100, 0, 120],
+    const [VECTOR_LINE, 13, 99.14, 14.36, 109.06],
+    const [VECTOR_LINE, 26, 96.6, 31, 115.9],
+    const [VECTOR_LINE, 38.27, 92.39, 42.1, 101.63],
+    const [VECTOR_LINE, 50, 86.6, 60, 104],
+    const [VECTOR_LINE, 86.6, 50, 104, 60],
+    const [VECTOR_LINE, 100, 0, 120, 0],
     [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get() * 3.0],
-    [VECTOR_LINE, 0, 0, 0, 0]
+    const [VECTOR_LINE, 0, 0, 0, 0]
   ]
-  children = [
-    {
-      size = FLEX
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      fillColor = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_POLY, -4, -75, 0, -79, 4, -75],
-        [VECTOR_POLY, -71, 0, -75, -4, -79, 0],
-        [VECTOR_POLY, 71, 0, 75, -4, 79, 0]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          rotate = -Roll.get()
-          pivot = [0, 0]
-        }
+  children = {
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = const [
+      [VECTOR_POLY, -4, -75, 0, -79, 4, -75],
+      [VECTOR_POLY, -71, 0, -75, -4, -79, 0],
+      [VECTOR_POLY, 71, 0, 75, -4, 79, 0]
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        rotate = -Roll.get()
+        pivot = 0
       }
     }
-  ]
+  }
 }
 
 let ASGRightScale = @() {
@@ -173,7 +171,7 @@ let ASGRightScale = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 0, 47],
     [VECTOR_LINE, 0, 53, 0, 100],
     [VECTOR_LINE, 20, 50, 100, 50],
@@ -193,7 +191,7 @@ let ASGLeftScale = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
-  commands = [
+  commands = const [
     [VECTOR_LINE, 100, 0, 100, 100],
     [VECTOR_LINE, 20, 50, 100, 50],
     [VECTOR_LINE, 100, 10, 0, 11.5],
@@ -214,20 +212,18 @@ let DistMarkAngle = Computed(@() 180 - (BombingMode.get() && TimeBeforeBombRelea
 let ASG23Distance = @() {
   watch = [RadarTargetValid, BombingMode]
   size = FLEX
-  children = RadarTargetValid.get() || BombingMode.get() ? [
-    @() {
-      watch = [IlsColor, DistMarkAngle]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = ph(18.7)
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 3
-      fillColor = Color(0, 0, 0, 0)
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, DistMarkAngle.get(), 180],
-        [VECTOR_LINE, 102 * cos(PI * DistMarkAngle.get() / 180), 102 * sin(PI * DistMarkAngle.get() / 180), 90 * cos(PI * DistMarkAngle.get() / 180), 90 * sin(PI * DistMarkAngle.get() / 180)]
-      ]
-    }
-  ] : null
+  children = RadarTargetValid.get() || BombingMode.get() ? @() {
+    watch = [IlsColor, DistMarkAngle]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = ph(18.7)
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get() * 3
+    fillColor = Color(0, 0, 0, 0)
+    commands = [
+      [VECTOR_SECTOR, 0, 0, 100, 100, DistMarkAngle.get(), 180],
+      [VECTOR_LINE, 102 * cos(PI * DistMarkAngle.get() / 180), 102 * sin(PI * DistMarkAngle.get() / 180), 90 * cos(PI * DistMarkAngle.get() / 180), 90 * sin(PI * DistMarkAngle.get() / 180)]
+    ]
+  } : null
 }
 
 let displayCCRP = Computed(@() BombingMode.get() && AimLockValid.get())
@@ -285,7 +281,7 @@ function ASG23(width, height) {
   }
 }
 
-return {
+return freeze({
   LCOSS
   ASG23
-}
+})

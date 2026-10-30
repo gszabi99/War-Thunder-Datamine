@@ -11,6 +11,6 @@ function getStatCardInfo() {
   return statCache
 }
 
-return {
+return freeze({
   getStatCardInfo
-}
+})

@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -3237,7 +3243,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/20mm_Type98_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "recoilOffset": 0.04,
@@ -3286,8 +3292,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_98_ta_se_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_98_ta_se_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "cockpit": {

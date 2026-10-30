@@ -1,4 +1,17 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/promo/promoConditions.nut" import isVisibleByConditions
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
+from "%scripts/promo/promoActions.nut" import getPromoAction, isVisiblePromoByAction
+from "%scripts/promo/promoButtonsConfig.nut" import getPromoButtonConfig
+from "%scripts/onlineShop/url.nut" import validateLink
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/user/suggestionEmailRegistration.nut" import showGuestEmailRegistration, needShowGuestEmailRegistration
+from "%scripts/unlocks/unlocksModule.nut" import checkUnlockString
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/langUtils/language.nut" import isAvailableForCurLang, getLocTextFromConfig
+from "%scripts/user/partnerUnlocks.nut" import isPartnerUnlockAvailable
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, isEmpty, isString, chooseRandom
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
@@ -12,21 +25,8 @@ from "%scripts/dagui_natives.nut" import set_cached_music, has_entitlement, peri
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/cachedMusicConsts.nut" import *
 
-let time = require("%scripts/time.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { isVisibleByConditions } = require("%scripts/promo/promoConditions.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoActions.nut")
-let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { validateLink } = require("%scripts/onlineShop/url.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -771,7 +771,7 @@ function setPromoButtonText(buttonObj, id, text = "") {
   }
 }
 
-return {
+return freeze({
   PERFORM_PROMO_ACTION_NAME
   performPromoAction
   launchPromoAction
@@ -807,4 +807,4 @@ return {
   getShowAllPromoBlocks
   setShowAllPromoBlocks
   canSwitchShowAllPromoBlocksFlag
-}
+})

@@ -1,5 +1,16 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/inOperation/view/wwObjectiveView.nut" import WwObjectiveView
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getOperationObjectives
+from "%scripts/worldWar/worldWarState.nut" import getArmyGroupsBySide
 from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
 from "dagor.math" import Point2
 from "%sqstd/string.nut" import startsWith
@@ -9,19 +20,7 @@ from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_mark_zones_as_o
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwObjectiveView } = require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
-let { getOperationObjectives } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
 
 
 let wwObjective = class (BaseGuiHandler) {
@@ -440,4 +439,4 @@ let wwObjective = class (BaseGuiHandler) {
 }
 register_gui_handler("wwObjective", wwObjective)
 
-return { wwObjective }
+return freeze({ wwObjective })

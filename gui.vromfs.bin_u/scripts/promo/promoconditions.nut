@@ -39,6 +39,6 @@ function isVisibleByConditions(blk) {
   return true
 }
 
-return {
+return freeze({
   isVisibleByConditions
-}
+})

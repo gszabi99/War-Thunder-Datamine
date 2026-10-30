@@ -1,3 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable, isUnitGroup
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
+from "%scripts/unit/unitInfoTexts.nut" import getCantBuyUnitReason
+from "%scripts/unit/unitInfo.nut" import getUnitExp
+from "%scripts/unit/unitActions.nut" import buyUnit, CheckFeatureLockAction, checkFeatureLock, showCantBuyOrResearchUnitMsgbox
+from "%scripts/gameModes/gameModeMesasge.nut" import showNotAvailableMsgBox
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
@@ -5,21 +16,9 @@ from "dagor.time" import get_time_msec
 from "hangar" import hangar_get_current_unit_name, force_retrace_decorators, hangar_force_reload_model
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-from "%scripts/dagui_natives.nut" import clan_get_exp, remove_calculate_modification_effect_jobs, calculate_ship_parameters_async, calculate_tank_parameters_async, calculate_min_and_max_parameters, calculate_mod_or_weapon_effect
+from "%scripts/dagui_natives.nut" import clan_get_exp, remove_calculate_modification_effect_jobs
+from "%scripts/unit/unitCalcRequests.nut" import calculateShipParameters, calculateTankParameters, calculateMinAndMaxParameters, calculateModOrWeaponEffect
 from "%scripts/clans/clanState.nut" import is_in_clan
-
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable, isUnitGroup } = require("%scripts/unit/unitStatus.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { buyUnit, CheckFeatureLockAction, checkFeatureLock, showCantBuyOrResearchUnitMsgbox } = require("%scripts/unit/unitActions.nut")
-let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -99,7 +98,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
 
   if (air.isShipOrBoat()) {
     air.modificatorsRequestTime = get_time_msec()
-    calculate_ship_parameters_async(air.name, this,  function(effect, ...) {
+    calculateShipParameters(air.name, function(effect) {
       air.modificatorsRequestTime = -1
       if (effect && effect.len() > 0) {
         air.modificators = {
@@ -118,13 +117,13 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
       }
 
       afterUpdateAirModificators(air, callBack)
-    }, null)
+    })
     return false
   }
 
   if (air.isTank()) {
     air.modificatorsRequestTime = get_time_msec()
-    calculate_tank_parameters_async(air.name, this,  function(effect, ...) {
+    calculateTankParameters(air.name, function(effect) {
       air.modificatorsRequestTime = -1
       if (effect && effect.len() > 0) {
         air.modificators = {
@@ -142,7 +141,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
           air.modificatorsBase = air.modificators
       }
       afterUpdateAirModificators(air, callBack)
-    }, null)
+    })
     return false
   }
 
@@ -151,7 +150,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
   }
 
   air.modificatorsRequestTime = get_time_msec()
-  calculate_min_and_max_parameters(air.name, this,  function(effect, ...) {
+  calculateMinAndMaxParameters(air.name, function(effect) {
     air.modificatorsRequestTime = -1
     if (effect && effect.len() > 0) {
       air.modificators = {
@@ -166,7 +165,7 @@ function checkUnitModsUpdate(air, callBack = null, forceUpdate = false, needMinM
         air.modificators = effect.max
     }
     afterUpdateAirModificators(air, callBack)
-  }, null)
+  })
   return false
 }
 
@@ -190,7 +189,7 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
       callback = callback
     }
 
-    calculate_mod_or_weapon_effect(unit.name, weaponName, false, this, function(effect, ...) {
+    calculateModOrWeaponEffect(unit.name, weaponName, false, function(effect) {
       secondaryMods = unit.secondaryWeaponMods
       if (!secondaryMods || weaponName != secondaryMods.weaponName)
         return
@@ -201,7 +200,7 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
         secondaryMods.callback()
         secondaryMods.callback = null
       }
-    }, null)
+    })
     return false
   }
 
@@ -210,12 +209,12 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
     let mod = getModificationByName(unit, torpedoMod)
     if (!mod || mod?.effects)
       return true
-    calculate_mod_or_weapon_effect(unit.name, torpedoMod, true, this, function(effect, ...) {
+    calculateModOrWeaponEffect(unit.name, torpedoMod, true, function(effect) {
       mod.effects <- effect
       if (callback)
         callback()
       broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
-    }, null)
+    })
     return false
   }
   return true
@@ -246,9 +245,9 @@ function updateUnitAfterSwitchMod(unit, modName = null) {
 
 }
 
-return {
+return freeze({
   checkForResearch
   checkUnitModsUpdate
   checkSecondaryWeaponModsRecount
   updateUnitAfterSwitchMod
-}
+})

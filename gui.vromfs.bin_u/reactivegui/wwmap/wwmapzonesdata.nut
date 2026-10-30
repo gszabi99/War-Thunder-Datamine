@@ -173,7 +173,7 @@ function getZoneByPoint(pos) {
   return cachedZones?[zone?.idx]
 }
 
-return {
+return freeze({
   parseZones
   getZones = @() cachedZones
   getZoneById
@@ -183,4 +183,4 @@ return {
   hoveredZone
   updateHoveredZone
   updateSelectedRearZone
-}
+})

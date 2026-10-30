@@ -1,6 +1,13 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
 import "DataBlock" as DataBlock
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%appGlobals/clientState/localProfile.nut" import loadLocalAccountSettings, saveLocalAccountSettings
+from "%scripts/statistics/mpStatisticsUtil.nut" import getLocalTeamForMpStats
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset, getPreviewControlsPreset
+from "%scripts/statistics/mplayersList.nut" import buildMplayerName
 from "controls" import isXInputDevice
 from "dagor.time" import get_time_msec
 from "chard" import get_charserver_time_sec
@@ -18,19 +25,13 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/viewUtils/hints.nut" import g_hints, g_hint_tag
 from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color
+from "%scripts/controls/activeInputDevice.nut" import isGamepadInputActive
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let time = require("%scripts/time.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalAccountSettings, saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { g_hud_hint_types } = require("%scripts/hud/hudHintTypes.nut")
 let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
-let { getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { getCurControlsPreset, getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -152,7 +153,7 @@ g_hud_hints._buildText <- function _buildText(data) {
   local shortcuts = this.getShortcuts(data)
 
   if (shortcuts == null) {
-    local res = loc(this.getLocId(data), this.getLocParams(data))
+    local res = this.getText(data, this.getLocParams(data))
     if (this.image)
       res = "".concat(g_hint_tag.IMAGE.makeFullTag({ image = this.image }), res)
     return res
@@ -188,7 +189,7 @@ g_hud_hints._buildText <- function _buildText(data) {
   }
 
   let locParams = this.getLocParams(data).__update({ shortcut = shortcutTag })
-  local result = loc(this.getLocId(data), locParams)
+  local result = this.getText(data, locParams)
 
   
   
@@ -310,17 +311,17 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
     return hintData?.shortcuts
   }
 
+  function getLocParams(hintData) {
+    let varValue = hintData?.variable_value
+    if (varValue == null)
+      return {}
+    if (hintData?.variable_style == "playerId")
+      return { var = buildMplayerName(get_mplayer_by_id(varValue)) }
+    return { var = varValue }
+  }
+
   buildText = function (hintData) {
-    local res = g_hud_hints._buildText.call(this, hintData)
-    local varValue = hintData?.variable_value
-    if (varValue != null) {
-      let varStyle = hintData?.variable_style
-      if (varStyle == "playerId") {
-        let player = get_mplayer_by_id(varValue)
-        varValue = buildMplayerName(player)
-      }
-      res = loc(res, { var = varValue })
-    }
+    let res = g_hud_hints._buildText.call(this, hintData)
     if (!this.getShortcuts(hintData))
       return res
     return "".concat(g_hint_tag.TIMER.makeFullTag(), " ", res)
@@ -491,6 +492,10 @@ g_hud_hints.template <- {
   getNoKeyLocId = g_hud_hints._getNoKeyLocId
 
   getLocParams = @(_hintData) {}
+  
+  function getText(data, locParams) {
+    return loc(this.getLocId(data), locParams)
+  }
 
   getPriority = function(eventData) { return (eventData?.priority ?? this.priority) }
   isCurrent = @(_eventData, _isHideEvent) true
@@ -543,12 +548,14 @@ g_hud_hints.template <- {
   disabledByUnitTags = null
 
   isShowedInVR = false
+  needKeyboard = false
 
   shouldBlink = false
   shouldFadeOut = false
   isSingleInNest = false
   isVerticalAlignText = false
   isEnabled = @() (this.isShowedInVR || !is_stereo_mode())
+    && (!this.needKeyboard || !isGamepadInputActive.get())
     && is_hint_enabled(this.mask)
     && this.isEnabledByDifficulty()
 
@@ -569,7 +576,7 @@ g_hud_hints.template <- {
   updateHintOptionsBlk = function(_blk) {} 
 }
 
-enums.addTypes(g_hud_hints, {
+enums.enumsAddTypesAsInstances(g_hud_hints, {
   UNKNOWN = {}
 
   OFFER_BAILOUT = {
@@ -680,7 +687,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:action_not_available"
     lifeTime = 5.0
     priority = CATASTROPHIC_HINT_PRIORITY
-    getLocId = @(data) loc($"hints/{data?.hintId ?? ""}")
+    getLocId = @(data) $"hints/{data?.hintId ?? ""}"
   }
 
   INEFFECTIVE_HIT_HINT = {
@@ -903,6 +910,7 @@ enums.addTypes(g_hud_hints, {
   F1_CONTROLS_HINT = {
     hintType = g_hud_hint_types.ACTIONBAR
     locId = "hints/f1_controls"
+    needKeyboard = true
     showEvent = "hint:f1_controls:show"
     hideEvent = "helpOpened"
     priority = CATASTROPHIC_HINT_PRIORITY
@@ -1068,6 +1076,16 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_REPAIR_BREACHES"
     showEvent = "hint:critical_heeling:show"
     hideEvent = "hint:critical_heeling:hide"
+    shouldBlink = true
+  }
+
+  CRITICAL_TRIMMING_HINT = {
+    hintType = g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/critical_trimming"
+    noKeyLocId = "hints/critical_trimming_nokey"
+    shortcuts = "ID_REPAIR_BREACHES"
+    showEvent = "hint:critical_trimming:show"
+    hideEvent = "hint:critical_trimming:hide"
     shouldBlink = true
   }
 
@@ -2830,6 +2848,13 @@ NEED_STOP_FOR_RADAR = {
     lifeTime = 5.0
   }
 
+  BACKUP_MANUAL_LOADING = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/backup_manual_loading"
+    showEvent = "hint:backup_manual_loading"
+    lifeTime = 5.0
+  }
+
   KILL_STREAK_SAFE_EXIT = {
     hintType = g_hud_hint_types.COMMON
     getLocId = function(_hintData) {
@@ -2870,18 +2895,18 @@ NEED_STOP_FOR_RADAR = {
   AMMO_USED_EXIT_ZONE = {
     hintType = g_hud_hint_types.MISSION_ACTION_HINTS
     showEvent = "hint:ammo_used_exit_zone:show"
-    getLocId = function(_hintData) {
+    function getText(_hintData, _locParams) {
       let misBlk = DataBlock()
       get_current_mission_desc(misBlk)
-      local locId = loc("hints/ammo_used_exit_zone")
+      local text = loc("hints/ammo_used_exit_zone")
       if (misBlk?.shouldReturnSpawnCostInExitZone)
-        locId = $"{locId}\n{loc("hints/return_spawn_cost_exit_zone")}"
+        text = $"{text}\n{loc("hints/return_spawn_cost_exit_zone")}"
       if ((misBlk?.returnSpawnScorePartInExitZone ?? 0) == 1)
-        locId = $"{locId}\n{loc("hints/return_spawn_score_full_exit_zone")}"
+        text = $"{text}\n{loc("hints/return_spawn_score_full_exit_zone")}"
       else if ((misBlk?.returnSpawnScorePartInExitZone ?? 0) > 0)
-        locId = $"{locId}\n{loc("hints/return_spawn_score_partial_exit_zone")}"
+        text = $"{text}\n{loc("hints/return_spawn_score_partial_exit_zone")}"
 
-      return locId
+      return text
     }
     lifeTime = 15.0
     isHideOnWatchedHeroChanged = true
@@ -2889,7 +2914,7 @@ NEED_STOP_FOR_RADAR = {
 
   NET_WARNING_HINT = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    getText = @(eventData, _) eventData.text
     toggleHint = [
       "warn:net_slow",
       "warn:net_unresponsive"
@@ -2900,7 +2925,7 @@ NEED_STOP_FOR_RADAR = {
 
   GENERAL_WARNING_HIT = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    getText = @(eventData, _) eventData.text
     toggleHint = [
       "warn:crit_airbrake",
       "warn:crit_flutter",
@@ -2927,14 +2952,14 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_RETURN_TO_ZONE = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    getText = @(eventData, _) eventData.text
     toggleHint = ["warn:return_to_zone"]
     shouldBlink = true
   }
 
   WARNING_CUSTOM = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    getText = @(eventData, _) eventData.text
     toggleHint = ["warn:custom"]
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
@@ -2942,7 +2967,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_FLAPS = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    locId = "HUD_CRIT_FLAPS"
     toggleHint = ["warn:crit_flaps"]
     shortcuts = "ID_FLAPS"
     shouldBlink = true
@@ -2951,7 +2976,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_GEAR = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    locId = "HUD_CRIT_GEARS"
     toggleHint = ["warn:crit_gears"]
     shortcuts = "ID_GEAR"
     shouldBlink = true
@@ -2960,7 +2985,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_FLAPS_TAKEOFF = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    locId = "HUD_SET_TAKEOFF_FLAPS_FOR_TAKEOFF"
     toggleHint = ["warn:set_takeoff_flaps_for_takeoff"]
     shortcuts = "ID_FLAPS"
     shouldBlink = true
@@ -2969,7 +2994,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_COCKPIT_DOOR = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
+    locId = "HUD_CRIT_COCKPIT_DOOR"
     toggleHint = ["warn:crit_cockpit_door"]
     shortcuts = "ID_TOGGLE_COCKPIT_DOOR"
     shouldBlink = true
@@ -2978,7 +3003,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_OVERLOAD = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) "".concat(loc("HUD_DANGEROUS_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
+    getText = @(eventData, _) "".concat(loc("HUD_DANGEROUS_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
     toggleHint = ["warn:danger_overload"]
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
@@ -2986,7 +3011,7 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_OVERLOAD_CRIT = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) "".concat(loc("HUD_CRIT_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
+    getText = @(eventData, _) "".concat(loc("HUD_CRIT_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
     toggleHint = ["warn:crit_overload"]
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
@@ -2994,7 +3019,6 @@ NEED_STOP_FOR_RADAR = {
 
   WARNING_ROYAL_AREA = {
     hintType = g_hud_hint_types.WARNING_HINTS
-    getLocId = @(eventData) eventData.text
     toggleHint = ["warn:royal_area"]
     buildText = @(data) data.isShrinkZone ? colorize("@red", data.text) : colorize("@white", data.text)
     shouldBlink = true
@@ -3013,6 +3037,22 @@ NEED_STOP_FOR_RADAR = {
     locId    = "hint/miningWall"
     showEvent = "hint:human_mine_the_wall_show"
     hideEvent = "hint:human_mine_the_wall_hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  PLANT_SITE_PLANT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/plantSitePlant"
+    showEvent = "hint:plant_site_plant:show"
+    hideEvent = "hint:plant_site_plant:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  PLANT_SITE_DEFUSE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/plantSiteDefuse"
+    showEvent = "hint:plant_site_defuse:show"
+    hideEvent = "hint:plant_site_defuse:hide"
     shortcuts = "ID_HUMAN_USE"
   }
 
@@ -3122,6 +3162,15 @@ NEED_STOP_FOR_RADAR = {
     showEvent = "hint:human_place_bipod:show"
     hideEvent = "hint:human_place_bipod:hide"
     shortcuts = "ID_HUMAN_BIPODTOGGLE"
+  }
+
+  CHANGE_BIPOD_MOUNT_POINT = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    isVerticalAlignText = true
+    locId    = "hints/change_bipod_mount_point"
+    showEvent = "hint:human_change_bipod_mount_point:show"
+    hideEvent = "hint:human_change_bipod_mount_point:hide"
+    shortcuts = "ID_HUMAN_CHANGE_BIPOD_MOUNT_POINT"
   }
 
   DRONE_COOLDOWN_FOR_LAUNCH = {
@@ -3498,7 +3547,91 @@ NEED_STOP_FOR_RADAR = {
     locId    = "hint/humanLeaveVehicle"
     showEvent = "hint:human_leave_vehicle:show"
     hideEvent = "hint:human_leave_vehicle:hide"
+    lifeTime = 5.0
     shortcuts = "ID_HUMAN_USE"
+  }
+
+  SUPPLY_BUY_TRANSPORT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyBuyTransport"
+    showEvent = "hint:supply_buy_transport:show"
+    hideEvent = "hint:supply_buy_transport:hide"
+    shortcuts = "ID_HUMAN_USE"
+  }
+
+  SUPPLY_NOT_ENOUGH_SCORE = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyNotEnoughScore"
+    showEvent = "hint:supply/not_enough_score"
+    lifeTime = 3.0
+  }
+
+  SUPPLY_SPAWN_BLOCKED = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplySpawnBlocked"
+    showEvent = "hint:supply/spawn_blocked"
+    lifeTime = 3.0
+  }
+
+  SUPPLY_LOADED = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyLoaded"
+    showEvent = "hint:supply/loaded"
+    lifeTime = 3.0
+  }
+
+  SUPPLY_UNLOADED = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyUnloaded"
+    showEvent = "hint:supply/unloaded"
+    lifeTime = 3.0
+  }
+
+  SUPPLY_UNDER_FIGHT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyUnderFight"
+    showEvent = "hint:supply/under_fight"
+    lifeTime = 3.0
+  }
+
+  SUPPLY_NODE_FULL = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyNodeFull"
+    showEvent = "hint:supply/node_full"
+    lifeTime = 3.0
+    getLocParams = @(hintData) { points = hintData.points }
+  }
+
+  SUPPLY_REWARD_UNLOAD = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyRewardUnload"
+    showEvent = "hint:supply/reward_unload"
+    lifeTime = 3.0
+    getLocParams = @(hintData) { score = hintData.score }
+  }
+
+  SUPPLY_REWARD_RETURN = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyRewardReturn"
+    showEvent = "hint:supply/reward_return"
+    lifeTime = 3.0
+    getLocParams = @(hintData) { score = hintData.score }
+  }
+
+  SUPPLY_REWARD_DESTROY = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyRewardDestroy"
+    showEvent = "hint:supply/reward_destroy"
+    lifeTime = 3.0
+    getLocParams = @(hintData) { score = hintData.score }
+  }
+
+  SUPPLY_REWARD_ESCORT = {
+    hintType = g_hud_hint_types.COMMON
+    locId    = "hint/supplyRewardEscort"
+    showEvent = "hint:supply/reward_escort"
+    lifeTime = 3.0
+    getLocParams = @(hintData) { score = hintData.score }
   }
 
   ENTER_DRIVER_SEAT = {
@@ -3615,17 +3748,6 @@ NEED_STOP_FOR_RADAR = {
     maskId = 32
     totalCount = 3
     countIntervals = [{ timeInterval = 15 * 60 }]
-  }
-
-  BOMBS_AUTO_RELEASE_TARGET_POINT_ACTIVATED = {
-    hintType = g_hud_hint_types.ACTIONBAR
-    locId    = "hints/bombs_auto_release_target_point_activated"
-    showEvent = "hint:bombs_auto_release_target_point_activated:show"
-    hideEvent = "hint:bombs_auto_release_target_point_activated:hide"
-    isWrapInRowAllowed = true
-    showShortcutsNameIfNotAssign = true
-    uid = 33
-    totalCount = 5
   }
 
   ENABLE_SHELL_FPV_LOCK = {

@@ -1,11 +1,24 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletSetNameByBulletName
+from "%scripts/unit/unitMrankSelectionState.nut" import isUnitMrankLockAvailable
+from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TYPE, isCaliberCannon, getWeaponNameByBlkPath, additionalMarkupTypes, additionalMarkupByType, getAdditionalBulletMarkupTypes, isItemMrankLocked, getMrankLockText
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/weaponsParams.nut" import saclosMissileBeaconIRSourceBand
+from "%scripts/weaponry/dmgModel.nut" import getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/weaponry/weaponryDescription.nut" import getModItemName
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dagor.fs" import file_exists
 from "unitCalculcation" import calculate_tank_bullet_parameters
 from "%sqstd/math.nut" import floor, round_by_value, roundToDigits, round, pow
 from "math" import cos, PI
 from "%sqstd/datablock.nut" import copyParamsToTable
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "string" import format
 from "guiMission" import get_mission_difficulty_int
 from "gameplayBinding" import isInFlight
@@ -13,8 +26,6 @@ from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let {
   
 
@@ -22,16 +33,9 @@ let {
   getBulletsSetData, getBulletAnnotation, getBulletsSearchName, anglesToCalcDamageMultiplier, getModifIconItem, getSquashArmorAnglesScale, getModificationBulletsEffect
 } = require("%scripts/weaponry/bulletsInfo.nut")
 
-let { WEAPON_TYPE, isCaliberCannon, getWeaponNameByBlkPath, additionalMarkupTypes, additionalMarkupByType, getAdditionalBulletMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
-let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
-let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg } = require("%scripts/weaponry/dmgModel.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { measureType } = require("%scripts/measureType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let bulletIcons = {}
 let bulletAspectRatio = {}
@@ -197,13 +201,13 @@ function getArmorPiercingViewData(armorPiercing, dist) {
   if (armorPiercing.len() <= 0 || !armorPiercing?[0].len())
     return { props = res, baseArmorPiercing = 0, baseDistance = 0 }
 
-  let angles = (armorPiercing?[0] ?? {}).keys().sort(@(a, b) a <=> b)
+  let angles = (armorPiercing?[0] ?? {}).keys().sort()
   local ranges = null
   foreach (angle in angles) {
     if (!ranges) {
       res = []
       ranges = u.values(dist)
-      ranges.sort(@(a, b) a <=> b)
+      ranges.sort()
       let headRow = {
         text = "-"
         values = ranges.map(@(r) { value = format("%.0f %s", r, loc("measureUnits/meters_alt"))})
@@ -915,7 +919,7 @@ function addBulletsParamToDesc(descTbl, unit, item, params = {}) {
       let armorPiercing = { [0] = value.x, [30] = value.y, [60] = value.z}
       res.append({ armorPiercingDist = value.w, armorPiercing })
     }
-    res.sort(@(v1, v2) v1.armorPiercingDist <=> v2.armorPiercingDist)
+    res.sortby(@(v1) v1.armorPiercingDist)
     bulletsData.armorPiercingDist.clear()
     bulletsData.armorPiercing.clear()
     res.each(function(v) {
@@ -976,8 +980,15 @@ function checkBulletParamsBeforeRender(descTbl) {
   })
 }
 
-function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams) {
+function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams, modName = "") {
   let descTbl = { name = colorize("activeTextColor", locName), desc = "", bulletActions = [] }
+  if (isUnitMrankLockAvailable(unit)) {
+    local bulletMod = getModificationByName(unit, modName)
+    if (bulletMod == null)
+      bulletMod = getModificationByName(unit, getBulletSetNameByBulletName(unit, bulletName))
+    if (isItemMrankLocked(unit, bulletMod))
+      descTbl.topReqBlock <- getMrankLockText()
+  }
   addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let part = bulletName.indexof("@")
   descTbl.desc = part == null ? getBulletAnnotation(bulletName)
@@ -999,7 +1010,7 @@ function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulle
   return descTbl
 }
 
-return {
+return freeze({
   initBulletIcons
   addBulletsParamToDesc
   buildBulletsData
@@ -1008,4 +1019,4 @@ return {
   getSingleBulletParamToDesc
   checkBulletParamsBeforeRender
   addArmorPiercingToDescForBullets
-}
+})

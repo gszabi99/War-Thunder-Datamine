@@ -1,4 +1,18 @@
+import "%scripts/wndLib/chooseAmountWnd.nut" as chooseAmountWnd
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksConditions.nut" import loadConditionsFromBlk, getMainProgressCondition
+from "%scripts/unlocks/unlocksState.nut" import getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues
+from "%scripts/unlocks/unlocksViewModule.nut" import getFullUnlockCondsDesc
+from "%scripts/utils/sharedSubtrees.nut" import shareSubtree
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/user/balance.nut" import get_gui_balance
+from "%scripts/tasker.nut" import addTask
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/itemsManagerModule.nut" import findItemByUid
 from "%sqStdLibs/helpers/u.nut" import isPoint3
 from "math" import pow
 from "string" import format
@@ -6,20 +20,7 @@ from "%scripts/dagui_natives.nut" import char_send_blk, get_cur_rank_info, get_c
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
-let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues } = require("%scripts/unlocks/unlocksState.nut")
-let { getFullUnlockCondsDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
 
 let Wager = class (BaseItem) {
   static name = "Wager"
@@ -122,10 +123,10 @@ let Wager = class (BaseItem) {
     this.maxWins = blk?.maxWins ?? 0
     this.maxFails = blk?.maxFails ?? 0
     if (blk?.active != null)
-      this.conditions = loadConditionsFromBlk(blk.active)
+      this.conditions = shareSubtree(loadConditionsFromBlk(blk.active))
     if (blk?.win != null)
-      this.winConditions = loadConditionsFromBlk(blk.win)
-    this.winParamsData = this.createWinParamsData(blk?.winParams)
+      this.winConditions = shareSubtree(loadConditionsFromBlk(blk.win))
+    this.winParamsData = shareSubtree(this.createWinParamsData(blk?.winParams))
     this.isGoldWager = (blk?.goldWager ?? false)
   }
 
@@ -174,11 +175,7 @@ let Wager = class (BaseItem) {
       if (!rewData.isEmpty)
         res.append(rewData)
     }
-    res.sort(function (rd1, rd2) {
-      if (rd1.winCount != rd2.winCount)
-        return rd1.winCount < rd2.winCount ? -1 : 1
-      return 0
-    })
+    res.sortby(@(rd1) rd1.winCount)
     return res
   }
 

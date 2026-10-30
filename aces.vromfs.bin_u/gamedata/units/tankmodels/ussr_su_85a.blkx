@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "soviet_gunner_char",
@@ -2218,7 +2224,8 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "radio_station_dm"
       ],
       "effect": [
         {
@@ -2264,7 +2271,7 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/85mm_D5S_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/85mm_D5S_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "shotFreq": 0.143,
@@ -2318,8 +2325,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_su_85a_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_su_85a_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

@@ -1,20 +1,26 @@
 
 
+import "%scripts/clientState/applyRendererSettingsChange.nut" as applyRendererSettingsChange
 import "DataBlock" as DataBlock
 import "regexp2" as regexp2
+from "%scripts/utils/restartClient.nut" import applyRestartClient, canRestartClient
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/events/eventInfo.nut" import isVrModeAllowedInEvent
+from "%scripts/missions/missionType.nut" import isHumanMission
 from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath, blkOptFromPath
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "blkGetters" import get_settings_blk
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "math" import round
 from "string" import format, strip
-from "graphicsOptions" import get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, get_supported_generated_frames, is_dynamic_mfg_supported, is_dx11_supported
+from "graphicsOptions" import get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, get_supported_generated_frames, is_dynamic_mfg_supported, is_dx11_supported, hasImeKeyboardLayout
   , is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api, is_intel_gpu, getVideoModes, getDgsTexQuality
-  , get_available_vsync_frequencies, get_video_memory_gb
+  , get_available_vsync_frequencies, get_video_memory_gb, is_dlss_nr_supported, is_dynamic_resolution_supported_by_driver
 from "dagor.system" import get_primary_screen_info
 from "debug.config" import was_screenshot_applied_to_config
 from "%sqstd/datablock.nut" import eachBlock
-from "%sqstd/string.nut" import stripTags
 from "eventbus" import eventbus_subscribe
 from "dagor.localize" import doesLocTextExist
 from "%sqstd/platform.nut" import is_win64, is_windows, is_linux, isPC, platformId, is_gdk
@@ -24,18 +30,10 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available, is_low_latency_available, has_ray_query
 from "app" import is_dev_version, get_config_name
 from "%scripts/utils_sa.nut" import findNearest
-from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_slider, create_option_switchbox, create_options_bar
 from "%globalScripts/unitTypeConsts.nut" import *
 from "types" import String, Function
 let { has_enough_vram_for_rt = @() true } = require_optional("bvhSettings")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
-let { applyRestartClient, canRestartClient } = require("%scripts/utils/restartClient.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isVrModeAllowedInEvent } = require("%scripts/events/eventInfo.nut")
-let { isHumanMission } = require("%scripts/missions/missionType.nut")
 
 
 
@@ -44,7 +42,8 @@ local mShared = {}
 local mSkipUI = false
 local mBlk = null
 local mHandler = null
-local mContainerObj = null
+
+local mView = null
 let mCfgStartup = {}
 local mCfgApplied = {}
 local mCfgInitial = {}
@@ -59,8 +58,9 @@ local mCfgDiffsInitial = {}
 local mCfgDiffsApplied = {}
 
 let mActiveTabTags = {}
-const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
+
+let riDistMulCapPct = round(100.0 * getBlkValueByPath(get_settings_blk(), "graphics/rendinstDistMulCap", 3.0)).tointeger()
 local prevRtMode = null
 
 const CONFIG_DIFF_PATH_PREFIX = "config_diff_"
@@ -146,6 +146,7 @@ local mUiStruct = [
       "backgroundScale"
       "antialiasingMode"
       "antialiasingdlssLegacyMode"
+      "neuralRendering"
       "antialiasingUpscaling"
       "antialiasingSharpening"
       "anisotropy"
@@ -178,6 +179,7 @@ local mUiStruct = [
       "physicsQuality"
       "displacementQuality"
       "volfogQuality"
+      "grassQuality"
     ]
   }
   {
@@ -185,12 +187,14 @@ local mUiStruct = [
     hasTabs = true
     items = [
       "rendinstDistMul"
+      "rendinstExDistMul"
       "grassRadiusMul"
       "contactShadowsQuality"
       "bloomQuality"
       "advancedShore"
       "lastClipSize"
       "lenseFlares"
+      "localTone"
       "lensDistortions"
       "crashDeformEnabled"
     ]
@@ -294,80 +298,13 @@ function tryGetOptionImageSrc(id, value = null) {
 
 }
 
-function tryUpdateOptionImage(id) {
-  let optInfoImg =   mHandler?.scene.findObject("option_info_image")
-  if (!optInfoImg?.isValid())
+let tryUpdateOptionImage = @(id) mHandler?.setOptionInfoImage(tryGetOptionImageSrc(id))
+
+function onSystemOptionValueHover(optId, valueIdx) {
+  if (mHandler == null || optId not in mSettings)
     return
-  optInfoImg["background-image"] = tryGetOptionImageSrc(id)
-}
-
-function getOptionShownValues(opt) {
-  if ("values" in opt)
-    return opt.values
-  if (opt?.min == null || opt?.max == null)
-    return []
-
-  let values = []
-  for (local value = opt.min; value <= opt.max; value++)
-    values.append(value)
-  return values
-}
-
-function getOptionValueHints(id, opt) {
-  if (!(opt?.hasValueHints ?? false))
-    return []
-
-  let hints = []
-  foreach (value in getOptionShownValues(opt)) {
-    let valueLocKey = $"guiHints/{id}/{value}"
-    if (doesLocTextExist(valueLocKey))
-      hints.append("".concat(loc("ui/hyphen"), loc("ui/space"), value, loc("ui/colon"), loc(valueLocKey)))
-  }
-  return hints
-}
-
-function getOptionInfoView(id) {
-  let opt = getOptionDesc(id)
-  let title = loc(opt?.titleLocId ?? $"options/{id}")
-  let descLocKey = $"guiHints/{id}"
-  let description = doesLocTextExist(descLocKey) ? [loc(descLocKey)] : []
-  description.extend(getOptionValueHints(id, opt))
-  if (opt?.restart)
-    description.append(colorize("warningTextColor", loc("guiHints/restart_required")))
-  if (opt?.tooltipExtra)
-    description.append(opt?.tooltipExtra)
-
-  return {
-    title
-    description =  "\n".join(description)
-    imageSrc = tryGetOptionImageSrc(id)
-    preloadedImages = opt?.allInfoImgs
-    hasImages = (opt?.allInfoImgs.len() ?? 0) > 0
-  }
-}
-
-function onSystemOptionControlHover(obj) {
-  if (!obj?.isValid() || !mHandler || obj?.idx == null)
-    return
-  let controlObjId = obj.getParent()?.getParent().id
-  if (controlObjId == null)
-    return
-  let optId = getOptionIdByObjId(controlObjId)
-  if (optId not in mSettings) 
-    return                
-
-  let desc = getOptionDesc(optId)
-  let needHoverOnOptionRow = optId != mHandler.lastHoveredRowId?.split("_tr")[0]
-  if (needHoverOnOptionRow)
-    mHandler.onOptionContainerHover(mHandler.scene.findObject($"{optId}_tr"))
-
-  let hoveredValue = desc.values[obj.idx.tointeger()]
-  let imgSrc = tryGetOptionImageSrc(optId, hoveredValue)
-  let imgObj = mHandler.scene.findObject("option_info_image")
-
-  imgObj.show(imgSrc != null)
-  if (imgSrc)
-    imgObj["background-image"] = imgSrc
+  mHandler.onOptionRowHover($"{optId}_tr")
+  mHandler.setOptionInfoImage(tryGetOptionImageSrc(optId, getOptionDesc(optId).values[valueIdx]))
 }
 
 function configValueToGuiValue(id, value) {
@@ -473,19 +410,11 @@ function getOptionSectionIdx(itemId) {
 let getActiveTagForOption = @(itemId) mActiveTabTags?[getOptionSectionIdx(itemId)] ?? ""
 
 function updateOptionChangedIcon(optionId) {
-  if (!hasFeature("HasTabsInGraphicsOption"))
+  let widgetId = getOptionDesc(optionId)?.widgetId
+  if (!hasFeature("HasTabsInGraphicsOption") || widgetId == null)
     return
-
-  let optionObj = mHandler?.scene.findObject($"{optionId}_tr")
-  if (!(optionObj?.isValid() ?? false))
-    return
-
-  if (hasFeature("HasTabsInGraphicsOption")) {
-    let activeTag = getActiveTagForOption(optionId)
-    let isCommon = activeTag == ""
-    optionObj.hasChangedRow = isOptionChangedFromCommon(optionId, isCommon, activeTag)
-      ? "yes" : "no"
-  }
+  let activeTag = getActiveTagForOption(optionId)
+  mView?.setItem(widgetId, { hasChangedRow = isOptionChangedFromCommon(optionId, activeTag == "", activeTag) })
 }
 
 function validateGuiValue(id, value) {
@@ -527,47 +456,24 @@ function validateGuiValue(id, value) {
   return value
 }
 
-function getGuiWidget(id) {
-  if (!(id in mSettings)) {
-    logError("sysopt.getGuiWidget()", $"Option '{id}' is UNKNOWN. It must be added to sysopt.settings table.")
-    return null
+function getViewValue(id, value) {
+  let desc = getOptionDesc(id)
+  let { widgetType, sliderPrintFormat = null } = desc
+  return {
+    value = (widgetType == "list" || widgetType == "options_bar") ? (desc.values.indexof(value) ?? -1)
+      : widgetType == "editbox" ? value.tostring()
+      : value
+    valueText = sliderPrintFormat?(value)
   }
-
-  let widgetId = getOptionDesc(id)?.widgetId
-  let obj = (widgetId && mContainerObj?.isValid()) ? mContainerObj.findObject(widgetId) : null
-  return obj?.isValid() ? obj : null
 }
 
 function setGuiValue(id, value, skipUI = false) {
   value = validateGuiValue(id, value)
   mCfgCurrent[id] = value
 
-  let obj = (skipUI || mSkipUI) ? null : getGuiWidget(id)
-  if (obj) {
-    let desc = getOptionDesc(id)
-    local raw = null
-    let {widgetType, sliderPrintFormat = null} = desc
-    if (widgetType == "checkbox") {
-      raw = value
-    }
-    if (widgetType == "slider") {
-      raw = value
-      if (sliderPrintFormat)
-        desc.updateText(mHandler?.scene.findObject($"sysopt_{id}"), value, sliderPrintFormat)
-    }
-    else if ( widgetType == "list" || widgetType == "options_bar") {
-      raw = desc.values.indexof(value) ?? -1
-    }
-    else if ( widgetType == "editbox" ) {
-      raw = value.tostring()
-    }
-    if (raw != null && obj.getValue() != raw) {
-      desc.ignoreNextUiCallback = desc.widgetType != "checkbox"
-      obj.setValue(raw)
-    }
-    if (widgetType == "options_bar")
-      desc.updateText(mHandler?.scene.findObject($"sysopt_{id}"), value)
-  }
+  let widgetId = getOptionDesc(id)?.widgetId
+  if (!skipUI && !mSkipUI && widgetId != null)
+    mView?.setItem(widgetId, getViewValue(id, value))
 }
 
 function setValue(id, value, skipUI = false) {
@@ -575,24 +481,16 @@ function setValue(id, value, skipUI = false) {
 }
 
 function getDisabledOptionTooltip(id) {
-  let locKey = $"guiHints/{id}/disabled"
-  return doesLocTextExist(locKey) ? stripTags(loc(locKey)) : null
+  let hintLocKey = getOptionDesc(id)?.disabledHintLocKeys() ?? $"guiHints/{id}/disabled"
+  let locKeys = type(hintLocKey) == "array" ? hintLocKey : [hintLocKey]
+  let lines = locKeys.filter(@(locKey) doesLocTextExist(locKey)).map(@(locKey) loc(locKey))
+  return lines.len() > 0 ? "\n".join(lines) : null
 }
 
 function enableGuiOption(id, state) {
-  if (mSkipUI || !mContainerObj?.isValid())
-    return
-  let rowObj = mContainerObj.findObject($"{id}_tr")
-  let controlObj = mContainerObj.findObject($"sysopt_{id}")
-  if (!controlObj?.isValid() || !rowObj?.isValid())
-    return
-
-  rowObj.disabled = state ? "no" : "yes"
-  controlObj.enable(state)
-
-  let disabledTooltip = getDisabledOptionTooltip(id)
-  if (disabledTooltip != null)
-    rowObj.tooltip = state ? null : disabledTooltip
+  let widgetId = getOptionDesc(id)?.widgetId
+  if (!mSkipUI && widgetId != null)
+    mView?.setItem(widgetId, { enabled = state, disabledTooltip = state ? null : getDisabledOptionTooltip(id) })
 }
 
 function checkChanges(config1, config2) {
@@ -691,58 +589,35 @@ let isHotReloadPending = @() checkChanges(mCfgApplied, getCommonViewCurrent()).n
 let isSavePending = @() checkChanges(mCfgInitial, getCommonViewCurrent()).needSave
   || !areDiffsEqual(mCfgDiffsInitial, getEffectiveDiffs())
 
-let canUseGraphicsOptions = @() isPC && hasFeature("GraphicsOptions")
+let canUseGraphicsOptions = @() isPC
 let canShowGpuBenchmark = @() canUseGraphicsOptions()
 
 local aaUseGui = false;
 
 function updateGuiNavbar(show = true) {
-  let { scene = null, curTabUnitType = "" } = mHandler
-  if (!scene?.isValid())
+  if (!(mHandler?.isValid() ?? false))
     return
 
   let showText = show && isRestartPending()
   let showRestartButton = showText && canRestartClient()
   let applyText = loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
-  showObjById("btn_reset", show && isSavePending(), scene)
-  showObjById("btn_reset_tab", show && hasActiveTabDiffs(), scene)
-  showObjById("restart_suggestion", showText, scene)
-  showObjById("btn_restart", showRestartButton, scene)
+  mHandler.showSceneItem("btn_reset", show && isSavePending())
+  mHandler.showSceneItem("btn_reset_tab", show && hasActiveTabDiffs())
+  mHandler.showSceneItem("restart_suggestion", showText)
+  mHandler.showSceneItem("btn_restart", showRestartButton)
 
   let hasBenchmark = show && canShowGpuBenchmark()
-  let objBenchmarkButton = showObjById("btn_gpu_benchmark", hasBenchmark, scene)
-  if (hasBenchmark && objBenchmarkButton != null) {
+  mHandler.showSceneItem("btn_gpu_benchmark", hasBenchmark)
+  if (hasBenchmark) {
+    let { curTabUnitType = "" } = mHandler
     let modeText = curTabUnitType == ""
       ? loc("unlocks/group/common")
       : loc($"unit_type/{curTabUnitType}")
-    objBenchmarkButton.text = loc("gpuBenchmark/title", { modeText })
+    mHandler.setSceneItemValue("btn_gpu_benchmark", loc("gpuBenchmark/title", { modeText }))
   }
 
-  let objNavbarApplyButton = scene.findObject("btn_apply")
-  if (objNavbarApplyButton?.isValid())
-    objNavbarApplyButton.setValue(applyText)
-}
-
-function resetActiveTabDiffs() {
-  if (!hasFeature("HasTabsInGraphicsOption"))
-    return
-  foreach (sectionIdx, tag in mActiveTabTags) {
-    if (tag == "")
-      continue
-    let items = mUiStruct?[sectionIdx].items ?? []
-    let tagCfg = mCfgDiffsCurrent?[tag]
-    foreach (optionId in items) {
-      if (tagCfg != null && optionId in tagCfg)
-        tagCfg.$rawdelete(optionId)
-      if (optionId in mCfgCommon)
-        setGuiValue(optionId, mCfgCommon[optionId])
-      updateOptionChangedIcon(optionId)
-    }
-    if (tagCfg != null && tagCfg.len() == 0)
-      mCfgDiffsCurrent.$rawdelete(tag)
-  }
-  updateGuiNavbar(true)
+  mHandler.setSceneItemValue("btn_apply", applyText)
 }
 
 function pickQualityPreset() {
@@ -795,7 +670,8 @@ function localize(optionId, valueId) {
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
       optionId == "giQuality" ||
-      optionId == "volfogQuality"
+      optionId == "volfogQuality" ||
+      optionId == "grassQuality"
     ) {
     if (valueId == "none")
       return loc("options/none")
@@ -834,9 +710,42 @@ function antiAliasingOptionsWithVersion() {
   })
 }
 
+function getPrimaryScreenResolution() {
+  try {
+    let { pixelsWidth, pixelsHeight } = get_primary_screen_info()
+    if (pixelsWidth > 0 && pixelsHeight > 0)
+      return { resolution = $"{pixelsWidth} x {pixelsHeight}", w = pixelsWidth, h = pixelsHeight }
+  }
+  catch(e) {}
+  return null
+}
+
+function isAutoResolutionOnPrimaryDisplay(blk, mode, monitor) {
+  if (is_linux)
+    return mode == "fullscreen"
+  if (!is_windows || monitor != "auto" || (mode != "fullscreen" && mode != "fullscreenwindowed"))
+    return false
+  if (get_active_gfx_api() != "dx11")
+    return true
+  let curMode = mCfgApplied?.mode ?? getBlkValueByPath(blk, "video/mode", "fullscreenwindowed")
+  let curResolution = mCfgApplied?.resolution ?? getBlkValueByPath(blk, "video/resolution", "auto")
+  return curMode != "fullscreen" || curResolution == "auto"
+}
+
+function getTargetResolution(blk) {
+  let resolution = getGuiValue("resolution") ?? getBlkValueByPath(blk, "video/resolution", "auto")
+  let res = parseResolution(resolution)
+  if (res.w > 0 && res.h > 0)
+    return res
+  let mode = getGuiValue("mode") ?? getBlkValueByPath(blk, "video/mode", "fullscreenwindowed")
+  let monitor = getGuiValue("monitor") ?? getBlkValueByPath(blk, "video/monitor", "auto")
+  return isAutoResolutionOnPrimaryDisplay(blk, mode, monitor) ? (getPrimaryScreenResolution() ?? res) : res
+}
+
 function antiAliasingUpscalingOptions(blk) {
   let aa = aaUseGui ? getGuiValue("antialiasingMode", "off") : getBlkValueByPath(blk, "video/antialiasing_mode", "off")
-  let modesString = get_antialiasing_upscaling_options(aa)
+  let res = getTargetResolution(blk)
+  let modesString = get_antialiasing_upscaling_options(aa, res.w, res.h)
   return modesString.split(";")
 }
 
@@ -868,7 +777,8 @@ function supportedGeneratedFramesValues(blk) {
 
 function hasAntialiasingUpscaling() {
   let aa = getGuiValue("antialiasingMode", "off")
-  let modesString = get_antialiasing_upscaling_options(aa)
+  let res = getTargetResolution(mBlk)
+  let modesString = get_antialiasing_upscaling_options(aa, res.w, res.h)
   return modesString.split(";").len() > 1
 }
 
@@ -904,17 +814,28 @@ let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_
 let is_platform_macosx = platformId == "macosx"
 let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query() && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
-let isRRGUIEnabled = @() getGuiValue("rayReconstruction", false) != false && hasRTGUI()
 let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptgi", "off") == "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
 let isDlssSelected = @() getGuiValue("antialiasingMode", "off") == "dlss"
 let isRRSupported = @() hasRTGUI() && is_nvidia_gpu() && isDlssSelected()
+let isRRGUIEnabled = @() getGuiValue("rayReconstruction", false) != false && isRRSupported()
+let isNeuralRenderingSupported = @() (is_dev_version() || hasFeature("optionDlssNr")) && is_dlss_nr_supported()
 let hasRayReconstructionGUI = @() hasRTGUI() && isRRSupported()
 let hasRTRResGUI = @() hasRTR() && !isRRGUIEnabled()
 let hasRTDecalsGUI = @() hasRTR()
 
+function isRRInConfig(cfgBlk) {
+  function readCfg(id) {
+    let desc = getOptionDesc(id)
+    return getBlkValueByPath(cfgBlk, desc.blk, null) ?? getBlkValueByPath(mBlk, desc.blk, desc.def)
+  }
+  return readCfg("rayReconstruction") && readCfg("antialiasingMode") == "dlss" && is_nvidia_gpu()
+}
+
 function canDynamicResolutionBeUsed() {
+  if (!is_dynamic_resolution_supported_by_driver())
+    return false
   let mode = getGuiValue("antialiasingMode", "off")
   let fg = getGuiValue("frameGeneration", "zero")
   return (mode == "tsr" || mode == "dlss" || mode == "fsr" || mode == "xess") && !getGuiValue("enableVr") && (fg == "zero");
@@ -958,10 +879,48 @@ function getOptionValueItems(id, desc) {
   return items
 }
 
-function getListOption(id, desc, cb, onOptHoverFnName, needCreateList = true) {
-  let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-  let items = getOptionValueItems(id, desc)
-  return create_option_combobox(desc.widgetId, items, raw, cb, needCreateList, { onOptHoverFnName, controlStyle = "class:t='systemOption'" })
+function getOptionShownValues(opt) {
+  if ("values" in opt)
+    return opt.values
+  if (opt?.min == null || opt?.max == null)
+    return []
+
+  let values = []
+  for (local value = opt.min; value <= opt.max; value++)
+    values.append(value)
+  return values
+}
+
+function getOptionValueHints(id, opt) {
+  if (!(opt?.hasValueHints ?? false))
+    return []
+
+  let hints = []
+  foreach (value in getOptionShownValues(opt)) {
+    let valueLocKey = $"guiHints/{id}/{value}"
+    if (doesLocTextExist(valueLocKey))
+      hints.append("".concat(loc("ui/hyphen"), loc("ui/space"), localize(id, value.tostring()),
+        loc("ui/colon"), loc(valueLocKey)))
+  }
+  return hints
+}
+
+function getOptionInfoView(id) {
+  let opt = getOptionDesc(id)
+  let title = loc(opt?.titleLocId ?? $"options/{id}")
+  let descLocKey = $"guiHints/{id}"
+  let description = doesLocTextExist(descLocKey) ? [loc(descLocKey)] : []
+  description.extend(getOptionValueHints(id, opt))
+  if (opt?.restart)
+    description.append(colorize("warningTextColor", loc("guiHints/restart_required")))
+  if (opt?.tooltipExtra)
+    description.append(opt?.tooltipExtra)
+
+  return {
+    title
+    description =  "\n".join(description)
+    imageSrc = tryGetOptionImageSrc(id)
+  }
 }
 
 function updateOption(id) {
@@ -971,46 +930,29 @@ function updateOption(id) {
 
   desc.init(null, desc)
 
-  if (desc.widgetType == "list") {
-    let guiVal = getGuiValue(id)
-    setGuiValue(id, desc.values.contains(guiVal) ? guiVal : desc.def, true)
-  }
-  else if (desc.widgetType == "options_bar") {
-    let guiVal = getGuiValue(id)
-    let val = desc.values.contains(guiVal) ? guiVal : desc.def
-    setGuiValue(id, val)
-  }
-
-  let obj = getGuiWidget(id)
-  if (!obj?.isValid())
+  if (desc.widgetType != "list" && desc.widgetType != "options_bar")
     return
-
-  local markup = ""
-  const onChangeFnName = "onSystemOptionChanged"
-  let onOptHoverFnName = "onSystemOptionControlHover"
-  let isEnabled = desc?.enabled() ?? true
-
-  if (desc.widgetType == "list")
-    markup = getListOption(id, desc, onChangeFnName, onOptHoverFnName, false)
-
-  if (desc.widgetType == "options_bar") {
-    let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-    let items = getOptionValueItems(id, desc)
-    markup = create_options_bar(desc.widgetId, raw,
-      localize(id, mCfgCurrent[id]), items, onChangeFnName, false, {
-        onOptHoverFnName = isEnabled ? onOptHoverFnName : null
-      })
-  }
-
-  mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
-  if (desc.widgetType == "options_bar")
-    obj.setValue(desc.values.indexof(mCfgCurrent[id]) ?? -1) 
+  let guiVal = getGuiValue(id)
+  setGuiValue(id, desc.values.contains(guiVal) ? guiVal : desc.def, true)
+  if (desc.widgetId != null)
+    mView?.setItem(desc.widgetId, getViewValue(id, mCfgCurrent[id]).__update({
+      items = getOptionValueItems(id, desc)
+      enabled = desc?.enabled() ?? true
+    }))
 }
 
 function graphicsQualityClickImpl(silent, applyFn = @() null) {
   applyFn()
   mShared.graphicsQualityClick(silent)
   updateGuiNavbar(true)
+}
+
+function showFullscreenImeUnavailableMsg() {
+  let text = loc("msgbox/fullscreen_ime_unavailable", {
+    mode = loc("options/mode_fullscreen")
+    winMode = loc("options/mode_fullscreenwindowed")
+  })
+  showInfoMsgBox(text, "msg_sysopt_fullscreen_ime", true)
 }
 
 
@@ -1041,6 +983,8 @@ mShared = {
     
     updateOption("fxQuality")
     updateOption("shadowQuality")
+    enableGuiOption("antialiasingdlssLegacyMode", isDlssSelected())
+    enableGuiOption("neuralRendering", isDlssSelected())
   }
 
   setGraphicsQuality = function() {
@@ -1144,14 +1088,31 @@ mShared = {
   }
 
   resolutionClick = function() {
+    enableGuiOption("antialiasingUpscaling", getOptionDesc("antialiasingUpscaling")?.enabled() ?? true)
     updateOption("antialiasingUpscaling")
   }
 
   modeClick = function() {
+    if (getGuiValue("mode") == "fullscreen" && hasImeKeyboardLayout()) {
+      setGuiValue("mode", "fullscreenwindowed")
+      showFullscreenImeUnavailableMsg()
+    }
+
     aaUseGui = true
 
     enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
+    enableGuiOption("antialiasingUpscaling", getOptionDesc("antialiasingUpscaling")?.enabled() ?? true)
     updateOption("frameGeneration")
+    updateOption("antialiasingUpscaling")
+
+    aaUseGui = false
+  }
+
+  monitorClick = function() {
+    aaUseGui = true
+
+    enableGuiOption("antialiasingUpscaling", getOptionDesc("antialiasingUpscaling")?.enabled() ?? true)
+    updateOption("antialiasingUpscaling")
 
     aaUseGui = false
   }
@@ -1178,8 +1139,9 @@ mShared = {
       setGuiValue("rayReconstruction", false)
       enableGuiOption("rayReconstruction", false)
       enableGuiOption("rtao", hasRTAOGUI())
-      enableGuiOption("rtrRes", hasRTGUI())
     }
+    enableGuiOption("rtrRes", hasRTRResGUI())
+    mShared.updateRtrValues()
 
     let canBgScale = canDoBackgroundScale()
 
@@ -1201,6 +1163,9 @@ mShared = {
 
     if (is_nvidia_gpu())
       updateOption("latency_nvidia")
+
+    enableGuiOption("antialiasingdlssLegacyMode", isDlssSelected())
+    enableGuiOption("neuralRendering", isDlssSelected())
   }
 
   latencyClick = function() {
@@ -1321,9 +1286,15 @@ mShared = {
   }
 
   rtrClick = function() {
-    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing", "off") != "off")
+    enableGuiOption("rtrRes", hasRTRResGUI())
     enableGuiOption("rtDecals", hasRTDecalsGUI())
     mShared.rtOptionChanged()
+  }
+
+  updateRtrValues = function() {
+    if (getGuiValue("rtr") == "ultra" && !isRRGUIEnabled())
+      setGuiValue("rtr", "high")
+    updateOption("rtr")
   }
 
   ptgiClick = function() {
@@ -1332,24 +1303,20 @@ mShared = {
   }
 
   fpsLimiterClick = function() {
-    let val = getGuiValue("fpsLimiter")
-    let idx = fpsLimits.findindex(@(v) val == fpsUnlimitedTxt
-      ? v == fpsUnlimitedVal : val == v.tostring()) ?? 0
-    enableGuiOption("menuFpsLimiter", idx > 0)
-    updateOption("menuFpsLimiter")
+    enableGuiOption("menuFpsLimiter", getOptionDesc("menuFpsLimiter").enabled())
+    if (getActiveTagForOption("menuFpsLimiter") == "")
+      updateOption("menuFpsLimiter")
   }
 
   hideFpsLimiter = function() {
-    enableGuiOption("menuFpsLimiter", getGuiValue("vsync") == "vsync_off")
+    enableGuiOption("menuFpsLimiter", getOptionDesc("menuFpsLimiter").enabled())
     enableGuiOption("fpsLimiter", getGuiValue("vsync") == "vsync_off")
-
-    updateOption("menuFpsLimiter")
-    updateOption("fpsLimiter")
   }
 
   rayReconstructionChanged = function() {
     enableGuiOption("rtao", hasRTAOGUI())
-    enableGuiOption("rtrRes", !isRRGUIEnabled())
+    enableGuiOption("rtrRes", hasRTRResGUI())
+    mShared.updateRtrValues()
     mShared.rtOptionChanged()
   }
 
@@ -1399,7 +1366,7 @@ mShared = {
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtDecals", true)
-      setGuiValue("rtsm", "sun")
+      setGuiValue("rtsm", "sun_and_dynamic")
       setGuiValue("rtsmQuality", "medium")
       setGuiValue("rtrWater", true)
       setGuiValue("rtrWaterRes", "half")
@@ -1432,6 +1399,7 @@ mShared = {
     enableGuiOption("rayReconstruction", rtIsOn && isRRSupported())
     enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && rtIsOn && !isRRGUIEnabled())
     enableGuiOption("rtDecals", hasRTDecalsGUI())
+    mShared.updateRtrValues()
 
     prevRtMode = rt
   }
@@ -1473,6 +1441,8 @@ mShared = {
     updateOption("antialiasingMode")
     updateOption("antialiasingUpscaling")
     setGuiValue("antialiasingMode", "off")
+    enableGuiOption("antialiasingdlssLegacyMode", isDlssSelected())
+    enableGuiOption("neuralRendering", isDlssSelected())
     setGuiValue("antialiasingUpscaling", "native")
     mShared.manageDynamicResolutionEnabled();
     mShared.manageDynamicResolutionTarget();
@@ -1612,6 +1582,10 @@ mShared = {
 
 
 
+
+
+
+
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     getValueFromConfig = function(blk, desc) {
@@ -1698,6 +1672,7 @@ mSettings = {
     setGuiValueToConfig = @(blk, desc, val) setBlkValueByPath(blk, desc.blk, val)
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
+    onChanged = "monitorClick"
   }
   fpsLimiter = {
     widgetType = "list" def = fpsUnlimitedTxt blk = "video/fpsLimit" restart = false
@@ -1723,20 +1698,41 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, to_integer_safe(val, fpsUnlimitedVal, false))
     }
     configValueToGuiValue = @(val) val == fpsUnlimitedVal ? fpsMenuUnlimTxt : val.tostring()
-    enabled = @() getGuiValue("vsync") == "vsync_off"
+    enabled = @() getActiveTagForOption("menuFpsLimiter") == ""
+      && getGuiValue("vsync") == "vsync_off"
+      && getMenuFpsLimiterValues(getGuiValue("fpsLimiter")).len() > 1
+    disabledHintLocKeys = function() {
+      let locKeys = []
+      if (getActiveTagForOption("menuFpsLimiter") != "")
+        locKeys.append("guiHints/onlyCommonTab")
+      if (getGuiValue("vsync") != "vsync_off")
+        locKeys.append("guiHints/menuFpsLimiter/disabled")
+      if (getMenuFpsLimiterValues(getGuiValue("fpsLimiter")).len() <= 1)
+        locKeys.append("guiHints/menuFpsLimiter/disabled_fpsLimit")
+      return locKeys
+    }
     onlyCommonTabAvailable = true
+    updateOnTabChange = function(_isCommon) {
+      enableGuiOption("menuFpsLimiter", getOptionDesc("menuFpsLimiter").enabled())
+    }
   }
   dynamicResolutionEnabled = {
     widgetType = "checkbox" def = false blk = "video/dynamicResolution/enabled" restart = false
     enabled = @() canDynamicResolutionBeUsed()
+    disabledHintLocKeys = @() is_dynamic_resolution_supported_by_driver()
+      ? "guiHints/dynamicResolutionEnabled/disabled"
+      : "guiHints/dynamicResolutionEnabled/disabled_driver"
     onChanged = "manageDynamicResolutionTarget"
-    isVisible = is_dev_version
+    isVisible = @() hasFeature("DynamicResolution")
   }
   dynamicResolutionTarget = {
     widgetType = "slider" def = 60 min = 30 max = 300 blk = "video/dynamicResolution/targetFPS" restart = false
     enabled = @() canDynamicResolutionBeUsed() && getGuiValue("dynamicResolutionEnabled", true)
+    disabledHintLocKeys = @() !is_dynamic_resolution_supported_by_driver() ? "guiHints/dynamicResolutionEnabled/disabled_driver"
+      : !canDynamicResolutionBeUsed() ? "guiHints/dynamicResolutionEnabled/disabled"
+      : "guiHints/dynamicResolutionTarget/disabled"
     sliderPrintFormat = @(value) loc("options/dynamicResolutionTarget/targetFPS/sliderPrintFormat", {value})
-    isVisible = is_dev_version
+    isVisible = @() hasFeature("DynamicResolution")
   }
   vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
@@ -1798,6 +1794,7 @@ mSettings = {
       }
     }
     enabled = @() isVsyncEnabledFromLowLatency() && getGuiValue("frameGeneration", "zero") == "zero"
+    disabledHintLocKeys = @() is_nvidia_gpu() ? "guiHints/vsync/disabled_nvidia" : "guiHints/vsync/disabled"
     onChanged = "hideFpsLimiter"
   }
   graphicsQuality = { widgetType = "list" def = "high" blk = "graphicsQuality" restart = false
@@ -1814,6 +1811,10 @@ mSettings = {
         return item
       })
     }
+    updateOnTabChange = function(isCommon) {
+      updateOption("graphicsQuality")
+      enableGuiOption("graphicsQuality", isCommon || mCfgCommon?["graphicsQuality"] != "ultralow")
+    }
   }
 
   antialiasingMode = { widgetType = "list" def = "off" blk = "video/antialiasing_mode" restart = false
@@ -1828,10 +1829,18 @@ mSettings = {
   }
 
   antialiasingdlssLegacyMode = { widgetType = "list" def = "auto" blk = "video/dlssLegacyMode" restart = false
-    isVisible = isDlssSelected
+    isVisible = @() is_nvidia_gpu()
+    enabled = @() isDlssSelected()
     init = function(_blk, desc) {
       desc.values <- [ "auto", "on", "off" ]
     }
+    updateOnTabChange = @(_isCommon) enableGuiOption("antialiasingdlssLegacyMode", isDlssSelected())
+  }
+
+  neuralRendering = { widgetType = "checkbox" def = false blk = "video/neuralRendering" restart = false
+    isVisible = isNeuralRenderingSupported
+    enabled = @() isDlssSelected()
+    updateOnTabChange = @(_isCommon) enableGuiOption("neuralRendering", isDlssSelected())
   }
 
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false
@@ -1962,6 +1971,7 @@ mSettings = {
   }
   perfMetrics = { widgetType = "list" def = "fps" blk = "video/perfMetrics" restart = false
     onChanged = "perfMetricsChanged"
+    hasValueHints = true
     init = function(_blk, desc) {
       desc.values <- getAvailablePerfMetricsModes()
     }
@@ -2005,6 +2015,10 @@ mSettings = {
   }
   volfogQuality = { widgetType = "options_bar" def = "low" blk = "graphics/volfogQuality" restart = false
     values = [ "low", "medium", "high" ]
+    isVisible = is_dev_version
+  }
+  grassQuality = { widgetType = "options_bar" def = "low" blk = "graphics/grassQuality" restart = false
+    values = [ "low", "high" ]
     isVisible = is_dev_version
   }
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
@@ -2066,15 +2080,24 @@ mSettings = {
     }
   }
   landquality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "graphics/landquality" restart = false
+    hasValueHints = true
     infoImgPattern = "#ui/images/settings/terrainQuality/%s"
     availableInfoImgVals = [0, 1, 2, 3, 4]
   }
-  rendinstDistMul = { widgetType = "slider" def = 100 min = 50 max = 350 blk = "graphics/rendinstDistMul" restart = false
+  rendinstDistMul = { widgetType = "slider" def = 100 min = 50 max = riDistMulCapPct step = 10 blk = "graphics/rendinstDistMul" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
     infoImgPattern = "#ui/images/settings/rendinstRange/%s"
     availableInfoImgVals = [50, 100, 150, 200, 250, 300, 350]
+  }
+  rendinstExDistMul = { widgetType = "slider" def = 100 min = 50 max = riDistMulCapPct step = 10 blk = "graphics/rendinstExDistMul" restart = false
+    getValueFromConfig = function(blk, desc) {
+      
+      return getBlkValueByPath(blk, desc.blk, getBlkValueByPath(blk, "graphics/rendinstDistMul", desc.def / 100.0))
+    }
+    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
+    configValueToGuiValue = @(val) round(val * 100).tointeger()
   }
   skyQuality = { widgetType = "slider" def = 1 min = 0 max = 2 blk = "graphics/skyQuality" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 2 - desc.def) }
@@ -2123,6 +2146,7 @@ mSettings = {
   }
   giQuality = { widgetType = "options_bar" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
+    hasValueHints = true
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
   ssaoQuality = { widgetType = "slider" def = 1 min = 1 max = 2 blk = "render/ssaoQuality" restart = false
@@ -2130,7 +2154,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/ssao/%s"
     availableInfoImgVals = [1, 2]
   }
-  ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssrQuality" restart = false
+  ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "render/ssrQuality" restart = false
     infoImgPattern = "#ui/images/settings/ssr/%s"
     availableInfoImgVals = [0, 1, 2]
   }
@@ -2165,6 +2189,9 @@ mSettings = {
   lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/lensFlare/%s"
+  }
+  localTone = { widgetType = "checkbox" def = false blk = "graphics/localTone" restart = false
+    enabled = @() !getGuiValue("compatibilityMode")
   }
   lensDistortions = { widgetType = "checkbox" def = true blk = "graphics/lensDistortions" restart = false
     enabled = @() is_dev_version()
@@ -2241,6 +2268,11 @@ mSettings = {
     enabled = hasRTGUI
     onChanged = "rtOptionChanged"
     infoImgPattern = "#ui/images/settings/rtShadows/%s"
+    getValueFromConfig = function(blk, desc) {
+      if (getBlkValueByPath(blk, "graphics/bvhMode", "off") == "high")
+        return "sun_and_dynamic"
+      return getBlkValueByPath(blk, desc.blk, desc.def)
+    }
   }
   rtsmQuality = { widgetType = "options_bar" def = "low" blk = "graphics/RTSMQuality" restart = false
     values = [ "low", "medium", "high" ]
@@ -2249,15 +2281,25 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/rtShadowsQuality/%s"
   }
   rtr = { widgetType = "options_bar" def = "off" blk = "graphics/RTRQuality" restart = false
-    values = ["off", "low", "medium", "high"]
+    init = function(blk, desc) {
+      let hasRR = blk == null ? isRRGUIEnabled() : isRRInConfig(blk)
+      desc.values <- hasRR ? ["off", "low", "medium", "high", "ultra"] : ["off", "low", "medium", "high"]
+    }
+    getValueFromConfig = function(blk, desc) {
+      let value = getBlkValueByPath(blk, desc.blk, desc.def)
+      return (value == "ultra" && !isRRInConfig(blk)) ? "high" : value
+    }
     enabled = hasRTGUI
     onChanged = "rtrClick"
+    updateOnTabChange = @(_isCommon) mShared.updateRtrValues()
     infoImgPattern = "#ui/images/settings/rtReflections/%s"
+    imgInfoForDependentValueFn = @(value) value == "ultra" ? { optRes = "high", imgPatternRes = "#ui/images/settings/rtReflections/%s" } : {}
   }
   rtrRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRResGUI
     onChanged = "rtOptionChanged"
+    updateOnTabChange = @(_isCommon) enableGuiOption("rtrRes", hasRTRResGUI())
     infoImgPattern = "#ui/images/settings/rtResolution/%s"
   }
   rtDecals = { widgetType = "checkbox" def = false blk = "graphics/RTDecals" restart = false
@@ -2531,26 +2573,6 @@ function configWrite() {
   log("[sysopt] Config saved.")
 }
 
-function getAllOptionInfoImages(opt) {
-  let { widgetType, values = null, infoImgPattern = null, availableInfoImgVals = null, imgInfoForDependentValueFn = null } = opt
-  local possibleImgValues = []
-
-  if (widgetType == "list" || widgetType == "options_bar")
-    possibleImgValues = values
-  else if (widgetType == "slider")
-    possibleImgValues = availableInfoImgVals
-      ?? array(opt.max - opt.min + 1).map(@(_v, idx) (idx + opt.min))
-
-  return possibleImgValues.map(function(val) {
-    if (imgInfoForDependentValueFn) {
-      let { optRes = null, imgPatternRes = null } = imgInfoForDependentValueFn(val)
-      if (optRes != null && imgPatternRes != null)
-        return { src = format(imgPatternRes, optRes) }
-    }
-    return { src = format(infoImgPattern, val.tostring()) }
-  } )
-}
-
 function init() {
   let blk = blkOptFromPath(get_config_name())
   foreach (_id, desc in mSettings) {
@@ -2558,12 +2580,9 @@ function init() {
       desc.init(blk, desc)
     if (("onChanged" in desc) && desc.onChanged instanceof String)
       desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
-    if ("infoImgPattern" in desc)
-      desc.allInfoImgs <- getAllOptionInfoImages(desc)
     let uiType = ("def" in desc) ? type(desc.def) : null
     desc.uiType <- uiType
     desc.widgetId <- null
-    desc.ignoreNextUiCallback <- false
   }
 
   validateInternalConfigs()
@@ -2572,7 +2591,7 @@ function init() {
 function configFree() {
   mBlk = null
   mHandler = null
-  mContainerObj = null
+  mView = null
   mCfgInitial = {}
   mCfgCurrent = {}
   mCfgDiffsInitial = {}
@@ -2707,7 +2726,7 @@ function onConfigApply() {
   if (!mScriptValid)
     return
 
-  if (!mContainerObj?.isValid())
+  if (mView == null)
     return
 
   mShared.presetCheck()
@@ -2739,18 +2758,13 @@ function onGuiOptionChanged(obj) {
   if (!desc)
     return
 
-  if (desc.ignoreNextUiCallback) {
-    desc.ignoreNextUiCallback = false
-    return
-  }
-
   let curValue = mCfgCurrent?[id]
   if (curValue == null)  
     return
 
   local value = null
   let raw = obj.getValue()
-  let {widgetType, sliderPrintFormat = null} = desc
+  let { widgetType } = desc
   if (widgetType == "button")
     return
 
@@ -2759,15 +2773,9 @@ function onGuiOptionChanged(obj) {
   }
   else if ( widgetType == "slider" ) {
     value = raw.tointeger()
-    if (sliderPrintFormat)
-      desc.updateText(obj, raw, sliderPrintFormat)
   }
-  else if ( widgetType == "list" ) {
+  else if ( widgetType == "list" || widgetType == "options_bar") {
     value = desc.values[raw]
-  }
-  else if ( widgetType == "options_bar") {
-    value = desc.values[raw]
-    desc.updateText(obj, value)
   }
   else if ( widgetType == "editbox") {
     let {uiType} = desc
@@ -2786,7 +2794,8 @@ function onGuiOptionChanged(obj) {
   if (value == curValue)
     return
 
-  setGuiValue(id, value, true)
+  
+  setGuiValue(id, value, widgetType == "editbox")
 
   let activeTag = getActiveTagForOption(id)
   if (activeTag == "")
@@ -2808,237 +2817,179 @@ function onGuiOptionChanged(obj) {
   tryUpdateOptionImage(id)
 }
 
-function updateOptionsBarText(obj, val) {
-  let id = getOptionIdByObjId(obj.id)
-  let locVal = localize(id, val)
-  obj.findObject($"{obj.id}_text_value").setValue(locVal)
-}
-
-function updateSliderText(obj, val, sliderPrintFormat) {
-  obj?.getParent().findObject($"{obj.id}_text_value").setValue(sliderPrintFormat(val))
-}
-
-
 function isUnitTypeTabEnabled(esUnitType) {
   if (esUnitType == ES_UNIT_TYPE_HUMAN)
     return isInHangar() || isHumanMission()
   return true
 }
 
-function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
-  let addTxt = addInfo == null ? "" : loc("ui/parentheses/space", { text = loc(addInfo) })
-  let view = {
-    id = $"header_{sectionIdx}"
-    headerText = "".concat(loc(title), addTxt)
-    sectionIdx
-    tabs = null
-    isHidden = sectionIdx == 0
-  }
-  if (hasFeature("HasTabsInGraphicsOption")) {
-    view.tabs = tabs.map(@(tab, tabIdx) {
-      tabId = (tab?.unitTypeTag ?? "") == "" ? null : $"{title}_{tab.unitTypeTag}"
-      tabName = tab?.locId ? loc(tab.locId) : null
-      tabImage = tab?.image
-      selected = tabIdx == (mHandler?.curTabIdx ?? 0)
-      unitTypeTag = tab?.unitTypeTag ?? ""
-      disabled = !isUnitTypeTabEnabled(tab?.esUnitType ?? ES_UNIT_TYPE_INVALID)
-    })
-  }
-  return handyman.renderCached(("%gui/options/optionsHeaderWithTabs.tpl"), view)
-}
-
-function setCurTabIdx(guiScene, unitTypesTabs) {
+function setCurTabIdx(unitTypesTabs) {
   if (!hasFeature("HasTabsInGraphicsOption"))
     return
 
   let curUnitType = isInFlight() && isHumanMission() ? ES_UNIT_TYPE_HUMAN : ES_UNIT_TYPE_INVALID
   let suitableTabIdx = unitTypesTabs.findindex(@(tab) tab?.esUnitType == curUnitType) ?? 0
-  if (suitableTabIdx <= 0) 
-    return
+  if (suitableTabIdx > 0) 
+    mHandler.selectUnitTypeTab(suitableTabIdx, unitTypesTabs[suitableTabIdx]?.unitTypeTag ?? "")
+}
 
-  for (local i = 0; i < guiScene.sysopts.childrenCount(); i++) {
-    let tabsObj = guiScene.sysopts.getChild(i).findObject("tabs_list")
-    if (tabsObj?.isValid() && tabsObj.childrenCount() > suitableTabIdx) {
-      tabsObj.setValue(suitableTabIdx)
-      break
+let getUnitTypesTabs = @() [{ locId = "unlocks/group/common" }]
+  .extend(unitTypes.types
+    .filter(@(v) (v?.hasGraphicsPreset ?? false) && (v?.isAvailable() ?? false))
+    .map(@(v) { image = v.testFlightIcon, unitTypeTag = v.tag, esUnitType = v.esUnitType }))
+
+
+let isItemShown = @(itemId) !(itemId in platformDependentOpts && getVideoModes().len() == 0 && !is_windows)
+  && (getOptionDesc(itemId)?.isVisible() ?? true)
+
+const KIND_BY_WIDGET = { checkbox = "switchbox", list = "combobox" }
+
+
+function mkViewRow(itemId, hasLabel) {
+  let desc = getOptionDesc(itemId)
+  desc.widgetId = $"sysopt_{itemId}"
+  let { widgetType } = desc
+  if (widgetType == "slider")
+    desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
+  let isEnabled = desc?.enabled() ?? true
+  let row = {
+    id = $"{itemId}_tr"
+    itemId = desc.widgetId
+    optId = itemId
+    label = !hasLabel ? ""
+      : "".concat(loc(desc?.titleLocId ?? $"options/{itemId}"), (desc?.restart ?? false) ? $"{nbsp}*" : "")
+    control = {
+      kind = KIND_BY_WIDGET?[widgetType] ?? widgetType
+      min = desc?.min
+      max = desc?.max
+      step = desc?.step
+      hasValueText = desc?.sliderPrintFormat != null
+      maxLength = desc?.maxlength
+      text = widgetType == "button" ? loc(desc?.btnLocId ?? "") : null
+      funcName = desc?.onClick
+      isDelayed = desc?.delayed ?? false
+    }
+  }
+  let item = getViewValue(itemId, mCfgCurrent[itemId]).__update({
+    items = (widgetType == "list" || widgetType == "options_bar") ? getOptionValueItems(itemId, desc) : null
+    enabled = isEnabled
+    disabledTooltip = isEnabled ? null : getDisabledOptionTooltip(itemId)
+    hasChangedRow = hasFeature("HasTabsInGraphicsOption") && isOptionChangedFromCommon(itemId, true, "")
+  })
+  return { row, item }
+}
+
+function fillViewOptions(handler, view) {
+  mView = view
+  mHandler = handler
+  if (!mScriptValid)
+    return view.showSections([], {}, "\n".concat(loc("msgbox/internal_error_header"), mValidationError))
+
+  configRead()
+  let unitTypesTabs = getUnitTypesTabs()
+  let tabs = !hasFeature("HasTabsInGraphicsOption") ? null : unitTypesTabs.map(@(tab) {
+    text = tab?.locId ? loc(tab.locId) : null
+    image = tab?.image
+    unitTypeTag = tab?.unitTypeTag ?? ""
+    disabled = !isUnitTypeTabEnabled(tab?.esUnitType ?? ES_UNIT_TYPE_INVALID)
+  })
+  let viewItems = {}
+  let sections = mUiStruct.map(function(section, sectionIdx) {
+    let { title, id = null, items = null, addTitleInfo = null, hasTabs = false } = section
+    let addTxt = addTitleInfo == null ? "" : loc("ui/parentheses/space", { text = loc(addTitleInfo) })
+    return {
+      sectionIdx
+      titleId = title
+      title = "".concat(loc(title), addTxt)
+      tabs = hasTabs ? tabs : null
+      rows = (items ?? (id ? [id] : [])).filter(isItemShown).map(function(itemId) {
+        let { row, item } = mkViewRow(itemId, items != null)
+        viewItems[row.itemId] <- item
+        return row
+      })
+    }
+  })
+  view.showSections(sections, viewItems)
+  onGuiLoaded()
+  setCurTabIdx(unitTypesTabs)
+}
+
+function saveTabValues(sectionItems, tag) {
+  foreach (optionId in sectionItems) {
+    if (!(optionId in mCfgCurrent))
+      continue
+    let value = mCfgCurrent[optionId]
+    if (tag == "")
+      mCfgCommon[optionId] <- value
+    else if (!isOnlyCommonOption(optionId)) {
+      if (tag not in mCfgDiffsCurrent)
+        mCfgDiffsCurrent[tag] <- {}
+      mCfgDiffsCurrent[tag][optionId] <- value
     }
   }
 }
 
-function fillGuiOptions(containerObj, handler) {
-  if (!containerObj?.isValid() || !handler)
-    return
-  let guiScene = containerObj.getScene()
+function applyTabValues(sectionItems, isCommon, unitTypeTag) {
+  foreach (optionId in sectionItems) {
+    let widgetId = getOptionDesc(optionId)?.widgetId
+    if (mView == null || widgetId == null)
+      continue
 
-  if (!mScriptValid) {
-    let msg = "\n".concat(loc("msgbox/internal_error_header"), mValidationError)
-    let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", stripTags(msg))
-    guiScene.replaceContentFromText(containerObj, data, data.len(), handler)
-    return
-  }
-
-  guiScene.setUpdatesEnabled(false, false)
-  guiScene.replaceContent(containerObj, "%gui/options/systemOptions.blk", handler)
-  mContainerObj = containerObj
-  mHandler = handler
-
-  configRead()
-  let cb = "onSystemOptionChanged"
-  let onOptHoverFnName = "onSystemOptionControlHover"
-
-  let unitTypesTabs = [{ locId = "unlocks/group/common" }]
-    .extend(unitTypes.types
-      .filter(@(v) (v?.hasGraphicsPreset ?? false) && (v?.isAvailable() ?? false))
-      .map(@(v) { image = v.testFlightIcon, unitTypeTag = v.tag, esUnitType = v.esUnitType }))
-
-  local data = ""
-  foreach (sectionIdx, section in mUiStruct) {
-    let { title, id = null, items = null, addTitleInfo = null, hasTabs = false } = section
-    let itemsIds = items ? items : id ? [ id ] : []
-
-    data = "".concat(data, mkOptionHeaderRow(sectionIdx, title, addTitleInfo,
-      hasTabs ? unitTypesTabs : []))
-
-    foreach (itemId in itemsIds) {
-      
-      if (itemId in platformDependentOpts && getVideoModes().len() == 0 && !is_windows)
-        continue
-
-      let desc = getOptionDesc(itemId)
-      if (!(desc?.isVisible() ?? true))
-        continue
-
-      desc.widgetId = $"sysopt_{itemId}"
-      local option = ""
-      let { widgetType } = desc
-      if ( widgetType == "checkbox" ) {
-        let config = {
-          id = desc.widgetId
-          value = mCfgCurrent[itemId]
-          cb = cb
-        }
-        option = create_option_switchbox(config)
-      }
-      else if ( widgetType == "slider" ) {
-        desc.cssClass <- "systemOption"
-        desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
-        option = create_option_slider(desc.widgetId, mCfgCurrent[itemId], cb, true, "slider", desc)
-        desc.updateText <- updateSliderText
-      }
-      else if (widgetType == "options_bar") {
-        let value = desc.values.findindex(@(v) v == mCfgCurrent[itemId])
-        let descItems = desc?.items ?? desc.values.map(@(v, idx) {
-          text = localize(itemId, v)
-          selected = idx == 0
-        })
-
-        option = create_options_bar(desc.widgetId, value, localize(itemId, mCfgCurrent[itemId]),
-          descItems, cb, true, { onOptHoverFnName })
-        desc.updateText <- updateOptionsBarText
-      }
-      else if ( widgetType == "list" ) {
-        option = getListOption(itemId, desc, cb, onOptHoverFnName)
-      }
-      else if ( widgetType == "editbox" ) {
-        let raw = mCfgCurrent[itemId].tostring()
-        option = create_option_editbox({
-          id = desc.widgetId,
-          value = raw,
-          maxlength = desc.maxlength
-        })
-      }
-      else if (widgetType == "button") {
-        option = handyman.renderCached(("%gui/commonParts/button.tpl"), {
-          id = desc.widgetId,
-          funcName = desc.onClick,
-          delayed = desc?.delayed ?? false
-          text = loc(desc?.btnLocId ?? "")
-          buttonClass = "systemOption"
-        })
-      }
-
-      if (items != null) {
-        let disabled = (desc?.enabled() ?? true) ? "no" : "yes"
-        let requiresRestart = desc?.restart ?? false
-        let optionName = loc(desc?.titleLocId ?? $"options/{itemId}")
-        let disabledTooltip = disabled == "yes" ? getDisabledOptionTooltip(itemId) : null
-        let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
-        let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
-        local hasChangedRow = "no"
-        if (hasFeature("HasTabsInGraphicsOption"))
-          hasChangedRow = isOptionChangedFromCommon(itemId, true, "") ? "yes" : "no"
-
-        option = "".concat("tr { id:t='", itemId, "_tr'; disabled:t='", disabled, "' disabledVal:t='", disabled,
-          "' selected:t='no'", tooltipProp, " hasLockedSign:t='no' hasChangedRow:t='", hasChangedRow,
-          "' size:t='pw, ", mRowHeightScale,
-          "@optContainerHeight' overflow:t='hidden' optContainer:t='yes' on_hover:t='onOptionContainerHover'",
-          " td { width:t='0.50pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
-          "@optContainerHeight' optiontext {text:t='", label, "'} }",
-          " td { width:t='0.50pw'; cellType:t='right';  height:t='", mRowHeightScale,
-          "@optContainerHeight' padding-left:t='@optPad'; optionWithDiffBg{} cellSeparator{}", option, " } }"
-        )
-      }
-      data = "".concat(data, option)
+    if (optionId in mCfgCommon) {
+      local target = mCfgCommon[optionId]
+      if (!isCommon && unitTypeTag != "" && unitTypeTag in mCfgDiffsCurrent
+          && optionId in mCfgDiffsCurrent[unitTypeTag])
+        target = mCfgDiffsCurrent[unitTypeTag][optionId]
+      setGuiValue(optionId, target)
     }
-  }
 
-  guiScene.replaceContentFromText(guiScene.sysopts, data, data.len(), handler)
-  guiScene.setUpdatesEnabled(true, true)
-  onGuiLoaded()
-  setCurTabIdx(guiScene, unitTypesTabs)
+    let isLocked = isOnlyCommonOption(optionId) ? !isCommon : null
+    let hasChangedRow = hasFeature("HasTabsInGraphicsOption")
+      ? isOptionChangedFromCommon(optionId, isCommon, unitTypeTag) : null
+    mView.setItem(widgetId, { isLocked, hasChangedRow }.filter(@(v) v != null))
+  }
+}
+
+function updateTabDependentOptions(sectionItems, isCommon) {
+  foreach (optionId in sectionItems)
+    getOptionDesc(optionId)?.updateOnTabChange(isCommon)
 }
 
 function updateGuiOptionsGroup(groupIdx, isCommon, unitTypeTag) {
   let prevTag = mActiveTabTags?[groupIdx] ?? ""
-  let newTag = isCommon ? "" : unitTypeTag
-
+  unitTypeTag = isCommon ? "" : unitTypeTag
   let sectionItems = mUiStruct?[groupIdx].items ?? []
-  if (prevTag != newTag) {
-    foreach (optionId in sectionItems) {
-      if (!(optionId in mCfgCurrent))
-        continue
-      let value = mCfgCurrent[optionId]
-      if (prevTag == "")
-        mCfgCommon[optionId] <- value
-      else if (!isOnlyCommonOption(optionId)) {
-        if (prevTag not in mCfgDiffsCurrent)
-          mCfgDiffsCurrent[prevTag] <- {}
-        mCfgDiffsCurrent[prevTag][optionId] <- value
-      }
-    }
-    mActiveTabTags[groupIdx] <- newTag
-  }
 
-  foreach (optionId in sectionItems) {
-    let optionObj = mHandler.scene.findObject($"{optionId}_tr")
-    if (!(optionObj?.isValid() ?? false))
+  if (prevTag != unitTypeTag) {
+    saveTabValues(sectionItems, prevTag)
+    mActiveTabTags[groupIdx] <- unitTypeTag
+  }
+  applyTabValues(sectionItems, isCommon, unitTypeTag)
+  updateTabDependentOptions(sectionItems, isCommon)
+  updateGuiNavbar(true)
+}
+
+function resetActiveTabDiffs() {
+  if (!hasFeature("HasTabsInGraphicsOption"))
+    return
+
+  foreach (sectionIdx, tag in mActiveTabTags) {
+    if (tag == "")
       continue
-
-    if (isOnlyCommonOption(optionId)) {
-      optionObj.disabled = isCommon ? optionObj.disabledVal : "yes"
-      optionObj.hasLockedSign = isCommon ? "no" : "yes"
+    let items = mUiStruct?[sectionIdx].items ?? []
+    let tagCfg = mCfgDiffsCurrent?[tag]
+    foreach (optionId in items) {
+      if (tagCfg != null && optionId in tagCfg)
+        tagCfg.$rawdelete(optionId)
+      if (optionId in mCfgCommon)
+        setGuiValue(optionId, mCfgCommon[optionId])
+      updateOptionChangedIcon(optionId)
     }
+    if (tagCfg != null && tagCfg.len() == 0)
+      mCfgDiffsCurrent.$rawdelete(tag)
 
-    
-    if (optionId == "graphicsQuality") {
-      updateOption(optionId)
-      
-      enableGuiOption(optionId, isCommon || mCfgCommon?[optionId] != "ultralow")
-    }
-
-    if (optionId in mCfgCommon) {
-      local target = mCfgCommon[optionId]
-      if (!isCommon && newTag != "" && newTag in mCfgDiffsCurrent
-          && optionId in mCfgDiffsCurrent[newTag])
-        target = mCfgDiffsCurrent[newTag][optionId]
-      setGuiValue(optionId, target)
-    }
-
-    if (hasFeature("HasTabsInGraphicsOption"))
-      optionObj.hasChangedRow = isOptionChangedFromCommon(optionId, isCommon, unitTypeTag)
-        ? "yes" : "no"
+    updateTabDependentOptions(items, false)
   }
-
   updateGuiNavbar(true)
 }
 
@@ -3067,6 +3018,19 @@ function checkShowGraphicSettingsWasModified() {
     ],
     "continue"
   )
+}
+
+function checkShowFullscreenImeUnavailable() {
+  if (!isPC || is_gdk || !hasImeKeyboardLayout())
+    return
+  if (getSystemConfigOption("video/mode", "fullscreen") != "fullscreen")
+    return
+
+  setSystemConfigOption("video/mode", "fullscreenwindowed")
+  if ("mode" in mCfgApplied)
+    mCfgApplied.mode = "fullscreenwindowed"
+
+  showFullscreenImeUnavailableMsg()
 }
 
 function disableVrModeValue() {
@@ -3106,8 +3070,8 @@ eventbus_subscribe("on_force_graphics_preset_and_apply", function(event) {
 init()
 
 
-return {
-  fillSystemGuiOptions = fillGuiOptions
+return freeze({
+  fillSystemGuiOptions = fillViewOptions
   resetSystemGuiOptions = resetGuiOptions
   resetSystemActiveTabDiffs = resetActiveTabDiffs
   getActiveTabDiffSectionTitles
@@ -3124,12 +3088,13 @@ return {
   onConfigApplyWithoutUiUpdate
   canShowGpuBenchmark
   getSystemOptionInfoView = getOptionInfoView
-  onSystemOptionControlHover
+  onSystemOptionValueHover
   checkShowGraphicSettingsWasModified
+  checkShowFullscreenImeUnavailable
   isVrModeEnable
   disableVrModeValue
   updateGuiOptionsGroup
   getOptionDiffTags
   getOptionSectionTitle
   getOptionIdByObjId
-}
+})

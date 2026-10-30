@@ -1,46 +1,3 @@
-@const profileHeaderPadding:28@sf/@pf;
-@const profileHeaderTopPadding:20@sf/@pf;
-@const profileHeaderBottomPadding:20@sf/@pf;
-@const medalItemMargin:8@sf/@pf;
-@const collectionItemMargin:8@sf/@pf;
-@const unlockListRightMargin:13@sf/@pf;
-@const maxAccountHeaderHeight:54@sf/@pf + 1@frameHeaderHeight + 1@avatarButtonSize + 1@profileHeaderTopPadding + 1@profileHeaderBottomPadding + 1@bh - 1@bhInVr;
-@const minAccountHeaderHeight:1@frameProfileTopOffset + 1@frameHeaderHeight + 1@buttonHeight + 7@sf/@pf + 1@bh - 1@bhInVr;
-@const accountHeaderWidth:720@sf/@pf;
-
-@const profileFrameWidth: 1.0 *(1@rw-2@framePadding);
-@const maxProfileContentWidth: 1.0 * (2080@sf/@pf - 2@framePadding);
-
-@const profilePageRightPartWidth: (0.7938 * @profileFrameWidth) $min 1642@sf/@pf;
-@const profilePagePartsMargin: (0.013 * @profileFrameWidth) $min 26@sf/@pf;
-
-@const profileUnockIconWidth: 160@sf/@pf;
-@const profileUnockIconPadding: 26@sf/@pf;
-@const profilePageTextColor: #FFc0c0c0;
-@const profileSeparatorExtraWidth: 128@sf/@pf;
-@const maxProfileFrameWidth: 2560@sf/@pf - 2@framePadding;
-@const beyondScrollbarSize: 10@sf/@pf;
-@const showcaseBoxBorder: #1B161719;
-@const showcaseGreyText: #7C8389;
-@const showcaseBlue: #FF17CBFC;
-@const showcaseWhiteTransparent: #05111111;
-@const countriesSmallListHeight:50@sf/@pf;
-@const comboboxSmallFontPixHt:22@sf/@pf \ 1;
-
-@const smallProfileHeaderH:130@sf/@pf;
-@const profileHeaderH:190@sf/@pf;
-@const favoriteUnitImageHeight:280@sf/@pf;
-@const showcaseLinePadding:13@sf/@pf;
-@const showcaseStatValHeight:42@sf/@pf \ 1;
-@const showcaseStatNameHeight:18@sf/@pf \ 1;
-@const showcaseStatIconSize:55@sf/@pf;
-@const showcaseMinStatHeight:159@sf/@pf;
-@const favoriteUnitShowcaseHeight:1@favoriteUnitImageHeight + 2@showcaseLinePadding + 2@showcaseMinStatHeight + 1@showcaseStatNameHeight + 1@showcaseLinePadding;
-@const collectionMainPrizeWidth:(pw - 7@collectionItemMargin)/4 + 1@collectionItemMargin;
-@const frameSeparatorHeight: 1@sf/@pf;
-@const profileBgImageAspectRatio: 1920/260 \1;
-@const separatorColor: #4B4F53;
-
 profileContent {
   position:relative;
   size:@profileFrameWidth $min 1@maxProfileContentWidth, fh;
@@ -332,24 +289,6 @@ listbox[isProfileUnlocksList=yes] achievementTitle activeText {
   font:@fontNormal;
 }
 
-listbox[isSpecEventsList=yes] > expandable {
-  pos: 0, 0;
-  margin: 2@blockInterval;
-  re-type: 9rect;
-  foreground-image: #ui/gameuiskin#item_selection;
-  foreground-position: 8;
-  foreground-repeat: expand;
-  foreground-color: #22222222;
-}
-
-listbox[isSpecEventsList=yes] > expandable[isSpecEventSlot=yes] {
-  margin-top: 2@blockInterval;
-}
-
-listbox[isSpecEventsList=yes] > expandable[isLastRow=yes] {
-  margin-bottom: 0;
-}
-
 hiddenDiv[isProfilePageUnlock=yes] {
   padding-top:0;
 }
@@ -534,6 +473,11 @@ avatarFrame {
   background-color: @white;
   background-scale: aspect-ratio;
   background-svg-size: 1.2 * pw, 1.2 * ph;
+}
+
+avatarFrame[background-frames] {
+  re-type:animated;
+  background-fps:30;
 }
 
 [isEditModeEnabled=yes] button[background-image=""] > editableSlotPlus {

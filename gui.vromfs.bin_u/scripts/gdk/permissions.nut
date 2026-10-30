@@ -86,7 +86,7 @@ function can_see_user_content(xuid, callback) {
 }
 
 
-return {
+return freeze({
   CommunicationState = CommunicationsState
   check_crossnetwork_play_privilege
   check_multiplayer_sessions_privilege
@@ -95,4 +95,4 @@ return {
   check_ugc_privilege
   can_we_text_user
   can_see_user_content
-}
+})

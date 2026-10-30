@@ -1,11 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj, setPopupMenuPosAndAlign
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
 
-let { check_obj, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
 
 
 
@@ -101,4 +101,4 @@ let FramedMessageBox = class (BaseGuiHandler) {
 
 register_gui_handler("FramedMessageBox", FramedMessageBox)
 
-return { FramedMessageBox }
+return freeze({ FramedMessageBox })

@@ -1,8 +1,8 @@
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/onlineShop/onlineShopModel.nut" import launchOnlineShop
+from "%scripts/user/balance.nut" import get_gui_balance, hasMultiplayerRestritionByBalance
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "%scripts/dagui_library.nut" import *
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { get_gui_balance, hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function isShowGoldBalanceWarning() {
   if (!hasMultiplayerRestritionByBalance())
@@ -63,7 +63,7 @@ function checkBalanceMsgBox(cost, afterCheck = null, silent = false) {
   return false
 }
 
-return {
+return freeze({
   isShowGoldBalanceWarning
   checkBalanceMsgBox
-}
+})

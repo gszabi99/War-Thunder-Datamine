@@ -5,6 +5,6 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let isMarketplaceEnabled = @() hasFeature("Marketplace")
   && hasFeature("AllowExternalLink") && inventoryClient.getMarketplaceBaseUrl() != null
 
-return {
+return freeze({
   isMarketplaceEnabled
-}
+})

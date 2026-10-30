@@ -135,8 +135,6 @@ def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&; less : 
     return (first != last) && (!invoke(less, val, a[first]))
 }
 
-
-
 def upper_bound(a : array<auto(TT)>; f, l : int; val : TT const -&) {
     
     assert(f >= 0 && f <= l, "upper bound first out of range")
@@ -161,7 +159,7 @@ def upper_bound(a : array<auto(TT)>; val : TT const -&) {
     return upper_bound(a, 0, length(a), val)
 }
 
-def upper_bound(a : array<auto(TT)>; f, l : int; value : auto(QQ); less : block<(a : TT const -&, b : QQ) : bool>) {
+def upper_bound(a : array<auto(TT)>; f, l : int; value : auto(QQ); less : block<(a : QQ, b : TT const -&) : bool>) {
     
     assert(f >= 0 && f <= l, "upper bound first out of range")
     assert(l >= f && l <= length(a), "upper bound last out of range")
@@ -180,12 +178,10 @@ def upper_bound(a : array<auto(TT)>; f, l : int; value : auto(QQ); less : block<
     return first
 }
 
-def upper_bound(a : array<auto(TT)>; value : auto(QQ); less : block<(a : TT const -&, b : QQ) : bool>) {
+def upper_bound(a : array<auto(TT)>; value : auto(QQ); less : block<(a : QQ, b : TT const -&) : bool>) {
     
     return upper_bound(a, 0, length(a), value, less)
 }
-
-
 
 def equal_range(a : array<auto(TT)>; val : TT const -&) {
     
@@ -202,8 +198,6 @@ def equal_range(a : array<auto(TT)>; f, l : int; val : TT const -&) {
     let hi = upper_bound(a, f, l, val)
     return int2(lo, hi)
 }
-
-
 
 [expect_any_array(a)]
 def reverse(var a) {
@@ -398,8 +392,6 @@ def erase_all(var arr; value) {
     }
 }
 
-
-
 def fill(var a : array<auto(TT)>; value : TT const -&) {
     
     for (e in a) {
@@ -418,8 +410,6 @@ def fill(var a; value) {
         }
     }
 }
-
-
 
 def is_sorted(a : array<auto(TT)>) : bool {
     
@@ -445,15 +435,12 @@ def is_sorted(a) : bool {
     }
 }
 
-
-
 def rotate(var a : array<auto>; mid : int) {
     
     
     let l = length(a)
     if (l == 0 || mid == 0 || mid == l) return
     assert(mid > 0 && mid < l, "rotate mid out of range")
-    
     let lm1 = l - 1
     let mm1 = mid - 1
     for (i in range(mid / 2)) {
@@ -475,8 +462,6 @@ def rotate(var a; mid : int) {
         rotate(temp_array(a), mid)
     }
 }
-
-
 
 def min_element(a : array<auto(TT)>) : int {
     

@@ -1,32 +1,32 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/customization/decoratorGetters.nut" import getCachedDataByType, getDecorator, getVisibleDecoratorsByType
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavButton, initUnlockFavInContainer
+from "%scripts/unlocks/unlocksState.nut" import getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene, useDecorator, showDecoratorAccessRestriction, getDecoratorDataToUse
+from "%scripts/user/skins/decoratorGroupsTree.nut" import initTree
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/items/itemsManagerGetters.nut" import canGetDecoratorFromTrophy
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/unlocks/unlocksModule.nut" import canDoUnlock
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/collections/collections.nut" import isCollectionItem
+from "%scripts/customization/decoratorAcquire.nut" import askPurchaseDecorator, askConsumeDecoratorCoupon, findDecoratorCouponOnMarketplace
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/customization/decoratorFavoritesStorage.nut" import FAVORITE_CATEGORY_ID
+from "%scripts/customization/decoratorUtils.nut" import filterDecorators
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCachedDataByType, getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction, getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
-let { initTree } = require("%scripts/user/skins/decoratorGroupsTree.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { canGetDecoratorFromTrophy } = require("%scripts/items/itemsManagerGetters.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { askPurchaseDecorator, askConsumeDecoratorCoupon, findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { FAVORITE_CATEGORY_ID } = require("%scripts/customization/decoratorFavoritesStorage.nut")
-let { filterDecorators } = require("%scripts/customization/decoratorUtils.nut")
 
 const SELECTED_DECAL_SAVE_ID = "wnd/selectedDecal"
 
@@ -101,11 +101,8 @@ local DecalsHandler = class (BaseGuiHandlerWT) {
       return
     this.totalReceived = 0
     this.decalsCache = []
-    let decoratorsList = getCachedDataByType(decoratorTypes.DECALS).decoratorsList
-
-    foreach (decalId, decal in decoratorsList) {
-      if (!decal.isVisible())
-        continue
+    foreach (decal in getVisibleDecoratorsByType(decoratorTypes.DECALS)) {
+      let decalId = decal.id
       this.decalsCache.append({
         id = decalId
         decal
@@ -515,6 +512,6 @@ local DecalsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("DecalsHandler", DecalsHandler)
 
-return {
+return freeze({
   openDecalsPage = @(params = {}) handlersManager.loadHandler(DecalsHandler, params)
-}
+})

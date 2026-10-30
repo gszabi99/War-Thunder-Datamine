@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "sound": {
     "EngineName": "engine_sherman_m4a1",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -3018,7 +3024,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_M5_user_cannon_for_M3_Lee.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_M5_user_cannon_for_M3_Lee.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": 0.0,
@@ -3089,7 +3095,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_M2_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_M2_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "defaultYaw": 0.0,
@@ -3163,7 +3169,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -3219,8 +3225,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_mk1_grant_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_mk1_grant_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "modifications": {
@@ -3262,7 +3268,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/37mm_M5_user_cannon_for_M3_Lee.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/37mm_M5_user_cannon_for_M3_Lee.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "defaultYaw": 0.0,
@@ -3333,7 +3339,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_M2_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/75mm_M2_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "defaultYaw": 0.0,
@@ -3407,7 +3413,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3451,7 +3457,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -170,6 +170,66 @@
       "rowMajor": true,
       "preciseMinor": true
     },
+    "twsNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.92329437,
+      "width": 15.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.8465887,
+      "width": 30.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 180.0,
+      "pitchStabLimit": 60.0,
+      "period": 3.6931775,
+      "width": 30.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
     "fastTws": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -539,6 +599,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
@@ -554,6 +615,7 @@
       "aircraftAsTarget": false,
       "groundVehiclesAsTarget": false,
       "shipsAsTarget": true,
+      "detectWeapon": false,
       "targetRadiusMin": 10.0,
       "angularAccuracy": 0.0,
       "distanceAccuracy": 1.0,
@@ -572,9 +634,9 @@
       "scanPattern3": "searchAutoNarrow"
     },
     "tws": {
-      "scanPattern1": "searchAutoMedium",
-      "scanPattern2": "searchAutoWide",
-      "scanPattern3": "searchAutoNarrow"
+      "scanPattern1": "twsMedium",
+      "scanPattern2": "twsWide",
+      "scanPattern3": "twsNarrow"
     },
     "acmLock": {
       "scanPattern1": "boresightLock",
@@ -2982,6 +3044,10 @@
       ]
     },
     {
+      "name": "hud/su_15",
+      "targetType": "su_15tm"
+    },
+    {
       "name": "hud/su_17",
       "targetType": [
         "su_17m2",
@@ -3366,7 +3432,9 @@
         "f_15c_baz_msip",
         "f_15c_golden_eagle",
         "f_15e",
-        "f_15i_raam"
+        "f_15i_raam",
+        "f_15ex",
+        "f_15ia"
       ]
     },
     {
@@ -3424,7 +3492,8 @@
         "cf_188a_canada",
         "fa_18e_block_2",
         "fa_18d_late_malaysia",
-        "fa_18f_block_2_raaf"
+        "fa_18f_block_2_raaf",
+        "fa_18d_late"
       ]
     },
     {
@@ -3565,6 +3634,7 @@
       "targetType": [
         "q_5_early",
         "q_5a",
+        "q_5d",
         "q_5l",
         "a_5c"
       ]
@@ -3787,7 +3857,8 @@
         "saab_jas39c_thailand",
         "saab_jas39c",
         "saab_jas39e",
-        "saab_jas39d"
+        "saab_jas39d",
+        "saab_jas39_pre_serie"
       ]
     },
     {

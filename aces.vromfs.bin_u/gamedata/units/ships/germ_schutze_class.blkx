@@ -1641,6 +1641,7 @@
     "engines": {
       "maxSpeed": 12.86,
       "maxReverseSpeed": 3.5,
+      "horsePowers": 4500.0,
       "speedToTime": {
         "row": [
           [
@@ -1748,6 +1749,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.6,
+        0.0
+      ],
+      [
+        7.1,
+        100.0
+      ],
+      [
+        10.7,
+        200.0
+      ],
+      [
+        14.3,
+        300.0
+      ],
+      [
+        17.9,
+        500.0
+      ],
+      [
+        21.4,
+        800.0
+      ],
+      [
+        25.0,
+        1100.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        200.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "radarAnimations": {
     "anim": [
       {
@@ -1769,7 +1828,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_mel58_naval_user_cannon.blk",
+      "blk": "gamedata/weapons/navalModels_weapons/40mm_l70_bofors_mel58_naval_user_cannon.blk",
       "emitter": "gun_barrel_01",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
@@ -1881,7 +1940,7 @@
   "weapon_presets": {
     "preset": {
       "name": "schutze_class_default",
-      "blk": "gameData/units/ships/weaponPresets/germ_schutze_class_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/germ_schutze_class_default.blk"
     }
   },
   "cockpit": {
@@ -2879,64 +2938,68 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -20000.0,
-    "waterMassMult": 300.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 800000.0,
+    "waterMassVel": -13309.0,
+    "waterMassMult": 83.0,
+    "additionalWaterDeathThreshold": 1003296.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 37.0,
+    "maxHeelingAngle": 24.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 6.4,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25
+    "sideCenterOfMassOffsetPercent": 0.157
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.15,
+        "weight": 0.51,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.75,
+        "weight": 1.0,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_03_dm",
-        "weight": 1.0,
+        "weight": 0.89,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
-              "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.6
-            },
-            {
-              "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.6
-            },
-            {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.05
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.05
+            },
+            {
+              "partNo": "engine_01_dm",
+              "critWaterLevel": 0.52
+            },
+            {
+              "partNo": "engine_02_dm",
+              "critWaterLevel": 0.52
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.8,
+        "weight": 0.79,
         "maxWaterAlive": 1.0
       }
     ]

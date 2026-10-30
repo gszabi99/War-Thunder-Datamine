@@ -51,16 +51,16 @@ let movementBlock = @() {
   size = [3 * bigTouchButtonSize + 2 * touchButtonMargin, bottomLeftBlockHeigh]
   pos = [0, rh.get() - bottomLeftBlockHeigh - missionProgressHeight.get()]
   children = [
-    mkTouchButton("ship_steering_rangeMax", {
+    mkTouchButton("ship_steering_rangeMax", const {
       vplace = ALIGN_CENTER
     })
-    mkTouchButton("ship_steering_rangeMin", {
+    mkTouchButton("ship_steering_rangeMin", const {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_CENTER
     })
-    mkTouchButton("ship_main_engine_rangeMax", {
+    mkTouchButton("ship_main_engine_rangeMax", const {
       hplace = ALIGN_CENTER })
-    mkTouchButton("ship_main_engine_rangeMin", {
+    mkTouchButton("ship_main_engine_rangeMin", const {
       hplace = ALIGN_CENTER
       vplace = ALIGN_BOTTOM
     })

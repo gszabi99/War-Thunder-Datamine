@@ -1,32 +1,32 @@
+import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
+import "%scripts/time.nut" as time
+import "%scripts/worldWar/inOperation/wwUnitClassParams.nut" as wwUnitClassParams
+import "%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut" as wwOperationUnitsGroups
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%scripts/weaponry/weaponryVisual.nut" import updateModItem, createModItem
+from "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" import getMaxFlyTime
+from "%scripts/unit/groupUnit.nut" import getGroupUnitMarkUp
+from "%scripts/weaponry/weaponrySelectModal.nut" import guiStartChooseUnitWeapon
+from "%scripts/tasker.nut" import addBgTaskCb
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getCurrentOperation, getAirArmiesNumberByGroupIdx
+from "%scripts/worldWar/inOperation/model/wwAirfield.nut" import WwAirfield
 from "string" import format
 from "worldwarConst" import RenderCategory
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let time = require("%scripts/time.nut")
-let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
-let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
-let { getMaxFlyTime } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
-let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
-let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getCurrentOperation, getAirArmiesNumberByGroupIdx } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 
 
 let unitsTypesList = {
@@ -833,4 +833,4 @@ let WwAirfieldFlyOut = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwAirfieldFlyOut", WwAirfieldFlyOut)
 
-return { WwAirfieldFlyOut }
+return freeze({ WwAirfieldFlyOut })

@@ -3,6 +3,7 @@ require math.base
 require DagorMath
 require DagorMathUtils
 require Dacoll
+require CollRes
 require ecs
 require Unit
 require IGroundModel

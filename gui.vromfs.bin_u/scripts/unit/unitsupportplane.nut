@@ -1,7 +1,7 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk, getEsUnitType
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-let { getFullUnitBlk, getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 
 let anyAirVehicle = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 let anyWaterVehicle = [ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP]
@@ -94,7 +94,7 @@ function getUnitSupportPlaneData(unitName) {
   }
 }
 
-return {
+return freeze({
   hasSupportPlane
   getUnitSupportPlaneData
-}
+})

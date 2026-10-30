@@ -1,54 +1,57 @@
+import "%scripts/user/externalIdsService.nut" as externalIDsService
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "DataBlock" as DataBlock
 import "sony.social" as psnSocial
+from "%scripts/social/crossplay.nut" import canInteractCrossConsole
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/leaderboard/leaderboard.nut" import LeaderboardWindow
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName, isPlayerFromPS4
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/user/userInfoStats.nut" import fillProfileSummary, getPlayerStatsFromBlk, getPlayerSummary
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText
+from "%scripts/contacts/contactsState.nut" import addContact, removeContact
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/contacts/customNicknames.nut" import openNickEditBox, getCustomNick
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%scripts/clientState/clientStates.nut" import isInBattleState
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/usersInfoManager.nut" import forceRequestUserInfoData, getUserInfo
+from "%scripts/user/profileShowcase.nut" import getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode
+from "%scripts/gamercard/fillGamercard.nut" import fillGamercard
+from "%scripts/gamercard/gamercardHelpers.nut" import addGamercardScene
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentShopDifficulty
+from "%scripts/user/complaints.nut" import checkCanComplainAndProceed
+from "%scripts/clans/clanTextInfo.nut" import checkClanTagForDirtyWords, amendUGCText, checkUGCAllowed
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/penitentiary/banhammer.nut" import gui_modal_ban, gui_modal_complain
+from "%scripts/user/medals/medalsHandler.nut" import openMedalsPage
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
+from "%scripts/user/serviceRecords/serviceRecordsHandler.nut" import openServiceRecordsPage
+from "%scripts/user/clanName.nut" import getMyClanTag, getMyClanName
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "app" import APP_ID
 from "url" import encode_uri_component
 from "mission" import get_local_mplayer
 from "%gdkLib/impl/user.nut" import show_profile_card
-from "dagor.workcycle" import setTimeout
+from "dagor.workcycle" import setTimeout, defer
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor, getVendorLocId
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
-
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
+from "%scripts/options/fonts.nut" import getCurrentFontType, fontTypes
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox, isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
-let externalIDsService = require("%scripts/user/externalIdsService.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { fillProfileSummary, getPlayerStatsFromBlk, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { forceRequestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = require("%scripts/user/profileShowcase.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
-let { checkClanTagForDirtyWords, amendUGCText, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let g_font = require("%scripts/options/fonts.nut")
-let { openMedalsPage } = require("%scripts/user/medals/medalsHandler.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { openServiceRecordsPage } = require("%scripts/user/serviceRecords/serviceRecordsHandler.nut")
-let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 
 function getCurrentWndDifficulty() {
   let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
@@ -71,7 +74,7 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
   sheetsList = ["UserCard", "Records", "Statistics", "Medal"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
-  tabLocalePrefix = "#mainmenu/btn"
+  tabLocalePrefix = "mainmenu/btn"
 
   showLbPlaces = 0
 
@@ -109,14 +112,18 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
     local headerAndPadHeight = to_pixels("1@profileHeaderH + 30@sf/@pf")
 
     if (maxHeight < defShowcaseHeight + headerAndPadHeight) {
-      this.isSmallSize = g_font.getCurrent() == g_font.LARGE
+      this.isSmallSize = getCurrentFontType() == fontTypes.LARGE
       if (this.isSmallSize)
         headerAndPadHeight = to_pixels("1@smallProfileHeaderH + 15@sf/@pf")
 
       if (!this.isSmallSize || (maxHeight < defShowcaseHeight + headerAndPadHeight))
         this.showcaseScale = maxHeight / (defShowcaseHeight + headerAndPadHeight)
     }
-    return this.getScaleParams()
+    return this.getScaleParams().__update({
+      profileLocId = getVendorLocId("mainmenu/btnProfile")
+      friendAddLocId = getVendorLocId("contacts/friendlist/add")
+      friendRemoveLocId = getVendorLocId("contacts/friendlist/remove")
+    })
   }
 
   function getScaleParams() {
@@ -157,7 +164,7 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
     this.scene.findObject("profile-name").setValue(profileName)
     this.scene.findObject("usercard-container").show(false)
     let breadCrumbTitle = this.scene.findObject("breadcrumb_title")
-    breadCrumbTitle.setValue(" ".concat(loc("mainmenu/btnProfile"), profileName))
+    breadCrumbTitle.setValue(" ".concat(locByVendor("mainmenu/btnProfile"), profileName))
 
     this.scene.findObject("profile_header").show(false)
     this.initTabs()
@@ -199,12 +206,14 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
     this.updateButtons()
   }
 
+  getTabLocText = @(tabId) $"#{getVendorLocId($"{this.tabLocalePrefix}{tabId}")}"
+
   function initTabs() {
     let view = { tabs = [] }
     foreach (idx, sheet in this.sheetsList) {
       view.tabs.append({
         id = sheet
-        tabName = this.tabLocalePrefix + sheet
+        tabName = this.getTabLocText(sheet)
         navImagesText = getNavigationImagesText(idx, this.sheetsList.len())
       })
     }
@@ -392,8 +401,8 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
 
     this.fillAdditionalName(this.curPlayerExternalIds?.steamName ?? "", "steamName")
 
-    showObjById("btn_xbox_profile", isPlatformXbox && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "", this.scene)
-    showObjById("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "", this.scene)
+    showObjById("btn_xbox_profile", isXbox && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "", this.scene)
+    showObjById("btn_psn_profile", isSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "", this.scene)
   }
 
   function fillAdditionalName(name, link) {
@@ -408,9 +417,6 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
   }
 
   function fillClanInfo(playerData) {
-    if (!hasFeature("Clans"))
-      return
-
     let clanTagObj = this.scene.findObject("clanTag")
     if (clanTagObj) {
       let text = this.isMyPage ? getMyClanTag() : checkClanTagForDirtyWords(playerData.clanTag)
@@ -465,8 +471,6 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    let hasFeatureFriends = hasFeature("Friends")
-
     let contact = getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
     let canBan = isMe ? false : (myself_can_devoice() || myself_can_ban())
@@ -475,7 +479,7 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
 
     let isPS4Player = isPlayerFromPS4(this.player.name)
     let isXBoxOnePlayer = isXBoxPlayerName(this.player.name)
-    let canBlock = !isPlatformXbox || !isXBoxOnePlayer
+    let canBlock = !isXbox || !isXBoxOnePlayer
     let canInteractCC = canInteractCrossConsole(this.player.name)
 
     let sheet = this.getCurSheet()
@@ -485,15 +489,15 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
 
     showObjectsByTable(this.scene, {
       wnd_paginator_place = showStatBar
-      btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
-      btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
-      btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
-      btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
+      btn_friendAdd = showProfBar && canInteractCC && !isMe && !isFriend && !isBlock
+      btn_friendRemove = showProfBar && isFriend && (contact?.isInFriendlist() ?? false)
+      btn_blacklistAdd = showProfBar && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
+      btn_blacklistRemove = showProfBar && isBlock && canBlock && !isPS4Player
       btn_moderatorBan = showProfBar && is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
       btn_friendChangeNick = hasFeature("CustomNicks") && showProfBar && !isMe
       btn_achievements_url = isVisibleAchievementsUrlBtn
-      btn_leaderboard = sheet == "Records" && hasFeature("Leaderboards")
+      btn_leaderboard = sheet == "Records"
     })
 
     if (isVisibleAchievementsUrlBtn)
@@ -695,12 +699,14 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
   }
 
   function changeFrameImage(image) {
-    let avatarFrame = showObjById("avatarFrame", image != "", this.scene)
-    if (avatarFrame == null || image == "")
+    let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(image ?? "")
+    let hasAvatarFrame = frameImagePath != null
+    let avatarFrameObj = showObjById("avatarFrame", hasAvatarFrame, this.scene)
+    if (!hasAvatarFrame || avatarFrameObj == null)
       return
 
-    avatarFrame["background-image"] = $"!ui/images/avatar_frames/{image}.avif"
-    avatarFrame.show(true)
+    avatarFrameObj["background-frames"] = framesCount
+    avatarFrameObj["background-image"] = frameImagePath
   }
 
   function changeAvatarImage(image) {
@@ -724,7 +730,10 @@ let UserCardHandler = class (BaseGuiHandlerWT) {
 
   function onShowcaseCustomFunc(_obj) {}
 
+  function onDestroy() {
+    defer(@() get_cur_gui_scene().discardUnusedPicture())
+  }
 }
 register_gui_handler("UserCardHandler", UserCardHandler)
 
-return { UserCardHandler }
+return freeze({ UserCardHandler })

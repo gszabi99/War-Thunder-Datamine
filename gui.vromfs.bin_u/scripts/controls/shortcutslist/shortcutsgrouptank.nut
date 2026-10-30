@@ -1,3 +1,7 @@
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/controls/controlsUtils.nut" import checkOptionValue
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AxisDirection, ConflictGroups
+from "%scripts/options/optionsExtNames.nut" import USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK
 from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_TANK, OPTION_AIM_ACCELERATION_DELAY_TANK, OPTION_MOUSE_Z_TANK_MULT
 from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
 from "crosshair" import can_add_tank_alt_crosshair
@@ -5,10 +9,6 @@ from "%scripts/dagui_library.nut" import *
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -106,6 +106,10 @@ return [
   }
   {
     id = "ID_TOGGLE_GM_ENGINE"
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_APU_AUTO"
     checkAssign = false
   }
 
@@ -329,7 +333,7 @@ return [
     id = "gm_target_camera"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXbox
+    condition = @() isSony || isXbox
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {

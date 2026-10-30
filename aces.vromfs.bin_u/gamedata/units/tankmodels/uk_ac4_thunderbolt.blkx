@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1858,7 +1864,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_17pdr_QF_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/76mm_17pdr_QF_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1920,7 +1926,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Vikkers_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1964,7 +1970,7 @@
   "weapon_presets": {
     "preset": {
       "name": "uk_ac4_thunderbolt_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_ac4_thunderbolt_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/uk_ac4_thunderbolt_default.blk"
     }
   },
   "VehiclePhys": {

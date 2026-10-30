@@ -1,15 +1,15 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/worldWar/inOperation/model/wwOperationLog.nut" import getWWLogsData, getWWLogArmyId, isWWPlayerWinner
+from "%scripts/worldWar/inOperation/model/wwBattlesState.nut" import isAutoBattle, isStillInOperation
 from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let time = require("%scripts/time.nut")
-let { getWWLogsData, getWWLogArmyId, isWWPlayerWinner } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
-let { isAutoBattle, isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 class WwOperationLogView {

@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/kitsuka.blk",
   "model": "kitsuka",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gyroSight": false,
   "type": "typeFighter",
@@ -12,17 +12,17 @@
   "engineFxMap2": 1,
   "engineFxMap3": 1,
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "900kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
@@ -858,15 +858,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -879,36 +883,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -944,15 +958,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -965,36 +983,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -1027,15 +1055,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -1078,7 +1110,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2348,15 +2382,15 @@
     "preset": [
       {
         "name": "kitsuka_default",
-        "blk": "gameData/FlightModels/weaponPresets/kitsuka_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/kitsuka_default.blk"
       },
       {
         "name": "kitsuka_500kg_bomb",
-        "blk": "gameData/FlightModels/weaponPresets/kitsuka_500kg_bomb.blk"
+        "blk": "gamedata/flightModels/weaponPresets/kitsuka_500kg_bomb.blk"
       },
       {
         "name": "kitsuka_800kg_bomb",
-        "blk": "gameData/FlightModels/weaponPresets/kitsuka_800kg_bomb.blk"
+        "blk": "gamedata/flightModels/weaponPresets/kitsuka_800kg_bomb.blk"
       }
     ]
   },
@@ -2406,7 +2440,7 @@
             "Weapon": [
               {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonType5.blk",
+                "blk": "gamedata/weapons/cannonType5.blk",
                 "emitter": "flare1",
                 "flash": "flare1",
                 "shell": "emtr_shellrejection1",
@@ -2419,7 +2453,7 @@
               },
               {
                 "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
+                "blk": "gamedata/weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
                 "emitter": "rocket_engine_1",
                 "bullets": 1,
                 "external": true,
@@ -2430,7 +2464,7 @@
               },
               {
                 "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
+                "blk": "gamedata/weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
                 "emitter": "rocket_engine_2",
                 "bullets": 1,
                 "external": true,
@@ -2461,7 +2495,7 @@
             "Weapon": [
               {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonType5.blk",
+                "blk": "gamedata/weapons/cannonType5.blk",
                 "emitter": "flare1",
                 "flash": "flare1",
                 "shell": "emtr_shellrejection1",
@@ -2473,7 +2507,7 @@
               },
               {
                 "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonType5_external.blk",
+                "blk": "gamedata/weapons/cannonType5_external.blk",
                 "emitter": "flare2",
                 "flash": "flare2",
                 "shell": "emtr_shellrejection1",
@@ -2486,7 +2520,7 @@
               },
               {
                 "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
+                "blk": "gamedata/weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
                 "emitter": "rocket_engine_1",
                 "bullets": 1,
                 "external": true,
@@ -2497,7 +2531,7 @@
               },
               {
                 "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
+                "blk": "gamedata/weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
                 "emitter": "rocket_engine_2",
                 "bullets": 1,
                 "external": true,
@@ -2524,7 +2558,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/jp_navy_mod50mark2_500kg.blk",
+              "blk": "gamedata/weapons/bombguns/jp_navy_mod50mark2_500kg.blk",
               "emitter": "bomb_800",
               "dm": "bomb_dm",
               "bullets": 1,
@@ -2540,7 +2574,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/jp_navy_mod80mark1_800kg.blk",
+              "blk": "gamedata/weapons/bombguns/jp_navy_mod80mark1_800kg.blk",
               "emitter": "bomb_800",
               "dm": "bomb_dm",
               "bullets": 1,

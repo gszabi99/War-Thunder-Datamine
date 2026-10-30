@@ -1,6 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "base64" as base64
 import "samsung" as samsung
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/langUtils/language.nut" import getCurLangShortName
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/onlineShop/browserWndActions.nut" import open_browser_modal
+from "%scripts/utils/errorMsgBox.nut" import get_yu2_error_text
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isAuthorized
 from "string" import split_by_chars
@@ -15,13 +20,8 @@ from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import use_embedded_browser
 from "%scripts/dagui_library.nut" import *
 
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
-let { open_browser_modal } = require("%scripts/onlineShop/browserWndActions.nut")
-let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -214,10 +214,10 @@ function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = false,
 eventbus_subscribe("open_url", @(p) openUrl(p.baseUrl, p?.forceExternal ?? false,
   p?.isAlreadyAuthenticated ?? false, p?.biqQueryKey ?? ""))
 
-return {
+return freeze({
   openUrl
   openUrlByObj
   validateLink
   requestAuthenticatedUrl
   getUrlWithQrRedirect
-}
+})

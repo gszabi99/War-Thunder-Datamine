@@ -1,13 +1,13 @@
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox, setFocusToNextObj
 from "chat" import is_chat_message_empty
 from "%sqstd/string.nut" import clearBorderSymbols
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { select_editbox, setFocusToNextObj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 register_gui_handler("modifyUrlMissionWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

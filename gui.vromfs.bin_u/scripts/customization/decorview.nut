@@ -1,7 +1,7 @@
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitCountry
 from "%scripts/dagui_library.nut" import *
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 function getDecorLockStatusText(decorator, unit) {
   if (!decorator || decorator.canUse(unit))
@@ -61,7 +61,7 @@ function getDecorButtonView(decorator, unit, params = null) {
   }
 }
 
-return {
+return freeze({
   getDecorLockStatusText
   getDecorButtonView
-}
+})

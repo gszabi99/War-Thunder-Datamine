@@ -131,7 +131,7 @@ function scanZoneElevationComponent(color) {
   let watch = [ScanZoneWatched, IsScanZoneElevationVisible]
   return function() {
     if (!IsScanZoneElevationVisible.get())
-      return { watch = [IsScanZoneElevationVisible] }
+      return { watch = IsScanZoneElevationVisible }
 
     let { x2, x3, y2, y3 } = ScanZoneWatched.get()
     let _x0 = (x2 + x3) * 0.5
@@ -202,7 +202,6 @@ function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations) {
       rendObj = ROBJ_VECTOR_CANVAS
       color
       lineWidth
-      fillcolor = color
       size
       commands
     })
@@ -426,9 +425,7 @@ function azimuthMarkStrike(styleColor) {
 
   return {
     pos = [sw(50) - 0.5 * width, sh(17)]
-    children = [
-      createAzimuthMarkStrikeComponent([width, hdpx(30)], totalWidth, styleColor)
-    ]
+    children = createAzimuthMarkStrikeComponent([width, hdpx(30)], totalWidth, styleColor)
   }
 }
 
@@ -467,10 +464,10 @@ function mkRadar(isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255
   }
 }
 
-return {
+return freeze({
   mkRadar
   mode = getRadarModeText
   maxLabelWidth
   maxLabelHeight
   maxMeasuresCompWidth
-}
+})

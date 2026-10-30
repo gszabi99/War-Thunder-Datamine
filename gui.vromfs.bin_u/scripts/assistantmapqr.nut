@@ -1,12 +1,12 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/user/wtAssistantDeeplink.nut" import openWTAssistantDeeplinkQr
+from "%scripts/user/features.nut" import hasFeature
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "dagor.localize" import loc
 from "dagor.workcycle" import setInterval, clearTimer
 from "assistantMap" import isAssistantMapActive, isAssistantMapAvailable, startAssistantMapSession, getAssistantMapSessionInfo, stopAssistantMapSession
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openWTAssistantDeeplinkQr } = require("%scripts/user/wtAssistantDeeplink.nut")
-let { hasFeature } = require("%scripts/user/features.nut")
 
 const ASSISTANT_MAP_QR_SESSION_POLL_SEC = 1.0
 
@@ -76,8 +76,8 @@ isLoggedIn.subscribe(function(v) {
   }
 })
 
-return {
+return freeze({
   guiStartAssistantMapQrWindow
   isAssistantMapEnabled
   isAssistantMapAvailable
-}
+})

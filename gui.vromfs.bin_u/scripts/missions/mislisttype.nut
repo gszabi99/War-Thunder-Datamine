@@ -1,3 +1,12 @@
+from "%scripts/squads/squadState.nut" import isNotAloneOnline
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/missions/missionsUtilsModule.nut" import isMissionComplete, getSessionLobbyMissionName
+from "%scripts/missions/missionsText.nut" import getCombineLocNameMission
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getMissionUrl
+from "%scripts/unit/unitParams.nut" import findUnitNoCase
+from "%scripts/missions/missionsStates.nut" import is_user_mission
 from "%sqStdLibs/helpers/u.nut" import isTable
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
@@ -8,20 +17,15 @@ from "%sqstd/string.nut" import capitalize
 from "%scripts/dagui_natives.nut" import toggle_fav_mission, is_mission_favorite, has_entitlement, get_last_played, get_mission_progress, scan_user_missions
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils/nativeRequests.nut" import mkNativeResultReceiver
 from "app" import is_dev_version
 from "dagor.workcycle" import defer
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { isNotAloneOnline } = require("%scripts/squads/squadState.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isMissionComplete, getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
-let { isInSessionRoom, getMissionUrl } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
-let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
+
+const USER_MISSIONS_SCANNED_EVENT = "userMissionsScanned"
+let onUserMissionsScanned = mkNativeResultReceiver(USER_MISSIONS_SCANNED_EVENT)
 
 enum mislistTabsOrder {
   BASE
@@ -42,7 +46,7 @@ function getMissionNameTextDefault(mission) {
 
 function sortMissionsByName(missions) {
   let sortData = missions.map(@(m) { locName = m.getNameText(), mission = m })
-  sortData.sort(@(a, b) a.locName <=> b.locName)
+  sortData.sortby(@(a) a.locName)
   return sortData.map(@(d) d.mission)
 }
 
@@ -265,7 +269,7 @@ let g_mislist_type = {
     infoLinkTextLocId = ""
     infoLinkTooltipLocId = ""
     getInfoLinkData = function() {
-      if (isPlatformSony || isPlatformXbox)
+      if (isSony || isXbox)
         return null
 
       let infoLink = this.getInfoLink()
@@ -315,11 +319,11 @@ enumsAddTypes(g_mislist_type, {
     }
 
     requestMissionsList = function(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
-      let fn = function() {
+      let fn = function(_) {
         let misList = getMissionsList(isShowCampaigns, this, customChapterId, customChapters)
         defer(@() callback(misList))
       }
-      scan_user_missions(this, fn.bindenv(this))
+      onUserMissionsScanned(scan_user_missions(USER_MISSIONS_SCANNED_EVENT), fn.bindenv(this))
     }
     misBlkCheckFunc = is_user_mission
   }
@@ -404,11 +408,7 @@ enumsAddTypes(g_mislist_type, {
   }
 }, null, "id")
 
-g_mislist_type.types.sort(function(a, b) {
-  if (a.tabsOrder != b.tabsOrder)
-    return a.tabsOrder < b.tabsOrder ? -1 : 1
-  return 0
-})
+g_mislist_type.types.sortby(@(a) a.tabsOrder)
 
 function getMislistTypeByName(typeName) {
   let res = g_mislist_type?[typeName]

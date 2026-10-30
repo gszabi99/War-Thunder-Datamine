@@ -184,7 +184,7 @@ enum WW_MAP_CONSPLE_SHORTCUTS {
   TRANSPORT_UNLOAD = "R3"
 }
 
-return {
+return freeze({
   WW_SKIP_BATTLE_WARNINGS_SAVE_ID
   WW_ARMY_ACTION_STATUS
   WW_ARMY_RELATION_ID
@@ -205,4 +205,4 @@ return {
   WW_LOG_CATEGORIES
   WW_LOG_ICONS
   mapObjectSelect
-}
+})

@@ -16,22 +16,6 @@ def binded_camera_target_init(evt : Event;
   query(camera__target) <| $ [es] (var bindedCamera : EntityId&)
     bindedCamera = eid
 
-
-
-def private to_cam_coefs(coefs : float3) : float3
-  return coefs
-
-def private to_cam_coefs(coefs : float2) : float3
-  return float3(coefs.x, coefs.y, 0.5f)
-
-def private get_segphys_smooth_cam_coefs(phys : HumanPhys) : float3
-  static_if typeinfo(builtin_function_exists @@ < (arg0 : HumanPhys const implicit) : float3 > HumanPhys::human_phys_get_segphys_smooth_cam_coefs)
-    return to_cam_coefs(human_phys_get_segphys_smooth_cam_coefs(phys))
-  static_elif typeinfo(builtin_function_exists @@ < (arg0 : HumanPhys const implicit) : float2 > HumanPhys::human_phys_get_segphys_smooth_cam_coefs)
-    return to_cam_coefs(human_phys_get_segphys_smooth_cam_coefs(phys))
-  else
-    return float3(0.f, -1.f, 0.5f)
-
 [es(tag=render, before=cockpit_camera_offseter, after=after_net_phys_sync)]
 def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
                          camera__active : bool;
@@ -64,7 +48,7 @@ def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
     assume prevSt = phys.previousState
 
     human_cam__fpvActive = !human_phys_state_get_isAttached(curSt) && curSt.standState != HUStandState.ESS_DOWNED && !human_ladder__attached && !isInVehicle && !bipod__enabled
-    let smoothSegPhysCoefs = get_segphys_smooth_cam_coefs(phys)
+    let smoothSegPhysCoefs = human_phys_get_segphys_smooth_cam_coefs(phys)
     let isSegPhysCamera = human_cam__fpvActive && smoothSegPhysCoefs.x > 0.f
     let wishOffsetMult = human_cam__fpvActive ? (!isSegPhysCamera ? 1.0 : smoothSegPhysCoefs.z) : 0.0
     let reachVel = bipod__enabled ? 5.0 : (isSegPhysCamera && smoothSegPhysCoefs.y > 0.f ? smoothSegPhysCoefs.y : 2.0)
@@ -125,6 +109,29 @@ def human_fpv_cam_pos(info : UpdateStageInfoAct;
     let wposRel = geomtree_getNodeWposRel(*animchar.nodeTree, human_cam__camNodeId)
     let wofs = geomtree_getWtmOfs(*animchar.nodeTree)
     camera__look_at = lerp(DPoint3(wposRel) + DPoint3(wofs), camera__look_at, human_cam__offsetMult)
+
+[es(tag=gameClient, after=(shooter_cam_update_tm_es, shooter_cam_rotate_es), before=after_camera_sync, REQUIRE=watchedByPlr, REQUIRE_NOT=deadEntity)]
+def human_cam_apply_reye_rotation(info : UpdateStageInfoAct;
+                                  isTpsView : bool;
+                                  animchar : AnimcharBaseComponent;
+                                  human_cam__camNodeId : int;
+                                  bindedCamera : EntityId)
+  if isTpsView || human_cam__camNodeId < 0
+    return
+  var reyeTm : float3x4
+  geomtree_getNodeTmScalar(*animchar.nodeTree, human_cam__camNodeId, reyeTm)
+  
+  
+  let reyeFwd = reyeTm[1]
+  let reyeUp = reyeTm[0]
+  let camLocalFwd = float3(reyeFwd.z, reyeFwd.x, reyeFwd.y)
+  let camLocalUp = float3(reyeUp.z, reyeUp.x, reyeUp.y)
+  query(bindedCamera) <| $ [es] (var transform aka camera_transform : float3x4&)
+    let fwd = rotate(camera_transform, camLocalFwd)
+    let up = rotate(camera_transform, camLocalUp)
+    camera_transform[0] = normalize(cross(up, fwd))
+    camera_transform[1] = normalize(cross(fwd, camera_transform[0]))
+    camera_transform[2] = normalize(fwd)
 
 
 [es(tag=render, after=camera_set_sync, before=before_camera_sync, REQUIRE=(watchedHero, deadEntity))]

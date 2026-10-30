@@ -73,8 +73,8 @@ class Component : Canvas
     let lockStateOk = aamLockState == GuidanceLockState.RESULT_TRACKING || aamLockState == GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH
     let guidanceTypeOk = guidanceType == GuidanceType.TYPE_OPTICAL || guidanceType == GuidanceType.TYPE_SARH || guidanceType == GuidanceType.TYPE_ARH
     if lockStateOk && guidanceTypeOk
-      hasLockedTarget = get_aam_tracker_visible()
-      lockedTargetAbsPos = hasLockedTarget ? get_screen_aam_tracker_pos() : trackedTargetAbsPos
+      hasLockedTarget = get_hmd_aam_tracker_visible()
+      lockedTargetAbsPos = hasLockedTarget ? get_hmd_aam_tracker_pos() : trackedTargetAbsPos
 
     var secondaryWeapon : Weapon? = null
     get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)

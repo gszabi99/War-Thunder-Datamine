@@ -1,4 +1,7 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%sqstd/platform.nut" import isSony, isXbox
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%globalScripts/systemConfig.nut" import setSystemConfigOption
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
@@ -7,17 +10,13 @@ from "language" import getLocalLanguage
 from "string" import split_by_chars
 from "console" import register_command
 from "scriptRespondent" import registerRespondent
-from "modules" import reset_static_memos
 from "%scripts/dagui_natives.nut" import get_language, set_language, get_localization_blk_copy
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%sqstd/frp.nut" import WatchedImmediate
 from "types" import String
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let langWithCommaDelimiters = ["fr", "it", "de", "ru", "pl", "cz", "tr", "pt", "uk", "hu", "be", "ro"]
@@ -48,7 +47,7 @@ function getEmptyLangInfo() {
   let langInfo = {
     id = "empty"
     title = "empty"
-    icon = ""
+    icon = null
     chatId = ""
     isMainChatId = true
     hasUnitSpeech = false
@@ -56,7 +55,7 @@ function getEmptyLangInfo() {
   return langInfo
 }
 
-let needCheckLangPack = Watched(false)
+let needCheckLangPack = mkHardPersistWatched("langUtils.language")("needCheckLangPack", false)
 let langsByChatId = {}
 let langsListForInventory = {}
 local currentLanguage = null
@@ -80,7 +79,7 @@ let isChineseHarmonized = @() getLanguageName() == "HChinese"
 
 let isChineseVersion = @() chineseLangs.contains(currentLanguage)
 
-let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXbox && !isChineseHarmonized()
+let canSwitchGameLocalization = @() !isSony && !isXbox && !isChineseHarmonized()
 
 function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
@@ -89,7 +88,7 @@ function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDe
   let langInfo = getEmptyLangInfo()
   langInfo.id = id
   langInfo.title = "".concat(isDev ? "[DEV] " : "", loc($"language/{id}"))
-  langInfo.icon = icon ?? ""
+  langInfo.icon = icon
   langInfo.chatId = chatId ?? "en"
   langInfo.isMainChatId = true
   langInfo.hasUnitSpeech = !!hasUnitSpeech
@@ -185,18 +184,13 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
 
   handlersManager.shouldResetFontsCache = true
   setSystemConfigOption("language", langId)
-  set_language(langId)
-  reset_static_memos()
+  set_language(langId, reloadScene || suggestPkgDownload)
   saveLanguage(langId)
 
   if (suggestPkgDownload)
     needCheckLangPack.set(true)
 
-  let handler = handlersManager.getActiveBaseHandler()
-  if (reloadScene && handler)
-    handler.fullReloadScene()
-  else
-    handlersManager.markfullReloadOnSwitchScene()
+  handlersManager.reloadSceneOnLangOrScreenChange(reloadScene)
 
   broadcastEvent(GAME_LOCALIZATION_CHANGED)
 }

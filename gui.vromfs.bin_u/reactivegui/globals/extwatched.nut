@@ -28,7 +28,7 @@ eventbus_subscribe("extWatched.update",
     foreach (name, value in config) {
       let data = sharedData?[name]
       if (data?.watch == null)
-        return
+        continue
       data.watch.set(value)
     }
   })

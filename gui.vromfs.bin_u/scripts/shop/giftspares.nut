@@ -1,8 +1,9 @@
+from "%scripts/items/trophyMultiAward.nut" import isPrizeMultiAward
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "blkGetters" import get_wpcost_blk
 from "%scripts/dagui_library.nut" import *
 
-let { TrophyMultiAward, isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { TrophyMultiAward } = require("%scripts/items/trophyMultiAward.nut")
 
 function getGiftSparesCount(unit) {
   let unitBlk = get_wpcost_blk()?[unit.name]
@@ -32,7 +33,7 @@ function getGiftSparesCost(unit) {
   return get_wpcost_blk()?[unitName].spare.costGold ?? 0
 }
 
-return {
+return freeze({
   getGiftSparesCount
   getGiftSparesCost
-}
+})

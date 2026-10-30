@@ -1,9 +1,8 @@
+from "%scripts/g_listener_priority.nut" import UNIT_CREW_CACHE_UPDATE
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/crew/crew.nut" import getCrewUnit
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
-
-let { UNIT_CREW_CACHE_UPDATE } = require("%scripts/g_listener_priority.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 
 
@@ -48,9 +47,9 @@ addListenersWithoutEnv({
   ModificationChanged = @(_p)resetCache(cacheCrewId, unit)
 }, UNIT_CREW_CACHE_UPDATE)
 
-return {
+return freeze({
   cacheCrewData
   getCachedCrewData
   getCachedCrewId
   getCachedCrewUnit
-}
+})

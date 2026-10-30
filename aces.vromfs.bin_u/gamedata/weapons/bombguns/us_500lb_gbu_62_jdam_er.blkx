@@ -1,10 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 20,
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "us_500lb_gbu_62_jdam_er_na",
   "bombCart": [
     "missile_stand_heavy",
@@ -149,14 +148,14 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
-      "positionError": 5.0,
+      "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "timeToGain0": [
           2.5,

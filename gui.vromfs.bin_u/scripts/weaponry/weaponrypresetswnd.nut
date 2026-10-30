@@ -1,6 +1,37 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "%sqstd/ecs.nut" as ecs
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/weaponry/weaponryPresetsParams.nut" import sortPresetsList, setFavoritePresets, getWeaponryPresetView, getWeaponryByPresetInfo, getCustomWeaponryPresetView
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, getWeaponBlockedByGameModeText
+from "%scripts/weaponry/itemInfo.nut" import getItemAmount, getItemCost, getItemStatusTbl
+from "%scripts/weaponry/weaponryVisual.nut" import getWeaponItemViewParams
+from "%scripts/weaponry/weaponryTooltipPkg.nut" import getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
+from "%scripts/weaponry/weaponsPurchase.nut" import weaponsPurchase, canBuyItem
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID, openPopupFilter
+from "%scripts/weaponry/weaponryPresets.nut" import MAX_PRESETS_NUM, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX, CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
+from "%scripts/weaponry/editWeaponryPreset.nut" import openEditWeaponryPreset, openEditPresetName
+from "%scripts/weaponry/modificationInfo.nut" import isWeaponModsPurchasedOrAvailableForFree
+from "%scripts/weaponry/weaponryPresetsWndState.nut" import isPresetsWndReserved
+from "%scripts/weaponry/checkInstallMods.nut" import promptReqModInstall, needReqModInstall
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/tasker.nut" import addTask
+from "%scripts/hangarModelLoadManager.nut" import loadModel
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut" import getChildInContainers
+from "%scripts/unit/unitChecks.nut" import checkSecondaryWeaponModsRecount
+from "%scripts/hangar/backgroundModelHint.nut" import initBackgroundModelHint, updateBackgroundModelHint
+from "%scripts/debugTools/dbgShop.nut" import getShopDevMode
+from "%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut" import openMissileTrajectoryWnd
 from "dasevents" import EventUpdateDemonstratedShellVisible
 from "hangar" import secondary_weapon_camera_mode
 from "unitCustomization" import set_weapon_visual
@@ -14,38 +45,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT, INFO_DETAIL
 from "types" import String
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { sortPresetsList, setFavoritePresets, getWeaponryPresetView, getWeaponryByPresetInfo, getCustomWeaponryPresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getLastWeapon, setLastWeapon, getWeaponBlockedByGameModeText } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
-let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
-let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { appendOnce } = u
-let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX, CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
-let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
-let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
-let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getChildInContainers } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint } = require("%scripts/hangar/backgroundModelHint.nut")
-let { getShopDevMode } = require("%scripts/debugTools/dbgShop.nut")
-let { openMissileTrajectoryWnd } = require("%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut")
+let { CHAPTER_ORDER } = require("%scripts/weaponry/weaponryPresets.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 const DELAY_BEFORE_GET_PRESET_DESCRIPTION = 0.5
@@ -244,7 +245,7 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     local hasDifferentCost = false
     local prevCostText = ""
     foreach (resData in res) {
-      if (resData?.weaponryItem.isBlockedByGameModeRestrictions ?? false)
+      if (resData?.weaponryItem.isBlockedByRestrictions ?? false)
         continue
       let currentCostText = resData?.weaponryItem.spawnScoreCost
       if (currentCostText == null)
@@ -257,7 +258,7 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     }
     if (!hasDifferentCost)
       foreach (resData in res)
-        if (resData?.weaponryItem && !resData.weaponryItem.isBlockedByGameModeRestrictions)
+        if (resData?.weaponryItem && !resData.weaponryItem.isBlockedByRestrictions)
           resData.weaponryItem.nameTextWithPrice = resData.weaponryItem.nameText
 
     return res
@@ -766,7 +767,7 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
         isDisable = inst.isDisable
         value = !inst.isDisable && this.filterStates.findindex(@(v) v == key) != null
       })
-    view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+    view.checkbox.sortby(@(a) a.idx)
     return [view]
   }
 

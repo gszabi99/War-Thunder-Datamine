@@ -1,8 +1,8 @@
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/daguiUtil.nut" import toPixels
 from "math" import abs
 from "%scripts/dagui_library.nut" import *
 
-let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let focusFrame = require("%scripts/sqDagui/focusFrame/focusFrame.nut")
 
 let sizeProps = [

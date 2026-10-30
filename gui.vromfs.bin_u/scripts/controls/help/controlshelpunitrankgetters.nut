@@ -1,9 +1,9 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
 from "%scripts/dagui_library.nut" import *
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 function getMatchedUnitRankForHelp(unitMatchFn) {
   let curUnit = getPlayerCurUnit()
@@ -22,6 +22,6 @@ function getMatchedUnitRankForHelp(unitMatchFn) {
     .reduce(@(maxRank, u) max(maxRank, u.rank), 0)
 }
 
-return {
+return freeze({
   getTankRankForHelp = @() getMatchedUnitRankForHelp(@(unit) unit.isTank())
-}
+})

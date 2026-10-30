@@ -9,11 +9,11 @@ let healthStateBlockGap = evenPx(4)
 const hpBarHeight = hdpxi(6)
 
 
-return {
+return freeze({
   heroStateWidth
   actionBarItemHeight
   actionBarItemWidth
   weaponBlockGap
   healthStateBlockGap
   hpBarHeight
-}
+})

@@ -1,10 +1,9 @@
+from "%scripts/user/nameMapping.nut" import updateNameMapping
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/utils_sa.nut" import get_mplayer_color
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
 from "mission" import get_mplayers_list, GET_MPLAYERS_LIST
 from "%scripts/dagui_library.nut" import *
-
-let { updateNameMapping } = require("%scripts/user/nameMapping.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { get_mplayer_color } = require("%scripts/utils_sa.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 
 function getMplayersList(team = GET_MPLAYERS_LIST) {
   local list = get_mplayers_list(team, true)
@@ -39,7 +38,7 @@ function buildMplayerName(player, colored = true, withClanTag = true, withUnit =
   return colored ? colorize(get_mplayer_color(player), name) : name
 }
 
-return {
+return freeze({
   getMplayersList
   buildMplayerName
-}
+})

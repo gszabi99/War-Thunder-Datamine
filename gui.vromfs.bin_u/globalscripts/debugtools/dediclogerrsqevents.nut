@@ -1,4 +1,4 @@
-let { registerBroadcastEvent } = require("%sqstd/ecs.nut")
+from "%sqstd/ecs.nut" import registerBroadcastEvent
 
 let broadcastEvents = {}
 foreach (name, payload in {

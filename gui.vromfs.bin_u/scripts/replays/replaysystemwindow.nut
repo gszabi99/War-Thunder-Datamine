@@ -1,3 +1,6 @@
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "math" import floor
 from "string" import format
 from "replays" import restartReplay, getReplayTotalTime, getCameraFov, setCameraFov, getFreeCameraInertia, setFreeCameraInertia, getFreeCameraZoomSpeed
@@ -8,14 +11,15 @@ from "replays" import restartReplay, getReplayTotalTime, getCameraFov, setCamera
   , trackEditorGetCurKeyRoll, getPlayKeysPosition, setPlayKeysPosition, getPlayKeysRotation, setPlayKeysRotation, getPlayKeysRoll, setPlayKeysRoll
   , getPlayKeysFov, setPlayKeysFov
 from "%scripts/dagui_library.nut" import *
-from "app" import pauseGame
+from "app" import pauseGame, isGamePaused, is_app_loaded
+from "modules" import on_module_unload
 
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
+
+local isWindowPause = false
+on_module_unload(@(is_closing) (is_closing && isWindowPause && is_app_loaded()) ? pauseGame(false) : null)
 
 let near_dof_ids = ["neardof_distance_slider", "neardof_fade_distance_slider", "neardof_blur_slider", "soft_render_checkbox"]
 let far_dof_ids = ["fardof_distance_slider", "fardof_fade_distance_slider", "fardof_blur_slider"]
@@ -289,9 +293,9 @@ class ReplaySystem (BaseGuiHandlerWT) {
       sliderData.initFunction(slider)
       this.guiScene.applyPendingChanges(false)
       this.updateSliderTextValue(sliderId, sliderData.value)
-
-      pauseGame(true)
     }
+    isWindowPause = !isGamePaused()
+    pauseGame(true)
 
     foreach (checkBoxId, checkBoxData in checkboxes) {
       let checkBox = this.scene.findObject(checkBoxId)
@@ -371,6 +375,7 @@ return {
     local handler = handlersManager.findHandlerClassInScene(ReplaySystem)
     if (handler) {
       pauseGame(false)
+      isWindowPause = false
       handler.switchControlsAllowMask(CtrlsInGui.CTRL_ALLOW_FULL)
       handlersManager.destroyHandler(handler)
     }

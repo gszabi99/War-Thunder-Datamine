@@ -1,27 +1,32 @@
+import "%scripts/utils/systemMsg.nut" as systemMsg
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/squads/squadState.nut" import getDiffCrossPlayConditionMembers, getInvitedPlayers, getIsMyCrewsReady, getMembers, getOnlineMembers, getOfflineMembers, getOnlineMembersCount, getWwOperationId, isInSquad
+  , isMeReady, isMySquadMemberById, isNotAloneOnline, isSquadLeader, isSquadMember, readyCheck
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import isMemberInMySquadById
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getRoomMembers, isMemberSpectator
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isRoomMemberReady
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/chat/chatStates.nut" import getXboxChatEnableStatus
+from "%scripts/battleRating.nut" import recentBR, getBRDataByMrankDiff
+from "%scripts/user/userUtils.nut" import getMyStateData
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/gdk/permissions.nut" import CommunicationState
+from "%scripts/crossModuleEvents.nut" import SQUAD_LEAVE_REQUESTED, SQUAD_REVOKE_ALL_INVITES_REQUESTED, SQUAD_SET_READY_REQUESTED, SQUAD_SET_CREWS_READY_REQUESTED, SQUAD_MY_MEMBER_DATA_UPDATE_REQUESTED
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setSessionLobbyCountryData
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "gameplayBinding" import isInFlight
 from "string" import format
 from "scriptRespondent" import registerRespondent
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import memberStatus
 
-let { getDiffCrossPlayConditionMembers, getIsMyCrewsReady, getMembers, getOfflineMembers, getOnlineMembersCount, getWwOperationId, isInSquad, isMeReady, isMySquadMemberById, isNotAloneOnline, isSquadLeader, isSquadMember, readyCheck } = require("%scripts/squads/squadState.nut")
-let { isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let systemMsg = require("%scripts/utils/systemMsg.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getXboxChatEnableStatus } = require("%scripts/chat/chatStates.nut")
-let { recentBR, getBRDataByMrankDiff } = require("%scripts/battleRating.nut")
-let { getMyStateData } = require("%scripts/user/userUtils.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { SQUAD_LEAVE_REQUESTED, SQUAD_REVOKE_ALL_INVITES_REQUESTED, SQUAD_SET_READY_REQUESTED, SQUAD_SET_CREWS_READY_REQUESTED, SQUAD_MY_MEMBER_DATA_UPDATE_REQUESTED } = require("%scripts/crossModuleEvents.nut")
-let { setSessionLobbyCountryData } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -98,7 +103,7 @@ function checkCrossPlayCondition() {
   let locId = isLeaderCrossplayOn ? "squad/sameCrossPlayConditionAsLeader/enabled" : "squad/otherPlatformsExist"
   let membersNamesArray = diffMembers.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
   showInfoMsgBox(
-    loc(locId,
+    locByVendor(locId,
       { names = ",".join(membersNamesArray, true) }
     ), "members_not_all_crossplay_condition")
   return false
@@ -170,7 +175,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
       ["ok", onOkFunc],
       ["no", onCancelFunc]
     ],
-    "ok", { cancel_fn = function() {} })
+    "ok", { cancel_fn = onCancelFunc })
 }
 
 function checkCanChangeGameModeAndDo(func) {
@@ -193,12 +198,11 @@ function canJoinFlightMsgBox(options = null, okFunc = null, cancelFunc = null) {
   if (!isInSquad())
     return true
 
-  local msgId = (options?.msgId ?? "squad/cant_start_new_flight")
   if ((options?.allowWhenAlone ?? true) && !isNotAloneOnline())
     return true
 
   if (!(options?.isLeaderCanJoin ?? false) || !isSquadLeader()) {
-    showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
+    showLeaveSquadMsgBox((options?.msgId ?? "squad/cant_start_new_flight"), okFunc, cancelFunc)
     return false
   }
 
@@ -212,22 +216,58 @@ function canJoinFlightMsgBox(options = null, okFunc = null, cancelFunc = null) {
     return false
   }
 
-  if (readyCheck(true)) {
-    if (!checkCrossPlayCondition())
-      return false
-
-    if ((options?.showOfflineSquadMembersPopup ?? false))
-      checkAndShowHasOfflinePlayersPopup()
-    return true
-  }
-
-  if (readyCheck(false)) {
-    showRevokeNonAcceptInvitesMsgBox(okFunc, cancelFunc)
+  if ((options?.checkSquadReady ?? true) && !readyCheck(true)) {
+    if (readyCheck(false))
+      showRevokeNonAcceptInvitesMsgBox(okFunc, cancelFunc)
+    else
+      showLeaveSquadMsgBox("squad/not_all_ready", okFunc, cancelFunc)
     return false
   }
 
-  msgId = "squad/not_all_ready"
-  showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
+  if (!checkCrossPlayCondition())
+    return false
+
+  if ((options?.showOfflineSquadMembersPopup ?? false))
+    checkAndShowHasOfflinePlayersPopup()
+  return true
+}
+
+let hasSquadNonAcceptedInvites = @() isSquadLeader() && getInvitedPlayers().len() > 0
+
+let needCheckSquadInRoom = @() isSquadLeader() && isNotAloneOnline()
+
+let findSquadMemberInRoom = @(roomMembers, memberData)
+  roomMembers.findvalue(@(m) m.userId.tostring() == memberData.uid)
+
+function isAllSquadInRoom() {
+  if (!needCheckSquadInRoom())
+    return true
+
+  let roomMembers = getRoomMembers()
+  foreach (memberData in getOnlineMembers())
+    if (findSquadMemberInRoom(roomMembers, memberData) == null)
+      return false
+  return true
+}
+
+function isSquadInRoomAndReady() {
+  if (!needCheckSquadInRoom())
+    return true
+
+  let roomMembers = getRoomMembers()
+  foreach (memberData in getOnlineMembers()) {
+    let roomMember = findSquadMemberInRoom(roomMembers, memberData)
+    if (roomMember == null || (!isMemberSpectator(roomMember) && !isRoomMemberReady(roomMember)))
+      return false
+  }
+  return true
+}
+
+function checkSquadInRoomAndReady() {
+  if (isSquadInRoomAndReady())
+    return true
+
+  showInfoMsgBox(loc("squad/not_all_ready"))
   return false
 }
 
@@ -328,7 +368,7 @@ function isEventAllowedForAllSquadMembers(eventEconomicName, isSilent = false) {
 }
 
 function initSquadWidgetHandler(nestObj) {
-  if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
+  if (!checkObj(nestObj))
     return null
   return handlersManager.loadCustomHandler(get_gui_handler("SquadWidgetCustomHandler"), { scene = nestObj })
 }
@@ -345,6 +385,7 @@ registerRespondent("is_in_squad", function is_in_squad(forChat = false) {
 addListenersWithoutEnv({
   CrewsOrderChanged = @(_p) updateMyCountryData(false)
   CountryChanged = @(_) updateMyCountryData()
+  UnitMrankSelectionChanged = @(_p) updateMyCountryData(false)
   function CrewChanged(p) {
     let { isInitSelectedCrews = false } = p
     if (!isInitSelectedCrews)
@@ -352,11 +393,15 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   checkSquadUnreadyAndDo
   isEventAllowedForAllSquadMembers
   canJoinByMySquad
   canJoinFlightMsgBox
+  checkSquadInRoomAndReady
+  isSquadInRoomAndReady
+  isAllSquadInRoom
+  hasSquadNonAcceptedInvites
   getMemberStatusLocId
   getMemberStatusLocTag
   canSquad
@@ -367,4 +412,4 @@ return {
   getSquadMembersAvailableUnitsCheckingData
   initSquadWidgetHandler
   checkCanChangeGameModeAndDo
-}
+})

@@ -1,4 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/options/optionsExtNames.nut" import USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST, USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE, USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO
+  , USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.math" import Point2
 from "math" import pow
@@ -7,8 +9,6 @@ from "%sqstd/string.nut" import floatToStringRounded
 from "guiOptions" import getMeasureUnitOptionType
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
-
-let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST, USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE, USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT } = require("%scripts/options/optionsExtNames.nut")
 
 let OptionsMeasureUnits = persist("OptionsMeasureUnits", @() {unitsCfg = []})
 
@@ -111,7 +111,7 @@ function isMetricSystem(unitNo) {
   return OptionsMeasureUnits.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 
-return {
+return freeze({
   init = init
   isInitialized = isInitialized
   getOption = getOption
@@ -119,4 +119,4 @@ return {
   getSelectedUnitsCfg = getSelectedUnitsCfg
   countMeasure = countMeasure
   isMetricSystem = isMetricSystem
-}
+})

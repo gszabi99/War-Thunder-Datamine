@@ -1,11 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 2,
-  "maxDeltaAngle": 0.14,
-  "shotFreq": 9.0,
-  "traceFreq": 4,
-  "bullets": -1,
-  "mass": 10.4,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,25 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 2,
+  "maxDeltaAngle": 0.14,
+  "shotFreq": 9.0,
+  "bullets": -1,
+  "mass": 10.4,
+  "overheat": {
+    "overheat": [
+      [
+        25.0,
+        0.0
+      ],
+      [
+        36.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.0095,
@@ -140,7 +152,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmYellow",
-        "trail": "thin"
+        "trail": "tinyTrail"
       },
       "collisions": {
         "default": {
@@ -1780,7 +1792,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         },
         "collisions": {
           "default": {
@@ -3433,7 +3445,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         },
         "collisions": {
           "default": {
@@ -3846,7 +3858,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         },
         "collisions": {
           "default": {
@@ -4259,7 +4271,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         },
         "collisions": {
           "default": {
@@ -4672,7 +4684,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmYellow",
-          "trail": "thin"
+          "trail": "tinyTrail"
         },
         "collisions": {
           "default": {
@@ -6616,24 +6628,6 @@
       }
     ]
   },
-  "gunSound": {
-    "pathStudio": "event/aircraft/weapon",
-    "outside": "vickers_mk1_gun_outside",
-    "cockpit": "vickers_mk1_gun_inside",
-    "ai": "vickers_mk1_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        25.0,
-        0.0
-      ],
-      [
-        36.0,
-        0.05
-      ]
-    ]
-  },
   "vikkersmk1_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -6648,5 +6642,11 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "pathStudio": "event/aircraft/weapon",
+    "outside": "vickers_mk1_gun_outside",
+    "cockpit": "vickers_mk1_gun_inside",
+    "ai": "vickers_mk1_gun_ai"
   }
 }

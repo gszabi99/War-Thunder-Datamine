@@ -1,18 +1,19 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/money.nut" import Cost
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getMyClanOperation, isMyClanInQueue
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import actionWithGlobalStatusRequest, getGlobalStatusData
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
+from "%scripts/clans/clanTextInfo.nut" import getMyClanType
+from "%scripts/clans/clanInfo.nut" import hasRightsToQueueWWar
+from "%scripts/worldWar/operations/model/wwGlobalStatusType.nut" import setStatusTypeLoadList
 from "%scripts/dagui_natives.nut" import clan_can_register_to_ww, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-let { getMyClanOperation, isMyClanInQueue } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { actionWithGlobalStatusRequest, getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getMyClanType } = require("%scripts/clans/clanTextInfo.nut")
-let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
-let { wwStatusType, setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 let WwQueue = class {
   map = null

@@ -1,8 +1,7 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/controlsVisual.nut" import getLocalizedShortcutName
+from "%scripts/controls/input/inputBase.nut" import InputBase
 from "%scripts/dagui_library.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
-let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
 let NullInput = class (InputBase) {
   showPlaceholder = false
@@ -32,4 +31,4 @@ let NullInput = class (InputBase) {
     }
   }
 }
-return {NullInput}
+return freeze({NullInput})

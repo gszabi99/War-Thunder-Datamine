@@ -1,7 +1,5 @@
 {
-  "isSpecEventSlot": "yes",
-  "height": "155@sf/@pf",
-  "padding": "@blockInterval, @blockInterval",
+  "isSpecEventOrder": "yes",
   "css-hier-invalidate": "yes",
   "tooltip": "",
   "on_hover": "onOrderRewardHover",
@@ -9,21 +7,29 @@
   "tdiv": {
     "position": "relative",
     "size": "pw, ph",
-    "padding": "1@blockInterval, @blockInterval",
+    "padding": "20@sf/@pf, 20@sf/@pf",
     "layeredIconContainer": {
       "id": "achivment_ico",
-      "size": "1.5@mIco, 1.5@mIco",
+      "size": "90@sf/@pf, 90@sf/@pf",
       "position": "relative"
     },
     "tdiv": {
       "position": "relative",
       "size": "pw, ph",
       "flow": "vertical",
-      "margin-left": "2@blockInterval",
+      "margin-left": "20@sf/@pf",
       "textareaNoTab": [
+        {
+          "id": "achivment_title",
+          "position": "relative",
+          "overlayTextColor": "unlockHeader",
+          "text": ""
+        },
         {
           "id": "status_text",
           "position": "relative",
+          "padding-bottom": "8@sf/@pf",
+          "smallFont": "yes",
           "text": ""
         },
         {
@@ -33,7 +39,9 @@
         }
       ],
       "tdiv": {
+        "position": "relative",
         "size": "pw, 10@sf/@pf",
+        "top": "-10@sf/@pf",
         "challengeDescriptionProgress": {
           "id": "progress_bar",
           "position": "relative",

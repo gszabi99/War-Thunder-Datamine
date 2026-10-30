@@ -1,3 +1,10 @@
+from "%scripts/unit/unitInfo.nut" import getUnitReqExp, getUnitExp, getUnitCountry, getPrevUnit
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitBought, isUnitGift
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitAvailableForGM
+from "%scripts/customization/skinUtils.nut" import approversUnitToPreviewLiveResource
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_unit_elite_status, is_default_aircraft, shop_unit_research_status, is_era_available, wp_get_repair_cost
@@ -5,14 +12,6 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
-
-let { getUnitReqExp, getUnitExp, getUnitCountry, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit, isUnitBought, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 function isUnitDefault(unit) {
   if (!("name" in unit))
@@ -162,7 +161,7 @@ function isClanUnitResearched(unit) {
   return isUnitResearched(unit) && !canResearchUnit(unit) && !unit.isBought()
 }
 
-return {
+return freeze({
   canBuyNotResearched
   isUnitEliteByStatus
   isUnitElite
@@ -185,4 +184,4 @@ return {
   isUnitRandomUnit
   isClanUnitResearched
   canShowUnitInfo
-}
+})

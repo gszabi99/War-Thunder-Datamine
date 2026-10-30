@@ -1,18 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "aimMaxDist": [
-    4000.0,
-    3000.0
-  ],
-  "maxDeltaAngle": 0.11,
-  "shotFreq": 9.1,
-  "alternativeShotFreq": 5.0,
-  "traceFreq": 4,
-  "bullets": 70,
-  "dragCx": 0.003,
-  "mass": 50.0,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -25,8 +11,31 @@
   "bEnablePause": false,
   "bulletsCluster": 1,
   "aimMinDist": 10.0,
+  "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.11,
+  "shotFreq": 9.1,
+  "alternativeShotFreq": 5.0,
+  "bullets": 70,
+  "dragCx": 0.003,
+  "mass": 50.0,
+  "shouldCollideWithRendinsts": true,
+  "overheat": {
+    "overheat": [
+      [
+        20.0,
+        0.0
+      ],
+      [
+        30.0,
+        0.09
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.4,
@@ -118,7 +127,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "thin"
+        "trail": "black"
       },
       "collisions": {
         "default": {
@@ -1031,7 +1040,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmDarkRed",
-          "trail": "noTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -1416,7 +1425,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "thin"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -2757,7 +2766,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmDarkRed",
-        "trail": "noTrail"
+        "trail": "black"
       },
       "collisions": {
         "default": {
@@ -3189,7 +3198,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmBrightRed",
-          "trail": "thin"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -3574,7 +3583,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "thin"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -4727,25 +4736,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "tanks/weapon_tanks/cannons",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_2A42_outside",
-    "cockpit": "cannon_2A42_inside",
-    "ai": "cannon_2A42_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        20.0,
-        0.0
-      ],
-      [
-        30.0,
-        0.09
-      ]
-    ]
-  },
   "2A42_new_gun": {
     "maxDeltaAngle": 0.14,
     "overheat": {
@@ -4760,5 +4750,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "tanks/weapon_tanks/cannons",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_2A42_outside",
+    "cockpit": "cannon_2A42_inside",
+    "ai": "cannon_2A42_ai"
   }
 }

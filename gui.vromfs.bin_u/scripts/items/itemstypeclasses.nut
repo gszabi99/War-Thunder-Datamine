@@ -1,7 +1,6 @@
+from "%scripts/items/itemsConsts.nut" import itemType
 from "%sqstd/math.nut" import number_of_set_bits
 from "%scripts/dagui_library.nut" import *
-
-let { itemType } = require("%scripts/items/itemsConsts.nut")
 
 const BASE_ITEM_TYPE_ICON = "#ui/gameuiskin#item_type_placeholder.svg"
 
@@ -40,11 +39,11 @@ function createItem(item_type, blk, inventoryBlk = null, slotData = null) {
 }
 
 
-return {
+return freeze({
   BASE_ITEM_TYPE_ICON
   registerBaseItemClass
   registerItemClass
   getItemClass
   isAddeditemTypeSmoke
   createItem
-}
+})

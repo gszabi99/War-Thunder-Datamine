@@ -6,6 +6,6 @@ enum MIS_PROGRESS {
   LOCKED              = 4
 }
 
-return {
+return freeze({
   MIS_PROGRESS
-}
+})

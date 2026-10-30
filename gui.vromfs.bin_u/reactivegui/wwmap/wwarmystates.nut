@@ -4,6 +4,7 @@ from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
 from "%rGui/wwMap/wwOperationConfiguration.nut" import getMapAspectRatio, convertToRelativeMapCoords, getMapSize
 from "%appGlobals/worldWar/wwSettings.nut" import getSettings, getSettingsArray
 from "%appGlobals/worldWar/wwMapHoverState.nut" import isMapHovered
+from "%rGui/wwMap/wwOperationStates.nut" import isPlayerSideStr
 from "math" import pow
 from "worldwar" import wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName, wwUpdateSelectedArmiesName
 from "eventbus" import subscribe
@@ -26,6 +27,14 @@ let newPartOfArmyPath = Watched(null)
 
 let armyNameForTooltip = keepref(Computed(@() (hoveredArmy.get() && isMapHovered.get()) ? hoveredArmy.get() : null))
 
+
+function dropStoppedArmiesPositions() {
+  let stopped = armiesData.get()
+    .filter(@(a) a.name in movingArmiesPositions.get() && a.pathTracker.status != "ES_MOVING_BY_PATH")
+  if (stopped.len() > 0)
+    movingArmiesPositions.mutate(@(t) stopped.each(@(a) t.$rawdelete(a.name)))
+}
+
 function updateArmiesState() {
   let wwArmiesNames = wwGetArmiesNames()
   if (!isEqual(wwArmiesNames, armiesList.get())) {
@@ -33,7 +42,7 @@ function updateArmiesState() {
       let ai = DataBlock()
       wwGetArmyInfo(v, ai)
       return ai
-    }))
+    }).sort(@(army1, army2) isPlayerSideStr(army1.owner.side) <=> isPlayerSideStr(army2.owner.side) || army2.specs.unitType <=> army1.specs.unitType))
 
     armiesList.set(wwArmiesNames)
   }
@@ -48,6 +57,7 @@ function updateArmiesState() {
       }
    })
   }
+  dropStoppedArmiesPositions()
 }
 
 function getArmyByPoint(point) {
@@ -89,6 +99,17 @@ function getArmyByName(armyName) {
   return armiesData.get().findvalue(@(armyData) armyData.name == armyName)
 }
 
+function mkArmyMapPosition(armyName) {
+  let army = Computed(@() armiesData.get().findvalue(@(armyData) armyData.name == armyName))
+  return Computed(function() {
+    let pos = movingArmiesPositions.get()?[armyName]
+    if (pos != null)
+      return pos
+    let armyInfo = army.get()
+    return armyInfo == null ? null : convertToRelativeMapCoords(armyInfo.pathTracker.pos)
+  })
+}
+
 let getArmyIconOverride = @(name) getSettingsArray("armyIconCustom").findvalue(@(v) v.name == name)
 
 function getArmyIcon(armyData) {
@@ -123,7 +144,7 @@ selectedArmy.subscribe(function(armyName) {
   sendToDagui("ww.selectArmy", { armyName = armyName ?? "" })
 })
 
-return {
+return freeze({
   selectedArmy
   hoveredArmy
   isShowArmiesIndex
@@ -137,8 +158,9 @@ return {
 
   getArmyByName
   getArmyIcon
+  mkArmyMapPosition
 
   movingArmiesPositions
 
   newPartOfArmyPath
-}
+})

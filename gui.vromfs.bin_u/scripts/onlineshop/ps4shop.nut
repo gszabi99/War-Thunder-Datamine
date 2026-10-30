@@ -2,15 +2,15 @@ import "DataBlock" as DataBlock
 import "statsd" as statsd
 import "sony.store" as psnStore
 import "sony.sys" as psnSystem
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/onlineShop/ingameConsoleStore.nut" import IngameConsoleStore
+from "%scripts/onlineShop/ps4ShopData.nut" import getShopData, getShopItem
+from "%scripts/user/countryUtils.nut" import isPlayerRecommendedEmailRegistration
+from "%scripts/user/pcStorePromo.nut" import showPcStorePromo
+from "%scripts/discounts/discounts.nut" import updateOnlineShopDiscounts
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
-let { getShopData, getShopItem } = require("%scripts/onlineShop/ps4ShopData.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
-let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
-let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
 register_gui_handler("Ps4Shop", class (IngameConsoleStore) {
   needWaitIcon = true

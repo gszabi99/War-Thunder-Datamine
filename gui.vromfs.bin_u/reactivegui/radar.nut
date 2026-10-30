@@ -33,67 +33,68 @@ let radarOffsets = Computed(function() {
   return [0, 0]
 })
 
-let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg")
-let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg")
-let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg")
+function radarCanvas(color_watched, ovr = {}, handle_clicks = false) {
+  let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg")
+  let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg")
+  let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg")
+  return function() {
+    let radarScriptDas = getDasScriptByPath("%rGui/radar.das")
+    let radarHandleClick = DasFunction(radarScriptDas, "handle_click")
+    let radarHandleDoubleClick = DasFunction(radarScriptDas, "handle_double_click")
+    let radarHandlePress = DasFunction(radarScriptDas, "handle_press")
+    let radarHandlePressEnd = DasFunction(radarScriptDas, "handle_press_end")
+    let radarHandleMouseWheel = DasFunction(radarScriptDas, "handle_mouse_wheel")
+    return {
+      watch = [color_watched, radarOffsets]
+      size = FLEX
+      pos = radarOffsets.get()
+      rendObj = ROBJ_DAS_CANVAS
+      script = radarScriptDas
+      drawFunc = "draw_radar_hud"
+      setupFunc = "setup_radar_data"
+      color = color_watched?.get()
+      font = Fonts.hud
+      fontSize = hudFontHgt
 
-let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
-  let radarScriptDas = getDasScriptByPath("%rGui/radar.das")
-  let radarHandleClick = DasFunction(radarScriptDas, "handle_click")
-  let radarHandleDoubleClick = DasFunction(radarScriptDas, "handle_double_click")
-  let radarHandlePress = DasFunction(radarScriptDas, "handle_press")
-  let radarHandlePressEnd = DasFunction(radarScriptDas, "handle_press_end")
-  let radarHandleMouseWheel = DasFunction(radarScriptDas, "handle_mouse_wheel")
-  return {
-    watch = [color_watched, radarOffsets]
-    size = FLEX
-    pos = radarOffsets.get()
-    rendObj = ROBJ_DAS_CANVAS
-    script = radarScriptDas
-    drawFunc = "draw_radar_hud"
-    setupFunc = "setup_radar_data"
-    color = color_watched?.get()
-    font = Fonts.hud
-    fontSize = hudFontHgt
+      screenHeight = sh(100)
+      usePictureTargets = true
+      planeTargetPicture
+      helicopterTargetPicture
+      rocketTargetPicture
 
-    screenHeight = sh(100)
-    usePictureTargets = true
-    planeTargetPicture
-    helicopterTargetPicture
-    rocketTargetPicture
+      handleClicks = handle_clicks
+      behavior = handle_clicks ? [ButtonExtendUpdatePress, Behaviors.Button, Behaviors.TrackMouse, Behaviors.JoystickScroll] : null
+      skipDirPadNav = true
+      onClick = handle_clicks ? function(evt){
+        let elem = evt.target
+        radarHandleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
+      } : null
+      onDoubleClick = handle_clicks ? function(evt){
+        let elem = evt.target
+        radarHandleDoubleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
+      } : null
+      onUpdatePress = handle_clicks ? function(evt){
+        let elem = evt.target
+        radarHandlePress(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
+      } : null
+      onPressEnd = handle_clicks ? function(evt){
+        let elem = evt.target
+        radarHandlePressEnd(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
+      } : null
 
-    handleClicks = handle_clicks
-    behavior = handle_clicks ? [ButtonExtendUpdatePress, Behaviors.Button, Behaviors.TrackMouse, Behaviors.JoystickScroll] : null
-    skipDirPadNav = true
-    onClick = handle_clicks ? function(evt){
-      let elem = evt.target
-      radarHandleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
-    } : null
-    onDoubleClick = handle_clicks ? function(evt){
-      let elem = evt.target
-      radarHandleDoubleClick(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
-    } : null
-    onUpdatePress = handle_clicks ? function(evt){
-      let elem = evt.target
-      radarHandlePress(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
-    } : null
-    onPressEnd = handle_clicks ? function(evt){
-      let elem = evt.target
-      radarHandlePressEnd(elem, evt.screenX, evt.screenY, evt.devId, evt.button)
-    } : null
-
-    function onJoystickScroll(evt) {
-      let elem = evt.target
-      const joystickSensetivity = 0.01
-      let delta = -evt.delta.y * joystickSensetivity
-      radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
-    }
-    function onMouseWheel(evt) {
-      let elem = evt.target
-      let delta = evt.button > 0.0 ? 1.0 : -1.0
-      radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
-    }
-  }.__update(ovr)
+      function onJoystickScroll(evt) {
+        let elem = evt.target
+        const joystickSensetivity = 0.01
+        let delta = -evt.delta.y * joystickSensetivity
+        radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
+      }
+      function onMouseWheel(evt) {
+        let elem = evt.target
+        let delta = evt.button > 0.0 ? 1.0 : -1.0
+        radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
+      }
+    }.__update(ovr)
+  }
 }
 
 
@@ -133,6 +134,10 @@ let customPages = {
   mig25Radar = "%rGui/planeCockpit/radarPage/mfdMig25Radar.das"
   ka52Radar = "%rGui/planeCockpit/radarPage/mfdKa52Radar.das"
   mfdF102Radar = "%rGui/planeCockpit/radarPage/mfdF102Radar.das"
+  f8eRadar = "%rGui/planeCockpit/radarPage/mfdF8eRadar.das"
+  lightningRadar = "%rGui/planeCockpit/radarPage/mfdLightningRadar.das"
+  mfdF15exRadar = "%rGui/planeCockpit/radarPage/mfdF15exRadar.das"
+  mfdSu15Radar = "%rGui/planeCockpit/radarPage/mfdSu15Radar.das"
 }
 
 let radarSettings = Watched({
@@ -292,10 +297,10 @@ function radarIndication(color_watched, handle_clicks = false) {
   }
 }
 
-return {
+return freeze({
   radarHud
   radarCanvas
   radarIndication
   radarMfd
   radarSettingsUpd
-}
+})

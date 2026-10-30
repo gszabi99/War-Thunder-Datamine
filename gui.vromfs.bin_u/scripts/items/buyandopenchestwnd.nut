@@ -1,4 +1,36 @@
+import "%scripts/items/listPopupWnd/trophyRewardListByCategory.nut" as trophyRewardListByCategory
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx, getFontLineHeightPx
+from "%scripts/crossModuleEvents.nut" import INVENTORY_UPDATE
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks
+from "%scripts/userstat/userstatItemsRewards.nut" import receiveRewards
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getFullUnitRoleText
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementShortName, getEntitlementAmount, getEntitlementFullTimeText
+from "%scripts/money.nut" import Cost
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/sqDagui/daguiUtil.nut" import enableObjsByTable, activateObjsByTable
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/items/prizesView.nut" import getPrizeText, getPrizeImageByConfig
+from "%scripts/items/buyAndOpenChestWndStyles.nut" import getBuyAndOpenChestWndStyle
+from "%scripts/userLog/userLog.nut" import gerRecentItemsLogs
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType
+from "%scripts/items/itemRestrictions.nut" import isHiddenByCountry
 from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, add_event_listener
 from "eventbus" import eventbus_send
@@ -11,38 +43,7 @@ from "%sqstd/datablock.nut" import isDataBlock, convertBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getStringWidthPx, getFontLineHeightPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let trophyRewardListByCategory = require("%scripts/items/listPopupWnd/trophyRewardListByCategory.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getFullUnitRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount, getEntitlementFullTimeText } = require("%scripts/onlineShop/entitlements.nut")
-let { Cost } = require("%scripts/money.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { enableObjsByTable, activateObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getPrizeText, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
-let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
-let { isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_ANIM_TIMER_ID = "timer_finish_open_chest_animation"

@@ -162,7 +162,7 @@ battleNameForTooltip.subscribe(function(battleName) {
     sendToDagui("ww.hoverBattle", { battleName })
 })
 
-return {
+return freeze({
   battlesInfo
   updateBattlesStates
   updateHoveredBattle
@@ -171,4 +171,4 @@ return {
   getBattleIconData
   getBattleState
   getBattleByPoint
-}
+})

@@ -221,7 +221,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
   }
 
   return @() {
-    watch = [stateFlags]
+    watch = stateFlags
     onElemState = @(sf) stateFlags.set(sf)
     margin
     padding

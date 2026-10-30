@@ -2,9 +2,9 @@ import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTempl
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
 import "%rGui/hints/hints.nut" as hints
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/style/colors.nut" import hud, white
 from "%rGui/hud/humanSquad/humanConst.nut" import heroStateWidth, hpBarHeight, weaponBlockGap
 from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunSlotIdx, WEAPON_SLOTS, heroModsByWeaponSlot, isWeaponsListVisible, humanCurGunModeInfo
-from "%rGui/style/colors.nut" import white
 from "%rGui/hud/state/watched_hero.nut" import watchedHeroEid
 from "dagor.math" import Color4
 from "dasevents" import CmdUIShowWeaponsBlock
@@ -12,7 +12,6 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
 let { weaponSlotsStatic, weaponSlots } = require("%rGui/hud/state/human_gun_info_es.nut")
-let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryShortcutCommonColor,
   infantryShortcutDisableColor, infantryShortcutCommonTextColor, infantryShortcutDisableTextColor
 } = hud
@@ -130,7 +129,7 @@ let bigText = @(text, color = white) {
 
 let mkWeaponAmmo = @(ammoWatch, totalAmmoWatch, weaponStaticInfoWatch, isSelected) function() {
   if (!(weaponStaticInfoWatch.get()?.haveAmmo ?? false))
-    return { watch = [weaponStaticInfoWatch] }
+    return { watch = weaponStaticInfoWatch }
 
   return {
     watch = [ammoWatch, totalAmmoWatch, weaponStaticInfoWatch]
@@ -219,7 +218,7 @@ let mkSlot = function(weaponStaticInfoWatch, slotIdx) {
     let weaponImage = mkWeaponImage(iconTemplateWatch, isSelected)
 
     let children = [@() {
-      watch = [ isSelected ]
+      watch = isSelected
       size = weaponBlockSize
       children = [
         hudBlurPanel

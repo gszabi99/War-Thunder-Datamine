@@ -1,3 +1,14 @@
+import "%scripts/worldWar/inOperation/wwActionModesManager.nut" as actionModesManager
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
+from "%scripts/worldWar/handler/wwAirfieldFlyOut.nut" import WwAirfieldFlyOut
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import markObjShortcutOnHover
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/worldWar/wwMapDataBridge.nut" import selectArmyByName, dargMapVisible
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getRearZonesOwnedToSide
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/worldWarState.nut" import getBattles
 from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
 from "dagor.math" import Point2
 from "string" import split_by_chars
@@ -10,19 +21,6 @@ from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, i
   , ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { WwAirfieldFlyOut } = require("%scripts/worldWar/handler/wwAirfieldFlyOut.nut")
-let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let { markObjShortcutOnHover } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let { selectArmyByName, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getRearZonesOwnedToSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { getBattles } = require("%scripts/worldWar/worldWarState.nut")
-
 
 function ww_is_append_path_mode_active() {
   if (!g_world_war.haveManagementAccessForSelectedArmies())
@@ -479,19 +477,7 @@ let worldWarMapControls = class {
     if (!haveAnyBattles)
       return false
 
-    let sortFunc = function(battle1, battle2) {
-      let diff1 = battle1.pos - mapPos
-      let diff2 = battle2.pos - mapPos
-
-      let l1 = diff1.lengthSq()
-      let l2 = diff2.lengthSq()
-
-      if (l1 != l2)
-        return l1 > l2 ? 1 : -1
-
-      return 0
-    }
-    battles.sort(sortFunc)
+    battles.sortby(@(battle) (battle.pos - mapPos).lengthSq())
 
     return battles[0]
   }
@@ -515,6 +501,6 @@ let worldWarMapControls = class {
   }
 }
 
-return {
+return freeze({
   worldWarMapControls
-}
+})

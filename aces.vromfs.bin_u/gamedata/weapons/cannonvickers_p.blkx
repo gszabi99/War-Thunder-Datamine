@@ -1,13 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.2,
-  "shotFreq": 1.2,
-  "shotFreqRndK": 0.0,
-  "traceFreq": 1,
-  "bullets": 32,
-  "reloadSpeedK": 1.5,
-  "soundLoop": false,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,6 +14,47 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 1,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.2,
+  "shotFreq": 1.2,
+  "shotFreqRndK": 0.0,
+  "bullets": 32,
+  "reloadSpeedK": 1.5,
+  "soundLoop": false,
+  "overheat": {
+    "overheat": [
+      [
+        25.0,
+        0.0
+      ],
+      [
+        30.0,
+        0.5
+      ],
+      [
+        35.5,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": {
     "mass": 2.07,
     "caliber": 0.047,
@@ -407,47 +439,8 @@
       ],
       "traceFreq": 1,
       "tracer": "37mmRed",
-      "trail": "black"
+      "trail": "thick"
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "vickers_s_gun_outside",
-    "cockpit": "vickers_s_gun_inside",
-    "ai": "vickers_s_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        25.0,
-        0.0
-      ],
-      [
-        30.0,
-        0.5
-      ],
-      [
-        35.5,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
   },
   "vickersS_new_gun": {
     "maxDeltaAngle": 0.25,
@@ -467,5 +460,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "vickers_s_gun_outside",
+    "cockpit": "vickers_s_gun_inside",
+    "ai": "vickers_s_gun_ai"
   }
 }

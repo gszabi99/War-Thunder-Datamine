@@ -1,3 +1,4 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "DataBlock" as DataBlock
 from "vehicleModel" import getUnitFileName
 from "eventbus" import eventbus_subscribe
@@ -5,8 +6,6 @@ from "%sqstd/datablock.nut" import blkFromPath
 from "string" import split_by_chars
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
-
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 let cache = {}
 let cacheUnitsBlk = {}
@@ -73,10 +72,10 @@ function getFmFile(unitId, unitBlkData = null) {
   return blkFromPath(fmPath)
 }
 
-return {
+return freeze({
   isShipDamageControlEnabled
   findUnitNoCase
   getFullUnitBlk
   getEsUnitType
   getFmFile
-}
+})

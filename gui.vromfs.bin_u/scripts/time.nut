@@ -154,7 +154,7 @@ function getTimeFromString(str, fillMissedByTimeTable = null) {
   if (timeTbl == null)
     return null
 
-  timeTbl = getFullTimeTable(timeTbl, fillMissedByTimeTable)
+  timeTbl = getFullTimeTable(clone timeTbl, fillMissedByTimeTable)
   if (fillMissedByTimeTable) {
     validateTime(timeTbl)
   }
@@ -294,7 +294,7 @@ function getExpireText(expireMin) {
 }
 
 
-return timeBase.__merge({
+return freeze(timeBase.__merge({
   calculateCorrectTimePeriodYears
   getUtcDays = getUtcDays
   buildDateTimeStr = buildDateTimeStr
@@ -316,4 +316,4 @@ return timeBase.__merge({
 
   getIso8601FromTimestamp = dagor_iso8601.format_unix_time
   getTimestampFromIso8601 = dagor_iso8601.parse_unix_time
-})
+}))

@@ -21,6 +21,8 @@ def texture_viewer()
       imgui::Text("No imported textures.")
       return
 
+    if selected_tex_idx >= assetCount
+      selected_tex_idx = 0
     let selectedName = importedTextures[selected_tex_idx]
     if imgui::BeginCombo("##select texture", selectedName)
       for name, idx in importedTextures, iter_range(importedTextures)

@@ -1,25 +1,25 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/shop/shopCountryInfo.nut" import hasUnitAtRank, get_units_list
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/unit/unitInfo.nut" import getUnitName, image_for_air
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 local sightUnitOptions = {
   types = []
 
   function addTypes(typesTable) {
     enums.addTypes(this, typesTable, null, "id")
-    this.types.sort(@(a, b) a.order <=> b.order)
+    this.types.sortby(@(a) a.order)
   }
 }
 
@@ -127,7 +127,7 @@ sightUnitOptions.addTypes({
           unit
           br = unit.getBattleRating(ediff)
         })
-        .sort(@(a, b) a.br <=> b.br)
+        .sortby(@(a) a.br)
         .map(@(v) {
           value = v.unit.name
           text  = format("[%.1f] %s", v.br, getUnitName(v.unit.name))

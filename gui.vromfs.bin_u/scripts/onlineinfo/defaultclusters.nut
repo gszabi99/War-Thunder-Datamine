@@ -185,6 +185,6 @@ let countryToCluster = {
 
 let getClustersByCountry = @(code) countryToCluster?[code].split_by_chars(";", true) ?? []
 
-return {
+return freeze({
   getClustersByCountry
-}
+})

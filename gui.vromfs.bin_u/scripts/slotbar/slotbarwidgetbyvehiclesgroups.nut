@@ -1,16 +1,17 @@
+import "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" as slotbarPresets
+import "%scripts/slotbar/selectGroupHandler.nut" as selectGroupHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/slotbar/slotbarWidget.nut" import SlotbarWidget
+from "%scripts/slotbar/playerCurUnit.nut" import setShowUnit
+from "%scripts/shop/shopCountriesList.nut" import getShopVisibleCountries
+from "%scripts/unit/unitInfo.nut" import bit_unit_status
+from "%scripts/slotbar/slotbarView.nut" import getSlotObj
+from "%scripts/slotbar/slotbarState.nut" import selectCrew
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/user/playerCountry.nut" import profileCountrySq
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
-let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
-let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
-let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
-let { selectCrew } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 local handlerClass = class (SlotbarWidget) {
   unitsGroupsByCountry = null
@@ -192,6 +193,6 @@ function create(params) {
   return handlersManager.loadHandler(handlerClass, params)
 }
 
-return {
+return freeze({
   create = create
-}
+})

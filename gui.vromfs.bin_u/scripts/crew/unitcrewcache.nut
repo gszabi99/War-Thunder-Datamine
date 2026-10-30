@@ -1,9 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import get_aircraft_crew_blk
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 
 
@@ -35,6 +34,6 @@ add_event_listener("CrewSkillsChanged", onNeedReset, null, g_listener_priority.U
 add_event_listener("QualificationIncreased", onNeedReset, null, g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 add_event_listener("CrewChanged", onNeedReset, null, g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 
-return {
+return freeze({
   getUnitCrewDataById
-}
+})

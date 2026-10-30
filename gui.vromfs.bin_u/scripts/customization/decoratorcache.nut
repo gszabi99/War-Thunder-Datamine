@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let decoratorCache = {}
-let waitingItemdefs = persist("waitingItemdefs", @() {})
+let waitingItemdefs = {}
 let liveDecoratorsCache = {}
 
 return {

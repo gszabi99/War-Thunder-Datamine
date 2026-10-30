@@ -485,9 +485,6 @@
           "setFsmActive": {
             "fsm": "lock",
             "active": true
-          },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
           }
         },
         "designatedTargetSearch": {
@@ -712,6 +709,9 @@
           "setScanPattern": {
             "scanPattern": "radarBvrLock"
           },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
           "setCustomActionTemplate": {
             "fsm": "main",
             "name": "setRadarModeName",
@@ -743,6 +743,9 @@
           },
           "setScanPattern": {
             "scanPattern": "irstBvrLock"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setModeName": {
             "name": "IRST acquisition"
@@ -1427,7 +1430,7 @@
               -56.0,
               56.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationRange": [
               -42.0,
               52.0

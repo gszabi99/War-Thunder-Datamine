@@ -1,31 +1,34 @@
+import "%scripts/missions/mapPreferencesParams.nut" as mapPreferencesParams
+import "%scripts/social/crossplay.nut" as crossplayModule
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/queue/queueBattleData.nut" import needActualizeQueueData, queueProfileJwt, actualizeQueueData
+from "%scripts/matching/serviceNotifications/match.nut" import enqueueInSession
+from "%scripts/matching/api.nut" import checkMatchingError
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES
+  , USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, USEROPT_DISPLAY_MY_REAL_CLAN
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/events/eventInfo.nut" import hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName
+from "%scripts/events/secondGameModesUtils.nut" import isBulletHellAvailable, hasBulletHellGameModes, getJoinBlockReason, getGmsTagRequests
+from "%scripts/matching/matchingGameModes.nut" import getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags, getGameModeIdsByEconomicNameWithOnlyTags, getModeById, NIGHT_GAME_MODE_TAG_PREFIX, SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX
+from "%scripts/user/antiAddictSystem.nut" import markToShowMultiplayerLimitByAasMsg
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/battleRating.nut" import getRecentSquadMrank
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/queue/queue/queueClasses.nut" import registerQueueClass, getQueueClass
+from "%scripts/options/optionsExt.nut" import get_option_in_mode
+from "%scripts/queue/queueState.nut" import getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue, findQueueByName
+from "%scripts/queue/queueInfo.nut" import getQueueCountry, getQueueSlots
+from "%scripts/queue/queueManager.nut" import leaveAllQueuesSilent, joinQueueImpl
 from "chardConst" import EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS
 from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
 
-let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
-let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
-let { checkMatchingError } = require("%scripts/matching/api.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, USEROPT_DISPLAY_MY_REAL_CLAN } = require("%scripts/options/optionsExtNames.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { isBulletHellAvailable, hasBulletHellGameModes, mainModePairs, getJoinBlockReason, getGmsTagRequests } = require("%scripts/events/secondGameModesUtils.nut")
-let { getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags, getGameModeIdsByEconomicNameWithOnlyTags, getModeById, NIGHT_GAME_MODE_TAG_PREFIX, SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX } = require("%scripts/matching/matchingGameModes.nut")
-let { markToShowMultiplayerLimitByAasMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getRecentSquadMrank } = require("%scripts/battleRating.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { mainModePairs } = require("%scripts/events/secondGameModesUtils.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
-let { registerQueueClass, getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue, findQueueByName } = require("%scripts/queue/queueState.nut")
-let { getQueueCountry, getQueueSlots } = require("%scripts/queue/queueInfo.nut")
-let { leaveAllQueuesSilent, joinQueueImpl } = require("%scripts/queue/queueManager.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
 
 function getCustomMgm(eventName) {
   return events.getCustomGameMode(events.getEvent(eventName))
@@ -153,9 +156,13 @@ let Event = class (BaseQueue) {
     requestLeaveQueue({}, successCallback, errorCallback, needShowError)
   }
 
-  getCurRank = @(event) g_squad_manager.isInSquad()
-    ? getRecentSquadMrank()
-    : getPlayerCurUnit().getEconomicRank(events.getEDiffByEvent(event))
+  function getCurRank(event) {
+    if (g_squad_manager.isInSquad())
+      return getRecentSquadMrank()
+
+    let unit = getPlayerCurUnit()
+    return getEffectiveMrank(unit, events.getEDiffByEvent(event))
+  }
 
   getExcludedGmsTags = @(event) {
     [NIGHT_GAME_MODE_TAG_PREFIX] = hasNightGameModes(event)

@@ -1,4 +1,25 @@
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/briefing.nut" import Briefing, getBriefingOptions
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/flightMenu/flightMenuState.nut" import canRestart, canBailout
+from "%scripts/options/handlers/optionsWnd.nut" import openOptionsWnd
+from "%scripts/controls/mousePointerInitialPos.nut" import setMousePointerInitialPos
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/statistics/mpStatisticsUtil.nut" import guiStartMPStatScreen, getCurMpTitle
+from "%scripts/missions/missionsUtilsModule.nut" import restartCurrentMission
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/controls/startControls.nut" import gui_start_controls
+from "%scripts/missions/startMissionsList.nut" import guiStartCdOptions
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/items/orders.nut" import disableOrders
+from "%scripts/missions/missionsUtils.nut" import isMissionExtr
+from "%scripts/help/helpWnd.nut" import gui_modal_help
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "eventbus" import eventbus_subscribe
 from "multiplayer" import is_mplayer_host
@@ -18,29 +39,8 @@ from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Briefing, getBriefingOptions } = require("%scripts/briefing.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
-let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { guiStartMPStatScreen, getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { disableOrders } = require("%scripts/items/orders.nut")
-let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let ludeo = require_optional("acesludeo")
 
 function gui_start_briefing_restart(_ = {}) {
@@ -66,7 +66,7 @@ function gui_start_briefing_restart(_ = {}) {
     set_context_to_player("difficulty", get_mission_difficulty())
     restartCurrentMission()
   }
-  params.applyFunc <- function() {
+  params.applyFunc <- function(_) {
     if (get_gui_option(USEROPT_DIFFICULTY) == "custom")
       guiStartCdOptions(finalApplyFunc)
     else
@@ -376,6 +376,6 @@ function gui_start_flight_menu_help(_) {
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
-return {
+return freeze({
   gui_start_flight_menu
-}
+})

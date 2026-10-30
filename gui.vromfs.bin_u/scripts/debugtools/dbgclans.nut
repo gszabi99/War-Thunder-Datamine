@@ -1,11 +1,10 @@
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
 import "DataBlock" as DataBlock
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table
+from "%scripts/clans/clanInfo.nut" import getClanPlaceRewardLogData
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
-let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")
 
 function debug_get_clan_blk() {
   let blk = DataBlock()

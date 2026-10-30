@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "us_gunner_char",
@@ -2128,6 +2134,35 @@
     }
   },
   "MetaParts": {
+    "open_fightning_compartment": {
+      "part": [
+        "driver_dm",
+        "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
+        "commander_dm",
+        "machine_gunner_dm",
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
+        "loader_01_dm",
+        "loader_02_dm",
+        "loader_03_dm"
+      ],
+      "effect": {
+        "pressureOpen": true
+      }
+    },
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
@@ -2152,15 +2187,14 @@
         "loader_01_dm",
         "loader_02_dm",
         "loader_03_dm",
-        "radio_station_dm",
         "driver_controls_dm",
+        "radio_station_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
         "drive_turret_h_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
-        "transmission_dm",
         "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
@@ -2382,7 +2416,8 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "transmission_dm"
       ],
       "effect": [
         {
@@ -2408,7 +2443,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_M6_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_M6_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 2.0,
@@ -2509,7 +2544,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "maxAdditionalPitch": 0.0,
@@ -2551,7 +2586,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_v_02",
         "flash": "emtr_mg_flame_02",
         "maxAdditionalPitch": 0.0,
@@ -2593,7 +2628,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_03",
         "defaultYaw": 0.0,
@@ -2636,8 +2671,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_lvt_a_1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_lvt_a_1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

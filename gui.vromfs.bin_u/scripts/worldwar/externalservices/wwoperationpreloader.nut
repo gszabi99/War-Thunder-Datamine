@@ -1,9 +1,8 @@
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+from "%scripts/tasker.nut" import addTask
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import ww_preview_operation, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 
 

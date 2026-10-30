@@ -86,7 +86,7 @@ class private CoAwait : AstCallMacro {
 [function_macro(name="coroutine")]
 class private CoroutineMacro : AstFunctionAnnotation {
     
-    def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+    def override apply(var func : FunctionPtr; var group : ModuleGroup; var args : AnnotationArgumentList; var errors : das_string) : bool {
         
         var retT : TypeDeclPtr
         if (func.result.baseType == Type.tVoid || func.result.baseType == Type.autoinfer) {
@@ -97,7 +97,7 @@ class private CoroutineMacro : AstFunctionAnnotation {
         var blk = qmacro_block() {
             return <- generator<$t(retT)> {
                 $e(func.body)
-                return false
+                return false        
             }
         }
         func.body = blk

@@ -1,13 +1,12 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%sqstd/platform.nut" import isPS4, isPS5
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/linesGenerator.nut" import getLinkLinesMarkup
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -104,8 +103,8 @@ let GampadCursorControlsSplash = class (BaseGuiHandlerWT) {
     if (!checkObj(contentObj))
       this.goBack()
 
-    let view = isPlatformPS4 ? this.controllerDualshock4View
-               : isPlatformPS5 ? this.controllerDualsenseView
+    let view = isPS4 ? this.controllerDualshock4View
+               : isPS5 ? this.controllerDualsenseView
                :                 this.controllerXboxOneView
 
     let markUp = handyman.renderCached("%gui/controls/gamepadCursorcontrolsController.tpl", view)
@@ -144,4 +143,4 @@ let GampadCursorControlsSplash = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("GampadCursorControlsSplash", GampadCursorControlsSplash)
 
-return { GampadCursorControlsSplash }
+return freeze({ GampadCursorControlsSplash })

@@ -1,11 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventInfo.nut" import getEventDisplayType, hasEventFeature, isVrModeAllowedInEvent, isEventAllowedByPackage, getEventEconomicName
+from "%scripts/events/eventTickets.nut" import eventRequiresTicket, getEventActiveTicket
+from "%scripts/options/systemOptions.nut" import isCompatibilityMode, isVrModeEnable
+from "%scripts/crossModuleEvents.nut" import EVENTS_DATA_UPDATED, INVENTORY_UPDATE, CONSOLE_PACKS_READY_CHANGED
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
 
-let { getEventDisplayType, hasEventFeature, isVrModeAllowedInEvent, isEventAllowedByPackage, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { eventRequiresTicket, getEventActiveTicket } = require("%scripts/events/eventTickets.nut")
-let { isCompatibilityMode, isVrModeEnable } = require("%scripts/options/systemOptions.nut")
-let { EVENTS_DATA_UPDATED, INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let { gameEvents } = require("%scripts/events/eventsState.nut")
 
 
@@ -41,11 +41,12 @@ function getUnallowedEventEconomicNames() {
 
 addListenersWithoutEnv({
   [EVENTS_DATA_UPDATED] = @(_) unallowedEventEconomicNamesNeedUpdate = true,
-  [INVENTORY_UPDATE] = @(_) unallowedEventEconomicNamesNeedUpdate = true
+  [INVENTORY_UPDATE] = @(_) unallowedEventEconomicNamesNeedUpdate = true,
+  [CONSOLE_PACKS_READY_CHANGED] = @(_) unallowedEventEconomicNamesNeedUpdate = true
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   isEventAllowedByVrMode
   isEventAllowedByComaptibilityMode
   getUnallowedEventEconomicNames
-}
+})

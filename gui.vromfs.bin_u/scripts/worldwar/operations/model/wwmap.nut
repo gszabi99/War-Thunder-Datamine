@@ -1,4 +1,13 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/operations/model/wwGlobalStatusType.nut" import setStatusTypeLoadList
+from "%scripts/worldWar/operations/model/wwOperationsGroup.nut" import getOperationGroupByMapId
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import refreshGlobalStatusData
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" import sortUnitsBySortCodeAndCount, loadUnitsFromNameCountTbl, loadWWUnitsFromUnitsArray
 from "string" import format
 from "math" import fabs
 from "chard" import get_charserver_time_sec
@@ -8,17 +17,9 @@ from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let time = require("%scripts/time.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { wwStatusType, setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
-let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
-let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
-let { sortUnitsBySortCodeAndCount, loadUnitsFromNameCountTbl, loadWWUnitsFromUnitsArray } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 
 
@@ -209,7 +210,7 @@ let WwMap = class {
         })
 
         local wwUnits = loadWWUnitsFromUnitsArray(group.units)
-        wwUnits.sort(@(a, b) a.name <=> b.name)
+        wwUnits.sortby(@(a) a.name)
         wwUnitsList.extend(wwUnits.map(@(unit)
           unit.getShortStringView({ addPreset = false, needShopInfo = true, hasIndent = true })))
       }
@@ -349,7 +350,6 @@ let WwMap = class {
   function isClanQueueAvaliable() {
     let reasonData = WwQueue.getCantJoinAnyQueuesReasonData()
     return hasFeature("WorldWarClansQueue") &&
-           hasFeature("Clans") &&
            is_in_clan() && this.isActive() &&
            (reasonData.canJoin || reasonData.hasRestrictClanRegister)
   }

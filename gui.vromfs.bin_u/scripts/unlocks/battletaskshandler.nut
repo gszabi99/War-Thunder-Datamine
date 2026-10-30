@@ -1,5 +1,32 @@
+import "%scripts/time.nut" as time
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/battleTasksState.nut" import isHardTaskIncomplete, isBattleTask, getBattleTaskNameById, getBattleTaskById
+from "%scripts/unlocks/battleTasks.nut" import getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable, isBattleTaskActual, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone
+  , isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward, getBattleTaskWithAvailableAward, getShowAllTasks, getBattleTasksByDiff
+  , markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask, canPlayerInteractWithDifficulty
+  , withdrawTasksArrayByDifficulty
+from "%scripts/unlocks/battleTasksView.nut" import mkUnlockConfigByBattleTask, getBattleTaskView, setBattleTasksUpdateTimer
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%scripts/warbonds/warbondsManager.nut" import getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
@@ -10,33 +37,9 @@ from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRow
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let time = require("%scripts/time.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { EASY_TASK, MEDIUM_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { isHardTaskIncomplete, isBattleTask, getBattleTaskNameById, getBattleTaskById } = require("%scripts/unlocks/battleTasksState.nut")
-let { getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable, isBattleTaskActual, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward, getBattleTaskWithAvailableAward, getShowAllTasks, getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask, canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty } = require("%scripts/unlocks/battleTasks.nut")
-let { mkUnlockConfigByBattleTask, getBattleTaskView, setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible } = require("%scripts/warbonds/warbondsManager.nut")
-let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 function guiStartBattleTasksWnd(taskId = null, tabType = null) {
   if (!isBattleTasksAvailable())
@@ -520,7 +523,7 @@ function openBattleTasksWndFromPromo(params = [], obj = null) {
 
 addPromoAction("battle_tasks", @(_handler, params, obj) openBattleTasksWndFromPromo(params, obj))
 
-return {
+return freeze({
   BattleTasksWnd
   guiStartBattleTasksWnd
-}
+})

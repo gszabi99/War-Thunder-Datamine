@@ -1,8 +1,7 @@
+import "%scripts/sqDagui/focusFrame/bhvFocusFrameTarget.nut" as focusTarget
+import "%scripts/sqDagui/focusFrame/bhvFocusFrameAnim.nut" as focusAnim
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let focusTarget = require("%scripts/sqDagui/focusFrame/bhvFocusFrameTarget.nut")
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let focusAnim = require("%scripts/sqDagui/focusFrame/bhvFocusFrameAnim.nut")
 
 let animObjList = []
 

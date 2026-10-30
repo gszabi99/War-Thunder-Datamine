@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.2,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1965,7 +1971,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/37mm_kan_m38_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/37mm_kan_m38_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2030,7 +2036,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/6_5mm_Ksp_m14_29_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/6_5mm_Ksp_m14_29_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2073,8 +2079,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_strv_m31_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_strv_m31_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

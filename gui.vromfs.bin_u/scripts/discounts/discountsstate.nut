@@ -1,9 +1,8 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched
 from "%scripts/dagui_library.nut" import *
 
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-
-let discountsList = persist("discountsList", @() {})
+let discountsList = {}
 let consoleEntitlementUnits = {} 
 
 function getDiscount(id, defVal = false) {

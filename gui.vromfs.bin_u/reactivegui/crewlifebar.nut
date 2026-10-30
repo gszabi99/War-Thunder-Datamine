@@ -1,3 +1,4 @@
+import "%rGui/style/cssColor.nut" as cssColor
 from "%rGui/crewState.nut" import totalCrewMembersCount, aliveCrewMembersCount, minCrewMembersCount
 from "%rGui/options/options.nut" import damageIndicatorScale
 from "dagor.workcycle" import resetTimeout
@@ -5,8 +6,8 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { hudLogBgColor } = require("%rGui/style/colors.nut").hud
 
-const badCrewTextColor = 0xFFc56e18
-const goodCrewTextColor = 0xC8C8C8C8
+const badCrewTextColor = cssColor("debuffLabelCritical")
+const goodCrewTextColor = cssColor("debuffLabelHealthy")
 const crewIconSize = hdpxi(40)
 let aliveBarTargetPercent = Watched(1)
 let aliveBarStartPercent = Watched(1)
@@ -97,20 +98,20 @@ let lostBar = @() {
   size = [pw((aliveBarStartPercent.get() - aliveBarTargetPercent.get()) * 100) , ph(100)]
   rendObj = ROBJ_BOX
   fillColor = badCrewTextColor
-  transform = {pivot = [0, 0.5], scale = [0, 1]}
+  transform = const {pivot = [0, 0.5], scale = [0, 1]}
   animations = [
     {
       prop = AnimProp.scale
-      from = [1, 1]
-      to = [1, 1]
+      from = const [1, 1]
+      to = const [1, 1]
       duration = flashBarDuration
       easing = Linear
       trigger = lostBarAnimTrigger
     },
     {
       prop = AnimProp.scale
-      from = [1, 1]
-      to = [0, 1]
+      from = const [1, 1]
+      to = const [0, 1]
       duration = lostBarDuration
       delay = flashBarDuration
       easing = Linear

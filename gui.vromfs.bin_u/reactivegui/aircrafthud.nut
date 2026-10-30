@@ -196,7 +196,7 @@ let aircraftDefaultHud = @(){
     twsElement(IsTwsDamaged.get() ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
     radarElement(IsRadarDamaged.get() ? AlertColorHigh : HudColor, radarPosWatched.get(), radarSizeComp.get(), isSquareRadarEnabled.get())
     radarIndication(HudColor)
-    !isCollapsedRadarInReplay.get() ? radarHud(radarSizeComp.get()[0], radarSizeComp.get()[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, {
+    !isCollapsedRadarInReplay.get() ? radarHud(radarSizeComp.get()[0], radarSizeComp.get()[1], radarPosWatched.get()[0], radarPosWatched.get()[1], HudColor, const {
       canZoom = true
       magnifiedIndicator = true
     }, true) : null

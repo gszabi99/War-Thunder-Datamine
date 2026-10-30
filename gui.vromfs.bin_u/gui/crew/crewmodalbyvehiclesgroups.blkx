@@ -182,7 +182,6 @@
               "input-transparent": "yes",
               "rightBlockHeader": {
                 "width": "pw",
-                "height": "1@crewRightTopHeaderHeight",
                 "margin-bottom": "0.5@frameMediumPadding",
                 "flow": "vertical",
                 "input-transparent": "yes",
@@ -202,8 +201,8 @@
                   },
                   {
                     "id": "crew_points_advice_block",
-                    "height": "@sIco",
                     "display": "hide",
+                    "width": "pw",
                     "img": {
                       "size": "@sIco, @sIco",
                       "pos": "0, ph/2-h/2",
@@ -212,6 +211,7 @@
                       "background-svg-size": "@sIco, @sIco"
                     },
                     "textareaNoTab": {
+                      "width": "fw",
                       "pos": "0.2@sIco, ph/2-h/2",
                       "position": "relative",
                       "text": "#crew/availablePoints/advice"
@@ -229,7 +229,8 @@
               },
               "rightBlockCenter": {
                 "width": "pw",
-                "height": "ph-1@crewRightTopHeaderHeight-1@buttonHeight-1@frameThickPadding",
+                "height": "fh",
+                "margin-bottom": "1@frameThickPadding",
                 "overflow-y": "auto",
                 "total-input-transparent": "yes",
                 "tdiv": [
@@ -279,8 +280,6 @@
               "rightBlockFooter": {
                 "width": "pw",
                 "height": "1@buttonHeight",
-                "position": "relative",
-                "bottom": "0",
                 "tdiv": {
                   "width": "fw"
                 },

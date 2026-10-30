@@ -1,14 +1,14 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/modalInfo/modalInfo.nut" import openModalInfo, closeModalInfo, getModalTooltipParent
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, addListenersWithoutEnv
 from "json" import parse_json
 from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openModalInfo, closeModalInfo, getModalTooltipParent } = require("%scripts/modalInfo/modalInfo.nut")
 
 dagui_propid_add_name_id("tooltipId")
 
@@ -163,11 +163,11 @@ addListenersWithoutEnv({
   RemoveOpenedModalInfo = @(p) removeOpenedModalInfo(p.objs)
 })
 
-return {
+return freeze({
   fillTooltip
   removeAllGenericTooltip
   addEventListenersTooltip
   openGenericTooltip
   closeGenericTooltip
   getTooltipObjId
-}
+})

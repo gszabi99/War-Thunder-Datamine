@@ -1,13 +1,12 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/missions/urlMission.nut" import UrlMission
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_library.nut" import *
-
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { UrlMission } = require("%scripts/missions/urlMission.nut")
 
 const MAX_URL_MISSIONS = 100
 const MAX_URL_MISSION_NAME_LENGTH = 24

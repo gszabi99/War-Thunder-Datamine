@@ -1702,7 +1702,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_6616_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_Rh_202_6616_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
@@ -1800,7 +1800,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_ub_16_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_ub_16_user_cannon.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1850,7 +1850,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame",
         "defaultYaw": 0.0,
@@ -1902,8 +1902,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_fiat_6616_cockerill_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_fiat_6616_cockerill_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3531,7 +3531,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_6616_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/20mm_Rh_202_6616_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
@@ -3629,7 +3629,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/57mm_ub_16_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/57mm_ub_16_user_cannon.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3679,7 +3679,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame",
               "defaultYaw": 0.0,
@@ -3723,7 +3723,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3887,5 +3887,29 @@
         "to": "it_camo_winter_white*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.666,
+      1.14,
+      0.847
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

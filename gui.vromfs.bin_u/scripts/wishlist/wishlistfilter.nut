@@ -1,11 +1,11 @@
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
+from "%scripts/ranks.nut" import maxCountryRank
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 let buyTypes = [
@@ -99,12 +99,13 @@ function fillAvailability() {
   return res
 }
 
+let hardPersist = mkHardPersist("wishlist.wishlistFilter")
 let filterNames = [
-  { name = "country", fillFunction = fillCountries, showInFriendWishlist = true, selectedArr = persist("wishlistFilterCountry", @() []) }
-  { name = "unitType", fillFunction = fillUnitTypes, showInFriendWishlist = true, selectedArr = persist("wishlistFilterUnitType", @() []) }
-  { name = "rank", fillFunction = fillRanks, showInFriendWishlist = true, selectedArr = persist("wishlistFilterRank", @() []) }
-  { name = "buyType", fillFunction = fillBuyType, showInFriendWishlist = false, selectedArr = persist("wishlistFilterBuyType", @() []) }
-  { name = "availability", fillFunction = fillAvailability, showInFriendWishlist = false, selectedArr = persist("wishlistFilterAvailability", @() []) }
+  { name = "country", fillFunction = fillCountries, showInFriendWishlist = true, selectedArr = hardPersist("wishlistFilterCountry", []) }
+  { name = "unitType", fillFunction = fillUnitTypes, showInFriendWishlist = true, selectedArr = hardPersist("wishlistFilterUnitType", []) }
+  { name = "rank", fillFunction = fillRanks, showInFriendWishlist = true, selectedArr = hardPersist("wishlistFilterRank", []) }
+  { name = "buyType", fillFunction = fillBuyType, showInFriendWishlist = false, selectedArr = hardPersist("wishlistFilterBuyType", []) }
+  { name = "availability", fillFunction = fillAvailability, showInFriendWishlist = false, selectedArr = hardPersist("wishlistFilterAvailability", []) }
 ]
 
 function getFiltersView(isFriendWishlist = false) {
@@ -126,7 +127,7 @@ function getFiltersView(isFriendWishlist = false) {
           value = selectedArr.indexof(key) != null
         })
 
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+      view.checkbox.sortby(@(a) a.idx)
       return view
     })
 }
@@ -165,8 +166,8 @@ function applyFilterChange(objId, tName, value) {
   }
 }
 
-return {
+return freeze({
   getFiltersView
   applyFilterChange
   getSelectedFilters
-}
+})

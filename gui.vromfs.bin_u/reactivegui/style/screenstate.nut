@@ -1,12 +1,14 @@
 import "%rGui/globals/extWatched.nut" as extWatched
+import "%appGlobals/style/cssConsts.nut" as cssConsts
+from "%appGlobals/options/safeAreaMenuValue.nut" import getPreLoginSafearea
 from "vr" import is_stereo_mode
 from "%rGui/globals/ui_library.nut" import *
 
-const debugRowHeight = 14 
+let debugRowHeight = cssConsts.debugRowHeight.tointeger()
 
 let safeAreaHud = extWatched("safeAreaHud", [ 1.0, 1.0 ])
 
-let safeAreaMenu = extWatched("safeAreaMenu", [ 1.0, 1.0 ])
+let safeAreaMenu = extWatched("safeAreaMenu", getPreLoginSafearea())
 
 let isInVr = is_stereo_mode()
 
@@ -30,7 +32,7 @@ let rh = Computed(@() safeAreaSizeHud.get().size[1])
 let bw = Computed(@() safeAreaSizeHud.get().borders[1])
 let bh = Computed(@() safeAreaSizeHud.get().borders[0])
 
-return {
+return freeze({
   safeAreaSizeHud
   safeAreaSizeMenu
   rw
@@ -39,4 +41,5 @@ return {
   bh
   isInVr
   safeAreaHud
-}
+  safeAreaMenu
+})

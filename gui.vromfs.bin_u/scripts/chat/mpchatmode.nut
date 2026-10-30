@@ -1,15 +1,13 @@
+from "%scripts/squads/squadState.nut" import isInSquad
+from "%sqstd/platform.nut" import is_android, isSony, isXbox
+from "%scripts/user/matchingFeature.nut" import hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
-from "%sqstd/platform.nut" import is_android
 from "chat" import CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "%scripts/chat/chatStates.nut" import hasChatCharPermission
-
-let { isInSquad } = require("%scripts/squads/squadState.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad } = require("%scripts/user/matchingFeature.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 enum mpChatModeSort {
   TEAM
@@ -76,11 +74,7 @@ enumsAddTypes(g_mp_chat_mode, {
   }
 })
 
-g_mp_chat_mode.types.sort(function(a, b) {
-  if (a.sortOrder != b.sortOrder)
-    return a.sortOrder < b.sortOrder ? -1 : 1
-  return 0
-})
+g_mp_chat_mode.types.sortby(@(a) a.sortOrder)
 
 g_mp_chat_mode.getModeById <- function getModeById(modeId) {
   return getCachedType("id", modeId, this.cache.byId, this, this.ALL)
@@ -116,7 +110,7 @@ g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode() {
 }
 
 g_mp_chat_mode.getChatHint <- function getChatHint() {
-  let hasIME = isPlatformSony || isPlatformXbox || is_android || is_steam_big_picture()
+  let hasIME = isSony || isXbox || is_android || is_steam_big_picture()
   let chatHelpText = hasIME ? "" : loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = this.getTextAvailableMode()
   availableModeText = availableModeText != ""

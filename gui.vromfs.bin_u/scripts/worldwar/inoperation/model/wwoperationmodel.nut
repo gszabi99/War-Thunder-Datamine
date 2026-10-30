@@ -1,10 +1,10 @@
+from "%scripts/worldWar/inOperation/model/wwOperationArmies.nut" import WwOperationArmies
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue
 from "dagor.math" import Point2
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
-let { WwOperationArmies } = require("%scripts/worldWar/inOperation/model/wwOperationArmies.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let WwOperationModel = class {
   armies = null
@@ -73,4 +73,4 @@ let WwOperationModel = class {
   }
 }
 
-return { WwOperationModel }
+return freeze({ WwOperationModel })

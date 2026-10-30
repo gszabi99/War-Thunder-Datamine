@@ -1,9 +1,9 @@
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import actionWithGlobalStatusRequest
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }

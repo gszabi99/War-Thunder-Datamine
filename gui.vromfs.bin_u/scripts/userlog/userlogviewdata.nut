@@ -1,80 +1,83 @@
+import "%scripts/time.nut" as time
+import "%scripts/userLog/getUserLogBattleRewardsTable.nut" as getBattleRewards
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/money.nut" import zero_money, Cost, Money, Balance, money_type
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName, getEntitlementPrice
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo
+from "%scripts/items/boosterEffect.nut" import getActiveBoostersDescription
+from "%scripts/userLog/userlogUtils.nut" import getTournamentRewardData, getLogNameByType, getUserLogsList, updateRepairCost
+from "%scripts/events/eventRewards.nut" import getTotalRewardDescText, getConditionText
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText, buildConditionsConfig
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/unlocks/battleTaskDifficulty.nut" import getDifficultyTypeById
+from "%scripts/unlocks/battleTasksState.nut" import getBattleTaskById, getDifficultyTypeByTask
+from "%scripts/unlocks/battleTasks.nut" import getDifficultyByProposals
+from "%scripts/unlocks/battleTasksView.nut" import getBattleTaskUserLogText, getBattleTaskUpdateDesc
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/crew/crewPointsText.nut" import getCrewSpTextIfNotZero
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/items/itemsTypeClasses.nut" import BASE_ITEM_TYPE_ICON, getItemClass
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/unlocks/unlocksModule.nut" import cloneDefaultUnlockData
+from "%scripts/bonusModule.nut" import getBonus
+from "%scripts/crew/crew.nut" import getSkillCrewLevel, loadCrewSkillsOnce
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/missions/missionsText.nut" import getMissionName
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
+from "%scripts/warbonds/warbondsState.nut" import getWarbondPriceText
+from "%scripts/clans/clanTextInfo.nut" import amendUGCText
+from "%scripts/contacts/contacts.nut" import getContact
+from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/items/prizesView.nut" import getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig, getPrizeTypeIcon
+from "%scripts/worldWar/operations/model/wwOperationView.nut" import getOperationNameTextByIdAndMapName
+from "%scripts/shop/shopCountryInfo.nut" import getShopCountry
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
+from "%scripts/chat/chatUtils.nut" import filterMessageText
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType, isRewardItem
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
 from "%sqStdLibs/helpers/toString.nut" import intToHexString
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%sqstd/platform.nut" import isPC
 from "math" import abs, round
 from "%sqstd/math.nut" import round_by_value
 from "string" import format
-from "%sqstd/string.nut" import stripTags, cutPrefix, split, startsWith, endsWith
+from "%sqstd/string.nut" import cutPrefix, split, startsWith, endsWith
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_role_name, get_name_by_unlock_type
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/clanNativeConsts.nut" import *
 from "%globalScripts/hangarMiscConsts.nut" import *
-from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 from "types" import Array, Table
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { zero_money, Cost, Money, Balance, money_type } = require("%scripts/money.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let time = require("%scripts/time.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
-let { isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { getTournamentRewardData, getLogNameByType, getUserLogsList, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
-let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
-let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
-let { getDifficultyTypeById, EASY_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
-let { getBattleTaskById, getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { getDifficultyByProposals } = require("%scripts/unlocks/battleTasks.nut")
-let { getBattleTaskUserLogText, getBattleTaskUpdateDesc } = require("%scripts/unlocks/battleTasksView.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { BASE_ITEM_TYPE_ICON, getItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { EASY_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
-let { getBonus } = require("%scripts/bonusModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getMissionName } = require("%scripts/missions/missionsText.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
-let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
+let { crewSkillPages } = require("%scripts/crew/crew.nut")
 let { RECYCLED_ITEMS_IDS } = require("%scripts/items/itemsRecycler.nut")
-let { amendUGCText } = require("%scripts/clans/clanTextInfo.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
-let { itemType } = require("%scripts/items/itemsConsts.nut")
-let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig, getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
-let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
-let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 
 const imgFormat = @"img {size:t='%s'; background-image:t='%s';
- background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
+ background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;' %s } "
 const textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 const descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
@@ -167,7 +170,7 @@ function getResourcesConfig(resources) {
     let descrImage = unlock?.descrImage ?? ""
     if (descrImage != "") {
       let imgSize = unlock?.descrImageSize ?? "0.05sh, 0.05sh"
-      res.resourcesImagesMarkupArr.append(format(imgFormat, imgSize, unlock.descrImage))
+      res.resourcesImagesMarkupArr.append(format(imgFormat, imgSize, unlock.descrImage, ""))
     }
   }
 
@@ -219,6 +222,8 @@ function getExternalInventoryTrophyContent(config) {
         let unlockConditions = buildConditionsConfig(unlock)
         let unlockData = buildLogUnlockData(unlockConditions)
         icon = unlockData?.descrImage ?? unlockData?.image
+        if (unlockData?.isAnimatedImage)
+          icon = format(icon, 0)
       }
     }
 
@@ -234,6 +239,22 @@ function getExternalInventoryTrophyContent(config) {
   }
   return itemData
 }
+
+
+const MAX_LOGIN_GUARD_POINTS = 30
+
+let mkFreezingLine = @(txt, isFreezingStyle = true, align = "left")
+  @"loadingHint {
+    behaviour:t='bhvHint'
+    width:t='pw'
+    padding:t='0, 0.5@blockInterval'
+    hintAlign:t='{align}'
+    smallFont:t='yes'
+    isCommonHint:t='yes'
+    value:t='{value}'
+    isFreezingStyle:t='{isFreezingStyle}'
+  }".subst({ align, value = stripTags(txt), isFreezingStyle = isFreezingStyle ? "yes" : "no" })
+
 
 function getUserlogViewData(logObj, isUgcAllowed) {
   let colon = loc("ui/colon")
@@ -814,7 +835,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
     if (("descrImage" in config) && config.descrImage != "") {
       let imgSize = ("descrImageSize" in config) ? config.descrImageSize : "0.05sh, 0.05sh"
-      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
+      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage, config?.iconParams.imageProps ?? "")
     }
     if ((config.type == UNLOCKABLE_SLOT ||
          config.type == UNLOCKABLE_AWARD)
@@ -899,7 +920,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       resourceType = logObj?.isAerobaticSmoke ? "smoke" : get_name_by_unlock_type(config.type)
     }
 
-    res.name = "".concat(format(loc($"userlog/{logName}/{resourceType}"), config.name), priceText)
+    res.name = "".concat(format(locByVendor($"userlog/{logName}/{resourceType}"), config.name), priceText)
 
     local desc = config?.desc ?? ""
     if (decoratorType) {
@@ -914,7 +935,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
     if ((config?.descrImage ?? "") != "") {
       let imgSize = (config?.descrImageSize ?? "0.05sh, 0.05sh")
-      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
+      res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage, config?.iconParams.imageProps ?? "")
     }
   }
   else if (logObj.type == EULT_CHARD_AWARD) {
@@ -1023,18 +1044,6 @@ function getUserlogViewData(logObj, isUgcAllowed) {
           (equalPlacesCount - 1), "</color>\n")
       }
 
-      let config = {
-        locId = "clan_duel_reward"
-        subType = ps4_activity_feed.CLAN_DUEL_REWARD
-      }
-      let customConfig = {
-        gold = gold
-        place = place
-        blkParamName = "CLAN_DUEL_REWARD"
-      }
-
-      activityFeedPostFunc(config, customConfig, bit_activity.PS4_ACTIVITY_FEED)
-
       let resourcesConfig = getResourcesConfig(rewardBlk?.resource)
       if (resourcesConfig != null) {
         if (resourcesConfig.description.len() > 0) {
@@ -1064,6 +1073,20 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         lineReward = colorize("activeTextColor", item.getName())
       res.logImg = getItemClass(itemType.TROPHY).typeIcon
       res.descriptionBlk <- getUserlogImageItem(item)
+
+      let { loginGuard = 0, loginGuardSpent = 0, loginGuardAdded = 0 } = logObj
+      let freezingLocId = loginGuardAdded > 0 && loginGuardSpent > 0
+          ? "mainmenu/freezingReceivedUsed"
+        : loginGuardAdded > 0 ? "mainmenu/freezingAdded"
+        : loginGuardSpent > 0 ? "mainmenu/freezingUsed"
+        : ""
+      if (freezingLocId != "" && hasFeature("loginGuard"))
+        res.descriptionBlk = "".concat(mkFreezingLine(loc(freezingLocId, {
+          addCount = 1
+          used = loginGuardSpent
+          count = loginGuard
+          total = MAX_LOGIN_GUARD_POINTS
+        })), res.descriptionBlk)
     }
     else if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail", "WagerWin", "WagerFail"])) {
       let itemId = logObj?.id
@@ -1862,7 +1885,9 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   return res
 }
 
-return {
+return freeze({
   getUserlogViewData
   getUserlogImageItem
-}
+  mkFreezingLine
+  MAX_LOGIN_GUARD_POINTS
+})

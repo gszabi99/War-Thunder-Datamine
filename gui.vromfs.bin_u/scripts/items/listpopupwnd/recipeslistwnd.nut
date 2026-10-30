@@ -1,18 +1,18 @@
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/items/exchangeRecipes.nut" import hasFakeRecipesInList, ExchangeRecipes
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, findChildIndex, setPopupMenuPosAndAlign
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
 from "math" import ceil
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { hasFakeRecipesInList, ExchangeRecipes } = require("%scripts/items/exchangeRecipes.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { move_mouse_on_child_by_value, findChildIndex, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
@@ -36,7 +36,7 @@ let RecipesListWnd = class (BaseGuiHandlerWT) {
     this.recipesList = clone this.recipesList
     let hasMarkers = hasFakeRecipesInList(this.recipesList)
     if (hasMarkers)
-      this.recipesList.sort(@(a, b) a.idx <=> b.idx)
+      this.recipesList.sortby(@(a) a.idx)
     else
       this.recipesList.sort(@(a, b) b.isUsable <=> a.isUsable
         || a.sortReqQuantityComponents <=> b.sortReqQuantityComponents
@@ -218,11 +218,11 @@ let RecipesListWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("RecipesListWnd", RecipesListWnd)
 
-return {
+return freeze({
   open = function(params) {
     let recipesList = params?.recipesList
     if (!recipesList || !recipesList.len())
       return
     handlersManager.loadHandler(RecipesListWnd, params)
   }
-}
+})

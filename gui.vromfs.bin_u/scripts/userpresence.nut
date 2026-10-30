@@ -1,17 +1,16 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/clientState/clientStates.nut" import isInBattleState
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/matching/api.nut" import matchingApiFunc
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
+from "%scripts/events/eventsState.nut" import getEvent, getEventDiffCode
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/queue/queueState.nut" import findQueue, isAnyQueuesActive
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { matchingApiFunc } = require("%scripts/matching/api.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getEvent, getEventDiffCode } = require("%scripts/events/eventsState.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { findQueue, isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let currentPresence = {}
 let helperObj = {}
@@ -92,7 +91,7 @@ addListenersWithoutEnv({
 
 isInBattleState.subscribe(@(_) updateBattlePresence())
 
-return {
+return freeze({
   initUserPresence
   setUserPresence
-}
+})

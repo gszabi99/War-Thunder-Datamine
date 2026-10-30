@@ -1,20 +1,20 @@
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj, setPopupMenuPosAndAlign
+from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import getObjCenteringPosRC
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/utils/genericTooltip.nut" import fillTooltip, addEventListenersTooltip
+from "%scripts/sqDagui/guiBhv/bhvPosNavigator.nut" import posNavigator
+from "%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut" import InContainersNavigator
+from "%scripts/unit/contextMenu.nut" import canShowUnitContextMenu
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/modalInfo/modalInfo.nut" import openModalInfo, closeModalInfo, getModalTooltipParent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "json" import parse_json
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { show_obj, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getObjCenteringPosRC } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { fillTooltip, addEventListenersTooltip } = require("%scripts/utils/genericTooltip.nut")
 let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { posNavigator } = require("%scripts/sqDagui/guiBhv/bhvPosNavigator.nut")
-let { InContainersNavigator } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { canShowUnitContextMenu } = require("%scripts/unit/contextMenu.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { openModalInfo, closeModalInfo, getModalTooltipParent } = require("%scripts/modalInfo/modalInfo.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -354,10 +354,10 @@ addListenersWithoutEnv({
   RemoveOpenedModalInfo = @(p) removeOpenedModalInfo(p.objs)
 })
 
-return {
+return freeze({
   markupTooltipHoldSelf
   markupTooltipHoldChild
   hideWaitIcon
   hideTooltip
   delayedTooltipOnHover = onHover
-}
+})

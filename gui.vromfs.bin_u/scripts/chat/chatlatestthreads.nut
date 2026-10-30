@@ -1,4 +1,10 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/langUtils/language.nut" import getCurLangInfo, getGameLocalizationInfo
+from "%scripts/wndLib/multiSelectMenu.nut" import MultiSelectMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/chat/chatHelper.nut" import checkChatConnected
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "string" import split_by_chars
 from "dagor.time" import get_time_msec
@@ -8,13 +14,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
-let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 
 const REQUEST_TIMEOUT_MSEC = 15000
 
@@ -217,7 +217,7 @@ addListenersWithoutEnv({
   ChatSearchCategoriesChanged = @(_p) refreshChatThreads()
 }, g_listener_priority.DEFAULT_HANDLER)
 
-return {
+return freeze({
   getChatLatestThreadsUpdateState
   getChatLatestThreadsCurListUid = @() curListUid
   onChatThreadsListEnd
@@ -230,4 +230,4 @@ return {
   getChatThreadsList
   openChatThreadsChooseLangsMenu
   canChooseThreadsLang
-}
+})

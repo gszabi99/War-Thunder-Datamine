@@ -1,4 +1,8 @@
 import "statsd" as statsd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/onlineShop/onlineBundles.nut" import getEntitlementId
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%sqstd/math.nut" import calcPercent
 from "%sqstd/string.nut" import cutPrefix
@@ -6,11 +10,7 @@ from "%gdkLib/impl/store.nut" import ProductKind, show_details, get_total_quanti
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 

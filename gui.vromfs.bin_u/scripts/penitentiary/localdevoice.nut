@@ -23,4 +23,4 @@ add_event_listener("LoadingStateChange",
       devoiceList.clear()
   }, localDevoice)
 
-return localDevoice
+return freeze(localDevoice)

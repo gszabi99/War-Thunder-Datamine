@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.24,
-  "shotFreq": 66.6,
-  "alternativeShotFreq": 11.6,
-  "shotFreqRndK": 0.1,
-  "traceFreq": 4,
-  "bullets": 250,
-  "mass": 109.0,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,7 +14,45 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 66.6,
+  "alternativeShotFreq": 11.6,
+  "shotFreqRndK": 0.1,
+  "bullets": 250,
+  "mass": 109.0,
+  "shouldCollideWithRendinsts": true,
   "iconType": "doublebarreled_box",
+  "overheat": {
+    "overheat": [
+      [
+        11.3,
+        0.0
+      ],
+      [
+        12.9,
+        0.02
+      ],
+      [
+        13.0,
+        0.12
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        0.5,
+        1.5
+      ],
+      [
+        2.5,
+        2.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.11,
@@ -408,7 +436,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1232,7 +1260,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     }
   ],
@@ -1620,7 +1648,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -3266,7 +3294,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -3651,7 +3679,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -4036,7 +4064,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -4480,41 +4508,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m197_gun_outside",
-    "cockpit": "m197_gun_inside",
-    "ai": "m197_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        11.3,
-        0.0
-      ],
-      [
-        12.9,
-        0.02
-      ],
-      [
-        13.0,
-        0.12
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        0.5,
-        1.5
-      ],
-      [
-        2.5,
-        2.0
-      ]
-    ]
-  },
   "Mk11_new_gun": {
     "maxDeltaAngle": 0.5,
     "deviation": {
@@ -4545,5 +4538,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m197_gun_outside",
+    "cockpit": "m197_gun_inside",
+    "ai": "m197_gun_ai"
   }
 }

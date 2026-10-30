@@ -350,9 +350,6 @@
           "setRelSpeedGatePos": {
             "source": "constRange"
           },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
           "setModeName": {
             "name": "acquisition"
           }
@@ -571,12 +568,18 @@
           "setBvrLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "bvrLockSearchRadar"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           }
         },
         "setIrstBvrLockMode": {
           "setBvrLockModeCommon": {},
           "setScanPattern": {
             "scanPattern": "bvrLockSearchIrst"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           }
         }
       },

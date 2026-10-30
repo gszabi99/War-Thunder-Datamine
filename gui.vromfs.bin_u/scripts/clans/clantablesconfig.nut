@@ -1,13 +1,13 @@
 import "DataBlock" as DataBlock
+from "%scripts/clans/clanTextInfo.nut" import getClanRequirementsText
+from "%scripts/clans/clanInfoTable.nut" import ranked_column_prefix
+from "%scripts/clans/clanSeasons.nut" import getShowInSquadronStatistics
 from "%scripts/dagui_natives.nut" import clan_evaluate_membership_requirements
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getClanRequirementsText } = require("%scripts/clans/clanTextInfo.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { ranked_column_prefix } = require("%scripts/clans/clanInfoTable.nut")
-let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
 
 function isFitsRequirements(clanData) {
   let requirements = clanData?.membership_req
@@ -32,7 +32,7 @@ let clanTableFieldsByPage = {
       }
     }
     { id = "activity", field = @() hasFeature("ClanVehicles") ? "clan_activity_by_periods" : "activity",
-      showByFeature = "ClanActivity", byDifficulty = false }
+      byDifficulty = false }
     { id = "members_cnt", sort = false, byDifficulty = false }
     { id = $"{ranked_column_prefix}_arc", icon = "#ui/gameuiskin#lb_elo_rating_arcade.svg",
       tooltip = "#clan/dr_era/desc", byDifficulty = false, diffCode = DIFFICULTY_ARCADE }
@@ -115,8 +115,8 @@ function getClanTableHelpLinksByPage(page) {
   return helpLinksByPage[page]
 }
 
-return {
+return freeze({
   getClanTableSortFields
   getClanTableFieldsByPage
   getClanTableHelpLinksByPage
-}
+})

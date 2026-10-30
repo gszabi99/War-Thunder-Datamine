@@ -1,3 +1,4 @@
+import "%rGui/style/fontsState.nut" as fontsState
 import "%rGui/hud/tankGunsAmmo.nut" as tankGunsAmmo
 from "%rGui/hud/actionBarState.nut" import actionBarSize, actionBarPos, isActionBarVisible, collapseBtnPressedTime, isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText
   , isCollapseBtnHidden, isCollapseHintVisible
@@ -8,8 +9,6 @@ from "%rGui/hudState.nut" import isUnitAlive, isPlayingReplay
 from "%rGui/radarButtons.nut" import isRadarGamepadNavEnabled
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
 
 const BTN_BLINK_DURATION = 0.3
 const BTN_BLINK_ANIM_DELAY = 0.6
@@ -22,6 +21,7 @@ const collapseTimerSize = hdpx(17)
 const collapseIconHeight = hdpx(14)
 let collapseButtonPadding = [hdpx(3), hdpx(7)]
 let collapseIcon = Picture($"ui/gameuiskin#icon_collapse_action_bar.svg:{collapseIconWidth}:{collapseIconHeight}")
+let collapseButtonBg = Picture($"ui/gameuiskin#block_bg_rounded_gray")
 
 let collapseIconComp = @() {
   watch = isActionBarCollapsed
@@ -78,7 +78,7 @@ let collapseButton = watchElemState(@(sf) {
   watch = [isCollapseHintVisible, isCollapseTimerVisible, isRadarGamepadNavEnabled]
   behavior = Behaviors.Button
   rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#block_bg_rounded_gray")
+  image = collapseButtonBg
   texOffs = 4
   screenOffs = 4
   flow = FLOW_HORIZONTAL
@@ -158,8 +158,8 @@ function actionBarTopPanel() {
 
 eventbus_subscribe("actionBarAutoCollapse", @(_) anim_start(blinkAnimTrigger))
 
-return {
+return freeze({
   actionBarTopPanel
   actionBarTopPanelMarginBottom = panelMarginBottom
   actionBarTopPanelHeight = panelHeight
-}
+})

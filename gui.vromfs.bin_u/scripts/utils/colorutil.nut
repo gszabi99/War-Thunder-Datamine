@@ -8,6 +8,6 @@ function color4ToInt(color) {
   return (a << 24) | (r << 16) | (g << 8) | b
 }
 
-return {
+return freeze({
   color4ToInt
-}
+})

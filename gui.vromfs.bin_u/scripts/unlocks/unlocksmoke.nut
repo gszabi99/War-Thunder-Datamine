@@ -1,26 +1,24 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/items/itemsTypeClasses.nut" import isAddeditemTypeSmoke, createItem
+from "%scripts/items/itemsConsts.nut" import itemType
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/datablock.nut" import blkFromPath
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isAddeditemTypeSmoke, createItem } = require("%scripts/items/itemsTypeClasses.nut")
-let { itemType } = require("%scripts/items/itemsConsts.nut")
-
-
-let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
-let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])
+let aeroSmokesList    = Watched([])
+let buyableSmokesList = Watched([])
 
 let shopSmokeItems = Computed(@() !isAddeditemTypeSmoke.get() ? []
   : buyableSmokesList.get().map(@(blk) createItem(itemType.SMOKE, blk)))
 
 
 function updateBuyableSmokesList(list = null) {
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
   let res = []
   let smokesList = list ?? aeroSmokesList.get()
@@ -67,9 +65,12 @@ addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) updateBuyableSmokesList()
 }, g_listener_priority.CONFIG_VALIDATION)
 
+if (hasFullLoginState.get()) 
+  updateAeroSmokeList()
 
-return {
+
+return freeze({
   aeroSmokesList
   buyableSmokesList
   shopSmokeItems
-}
+})

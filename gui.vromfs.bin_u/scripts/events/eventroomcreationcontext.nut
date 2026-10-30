@@ -1,23 +1,24 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/utils_sa.nut" import array_to_blk, get_array_by_bit_value
+from "%scripts/teams.nut" import g_team
+from "%scripts/missions/misListType.nut" import getSortedMissionsListByNames
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/options/optionsExtNames.nut" import USEROPT_CLUSTERS, USEROPT_RANK, USEROPT_COUNTRIES_SET, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/onlineInfo/clustersManagement.nut" import getClustersList
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import createSessionLobbyEventRoom
+from "%scripts/options/optionsExt.nut" import get_option
 from "guiOptions" import get_gui_option
 from "%scripts/dagui_library.nut" import *
 
-let { array_to_blk, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { getSortedMissionsListByNames } = require("%scripts/missions/misListType.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { USEROPT_CLUSTERS, USEROPT_RANK, USEROPT_COUNTRIES_SET, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { createSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -109,7 +110,7 @@ let EventRoomCreationContext = class {
     let brRange = this.getCurBrRange()
     if (brRange) {
       let ediff = events.getEDiffByEvent(this.mGameMode)
-      let unitMRank = unit.getEconomicRank(ediff)
+      let unitMRank = getEffectiveMrank(unit, ediff)
       if (unitMRank < (brRange?[0] ?? 0) || ((brRange?[1] ?? maxCountryRank.get()) < unitMRank))
         return false
     }
@@ -307,6 +308,6 @@ let EventRoomCreationContext = class {
   }
 }
 
-return {
+return freeze({
   EventRoomCreationContext
-}
+})

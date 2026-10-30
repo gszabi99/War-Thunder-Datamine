@@ -100,13 +100,37 @@
     "rendinstDamageRadius": 5.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
+    "fpvModeSettings": {
+      "hasNightVision": true,
+      "hasFPVMode": true,
+      "horLimit": [
+        -15.0,
+        15.0
+      ],
+      "verLimit": [
+        -30.0,
+        10.0
+      ],
+      "zoomMinMax": [
+        12.0,
+        2.9
+      ],
+      "rateMax": [
+        5.0,
+        5.0
+      ]
+    },
     "guidance": {
       "uncageBeforeLaunch": true,
       "warmUpTime": 0.3,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
+      "useTrippleClickLockInTpv": true,
+      "applyExtraDifficultyParameters": true,
       "inertialNavigation": true,
       "indicateOnHud": false,
+      "reacquireTarget": true,
+      "lockMode": "LOAL+LOBL",
       "breakLockMaxTime": 1500.0,
       "inertialNavigationDriftSpeed": 0.0,
       "designationError": 7.0,
@@ -118,7 +142,7 @@
         "targetSignatureType": "infraRed",
         "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0,
+        "rangeBand8": 1000.0,
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true,
@@ -127,12 +151,12 @@
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 1.0,
+        "prolongationTimeMax": 1.0,
         "rangeSurface": 20000.0,
         "rangeMax": 20000.0,
         "lockAngleMax": 30.0,
         "angleMax": 30.0,
         "rateMax": 5.0,
-        "prolongationTimeMax": 1.0,
         "designationSourceType": [
           "ins",
           "camera",

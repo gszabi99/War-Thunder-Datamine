@@ -16,7 +16,7 @@
     2.0
   ],
   "shellAnimation": "video/shells_animations/heat_fs.ivf",
-  "bulletName": "66mm_m72_law",
+  "bulletName": "66mm_m72a2_law",
   "mass": 1.0,
   "caliber": 0.066,
   "reload_sound_path": "tanks/effects_tanks",
@@ -119,7 +119,11 @@
     }
   },
   "rocket": {
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "",
+    "explosionSoundType": "explosion_infantry_at_rocket",
+    "maxDeltaAngle": 0.03,
     "caliber": 0.066,
     "length": 0.508,
     "WdK": [
@@ -127,16 +131,20 @@
       0.1,
       0.1
     ],
-    "CxK": 0.85,
+    "CxK": 1.2,
     "distFromCmToStab": 0.05,
-    "mass": 1.8,
-    "massEnd": 0.95,
-    "speed": 145.0,
+    "mass": 0.935307,
+    "massEnd": 0.935307,
+    "force": 0.0,
+    "fireDelay": 0.0,
+    "timeFire": 0.0,
+    "startSpeed": 144.78,
+    "maxSpeed": 144.78,
     "maxDistance": 1000.0,
     "minDistance": 10.0,
-    "maxDeltaAngle": 0.03,
-    "explosiveType": "ocfol",
-    "explosiveMass": 0.15,
+    "explosiveType": "octol_tnt",
+    "explosiveMass": 0.303907,
+    "warheadMass": 0.624143,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "groundRicochetPreset": "heat_fs",
@@ -154,11 +162,9 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "dragCx": 0.027,
     "explosionOffset": 0.05,
+    "hitPowerMult": 6.5,
     "hitPower": 20.0,
-    "fuseDelayDist": 0.05,
-    "explodeTreshold": 0.1,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -167,6 +173,8 @@
       200.0,
       1000.0
     ],
+    "fuseDelayDist": 0.05,
+    "explodeTreshold": 0.1,
     "distanceFuse": false,
     "selfDestructionFx": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -189,6 +197,12 @@
       0.0,
       0.0
     ],
+    "cumulativeDamage": {
+      "armorPower": 300.0,
+      "damage": 100.0,
+      "distance": 2.75,
+      "onHitChanceMultFire": 25.0
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -345,12 +359,6 @@
         1.0,
         7000.0
       ]
-    },
-    "cumulativeDamage": {
-      "armorPower": 200.0,
-      "distance": 5.3,
-      "damage": 100.0,
-      "onHitChanceMultFire": 25.0
     },
     "hitpower": {
       "HitPower0m": [

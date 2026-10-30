@@ -1,20 +1,22 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/crew/crewPointsText.nut" import getCrewSpTextIfNotZero
+from "%scripts/crew/crewActionsWithMsgBox.nut" import upgradeUnitSpec
+from "%scripts/crew/crew.nut" import getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep, getCrewButtonRow, getCrewSkillCost, getNextCrewSkillStepValue, getMaxAvailbleCrewStepValue
+  , getSkillCrewLevel, getSkillMaxCrewLevel, createCrewBuyPointsHandler, crewSkillStepToValue, getCrewLevel, getCrewTotalSteps, getCrewSkillValue
+from "%scripts/crew/crewSpecType.nut" import getSpecTypeByCrewAndUnit
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
 from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
-let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep, getCrewButtonRow, getCrewSkillCost, getNextCrewSkillStepValue, getMaxAvailbleCrewStepValue, getSkillCrewLevel, getSkillMaxCrewLevel, createCrewBuyPointsHandler, crewSkillStepToValue, getCrewLevel, getCrewTotalSteps, getCrewSkillValue } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 const MIN_EXP_POINTS = 5
 const MAX_EXPERT_EXP_POINTS = 3

@@ -1,20 +1,21 @@
 from "string" import format
+from "math" import min, max
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { SceneOutlinerWndId, selectedEntities, markedScenes, de4workMode,
-  sceneListUpdateTrigger, addEntityCreatedCallback, addEntityRemovedCallback, entitiesListUpdateTrigger
-  edObjectFlagsUpdateTrigger } = require("state.nut")
-let { allScenes, sortedScenes, sceneIdMap, updateAllScenes, canSceneBeModified, sceneDisplayName } = require("sceneModel.nut")
+let { SceneOutlinerWndId, selectedEntities, edObjectFlagsUpdateTrigger, DEPENDS_ON } = require("state.nut")
+let { sceneTree, sortedScenes, sceneIdMap, canSceneBeModified, sceneDisplayName } = require("sceneModel.nut")
+let { selection, selectedItems, hasSelection, markedSceneCount, isObjMarked,
+  markObjects, toggleObject, setSelection, clearSelection, applyToEditor } = require("selection.nut")
 let { colors } = require("components/style.nut")
 let textButton = require("components/textButton.nut")
-let nameFilter = require("components/nameFilter.nut")
+let { mkListFilter } = require("components/mkFilteredList.nut")
 let mkCheckBox = require("components/mkCheckBox.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let textInput = require("%daeditor/components/textInput.nut")
-let { getSceneLoadTypeText, getNumMarkedScenes } = require("%daeditor/daeditor_es.nut")
-let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
+let { getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
+let { addModalWindow, removeModalWindow, getPopupZOrder } = require("%daeditor/components/modalWindows.nut")
 let { Point3 } = require("dagor.math")
 let { isStringFloat } = require("%sqstd/string.nut")
 let { fileName } = require("%sqstd/path.nut")
@@ -36,16 +37,11 @@ let showCommonScenes = mkWatched(persist, "showCommonScenes", true)
 let showOtherScenes = mkWatched(persist, "showOtherScenes", true)
 let itemDragData = Watched(null)
 let dragDestData = Watched(null)
-let markedStateScenes = mkWatched(persist, "markedStateScenes", {})
 let expandedStateScenes = mkWatched(persist, "expandedStateScenes", {})
 let filterString = mkWatched(persist, "filterString", "")
-let selectionStateEntities = mkWatched(persist, "selectionStateEntities", {})
-let allEntities = mkWatched(persist, "allEntities", {})
 let scrollHandler = ScrollHandler()
 
 let statusAnimTrigger = { lastN = null }
-
-let UNUSED = @(...) null
 
 function sceneToText(scene) {
   return $"{scene.importDepth == 0 ? "*** " : ""}{sceneDisplayName(scene)}"
@@ -59,8 +55,22 @@ function entityToTxt(eid) {
   return $"{eid} - {name}"
 }
 
-let isFilteringEnabled = Computed(function (){
-  return (filterSelectedEntities?.get() ?? false) || (filterString?.get() != null && filterString.get().len() != 0) || !showEntities.get()
+
+
+
+let itemFilter = Computed(@() {
+  showEntities = showEntities.get()
+  showClientScenes = showClientScenes.get()
+  showCommonScenes = showCommonScenes.get()
+  showImportScenes = showImportScenes.get()
+  showOtherScenes = showOtherScenes.get()
+  onlySelected = filterSelectedEntities.get()
+  filterStr = (filterString.get() ?? "").tolower()
+})
+
+let isFilteringEnabled = Computed(function() {
+  let filter = itemFilter.get()
+  return filter.onlySelected || filter.filterStr.len() != 0 || !filter.showEntities
 })
 
 let fakeScene = {
@@ -74,9 +84,9 @@ let fakeScene = {
 }
 
 let isFakeSceneHidden = Computed(function() {
-  UNUSED(edObjectFlagsUpdateTrigger)
+  DEPENDS_ON(edObjectFlagsUpdateTrigger)
 
-  let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
+  let entities = sceneTree.get().freeEntities
   foreach (id in entities) {
     if (!entity_editor?.get_instance().isEntityHidden(id)) {
       return false
@@ -86,9 +96,9 @@ let isFakeSceneHidden = Computed(function() {
 })
 
 let isFakeSceneLocked = Computed(function() { 
-  UNUSED(edObjectFlagsUpdateTrigger)
+  DEPENDS_ON(edObjectFlagsUpdateTrigger)
 
-  let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
+  let entities = sceneTree.get().freeEntities
   foreach (id in entities) {
     if (!entity_editor?.get_instance().isEntityLocked(id)) {
       return false
@@ -102,234 +112,212 @@ function getScene(id) {
   return id != ecs.INVALID_SCENE_ID ? sceneIdMap?.get()[id] : fakeScene
 }
 
-function filterItem(item) {
-  if (item?.entity != null && !showEntities.get()) {
+
+function isSceneTypeHidden(scene, filter) {
+  if (scene.id == fakeScene.id) {
+    return !filter.showOtherScenes
+  }
+  return (scene.loadType == 1 && !filter.showCommonScenes) ||
+    (scene.loadType == 2 && !filter.showClientScenes) ||
+    (scene.loadType == 3 && !filter.showImportScenes)
+}
+
+
+function filterItem(item, filter) {
+  if (item?.entity != null && !filter.showEntities) {
     return false
   }
 
-  if (filterSelectedEntities?.get()) {
+  if (filter.onlySelected) {
     if (item?.entity == null) {
       return false
     }
 
-    if (!selectedEntities?.get()[item.entity.id]) {
+    if (!filter.selectedEntities?[item.entity.id]) {
       return false
     }
   }
 
-  let filterStr = filterString.get()
-  if (filterStr != null && filterStr.len() != 0) {
+  if (filter.filterStr.len() != 0) {
     let itemStr = item?.scene != null ? sceneToText(item.scene) : entityToTxt(item.entity.id)
-
-    return itemStr.tolower().contains(filterStr.tolower())
+    return itemStr.tolower().contains(filter.filterStr)
   }
   return true
 }
 
-function createFakeSceneItems(order, expandedStateCb) {
-  local sceneItem = {}
-  let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
 
-  sceneItem.scene <- fakeScene
-  sceneItem.order <- order
-  sceneItem.hasChildren <- false
-  sceneItem.depth <- 0
 
-  let fakeItems = []
-  local isAnythingFilteredIn = filterItem(sceneItem)
+function filterSceneNode(scene, scenes, tree, filter) {
+  if (isSceneTypeHidden(scene, filter)) {
+    return null
+  }
 
-  foreach (eid in entities) {
-    if (fakeItems.len() >= MAX_FREE_ENTITIES) {
-      local textItem = {}
-      textItem.text <- "More entities ...";
-      textItem.parentSceneId <- ecs.INVALID_SCENE_ID
-      textItem.depth <- 1
-
-      fakeItems.append(textItem)
-      break
-    }
-
-    local entityItem = {}
-    entityItem.entity <- {}
-    entityItem.entity.id <- eid
-    entityItem.entity.parentSceneId <- ecs.INVALID_SCENE_ID
-    entityItem.order <- fakeItems.len()
-    entityItem.depth <- 1
-
-    let isExpanded = expandedStateCb(fakeScene)
-
-    if (filterItem(entityItem)) {
-      isAnythingFilteredIn = true
-      sceneItem.hasChildren = true
-      if (isExpanded) {
-        fakeItems.append(entityItem)
+  let children = []
+  if (scene.id == fakeScene.id) {
+    foreach (eid in tree.freeEntities) {
+      let child = { entity = { id = eid, parentSceneId = fakeScene.id } }
+      if (filterItem(child, filter)) {
+        children.append(child)
       }
     }
   }
-
-  if (isAnythingFilteredIn) {
-    fakeItems.insert(0, sceneItem)
-  }
-
-  return fakeItems
-}
-
-function gatherSceneItems(scene, order, isParentExpanded, depth, items: array, expandedStateCb) {
-  if (scene.id != fakeScene.id) {
-    if ((scene.loadType == 1 && !showCommonScenes.get()) ||
-      (scene.loadType == 2 && !showClientScenes.get()) ||
-      (scene.loadType == 3 && !showImportScenes.get())) {
-      return false;
-    }
-  }
-  else if (!showOtherScenes.get()) {
-    return false
-  }
-
-  if (scene.id == fakeScene.id) {
-    items.extend(createFakeSceneItems(order, expandedStateCb))
-    return
-  }
-
-  local sceneItem = {}
-  sceneItem.scene <- scene
-  sceneItem.order <- order
-  sceneItem.hasChildren <- false
-  sceneItem.depth <- depth
-
-  local insertionPos = items.len()
-  local isAnythingFilteredIn = filterItem(sceneItem)
-  let isExpanded = isParentExpanded && expandedStateCb(scene)
-
-  local entries = entity_editor?.get_instance().getSceneOrderedEntries(scene.id) ?? []
-  local i = 0
-  foreach (entry in entries) {
-    if (entry.isEntity) {
-      local entityItem = {}
-      entityItem.entity <- {}
-      entityItem.entity.id <- entry.eid
-      entityItem.entity.parentSceneId <- scene.id
-      entityItem.order <- i
-      entityItem.depth <- depth + 1
-
-      if (filterItem(entityItem)) {
-        isAnythingFilteredIn = true
-        sceneItem.hasChildren = true
-
-        if (isExpanded) {
-          items.append(entityItem)
-          ++i
+  else {
+    foreach (entry in tree.entries?[scene.id] ?? []) {
+      if (entry.isEntity) {
+        let child = { entity = { id = entry.eid, parentSceneId = scene.id } }
+        if (filterItem(child, filter)) {
+          children.append(child)
+        }
+      }
+      else {
+        let subScene = scenes?[entry.sid]
+        let child = subScene != null ? filterSceneNode(subScene, scenes, tree, filter) : null
+        if (child != null) {
+          children.append(child)
         }
       }
     }
-    else {
-      local filteredIn = gatherSceneItems(getScene(entry.sid), i, isExpanded, depth + 1, items, expandedStateCb)
-      if (filteredIn) {
-        ++i
-        isAnythingFilteredIn = true
-        sceneItem.hasChildren = true
+  }
+
+  let node = { scene, children }
+  return children.len() != 0 || filterItem(node, filter) ? node : null
+}
+
+
+let filteredTree = Computed(function() {
+  let filter = itemFilter.get().__merge({ selectedEntities = selectedEntities.get() })
+  let tree = sceneTree.get()
+  let scenes = sceneIdMap.get()
+
+  let roots = []
+  foreach (scene in sortedScenes.get()) {
+    if (!scene.hasParent) {
+      let node = filterSceneNode(scene, scenes, tree, filter)
+      if (node != null) {
+        roots.append(node)
       }
     }
   }
-
-  if (isAnythingFilteredIn && isParentExpanded) {
-    items.insert(insertionPos, sceneItem)
+  let freeEntities = filterSceneNode(fakeScene, scenes, tree, filter)
+  if (freeEntities != null) {
+    roots.append(freeEntities)
   }
+  return roots
+})
 
-  return isAnythingFilteredIn
+function forEachTreeNode(nodes, fn) {
+  foreach (node in nodes) {
+    fn(node)
+    if (node?.children != null) {
+      forEachTreeNode(node.children, fn)
+    }
+  }
 }
 
-function getEntityCount(scene) {
-  if (scene.id == fakeScene.id) {
-    return allEntities.get()?[scene.id].len() ?? 0
+function findSceneNode(nodes, sceneId) {
+  foreach (node in nodes) {
+    if (node?.scene != null) {
+      if (node.scene.id == sceneId) {
+        return node
+      }
+      let found = findSceneNode(node.children, sceneId)
+      if (found != null) {
+        return found
+      }
+    }
   }
-  else {
-    return entity_editor?.get_instance().getSceneEntityCount(scene.id) ?? 0
+  return null
+}
+
+
+
+function appendRows(node, order, depth, expanded, rows) {
+  if (node?.entity != null) {
+    rows.append({ entity = node.entity, order, depth })
+    return
+  }
+
+  rows.append({ scene = node.scene, order, depth, hasChildren = node.children.len() != 0 })
+  if (!(expanded?[node.scene.id] ?? false)) {
+    return
+  }
+
+  let isFakeScene = node.scene.id == fakeScene.id
+  foreach (i, child in node.children) {
+    if (isFakeScene && i >= MAX_FREE_ENTITIES) {
+      rows.append({ text = "More entities ...", parentSceneId = fakeScene.id, depth = depth + 1 })
+      break
+    }
+    appendRows(child, i, depth + 1, expanded, rows)
   }
 }
 
 let filteredItems = Computed(function() {
-  UNUSED(showEntities)
-  UNUSED(showClientScenes)
-  UNUSED(showCommonScenes)
-  UNUSED(showImportScenes)
-  UNUSED(showOtherScenes)
-  UNUSED(filterSelectedEntities)
-  UNUSED(selectedEntities)
-  UNUSED(filterString)
-  UNUSED(allEntities)
-  UNUSED(expandedStateScenes)
-
-  local items = []
-  let rootScenes = sortedScenes.get().filter(@(scene) !scene.hasParent)
-
-  local i = 0
-  foreach (scene in rootScenes) {
-    if (gatherSceneItems(scene, i, true, 0, items, @(val) expandedStateScenes?.get()?[val.id] ?? false)) {
-      ++i
-    }
+  let expanded = expandedStateScenes.get()
+  let rows = []
+  foreach (order, node in filteredTree.get()) {
+    appendRows(node, order, 0, expanded, rows)
   }
-
-  gatherSceneItems(fakeScene, i, true, 0, items, @(val) expandedStateScenes?.get()?[val.id] ?? false)
-
-  return items
+  return rows
 })
+
+function getEntityCount(scene, tree) {
+  if (scene.id == fakeScene.id) {
+    return tree.freeEntities.len()
+  }
+  return tree.entityCounts?[scene.id] ?? 0
+}
 
 let filteredScenesCount = Computed(@() filteredItems.get().filter(@(item) item?.scene != null && item.scene.id != ecs.INVALID_SCENE_ID).len())
 
 let filteredScenesEntityCount = Computed(function() {
+  let tree = sceneTree.get()
   local eCount = 0
   foreach (item in filteredItems.get()) {
     if (item?.scene != null) {
-      eCount += getEntityCount(item.scene)
+      eCount += getEntityCount(item.scene, tree)
     }
   }
   return eCount
 })
 
-function persistMarkedScenes(v) {
-  if (v) {
-    local scenes = markedScenes.get()
-    foreach (sceneId, marked in v)
-      scenes[sceneId] <- marked
-  }
-}
-markedScenes.whiteListMutatorClosure(persistMarkedScenes)
-markedStateScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  persistMarkedScenes(v)
-  markedScenes.trigger()
-})
-
 let numMarkedScenesEntityCount = Computed(function() {
-  local nSaved = 0
-  local nGenerated = 0
+  let tree = sceneTree.get()
+  let marked = selection.get().scenes
+  local count = 0
   foreach (item in filteredItems.get()) {
-    if (item?.scene) {
-      local scene = item.scene
-      if (markedStateScenes.get()?[scene.id]) {
-        nSaved += getEntityCount(scene)
-      }
+    if (item?.scene != null && item.scene.id in marked) {
+      count += getEntityCount(item.scene, tree)
     }
   }
-  return nSaved + nGenerated
+  return count
 })
 
-function clearSelection() {
-  markedStateScenes.mutate(function(value) {
-    foreach (k, _v in value)
-      value[k] = false
-  })
 
-  selectionStateEntities.mutate(function(value) {
-    foreach (k, _v in value)
-      value[k] = false
-  })
+function itemToObj(item) {
+  if (item?.entity != null) {
+    return { id = item.entity.id, isEntity = true }
+  }
+  if (item?.scene != null) {
+    return { id = item.scene.id, isEntity = false, loadType = item.scene.loadType }
+  }
+  return null
+}
+
+function isItemSelected(item, sel) {
+  let obj = itemToObj(item)
+  return obj != null && isObjMarked(sel, obj)
+}
+
+function markTreeNodes(nodes, on) {
+  let objs = []
+  forEachTreeNode(nodes, @(node) objs.append(itemToObj(node)))
+  markObjects(objs, on)
 }
 
 function scrollScenesBySelection() {
-  scrollHandler.scrollToChildren(function(desc) {
-    return ("item" in desc) && (markedStateScenes.get()?[desc.item?.scene.id] || selectionStateEntities.get()?[desc.item?.entity.id])
-  }, 2, false, true)
+  let sel = selection.get()
+  scrollHandler.scrollToChildren(@(desc) ("item" in desc) && isItemSelected(desc.item, sel), 2, false, true)
 }
 
 function scnTxt(count): string { return count==1 ? "scene" : "scenes" }
@@ -337,7 +325,7 @@ function entTxt(count): string { return count==1 ?  "entity" : "entities" }
 function statusText(count, textFunc: function): string { return format("%d %s", count, textFunc(count)) }
 
 function statusLineScenes() {
-  let sMrk = getNumMarkedScenes()
+  let sMrk = markedSceneCount.get()
   let eMrk = numMarkedScenesEntityCount.get()
   let eRec = filteredScenesEntityCount.get()
 
@@ -346,7 +334,7 @@ function statusLineScenes() {
   statusAnimTrigger.lastN = sMrk
 
   return {
-    watch = [numMarkedScenesEntityCount, filteredScenesCount, filteredScenesEntityCount, markedStateScenes, selectedEntities]
+    watch = [numMarkedScenesEntityCount, filteredScenesCount, filteredScenesEntityCount, markedSceneCount]
     size = FLEX_H
     flow = FLOW_HORIZONTAL
     children = [
@@ -370,31 +358,7 @@ function statusLineScenes() {
 }
 
 function markAllObjects() {
-  clearSelection()
-  foreach (item in filteredItems.get()) {
-    if (item?.scene != null) {
-      markedStateScenes.get()[item.scene.id] <- true
-    }
-    else if (item?.entity != null) {
-      selectionStateEntities.get()[item.entity.id] <- true
-    }
-  }
-
-  markedStateScenes.trigger()
-  selectionStateEntities.trigger()
-}
-
-function markObject(object, flag = true) {
-  if (object?.scene != null) {
-    markedStateScenes.mutate(function(value) {
-      value[object.scene.id] <- flag
-    })
-  }
-  else if (object?.entity != null) {
-    selectionStateEntities.mutate(function(value) {
-      value[object.entity.id] <- flag
-    })
-  }
+  setSelection(filteredItems.get().map(itemToObj).filter(@(obj) obj != null))
 }
 
 function getIcon(name) {
@@ -428,30 +392,13 @@ let IconButton = StatefulComp(function(scope, icon, onClick, visible, parentHove
 })
 
 function gatherItemsAndModifySelection(op) {
-  let additionalSelection = []
-  foreach (item in filteredItems.get()) {
-    if (item.depth == 0) {
-      let sceneCopy = clone item.scene
-      gatherSceneItems(sceneCopy, 0, true, 0, additionalSelection, @(_scene) true)
-    }
-  }
-
-  foreach (selected in additionalSelection) {
-    markObject(selected, op)
-  }
+  markTreeNodes(filteredTree.get(), op)
 }
 
 let hasFilteredItems = Computed(@() isFilteringEnabled.get() && filteredItems.get().len() != 0)
 
-let filter = nameFilter(filterString, {
+let filter = mkListFilter(filterString, {
   placeholder = "Filter and search"
-  onChange = @(text) filterString.set(text)
-  onEscape = @() set_kb_focus(null)
-  onReturn = @() set_kb_focus(null)
-  onClear = function() {
-    filterString.set("")
-    set_kb_focus(null)
-  }
   additionalChildren = [
     @() {
       halign = ALIGN_CENTER
@@ -480,105 +427,20 @@ let filter = nameFilter(filterString, {
   ]
 })
 
-function getSelectedScenesIndicies(scenes) {
-  return scenes.get()?.filter(@(marked, _sceneId) marked).keys()
-}
-
-function getAllSelectedItems(): array {
-  let selection = []
-  selection.extend(markedStateScenes?.get().filter(@(marked, _sceneId) marked).keys().map(function (value) {
-    let item = {}
-    item.id <- value
-    item.isEntity <- false
-    item.loadType <- sceneIdMap?.get()[value].loadType ?? 0
-    return item
-  }))
-
-  selection.extend(selectionStateEntities?.get().filter(@(selected, _eid) selected).keys().map(function (value) {
-    let item = {}
-    item.id <- value
-    item.isEntity <- true
-    return item
-  }))
-
-  return selection
-}
-
-function selectObjects() {
-  entity_editor?.get_instance().selectObjects(getAllSelectedItems())
-}
 
 function initScenesList() {
-  foreach (scene in allScenes.get()) {
-    local isMarked = markedScenes.get()?[scene.id] ?? false
-    local isExpanded = expandedStateScenes.get()?[scene.id] ?? false
-
-    markedStateScenes.get()[scene.id] <- isMarked
-    expandedStateScenes.get()[scene.id] <- isExpanded
-  }
-
-  local wasFakeSceneMarked = markedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
-  local wasFakeSceneExpanded = expandedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
-  markedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
-  expandedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
-
-  markedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneMarked
-  expandedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneExpanded
-
-  markedStateScenes.trigger()
-  expandedStateScenes.trigger()
-}
-
-function initEntitiesList() {
-  let editorInstance = entity_editor?.get_instance()
-  let entities = editorInstance?.getEntities("") ?? []
-  let currentSelection = selectionStateEntities.get()
-
-  let sceneToCount = {}
-  let sceneToCurCount = {}
-  let eidToSceneId = {}
-  foreach (eid in entities) {
-    if (!(eid in currentSelection))
-      currentSelection[eid] <- false
-
-    let sceneId = editorInstance?.getEntityRecordSceneId(eid) ?? ecs.INVALID_SCENE_ID
-    eidToSceneId[eid] <- sceneId
-    let curVal = sceneToCount?[sceneId] ?? 0
-    if (curVal == 0) {
-      sceneToCurCount[sceneId] <- 0
+  let scenes = sceneIdMap.get()
+  expandedStateScenes.modify(function(expanded) {
+    let next = {}
+    foreach (id, _scene in scenes) {
+      next[id] <- expanded?[id] ?? false
     }
-    sceneToCount[sceneId] <- curVal + 1
-  }
-
-  allEntities.mutate(function(value) {
-    value.clear()
-    foreach (eid in entities) {
-      let sceneId = eidToSceneId[eid]
-      let fullCount = sceneToCount[sceneId]
-      let curCount = sceneToCurCount[sceneId]
-      if (curCount == 0) {
-        let newArray = array(fullCount, ecs.INVALID_ENTITY_ID)
-        newArray[0] = eid
-        value.rawset(sceneId, newArray)
-      } else {
-        value[sceneId][curCount] = eid
-      }
-      sceneToCurCount[sceneId] = curCount + 1
-    }
+    next[ecs.INVALID_SCENE_ID] <- expanded?[ecs.INVALID_SCENE_ID] ?? false
+    return next
   })
-  selectionStateEntities.trigger()
 }
 
-function initLists() {
-  initScenesList();
-  initEntitiesList();
-}
-
-allScenes.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(initLists))
-
-entitiesListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(initEntitiesList))
-addEntityCreatedCallback(@(_eid) deferOnce(initEntitiesList))
-addEntityRemovedCallback(@(_eid) deferOnce(initEntitiesList))
+sortedScenes.subscribe_with_nasty_disregard_of_frp_update(@(_v) deferOnce(initScenesList))
 
 const setSceneNameUID = "set_scene_name_modal_window"
 
@@ -591,7 +453,6 @@ function setScenePrettyName(sceneId) {
 
     function applySceneName() {
         entity_editor?.get_instance().setScenePrettyName(sceneId, sceneName.get())
-        updateAllScenes()
     }
 
     if (sceneName.get().len() == 0) {
@@ -644,14 +505,6 @@ function setScenePrettyName(sceneId) {
       )
     )
   })
-}
-
-function isItemSelected(item) {
-  if (item?.text != null) {
-    return false
-  }
-
-  return item?.scene != null ? markedStateScenes?.get()[item.scene.id] : selectionStateEntities?.get()[item.entity.id]
 }
 
 function getItemParentScene(item) {
@@ -870,7 +723,9 @@ function isItemLocked(item) {
   }
 }
 
-function mkDataRow(item, textColor, hovered, tooltips) {
+
+function mkDataRow(item, textColor, hovered, row) {
+  let { hidden, locked, tooltips } = row
   let isRealScene = item?.scene != null && item.scene.id != fakeScene.id
   let isEntity = item?.entity != null
   let isScene = item?.scene != null
@@ -926,16 +781,7 @@ function mkDataRow(item, textColor, hovered, tooltips) {
     }
   }
 
-  function itemToObjectData() {
-    let data = {}
-    data.isEntity <- item?.entity != null
-    data.id <- item?.entity != null ? item.entity.id : item.scene.id
-    if (item?.scene != null) {
-      data.loadType <- item.scene.loadType
-    }
-
-    return data
-  }
+  let obj = itemToObj(item)
 
   function getSceneTypeTagText(scene) {
     return scene.id != fakeScene.id ? getSceneLoadTypeText(scene) : "OTHER"
@@ -978,8 +824,8 @@ function mkDataRow(item, textColor, hovered, tooltips) {
           getSceneTypeTagText(item.scene), "COMMON", $"{getSceneTypeTagText(item.scene)} scene")
         : { rendObj = ROBJ_BOX, size = [ getTagWidth(false, "COMMON"), flex() ] }
       isScene
-        ? mkTag(getIcon("select_none"), Color(75, 51, 49), Color(174, 143, 109), getEntityCount(item.scene), "88888",
-          $"{getEntityCount(item.scene)} entities")
+        ? mkTag(getIcon("select_none"), Color(75, 51, 49), Color(174, 143, 109), getEntityCount(item.scene, sceneTree.get()), "88888",
+          $"{getEntityCount(item.scene, sceneTree.get())} entities")
         : { rendObj = ROBJ_BOX, size = [ getTagWidth(true, "88888"), flex() ] }
       {
         halign = ALIGN_LEFT
@@ -991,9 +837,8 @@ function mkDataRow(item, textColor, hovered, tooltips) {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         children = IconButton(getIcon("zoom_and_center"), function() {
-          clearSelection()
-          markObject(item)
-          selectObjects()
+          setSelection([itemToObj(item)])
+          applyToEditor()
           entity_editor?.get_instance().zoomAndCenter()
         }, !isOtherItem, hovered, 0.9, "Zoom in at center in the viewport")
       }
@@ -1001,52 +846,49 @@ function mkDataRow(item, textColor, hovered, tooltips) {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         children = IconButton(getIcon("layer_entity"), function() {
-          local wasSelected = isItemSelected(item)
+          let wasSelected = isItemSelected(item, selection.get())
           if (isScene) {
-            let newSelectionItems = []
-            gatherSceneItems(item.scene, 0, true, 0, newSelectionItems, @(_scene) true)
-            foreach (selected in newSelectionItems) {
-              markObject(selected, !wasSelected)
-            }
+            let node = findSceneNode(filteredTree.get(), item.scene.id)
+            markTreeNodes(node != null ? [node] : [], !wasSelected)
           }
           else if (isEntity) {
-            markObject(item, !wasSelected)
+            markObjects([itemToObj(item)], !wasSelected)
           }
         }, !isOtherItem, hovered, 0.9, tooltips.select)
       }
       @() {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        watch = edObjectFlagsUpdateTrigger
-        children = IconButton(isItemHidden(item) ? getIcon("eye_hide") : getIcon("eye_show"), function() {
-          if (isItemHidden(item)) {
-            entity_editor?.get_instance().unhideObjects([itemToObjectData()])
+        watch = hidden
+        children = IconButton(hidden.get() ? getIcon("eye_hide") : getIcon("eye_show"), function() {
+          if (hidden.get()) {
+            entity_editor?.get_instance().unhideObjects([obj])
           }
           else {
-            entity_editor?.get_instance().hideObjects([itemToObjectData()])
+            entity_editor?.get_instance().hideObjects([obj])
           }
-        }, !isOtherItem, hovered || isItemHidden(item), 0.9, tooltips.hide)
+        }, !isOtherItem, hovered || hidden.get(), 0.9, tooltips.hide)
       }
       @() {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
-        watch = edObjectFlagsUpdateTrigger
-        children = IconButton(isItemLocked(item) ? getIcon("lock_close") : getIcon("lock_open"), function() {
-          if (isItemLocked(item)) {
-            entity_editor?.get_instance().unlockObjects([itemToObjectData()])
+        watch = locked
+        children = IconButton(locked.get() ? getIcon("lock_close") : getIcon("lock_open"), function() {
+          if (locked.get()) {
+            entity_editor?.get_instance().unlockObjects([obj])
           }
           else {
-            entity_editor?.get_instance().lockObjects([itemToObjectData()])
+            entity_editor?.get_instance().lockObjects([obj])
           }
         },
         !isOtherItem,
-        hovered || isItemLocked(item), 0.9, tooltips.lock)
+        hovered || locked.get(), 0.9, tooltips.lock)
       }
       {
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         children = IconButton(getIcon("delete"), function() {
-          entity_editor?.get_instance().removeObjects([itemToObjectData()])
+          entity_editor?.get_instance().removeObjects([obj])
         }, !isOtherItem, hovered, canBeRemoved() ? 0.9 : 0.5, canBeRemoved()
           ? "Remove item"
           : "This item cannot be removed")
@@ -1129,10 +971,14 @@ let itemKey = @(item) item?.scene != null ? $"s{item.scene.id}" : item?.entity !
 
 let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
   let stateFlags = scope.Watched(0)
-  let isMarked = scope.Computed(function() {
-    UNUSED(markedStateScenes)
-    UNUSED(selectionStateEntities)
-    return isItemSelected(item.get()) ?? false
+  let isMarked = scope.Computed(@() isItemSelected(item.get(), selection.get()))
+  let hidden = scope.Computed(function() {
+    DEPENDS_ON(edObjectFlagsUpdateTrigger)
+    return isItemHidden(item.get())
+  })
+  let locked = scope.Computed(function() {
+    DEPENDS_ON(edObjectFlagsUpdateTrigger)
+    return isItemLocked(item.get())
   })
   
   let dropPosition = scope.Computed(function() {
@@ -1165,19 +1011,14 @@ let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
     select = scope.Computed(@() isMarked.get()
       ? "Selected\nClick to unselect this item and all nested items in the viewport"
       : "Not selected\nClick to select this item and all nested items in the viewport")
-    hide = scope.Computed(function() {
-      UNUSED(edObjectFlagsUpdateTrigger)
-      return isItemHidden(item.get())
-        ? "Hidden\nClick to show debug visualization in the viewport"
-        : "Visible\nClick to hide debug visualization in the viewport"
-    })
-    lock = scope.Computed(function() {
-      UNUSED(edObjectFlagsUpdateTrigger)
-      return isItemLocked(item.get())
-        ? "Locked\nClick to unlock editing"
-        : "Unlocked\nClick to lock editing"
-    })
+    hide = scope.Computed(@() hidden.get()
+      ? "Hidden\nClick to show debug visualization in the viewport"
+      : "Visible\nClick to hide debug visualization in the viewport")
+    lock = scope.Computed(@() locked.get()
+      ? "Locked\nClick to unlock editing"
+      : "Unlocked\nClick to lock editing")
   }
+  let row = { hidden, locked, tooltips }
 
   return function() {
     let cur = item.get()
@@ -1248,10 +1089,8 @@ let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
       }
 
       onDragMode = function(on, _val) {
-        let selectedIds = getAllSelectedItems()
-
         if (isMarked.get()) {
-          itemDragData.set(on ? selectedIds : null)
+          itemDragData.set(on ? selectedItems.get() : null)
         }
         else {
           let dragItem = {}
@@ -1269,92 +1108,38 @@ let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
       }
 
       onDoubleClick = function(_evt) {
-        clearSelection()
-        if (isScene) {
-          markedStateScenes.mutate(function(value) {
-            value[cur.scene.id] <- true
-          })
-        }
-        else {
-          selectionStateEntities.mutate(function(value) {
-            value[cur.entity.id] <- true
-          })
-        }
-        selectObjects()
+        setSelection([itemToObj(cur)])
+        applyToEditor()
       }
 
       onClick = function(evt) {
+        let obj = itemToObj(cur)
+        if (obj == null) {
+          return
+        }
         if (evt.shiftKey) {
-          local selCount = 0
-          foreach (_k, v in markedStateScenes.get()) {
-            if (v)
-              ++selCount
+          let sel = selection.get()
+          let items = filteredItems.get()
+          local idx1 = idx.get()
+          local idx2 = idx.get()
+          foreach (i, filteredItem in items) {
+            if (isItemSelected(filteredItem, sel)) {
+              idx1 = min(idx1, i)
+              idx2 = max(idx2, i)
+            }
           }
-          foreach (_k, v in selectionStateEntities.get()) {
-            if (v)
-              ++selCount
-          }
-          if (selCount > 0) {
-            local idx1 = -1
-            local idx2 = -1
-            foreach (i, filteredItem in filteredItems.get()) {
-              if (cur == filteredItem) {
-                idx1 = i
-                idx2 = i
-              }
-            }
-            foreach (i, filteredItem in filteredItems.get()) {
-              if ((filteredItem?.scene != null && markedStateScenes.get()?[filteredItem.scene.id])
-                || (filteredItem?.entity != null && selectionStateEntities.get()?[filteredItem.entity.id])) {
-                if (idx1 > i)
-                  idx1 = i
-                if (idx2 < i)
-                  idx2 = i
-              }
-            }
-            if (idx1 >= 0 && idx2 >= 0) {
-              if (idx1 > idx2) {
-                let tmp = idx1
-                idx1 = idx2
-                idx2 = tmp
-              }
-              markedStateScenes.mutate(function(value) {
-                for (local i = idx1; i <= idx2; i++) {
-                  let filteredItem = filteredItems.get()[i]
-                  if (filteredItem?.scene != null) {
-                    value[filteredItem.scene.id] <- !evt.ctrlKey
-                  }
-                }
-              })
-              selectionStateEntities.mutate(function(value) {
-                for (local i = idx1; i <= idx2; i++) {
-                  let filteredItem = filteredItems.get()[i]
-                  if (filteredItem?.entity != null) {
-                    value[filteredItem.entity.id] <- !evt.ctrlKey
-                  }
-                }
-              })
-            }
+          if (hasSelection.get()) {
+            markObjects(items.slice(idx1, idx2 + 1).map(itemToObj).filter(@(o) o != null), !evt.ctrlKey)
           }
         }
         else if (evt.ctrlKey) {
-          if (isScene) {
-            markedStateScenes.mutate(function(value) {
-              value[cur.scene.id] <- !value?[cur.scene.id]
-            })
-          }
-          else {
-            selectionStateEntities.mutate(function(value) {
-              value[cur.entity.id] <- !value?[cur.entity.id]
-            })
-          }
+          toggleObject(obj)
+        }
+        else if (isItemSelected(cur, selection.get())) {
+          clearSelection()
         }
         else {
-          local wasMarked = isItemSelected(cur)
-          clearSelection()
-          if (!wasMarked) {
-            markObject(cur)
-          }
+          setSelection([obj])
         }
       }
 
@@ -1383,7 +1168,7 @@ let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
                 {
                   size = const [ flex(), SIZE_TO_CONTENT ]
                   padding = const [fsh(0.5), fsh(0.5), fsh(0.5), 0]
-                  children = mkDataRow(cur, textColor.get(), (sf & S_HOVER) != 0, tooltips)
+                  children = mkDataRow(cur, textColor.get(), (sf & S_HOVER) != 0, row)
                 }
               ]
             }
@@ -1399,14 +1184,18 @@ let SceneRow = StatefulComp(function(scope, item, idx, isLastSibling) {
   }
 }, itemKey)
 
-de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initLists))
 
-function isAnyEntitySelected(): bool {
-  return selectionStateEntities?.get().filter(@(val, _) val).len() != 0
+function singleMarkedImportScene(sel, scenes) {
+  let sceneIds = sel.scenes.keys()
+  if (sceneIds.len() != 1 || sel.entities.len() != 0) {
+    return null
+  }
+  let scene = scenes?[sceneIds[0]]
+  return scene?.loadType == 3 ? scene : null
 }
 
 function createSelectButton() {
-  return textButton("Select", selectObjects, {
+  return textButton("Select", applyToEditor, {
     boxStyle = {
       normal = {
         margin = 0
@@ -1415,29 +1204,19 @@ function createSelectButton() {
 }
 
 let canAddImport = Computed(function() {
-  let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-  if (selectedSceneIds?.len() != 1 || (selectionStateEntities.get() != null && isAnyEntitySelected())) {
-    return false
-  }
-
-  local scene = sceneIdMap?.get()[selectedSceneIds[0]]
-  if (scene?.loadType != 3) {
-    return false
-  }
-
-  return canSceneBeModified(scene)
+  let scene = singleMarkedImportScene(selection.get(), sceneIdMap.get())
+  return scene != null && canSceneBeModified(scene)
 })
 
 function createRemoveObjectsButton() {
   let canRemoveObjects = Computed(function() {
-    UNUSED(edObjectFlagsUpdateTrigger)
+    DEPENDS_ON(edObjectFlagsUpdateTrigger)
 
-    let selectedItems = getAllSelectedItems()
-    if (selectedItems.len() == 0) {
-      return false;
+    if (!hasSelection.get()) {
+      return false
     }
 
-    foreach (item in selectedItems) {
+    foreach (item in selectedItems.get()) {
       if (item.isEntity) {
         let parentSceneId = entity_editor?.get_instance().getEntityRecordSceneId(item.id)
         if (entity_editor?.get_instance()?.isEntityLocked(item.id) || (parentSceneId != ecs.INVALID_SCENE_ID && !canSceneBeModified(sceneIdMap?.get()[parentSceneId]))) {
@@ -1458,7 +1237,7 @@ function createRemoveObjectsButton() {
   return @() {
     watch = [edObjectFlagsUpdateTrigger, canRemoveObjects]
     children = textButton("Remove", function() {
-      entity_editor?.get_instance().removeObjects(getAllSelectedItems())
+      entity_editor?.get_instance().removeObjects(selectedItems.get())
       },
       {
         off = !canRemoveObjects.get()
@@ -1473,25 +1252,10 @@ function createRemoveObjectsButton() {
 }
 
 function createHideObjectsButton() {
-  let canHideObjects = Computed(function() {
-    UNUSED(markedStateScenes)
-    UNUSED(selectionStateEntities)
-
-    let selectedItems = getAllSelectedItems()
-    if (selectedItems.len() == 0) {
-      return false;
-    }
-
-    return true
-  })
-
   let isSelectionHidden = Computed(function() {
-    UNUSED(markedStateScenes)
-    UNUSED(selectionStateEntities)
-    UNUSED(edObjectFlagsUpdateTrigger)
+    DEPENDS_ON(edObjectFlagsUpdateTrigger)
 
-    let selectedItems = getAllSelectedItems()
-    foreach (item in selectedItems) {
+    foreach (item in selectedItems.get()) {
       if (item.isEntity) {
         if (!entity_editor?.get_instance().isEntityHidden(item.id)) {
           return false
@@ -1513,19 +1277,19 @@ function createHideObjectsButton() {
   })
 
   return @() {
-    watch = [isSelectionHidden, canHideObjects]
-    children = textButton(isSelectionHidden.get() && canHideObjects.get() ? "Unhide" : "Hide", function() {
+    watch = [isSelectionHidden, hasSelection]
+    children = textButton(isSelectionHidden.get() && hasSelection.get() ? "Unhide" : "Hide", function() {
       if (isSelectionHidden.get()) {
-        entity_editor?.get_instance().unhideObjects(getAllSelectedItems())
+        entity_editor?.get_instance().unhideObjects(selectedItems.get())
       }
       else {
-        entity_editor?.get_instance().hideObjects(getAllSelectedItems())
+        entity_editor?.get_instance().hideObjects(selectedItems.get())
       }
     }, {
-      off = !canHideObjects.get(),
-      disabled = Computed(@() !canHideObjects.get() ),
+      off = !hasSelection.get(),
+      disabled = Computed(@() !hasSelection.get() ),
       onHover = @(on) setTooltip(on ? Computed(function() {
-        if (!canHideObjects.get()) {
+        if (!hasSelection.get()) {
           return "First, select the target items"
         }
 
@@ -1540,25 +1304,10 @@ function createHideObjectsButton() {
 }
 
 function createLockObjectsButton() {
-  let canLockObjects = Computed(function() {
-    UNUSED(markedStateScenes)
-    UNUSED(selectionStateEntities)
-
-    let selectedItems = getAllSelectedItems()
-    if (selectedItems.len() == 0) {
-      return false;
-    }
-
-    return true
-  })
-
   let isSelectionLocked = Computed(function() {
-    UNUSED(markedStateScenes)
-    UNUSED(selectionStateEntities)
-    UNUSED(edObjectFlagsUpdateTrigger)
+    DEPENDS_ON(edObjectFlagsUpdateTrigger)
 
-    let selectedItems = getAllSelectedItems()
-    foreach (item in selectedItems) {
+    foreach (item in selectedItems.get()) {
       if (item.isEntity) {
         if (!entity_editor?.get_instance().isEntityLocked(item.id)) {
           return false
@@ -1580,19 +1329,19 @@ function createLockObjectsButton() {
   })
 
   return @() {
-    watch = [isSelectionLocked, canLockObjects]
-    children = textButton(isSelectionLocked.get() && canLockObjects.get() ? "Unlock" : "Lock", function() {
+    watch = [isSelectionLocked, hasSelection]
+    children = textButton(isSelectionLocked.get() && hasSelection.get() ? "Unlock" : "Lock", function() {
       if (isSelectionLocked.get()) {
-        entity_editor?.get_instance().unlockObjects(getAllSelectedItems())
+        entity_editor?.get_instance().unlockObjects(selectedItems.get())
       }
       else {
-        entity_editor?.get_instance().lockObjects(getAllSelectedItems())
+        entity_editor?.get_instance().lockObjects(selectedItems.get())
       }
     }, {
-      off = !canLockObjects.get(),
-      disabled = Computed(@() !canLockObjects.get() )
+      off = !hasSelection.get(),
+      disabled = Computed(@() !hasSelection.get() )
       onHover = @(on) setTooltip(on ? Computed(function() {
-        if (!canLockObjects.get()) {
+        if (!hasSelection.get()) {
           return "First, select the target items"
         }
 
@@ -1608,21 +1357,12 @@ function createLockObjectsButton() {
 
 let ScenePropertiesControl = StatefulComp(function(scope) {
   let sceneIndex = scope.Computed(function() {
-    let selectedSceneIds = markedStateScenes.get()?.filter(@(marked, _sceneId) marked).keys()
-    if (selectedSceneIds == null || selectedSceneIds.len() != 1) {
+    let sceneIds = selection.get().scenes.keys()
+    if (sceneIds.len() != 1 || sceneIdMap.get()?[sceneIds[0]].loadType != 3) {
       return -1
     }
-    let sceneId = selectedSceneIds[0]
-    if (sceneIdMap.get()?[sceneId].loadType != 3) {
-      return -1
-    }
-
-    return sceneId;
+    return sceneIds[0]
   })
-
-  function getIsTransformable() {
-    return sceneIndex.get() != -1 ? entity_editor?.get_instance().isSceneTransformable(sceneIndex.get()) : false
-  }
 
   let isTransformable = scope.Watched(false)
   let pivotX = scope.Watched("")
@@ -1630,21 +1370,33 @@ let ScenePropertiesControl = StatefulComp(function(scope) {
   let pivotZ = scope.Watched("")
 
   
+  function syncPivotField(field, value) {
+    let text = field.get().tostring()
+    if (!isStringFloat(text) || text.tofloat() != value) {
+      field.set(value)
+    }
+  }
+
   
   function readFromEditor(_v) {
-    let idx = sceneIndex.get()
-    isTransformable.set(getIsTransformable())
-    let scenePivot = idx != -1 ? entity_editor?.get_instance().getScenePivot(idx) : null
-    pivotX.set(scenePivot ? scenePivot.x : "")
-    pivotY.set(scenePivot ? scenePivot.y : "")
-    pivotZ.set(scenePivot ? scenePivot.z : "")
+    let scene = sceneIdMap.get()?[sceneIndex.get()]
+    isTransformable.set(scene?.transformable ?? false)
+    if (scene == null) {
+      pivotX.set("")
+      pivotY.set("")
+      pivotZ.set("")
+      return
+    }
+    syncPivotField(pivotX, scene.pivot.x)
+    syncPivotField(pivotY, scene.pivot.y)
+    syncPivotField(pivotZ, scene.pivot.z)
   }
   readFromEditor(null)
   
   
   sceneIndex.subscribe_with_nasty_disregard_of_frp_update(readFromEditor)
-  sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(readFromEditor)
-  scope.onDetach(@() sceneListUpdateTrigger.unsubscribe(readFromEditor))
+  sceneIdMap.subscribe_with_nasty_disregard_of_frp_update(readFromEditor)
+  scope.onDetach(@() sceneIdMap.unsubscribe(readFromEditor))
 
   function onPivotXChanged(val) {
     if (isStringFloat(val) && isStringFloat(pivotY.get()) && isStringFloat(pivotZ.get())) {
@@ -1807,13 +1559,10 @@ function mkImportButton() {
     watch = [canAddImport]
     children = textButton("Import", function() {
         addImportDialog(function(path) {
-          let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-          if (selectedSceneIds?.len() == 1 && !isAnyEntitySelected()) {
-            entity_editor?.get_instance().addImportScene(selectedSceneIds[0], path)
-            expandedStateScenes?.mutate(function(value) {
-              value[selectedSceneIds[0]] = true
-            })
-            updateAllScenes()
+          let scene = singleMarkedImportScene(selection.get(), sceneIdMap.get())
+          if (scene != null) {
+            entity_editor?.get_instance().addImportScene(scene.id, path)
+            expandedStateScenes.mutate(@(value) value[scene.id] <- true)
           }
         })
       },
@@ -1823,9 +1572,9 @@ function mkImportButton() {
         onHover = function(on) {
           local text = null
           if (on) {
-            if (canAddImport.get()) {
-              let selectedSceneIds = getSelectedScenesIndicies(markedStateScenes)
-              text = $"Add a new scene or import an existing one into {fileName(sceneIdMap?.get()[selectedSceneIds[0]].path)}"
+            let scene = canAddImport.get() ? singleMarkedImportScene(selection.get(), sceneIdMap.get()) : null
+            if (scene != null) {
+              text = $"Add a new scene or import an existing one into {fileName(scene.path)}"
             }
             else {
               text = "Add a new scene or import an existing one\nFirst, select the target scene to import"
@@ -1854,11 +1603,6 @@ function mkFilterOptionsButton() {
   let dropDownOpen = Watched(false)
   let toggleDropDown = @() dropDownOpen.get() ? dropDownOpen.set(false) : dropDownOpen.set(true)
   let doHideDropDown = @() dropDownOpen.set(false)
-
-  local popupLayer = 1
-  if ("Layers" in getconsttable()) {
-    popupLayer = getconsttable()?["Layers"].ComboPopup ?? 1
-  }
 
   let isAnyFilterOptionEnabled = Computed(function() {
     return !showEntities.get() || !showClientScenes.get() || !showCommonScenes.get() || !showImportScenes.get() || !showOtherScenes.get()
@@ -1939,7 +1683,7 @@ function mkFilterOptionsButton() {
     }
 
     return {
-      zOrder = popupLayer
+      zOrder = getPopupZOrder()
       size = flex()
       children = [
         dropdownBgOverlay(doHideDropDown)
@@ -2078,7 +1822,6 @@ function mkScenesList() {
 
 return {
   id = SceneOutlinerWndId
-  onAttach = updateAllScenes
   mkContent = mkScenesList
   saveState=true
   headerText = "Scene Outliner"

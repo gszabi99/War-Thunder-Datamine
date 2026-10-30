@@ -1,26 +1,25 @@
-from "%sqstd/string.nut" import stripTags
+import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%scripts/controls/mousePointerVisibility.nut" import forceHideCursor
+from "%scripts/gdk/loginState.nut" import login
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%appGlobals/clientState/localProfile.nut" import loadLocalSharedSettings
+from "%scripts/eulaWnd.nut" import LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/viewUtils/projectAwards.nut" import setProjectAwards
+from "%scripts/waitScreen/waitScreen.nut" import showWaitScreen, closeWaitScreen
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "guiOptions" import setGuiOptionsMode
 from "%gdkLib/impl/user.nut" import get_gamertag
 from "%sqstd/platform.nut" import is_xbox
 from "%scripts/dagui_natives.nut" import xbox_complete_login
 from "%scripts/dagui_library.nut" import *
-
-let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
-let { login } = require("%scripts/gdk/loginState.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
-let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 
 const AUTOLOGIN_DISABLED = true
 

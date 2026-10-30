@@ -27,8 +27,8 @@ let getPromoHandlerUpdateConfigs = @() promoButtonsConfig.map(
     updateByEvents = c?.updateByEvents
   })
 
-return {
+return freeze({
   addPromoButtonConfig
   getPromoButtonConfig
   getPromoHandlerUpdateConfigs
-}
+})

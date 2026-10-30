@@ -1,8 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let ChooseAmountWnd = class (BaseGuiHandlerWT) {
@@ -87,6 +88,6 @@ let ChooseAmountWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ChooseAmountWnd", ChooseAmountWnd)
 
-return {
+return freeze({
   open = @(params) handlersManager.loadHandler(ChooseAmountWnd, params)
-}
+})

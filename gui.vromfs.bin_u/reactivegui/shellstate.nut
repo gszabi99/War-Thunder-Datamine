@@ -32,4 +32,4 @@ interopGet({
 })
 
 
-return shellState
+return freeze(shellState)

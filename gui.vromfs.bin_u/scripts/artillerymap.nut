@@ -1,4 +1,15 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/mousePointerInitialPos.nut" import setMousePointerInitialPos
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/hud/hudActionBarInfo.nut" import getActionItemStatus
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/controls/controlsVisual.nut" import getLocalizedControlName
+from "%scripts/controls/controlsCompatibility.nut" import getShortcuts
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%scripts/missions/missionsUtils.nut" import getLevelMapBackgroundColors
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
@@ -10,7 +21,7 @@ from "string" import format
 from "guiArtillery" import getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel, getMapRelativePlayerPos, getArtilleryRange
 from "hudActionBar" import getActionBarItems
 from "hudActionBarConst" import EII_ARTILLERY_TARGET
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "guiMission" import get_mission_difficulty_int, get_current_mission_desc
 from "gameplayBinding" import isInFlight
 from "%globalScripts/inputDeviceConsts.nut" import *
@@ -19,19 +30,8 @@ from "%globalScripts/difficultyConsts.nut" import *
 from "app" import is_dev_version
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
-let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -431,4 +431,4 @@ eventbus_subscribe("artilleryCallByShortcut", function(_) {
     handler.onApplyByShortcut()
 })
 
-return { ArtilleryMap }
+return freeze({ ArtilleryMap })

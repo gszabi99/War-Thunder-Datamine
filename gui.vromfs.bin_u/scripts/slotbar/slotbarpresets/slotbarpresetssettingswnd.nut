@@ -1,13 +1,13 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut" import getPresetsSettings, setPresetsSetting
 from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getPresetsSettings, setPresetsSetting } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
 
 function getDependedSettings() {
   return getPresetsSettings().reduce(function(res, value) {
@@ -114,7 +114,7 @@ let SlotbarPresetSettings = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("SlotbarPresetSettings", SlotbarPresetSettings)
 
-return {
+return freeze({
   openSlotbarPresetSettings = @(initialButton, owner)
     handlersManager.loadHandler(SlotbarPresetSettings, {initialButton, ownerWeak = owner })
-}
+})

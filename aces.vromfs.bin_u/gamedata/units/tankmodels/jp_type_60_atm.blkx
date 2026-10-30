@@ -1131,7 +1131,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_03",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1157,7 +1157,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_type_64_mat_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_type_64_mat_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1209,7 +1209,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_type_64_mat_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_type_64_mat_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
         "emitter": "bone_rocket_02",
@@ -1261,7 +1261,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": 0.0,
@@ -1343,7 +1343,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1387,8 +1387,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_60_atm_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_60_atm_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -1429,7 +1429,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.69,
       "maxBrakeForce": 55000.0,
       "driveGearRadius": 0.24,
       "mainGearRatio": 4.82,
@@ -1462,7 +1465,18 @@
         110000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -2490,5 +2504,29 @@
         "to": "jp_camo_post_biege_gray_green_fuji*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.5,
+      1.437,
+      1.0059
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

@@ -1,9 +1,8 @@
+import "%rGui/timeLocTable.nut" as timeLocTable
 import "penalty" as penalty
 import "string" as stdStr
 import "%sqstd/time.nut" as time
 from "%rGui/globals/ui_library.nut" import *
-
-let timeLocTable = require("%rGui/timeLocTable.nut")
 
 let currentPenaltyDesc = Watched({})
 
@@ -48,7 +47,7 @@ function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
 }
 
 
-return {
+return freeze({
   isDevoiced = isDevoiced
   getDevoiceDescriptionText = getDevoiceDescriptionText
-}
+})

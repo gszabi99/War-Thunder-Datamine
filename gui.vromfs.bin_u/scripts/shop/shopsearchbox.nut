@@ -1,20 +1,19 @@
+import "%scripts/shop/shopSearchCore.nut" as shopSearchCore
+import "%scripts/shop/shopSearchWnd.nut" as shopSearchWnd
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfo.nut" import getUnitCountry
+from "%scripts/unit/unitParams.nut" import getEsUnitType
 from "%sqstd/string.nut" import trim
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-
-let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 
 let ShopSearchBox = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -37,7 +36,6 @@ let ShopSearchBox = class (BaseGuiHandlerWT) {
   isClear = true
 
   function initScreen() {
-    this.scene.setUserData(this)
     this.scene.findObject("search_update_timer").setUserData(this)
 
     foreach (id in [ "search_btn_start", "search_btn_close" ]) {
@@ -190,6 +188,6 @@ let ShopSearchBox = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ShopSearchBox", ShopSearchBox)
 
-return {
+return freeze({
   init = @(params) handlersManager.loadHandler(ShopSearchBox, params)
-}
+})

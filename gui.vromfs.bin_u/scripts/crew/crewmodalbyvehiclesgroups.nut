@@ -1,19 +1,19 @@
+import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/crew/crewWndHandler.nut" import CrewHandler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import getSlotItem, getCurPreset, setUnit
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton, warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import purchaseNewCrewSlot
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "string" import format
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { CrewHandler } = require("%scripts/crew/crewWndHandler.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setColoredDoubleTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 class CrewModalByVehiclesGroups (CrewHandler) {
   wndType = handlerType.MODAL
@@ -96,11 +96,8 @@ class CrewModalByVehiclesGroups (CrewHandler) {
 
 register_gui_handler("CrewModalByVehiclesGroups", CrewModalByVehiclesGroups)
 
-return {
+return freeze({
   open = function(params = {}) {
-    if (hasFeature("CrewSkills"))
-      handlersManager.loadHandler(CrewModalByVehiclesGroups, params)
-    else
-      showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+    handlersManager.loadHandler(CrewModalByVehiclesGroups, params)
   }
-}
+})

@@ -2031,13 +2031,14 @@ def render_anim_graph(var animchar : AnimcharBaseComponent; var reset_state : bo
           imgui::Separator()
 
           for param in params
-            if !showHiddenParams && param.name |> character_at(0) == ':'
+            let alwaysShowThisHiddenParam = param.name == "::GlobalTime" || param.name == "::GlobalLastDT"
+            if !showHiddenParams && param.name |> character_at(0) == ':' && !alwaysShowThisHiddenParam
               continue
 
             if !(*paramsFilter |> PassFilter(param.name))
               continue
 
-            invoke(drawParam, param.id, "", "{param.name}", showHiddenParams)
+            invoke(drawParam, param.id, "", "{param.name}", showHiddenParams || alwaysShowThisHiddenParam)
 
       if imgui::CollapsingHeader("Bookmarked states and params")
         if length(bookmarkedStates) + length(bookmarkedParams) == 0
@@ -2488,28 +2489,37 @@ def render_anim_graph(var animchar : AnimcharBaseComponent; var reset_state : bo
             else
               NavigateToContent(0.2f)
 
-          query() <| $ [es] (var animgraph_prop_panel__select_request : das_string&; animgraph_prop_panel__select_tree : das_string)
-            let requested = "{animgraph_prop_panel__select_request}"
-            if requested != ""
+          query() <| $ [es] (var animgraph_prop_panel__select_request : StringList&; animgraph_prop_panel__select_tree : das_string)
+            if !empty(animgraph_prop_panel__select_request)
               
               let drawnTree = get_game_resource_name(graph.resId)
-              var status = "Selected '{requested}'"
+              var status = ""
               let requestTree = "{animgraph_prop_panel__select_tree}"
               if requestTree != drawnTree
                 status = "Select failed: request was made for '{requestTree}', the viewer draws '{drawnTree}'"
               else
-                let selIdx = ctx.nodeNames |> find_index(requested)
-                if selIdx < 0
-                  status = "Select failed: node '{requested}' not found in graph"
-                elif selIdx >= length(isNodeRendered) || !isNodeRendered[selIdx]
-                  status = "Select failed: node '{requested}' is not drawn (draw mode or node filter)"
+                
+                var drawnIdxs : array<int>
+                let requestedCount = length(animgraph_prop_panel__select_request)
+                for requested in animgraph_prop_panel__select_request
+                  let selIdx = ctx.nodeNames |> find_index(string(requested))
+                  if selIdx >= 0 && isNodeRendered[selIdx]
+                    drawnIdxs |> push(selIdx)
+                if length(drawnIdxs) == 0
+                  status = "Select failed: no requested node is drawn (draw mode or node filter)"
                 else
                   imgui_node_editor::ClearSelection()
-                  imgui_node_editor::SelectNode(get_node_idx(ctx.nodeIds[selIdx]), true)
+                  for selIdx in drawnIdxs
+                    imgui_node_editor::SelectNode(get_node_idx(ctx.nodeIds[selIdx]), true)
                   NavigateToSelection(false, 0.2f)
+                  let firstName = ctx.nodeNames[drawnIdxs[0]]
+                  if length(drawnIdxs) == requestedCount
+                    status = requestedCount == 1 ? "Selected '{firstName}'" : "Selected {requestedCount} nodes ('{firstName}', ...)"
+                  else
+                    status = "Selected {length(drawnIdxs)} of {requestedCount} nodes, others are not drawn (draw mode or node filter)"
               query() <| $ [es] (var animgraph_prop_panel__select_status : das_string&)
                 animgraph_prop_panel__select_status := status
-              animgraph_prop_panel__select_request := ""
+              clear(animgraph_prop_panel__select_request)
 
           imgui_node_editor::Suspend()
 

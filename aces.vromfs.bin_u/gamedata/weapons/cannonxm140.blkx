@@ -1,13 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.35,
-  "shotFreq": 7.5,
-  "traceFreq": 4,
-  "bullets": 50,
-  "dragCx": 0.001,
-  "mass": 66.7,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,6 +14,15 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.35,
+  "shotFreq": 7.5,
+  "bullets": 50,
+  "dragCx": 0.001,
+  "mass": 66.7,
+  "shouldCollideWithRendinsts": true,
   "bullet": {
     "mass": 0.4,
     "caliber": 0.03,
@@ -408,15 +408,8 @@
       ],
       "traceFreq": 1,
       "tracer": "30mmRed",
-      "trail": "noTrail"
+      "trail": "black"
     }
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_xm140_outside",
-    "cockpit": "cannon_xm140_inside",
-    "ai": "cannon_xm140_ai"
   },
   "aden_new_gun": {
     "maxDeltaAngle": 0.65,
@@ -432,5 +425,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_xm140_outside",
+    "cockpit": "cannon_xm140_inside",
+    "ai": "cannon_xm140_ai"
   }
 }

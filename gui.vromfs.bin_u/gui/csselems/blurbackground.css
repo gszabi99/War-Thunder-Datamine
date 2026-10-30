@@ -1,9 +1,3 @@
-@const blurBgrColor: #66080A0D;
-@const blurSlotbarForegroundColor: #b2141a21;
-@const fullScreenBgrColor: #BF090F16;
-@const hudBlur: #BF9696A1;
-
-
 blur {
   position: root;
   size: 1@swOrRwInVr, 1@shOrRhInVr;
@@ -59,18 +53,4 @@ smoke_bg_image {
   pos: (sw-w)/2, sh-h;
   background-image: !ui/images/profile/smoke_bg;
   background-color: @white;
-}
-
-hover_dark_border {
-  position: absolute;
-  size: pw-2@sf/@pf, ph-2@sf/@pf;
-  pos: @dp, @dp;
-  input-transparent: yes;
-  border: yes;
-  border-color: #2D3841;
-  display: hide;
-}
-
-:hover > hover_dark_border {
-  display: show;
 }

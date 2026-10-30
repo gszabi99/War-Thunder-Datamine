@@ -1,8 +1,7 @@
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 from "guiTacticalMap" import TacticalMapIconType
-
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 
 let { IT_Fighter, IT_Bomber, IT_Assault, IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer,
   IT_Tracked, IT_SPAA, IT_Airdefence, IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage,
@@ -38,18 +37,19 @@ let getUpdatedUnitTypes = @(side) unitTypesData.map(@(v, idx) {
   id = $"{side}_{idx}"
 })
 
+let hardPersist = mkHardPersist("respawn.mapMarkersFilter")
 let filterNames = [
   {
     name = "allies"
     title = "sensorsFilters/allyes"
     fillFunction = @() getUpdatedUnitTypes("allies")
-    selectedArr = persist("markerFilterAllies", @() [])
+    selectedArr = hardPersist("markerFilterAllies", [])
   }
   {
     name = "enemies"
     title = "sensorsFilters/enemyes"
     fillFunction = @() getUpdatedUnitTypes("enemies")
-    selectedArr = persist("markerFilterEnemies", @() [])
+    selectedArr = hardPersist("markerFilterEnemies", [])
   }
 ]
 
@@ -114,8 +114,8 @@ function applyTacticalMapMarksFilterChange(objId, tName, value) {
   }
 }
 
-return {
+return freeze({
   getTacticalMapMarksFiltersView
   applyTacticalMapMarksFilterChange
   getTacticalMapMarksSelectedFilters
-}
+})

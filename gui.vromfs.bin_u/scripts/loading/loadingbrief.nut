@@ -1,4 +1,24 @@
+import "%scripts/missions/changeStartMission.nut" as changeStartMission
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton, setHelpTextOnLoading
+from "%scripts/chat/chatStates.nut" import hasMenuChat
+from "%scripts/loading/loadingTips.nut" import getTip
+from "%scripts/missions/missionsUtils.nut" import getMissionLocaltionAndConditionText, getLevelMapBackgroundColors
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_WEAPONS
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/unit/unitInfo.nut" import getUnitName, getCountryByAircraftName
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/missions/missionsStates.nut" import get_mission_settings, currentCampaignMission
+from "%scripts/missions/missionsText.nut" import loc_current_mission_desc, locCurrentMissionName
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/statistics/mpStatisticsUtil.nut" import getCurMpTitle
+from "%scripts/help/helpWnd.nut" import gui_modal_help
+from "%scripts/chat/chatUtils.nut" import getChatObject
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, broadcastEvent
 from "blkGetters" import get_game_params_blk
@@ -9,7 +29,7 @@ from "multiplayer" import is_mplayer_peer
 from "loading" import loading_is_finished, loading_press_apply, briefing_finish, loading_play_voice, loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len
   , loading_is_voice_playing, loading_play_music, loading_stop_music
 from "mission" import get_game_mode, get_game_type, get_game_type_by_mode
-from "%sqstd/string.nut" import clearBorderSymbolsMultiline
+from "%sqStdLibs/helpers/daguiString.nut" import clearBorderSymbolsMultiline
 from "guiMission" import get_current_mission_desc
 from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
@@ -19,27 +39,7 @@ from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let changeStartMission = require("%scripts/missions/changeStartMission.nut")
-let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { getTip } = require("%scripts/loading/loadingTips.nut")
-let { getMissionLocaltionAndConditionText, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getCountryByAircraftName } = require("%scripts/unit/unitInfo.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { get_mission_settings, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { loc_current_mission_desc, locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -514,4 +514,4 @@ let LoadingBrief = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("LoadingBrief", LoadingBrief)
 
-return { LoadingBrief }
+return freeze({ LoadingBrief })

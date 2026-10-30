@@ -1,5 +1,5 @@
+from "%sqstd/platform.nut" import is_android, isSony, isXbox
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%sqstd/platform.nut" import is_android
 from "string" import format
 from "eventbus" import subscribe, unsubscribe
 from "%scripts/dagui_library.nut" import *
@@ -7,7 +7,6 @@ from "app" import is_dev_version
 from "hudState" import is_hud_visible
 
 let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 
 
 const QUALITY_COLOR_EPIC = "constantColorFps"
@@ -86,7 +85,7 @@ function updateTexts(objects, params) {
   let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
   let fpsInt = (fps + 0.5).tointeger();
   local fpsText = ""
-  let isAllowedForPlatform = !isPlatformSony && !isPlatformXbox && !is_android
+  let isAllowedForPlatform = !isSony && !isXbox && !is_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((is_dev_version() || isAllowedForPlatform || isAllowedForUser) && fpsInt < 10000 && fpsInt > 0)
     fpsText = colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))

@@ -1,11 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/unit/unitClassType.nut" import processUnitTypeArray
+from "%scripts/ranks.nut" import maxCountryRank
 from "dagor.math" import Point2
 from "%scripts/dagui_library.nut" import *
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 
 let ModificationBase = class (BaseItem) {

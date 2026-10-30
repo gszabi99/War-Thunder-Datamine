@@ -93,17 +93,12 @@ def human_weap_throw_on_equip(evt : CmdPostPhysUpdate;
 def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
                                          eid : EntityId;
                                          human_net_phys : HumanActor;
-                                         human_net_phys__isClimbing : bool;
                                          human_weap__throwMode : bool;
                                          human_weap__grenadeThrowServerConfirmed : bool;
                                          var human_weap__grenadeThrowViaRethrow : bool&;
                                          human_weap__grenadeThrower : EntityId)
-  if human_net_phys__isClimbing || human_weap__throwMode || !human_weap__grenadeThrowServerConfirmed
-    return
-
-  assume phys = human_net_phys.phys
-  if phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_HOLSTERING || \
-     phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_EQUIPING
+  if !can_quick_throw_via_rethrow(human_weap__throwMode, human_weap__grenadeThrowServerConfirmed,
+                                  human_net_phys.phys)
     return
 
   sendEventImmediate(eid, CmdInterruptReloadImmediately())

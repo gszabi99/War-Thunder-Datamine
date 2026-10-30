@@ -16,14 +16,6 @@ excludesdata =
     ]
   },
   {
-    key = "b",
-    arr =
-    [
-      "blade",
-      "blados",
-    ]
-  },
-  {
     key = "d",
     arr =
     [
@@ -35,7 +27,8 @@ excludesdata =
     key = "h",
     arr =
     [
-      "hoary",
+      "^hoary"
+      "^huy(a|amos|an|as|e|en|endo|eron|es|o|ó)$"
     ]
   },
   {
@@ -145,7 +138,8 @@ fouldata =
       "^b[i1]tc",
       "^b(|i|1)tch",
       "^binladen",
-      "^bl(|y)ad(|t)",
+      "^bladina",
+      "^bl(y|j|i)a(d|t)",
       "^blow(job|me)",
       "^butt(hole|wipe)",
       "^boffing",
@@ -233,6 +227,8 @@ fouldata =
     key = "e",
     arr =
     [
+      "^ebal[ou]"
+      "^ebat"
       "^ejaculate"
       "^enema"
       "^encule"
@@ -308,7 +304,7 @@ fouldata =
       "^honk(|e)y",
       "^h[o0][o0]ker",
       "^huevon",
-      "^hui",
+      "^hu[ijy]",
       "^hukasyokumin",
       "^hure",
       "^huzinoyamai",
@@ -411,6 +407,7 @@ fouldata =
       "^molest",
       "^mong",
       "^mouliewop",
+      "^mudak",
       "^muie",
       "^mulkku",
       "^mulatto",
@@ -424,6 +421,7 @@ fouldata =
       "^n(|[aeilu14])[qg6](|q|g|6)([e3]r|[ag46])(|man|z|let)",
       "^n[g13]gr",
       "^nastt",
+      "^nahu[ijy]",
       "^n[a4](|t)z[i1l]",
       "^nepesaurio",
       "^niig(|e)r",
@@ -479,7 +477,7 @@ fouldata =
       "^pimmel",
       "^pinche",
       "^piss",
-      "^pizda",
+      "^pizd[aeou]",
       "^polla",
       "^poontsee",
       "^poop",
@@ -684,6 +682,7 @@ fouldata =
     arr =
     [
       "^zabourah"
+      "^zaeb(al|is)"
       "^zipperhead"
     ]
   }
@@ -709,6 +708,13 @@ forbiddennames = [
 
 allowednames = [
   "homochka"
+  "^hujr"
+  "^huy" 
+  "^huib[oо]"
+  "^huj[aа][cс]h[aа]"
+  "^hujb[eе]r"
+  "^huj[eе]r"
+  "^huji[mм][aа][tт][aа]"
   "iктzdхуеzzета"
 ]
 

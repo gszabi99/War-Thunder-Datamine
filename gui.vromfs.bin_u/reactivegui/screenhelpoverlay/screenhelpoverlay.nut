@@ -1,11 +1,9 @@
-from "%globalScripts/guiGeom/guiBox.nut" import cutBoxesAroundTargets
+from "%globalScripts/guiGeom/guiBox.nut" import GuiBox, cutBoxesAroundTargets
 from "%globalScripts/guiGeom/linesGenerator.nut" import LinesPriorities, createLinkLines
 from "%globalScripts/guiGeom/hintPlacement.nut" import findPlaceForHintByRect
 from "%rGui/screenHelpOverlay/screenHelpOverlayState.nut" import screenHelpItems, screenHelpSafeArea, closeScreenHelp
 from "%rGui/hud/actionBarState.nut" import actionBarRect
 from "%rGui/globals/ui_library.nut" import *
-
-let { GuiBox } = require("%globalScripts/guiGeom/guiBox.nut")
 
 const DARK_COLOR = 0xCC000000
 const SIZE_INC_ADD = -2 
@@ -172,4 +170,4 @@ let screenHelpOverlay = @() {
   children = mkHelpContent(screenHelpItems.get(), screenHelpSafeArea.get(), actionBarRect.get())
 }
 
-return { screenHelpOverlay }
+return freeze({ screenHelpOverlay })

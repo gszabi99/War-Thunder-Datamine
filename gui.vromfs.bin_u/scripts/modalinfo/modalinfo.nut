@@ -1,12 +1,11 @@
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/actionsList/actionsListState.nut" import isActionsListOpen
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.workcycle" import setInterval, clearTimer
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
-
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 
 const MODAL_INFO_HOLDER_PATH = "%gui/modalInfo/modalInfoHolder.blk"
 const MODAL_TOOLTIP_ID = "__delayed_modal_tooltip_obj__"

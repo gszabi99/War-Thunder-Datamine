@@ -1,3 +1,32 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/slotbar/guiStartSelectingCrew.nut" as guiStartSelectingCrew
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/unit/unitActions.nut" import research, buyUnit
+from "%scripts/unit/unitChecks.nut" import checkForResearch
+from "%scripts/shop/shopCountryInfo.nut" import isCountryHaveUnitType
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitReqExp, getUnitExp
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitStatus.nut" import canResearchUnit, isUnitInResearch, isUnitResearched
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, canSpendGoldOnUnitWithPopup
+from "%scripts/user/balance.nut" import get_balance, get_gui_balance
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/firstChoice/firstChoice.nut" import isCountryAvailable
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/discounts/discountUtils.nut" import showDiscount
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/convertExp/convertExp.nut" import convertExpWndOpenParams, closeConvertExpModalWnd
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "math" import ceil
@@ -5,37 +34,9 @@ from "string" import format
 from "%scripts/dagui_natives.nut" import wp_get_cost, shop_get_researchable_unit_name, shop_get_free_exp, set_char_cb, shop_convert_free_exp_for_unit, wp_get_exp_convert_exp_for_gold_rate
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { research, buyUnit } = require("%scripts/unit/unitActions.nut")
-let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canResearchUnit, isUnitInResearch, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
-let { canBuyUnit, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { convertExpWndOpenParams, closeConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 
 enum windowState {
   research,
@@ -126,7 +127,7 @@ let ConvertExpHandler = class (BaseGuiHandlerWT) {
           && unitForList.isVisibleInShop())
         this.unitList.append(unitForList)
     let ediff = getCurrentGameModeEdiff()
-    this.unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
+    this.unitList.sortby(@(a) a.getBattleRating(ediff))
   }
 
   function getCurExpValue() {
@@ -228,7 +229,7 @@ let ConvertExpHandler = class (BaseGuiHandlerWT) {
 
     this.unitTypesList = unitTypes.types
       .filter(@(t) t.isVisibleInShop())
-      .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
+      .sortby(@(a) a.visualSortOrder)
 
     let view = { items = [] }
     foreach (_idx, unitType in this.unitTypesList)

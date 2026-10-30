@@ -1,4 +1,13 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/ranks.nut" import getRankByExp, getPrestigeByRank
+from "%scripts/unit/unitStatus.nut" import isUnitEliteByStatus
+from "%scripts/contacts/contactsListState.nut" import clanUserTable
+from "%scripts/user/clanName.nut" import getMyClanTag, getMyClanName
 from "unlocks" import getNumUnlocked
 from "guiMission" import get_mp_session_info
 from "mission" import get_mp_local_team
@@ -12,17 +21,9 @@ from "%scripts/utils_sa.nut" import buildTableRowNoPad, is_multiplayer
 from "types" import String, Array
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let time = require("%scripts/time.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
-let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank } = require("%scripts/ranks.nut")
-let { isUnitEliteByStatus } = require("%scripts/unit/unitStatus.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
-let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
+let { ranksPersist, expPerRank } = require("%scripts/ranks.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]

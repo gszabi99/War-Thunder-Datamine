@@ -2,6 +2,7 @@ import "%rGui/interopGen.nut" as interopGet
 from "%rGui/hudSpectatorState.nut" import isSpectatorMode
 from "%rGui/hud/hudPartVisibleState.nut" import isDmgPanelVisible
 from "%sqstd/underscore.nut" import isEqual
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "gameplayBinding" import isDmgIndicatorVisible
 from "eventbus" import eventbus_subscribe
 from "hudState" import getHudGuiState, HudGuiState
@@ -24,7 +25,7 @@ let hudState = {
   playerUnitName = ""
   isThermalSightActive = false
   isMissionProgressVisible = false
-}.map(@(val, key) mkWatched(persist, key, val))
+}.map(@(val, key) hardPersistWatched($"rGui.hudState.{key}", val))
 hudState.isSpectatorMode <- isSpectatorMode
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState

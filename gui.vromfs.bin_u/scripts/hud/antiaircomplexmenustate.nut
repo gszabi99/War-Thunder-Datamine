@@ -1,3 +1,4 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%appGlobals/hud/hudState.nut" import savedRadarFilters, AAComplexRadarFiltersSaveSlotName
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
@@ -5,8 +6,6 @@ from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const FILTER_SAVE_ID_DEPRICATED = "aaComplexMenuFilters"
 const FILTER_SAVE_ID = "savedRadarFilters"

@@ -4,4 +4,4 @@ enum SEL_UNIT_BUTTON {
   SHOW_MORE
 }
 
-return { SEL_UNIT_BUTTON }
+return freeze({ SEL_UNIT_BUTTON })

@@ -1,9 +1,8 @@
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/time.nut" import secondsToHours, hoursToString
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-
-let { secondsToHours, hoursToString } = require("%scripts/time.nut")
 
 let battleTaskDifficulty = {
   types = []
@@ -84,7 +83,7 @@ enums.addTypes(battleTaskDifficulty, {
   }
 }, null, "name")
 
-battleTaskDifficulty.types.sort(@(a, b) a.executeOrder <=> b.executeOrder)
+battleTaskDifficulty.types.sortby(@(a) a.executeOrder)
 
 function getDifficultyTypeByName(typeName) {
   return enums.getCachedType("name", typeName, battleTaskDifficulty.cache.byName,

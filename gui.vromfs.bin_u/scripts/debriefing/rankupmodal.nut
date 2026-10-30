@@ -1,17 +1,17 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/unlocks/unlocks.nut" import getNextAwardText
+from "%scripts/unit/unitStatus.nut" import isUnitLocked, isUnitUsable
+from "%scripts/unlocks/showUnlockWnd.nut" import checkDelayedUnlockWnd
 from "string" import format
 from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getNextAwardText } = require("%scripts/unlocks/unlocks.nut")
-let { isUnitLocked, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { delayedRankUpWnd } = require("%scripts/debriefing/checkRankUpWindow.nut")
 
 let RankUpModal = class (BaseGuiHandlerWT) {

@@ -1,7 +1,7 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/style/cssColor.nut" as cssColor
 from "%rGui/style/screenState.nut" import isInVr
 from "%rGui/globals/ui_library.nut" import *
-
-let colors = require("%rGui/style/colors.nut")
 
 let blurPanel = {
   rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : null
@@ -19,14 +19,14 @@ let fullScreenBlurPanel = {
   children = {
     rendObj = ROBJ_SOLID
     size = FLEX
-    color = 0xBF090F16
+    color = cssColor("fullScreenBgrColor")
   }
 }
 
 let hudBlurPanel = {
   rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : ROBJ_SOLID
   size = FLEX
-  color = !isInVr ? 0xBF9696A1 : 0x6E1A1E23
+  color = !isInVr ? cssColor("hudBlur") : 0x6E1A1E23
 }
 
 let ticketHudBlurPanel = {

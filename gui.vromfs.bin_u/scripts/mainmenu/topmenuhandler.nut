@@ -1,45 +1,46 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
 import "math" as math
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import get_current_base_gui_handler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/shop/shopViewWnd.nut" import ShopViewWnd
+from "%scripts/shop/shop.nut" import ShopMenuHandler
+from "%scripts/mainmenu/topMenuButtonsHandler.nut" import TopMenuButtonsHandler
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler, topMenuShopActive, unitToShowInShop
+from "%scripts/slotbar/playerCurUnit.nut" import setShowUnit
+from "%scripts/slotbar/slotbarPresetsList.nut" import getSlotbarPresetsList
+from "%appGlobals/clientState/touchScreen.nut" import isSmallScreen
+from "%scripts/unlocks/unlockMarkers.nut" import checkUnlockMarkers
+from "%sqstd/platform.nut" import isPS4
+from "%scripts/contacts/contactsHandlerState.nut" import switchContactsObj, getLastContactsSceneShow
+from "%scripts/langUtils/customLocalization.nut" import isUsedCustomLocalization, getLocalization
+from "%scripts/firstChoice/firstChoice.nut" import getUnlockedCountries
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb
+from "%scripts/tasker.nut" import addBgTaskCb
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/customSoundMods.nut" import isUsedCustomSoundMods
+from "%scripts/langUtils/language.nut" import getCurLangShortName
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/matching/matchingGameModes.nut" import needShowGameModesNotLoadedMsg
+from "%scripts/chat/chatHandler.nut" import lastChatSceneShow
+from "%scripts/markers/markerUtils.nut" import hasMarkers
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_natives.nut" import is_news_adver_actual, req_news, get_news_blk
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ShopViewWnd } = require("%scripts/shop/shopViewWnd.nut")
-let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
-let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
-let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
-let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
-let { switchContactsObj, getLastContactsSceneShow } = require("%scripts/contacts/contactsHandlerState.nut")
-let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
-let { getUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
-let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isUsedCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
-let { lastChatSceneShow } = require("%scripts/chat/chatHandler.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { topMenuLeftSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
-let { hasMarkers } = require("%scripts/markers/markerUtils.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -79,7 +80,7 @@ class TopMenu (BaseGuiHandlerWT) {
   }
 
   function reinitScreen(_params = null) {
-    if (!this.topMenuInited && isLoggedIn.get()) {
+    if (!this.topMenuInited && hasFullLoginState.get()) {
       this.topMenuInited = true
 
       this.leftSectionHandlerWeak = TopMenuButtonsHandler.create(
@@ -113,7 +114,7 @@ class TopMenu (BaseGuiHandlerWT) {
         "nav-topMenu"
       )
 
-      showObjById("topmenu_psn_update", isPlatformPS4 && isRunningOnPS5(), this.scene)
+      showObjById("topmenu_psn_update", isPS4 && isRunningOnPS5(), this.scene)
     }
   }
 
@@ -448,6 +449,7 @@ class TopMenu (BaseGuiHandlerWT) {
       {
         obj = ["slot_info_listbox", "slot_collapse"]
         msgId = "hint_unitInfo"
+        text = locByVendor("help/unitInfo")
       }
 
       
@@ -668,4 +670,4 @@ class TopMenu (BaseGuiHandlerWT) {
 
 register_gui_handler("TopMenu", TopMenu)
 
-return { TopMenu }
+return freeze({ TopMenu })

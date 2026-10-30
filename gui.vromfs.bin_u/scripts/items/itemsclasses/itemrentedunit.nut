@@ -1,8 +1,8 @@
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let RentedUnit = class (ItemCouponBase) {
   static iType = itemType.RENTED_UNIT

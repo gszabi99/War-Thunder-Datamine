@@ -1,13 +1,17 @@
-import "%sqStdLibs/helpers/u.nut" as u
+import "%scripts/replays/spectatorWatchedHero.nut" as spectatorWatchedHero
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
 from "console" import register_command
 from "dagor.random" import rnd
 from "eventbus" import eventbus_subscribe
 from "matching.errors" import INVALID_SQUAD_ID
 from "string" import format
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj
 from "replays" import is_replay_playing
 from "mission" import get_game_mode, get_mp_local_team, get_game_type
 from "guiMission" import get_mission_difficulty_int, get_mp_session_info, get_player_army_for_hud
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "blkGetters" import get_game_settings_blk, get_ranks_blk
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_mp_kick_countdown
@@ -15,34 +19,31 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
+from "%scripts/mplayerParamType.nut" import g_mplayer_param_type
+from "%scripts/teams.nut" import g_team
+from "%scripts/difficulty.nut" import g_difficulty
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/statistics/squadIcon.nut" import updateTopSquadScore, isShowSquad, getSquadInfoByMemberId, getTopSquadId
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/missions/missionsText.nut" import locCurrentMissionName
+from "%scripts/matchingRooms/sessionLobbyState.nut" import sessionLobbyStatus, getSessionLobbyTeam
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/ranks.nut" import getRankByExp
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import isMemberInMySquadById
+from "%scripts/squads/squadState.nut" import isEqualSquadId
+from "%scripts/statistics/mpStatisticsInfo.nut" import getWeaponTypeIcoByWeapon
+from "%scripts/worldWar/worldWarState.nut" import getCurMissionWWBattleName
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%sqStdLibs/helpers/u.nut" import isEmpty
 
-let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
-let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
-let { g_difficulty } = require("%scripts/difficulty.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { updateTopSquadScore, isShowSquad, getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { sessionLobbyStatus, getSessionLobbyTeam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getRankByExp } = require("%scripts/ranks.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
-let { isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
-let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")
-let { getCurMissionWWBattleName } = require("%scripts/worldWar/worldWarState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 
 const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
@@ -105,7 +106,6 @@ function guiStartMPStatScreenFromGame(_ = {}) {
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mpstatscreen_", params })
 }
 
-eventbus_subscribe("gui_start_mpstatscreen_from_game", guiStartMPStatScreenFromGame) 
 eventbus_subscribe("gui_start_flight_menu_stat", guiStartMPStatScreenFromGame) 
 
 local time_to_kick_show_timer = null
@@ -175,9 +175,9 @@ function getLocalTeamForMpStats(team = null) {
 }
 
 function createExpSkillBonusIcon(tooltipFunction) {
-  return "".concat("img{ id:t='exp_skill_bonus_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='@tableIcoSize, @tableIcoSize';",
+  return "".concat("statsImg{ id:t='exp_skill_bonus_icon'; not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='@tableIcoSize, @tableIcoSize';",
     "top:t='0.5ph-0.5h'; position:t='relative';background-image:t='';",
-    "background-svg-size:t='@tableIcoSize, @tableIcoSize'; left:t='0'; margin:t='2@dp, 0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
+    "background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-color:t='@white'; left:t='0'; margin:t='2@dp, 0'; tooltipObj{", $"on_tooltip_open:t='{tooltipFunction}';",
     " display:t='hide'}}"
   )
 }
@@ -206,6 +206,64 @@ const DELAYED_TOOLTIP_MARKUP =
 
 let createCellCustomTooltip = @(tooltipId) showConsoleButtons.get() ? DELAYED_TOOLTIP_MARKUP : createBaseTooltip(tooltipId)
 
+local cachedColorsTable = null
+
+function getColorsTable() {
+  let isEmptyTable = cachedColorsTable == null
+  if (isEmptyTable)
+    cachedColorsTable = {}
+
+  local mainGuiScene = get_main_gui_scene()
+  cachedColorsTable.teamBlue <- mainGuiScene.getConstantValue("teamBlueColor")
+  cachedColorsTable.teamRed <- mainGuiScene.getConstantValue("teamRedColor")
+  cachedColorsTable.teamBlueInactive <- mainGuiScene.getConstantValue("teamBlueInactiveColor")
+  cachedColorsTable.teamRedInactive <- mainGuiScene.getConstantValue("teamRedInactiveColor")
+  cachedColorsTable.mainPlayer <- mainGuiScene.getConstantValue("mainPlayerColor")
+  cachedColorsTable.squad <- mainGuiScene.getConstantValue("mySquadColor")
+
+  if (isEmptyTable) {
+    cachedColorsTable.spectator <- mainGuiScene.getConstantValue("spectatorColor")
+    cachedColorsTable.even <- mainGuiScene.getConstantValue("evenTrColor")
+    cachedColorsTable.transparent <- mainGuiScene.getConstantValue("transparent")
+    cachedColorsTable.commonText <- mainGuiScene.getConstantValue("commonTextColor")
+  }
+  return cachedColorsTable
+}
+
+function getPlayerTeamCode(customPlayerTeamCode = null) {
+  if (isInFlight() || is_replay_playing())
+    return customPlayerTeamCode ?? get_player_army_for_hud()
+
+  return (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? getSessionLobbyTeam()
+    : (customPlayerTeamCode ?? getLocalTeamForMpStats())
+}
+
+function getTextColor(data, playerTeamCode, colorsTable, isTeamplay) {
+  let needColorizeNotInGame = isInFlight()
+
+  local isInGame = true
+  if (needColorizeNotInGame)
+    isInGame = data.state == PLAYER_IN_FLIGHT || data.state == PLAYER_IN_RESPAWN
+
+  
+  let isInHeroSquad = data?.isInHeroSquad || isMemberInMySquadById(data?.userId.tointeger())
+  local color = ""
+  if (("spectator" in data) && data.spectator)
+    color = colorsTable.spectator
+  else if (data?.isLocal)
+    color = colorsTable.mainPlayer
+  else if (isInHeroSquad)
+    color = colorsTable.squad
+  else if (playerTeamCode > 0 && (data?.team == g_team.A.code || data?.team == g_team.B.code)) {
+    if (data?.team == playerTeamCode && isTeamplay)
+      color = isInGame ? colorsTable.teamBlue : colorsTable.teamBlueInactive
+    else
+      color = isInGame ? colorsTable.teamRed : colorsTable.teamRedInactive
+  } else
+    color = colorsTable.commonText
+  return color
+}
+
 function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
   if (numRows <= 0)
     return ""
@@ -216,6 +274,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
   let isRowInvert = markupData?.invert    ?? false
   let colorTeam   = markupData?.colorTeam ?? "blue"
   let trOnHover   = markupData?.trOnHover
+  let smallFont   = markupData?.smallFont ?? false
 
   let markup = markupData.columns
 
@@ -224,105 +283,114 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
     hdr.reverse()
   }
 
-  let { hasCustomTooltip = false } = params
+  let { hasCustomTooltip = false, isTeamplay = true } = params
+  let colorsTable = getColorsTable()
+  let fontSize = smallFont ? "@fontSmall" : "@fontNormal"
+  let defaultTextParams = $"font:t='{fontSize}'; word-wrap:t='no';"
 
   let data = []
+  let playerTeamCode = getPlayerTeamCode()
+
   for (local i = 0; i < numRows; i++) {
-    let isEmpty = i >= numTblRows
-    let trData = [format("even:t='%s'; ", (i % 2 == 0) ? "yes" : "no")]
-    let trAdd = [isEmpty ? "inactive:t='yes'; " : ""]
-    if (!u.isEmpty(trOnHover))
+    let isRowEmpty = i >= numTblRows
+    let trData = []
+    let trAdd = [isRowEmpty ? "inactive:t='yes'; " : ""]
+    if (!isEmpty(trOnHover))
       trAdd.append($"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
+
+    let tableData = isRowEmpty ? null : table[i]
+    local colorProp = ""
+    if (!isRowEmpty) {
+      let color = getTextColor(tableData, playerTeamCode, colorsTable, isTeamplay)
+      if (color != "")
+        colorProp = $"color:t='{color}';"
+    }
 
     for (local j = 0; j < hdr.len(); ++j) {
       local item = ""
       local tdData = ""
       let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
-      const textPadding = "style:t='padding:@tablePad,0;'; "
+      const textPadding = "padding:t='@tablePad, 0'; "
       let customTooltipId = hasCustomTooltip && hdr[j] in colsWithCustomTooltip
         ? $"{hdr[j]}_tooltip"
         : null
 
-      if (!isEmpty && (hdr[j] in table[i]))
-        item = table[i][hdr[j]]
+      if (!isRowEmpty && (hdr[j] in tableData))
+        item = tableData[hdr[j]]
 
+      let customTooltip = customTooltipId
+        ? createCellCustomTooltip(customTooltipId)
+        : ""
+      let idText = $"id:t='td_{hdr[j]}'; "
       if (hdr[j] == "hasPassword") {
         let icon = item ? "#ui/gameuiskin#password.svg" : ""
-        tdData = "".concat("size:t='ph", widthAdd, " ,ph';",
-          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';",
-          "background-svg-size:t='@tableIcoSize,@tableIcoSize'; background-image:t='", isEmpty ? "" : icon, "'; }")
+        tdData = "".concat("statCell { position:t='relative'; valign:t='center'; size:t='ph", widthAdd, " ,ph';", idText,
+          "statsImg{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize, @tableIcoSize'; ",
+          "background-svg-size:t='@tableIcoSize,@tableIcoSize'; background-image:t='", isRowEmpty ? "" : icon, "'; }}")
       }
       else if (hdr[j] == "team") {
-        let teamText = "teamImg{ text { halign:t='center'}} "
-        tdData = "".concat("size:t='ph", widthAdd, ",ph'; css-hier-invalidate:t='yes'; team:t=''; ", teamText)
+        let teamText = "teamImg{ position:t='relative'; height:t='@tableIcoSize'; width:t='h'; pos:t='50%pw-50%w, 50%ph-50%h'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; } "
+        tdData = "".concat("statCell { ", idText, "position:t='relative'; css-hier-invalidate:t='yes'; valign:t='center'; size:t='ph", widthAdd, ",ph'; team:t=''; ", teamText, "}")
       }
       else if (hdr[j] == "country" || hdr[j] == "teamCountry") {
         local country = ""
         if (hdr[j] == "country")
           country = item
-        else if (!isEmpty && ("team" in table[i]))
-            country = get_mp_country_by_team(table[i].team)
+        else if (!isRowEmpty && ("team" in tableData))
+            country = get_mp_country_by_team(tableData.team)
 
         local icon = ""
-        if (!isEmpty && country != "")
+        if (!isRowEmpty && country != "")
           icon = getCountryIcon(country)
-        tdData = format("".concat("size:t='ph%s,ph';",
-          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize, 0.66@tableIcoSize';",
-          "background-image:t='%s'; background-svg-size:t='@tableIcoSize, 0.66@tableIcoSize'; background-repeat:t='aspect-ratio';",
-          "}"), widthAdd, icon)
+        tdData = format("".concat("statCell { position:t='relative'; valign:t='center'; size:t='ph%s,ph'; ", idText,
+          "statsImg{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize, 0.66@tableIcoSize'; background-color:t='@white'; ",
+          "background-image:t='%s'; background-svg-size:t='@tableIcoSize, 0.66@tableIcoSize'; background-repeat:t='aspect-ratio'; %s",
+          "}}"), widthAdd, icon, customTooltip)
       }
       else if (hdr[j] == "status") {
-        tdData = format("size:t='ph%s,ph'; playerStateIcon { id:t='ready-ico' } ", widthAdd)
+        tdData = format("statCell {position:t='relative'; valign:t='center'; %s size:t='ph%s,ph'; playerStateIcon { id:t='ready-ico'; valign:t='center'} %s}", idText, widthAdd, customTooltip)
       }
       else if (hdr[j] == "name") {
         local nameText = item
-        if (!isEmpty && !isHeader && !table[i].isBot)
-          nameText = getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+        if (!isRowEmpty && !isHeader && !tableData?.isBot)
+          nameText = getPlayerFullName(getPlayerName(nameText), tableData?.clanTag)
 
         nameText = stripTags(colorizeWhitePsnIcon(nameText))
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         let nameAlign = isRowInvert ? "text-align:t='right' " : ""
-        tdData = "".concat($"width:t='{nameWidth}'; {textPadding}",
-          "textareaNoTab {",
-            $"id:t='name-text'; {nameAlign} text:t = '{nameText}';",
-            "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';",
-          "}")
-        if (!isEmpty) {
-          
-          if (table[i]?.isLocal)
-            trAdd.append("mainPlayer:t = 'yes';")
-          else if (table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger()))
-            trAdd.append("inMySquad:t = 'yes';")
-          if (("spectator" in table[i]) && table[i].spectator)
-            trAdd.append("spectator:t = 'yes';")
-        }
+        tdData = "".concat("statText { position:t='relative'; valign:t='center';",
+          $"{idText} {nameAlign} {defaultTextParams} text:t = '{nameText}'; {colorProp} ",
+          $"pare-text:t='yes'; valign:t='center'; width:t='{nameWidth}'; {textPadding} {customTooltip}",
+          "}"
+        )
       }
       else if (hdr[j] == "unitIcon") {
         
         let images = params?.canHasBonusIcon ? [createExpSkillBonusIcon("onSkillBonusTooltip")] : []
 
         foreach (id, _weap in getWeaponTypeIcoByWeapon("", ""))
-          images.append(format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
+          images.append(format("statsImg { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0'; bgColor:t='@white'; display:t='hide' }", id))
 
-        images.append("div{ size:t='@tableIcoSize,@tableIcoSize' img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }}")
+        images.append("statsImg { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; bgColor:t='@white'; display:t='hide'}")
 
         if (isRowInvert)
           images.reverse()
         let cellWidth = markup?[hdr[j]]?.width ?? "@tableIcoSize, @tableIcoSize"
         let divPos = isRowInvert ? "0" : "pw-w"
-        tdData = format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, "".join(images, true))
+        tdData = format("statCell {position:t='relative'; contextMenu:t='no'; cursor:t='normal'; valign:t='center'; %s width:t='%s'; height:t='@tableIcoSize'; statCell { left:t='%s'; position:t='absolute'; %s  } %s }", idText, cellWidth, divPos, "".join(images, true), customTooltip)
       }
       else if (hdr[j] == "rank") {
-        local prestigeImg = "";
+        local prestigeImg = ""
         local rankTxt = ""
-        if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i])) {
-          rankTxt = getRankByExp(table[i].exp).tostring()
-          prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}"
+        if (!isRowEmpty && ("exp" in tableData) && ("prestige" in tableData)) {
+          rankTxt = getRankByExp(tableData.exp).tostring()
+          prestigeImg = $"#ui/gameuiskin#prestige{tableData.prestige}"
         }
         let rankItem = format("activeText { id:t='rank-text'; text:t='%s'; margin-right:t='%%s' } ", rankTxt)
         let prestigeItem = format("cardImg { id:t='prestige-ico'; background-image:t='%s'; margin-right:t='%%s' } ", prestigeImg)
         let cell = isRowInvert ? $"{prestigeItem}{rankItem}" : $"{rankItem}{prestigeItem}"
-        tdData = format("".concat("width:t='2.2@rows16height%s'; tdiv { pos:t='%s, 0.5(ph-h)'; position:t='absolute'; ", cell, " } "),
+        tdData = format("".concat("statCell { position:t='relative'; valign:t='center';", $"{idText} width:t='2.2@rows16height%s';",
+          "statCell { pos:t='%s, 0.5(ph-h)'; position:t='absolute';", cell, " }} "),
           widthAdd, isRowInvert ? "0" : "pw-w-1", "0", "0.003sh")
       }
       else if (hdr[j] == "rowNo") {
@@ -330,35 +398,37 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         if (hdr[j] in markup)
           tdProp.append(format("width:t='%s'", (markup[hdr[j]]?.width ?? "")))
 
-        trAdd.append("winnerPlace:t='none';")
-        tdData = format("%s activeText { text:t = '%i'; halign:t='center'} ", "".join(tdProp), i + 1)
+        tdData = format("statText { position:t='relative'; %s %s %s; text:t = '%i'; valign:t='center'; text-align:t='center'; %s} ",
+          idText, defaultTextParams, "".join(tdProp), i + 1, colorProp)
       }
       else if (hdr[j] == "place") {
         let width = $"width:t='{markup[hdr[j]]?.width ?? 1}'; "
-        tdData = format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
+        tdData = format("statText {position:t='relative'; %s valign:t='center'; %s text:t='%s'; text-align:t='center'} ", width, defaultTextParams, item)
       }
       else if (hdr[j] in colsWithParamType) {
-        let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
-        tdData = format("activeText { text:t='%s' halign:t='center' } ", txt)
+        let txt = isRowEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, tableData)
         let width = ((markup?[hdr[j]] ?? {})?.width ?? "")
-        if (width != "")
-          tdData = "".concat(tdData, format("width:t='%s'; ", width))
+        tdData = format("statText { position:t='relative'; %s valign:t='center'; %s text:t='%s'; text-align:t='center'; %s %s %s} ",
+          idText, defaultTextParams, txt, width != "" ? $"width:t='{width}';" : "", colorProp, customTooltip
+        )
       }
       else if (hdr[j] == "numPlayers") {
         let curWidth = ((hdr[j] in markup) && ("width" in markup[hdr[j]])) ? markup[hdr[j]].width : "0.15pw"
         local txt = item.tostring()
-        local txtParams = "pare-text:t='yes'; max-width:t='pw'; halign:t='center';"
-        if (!isEmpty && "numPlayersTotal" in table[i]) {
-          let maxVal = table[i].numPlayersTotal
+        local txtParams = "pare-text:t='yes'; max-width:t='pw';"
+        local textColor = colorProp
+        if (!isRowEmpty && "numPlayersTotal" in tableData) {
+          let maxVal = tableData.numPlayersTotal
           txt = $"{txt}/{maxVal}"
           if (item >= maxVal)
-            txtParams = $"{txtParams}overlayTextColor:t='warning';"
+            textColor = $"color:t='@warningTextColor';"
         }
-        tdData = "".concat("width:t='", curWidth, "'; activeText { text:t = '", txt, "'; ", txtParams, " } ")
+        tdData = format("statText { position:t='relative'; %s %s width:t='%s'; valign:t='center'; text:t='%s'; %s %s text-align:t='center';}",
+          idText, defaultTextParams, curWidth, txt, txtParams, textColor)
       }
       else {
         local tdProp = textPadding
-        local textType = "activeText"
+        local textType = "statText"
         let text = locOrStrip(item.tostring())
         local halign = "center"
         local pareText = true
@@ -373,51 +443,52 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
             halign =  markup[hdr[j]].halign
           if ("pareText" in markup[hdr[j]])
             pareText =  markup[hdr[j]].pareText
-          if ("image" in markup[hdr[j]])
-            imageBg = format("".concat(" team:t='%s'; ", "teamImg {", "css-hier-invalidate:t='yes'; ",
-                "id:t='%s';", "background-image:t='%s';", "display:t='%s'; "),
-              colorTeam, $"icon_{hdr[j]}", markup[hdr[j]].image, isEmpty ? "hide" : "show"
+          if ("image" in markup[hdr[j]]) {
+            textType = markup[hdr[j]]?.textDiv ?? "activeText"
+            imageBg = format("".concat("team:t='%s'; css-hier-invalidate:t='yes';",
+              "teamImg {id:t='%s'; background-image:t='%s';", "display:t='%s';"),
+              colorTeam, $"icon_{hdr[j]}", markup[hdr[j]].image, isRowEmpty ? "hide" : "show"
             )
+          }
         }
-        let textParams = format("halign:t='%s'; ", halign)
 
-        tdData = format("".concat("%s {", "id:t='%s';", "text:t = '%s';",
-            "max-width:t='pw';", "pare-text:t='%s'; ", "%s}"),
-          $"{tdProp}{imageBg}{textType}", $"txt_{hdr[j]}", text, pareText ? "yes" : "no",
-          "".concat(textParams, (imageBg == "") ? "" : "}")
-        )
+        if (hdr[j] in colsWithWishlistContextMenu)
+          tdProp = "".concat(tdProp, "cursor:t='normal'; contextMenu:t='no'; ")
+
+        let overridedTextParams = textType == "statText"
+          ? defaultTextParams
+          : $"word-wrap:t='no'; {smallFont ? "smallFont:t='yes';" : ""}"
+        if (imageBg != "") {
+          tdData = format("".concat("statCell { %s position:t='relative'; valign:t='center'; max-width:t='pw'; ",
+          "%s %s {id:t='%s'; position:t='absolute'; %s text:t = '%s'; pare-text:t='%s'; text-align:t='%s'; pos:t='(pw-w)/2, (ph-h)/2'; %s}} %s %s}"),
+            idText, imageBg, textType, $"txt_{hdr[j]}" , overridedTextParams, text, pareText ? "yes" : "no", halign, colorProp,
+            tdProp, customTooltip
+          )
+        } else {
+          tdData = format("".concat("%s { position:t='relative'; %s %s text:t = '%s'; max-width:t='pw';",
+            "pare-text:t='%s'; valign:t='center'; %s text-align:t='%s'; %s %s}"),
+            textType, idText, $"{tdProp}", text, pareText ? "yes" : "no", overridedTextParams, halign, colorProp, customTooltip
+          )
+        }
       }
-
-      trData.append("td { id:t='td_", hdr[j], "'; ")
-      if (hdr[j] in colsWithWishlistContextMenu)
-        trData.append("cursor:t='normal'; isNavInContainerBtn:t='no'; contextMenu:t='no'; ")
-      if (j == 0)
-        trData.append("padding-left:t='@tablePad'; ")
-      if (j > 0)
-        trData.append("cellType:t = 'border'; ")
-      if (j == (hdr.len() - 1))
-        trData.append("padding-right:t='@tablePad'; ")
       trData.append(tdData)
-      if (customTooltipId)
-        trData.append(createCellCustomTooltip(customTooltipId))
-      trData.append(" }")
     }
 
-    data.append("".concat("tr {size:t = '", trSize, "'; ", "".join(trAdd), "".join(trData),
-      " text-valign:t='center'; css-hier-invalidate:t='all'; }"))
+    data.append("".concat("statLine {input-transparent:t='yes'; css-hier-invalidate:t='yes'; mouse-pointer-centering:t='",
+      isRowInvert ? "55, 50" : "50, 55", "'; isContainer:t='yes'; total-input-transparent:t='yes'; flow:t='horizontal'; selected:t='no';  size:t = '", trSize, "'; ", "".join(trAdd), "".join(trData),
+      "}")
+    )
   }
 
   return "\n".join(data)
 }
 
-function updateTeamCssLabel(nestObj, customPlayerTeam = null) {
+function updateTeamCssLabel(nestObj, customPlayerTeamCode = null) {
   if (!checkObj(nestObj))
     return
-  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? getSessionLobbyTeam()
-    : (customPlayerTeam ?? getLocalTeamForMpStats())
+  let teamCode = getPlayerTeamCode(customPlayerTeamCode)
   nestObj.playerTeam = g_team.getTeamByCode(teamCode).cssLabel
 }
-
 
 function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   if (expSkillBonuses == null || skillBonusType == null)
@@ -445,43 +516,53 @@ function getUnitCardTooltipId(player) {
 function setMpTable(obj_tbl, table, params = {}) {
   let numTblRows = table.len()
   let realTblRows = obj_tbl.childrenCount()
-  let numRows = max(numTblRows, realTblRows)
+  local numRows = max(numTblRows, realTblRows)
   if (numRows <= 0)
     return
 
   let { showUnitsInfo = true, continueRowNum = 0, numberOfWinningPlaces = -1,
-    isDebriefing = false, hasCustomTooltip = false } = params
+    isDebriefing = false, hasCustomTooltip = false, friendlyTeamCode = -1, isTeamplay = true,
+    playerTooltipType = "MP_STAT_PLAYER" } = params
   let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
-  let isAlly = obj_tbl?.team == "blue"
+  let playerTeamCode = friendlyTeamCode >= 0 ? friendlyTeamCode : getPlayerTeamCode()
 
+  let colorsTable = getColorsTable()
+  let mainGuiScene = get_main_gui_scene()
   updateTopSquadScore(table)
-  for (local i = 0; i < numRows; i++) {
-    local objTr = null
-    if (realTblRows <= i) {
-      objTr = obj_tbl.getChild(realTblRows - 1).getClone(obj_tbl, params?.handler)
-      if (objTr?.rowIdx != null)
-        objTr.rowIdx = i.tostring()
-      objTr.even = (i % 2 == 0) ? "yes" : "no"
-      objTr.selected = "no"
-    }
-    else
-      objTr = obj_tbl.getChild(i)
 
-    let isEmpty = i >= numTblRows
-    objTr.inactive = isEmpty ? "yes" : "no"
-    objTr.show(!isEmpty)
-    if (isEmpty)
+  let createCount = numRows - realTblRows
+  obj_tbl.getChild(0).getClone(obj_tbl, params?.handler, createCount)
+
+  for (local i = 0; i < numRows; i++) {
+    let objTr = obj_tbl.getChild(i)
+    if (objTr?.rowIdx != null)
+      objTr.rowIdx = i.tostring()
+    let isEven = (i % 2 == 0)
+    if (realTblRows <= i && objTr?.selected)
+      objTr.selected = "no"
+    if ((objTr?.selected != "yes") || (realTblRows <= i))
+      objTr.bgColor = isEven ? colorsTable.even : colorsTable.transparent
+
+    let isRowEmpty = i >= numTblRows
+    objTr.inactive = isRowEmpty ? "yes" : "no"
+    show_obj(objTr, !isRowEmpty)
+    if (isRowEmpty)
       continue
 
     let player = table[i]
-    local isInGame = true
-    if (needColorizeNotInGame) {
-      let state = table[i].state
-      isInGame = state == PLAYER_IN_FLIGHT || state == PLAYER_IN_RESPAWN
-      objTr.inGame = isInGame ? "yes" : "no"
+    if (isReplay) {
+      player.isLocal = spectatorWatchedHero.id == player.id
+      player.isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId,
+        player?.squadId)
     }
 
+    local isInGame = true
+    if (needColorizeNotInGame)
+      isInGame = player?.state == PLAYER_IN_FLIGHT || player?.state == PLAYER_IN_RESPAWN
+
+    let isAlly = isTeamplay && (player.team == playerTeamCode)
+    let textColor = getTextColor(player, playerTeamCode, colorsTable, isTeamplay)
     let unitCardTooltipId = hasCustomTooltip && showUnitsInfo ? getUnitCardTooltipId(player) : null
 
     let totalCells = objTr.childrenCount()
@@ -494,46 +575,23 @@ function setMpTable(obj_tbl, table, params = {}) {
       let hdr = id.slice(3)
       local item = ""
 
-      if (hdr in table[i])
-        item = table[i][hdr]
-
-      if (isReplay) {
-        table[i].isLocal = spectatorWatchedHero.id == table[i].id
-        table[i].isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId,
-          table[i]?.squadId)
-      }
+      if (hdr in player)
+        item = player[hdr]
 
       if (hdr in colsWithWishlistContextMenu) {
         let hasUnitCard = !!unitCardTooltipId
         objTd.cursor = hasUnitCard ? "context-menu" : "normal"
-        objTd.isNavInContainerBtn = hasUnitCard ? "yes" : "no"
         objTd.contextMenu = hasUnitCard ? "wishlist" : "no"
       }
 
-      if (hdr == "team") {
-        local teamText = ""
-        local teamStyle = ""
-        if (item == 1) {
-          teamText = "A"
-          teamStyle = "a"
-        }
-        else if ( item == 2) {
-          teamText = "B"
-          teamStyle = "b"
-        }
-        else {
-          teamText = "?"
-          teamStyle = ""
-        }
-        objTd.getChild(0).setValue(teamText)
-        objTd["team"] = teamStyle
-      }
+      if (hdr == "team")
+        objTd["team"] = item == 1 ? "a" : item == 2 ? "b" : ""
       else if (hdr == "country" || hdr == "teamCountry") {
         local country = ""
         if (hdr == "country")
           country = item
         else if ("team" in table[i])
-            country = get_mp_country_by_team(table[i].team)
+          country = get_mp_country_by_team(table[i].team)
 
         let objImg = objTd.getChild(0)
         local icon = ""
@@ -564,28 +622,20 @@ function setMpTable(obj_tbl, table, params = {}) {
             else if (obj_tbl.team == "blue")
               color = "teamBlueInactiveColor"
           }
-
           local playerName = colorize(color, getPlayerName(table[i].invitedName))
           nameText = $"{getPlayerName(nameText)}... {playerName}"
         }
 
-        let objName = objTd.findObject("name-text")
-        if (checkObj(objName))
-         objName.setValue(colorizeWhitePsnIcon(nameText))
+        objTd.setValue(colorizeWhitePsnIcon(nameText))
+        objTd.color = textColor;
 
-        let objDlcImg = objTd.findObject("dlc-ico")
+        let objDlcImg = objTr.findObject("dlc-ico")
         if (checkObj(objDlcImg))
           objDlcImg.show(false)
-        let isLocal = table[i].isLocal
-        
-        let isInHeroSquad = table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger())
-        objTr.mainPlayer = isLocal ? "yes" : "no"
-        objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
-        objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
         let userIdInt = player.userId.tointeger()
         if (hasCustomTooltip && (!player.isBot || (isReplay && userIdInt > 0))) {
-          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player.userId, { isAlly, isDebriefing })
+          let tooltipId = getTooltipType(playerTooltipType).getTooltipId(player.userId, { isAlly, isDebriefing })
           let baseTooltipObj = objTd.findObject("name_tooltip")
           if (baseTooltipObj?.isValid()) {
             baseTooltipObj.tooltipId = tooltipId
@@ -603,7 +653,7 @@ function setMpTable(obj_tbl, table, params = {}) {
         local unitId = ""
         local weapon = ""
 
-        if (isInFlight() && !isInGame)
+        if (needColorizeNotInGame && !isInGame)
           unitIco = g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
@@ -615,10 +665,16 @@ function setMpTable(obj_tbl, table, params = {}) {
         }
 
         local obj = objTd.findObject("unit-ico")
-        if (checkObj(obj)) {
-          obj["background-image"] = unitIco
-          obj["shopItemType"] = unitIcoColorType
-          obj["skipBgColor"] = unitIco.endswith(ICON_SKIP_BG_COLORING) ? "yes" : "no"
+        if (obj.isValid()) {
+          if (unitIco == "")
+            show_obj(obj, false)
+          else {
+            obj["background-image"] = unitIco
+            let isWhiteIcon = unitIco.endswith(ICON_SKIP_BG_COLORING)
+            let color = isWhiteIcon ? "#FFFFFF" : (mainGuiScene.getConstantValue($"{unitIcoColorType}Color") ?? "#FFFFFF")
+            obj["bgColor"] = color
+            show_obj(obj, true)
+          }
         }
 
         if (params?.canHasBonusIcon) {
@@ -630,6 +686,7 @@ function setMpTable(obj_tbl, table, params = {}) {
           let nameIcon = objTd.findObject("exp_skill_bonus_icon")
           if (checkObj(nameIcon)) {
             nameIcon["background-image"] = bonusIndex > 0 ? $"#ui/gameuiskin#skill_bonus_level_{bonusIndex}.svg" : ""
+            show_obj(nameIcon, bonusIndex > 0)
           }
         }
 
@@ -640,6 +697,7 @@ function setMpTable(obj_tbl, table, params = {}) {
             obj.size = iconSize
             obj["background-image"] = weap.icon
             obj["background-svg-size"] = iconSize
+            show_obj(obj, (weap.icon && !(weap.icon == "")))
           }
         }
         if (unitCardTooltipId) {
@@ -655,55 +713,59 @@ function setMpTable(obj_tbl, table, params = {}) {
           objTd.tooltip = ""
       }
       else if (hdr == "aircraft") {
-        let objText = objTd.findObject("txt_aircraft")
-        if (objText?.isValid()) {
-          local text = ""
-          local tooltip = ""
-          if (table[i]?.spectator ?? false) {
-            text = loc("mainmenu/btnReferee")
-            tooltip = loc("multiplayer/state/player_referee")
+        local text = ""
+        local tooltip = ""
+        if (table[i]?.spectator ?? false) {
+          text = loc("mainmenu/btnReferee")
+          tooltip = loc("multiplayer/state/player_referee")
+        }
+        else {
+          let unitId = table[i]?.aircraftName ?? ""
+          text = (unitId != "") ? loc(getUnitName(unitId, true)) : "..."
+          tooltip = (unitId != "") ? loc(getUnitName(unitId, false)) : ""
+        }
+        objTd.setValue(text)
+        objTd.color = textColor
+
+        if (unitCardTooltipId) {
+          let baseTooltipObj = objTd.findObject("aircraft_tooltip")
+          if (baseTooltipObj?.isValid()) {
+            baseTooltipObj.tooltipId = unitCardTooltipId
+            objTd.tooltipId = ""
           }
           else {
-            let unitId = table[i]?.aircraftName ?? ""
-            text = (unitId != "") ? loc(getUnitName(unitId, true)) : "..."
-            tooltip = (unitId != "") ? loc(getUnitName(unitId, false)) : ""
+            objTd.tooltipId = unitCardTooltipId
           }
-          objText.setValue(text)
-
-          if (unitCardTooltipId) {
-            let baseTooltipObj = objTd.findObject("aircraft_tooltip")
-            if (baseTooltipObj?.isValid()) {
-              baseTooltipObj.tooltipId = unitCardTooltipId
-              objTd.tooltip = "$tooltipObj"
-            }
-            else
-              objTd.tooltipId = unitCardTooltipId
-          }
-          else
-            objTd.tooltip = tooltip
+          if (!showConsoleButtons.get())
+            objTd.tooltip = "$tooltipObj"
+        }
+        else {
+          objTd.tooltip = tooltip
         }
       }
       else if (hdr == "rowNo") {
         let tablePos = i + 1
         let pos = tablePos + continueRowNum
-        objTd.getChild(0).setValue(pos.tostring())
-        local winPlace = "none"
+        objTd.setValue(pos.tostring())
+        local placeTextColor = textColor
         if (numberOfWinningPlaces > 0 && (table[i]?.raceLastCheckpoint ?? 0) > 0) {
           if (tablePos == 1)
-            winPlace = "1st"
+            placeTextColor = mainGuiScene.getConstantValue("raceMode1stPlace")
           else if (tablePos <= numberOfWinningPlaces)
-            winPlace = "2nd"
+            placeTextColor = mainGuiScene.getConstantValue("raceMode2ndPlace")
         }
-        objTr.winnerPlace = winPlace
+        objTd.color = placeTextColor
       }
       else if (hdr == "place") {
-        objTd.getChild(0).setValue(item)
+        objTd.setValue(item)
+        objTd.color = textColor
       }
       else if (hdr in colsWithParamType) {
         let paramType = g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
-        let objText = objTd.getChild(0)
+        let objText = objTd
         objText.setValue(txt)
+        objTd.color = textColor
 
         let tooltipId = !hasCustomTooltip ? ""
           : paramType?.getTooltipId(player.userId, { isDebriefing, paramId = hdr, val = item }) ?? ""
@@ -713,7 +775,8 @@ function setMpTable(obj_tbl, table, params = {}) {
           let baseTooltipObj = objTd.findObject($"{hdr}_tooltip")
           if (baseTooltipObj?.isValid()) {
             baseTooltipObj.tooltipId = tooltipId
-            objTd.tooltip = "$tooltipObj"
+            if (!showConsoleButtons.get())
+              objTd.tooltip = "$tooltipObj"
           }
           else
             objTd.tooltipId = tooltipId
@@ -725,7 +788,8 @@ function setMpTable(obj_tbl, table, params = {}) {
         local txt = item.tostring()
         if ("numPlayersTotal" in table[i])
           txt = "".concat(txt, "/", table[i].numPlayersTotal)
-        objTd.getChild(0).setValue(txt)
+        objTd.color = textColor
+        objTd.setValue(txt)
       }
       else if (hdr == "squad") {
         let squadInfo = isShowSquad() ? getSquadInfoByMemberId(table[i]?.userId.tointeger()) : null
@@ -737,8 +801,10 @@ function setMpTable(obj_tbl, table, params = {}) {
         let isTopSquad = needSquadIcon && squadScore && squadId != INVALID_SQUAD_ID && squadId == getTopSquadId(squadInfo?.teamId)
 
         let cellText = objTd.findObject($"txt_{hdr}")
-        if (checkObj(cellText))
+        if (checkObj(cellText)) {
           cellText.setValue(needSquadIcon && !isTopSquad ? labelSquad : "")
+          cellText.color = textColor
+        }
 
         let cellIcon = objTd.findObject($"icon_{hdr}")
         if (checkObj(cellIcon)) {
@@ -759,14 +825,17 @@ function setMpTable(obj_tbl, table, params = {}) {
         local txt = item.tostring()
         if (txt.len() > 0 && txt[0] == '#')
           txt = loc(txt.slice(1))
-        let objText = objTd.findObject($"txt_{hdr}")
-        if (objText)
+        let objText = objTd.findObject($"txt_{hdr}") ?? objTd
+        if (objText?.setValue) {
           objText.setValue(txt)
+          objText.color = textColor
+        }
 
         objTd.tooltip = g_mplayer_param_type.getTypeById(hdr).getDefTooltip(txt)
       }
     }
   }
+
 }
 
 function getCurMpTitle() {
@@ -882,7 +951,7 @@ register_command(hud_show_in_battle_time_to_kick_timer, "debug.hud.show_in_battl
 register_command(hud_show_in_battle_time_to_kick_alert, "debug.hud.show_in_battle_time_to_kick_alert")
 register_command(hud_reset_in_battle_time_to_kick, "debug.hud.reset_in_battle_time_to_kick")
 
-return {
+return freeze({
   guiStartMPStatScreen
   guiStartMPStatScreenFromGame
   set_time_to_kick_show_alert
@@ -901,4 +970,4 @@ return {
   getSpectatorTeammateStatsMarkup
   getSpectatorTeammateStats
   TEAMMATE_STATS_FIELDS
-}
+})

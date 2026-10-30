@@ -148,10 +148,6 @@ enumsAddTypes(g_chat_thread_tag, {
   }
 })
 
-g_chat_thread_tag.types.sort(function(a, b) {
-  if (a.isRegular != b.isRegular)
-    return a.isRegular ? -1 : 1
-  return 0
-})
+g_chat_thread_tag.types.sortby(@(a) !a.isRegular)
 
 return {g_chat_thread_tag}

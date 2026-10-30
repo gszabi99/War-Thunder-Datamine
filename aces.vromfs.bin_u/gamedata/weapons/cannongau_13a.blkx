@@ -1,14 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.25,
-  "shotFreq": 40.0,
-  "traceFreq": 4,
-  "bullets": 50,
-  "shootingCharge": 5.5,
-  "dragCx": 0.15,
-  "mass": 624.0,
-  "recoilMultiplier": 0.35,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,6 +14,16 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.25,
+  "shotFreq": 40.0,
+  "bullets": 50,
+  "shootingCharge": 5.5,
+  "dragCx": 0.15,
+  "mass": 624.0,
+  "recoilMultiplier": 0.35,
   "bullet": [
     {
       "mass": 0.43,
@@ -132,7 +132,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       },
       "collisions": {
         "default": {
@@ -987,7 +987,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       },
       "collisions": {
         "default": {
@@ -1845,7 +1845,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -2700,7 +2700,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -3102,7 +3102,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -3508,7 +3508,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -6980,13 +6980,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "gau_13a_gun_outside",
-    "cockpit": "gau_13a_gun_inside",
-    "ai": "gau_13a_gun_ai"
-  },
   "GAU_13A_new_gun": {
     "maxDeltaAngle": 0.47,
     "overheat": {
@@ -7001,5 +6994,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "gau_13a_gun_outside",
+    "cockpit": "gau_13a_gun_inside",
+    "ai": "gau_13a_gun_ai"
   }
 }

@@ -76,7 +76,7 @@ function openFilterPopupWnd(event) {
 }
 
 let mkFilterImage = @(height) {
-  size = [height, height]
+  size = height
   valign = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#filter_icon.svg:{height}:{height}:P")
@@ -105,6 +105,6 @@ function mkFilterTargetsBtn(contentScaleV) {
 
 isAAComplexMenuActive.subscribe(@(v) !v ? close() : null)
 
-return {
+return freeze({
   mkFilterTargetsBtn
-}
+})

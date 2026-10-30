@@ -1,19 +1,19 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/weaponry/weaponryActions.nut" import enable_modifications, open_weapons_for_unit
+from "%scripts/tasker.nut" import addTask
+from "%scripts/weaponry/itemInfo.nut" import getItemStatusTbl
+from "%scripts/unit/unitChecks.nut" import updateUnitAfterSwitchMod
+from "%scripts/unit/unitWeaponryInfo.nut" import getModsListByType
+from "%scripts/weaponry/weaponryVisual.nut" import getTooltipId
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { enable_modifications, open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
-let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-let { getModsListByType } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getTooltipId } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 
 let modGroups = ["scope", "stock", "magazine", "underbarrel", "tactical", "grip", "muzzle"]

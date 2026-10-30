@@ -1,3 +1,12 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/dirtyWordsFilter.nut" import isNamePassing
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/sqDagui/daguiUtil.nut" import setFocusToNextObj
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/clans/clanTextInfo.nut" import checkClanTagForDirtyWords, stripClanTagDecorators
 from "string" import format
 from "%sqstd/string.nut" import clearBorderSymbols, slice
 from "dagor.debug" import debug
@@ -5,15 +14,6 @@ from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { setFocusToNextObj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { checkClanTagForDirtyWords, stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
 
 let ModifyClanModalHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -57,14 +57,6 @@ let ModifyClanModalHandler = class (BaseGuiHandlerWT) {
       newClanTypeObj.setValue(0)
 
     this.lastShownHintObj = this.scene.findObject("req_newclan_name")
-
-    let regionObj = this.scene.findObject("region_nest")
-    if (!hasFeature("ClanRegions") && checkObj(regionObj))
-      regionObj.show(false)
-
-    let announcementNest = this.scene.findObject("announcement_nest")
-    if (!hasFeature("ClanAnnouncements") && checkObj(announcementNest))
-      announcementNest.show(false)
 
     this.updateReqs()
     this.updateTagMaxLength()
@@ -308,4 +300,4 @@ let ModifyClanModalHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ModifyClanModalHandler", ModifyClanModalHandler)
 
-return { ModifyClanModalHandler }
+return freeze({ ModifyClanModalHandler })

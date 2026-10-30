@@ -1,16 +1,16 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/misCustomRules/missionCustomState.nut" import registerMissionRules
+from "%scripts/misCustomRules/unitLimit.nut" import UnitLimitByUnitType, UnitLimitByUnitExpClass
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
 from "%appGlobals/ranks_common_shared.nut" import get_ds_ut_name_unit_type
 from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
-let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 let NumSpawnsByUnitType = class (RuleBase) {
   needLeftRespawnOnSlots = true

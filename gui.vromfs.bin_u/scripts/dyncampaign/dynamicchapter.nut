@@ -1,4 +1,22 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/missions/campaignChapter.nut" import CampaignChapter
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/missions/dynCampaingState.nut" import dynamicInitAsync
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY, USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/missions/missionsUtils.nut" import getDynamicLayouts, addMissionListFull
+from "%scripts/missions/startMissionsList.nut" import DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions
+from "%scripts/missions/missionsStates.nut" import set_current_campaign, get_mission_settings, set_mission_settings
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/clientState/contentPacks.nut" import checkDiffPkg
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/dynCampaign/campaignHelpers.nut" import isDynamicCountryAllowed
 from "string" import format
 from "guiOptions" import get_gui_option
 from "dynamicMission" import dynamicGetList
@@ -8,24 +26,7 @@ from "%scripts/dagui_natives.nut" import get_mission_progress
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { CampaignChapter } = require("%scripts/missions/campaignChapter.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { dynamicInitAsync, isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY, USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getDynamicLayouts, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
-let { DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
-let { set_current_campaign, get_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { isDynamicCountryAllowed } = require("%scripts/dynCampaign/campaignHelpers.nut")
+let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 
 register_gui_handler("DynamicLayouts", class (CampaignChapter) {
   wndType = handlerType.MODAL
@@ -218,7 +219,7 @@ register_gui_handler("DynamicLayouts", class (CampaignChapter) {
     return true
   }
 
-  function updateButtons() {
+  function updateButtons(_v = null) {
     let selectedMission = this.missions?[this.getSelectedMission()]
 
     let hoveredMission = this.isMouseMode ? null : this.missions?[this.hoveredIdx]
@@ -280,7 +281,7 @@ register_gui_handler("DynamicLayouts", class (CampaignChapter) {
       [USEROPT_DIFFICULTY, "spinner"]
     ]
 
-    this.createModalOptions(options, Callback(this.checkCustomDifficulty, this))
+    this.createModalOptions(options, Callback(@(_) this.checkCustomDifficulty(), this))
   }
 
   function finalApplyCallback() {
@@ -349,7 +350,6 @@ register_gui_handler("DynamicLayouts", class (CampaignChapter) {
     this.goForwardCheckEntitlement(guiStartDynamicSummary, {
       minRank = DYNAMIC_REQ_COUNTRY_RANK
       rankCountry = playerCountry
-      silentFeature = "ModeDynamic"
     })
 
     if (get_mission_settings().dynlist.len() == 0)
@@ -363,6 +363,12 @@ register_gui_handler("DynamicLayouts", class (CampaignChapter) {
 
   function afterModalDestroy() {
     this.restoreMainOptions()
+  }
+
+  function onItemDblClick() {
+    if (showConsoleButtons.get())
+      return
+    this.onStart()
   }
 
   function onFav() {}

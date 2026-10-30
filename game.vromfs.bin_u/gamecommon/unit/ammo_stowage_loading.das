@@ -372,10 +372,10 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
       if visual_node_name != ""
         *unit.visual |> dm_bind_visual_node(int(part_id.id), visual_node_name)
 
-      if unit.collNodeTree != null
+      if unit.visual.collNodeTree != null
         let cnode = *unit.visual |> dm_get_collision_node_by_part_id(int(part_id.globalId))
         let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(part_id.id))
-        let node_wtm = *unit.collNodeTree |> get_node_wtm_rel_ptr(geom_node_id)
+        let node_wtm = *unit.visual.collNodeTree |> get_node_wtm_rel_ptr(geom_node_id)
         v.ammo_slots__node[slot_id] := AmmoStowageSlotCollAndGeomNodes(cnode = cnode, nodeWtm = node_wtm)
 
     num_ammo -= num_ammo_max
@@ -796,6 +796,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REMOVE_LOADED_AMMO, "removeLoadedAmmo", true)
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REPLENISH_ONLY_EMPTY, "replenishOnlyIfEmpty", false)
       stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REVERSE_REPLENISHMENT, "reverseReplenishment", false)
+      stowage_blk |> read_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.BACKUP_MANUAL_LOADING, "backupManualLoading", false)
 
       let stowage_munition = stowage_blk |> datablock_getStr("entityMunition", "")
 
@@ -869,6 +870,10 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
           set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.HAS_AUTO_LOAD, true)
 
       v.ammo_stowages__clustersRange[stowage_id].y = v.ammo_clusters__state |> length()
+
+      if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.BACKUP_MANUAL_LOADING) && !get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.HAS_AUTO_LOAD)
+        logerr("unit {model_name}: stowage {stowage_blk.blockName} has backupManualLoading:b = yes but no autoLoad cluster, key is ignored")
+        set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.BACKUP_MANUAL_LOADING, false)
 
       for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
         distribute_residue_ammo_in_stowage(stowage_id, cluster_type, num_ammo_for_cluster_type[cluster_type]) <| v

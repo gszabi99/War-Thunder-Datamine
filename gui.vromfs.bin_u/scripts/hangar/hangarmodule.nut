@@ -10,6 +10,6 @@ function blurHangar(enable) {
   }
 }
 
-return {
+return freeze({
   blurHangar
-}
+})

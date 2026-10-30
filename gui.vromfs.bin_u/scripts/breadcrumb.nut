@@ -1,21 +1,22 @@
+import "%scripts/mainmenu/backToMainScene.nut" as backToMainScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/hud/hud.nut" import Hud
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Hud } = require("%scripts/hud/hud.nut")
-let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 local lastBaseHandlerStartData = null
+
+let getBackSceneName = @() loc(lastBaseHandlerStartData?.handlerLocId ?? "mainmenu/hangar")
 
 function updateBackSceneObj(handler) {
   handler.backSceneParams = lastBaseHandlerStartData?.handlerLocId
     ? lastBaseHandlerStartData?.startParams : backToMainScene()
-  let handlerLocId = lastBaseHandlerStartData?.handlerLocId ?? "mainmenu/hangar"
   let backSceneObj = handler.scene.findObject("back_scene_name")
   if (!backSceneObj?.isValid())
     return
 
-  backSceneObj.setValue(loc(handlerLocId))
+  backSceneObj.setValue(getBackSceneName())
 }
 
 function setBreadcrumbGoBackParams(handler) {
@@ -46,7 +47,8 @@ add_event_listener("SwitchedBaseHandler", function(_p) {
     lastBaseHandlerStartData = null
 }, this)
 
-return {
+return freeze({
   setBreadcrumbGoBackParams
   setModalBreadcrumbGoBackParams
-}
+  getBackSceneName
+})

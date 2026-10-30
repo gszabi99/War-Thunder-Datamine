@@ -1,9 +1,8 @@
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
 from "chard" import get_charserver_time_sec
 from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_library.nut" import *
-
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 local isCrewUnlockErrorShowed = false
 
@@ -41,8 +40,8 @@ function getCrewByAir(air) {
   return null
 }
 
-return {
+return freeze({
   getCrewUnlockTime
   isCrewLockedByPrevBattle
   getCrewByAir
-}
+})

@@ -72,7 +72,7 @@ let createCompass = @(gridStyle, color, backGroundColor, styleText) function() {
   }
 }
 
-function createRwrGrid(gridStyle, color, backGroundColor) {
+function [pure, nodiscard] createRwrGrid(gridStyle, color, backGroundColor) {
   return {
     pos = const [pw(50), ph(50)],
     size = const [pw(100), ph(100)],
@@ -107,7 +107,7 @@ function createRwrGrid(gridStyle, color, backGroundColor) {
   }
 }
 
-function createRwrGridMarks(gridStyle, styleText, settings) {
+function [pure, nodiscard] createRwrGridMarks(gridStyle, styleText, settings) {
   const gridFontSizeMult = 1.5
   return {
     size = FLEX,

@@ -58,4 +58,4 @@ interopGet({
   postfix = "Update"
 })
 
-return hudChatState.__merge({pushSystemMessage})
+return freeze(hudChatState.__merge({pushSystemMessage}))

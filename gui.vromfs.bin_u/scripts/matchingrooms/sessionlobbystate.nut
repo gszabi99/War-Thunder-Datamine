@@ -1,3 +1,5 @@
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/user/usersInfoManager.nut" import requestUsersInfo
 from "%sqStdLibs/helpers/u.nut" import isInteger
 from "matching.errors" import INVALID_ROOM_ID
 from "%sqstd/globalState.nut" import hardPersistWatched
@@ -5,9 +7,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 
 let sessionLobbyStatus = hardPersistWatched("sessionLobby.status", lobbyStates.NOT_IN_ROOM)
 let isInSessionLobbyEventRoom = hardPersistWatched("sessionLobby.isInEventRoom", false)
@@ -30,7 +30,7 @@ let notInRoomStatuses = [
 
 let isInSessionRoom = Computed(@() !notInRoomStatuses.contains(sessionLobbyStatus.get()))
 
-let SessionLobbyState =  persist("SessionLobbyState", @() {
+let SessionLobbyState = mkHardPersist("matchingRooms.sessionLobbyState")("SessionLobbyState", {
   roomId = INVALID_ROOM_ID
   settings = {
     connect_on_join = true
@@ -63,7 +63,12 @@ let SessionLobbyState =  persist("SessionLobbyState", @() {
   isReadyInSetStateRoom = null 
 })
 
+SessionLobbyState.isReadyInSetStateRoom = null
+SessionLobbyState.isLeavingLobbySession = false
+
 local playersInfoByNames = {}
+foreach (pinfo in SessionLobbyState.playersInfo) 
+  playersInfoByNames[pinfo.name] <- pinfo
 
 let getSessionLobbyTeam = @() SessionLobbyState.team
 let getSessionLobbyRoomId = @() SessionLobbyState.roomId
@@ -280,7 +285,7 @@ function getSessionLobbyClusterName(room = null) {
 }
 
 function getSessionLobbyMaxRespawns(room = null) {
-  return getSessionLobbyMissionData(room)?.maxRespawns ?? 0
+  return getSessionLobbyMissionData(room)?.maxRespawns ?? RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW
 }
 
 function getRoomSessionStartTime(room = null) {

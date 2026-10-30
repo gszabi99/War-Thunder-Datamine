@@ -7,41 +7,36 @@ from "types" import String, Function
 let closeButton = require("closeButton.nut")
 
 
-let windowsOrder = persist("windowsOrder", @() [])
-let windowsGeneration = Watched(0)
-let incGen = @() windowsGeneration.modify(@(v) v+1)
+
+let windowsOrder = mkWatched(persist, "windowsOrder", [])
 
 let registeredWindows = {}
 
 let windowsManager = @() {
-  watch = windowsGeneration
+  watch = windowsOrder
   size = flex()
   children = {
-    children = windowsOrder.map(@(v) registeredWindows?[v])
+    children = windowsOrder.get().map(@(v) registeredWindows?[v])
   }
 }
 
 function updateWindowOrder(newOrder){
-  if (!isEqual(newOrder, windowsOrder)) {
-    windowsOrder.replace(newOrder)
-    incGen()
-  }
+  if (!isEqual(newOrder, windowsOrder.get()))
+    windowsOrder.set(newOrder)
 }
 
 function showWindow(id){
-  if (id instanceof String  && id not in registeredWindows)
-    logerr($"window {id} is not registered")
   if (!(id instanceof String))
     id = id.key
-  if (!windowsOrder.contains(id))
-    updateWindowOrder((clone windowsOrder).append(id))
-  else {
-    updateWindowOrder(windowsOrder.filter(@(v) v != id).append(id))
+  if (id not in registeredWindows) {
+    logerr($"window {id} is not registered")
+    return
   }
+  updateWindowOrder(windowsOrder.get().filter(@(v) v != id).append(id))
 }
 
 function hideWindow(window){
-  updateWindowOrder(windowsOrder.filter(@(v) v != (window?.key ?? window)))
+  updateWindowOrder(windowsOrder.get().filter(@(v) v != (window?.key ?? window)))
 }
 
 function hideAllWindows(){
@@ -49,7 +44,7 @@ function hideAllWindows(){
 }
 
 function toggleWindow(window){
-  if (windowsOrder.contains(window?.key ?? window))
+  if (windowsOrder.get().contains(window?.key ?? window))
     hideWindow(window)
   else
     showWindow(window)
@@ -87,13 +82,8 @@ function mkHeader(id, headerText, onClose) {
   }
 }
 
-let isWindowVisible = @(window) windowsOrder.contains(window?.key ?? window)
-let unused = @(...) null
-
-let mkIsWindowVisible = @(id_or_window) Computed(function(){
-  unused(windowsGeneration.get())
-  return isWindowVisible(id_or_window)
-})
+let isWindowVisible = @(window) windowsOrder.get().contains(window?.key ?? window)
+let mkIsWindowVisible = @(id_or_window) Computed(@() windowsOrder.get().contains(id_or_window?.key ?? id_or_window))
 
 let windowsStates = persist("windowStates", @() {})
 
@@ -120,8 +110,6 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
     size[1] = math.clamp(size[1]+dh, minSize[1], maxSize[1])
     w.pos = pos
     w.size = size
-    if (saveState && !isEqual(w, windowsStates[id]))
-      windowsStates[id] = w
     return w
   }
   let contentItem = @() {
@@ -142,8 +130,8 @@ let mkWindow = kwarg(function(id, content=null, mkContent=null,
     behavior = [Behaviors.MoveResize]
     key = id
     stopMouse = true
-    watch = [windowsGeneration]
-    zOrder = windowsOrder.findindex(@(v) v == id) ?? 0
+    watch = windowsOrder
+    zOrder = windowsOrder.get().findindex(@(v) v == id) ?? 0
     flow = FLOW_VERTICAL
     children = [
       mkHeader(id, headerText, onClose)
@@ -166,12 +154,13 @@ function registerWindow(params) {
   return window
 }
 
-function getNumberOfRegisteredWindows(): int {
-  return registeredWindows.len()
+function getModalZOrder(): int {
+  return registeredWindows.len() + 1
 }
 
 return {
   registerWindow
+  getModalZOrder
   showWindow
   windowsManager
   hideAllWindows
@@ -180,5 +169,4 @@ return {
   isWindowVisible
   mkIsWindowVisible
   mkWindow
-  getNumberOfRegisteredWindows
 }

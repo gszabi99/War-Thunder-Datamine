@@ -1,14 +1,14 @@
+from "%scripts/langUtils/textFormat.nut" import decimalFormat
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/user/userInfoStats.nut" import getPlayerLeaderboard
 from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
 
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { leaderboardsList } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { getPlayerLeaderboard } = require("%scripts/user/userInfoStats.nut")
 
 const defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]

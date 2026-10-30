@@ -1,12 +1,11 @@
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/weaponry/weaponryPresetsWndState.nut" import isPresetsWndReserved
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "hangar" import hangar_get_current_unit_name
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 function onClickDemonstratedShell(params) {
   if (isPresetsWndReserved.get())

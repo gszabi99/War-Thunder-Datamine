@@ -1,19 +1,8 @@
-from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
-from "hudCompassState" import hasCompassObservable
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/hud/dargHudLayers.nut" import getDargLayerWidgets
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
-
-function updatePosMultiplayerScore(obj, hasCompass, isInAntiAirMenu) {
-  let top = hasCompass && !isInAntiAirMenu
-    ? "1@multiplayerScoreTopPosUnderCompass"
-    : "0.015@shHud"
-  obj.top = top
-}
 
 let BaseUnitHud = class (BaseGuiHandlerWT) {
   scene = null
@@ -21,28 +10,17 @@ let BaseUnitHud = class (BaseGuiHandlerWT) {
 
   actionBarWeak   = null
   isReinitDelayed = false
+  killFeedPlace   = null
+  hasMpScore      = false
 
   function initScreen() {
     this.actionBarWeak = null
     this.isReinitDelayed = false
   }
 
-  function updatePosHudMultiplayerScore() {
-    let multiplayerScoreObj = this.scene.findObject("hud_multiplayer_score")
-    if (checkObj(multiplayerScoreObj)) {
-      multiplayerScoreObj.setValue(stashBhvValueConfig([{
-        watch = hasCompassObservable
-        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, value, isAAComplexMenuActive.get()), this)
-      },
-      {
-        watch = isAAComplexMenuActive
-        updateFunc = Callback(@(obj, value) updatePosMultiplayerScore(obj, hasCompassObservable.get(), value), this)
-      },
-      {
-        watch = isPlayerAlive
-        updateFunc = @(obj, value) obj.show(value)
-      }]))
-    }
+  function getWidgetsList() {
+    let layers = getDargLayerWidgets(this)
+    return base.getWidgetsList().extend(layers)
   }
 
   function onEventControlsPresetChanged(_p) {
@@ -67,4 +45,4 @@ let BaseUnitHud = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("BaseUnitHud", BaseUnitHud)
 
-return { BaseUnitHud }
+return freeze({ BaseUnitHud })

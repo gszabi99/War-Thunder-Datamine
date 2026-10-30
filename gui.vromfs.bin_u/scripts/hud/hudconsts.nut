@@ -51,9 +51,9 @@ enum HUD_TYPE {
   NONE
 }
 
-return {
+return freeze({
   HINT_INTERVAL
   REWARD_PRIORITY
   HUD_VIS_PART
   HUD_TYPE
-}
+})

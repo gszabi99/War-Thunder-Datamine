@@ -1,9 +1,10 @@
 import "%rGui/globals/extWatched.nut" as extWatched
 
 
+let isSpectatorMode = extWatched("isSpectatorMode", false) 
+let isDedicatedSpectator = extWatched("isDedicatedSpectator", false) 
 
-let isSpectatorMode = extWatched("isSpectatorMode", false)
-
-return {
+return freeze({
   isSpectatorMode
-}
+  isDedicatedSpectator
+})

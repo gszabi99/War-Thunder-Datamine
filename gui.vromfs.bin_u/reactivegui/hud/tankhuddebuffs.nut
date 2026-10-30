@@ -105,10 +105,15 @@ let isTransferState = @(state) transferStates.contains(state)
 let isHaveTooltipState = @(state) haveTooltipStates.contains(state)
 
 function getDebuffColor(data) {
-  foreach (key, value in data)
-    if (value)
-      return key.contains("Dead") ? stateColors.dead : stateColors.bad
-  return stateColors.ok
+  local color = stateColors.ok
+  foreach (key, value in data) {
+    if (type(value) != "bool" || !value)
+      continue
+    if (key.contains("Dead"))
+      return stateColors.dead
+    color = stateColors.bad
+  }
+  return color
 }
 
 function getTooltip(data) {
@@ -203,6 +208,7 @@ function mkTooltipParams(ctorOrLocId) {
 
   let key = {}
   let stateFlag = Watched(0)
+  let hideOnDetach = tooltipDetach(stateFlag, key)
   return {
     key
     behavior = Behaviors.Button
@@ -225,7 +231,10 @@ function mkTooltipParams(ctorOrLocId) {
         }
       }
     )
-    onDetach = tooltipDetach(stateFlag, key)
+    function onDetach() {
+      hideOnDetach()
+      stateFlag.set(0)
+    }
   }
 }
 
@@ -235,14 +244,17 @@ function getCompPosition(parentSize, cmpSize, angle) {
   return [point.x - compSizeArr[0] / 2, point.y - compSizeArr[1] / 2]
 }
 
-let mkIconicComp = @(colorWatch, tooltipCtor, icon, angle, ovr = {}) @() {
-  watch = [colorWatch, indicatorSize, compSize]
-  size = compSize.get()
-  pos = getCompPosition(indicatorSize.get(), compSize.get(), angle)
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{icon}:{compSize.get()}:{compSize.get()}:P")
-  color = colorWatch.get()
-}.__update(ovr, mkTooltipParams(tooltipCtor))
+function mkIconicComp(colorWatch, tooltipCtor, icon, angle, ovr = {}) {
+  let tooltipParams = mkTooltipParams(tooltipCtor)
+  return @() {
+    watch = [colorWatch, indicatorSize, compSize]
+    size = compSize.get()
+    pos = getCompPosition(indicatorSize.get(), compSize.get(), angle)
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{icon}:{compSize.get()}:{compSize.get()}:P")
+    color = colorWatch.get()
+  }.__update(ovr, tooltipParams)
+}
 
 let tracksStateComp = mkIconicComp(tracksStateColor, mkTooltipContentCtor(tracksData), "ui/gameuiskin#track_state_indicator.svg", -90)
 let turretDriveStateComp = mkIconicComp(turretDriveStateColor, mkTooltipContentCtor(turretDriveData), "ui/gameuiskin#turret_gear_state_indicator.svg", -67.5)
@@ -264,12 +276,13 @@ let fireStateComp = @() !fireState.get()?.burns ? { watch = fireState }
     color = stateColors.red
   }
 
+let firstStageAmmoTooltip = mkTooltipParams("first_stage_ammo")
 function firstStageAmmoStateComp() {
   let { state = 0, amount = 0 } = firstStageAmmo.get()
   if (state <= 0)
     return {
       watch = firstStageAmmo
-    }
+    }.__update(firstStageAmmoTooltip)
 
   let ammoState = state == 2 ? "dmg"
     : amount > 0 ? "none"
@@ -294,7 +307,7 @@ function firstStageAmmoStateComp() {
         vplace = ALIGN_BOTTOM
       }.__update(fontParamsByScale.get())
     }
-  }.__update(mkTooltipParams("first_stage_ammo"))
+  }.__update(firstStageAmmoTooltip)
 }
 
 let mkTextValueComp = @(locText, angle, fontParam) {
@@ -401,9 +414,10 @@ function regenerationComp() {
   }
 }
 
+let crewStateTooltip = mkTooltipParams("hud_tank_crew_members_count")
 function crewStateComp() {
   if (!crewStateVisible.get())
-    return { watch = crewStateVisible }
+    return { watch = crewStateVisible }.__update(crewStateTooltip)
 
   return {
     watch = [crewStateVisible, indicatorSize, fontParamsByScale, compSize]
@@ -425,7 +439,7 @@ function crewStateComp() {
         vplace = ALIGN_BOTTOM
       }.__update(fontParamsByScale.get())
     }, regenerationComp]
-  }.__update(mkTooltipParams("hud_tank_crew_members_count"))
+  }.__update(crewStateTooltip)
 }
 
 let mkTimeBarComp = @(crewMemberState) function() {
@@ -450,9 +464,10 @@ let mkTimeBarComp = @(crewMemberState) function() {
   }
 }
 
+let gunnerStateTooltip = mkTooltipParams(mkCrewTooltipContentCtor(crewGunnerState, "hud_tank_crew_gunner_out_of_action"))
 function gunnerStateComp() {
   if (!gunnerStateVisible.get())
-    return { watch = gunnerStateVisible }
+    return { watch = gunnerStateVisible }.__update(gunnerStateTooltip)
 
   return {
     watch = [gunnerStateVisible, indicatorSize, compSize]
@@ -466,11 +481,12 @@ function gunnerStateComp() {
       color = gunnerStateColor.get()
       animations = [{ prop = AnimProp.opacity, from = 1, to = 0.4, duration = 1.5, loop = true, easing = CosineFull, trigger = "gunnerStateWink" }]
     }, mkTimeBarComp(crewGunnerState)]
-  }.__update(mkTooltipParams(mkCrewTooltipContentCtor(crewGunnerState, "hud_tank_crew_gunner_out_of_action")))
+  }.__update(gunnerStateTooltip)
 }
 
 gunnerStateWink.subscribe(@(v) v ? anim_start("gunnerStateWink") : anim_request_stop("gunnerStateWink"))
 
+let drivingDirectionModeTooltip = mkTooltipParams("hotkeys/ID_ENABLE_GM_DIRECTION_DRIVING")
 function drivingDirectionModeComp() {
   let ddmCompSize = even(0.17 * compSize.get())
   return {
@@ -480,12 +496,13 @@ function drivingDirectionModeComp() {
     rendObj = ROBJ_IMAGE
     image = Picture($"!ui/gameuiskin#squad_status.svg:{ddmCompSize}:{ddmCompSize}:P")
     color = drivingDirectionModeColor.get()
-  }.__update(mkTooltipParams("hotkeys/ID_ENABLE_GM_DIRECTION_DRIVING"))
+  }.__update(drivingDirectionModeTooltip)
 }
 
+let driverStateTooltip = mkTooltipParams(mkCrewTooltipContentCtor(crewDriverState, "hud_tank_crew_driver_out_of_action"))
 function driverStateComp() {
   if (!driverStateVisible.get())
-    return { watch = driverStateVisible }
+    return { watch = driverStateVisible }.__update(driverStateTooltip)
 
   return {
     watch = [driverStateVisible, indicatorSize, compSize]
@@ -499,7 +516,7 @@ function driverStateComp() {
       color = driverStateColor.get()
       animations = [{ prop = AnimProp.opacity, from = 1, to = 0.4, duration = 1.5, loop = true, easing = CosineFull, trigger = "driverStateWink" }]
     }, mkTimeBarComp(crewDriverState), drivingDirectionModeComp]
-  }.__update(mkTooltipParams(mkCrewTooltipContentCtor(crewDriverState, "hud_tank_crew_driver_out_of_action")))
+  }.__update(driverStateTooltip)
 }
 
 driverStateWink.subscribe(@(v) v ? anim_start("driverStateWink") : anim_request_stop("driverStateWink"))
@@ -517,6 +534,7 @@ let distanceBarComp = @() {
 let mkDistanceTooltipContentCtor = @(state, key)
   @() @() mkTooltipText(state.get().distance < 1 ? loc(key, { distance = state.get().distance * 100 }) : "", { watch = state })
 
+let distanceTooltip = mkTooltipParams(mkDistanceTooltipContentCtor(distance, "hud_tank_crew_distance"))
 function distanceComp() {
   return {
     watch = [indicatorSize, compSize]
@@ -536,7 +554,7 @@ function distanceComp() {
       size = FLEX
       color = crewStateColors.ok
     }]
-  }.__update(mkTooltipParams(mkDistanceTooltipContentCtor(distance, "hud_tank_crew_distance")))
+  }.__update(distanceTooltip)
 }
 
 let tankDebuffs = @() {
@@ -564,6 +582,6 @@ let tankDebuffs = @() {
   ]
 }
 
-return {
+return freeze({
   tankDebuffs
-}
+})

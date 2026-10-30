@@ -14,9 +14,17 @@ shopItem[group=yes] > slotPlate > middleBg > pattern {
   background-position:1@slotBorderSize, 1@slotBorderSize +1@slotGroupTagHeight, 1@slotBorderSize, 1@slotBorderSize;
 }
 
+shopItem[isEmptySlot=yes] > slotPlate > middleBg > pattern {
+  display: hide;
+}
+
 pattern[type=bright_texture] {
   background-image:#ui/gameuiskin#pattern_bright_texture;
 }
 pattern[type=dark_diag_lines] {
   background-image:#ui/gameuiskin#pattern_dark_diag_lines;
+}
+
+pattern[type=freezing_progress] {
+  background-image:#ui/gameuiskin#pattern_for_freezing;
 }

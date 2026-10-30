@@ -1,14 +1,13 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/shop/shopCountriesList.nut" import getShopVisibleCountries
+from "%scripts/unit/unitStatus.nut" import isUnitInResearch
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "chard" import getTopUnitsInfo
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 
 local unitsWithBonusData = null
 local nationBonusMarkState = null
@@ -95,8 +94,8 @@ addListenersWithoutEnv({
   BattleEnded = @(_p) invalidateCachedData()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getUnitsWithNationBonuses
   getNationBonusMarkState
   setNationBonusMarkState
-}
+})

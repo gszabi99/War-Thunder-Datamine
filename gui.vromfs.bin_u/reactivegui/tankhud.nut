@@ -36,6 +36,10 @@ let { aaComplexMenu } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut
 const greenColor = Color(10, 202, 10, 250)
 const redColor = Color(255, 35, 30, 255)
 
+let colorWacthed = Watched(greenColor)
+let colorAlertWatched = Watched(redColor)
+let radarColor = Watched(Color(0, 255, 0, 255))
+
 let styleAamAim = {
   color = greenColor
   fillColor = Color(0, 0, 0, 0)
@@ -57,6 +61,16 @@ let xraydoll = {
   size = 1
 }
 
+let dmgIndicatorTws = tws({
+  colorWatched = colorWacthed,
+  posWatched = Watched([0, 0]),
+  sizeWatched = Computed(@() [dmgIndicatorWidth.get() * 0.8, dmgIndicatorWidth.get() * 0.8]),
+  relativCircleSize = 49,
+  needDrawCentralIcon = false,
+  needDrawBackground =  true,
+  needAdditionalLights = false
+})
+
 function tankDmgIndicator() {
   if (!needShowDmgIndicator.get())
     return {
@@ -64,7 +78,6 @@ function tankDmgIndicator() {
       children = xraydoll
     }
 
-  let colorWacthed = Watched(greenColor)
   let children = [
     tankXrayIndicator,
     activeProtectionSystem,
@@ -74,15 +87,7 @@ function tankDmgIndicator() {
     tankDebuffs
   ]
   if (IsMlwsLwsHudVisible.get())
-    children.append(tws({
-      colorWatched = colorWacthed,
-      posWatched = Watched([0, 0]),
-      sizeWatched = Computed(@() [dmgIndicatorWidth.get() * 0.8, dmgIndicatorWidth.get() * 0.8]),
-      relativCircleSize = 49,
-      needDrawCentralIcon = false,
-      needDrawBackground =  true,
-      needAdditionalLights = false
-    }))
+    children.append(dmgIndicatorTws)
   return {
     rendObj = ROBJ_IMAGE
     watch = [ IsMlwsLwsHudVisible, needShowDmgIndicator, dmgIndicatorWidth ]
@@ -136,14 +141,29 @@ let hitPanel = {
   children = mkScreenHitMark
 }
 
-let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let isBScope = Computed(@() AzimuthRange.get() > PI)
 let needRadarCollapsedIcon = Computed(@() IsRadarHudVisible.get() && ((!IsRadarVisible.get() && !IsRadar2Visible.get()) || isCollapsedRadarInReplay.get()) &&
  CollapsedIcon.get() && (IsCScopeVisible.get() || IsBScopeVisible.get()))
+
+function mkRadarCollapsedIcon() {
+  let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
+  return @(){
+    watch = [isPlayingReplay, radarPosComputed]
+    pos = [radarPosComputed.get()[0] + sw(10), radarPosComputed.get()[1] + (isPlayingReplay.get() ? sh(5) : 0) ]
+    size = sh(5)
+    rendObj = ROBJ_IMAGE
+    image = radarPic
+    color = radarColor.get()
+    children = isPlayingReplay.get() ? mkCollapseButton(const [sh(5), sh(1)], isCollapsedRadarInReplay) : null
+  }
+}
+
+let radarCollapsedIcon = @(){
+  watch = needRadarCollapsedIcon
+  children = needRadarCollapsedIcon.get() ? mkRadarCollapsedIcon() : null
+}
+
 function Root() {
-  let colorWacthed = Watched(greenColor)
-  let colorAlertWatched = Watched(redColor)
-  let radarColor = Watched(Color(0, 255, 0, 255))
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
@@ -159,18 +179,7 @@ function Root() {
     :[
       hitPanel
       mkRadar()
-      @(){
-        watch = needRadarCollapsedIcon
-        children = needRadarCollapsedIcon.get() ? @(){
-            watch = [isPlayingReplay, radarPosComputed]
-            pos = [radarPosComputed.get()[0] + sw(10), radarPosComputed.get()[1] + (isPlayingReplay.get() ? sh(5) : 0) ]
-            size = sh(5)
-            rendObj = ROBJ_IMAGE
-            image = radarPic
-            color = radarColor.get()
-            children = isPlayingReplay.get() ? mkCollapseButton([sh(5), sh(1)], isCollapsedRadarInReplay) : null
-          } : null
-      }
+      radarCollapsedIcon
       aamAim(colorWacthed, colorAlertWatched)
       agmAim(colorWacthed, colorAlertWatched)
       actionBarTopPanel
@@ -184,7 +193,7 @@ function Root() {
         size = FLEX
         children = !isCollapsedRadarInReplay.get()
           ? [
-              radarHud(isBScope.get() ? sh(40) : sh(32), isBScope.get() ? sh(40) : sh(32), radarPosComputed.get()[0], radarPosComputed.get()[1], radarColor, {
+              radarHud(isBScope.get() ? sh(40) : sh(32), isBScope.get() ? sh(40) : sh(32), radarPosComputed.get()[0], radarPosComputed.get()[1], radarColor, const {
                 hasTxtBlock = true
               }, true)
               isPlayingReplay.get() ? mkCollapseButton([radarPosComputed.get()[0] + (isBScope.get() ? sh(40) : sh(32)), radarPosComputed.get()[1]], isCollapsedRadarInReplay) : null

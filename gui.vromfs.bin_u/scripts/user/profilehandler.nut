@@ -1,4 +1,58 @@
+import "%scripts/time.nut" as time
+import "%scripts/user/externalIdsService.nut" as externalIDsService
+import "%scripts/seen/seenList.nut" as seenList
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/selectUnitModal.nut" import openSelectUnitWnd
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/user/chooseTitle.nut" import ChooseTitle
+from "%scripts/leaderboard/leaderboard.nut" import LeaderboardWindow
+from "%scripts/user/userCard/userCard.nut" import UserCardHandler
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings, loadLocalAccountSettings
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/unlocks/unlocksCache.nut" import getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder, getUnlockById
+from "%sqstd/platform.nut" import is_gdk, isPC, isSony
+from "%appGlobals/clientState/platform.nut" import isMeXBOXPlayer, isMePS4Player
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/login/logout.nut" import startLogout
+from "%scripts/user/viralAcquisition.nut" import getViralAcquisitionDesc, showViralAcquisitionWnd
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/user/userInfoStats.nut" import fillProfileSummary, getProfileInfo, getPlayerSummary
+from "%scripts/seen/bhvUnseen.nut" import makeConfigStrByList
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/user/suggestionEmailRegistration.nut" import launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip, needShowGuestEmailRegistration
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, isUnlockVisible
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%scripts/user/profileStates.nut" import userIdStr, userIdInt64, havePlayerTag, isGuestLogin
+from "%scripts/myStats.nut" import getStats, clearStats
+from "%scripts/breadcrumb.nut" import setBreadcrumbGoBackParams
+from "%scripts/tasker.nut" import addTask
+from "%scripts/user/profileShowcase.nut" import getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo, getGameModeBoxIndex, getShowcaseByTerseInfo
+  , getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode, writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex
+  , defaultTitleIcon
+from "%scripts/gamercard/fillGamercard.nut" import fillGamercard
+from "%scripts/gamercard/gamercardHelpers.nut" import addGamercardScene
+from "%scripts/user/profileShowcasesData.nut" import generateShowcaseInfo
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
+from "%scripts/shop/shopCountryInfo.nut" import getShopCountry
+from "%scripts/chooseImage.nut" import gui_choose_image
+from "%scripts/collections/collectionsHandler.nut" import openCollectionsPage
+from "%scripts/collections/collections.nut" import hasAvailableCollections
+from "%scripts/user/skins/skinsHandler.nut" import openSkinsPage
+from "%scripts/user/decals/decalsHandler.nut" import openDecalsPage
+from "%scripts/user/achievements/achievementsHandler.nut" import openAchievementsPage
+from "%scripts/user/avatars.nut" import getAvatarIconIdByUserInfo
+from "%scripts/clans/clanTextInfo.nut" import checkUGCAllowed
+from "%scripts/money.nut" import Cost
+from "%scripts/unlocks/unlocksAction.nut" import buyUnlock
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "dagor.workcycle" import defer, setTimeout, clearTimer
 from "string" import format
@@ -8,69 +62,19 @@ from "blkGetters" import get_gui_regional_blk
 from "steam" import steam_is_running, steam_is_overlay_active
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type, select_current_title, get_name_by_unlock_type
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "app" import APP_ID, isAppActive
-from "%sqstd/platform.nut" import is_gdk
 
-let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ChooseTitle } = require("%scripts/user/chooseTitle.nut")
-let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
-let { UserCardHandler } = require("%scripts/user/userCard/userCard.nut")
-let { saveLocalSharedSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let time = require("%scripts/time.nut")
-let externalIDsService = require("%scripts/user/externalIdsService.nut")
-let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
-let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { fillProfileSummary, getProfileInfo, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { getUnlockCost, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { userIdStr, userIdInt64, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { getStats, clearStats } = require("%scripts/myStats.nut")
-let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo, getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode, writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex, defaultTitleIcon } = require("%scripts/user/profileShowcase.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/user/profileAppearance.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
-let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
-let { gui_choose_image } = require("%scripts/chooseImage.nut")
-let { openCollectionsPage } = require("%scripts/collections/collectionsHandler.nut")
-let { hasAvailableCollections } = require("%scripts/collections/collections.nut")
-let { openSkinsPage } = require("%scripts/user/skins/skinsHandler.nut")
-let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
-let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
-let { Cost } = require("%scripts/money.nut")
-let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let gfn = require_optional("gfn")
 
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
@@ -117,7 +121,6 @@ let Profile = class (UserCardHandler) {
   presetSheetList = ["UserCard", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal", "Collections"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
-  tabLocalePrefix = "#mainmenu/btn"
   defaultTabImageName = "unlockachievement"
 
   sheetsList = null
@@ -262,11 +265,11 @@ let Profile = class (UserCardHandler) {
 
       if (cb.customMenuTab in customCategoryConfig) {
         tabImage = customCategoryConfig[cb.customMenuTab]?.image ?? defaultImage
-        tabText = this.tabLocalePrefix + (customCategoryConfig[cb.customMenuTab]?.title ?? cb.customMenuTab)
+        tabText = this.getTabLocText(customCategoryConfig[cb.customMenuTab]?.title ?? cb.customMenuTab)
       }
       else {
         tabImage = defaultImage
-        tabText = this.tabLocalePrefix + cb.customMenuTab
+        tabText = this.getTabLocText(cb.customMenuTab)
       }
       this.customMenuTabs[lowerCaseTab] <- {
         image = tabImage
@@ -295,7 +298,7 @@ let Profile = class (UserCardHandler) {
       if (sheet in this.customMenuTabs)
         tabText = this.customMenuTabs[sheet].title
       else
-        tabText = $"{this.tabLocalePrefix}{sheet}"
+        tabText = this.getTabLocText(sheet)
 
       view.tabs.append({
         id = sheet
@@ -343,20 +346,20 @@ let Profile = class (UserCardHandler) {
     let isProfileOpened = this.selectedSheet == "UserCard"
     let needHideChangeAccountBtn = (steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)) || gfn?.is_running()
     let buttonsList = {
-      btn_changeAccount = isInMenu.get() && isProfileOpened && !isPlatformSony && !is_gdk && !needHideChangeAccountBtn && !this.isEditModeEnabled
+      btn_changeAccount = isInMenu.get() && isProfileOpened && !isSony && !is_gdk && !needHideChangeAccountBtn && !this.isEditModeEnabled
       btn_changeName = isInMenu.get() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !this.isEditModeEnabled
       btn_editPage = isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_cancelEditPage = isInMenu.get() && isProfileOpened && this.isEditModeEnabled
       btn_applyEditPage = isInMenu.get() && isProfileOpened && this.isEditModeEnabled
       btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.get() && !this.isEditModeEnabled
-      btn_codeApp = isPlatformPC && !is_gdk && hasFeature("AllowExternalLink") &&
+      btn_codeApp = isPC && !is_gdk && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
       wnd_paginator_place = this.selectedSheet == "Statistics"
       btn_achievements_url = (this.selectedSheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
       btn_SkinPreview = isInMenu.get() && this.selectedSheet == "UnlockSkin"
-      btn_leaderboard = this.selectedSheet == "Records" && hasFeature("Leaderboards")
+      btn_leaderboard = this.selectedSheet == "Records"
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -458,7 +461,7 @@ let Profile = class (UserCardHandler) {
       let realId = data?.unlockId ?? data?.id ?? ""
       let unlockBlk = getUnlockById(realId)
       let uType = unlockBlk?.type != null ? get_unlock_type(unlockBlk.type) : -1
-      let unlockName = loc($"unlocks/{get_name_by_unlock_type(uType)}")
+      let unlockName = locByVendor($"unlocks/{get_name_by_unlock_type(uType)}")
       let unlockItem = { unlockId = realId, unlockName, tempDataKey }
       if (canBuy) {
         this.purchaseCostGoldTotal = this.purchaseCostGoldTotal + cost.gold
@@ -1566,7 +1569,7 @@ function openProfileFromPromo(params, sheet = null) {
 
 addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))
 
-return {
+return freeze({
   Profile
   guiStartProfile
-}
+})

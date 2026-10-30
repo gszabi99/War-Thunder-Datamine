@@ -1,8 +1,7 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 let bannedSkins = hardPersistWatched("bannedSkins", [])
 
@@ -24,9 +23,9 @@ addListenersWithoutEnv({
   LoginComplete = @(_p) loadBannedSkins()
 })
 
-return {
+return freeze({
   saveBannedSkins
   isSkinBanned
   addSkinToBanned
   removeSkinFromBanned
-}
+})

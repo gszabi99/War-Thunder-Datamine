@@ -1,9 +1,8 @@
 from "%rGui/style/screenState.nut" import isInVr
 from "%rGui/planeIlses/ilsTyphoon.nut" import altCircle, altitude, weapons, mach, speed, aamScale, canShoot, flightTime
 from "%rGui/planeState/planeFlyState.nut" import Roll, Tangage
-from "%rGui/airState.nut" import TATargetVisible
-from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
-from "%rGui/rocketAamAimState.nut" import TrackerVisible, TrackerX, TrackerY, GuidanceLockState
+from "%rGui/hud/targetTrackerState.nut" import HmdTargetX, HmdTargetY, HmdTargetVisible
+from "%rGui/rocketAamAimState.nut" import HmdTrackerVisible, HmdTrackerX, HmdTrackerY, GuidanceLockState
 from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
 from "%sqstd/math.nut" import floor
 from "math" import sin, cos, PI
@@ -60,38 +59,36 @@ let airSymbol = {
 
 function ccrpReticle(width, height) {
   return @() {
-    watch = TATargetVisible
+    watch = HmdTargetVisible
     size = ph(3)
-    children = TATargetVisible.get() ? [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = baseColor
-        fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth
-        commands = [
-          [VECTOR_POLY, 0, -100, 100, 100, -100, 100],
-          [VECTOR_LINE, 0, -50, 60, 70],
-          [VECTOR_LINE, 20, 70, 60, 70],
-          [VECTOR_LINE, 0, -50, -60, 70],
-          [VECTOR_LINE, -20, 70, -60, 70],
-          [VECTOR_LINE, 100, 50, 170, 20],
-          [VECTOR_LINE, 150, -10, 170, 20],
-          [VECTOR_LINE, -100, 50, -170, 20],
-          [VECTOR_LINE, -150, -10, -170, 20],
-          [VECTOR_LINE, 120, 100, 190, 120],
-          [VECTOR_LINE, 185, 150, 190, 120],
-          [VECTOR_LINE, -120, 100, -190, 120],
-          [VECTOR_LINE, -185, 150, -190, 120],
-        ]
-      }
-    ] : null
+    children = HmdTargetVisible.get() ? {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = baseColor
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth
+      commands = const [
+        [VECTOR_POLY, 0, -100, 100, 100, -100, 100],
+        [VECTOR_LINE, 0, -50, 60, 70],
+        [VECTOR_LINE, 20, 70, 60, 70],
+        [VECTOR_LINE, 0, -50, -60, 70],
+        [VECTOR_LINE, -20, 70, -60, 70],
+        [VECTOR_LINE, 100, 50, 170, 20],
+        [VECTOR_LINE, 150, -10, 170, 20],
+        [VECTOR_LINE, -100, 50, -170, 20],
+        [VECTOR_LINE, -150, -10, -170, 20],
+        [VECTOR_LINE, 120, 100, 190, 120],
+        [VECTOR_LINE, 185, 150, 190, 120],
+        [VECTOR_LINE, -120, 100, -190, 120],
+        [VECTOR_LINE, -185, 150, -190, 120],
+      ]
+    } : null
     animations = [
       { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
     ]
     behavior = Behaviors.RtPropUpdate
     update = function() {
-      local target = [TargetX.get() - width * 0.25, TargetY.get() - height * 0.2]
+      local target = [HmdTargetX.get() - width * 0.25, HmdTargetY.get() - height * 0.2]
       const leftBorder = 0
       let rightBorder = width * 0.5
       const topBorder = 0
@@ -118,34 +115,32 @@ function aamReticle(width, height) {
     animations = [
       { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aam_seeker_limit" }
     ]
-    children = isAAMMode.get() ? [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = baseColor
-        fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth
-        commands = [
-          [VECTOR_POLY, -100, 0, 0, -100, 100, 0, 0, 100]
-        ]
-      }
-    ] : null
+    children = isAAMMode.get() ? {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = baseColor
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth
+      commands = const [
+        [VECTOR_POLY, -100, 0, 0, -100, 100, 0, 0, 100]
+      ]
+    } : null
     behavior = Behaviors.RtPropUpdate
     update = function() {
       let atAamSeekerLimit =
-        TrackerX.get() < width * 0.25
-        || TrackerX.get() > width * 0.75
-        || TrackerY.get() < height * 0.2
-        || TrackerY.get() > height * 0.8
+        HmdTrackerX.get() < width * 0.25
+        || HmdTrackerX.get() > width * 0.75
+        || HmdTrackerY.get() < height * 0.2
+        || HmdTrackerY.get() > height * 0.8
       if (atAamSeekerLimit)
         anim_start("aam_seeker_limit")
       else
         anim_request_stop("aam_seeker_limit")
       return {
         transform = {
-          translate = TrackerVisible.get() ? [
-            clamp(TrackerX.get() - width * 0.25, 0, width * 0.5),
-            clamp(TrackerY.get() - height * 0.2, 0, height * 0.6)
+          translate = HmdTrackerVisible.get() ? [
+            clamp(HmdTrackerX.get() - width * 0.25, 0, width * 0.5),
+            clamp(HmdTrackerY.get() - height * 0.2, 0, height * 0.6)
           ]
           : [width * 0.5, height * 0.5]
         }

@@ -50,6 +50,7 @@ module perf_lint shared private
 
 
 
+
 require daslib/ast_boost
 require strings
 require daslib/lint_config
@@ -58,9 +59,15 @@ require daslib/lint_config
 
 
 
+struct Perf031Return {
+    loop_depth_at_return : int
+    barrier : int
+}
+
 struct VarStackEntry {
     @do_not_delete v : Variable?
     depth : int
+    inline_aware_depth : int
     is_iter : bool
 }
 
@@ -73,18 +80,15 @@ struct Perf018State {
     vars_seen : int
     disqualified : bool
     matched : bool
-    
-    
-    
-    other_keys : string
-    other_names : string
-    other_qualified : int
+    perf029_sibling_keys : string
+    perf029_sibling_names : string
+    perf029_sibling_count : int
 }
 
 struct Perf022State {
     
     @do_not_delete iter_var : Variable?
-    callee_id : int
+    callee_id : Perf022Callee
     sources_seen : int
     vars_seen : int
     disqualified : bool
@@ -106,24 +110,28 @@ struct Perf023Candidate {
 }
 
 enum private Perf025Kind {
-    
-    
-    skip            
-    equivalent      
-    unsigned_hex    
+    not_a_cast
+    cast_is_noop
+    cast_changes_radix
 }
 
+enum private BlockTailExit {
+    none
+    returns
+    breaks
+}
 
-
-
+enum private Perf022Callee {
+    neither
+    push
+    push_clone
+}
 
 bitfield private HotBits {
-    alloc   
-    env     
-    io      
+    perf026_alloc
+    perf027_env
+    perf028_io
 }
-
-
 
 struct private HotSink {
     bit : HotBits
@@ -133,39 +141,34 @@ struct private HotSink {
 
 struct private HotEdge {
     @do_not_delete fn : Function?
-    @do_not_delete site : ExpressionPtr   
+    @do_not_delete caller_site : ExpressionPtr
 }
 
-
-
 struct private HotCache {
-    sinks_at : table<uint64; int2>   
-    edges_at : table<uint64; int2>
+    sinks_span_by_fn : table<uint64; int2>
+    edges_span_by_fn : table<uint64; int2>
     sinks_all : array<HotSink>
     edges_all : array<HotEdge>
 }
 
 struct private HotFrame {
     @do_not_delete fn : Function?
-    parent : int                          
-    @do_not_delete site : ExpressionPtr   
-    
-    
-    
-    @do_not_delete anchor : ExpressionPtr
+    parent : int
+    @do_not_delete site : ExpressionPtr
+    @do_not_delete nearest_root_file_site : ExpressionPtr
 }
 
 def private hot_bits_of(func : Function?) : HotBits {
     var bits : HotBits
     for (a in func.annotations) {
         if (a.annotation.name == "hot_path") {
-            bits = HotBits.alloc | HotBits.env | HotBits.io
+            bits = HotBits.perf026_alloc | HotBits.perf027_env | HotBits.perf028_io
         } elif (a.annotation.name == "no_alloc") {
-            bits.alloc = true
+            bits.perf026_alloc = true
         } elif (a.annotation.name == "no_env") {
-            bits.env = true
+            bits.perf027_env = true
         } elif (a.annotation.name == "no_io") {
-            bits.io = true
+            bits.perf028_io = true
         }
     }
     return bits
@@ -178,9 +181,6 @@ def private is_cold_path(func : Function?) : bool {
     return false
 }
 
-
-
-
 def private is_alloc_builtin(n : string) : bool {
     if (starts_with(n, "__builtin_array_") || starts_with(n, "__builtin_table_")) {
         return !(ends_with(n, "_lock") || ends_with(n, "_lock_mutable")
@@ -189,26 +189,21 @@ def private is_alloc_builtin(n : string) : bool {
                  || n == "__builtin_table_get_key" || n == "__builtin_table_keys"
                  || n == "__builtin_table_values")
     }
-    return n == "clone_string"
+    return false
 }
-
-
 
 def private is_container_sizing(n : string) : bool {
     return (n == "resize" || n == "resize_no_init" || n == "reserve" || n == "clear"
             || n == "push" || n == "push_clone" || n == "emplace" || n == "push_from"
-            || n == "push_clone_from" || n == "insert" || n == "erase" || n == "pop")
+            || n == "push_clone_from" || n == "insert" || n == "erase" || n == "pop"
+            || n == "ensure_capacity" || n == "scratch_resize" || n == "scratch_reserve"
+            || n == "scratch_ensure_capacity")
 }
 
-
-
-
 def private perf030_needs_release(td : TypeDeclPtr) : bool {
-    
     if (td == null) return false
     let bt = td.baseType
     if (bt == Type.tArray || bt == Type.tTable || bt == Type.tLambda) return true
-    
     if (bt == Type.tFixedArray) return perf030_needs_release(td.firstType)
     if (bt == Type.tStructure && td.structType != null) {
         for (fld in td.structType.fields) {
@@ -224,48 +219,53 @@ def private perf030_needs_release(td : TypeDeclPtr) : bool {
     return false
 }
 
-def private has_scratch_annotation(annotations) : bool {
+def private has_annotation(annotations; name : string) : bool {
     for (a in annotations) {
-        if (a.name == "scratch") return true
+        if (a.name == name) return true
     }
     return false
 }
 
-def private is_scratch_dest(var expr : Expression?) : bool {
+def private is_annotated_dest(var expr : Expression?; name : string) : bool {
     return false if (expr == null)
     if (expr is ExprField) {
         var f = expr as ExprField
         var fd = f.field
-        if (fd != null && has_scratch_annotation(fd.annotation)) return true
-        return is_scratch_dest(f.value)
+        if (fd != null && has_annotation(fd.annotation, name)) return true
+        return is_annotated_dest(f.value, name)
     }
     if (expr is ExprVar) {
         var v = (expr as ExprVar).variable
         if (v != null) {
-            if (has_scratch_annotation(v.annotation)) return true
-            
+            if (has_annotation(v.annotation, name)) return true
             if (v._type != null && v._type.flags.ref && v.init != null) {
-                return is_scratch_dest(v.init)
+                return is_annotated_dest(v.init, name)
             }
         }
         return false
     }
-    if (expr is ExprRef2Value) return is_scratch_dest((expr as ExprRef2Value.subexpr))
-    if (expr is ExprAt) return is_scratch_dest((expr as ExprAt.subexpr))
-    if (expr is ExprSafeAt) return is_scratch_dest((expr as ExprSafeAt.subexpr))
-    if (expr is ExprCast) return is_scratch_dest((expr as ExprCast.subexpr))
+    if (expr is ExprRef2Value) return is_annotated_dest((expr as ExprRef2Value.subexpr), name)
+    if (expr is ExprAt) return is_annotated_dest((expr as ExprAt.subexpr), name)
+    if (expr is ExprSafeAt) return is_annotated_dest((expr as ExprSafeAt.subexpr), name)
+    if (expr is ExprCast) return is_annotated_dest((expr as ExprCast.subexpr), name)
     return false
 }
 
+def private is_scratch_dest(var expr : Expression?) : bool {
+    return is_annotated_dest(expr, "scratch")
+}
 
 def private takes_scratch_arg(fn : Function?) : bool {
     return false if (fn == null)
     for (arg in fn.arguments) {
-        for (a in arg.annotation) {
-            if (a.name == "scratch") return true
-        }
+        if (has_annotation(arg.annotation, "scratch")) return true
     }
     return false
+}
+
+def private is_explicit_capacity_call(n : string) : bool {
+    return (n == "reserve" || n == "ensure_capacity"
+            || n == "scratch_reserve" || n == "scratch_ensure_capacity" || n == "scratch_resize")
 }
 
 def private is_env_builtin(n : string) : bool {
@@ -277,19 +277,11 @@ def private is_io_builtin(n : string) : bool {
             || n == "fread" || n == "fwrite" || n == "fflush" || n == "popen" || n == "popen_argv")
 }
 
-
-
-
 class HotBodyScan : AstVisitor {
     sinks : array<HotSink>
     edges : array<HotEdge>
-    
-    
     panic_depth : int = 0
 
-    
-    
-    
     gen_depth : int = 0
 
     def override preVisitExpression(var expr : ExpressionPtr) : void {
@@ -325,7 +317,6 @@ class HotBodyScan : AstVisitor {
             return
         }
         return if (panic_depth > 0)
-        
         let origin = string(expr.func.fromGeneric != null ? expr.func.fromGeneric.name : expr.func.name)
         if (!empty(expr.arguments)
             && ((is_container_sizing(origin) && is_scratch_dest(expr.arguments[0]))
@@ -333,135 +324,105 @@ class HotBodyScan : AstVisitor {
             return
         }
         if (is_env_builtin(n)) {
-            add_sink(HotBits.env, "{n}()", expr)
+            add_sink(HotBits.perf027_env, "{n}()", expr)
         } elif (is_io_builtin(n)) {
-            add_sink(HotBits.io, "{n}()", expr)
+            add_sink(HotBits.perf028_io, "{n}()", expr)
         } elif (is_alloc_builtin(n)) {
-            add_sink(HotBits.alloc, "{n}()", expr)
+            add_sink(HotBits.perf026_alloc, "{n}()", expr)
         } elif (expr.func.flags.builtIn && expr.func.result != null
                 && expr.func.result.baseType == Type.tString) {
-            add_sink(HotBits.alloc, "{n}() returns a newly allocated string", expr)
+            add_sink(HotBits.perf026_alloc, "{n}() returns a newly allocated string", expr)
         }
-        edges |> push(HotEdge(fn = expr.func, site = expr))
+        edges |> push(HotEdge(fn = expr.func, caller_site = expr))
     }
 
     def override preVisitExprNew(var expr : ExprNew?) : void {
-        add_sink(HotBits.alloc, "new", expr)
+        add_sink(HotBits.perf026_alloc, "new", expr)
     }
 
-    
     def override preVisitExprAscend(var expr : ExprAscend?) : void {
-        add_sink(HotBits.alloc, "new", expr)
+        add_sink(HotBits.perf026_alloc, "new", expr)
     }
 
     def override preVisitExprDelete(var expr : ExprDelete?) : void {
-        add_sink(HotBits.alloc, "delete", expr)
+        add_sink(HotBits.perf026_alloc, "delete", expr)
     }
 
     def override preVisitExprStringBuilder(var expr : ExprStringBuilder?) : void {
-        add_sink(HotBits.alloc, "string interpolation", expr)
+        add_sink(HotBits.perf026_alloc, "string interpolation", expr)
     }
 
-    
-    
-    
     def override preVisitExprAt(var expr : ExprAt?) : void {
         if (expr.subexpr == null || expr.subexpr._type == null) return
         if (expr.subexpr._type.baseType == Type.tTable && !is_scratch_dest(expr.subexpr)) {
-            add_sink(HotBits.alloc, "table index (inserts a default entry when the key is missing)", expr)
+            add_sink(HotBits.perf026_alloc, "table index (inserts a default entry when the key is missing)", expr)
         }
     }
 
-    
     def override preVisitExprMakeBlock(var expr : ExprMakeBlock?) : void {
         if (expr.mmFlags.isLambda) {
-            add_sink(HotBits.alloc, "lambda capture frame", expr)
+            add_sink(HotBits.perf026_alloc, "lambda capture frame", expr)
         }
     }
 }
 
 class PerfLintVisitor : AstVisitor {
     compile_time_errors : bool
-    
+    perf032_reserved : table<string>
     loop_depth : int = 0
     in_closure : int = 0
     var_stack : array<VarStackEntry>
     scope_stack : array<int>
-    
+    @do_not_delete inline_blocks : array<ExprBlock?>
+    inline_block_entry_depth : array<int>
+    in_deferred : int = 0
+    inline_aware_loop_depth : int = 0
+    block_tail_exit : array<BlockTailExit>
+    return_frames : array<Perf031Return>
     in_while_cond : bool = false
-    
     in_character_at_call : int = 0
     @do_not_delete current_character_at : ExprCall?
     in_length_while_call : int = 0
     in_string_builder_check : int = 0
     @do_not_delete string_builder_target_var : Variable?
     @do_not_delete string_builder_save_stack : array<Variable?>
-    
     @do_not_delete reported_character_at : array<ExprCall?>
-    
     reserved_paths : array<string>
-    
     if_depth_stack : array<int>
-    
     @do_not_delete current_function : Function?
     in_template : bool = false
-    
-    
     @do_not_delete hot_roots : array<Function?>
-    
     known_length_loop_depth : int = 0
     current_for_known_length : bool = true
-    
+    known_length_stack : array<bool>
     loop_has_early_exit : array<bool>
     @do_not_delete perf030_released : array<Variable?>
-    
     @do_not_delete pending_move_var : Variable?
     @safe_when_uninitialized pending_move_at : LineInfo
-    
-    
-    
     pending_move_is_clone : bool = false
-    
     perf018_stack : array<Perf018State>
-    perf018_paths : array<string>
     @do_not_delete perf018_for_exprs : array<ExprFor?>
     in_qualifying_idx : int = 0
     at_qualifying_pushes : array<int>
-    
-    
-    
     perf022_stack : array<Perf022State>
     @do_not_delete perf022_for_exprs : array<ExprFor?>
-    
     perf023_candidates : array<Perf023Candidate>
     perf023_splice_depth : int = 0
-    
     perf024_candidates : array<Perf024Candidate>
     perf024_skip_iptr : uint64 = 0ul
     warning_count : int = 0
-    
     collect_warnings : bool = false
     warnings : array<string>
-    issues : array<LintIssue>       
-    
+    issues : array<LintIssue>
     reported_locations : table<uint64>
-    
-    
     perf019_enum_or_probed : array<uint64>
     perf019_enum_or_yes : array<uint64>
-    def PerfLintVisitor() {
-        pass
-    }
-
-    
-    
-    def location_key(at : LineInfo) : uint64 {
+    def report_key(at : LineInfo; code : string) : uint64 {
+        
         let pos = uint64(at.line) | (uint64(at.column) << uint64(20))
-        return pos ^ (intptr(at.fileInfo) * 1099511628211ul)
+        return (pos ^ (intptr(at.fileInfo) * 1099511628211ul)) ^ hash(code)
     }
 
-    
-    
     disabled_codes : table<string>
     enabled_codes : table<string>
 
@@ -480,12 +441,10 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def perf_warning(text : string; at : LineInfo) : void {
-        
         if (in_template
-            || (current_function != null && current_function.flags.generated)
+            || !is_user_authored_body(current_function)
             || is_suppressed(text, at)) return
-        
-        let key = location_key(at) ^ hash(extract_lint_code(text))
+        let key = report_key(at, extract_lint_code(text))
         if (key_exists(reported_locations, key)) return
         reported_locations |> insert(key)
         warning_count++
@@ -509,8 +468,6 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def is_loop_variable(v : Variable?) : bool {
         if (v == null) return false
         for (entry in var_stack) {
@@ -519,16 +476,17 @@ class PerfLintVisitor : AstVisitor {
         return false
     }
 
-    def is_defined_outside_loop(v : Variable?) : bool {
-        if (v == null || loop_depth == 0 || is_loop_variable(v)) return false
+    def outside_loop(v : Variable?; depth : int; use31 : bool) : bool {
+        if (v == null || depth == 0 || is_loop_variable(v)) return false
         for (entry in var_stack) {
-            if (entry.v == v) return entry.depth < loop_depth
+            if (entry.v == v) return (use31 ? entry.inline_aware_depth : entry.depth) < depth
         }
-        
         return true
     }
 
-    
+    def is_defined_outside_loop(v : Variable?) : bool => outside_loop(v, loop_depth, false)
+
+    def is_defined_outside_inline_aware_loop(v : Variable?) : bool => outside_loop(v, inline_aware_loop_depth, true)
 
     def is_character_at_zero(expr : ExprCall?) : bool {
         if (length(expr.arguments) >= 2) {
@@ -539,7 +497,6 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def is_array_func(expr : ExprCall?; fname : string) : bool {
-        
         if (expr.func == null || expr.func.fromGeneric == null
             || expr.func.fromGeneric.name != fname || empty(expr.arguments)) return false
         let arg = expr.arguments[0]
@@ -579,12 +536,10 @@ class PerfLintVisitor : AstVisitor {
         if (through != null) {
             return find_expr_path(through, path)
         }
-        
         return null
     }
 
     def path_passthrough_child(expr : Expression?) : Expression? {
-        
         if (expr is ExprSwizzle) return (expr as ExprSwizzle).value
         if (expr is ExprCast) return (expr as ExprCast.subexpr)
         if (expr is ExprRef2Ptr) return (expr as ExprRef2Ptr.subexpr)
@@ -598,7 +553,6 @@ class PerfLintVisitor : AstVisitor {
 
     def find_string_var_from_expr(expr : Expression?) : Variable? {
         return null if (expr == null)
-        
         var inner = expr
         if (inner is ExprRef2Value) {
             inner = (inner as ExprRef2Value.subexpr)
@@ -610,8 +564,6 @@ class PerfLintVisitor : AstVisitor {
         return null
     }
 
-    
-
     def is_string_of_das_string(expr : Expression?) : bool {
         
         return false if (expr == null)
@@ -621,7 +573,6 @@ class PerfLintVisitor : AstVisitor {
         }
         return false if (inner == null || !(inner is ExprCall))
         var call = inner as ExprCall
-        
         if (empty(call.arguments) || call.name != "string") return false
         var arg = call.arguments[0]
         if (arg._type == null || arg._type.baseType != Type.tHandle) return false
@@ -645,8 +596,6 @@ class PerfLintVisitor : AstVisitor {
         }
         return false
     }
-
-    
 
     def is_const_zero(expr : Expression? const) : bool {
         if (expr == null) return false
@@ -686,7 +635,7 @@ class PerfLintVisitor : AstVisitor {
         return describe(a) == describe(b)
     }
 
-    def is_workhorse_numeric(t : TypeDecl?) : bool {
+    def is_workhorse_numeric_scalar(t : TypeDecl?) : bool {
         
         if (t == null) return false
         let bt = t.baseType
@@ -703,8 +652,6 @@ class PerfLintVisitor : AstVisitor {
         let modname = string(call.func._module.name)
         return modname == "strings" || modname == "$" || modname == "builtin"
     }
-
-    
 
     def unwrap_int_cast(expr : Expression? const) : Expression? const {
         
@@ -755,10 +702,7 @@ class PerfLintVisitor : AstVisitor {
         return false
     }
 
-    
-
     def perf020_target_basetype(fname : string) : Type {
-        
         if (fname == "int") return Type.tInt
         if (fname == "int8") return Type.tInt8
         if (fname == "int16") return Type.tInt16
@@ -776,8 +720,6 @@ class PerfLintVisitor : AstVisitor {
         if (fname == "bitfield64") return Type.tBitfield64
         return Type.none
     }
-
-    
 
     def is_clone_init_call(expr : Expression const?) : bool {
         
@@ -807,18 +749,16 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def perf025_value_kind(arg : Expression const?) : Perf025Kind {
         
-        if (arg == null || arg._type == null) return Perf025Kind.skip
+        if (arg == null || arg._type == null) return Perf025Kind.not_a_cast
         let bt = arg._type.baseType
         if (bt == Type.tInt || bt == Type.tInt8 || bt == Type.tInt16 || bt == Type.tInt64
             || bt == Type.tFloat || bt == Type.tDouble || bt == Type.tString
             || (bt == Type.tHandle && arg._type.annotation != null
-                && arg._type.annotation.name == "das_string")) return Perf025Kind.equivalent
-        if (bt == Type.tUInt || bt == Type.tUInt8 || bt == Type.tUInt16 || bt == Type.tUInt64) return Perf025Kind.unsigned_hex
-        return Perf025Kind.skip
+                && arg._type.annotation.name == "das_string")) return Perf025Kind.cast_is_noop
+        if (bt == Type.tUInt || bt == Type.tUInt8 || bt == Type.tUInt16 || bt == Type.tUInt64) return Perf025Kind.cast_changes_radix
+        return Perf025Kind.not_a_cast
     }
 
     def perf025_string_call_value(e : Expression const?) : Expression const? {
@@ -844,25 +784,25 @@ class PerfLintVisitor : AstVisitor {
         return ex
     }
 
-    
-
     def override preVisitFunction(var fn : FunctionPtr) : void {
         current_function = fn
         in_template = fn.moreFlags.isTemplate
-        
         if (!in_template && uint(hot_bits_of(fn)) != 0u) {
             hot_roots |> push(fn)
         }
-        
         perf023_candidates |> clear
         perf023_splice_depth = 0
-        
         perf024_candidates |> clear
         perf024_skip_iptr = 0ul
+        perf030_released |> clear
+        perf032_reserved |> clear
+        pending_move_var = null
+        for (arg in fn.arguments) {
+            check_perf032_declaration(arg._type, arg.annotation, arg.at)
+        }
     }
 
     def override visitFunction(var fn : FunctionPtr) : FunctionPtr {
-        
         for (c in perf023_candidates) {
             if (!c.disqualified && c.safe_uses >= 1 && c.v != null) {
                 perf_warning(
@@ -870,7 +810,6 @@ class PerfLintVisitor : AstVisitor {
                     c.v.at)
             }
         }
-        
         for (c in perf024_candidates) {
             if (!c.disqualified && c.safe_uses >= 1 && c.v != null) {
                 perf_warning(
@@ -882,25 +821,65 @@ class PerfLintVisitor : AstVisitor {
         perf023_splice_depth = 0
         perf024_candidates |> clear
         perf024_skip_iptr = 0ul
+        perf030_released |> clear
         current_function = null
         in_template = false
         return <- fn
     }
 
-    
+    def override preVisitExprMakeBlock(var expr : ExprMakeBlock?) : void {
+        if (expr._block != null && expr._block is ExprBlock && expr._type != null && expr._type.baseType == Type.tBlock
+                && !expr.mmFlags.isLambda && !expr.mmFlags.isLocalFunction && !expr.genFlags.generated
+                && !(expr._block as ExprBlock).genFlags.generated) {
+            inline_blocks |> push(expr._block as ExprBlock)
+            inline_block_entry_depth |> push(inline_aware_loop_depth)
+        }
+    }
+
+    def override visitExprMakeBlock(var expr : ExprMakeBlock?) : ExpressionPtr {
+        if (!empty(inline_blocks) && expr._block != null && expr._block is ExprBlock
+                && inline_blocks |> back() == expr._block as ExprBlock) {
+            inline_blocks |> pop()
+            inline_block_entry_depth |> pop()
+        }
+        return <- expr
+    }
+
+    def inline_barrier() : int => empty(inline_block_entry_depth) ? 0 : inline_block_entry_depth |> back()
+
+    def tail_exit_kind(blk : ExprBlock?) : BlockTailExit {
+        if (blk == null || empty(blk.list)) return BlockTailExit.none
+        let lastE = blk.list[length(blk.list) - 1]
+        if (lastE is ExprReturn) return BlockTailExit.returns
+        if (lastE is ExprBreak) return BlockTailExit.breaks
+        return BlockTailExit.none
+    }
 
     def override preVisitExprBlock(blk : ExprBlock?) : void {
         if (blk.blockFlags.isClosure) {
             in_closure++
             string_builder_save_stack |> push(string_builder_target_var)
             string_builder_target_var = null
+            if (!(inline_blocks |> has_value(blk))) {
+                in_deferred++
+            }
         }
         scope_stack |> push(length(var_stack))
+        block_tail_exit |> push(tail_exit_kind(blk))
+    }
+
+    def override preVisitExprBlockArgument(blk : ExprBlock?; var arg : VariablePtr; lastArg : bool) : void {
+        if (in_deferred == 0) {
+            var_stack |> push(VarStackEntry(v = arg, depth = loop_depth, inline_aware_depth = inline_aware_loop_depth, is_iter = false))
+        }
     }
 
     def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         if (blk.blockFlags.isClosure) {
             in_closure--
+            if (!(inline_blocks |> has_value(blk))) {
+                in_deferred--
+            }
             if (!empty(string_builder_save_stack)) {
                 string_builder_target_var = string_builder_save_stack |> back()
                 string_builder_save_stack |> pop()
@@ -910,27 +889,45 @@ class PerfLintVisitor : AstVisitor {
             var_stack |> resize(scope_stack |> back())
             scope_stack |> pop()
         }
+        if (!empty(block_tail_exit)) {
+            block_tail_exit |> pop()
+        }
         return <- blk
     }
 
-    
+    def override preVisitExprReturn(expr : ExprReturn?) : void {
+        return_frames |> push(Perf031Return(loop_depth_at_return = inline_aware_loop_depth, barrier = inline_barrier()))
+    }
+
+    def override visitExprReturn(var expr : ExprReturn?) : ExpressionPtr {
+        if (!empty(return_frames)) {
+            return_frames |> pop()
+        }
+        return <- expr
+    }
+
+    def override preVisitGlobalLetVariable(v : VariablePtr; _last : bool) : void {
+        check_perf032_declaration(v._type, v.annotation, v.at)
+    }
+
+    def override preVisitStructureField(_st : StructurePtr; decl : FieldDeclaration; _last : bool) : void {
+        check_perf032_declaration(decl._type, decl.annotation, decl.at)
+    }
 
     def override preVisitExprLetVariable(expr : ExprLet?; var v : VariablePtr; last : bool) : void {
-        if (in_closure == 0) {
-            var_stack |> push(VarStackEntry(v = v, depth = loop_depth, is_iter = false))
+        check_perf032_declaration(v._type, v.annotation, v.at)
+        if (in_deferred == 0) {
+            var_stack |> push(VarStackEntry(v = v, depth = loop_depth, inline_aware_depth = inline_aware_loop_depth, is_iter = false))
         }
-        
         if (in_closure == 0 && v != null && v.init != null && v.init is ExprCall) {
             let initCall = v.init as ExprCall
             if (initCall.name == "clone_expression" && length(initCall.arguments) == 1) {
                 perf023_candidates |> push(Perf023Candidate(v = v, safe_uses = 0, disqualified = false))
             }
         }
-        
         if (in_closure == 0 && v != null && is_clone_init_call(v.init)) {
             perf024_candidates |> push(Perf024Candidate(v = v, safe_uses = 0, disqualified = false))
         }
-        
         if (last && v.flags.init_via_move && v.init != null) {
             var dominated_by_clone = false
             var ini = v.init
@@ -946,8 +943,6 @@ class PerfLintVisitor : AstVisitor {
             pending_move_is_clone = dominated_by_clone
         }
     }
-
-    
 
     def override preVisitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) : void {
         if (pending_move_var != null) {
@@ -972,12 +967,9 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def override preVisitExprFor(expr : ExprFor?) : void {
         if (in_closure == 0) {
             scope_stack |> push(length(var_stack))
-            loop_depth++
             if_depth_stack |> push(0)
             current_for_known_length = true
             loop_has_early_exit |> push(false)
@@ -989,7 +981,6 @@ class PerfLintVisitor : AstVisitor {
     def is_known_length_source(src : Expression?) : bool {
         if (src == null || src._type == null) return false
         let bt = src._type.baseType
-        
         return (bt == Type.tArray || bt == Type.tString
                 || bt == Type.tRange || bt == Type.tRange64
                 || bt == Type.tURange || bt == Type.tURange64
@@ -1007,54 +998,56 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def override preVisitExprForBody(expr : ExprFor?) : void {
-        if (in_closure == 0 && current_for_known_length) {
-            known_length_loop_depth++
+        if (in_closure == 0) {
+            known_length_stack |> push(current_for_known_length)
+            if (current_for_known_length) {
+                known_length_loop_depth++
+            }
         }
         if (in_closure == 0) {
+            loop_depth++
             perf018_finalize_on_body()
             perf022_inspect_body(expr.body)
+        }
+        if (in_deferred == 0) {
+            inline_aware_loop_depth++
         }
     }
 
     def override preVisitExprForVariable(expr : ExprFor?; var v : VariablePtr; last : bool) : void {
+        if (in_deferred == 0) {
+            var_stack |> push(VarStackEntry(v = v, depth = loop_depth, inline_aware_depth = inline_aware_loop_depth, is_iter = true))
+        }
         if (in_closure == 0) {
-            var_stack |> push(VarStackEntry(v = v, depth = loop_depth - 1, is_iter = true))
             perf018_record_var(v)
             perf022_record_var(v)
         }
     }
 
     def override visitExprFor(var expr : ExprFor?) : ExpressionPtr {
+        if (in_deferred == 0) {
+            inline_aware_loop_depth--
+        }
         if (in_closure == 0) {
             perf018_pop_and_check()
             perf022_pop_and_check()
             loop_depth--
-            if (current_for_known_length) {
-                known_length_loop_depth--
+            if (!empty(known_length_stack)) {
+                if (known_length_stack |> back()) {
+                    known_length_loop_depth--
+                }
+                known_length_stack |> pop()
             }
-            if (!empty(scope_stack)) {
-                var_stack |> resize(scope_stack |> back())
-                scope_stack |> pop()
-            }
-            if (!empty(if_depth_stack)) {
-                if_depth_stack |> pop()
-            }
-            if (!empty(loop_has_early_exit)) {
-                loop_has_early_exit |> pop()
-            }
+            pop_loop_scope()
         }
         return <- expr
     }
-
-    
 
     def perf018_push_sentinel(expr : ExprFor?) : void {
         
         var state = Perf018State(disqualified = true, matched = false)
         perf018_stack    |> push(state)
-        unsafe {
-            perf018_for_exprs |> push(reinterpret<ExprFor?>(expr))
-        }
+        perf018_for_exprs |> push(unsafe(reinterpret<ExprFor?>(expr)))
     }
 
     def perf018_pop_and_check() : void {
@@ -1065,8 +1058,8 @@ class PerfLintVisitor : AstVisitor {
         perf018_stack    |> pop()
         perf018_for_exprs |> pop()
         if (state.matched && !state.disqualified && state.qualified_count > 0 && owning != null) {
-            if (state.other_qualified > 0 && state.arr_var != null) {
-                perf_warning("PERF029: parallel-array indexing - i subscripts {state.arr_var.name}{state.other_names} in lockstep; zip them: 'for (a, b, ... in {state.arr_var.name}{state.other_names})'", owning.at)
+            if (state.perf029_sibling_count > 0 && state.arr_var != null) {
+                perf_warning("PERF029: parallel-array indexing - i subscripts {state.arr_var.name}{state.perf029_sibling_names} in lockstep; zip them: 'for (a, b, ... in {state.arr_var.name}{state.perf029_sibling_names})'", owning.at)
             } else {
                 perf_warning("PERF018: for (i in range(length(X))) where i only indexes X; use 'for (c in X)' for direct iteration", owning.at)
             }
@@ -1106,7 +1099,6 @@ class PerfLintVisitor : AstVisitor {
         var state = perf018_stack[top_idx]
         state.sources_seen++
         if (state.sources_seen > 1) {
-            
             state.disqualified = true
             perf018_stack[top_idx] = state
             return
@@ -1190,7 +1182,6 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def perf029_other_array_of(var at : ExprAt?; frame_idx : int) : Variable? {
-        
         if (frame_idx < 0 || frame_idx >= length(perf018_stack)) return null
         let state = perf018_stack[frame_idx]
         if (state.disqualified || !state.matched
@@ -1220,11 +1211,11 @@ class PerfLintVisitor : AstVisitor {
                 var av = perf029_other_array_of(expr, i)
                 if (av != null) {
                     var st = perf018_stack[i]
-                    st.other_qualified++
-                    let akey = "{intptr(av)}|"
-                    if (find(st.other_keys, akey) < 0) {
-                        st.other_keys += akey
-                        st.other_names += ", {av.name}"
+                    st.perf029_sibling_count++
+                    let akey = "|{intptr(av)}|"
+                    if (find(st.perf029_sibling_keys, akey) < 0) {
+                        st.perf029_sibling_keys += akey
+                        st.perf029_sibling_names += ", {av.name}"
                     }
                     perf018_stack[i] = st
                     pushes++
@@ -1257,15 +1248,11 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def perf022_push_sentinel(expr : ExprFor?) : void {
         
         var state : Perf022State
         perf022_stack |> push(state)
-        unsafe {
-            perf022_for_exprs |> push(reinterpret<ExprFor?>(expr))
-        }
+        perf022_for_exprs |> push(unsafe(reinterpret<ExprFor?>(expr)))
     }
 
     def perf022_record_source(src : Expression?) : void {
@@ -1276,7 +1263,6 @@ class PerfLintVisitor : AstVisitor {
         if (state.sources_seen > 1) {
             state.disqualified = true
         }
-        
         if (src == null || src._type == null) {
             state.disqualified = true
         } else {
@@ -1317,11 +1303,10 @@ class PerfLintVisitor : AstVisitor {
         if (stmt == null || !(stmt is ExprCall) || (stmt as ExprCall).func == null
             || length((stmt as ExprCall).arguments) != 2) return
         var call = stmt as ExprCall
-        
         let dest = call.arguments[0]
         if (dest == null || dest._type == null || dest._type.baseType != Type.tArray) return
         let callee_id = perf022_callee_id(call)
-        if (callee_id == 0) return
+        if (callee_id == Perf022Callee.neither) return
         var arg1 = call.arguments[1]
         if (arg1 is ExprRef2Value) {
             arg1 = (arg1 as ExprRef2Value.subexpr)
@@ -1334,14 +1319,13 @@ class PerfLintVisitor : AstVisitor {
         perf022_stack[top_idx] = state
     }
 
-    def perf022_callee_id(var call : ExprCall?) : int {
-        
+    def perf022_callee_id(var call : ExprCall?) : Perf022Callee {
         if (call.func.fromGeneric != null) {
-            if (call.func.fromGeneric.name == "push") return 1
-            return call.func.fromGeneric.name == "push_clone" ? 2 : 0
+            if (call.func.fromGeneric.name == "push") return Perf022Callee.push
+            return call.func.fromGeneric.name == "push_clone" ? Perf022Callee.push_clone : Perf022Callee.neither
         }
-        if (call.func.name == "push") return 1
-        return call.func.name == "push_clone" ? 2 : 0
+        if (call.func.name == "push") return Perf022Callee.push
+        return call.func.name == "push_clone" ? Perf022Callee.push_clone : Perf022Callee.neither
     }
 
     def perf022_pop_and_check() : void {
@@ -1352,7 +1336,7 @@ class PerfLintVisitor : AstVisitor {
         perf022_stack    |> pop()
         perf022_for_exprs |> pop()
         if (state.matched && !state.disqualified && owning != null) {
-            let name = state.callee_id == 1 ? "push" : "push_clone"
+            let name = state.callee_id == Perf022Callee.push ? "push" : "push_clone"
             perf_warning("PERF022: for-loop body 'B |> {name}(x)' pushes one element per iteration; use 'B |> {name}_from(A)' for a bulk reserve+copy", owning.at)
         }
     }
@@ -1378,31 +1362,39 @@ class PerfLintVisitor : AstVisitor {
             loop_has_early_exit |> push(false)
             in_while_cond = true
         }
+        if (in_deferred == 0) {
+            inline_aware_loop_depth++
+        }
     }
 
     def override preVisitExprWhileBody(expr : ExprWhile?; body : ExpressionPtr) : void {
         in_while_cond = false
     }
 
+    def pop_loop_scope() : void {
+        if (!empty(scope_stack)) {
+            var_stack |> resize(scope_stack |> back())
+            scope_stack |> pop()
+        }
+        if (!empty(if_depth_stack)) {
+            if_depth_stack |> pop()
+        }
+        if (!empty(loop_has_early_exit)) {
+            loop_has_early_exit |> pop()
+        }
+    }
+
     def override visitExprWhile(var expr : ExprWhile?) : ExpressionPtr {
+        if (in_deferred == 0) {
+            inline_aware_loop_depth--
+        }
         if (in_closure == 0) {
             loop_depth--
-            if (!empty(scope_stack)) {
-                var_stack |> resize(scope_stack |> back())
-                scope_stack |> pop()
-            }
-            if (!empty(if_depth_stack)) {
-                if_depth_stack |> pop()
-            }
-            if (!empty(loop_has_early_exit)) {
-                loop_has_early_exit |> pop()
-            }
+            pop_loop_scope()
         }
         in_while_cond = false
         return <- expr
     }
-
-    
 
     def override preVisitExprBreak(expr : ExprBreak?) : void {
         if (in_closure == 0 && !empty(loop_has_early_exit)) {
@@ -1415,8 +1407,6 @@ class PerfLintVisitor : AstVisitor {
             loop_has_early_exit[length(loop_has_early_exit) - 1] = true
         }
     }
-
-    
 
     def override preVisitExprIfThenElse(ifte : ExprIfThenElse?) : void {
         if (!empty(if_depth_stack)) {
@@ -1431,19 +1421,13 @@ class PerfLintVisitor : AstVisitor {
         return <- ifte
     }
 
-    
-    
-    
-
     def override preVisitExprOp2(expr : ExprOp2?) : void {
-        
         if (loop_depth > 0 && expr.op == "+=") {
             let v = find_string_var_from_expr(expr.left)
             if (v != null && is_defined_outside_loop(v)) {
                 perf_warning("PERF001: string += in loop creates O(n^2) allocations; use build_string() instead", expr.at)
             }
         }
-        
         if (expr.op == "==" || expr.op == "!=") {
             let left_is = is_string_of_das_string(expr.left)
             let right_is = is_string_of_das_string(expr.right)
@@ -1451,10 +1435,8 @@ class PerfLintVisitor : AstVisitor {
                 perf_warning("PERF007: string(das_string) in comparison is unnecessary; das_string supports == and != directly", expr.at)
             }
         }
-        
         if (expr.op == "==") {
             var left = expr.left
-            
             if (left is ExprRef2Value) {
                 left = (left as ExprRef2Value.subexpr)
             }
@@ -1465,15 +1447,12 @@ class PerfLintVisitor : AstVisitor {
                 }
             }
         }
-        
         if (is_get_ptr_vs_null(expr.left, expr.right) || is_get_ptr_vs_null(expr.right, expr.left)) {
             perf_warning("PERF010: get_ptr() is unnecessary for null comparison; smart_ptr supports == and != null directly", expr.at)
         }
-        
         if (expr.op == "+=" || expr.op == "-=") {
             check_perf013_incdec(expr)
         }
-        
         if (expr.op == "&&") {
             check_perf014_digit(expr, false)
             check_perf014_alpha(expr, true)
@@ -1482,19 +1461,16 @@ class PerfLintVisitor : AstVisitor {
             check_perf014_digit(expr, true)
             check_perf014_alpha(expr, false)
         }
-        
         if (expr.op == "==" || expr.op == "!=" || expr.op == "<" || expr.op == "<=" || expr.op == ">" || expr.op == ">=") {
             check_perf017_length_zero(expr)
         }
-        
         if (expr.op == "|") {
             check_perf019_int_cast_or(expr)
         }
     }
 
     def check_perf013_incdec(expr : ExprOp2?) : void {
-        
-        if (expr.left == null || !is_workhorse_numeric(expr.left._type)) return
+        if (expr.left == null || !is_workhorse_numeric_scalar(expr.left._type)) return
         let rhs_one = is_const_one(expr.right)
         let rhs_neg = is_const_neg_one(expr.right)
         var delta = 0
@@ -1522,10 +1498,7 @@ class PerfLintVisitor : AstVisitor {
         perf_warning("PERF019: int(...) | int(...) on the same {kind} type can collapse to int(L | R) (one cast instead of two)", expr.at)
     }
 
-    
-
     def check_perf020_redundant_cast(call : ExprCall?) : void {
-        
         if (call == null || call.func == null || empty(call.arguments)
             || (current_function != null && current_function.fromGeneric != null)) return
         let fname = string(call.func.fromGeneric != null ? call.func.fromGeneric.name : call.func.name)
@@ -1535,13 +1508,10 @@ class PerfLintVisitor : AstVisitor {
         if (arg is ExprRef2Value) {
             arg = (arg as ExprRef2Value.subexpr)
         }
-        
         if (arg == null || arg._type == null || arg._type.baseType != target
                 || (target == Type.tString && arg._type.flags.temporary)) return
         perf_warning("PERF020: redundant {fname}(...) cast - argument is already {fname}", call.at)
     }
-
-    
 
     def cast_call_workhorse_target(e : Expression?; var fname_out : string&) : Type {
         
@@ -1617,16 +1587,13 @@ class PerfLintVisitor : AstVisitor {
         let rt = cast_call_workhorse_target(expr.right, rname)
         let la = cast_call_arg_basetype(expr.left)
         let ra = cast_call_arg_basetype(expr.right)
-        
         if (lt == Type.none || rt == Type.none || lt != rt || lname != rname
             || la == Type.none || la != ra
             || !cast_call_tail_args_equal(expr.left, expr.right)) return
         perf_warning("PERF021: redundant per-branch {lname}(...) cast in ternary - hoist as {lname}(cond ? a : b)", expr.at)
     }
 
-    
-
-    def parse_range_leg(leg : Expression?; upper_op, lower_op : string; var v_out : Expression?&; var bound_out : int&; var is_hi_out : bool&) : bool {
+    def parse_range_leg(leg : Expression?; upper_op, lower_op : string; var v_out : Expression?&; var bound_out : int&; var bounds_above : bool&) : bool {
         
         if (leg == null || !(leg is ExprOp2)) return false
         var op2 = leg as ExprOp2
@@ -1635,13 +1602,13 @@ class PerfLintVisitor : AstVisitor {
         if (op2.right is ExprConstInt && op2.left != null) {
             v_out = op2.left
             bound_out = (op2.right as ExprConstInt).value
-            is_hi_out = opname == upper_op
+            bounds_above = opname == upper_op
             return true
         }
         if (op2.left is ExprConstInt && op2.right != null) {
             v_out = op2.right
             bound_out = (op2.left as ExprConstInt).value
-            is_hi_out = opname == lower_op
+            bounds_above = opname == lower_op
             return true
         }
         return false
@@ -1695,15 +1662,12 @@ class PerfLintVisitor : AstVisitor {
         if (!parse_bounded_range(expr.left as ExprOp2, negated, vL, loL, hiL)
             || !parse_bounded_range(expr.right as ExprOp2, negated, vR, loR, hiR)
             || !expr_equal_struct(vL, vR)) return
-        
         let lowerUpper = loL == 97 && hiL == 122 && loR == 65 && hiR == 90
         let upperLower = loL == 65 && hiL == 90 && loR == 97 && hiR == 122
         if (!lowerUpper && !upperLower) return
         let neg = negated ? "!" : ""
         perf_warning("PERF014: char-class range check{negated ? " (negated)" : ""} 'a'..'z' + 'A'..'Z' - use '{neg}is_alpha({describe(vL)})' from strings module", expr.at)
     }
-
-    
 
     def peel_ref2value(e : Expression? const) : Expression? const {
         if (e != null && e is ExprRef2Value) return (e as ExprRef2Value.subexpr)
@@ -1725,7 +1689,6 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def check_perf017_length_zero(expr : ExprOp2?) : void {
-        
         if (current_function != null) {
             let direct_match = (current_function.name == "empty"
                 && current_function._module != null
@@ -1750,7 +1713,6 @@ class PerfLintVisitor : AstVisitor {
         var k = 0
         if (!const_int_value(const_side, k) || (k != 0 && k != 1)) return
         let opname = string(expr.op)
-        
         var canon_op = opname
         if (!len_on_left) {
             if (opname == "<") {
@@ -1763,7 +1725,6 @@ class PerfLintVisitor : AstVisitor {
                 canon_op = "<="
             }
         }
-        
         var is_empty_pattern = false
         var is_nonempty_pattern = false
         if (k == 0) {
@@ -1779,7 +1740,6 @@ class PerfLintVisitor : AstVisitor {
                 is_nonempty_pattern = true
             }
         }
-        
         if (is_empty_pattern) {
             perf_warning("PERF017: 'length(x) {canon_op} {k}' - use 'empty(x)' (avoids unnecessary strlen on strings)", expr.at)
         } elif (is_nonempty_pattern) {
@@ -1787,10 +1747,7 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def override preVisitExprOp3(expr : ExprOp3?) : void {
-        
         check_perf021_ternary_cast_hoist(expr)
         if (in_closure > 0 || expr.op != "?"
             || expr.subexpr == null || !(expr.subexpr is ExprOp2)) return
@@ -1800,7 +1757,6 @@ class PerfLintVisitor : AstVisitor {
             || expr.left == null || expr.right == null) return
         let t_branch = expr.left
         let f_branch = expr.right
-        
         if (try_perf016_abs(expr, cmp, t_branch, f_branch, cop)) return
         try_perf015_minmax(expr, cmp, t_branch, f_branch, cop)
     }
@@ -1809,15 +1765,13 @@ class PerfLintVisitor : AstVisitor {
         let cl = cmp.left
         let cr = cmp.right
         if (cl == null || cr == null) return false
-        
         let tcl = expr_equal_struct(t_branch, cl)
         let tcr = expr_equal_struct(t_branch, cr)
         let fcl = expr_equal_struct(f_branch, cl)
         let fcr = expr_equal_struct(f_branch, cr)
-        let same_order = tcl && fcr   
-        let swap_order = tcr && fcl   
+        let same_order = tcl && fcr
+        let swap_order = tcr && fcl
         if (!same_order && !swap_order) return false
-        
         var is_min = false
         if (cop == "<" || cop == "<=") {
             is_min = same_order
@@ -1830,7 +1784,6 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def try_perf016_abs(expr : ExprOp3?; cmp : ExprOp2?; t_branch, f_branch : Expression? const; cop : string) : bool {
-        
         var x_on_left = false
         if (is_const_zero(cmp.right)) {
             x_on_left = true
@@ -1841,7 +1794,6 @@ class PerfLintVisitor : AstVisitor {
         }
         let x_expr = x_on_left ? cmp.left : cmp.right
         if (x_expr == null) return false
-        
         var neg_then = false
         var ok = false
         if (is_neg_of(t_branch, x_expr) && expr_equal_struct(f_branch, x_expr)) {
@@ -1852,7 +1804,6 @@ class PerfLintVisitor : AstVisitor {
             ok = true
         }
         if (!ok) return false
-        
         var is_abs = false
         if (x_on_left) {
             if ((cop == "<" || cop == "<=") && neg_then) {
@@ -1880,8 +1831,6 @@ class PerfLintVisitor : AstVisitor {
         return expr_equal_struct(op1.subexpr, ref)
     }
 
-    
-
     def override preVisitExprField(expr : ExprField?) : void {
         if (in_closure > 0) return
         if (is_get_ptr_of_smart_ptr(expr.value)) {
@@ -1896,15 +1845,11 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def override preVisitExprCallArgument(expr : ExprCall?; arg : ExpressionPtr; last : bool) : void {
-        
         if (expr == null || expr.func == null) return
         var indices : array<int>
         get_clone_param_indices(expr.func, indices)
         if (empty(indices)) return
-        
         var arg_index = -1
         for (i in 0 .. length(expr.arguments)) {
             if (intptr(expr.arguments[i]) == intptr(arg)) {
@@ -1913,19 +1858,16 @@ class PerfLintVisitor : AstVisitor {
             }
         }
         if (arg_index < 0 || !has_value(indices, arg_index)) return
-        
         var inner = arg
         if (inner is ExprRef2Value) {
             inner = (inner as ExprRef2Value).subexpr
         }
-        
         if (is_clone_init_call(inner)) {
             perf_warning(
                 "PERF024: argument to function annotated [clone({expr.func.arguments[arg_index].name})] is wrapped in clone_*; the callee clones internally, drop the outer clone wrap",
                 arg.at)
             return
         }
-        
         if (inner is ExprVar) {
             let vv = (inner as ExprVar).variable
             if (vv != null) {
@@ -1941,49 +1883,84 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
+    def check_perf032_declaration(td : TypeDeclPtr; annotations : AnnotationArgumentList; at : LineInfo) : void {
+        if (td == null || !has_annotation(annotations, "exact_size")) return
+        if (td.baseType != Type.tArray) {
+            perf_warning("PERF032: @exact_size does not apply to `{describe(td, false, false, false)}` - the annotation is an array contract (every resize must follow a reserve/ensure_capacity)", at)
+        }
+    }
+
+    def check_perf032_sizing_call(var expr : ExprCall?) : void {
+        if (empty(expr.arguments)) return
+        var dest = expr.arguments[0]
+        if (dest._type == null || dest._type.baseType != Type.tArray) return
+        let origin = string(expr.func.fromGeneric != null ? expr.func.fromGeneric.name : expr.func.name)
+        if (is_explicit_capacity_call(origin)) {
+            perf032_reserved |> insert(describe(dest))
+        } elif ((origin == "resize" || origin == "resize_no_init") && is_annotated_dest(dest, "exact_size")) {
+            if (!key_exists(perf032_reserved, describe(dest))) {
+                perf_warning("PERF032: {origin} on the @exact_size array `{describe(dest)}` with no reserve/ensure_capacity earlier in this function - an unreserved resize rounds capacity up to the next power of two, and past max_unreserved_size it panics, only when the big input arrives; reserve(need) or ensure_capacity(need) first, or size it through a helper that does", expr.at)
+            }
+        }
+    }
 
     def override preVisitExprCall(var expr : ExprCall?) : void {
         if (expr.func == null) return
-        
         check_perf020_redundant_cast(expr)
-        
+        check_perf032_sizing_call(expr)
         if (expr.name == "add_ptr_ref" && !empty(perf023_candidates)) {
             perf023_splice_depth++
         }
-        
+        if (in_deferred == 0 && length(expr.arguments) == 1
+                && (expr.name == "_::finalize" || expr.func.name == "finalize"
+                    || expr.func.name |> starts_with("builtin`finalize`")
+                    || expr.func.name |> starts_with("builtin`finalize_dim`"))) {
+            perf030_mark_released(expr.arguments[0])
+        }
         if (in_closure > 0) return
         if (expr.func.name == "character_at" && expr.func._module.name == "strings") {
             var ecall = expr
-            
             if (loop_depth > 0) {
                 in_character_at_call++
                 current_character_at = ecall
             }
         }
-        
         if (in_while_cond && expr.func.name == "length" && expr.func._module.name == "strings") {
             in_length_while_call++
         }
-        if (!empty(expr.arguments) && expr.func.name |> starts_with("builtin`finalize`")) {
-            perf030_mark_released(expr.arguments[0])
+    }
+
+    def check_perf031_slice_in_loop(var expr : ExprCall?) {
+        if (in_deferred > 0 || inline_aware_loop_depth <= 0 || !(expr.func.name == "slice" || expr.func.name == "chop") || expr.func._module.name != "strings"
+                || empty(expr.arguments) || expr.arguments[0]._type == null || expr.arguments[0]._type.baseType != Type.tString) {
+            return
+        }
+        if (!empty(return_frames)) {
+            let rf = return_frames |> back()
+            if (rf.barrier == 0 && rf.loop_depth_at_return == inline_aware_loop_depth) return
+        }
+        if (!empty(block_tail_exit) && inline_barrier() == 0) {
+            let tail = block_tail_exit |> back()
+            if (tail == BlockTailExit.returns || (tail == BlockTailExit.breaks && inline_aware_loop_depth == 1)) return
+        }
+        var spath = ""
+        let srv = find_expr_path(expr.arguments[0], spath)
+        if (srv != null && !srv.flags.generated && is_defined_outside_inline_aware_loop(srv)) {
+            perf_warning("PERF031: {expr.func.name} re-strlens its source string on every call; in a loop over the same string this is O(n^2) - wrap the loop in peek_data(s) $(d) and {expr.func.name}(d, ...) the view, or hoist it", expr.at)
         }
     }
 
     def override visitExprCall(var expr : ExprCall?) : ExpressionPtr {
         if (expr.func == null) return <- expr
-        
         if (expr.name == "add_ptr_ref" && perf023_splice_depth > 0) {
             perf023_splice_depth--
         }
-        
         if (expr.func.name == "character_at" && expr.func._module.name == "strings") {
             var ecall = expr
             if (in_closure == 0 && loop_depth > 0 && in_character_at_call > 0) {
                 in_character_at_call--
                 current_character_at = null
             }
-            
             if (!reported_character_at |> has_value(ecall)) {
                 if (is_character_at_zero(expr)) {
                     perf_warning("PERF003: character_at(s, 0) can be replaced with first_character(s)", expr.at)
@@ -1992,8 +1969,8 @@ class PerfLintVisitor : AstVisitor {
                 }
             }
         }
-        
-        if (is_array_func(expr, "reserve")) {
+        check_perf031_slice_in_loop(expr)
+        if (is_array_func(expr, "reserve") || is_array_func(expr, "ensure_capacity")) {
             var path = ""
             let rv = find_expr_path(expr.arguments[0], path)
             if (rv != null) {
@@ -2009,7 +1986,6 @@ class PerfLintVisitor : AstVisitor {
             if (is_array_func(expr, "push") || is_array_func(expr, "push_clone") || is_array_func(expr, "emplace")) {
                 var path = ""
                 let rv = find_expr_path(expr.arguments[0], path)
-                
                 if (rv != null && !rv.flags.generated && is_defined_outside_loop(rv)
                     && !reserved_paths |> has_value(make_path_key(rv, path))) {
                     let fname = string(expr.func.fromGeneric.name)
@@ -2017,7 +1993,6 @@ class PerfLintVisitor : AstVisitor {
                 }
             }
         }
-        
         if (expr.func._module.name == "strings" && expr.func.name != "string") {
             for (arg in expr.arguments) {
                 if (is_string_of_das_string(arg)) {
@@ -2034,8 +2009,6 @@ class PerfLintVisitor : AstVisitor {
         }
         return <- expr
     }
-
-    
 
     def override preVisitExprCopy(expr : ExprCopy?) : void {
         if (in_closure > 0 || loop_depth == 0) return
@@ -2060,14 +2033,12 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def check_perf030_move_leak(expr : ExprMove?) : void {
-        
         if (expr == null || expr.move_flags.podDelete || expr.genFlags.generated) return
         var lhs = expr.left
         if (lhs is ExprRef2Value) {
             lhs = (lhs as ExprRef2Value.subexpr)
         }
         if (lhs == null || !(lhs is ExprVar)) return
-        
         let lv = (lhs as ExprVar).variable
         if (lv == null || lv.flags.aliasCMRES || lv.flags.generated
                 || (lv._type != null && lv._type.flags.ref)
@@ -2077,13 +2048,19 @@ class PerfLintVisitor : AstVisitor {
             perf030_released |> erase(released)
             return
         }
-        perf_warning("PERF030: move-assign drops the target's old contents without release (a leak on a persistent heap); when the target can be live, delete it first; when it is fresh, fold the move into the declaration; or enable force_inscope_pod so the compiler collects it", expr.at)
+        perf_warning("PERF030: move-assign drops the target's old contents without release (a leak on a persistent heap); when the target can be live, delete it first; when it is fresh, fold the move into the declaration (a `cond ? a : b` init covers conditional fills); or enable force_inscope_pod so the compiler collects it", expr.at)
     }
 
     def perf030_mark_released(sub : ExpressionPtr) : void {
         var e = sub
         if (e is ExprRef2Value) {
             e = (e as ExprRef2Value.subexpr)
+        }
+        while (e != null && e is ExprField) {
+            e = (e as ExprField).value
+            if (e is ExprRef2Value) {
+                e = (e as ExprRef2Value.subexpr)
+            }
         }
         if (e == null || !(e is ExprVar)) return
         var v = (e as ExprVar).variable
@@ -2093,7 +2070,9 @@ class PerfLintVisitor : AstVisitor {
     }
 
     def override preVisitExprDelete(var expr : ExprDelete?) : void {
-        perf030_mark_released(expr.subexpr)
+        if (in_deferred == 0) {
+            perf030_mark_released(expr.subexpr)
+        }
     }
 
     def override visitExprMove(var expr : ExprMove?) : ExpressionPtr {
@@ -2114,24 +2093,19 @@ class PerfLintVisitor : AstVisitor {
         return <- expr
     }
 
-    
-
     def override preVisitExprStringBuilderElement(sb : ExprStringBuilder?; elem : ExpressionPtr; last : bool) {
         let inner = perf025_unwrap_element(elem)
         let value = perf025_string_call_value(inner)
         return if (value == null)
         let kind = perf025_value_kind(value)
-        if (kind == Perf025Kind.equivalent) {
+        if (kind == Perf025Kind.cast_is_noop) {
             perf_warning("PERF025: string(...) inside string interpolation is redundant - the interpolation already converts to string; drop the cast", inner.at)
-        } elif (kind == Perf025Kind.unsigned_hex) {
+        } elif (kind == Perf025Kind.cast_changes_radix) {
             perf_warning("PERF025: string(...) inside string interpolation is redundant; drop the cast - unsigned values interpolate as hex by default, so use the '\{x:d\}' format tag to keep decimal output", inner.at)
         }
     }
 
-    
-
     def override preVisitExprVar(expr : ExprVar?) : void {
-        
         if (!empty(perf023_candidates)) {
             let vv = expr.variable
             if (vv != null) {
@@ -2147,13 +2121,12 @@ class PerfLintVisitor : AstVisitor {
                 }
             }
         }
-        
         if (!empty(perf024_candidates)) {
             let vv4 = expr.variable
             if (vv4 != null) {
                 let vv4_iptr = intptr(vv4)
                 if (perf024_skip_iptr == vv4_iptr && vv4_iptr != 0ul) {
-                    perf024_skip_iptr = 0ul   
+                    perf024_skip_iptr = 0ul
                 } else {
                     for (i in 0 .. length(perf024_candidates)) {
                         if (intptr(perf024_candidates[i].v) == vv4_iptr) {
@@ -2166,20 +2139,16 @@ class PerfLintVisitor : AstVisitor {
         }
         if (in_closure > 0) return
         let v = expr.variable
-        
         perf018_on_var(v)
-        
         if (in_character_at_call > 0 && is_loop_variable(v)) {
             if (current_character_at != null && !reported_character_at |> has_value(current_character_at)) {
                 perf_warning("PERF002: character_at(s, i) in loop is O(n) per call (strlen + bounds check each time); use peek_data(s) to access characters as array<uint8>", expr.at)
                 reported_character_at |> push(current_character_at)
             }
         }
-        
         if (in_string_builder_check > 0 && string_builder_target_var != null && v == string_builder_target_var) {
             perf_warning("PERF004: rebuilding string via interpolation in loop creates O(n^2) allocations; use build_string() instead", expr.at)
         }
-        
         if (in_length_while_call > 0 && v != null) {
             if (expr.variable._type != null && expr.variable._type.baseType == Type.tString) {
                 if (!expr.variable.access_flags.access_ref) {
@@ -2189,8 +2158,6 @@ class PerfLintVisitor : AstVisitor {
         }
     }
 
-    
-
     def hot_file_of(at : LineInfo) : string {
         return at.fileInfo != null ? "{at.fileInfo.name}" : ""
     }
@@ -2199,27 +2166,23 @@ class PerfLintVisitor : AstVisitor {
         return fn_hash * 1099511628211ul + intptr(anchor)
     }
 
-    
-    
     def hot_ensure_summary(var fn : Function?; var hc : HotCache) {
         let h = fn.getMangledNameHash
-        return if (key_exists(hc.sinks_at, h))
+        return if (key_exists(hc.sinks_span_by_fn, h))
         var scan = new HotBodyScan()
         make_visitor(*scan) $(adapter) {
             visit(fn, adapter)
         }
-        hc.sinks_at |> insert(h, int2(length(hc.sinks_all), length(scan.sinks)))
+        hc.sinks_span_by_fn |> insert(h, int2(length(hc.sinks_all), length(scan.sinks)))
         hc.sinks_all |> push_from(scan.sinks)
-        hc.edges_at |> insert(h, int2(length(hc.edges_all), length(scan.edges)))
+        hc.edges_span_by_fn |> insert(h, int2(length(hc.edges_all), length(scan.edges)))
         hc.edges_all |> push_from(scan.edges)
         unsafe { delete scan; }
     }
 
     def hot_report(frames : array<HotFrame>; fi : int; sink : HotSink; want : HotBits; root_file : string) {
-        
         return if ((uint(sink.bit) & uint(want)) == 0u)
-        
-        let code = sink.bit.alloc ? "PERF026" : (sink.bit.env ? "PERF027" : "PERF028")
+        let code = sink.bit.perf026_alloc ? "PERF026" : (sink.bit.perf027_env ? "PERF027" : "PERF028")
         return if (is_lint_suppressed(sink.site.at, code))
         var si = fi
         while (si >= 0) {
@@ -2228,18 +2191,15 @@ class PerfLintVisitor : AstVisitor {
             }
             si = frames[si].parent
         }
-        
         var at = sink.site.at
         let shared_node = frames[fi].fn.flags.generated || frames[fi].fn.fromGeneric != null
-        if ((hot_file_of(at) != root_file || shared_node) && frames[fi].anchor != null) {
-            at = frames[fi].anchor.at
+        if ((hot_file_of(at) != root_file || shared_node) && frames[fi].nearest_root_file_site != null) {
+            at = frames[fi].nearest_root_file_site.at
         }
-        
         var sink_pos = ""
         if (sink.site.at.line != at.line || hot_file_of(sink.site.at) != hot_file_of(at)) {
             sink_pos = " [at {hot_file_of(sink.site.at)}:{int(sink.site.at.line)}]"
         }
-        
         var parts : array<string>
         var pi = fi
         while (pi >= 0) {
@@ -2260,9 +2220,9 @@ class PerfLintVisitor : AstVisitor {
         delete parts
         let esc = "[cold_path] on the callee, // nolint on the line, or DAS_LINT_DISABLE for a whole run"
         let esc_alloc = "@scratch on the destination field if it is a reused buffer, {esc}"
-        if (sink.bit.alloc) {
+        if (sink.bit.perf026_alloc) {
             perf_warning("PERF026: {sink.what} allocates or frees on a hot path, via {chain}{sink_pos}; hoist it out of the hot path. To allow it: {esc_alloc}", at)
-        } elif (sink.bit.env) {
+        } elif (sink.bit.perf027_env) {
             perf_warning("PERF027: {sink.what} reads the environment on a hot path, via {chain}{sink_pos}; getenv allocates a string in the context heap on every call - read it once at init and cache the value. To allow it: {esc}", at)
         } else {
             perf_warning("PERF028: {sink.what} performs I/O on a hot path, via {chain}{sink_pos}. To allow it: {esc}", at)
@@ -2276,7 +2236,6 @@ class PerfLintVisitor : AstVisitor {
         var visited : table<uint64>
         frames |> push(HotFrame(fn = root, parent = -1))
         visited |> insert(hot_visit_key(root.getMangledNameHash, null))
-        
         var qi = 0
         while (qi < length(frames)) {
             var cur = frames[qi]
@@ -2284,23 +2243,22 @@ class PerfLintVisitor : AstVisitor {
             qi++
             hot_ensure_summary(cur.fn, hc)
             let h = cur.fn.getMangledNameHash
-            let ss = hc.sinks_at[h]
+            let ss = hc.sinks_span_by_fn[h]
             for (si in range(ss.x, ss.x + ss.y)) {
                 hot_report(frames, ci, hc.sinks_all[si], want, root_file)
             }
-            let es = hc.edges_at[h]
+            let es = hc.edges_span_by_fn[h]
             for (ei in range(es.x, es.x + es.y)) {
                 var callee = hc.edges_all[ei].fn
                 continue if (callee == null || callee.body == null || callee.flags.builtIn
                              || callee.moreFlags.isTemplate || callee.moreFlags.stub
                              || is_cold_path(callee))
-                var site = hc.edges_all[ei].site
-                
-                var anchor = hot_file_of(site.at) == root_file ? site : cur.anchor
+                var site = hc.edges_all[ei].caller_site
+                var anchor = hot_file_of(site.at) == root_file ? site : cur.nearest_root_file_site
                 let key = hot_visit_key(callee.getMangledNameHash, anchor)
                 continue if (key_exists(visited, key))
                 visited |> insert(key)
-                frames |> push(HotFrame(fn = callee, parent = ci, site = site, anchor = anchor))
+                frames |> push(HotFrame(fn = callee, parent = ci, site = site, nearest_root_file_site = anchor))
             }
         }
         delete frames
@@ -2309,7 +2267,6 @@ class PerfLintVisitor : AstVisitor {
 
     def hot_path_scan() {
         return if (empty(hot_roots))
-        
         if (is_suppressed_code("PERF026") && is_suppressed_code("PERF027")
             && is_suppressed_code("PERF028")) {
             hot_roots |> clear()
@@ -2324,10 +2281,6 @@ class PerfLintVisitor : AstVisitor {
         delete hc
     }
 }
-
-
-
-
 
 def public perf_lint(prog : ProgramPtr; compile_time_errors : bool) : int {
     
@@ -2391,10 +2344,6 @@ def public perf_lint_collect_issues(prog : ProgramPtr; var issues : array<LintIs
     unsafe { delete astVisitor; }
     return count
 }
-
-
-
-
 
 [lint_macro]
 class PerfLintMacro : AstPassMacro {

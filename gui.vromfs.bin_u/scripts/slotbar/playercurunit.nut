@@ -1,3 +1,7 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/hangarModelLoadManager.nut" import loadModel
+from "%scripts/user/playerCountry.nut" import profileCountrySq, switchProfileCountry
+from "%scripts/unit/unitStatus.nut" import isUnitDefault
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "unit" import get_player_unit_name
 from "hangar" import hangar_get_current_unit_name, hangar_move_cam_to_unit_place
@@ -5,11 +9,7 @@ from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -50,7 +50,15 @@ function getFallbackUnitForHangar(params) {
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 
-let showedUnit = mkWatched(persist, "showedUnit", null)
+let showedUnit = mkWatched(persist, "showedUnit", null) 
+let showedUnitName = mkHardPersistWatched("slotbar.playerCurUnit")("showedUnitName", "")
+showedUnit.subscribe(@(v) showedUnitName.set(v?.name ?? ""))
+
+
+function restoreShowedUnit() {
+  if (showedUnit.get() == null && showedUnitName.get() != "")
+    showedUnit.set(getAircraftByName(showedUnitName.get()))
+}
 
 let getShowedUnitName = @() showedUnit.get()?.name ??
   (isFallbackUnitInHangar ? "" : hangar_get_current_unit_name())
@@ -84,10 +92,11 @@ function getPlayerCurUnit() {
 }
 
 
-return {
+return freeze({
   showedUnit
+  restoreShowedUnit
   getShowedUnitName
   getShowedUnit
   setShowUnit
   getPlayerCurUnit
-}
+})

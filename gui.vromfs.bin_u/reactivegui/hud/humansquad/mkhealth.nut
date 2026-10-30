@@ -440,78 +440,81 @@ let needHideBlock = Computed(@() (hp.get() == maxHp.get()
   && (!haveAnyArmorPieceDamaged.get() || !showHpUi.get())
 )
 
-return function() {
-  let hpRatio = Computed(@() maxHp.get() == 0
-    ? 0
-    : clamp(hp.get().tofloat() / maxHp.get().tofloat(), 0.0, 1.0))
-  let dotRatio = Computed(@() maxHp.get() == 0 || hpRatio.get() == 0
-    ? 0
-    : clamp(totalDotAmount.get().tofloat() / maxHp.get().tofloat() / hpRatio.get().tofloat(), 0.0, 1.0))
+let hpRatio = Computed(@() maxHp.get() == 0
+  ? 0
+  : clamp(hp.get().tofloat() / maxHp.get().tofloat(), 0.0, 1.0))
+let dotRatio = Computed(@() hpRatio.get() == 0
+  ? 0
+  : clamp(totalDotAmount.get().tofloat() / maxHp.get().tofloat() / hpRatio.get().tofloat(), 0.0, 1.0))
 
+let xrayDoll = [
+  @() {
+    watch = hpRatio
+    size = xrayImageSize
+    children = getXrayDollImageByHP(hpRatio.get())
+  }
+  {
+    size = xrayImageSize
+    children = mkHeavyArmor()
+  }
+]
+
+let healthBlockChildren = [
+  {
+    size = FLEX_H
+    valign = ALIGN_BOTTOM
+    halign = ALIGN_RIGHT
+    children = [
+      @() {
+        watch = isWeaponsListVisible
+        size = xrayImageSize
+        margin = const [0, bleedImgSize/2, 0,0]
+        animations = isWeaponsListVisible.get() ? [] : mkAnimations
+        children = isWeaponsListVisible.get() ? null : xrayDoll
+        onAttach = @() isXrayBlockAttached.set(true)
+        onDetach = @() isXrayBlockAttached.set(false)
+      }
+      @() {
+        watch = dotRatio
+        size = bleedImgSize
+        children = dotRatio.get() == 0 ? null : [
+          hudBlurPanel
+          bleedingImage
+        ]
+      }
+    ]
+  }
+  {
+    size = [ FLEX, hpBarHeight ]
+    children = [
+      ticketHudBlurPanel
+      @() {
+        watch = hpRatio
+        rendObj = ROBJ_BOX
+        size = [ pw(hpRatio.get()*100), FLEX ]
+        fillColor = hpColor
+        hplace = ALIGN_RIGHT
+        children = @() dotRatio.get() == 0
+          ? { watch = dotRatio }
+          : {
+              watch = dotRatio
+              rendObj = ROBJ_BOX
+              size = [ pw(dotRatio.get()*100), FLEX ]
+              fillColor = bleedingColor
+              hplace = ALIGN_LEFT
+            }
+      }
+    ]
+  }
+]
+
+return function() {
   return needHideBlock.get() ? { watch = needHideBlock } : {
     watch = needHideBlock
     size = [ heroStateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = xrayGap
     vplace = ALIGN_BOTTOM
-    children = [
-      {
-        size = FLEX_H
-        valign = ALIGN_BOTTOM
-        halign = ALIGN_RIGHT
-        children = [
-          @() {
-            watch = isWeaponsListVisible
-            size = xrayImageSize
-            margin = const [0, bleedImgSize/2, 0,0]
-            animations = isWeaponsListVisible.get() ? [] : mkAnimations
-            children = isWeaponsListVisible.get() ? null
-              : [
-                @() {
-                  watch = hpRatio
-                  size = xrayImageSize
-                  children = getXrayDollImageByHP(hpRatio.get())
-                }
-                {
-                  size = xrayImageSize
-                  children = mkHeavyArmor()
-                }
-              ]
-            onAttach = @() isXrayBlockAttached.set(true)
-            onDetach = @() isXrayBlockAttached.set(false)
-          }
-          @() {
-            watch = dotRatio
-            size = bleedImgSize
-            children = dotRatio.get() == 0 ? null : [
-              hudBlurPanel
-              bleedingImage
-            ]
-          }
-        ]
-      }
-      {
-        size = [ FLEX, hpBarHeight ]
-        children = [
-          ticketHudBlurPanel
-          @() {
-            watch = hpRatio
-            rendObj = ROBJ_BOX
-            size = [ pw(hpRatio.get()*100), FLEX ]
-            fillColor = hpColor
-            hplace = ALIGN_RIGHT
-            children = @() dotRatio.get() == 0
-              ? { watch = dotRatio }
-              : {
-                  watch = dotRatio
-                  rendObj = ROBJ_BOX
-                  size = [ pw(dotRatio.get()*100), FLEX ]
-                  fillColor = bleedingColor
-                  hplace = ALIGN_LEFT
-                }
-          }
-        ]
-      }
-    ]
+    children = healthBlockChildren
   }
 }

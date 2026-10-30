@@ -1,7 +1,8 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
+
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function fillSwitchMapTypeBtn(btnContainer, handler) {
   const shortcutName = "ID_SWITCH_TACTICAL_MAP_TYPE"
@@ -15,6 +16,6 @@ function fillSwitchMapTypeBtn(btnContainer, handler) {
   btnContainer.getScene().replaceContentFromText(btnContainer, data, data.len(), handler)
 }
 
-return {
+return freeze({
   fillSwitchMapTypeBtn
-}
+})

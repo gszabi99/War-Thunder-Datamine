@@ -1,9 +1,8 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 class WwArmyGroupHandler {
   group = null

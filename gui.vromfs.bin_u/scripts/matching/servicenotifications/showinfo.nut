@@ -1,9 +1,9 @@
+import "%scripts/clientState/callbackWhenAppWillActive.nut" as callbackWhenAppWillActive
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+from "%scripts/onlineShop/url.nut" import openUrl
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/webRPC.nut" import webRpcRegister
-let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 
 function showMessageBox(params) {
   if (isInFlight())

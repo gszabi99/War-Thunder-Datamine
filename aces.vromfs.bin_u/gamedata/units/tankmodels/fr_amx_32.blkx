@@ -2372,7 +2372,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_25_G1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_25_G1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.5,
@@ -2463,7 +2463,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_mg_flame_01",
         "recoilOffset": 0.02,
@@ -2511,7 +2511,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
         "emitter": "emtr_mg_flame_02",
         "flash": "emtr_mg_flame_02",
         "useEmitter": true,
@@ -2555,7 +2555,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2610,8 +2610,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_amx_32_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_amx_32_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2648,15 +2648,25 @@
     "engine": {
       "horsePowers": 800.0,
       "maxRPM": 2400.0,
-      "minRPM": 700.0
+      "minRPM": 700.0,
+      "manufacturer": "hispano_suiza",
+      "model": "hs_110_s2",
+      "torqFormula": {
+        "a": -1.2989067,
+        "b": 1.9704741,
+        "c": 0.3284316
+      }
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 270000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
       "sideGearRatio": 1.0,
-      "neutralGearRatio": 7.4,
+      "neutralGearRatio": 15.0,
+      "manufacturer": "sesm",
+      "model": "enc_200",
+      "type": "auto",
+      "steerType": "clutch_braking",
       "gearRatios": {
         "ratio": [
           -0.62,
@@ -3761,7 +3771,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_25_G1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_25_G1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.5,
@@ -3852,7 +3862,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_mg_flame_01",
               "recoilOffset": 0.02,
@@ -3900,7 +3910,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
               "emitter": "emtr_mg_flame_02",
               "flash": "emtr_mg_flame_02",
               "useEmitter": true,
@@ -3944,7 +3954,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3998,7 +4008,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4192,5 +4202,29 @@
       "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.371,
+      0.812,
+      0.835
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

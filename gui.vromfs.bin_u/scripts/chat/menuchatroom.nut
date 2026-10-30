@@ -1,3 +1,16 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/chat/chatStates.nut" import checkChatEnableWithPlayer
+from "%scripts/options/optionsExtNames.nut" import USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/profileStates.nut" import userName
+from "%scripts/contacts/contactsListState.nut" import clanUserTable, getContactByName
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/chat/chatRooms.nut" import isRoomClan, isRoomSquad
+from "%scripts/chat/chatUtils.nut" import filterMessageText, filterNameFromHtmlCodes
+from "%scripts/user/usersReputation.nut" import getUserReputation, hasChatReputationFilter, getReputationBlockMessage
+from "%scripts/user/clanName.nut" import getMyClanTag
 from "%globalScripts/chatState.nut" import ReputationType
 from "string" import format
 from "%sqstd/string.nut" import endsWith, slice, cutPrefix
@@ -8,19 +21,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { userName } = require("%scripts/user/profileStates.nut")
-let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { isRoomClan, isRoomSquad } = require("%scripts/chat/chatRooms.nut")
-let { filterMessageText, filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
-let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
-let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"

@@ -104,23 +104,21 @@ let counterMeasures = {
   pos = const [pw(5), ph(5)]
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT
-  children = [
-    @() {
-      watch = [ChaffsCount, FlaresCount]
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXTAREA
-      color = baseColor
-      font = Fonts.hud
-      fontSize = baseFontSize
-      behavior = Behaviors.TextArea
-      spacing = baseSpacing
-      text = string.format(
-        "CHAFF %d\nFLARE %d\nDECOY",
-        ChaffsCount.get(),
-        FlaresCount.get()
-      )
-    }
-  ]
+  children = @() {
+    watch = [ChaffsCount, FlaresCount]
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXTAREA
+    color = baseColor
+    font = Fonts.hud
+    fontSize = baseFontSize
+    behavior = Behaviors.TextArea
+    spacing = baseSpacing
+    text = string.format(
+      "CHAFF %d\nFLARE %d\nDECOY",
+      ChaffsCount.get(),
+      FlaresCount.get()
+    )
+  }
 }
 
 let status = {
@@ -171,22 +169,20 @@ let cannon = @() {
       85.0,   50.0,
     ]
   ]
-  children = [
-    @() {
-      watch = CannonAmmoCount
-      size = FLEX
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      pos = const [pw(0), ph(32)]
-      rendObj = ROBJ_TEXTAREA
-      color = baseColor
-      font = Fonts.hud
-      fontSize = baseFontSize
-      spacing = baseSpacing
-      behavior = Behaviors.TextArea
-      text = string.format("%d", CannonAmmoCount.get())
-    }
-  ]
+  children = @() {
+    watch = CannonAmmoCount
+    size = FLEX
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    pos = const [pw(0), ph(32)]
+    rendObj = ROBJ_TEXTAREA
+    color = baseColor
+    font = Fonts.hud
+    fontSize = baseFontSize
+    spacing = baseSpacing
+    behavior = Behaviors.TextArea
+    text = string.format("%d", CannonAmmoCount.get())
+  }
 }
 
 let sraam = @(pos, selected = false, size = const [5, 22]) {
@@ -704,19 +700,17 @@ let fuelTank = @(pos, size = const [8, 40]) {
 let label = @(text, pos) function() {
   local labelText = {
     size = SIZE_TO_CONTENT
-    children = [
-      {
-        size = SIZE_TO_CONTENT
-        rendObj = ROBJ_TEXTAREA
-        color = baseColor
-        font = Fonts.hud
-        fontSize = baseFontSize
-        text = text
-        margin = const [2.5, 5]
-        spacing = baseSpacing
-        behavior = Behaviors.TextArea
+    children = {
+      size = SIZE_TO_CONTENT
+      rendObj = ROBJ_TEXTAREA
+      color = baseColor
+      font = Fonts.hud
+      fontSize = baseFontSize
+      text = text
+      margin = const [2.5, 5]
+      spacing = baseSpacing
+      behavior = Behaviors.TextArea
     }
-    ]
   }
 
   let size = calc_comp_size(labelText).map(@(v) v * 0.17)

@@ -1,3 +1,7 @@
+from "%sqstd/platform.nut" import isPS5
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyMyState
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "sony.user" import hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage
 from "sony.store" import suggest_psplus
@@ -8,15 +12,10 @@ from "%globalScripts/playerStateConsts.nut" import *
 from "%globalScripts/periodicTaskConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { getSessionLobbyMyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-
-eventbus_subscribe("psPlusSuggested", @(_r) requestPremiumStatusUpdate(@(_r) null))
+eventbus_subscribe("psPlusSuggested", @(_r) requestPremiumStatusUpdate(""))
 
 function suggestAndAllowPsnPremiumFeatures() {
-  if (isPlatformPS5 && !ps4_is_production_env() && !hasPremium()) {
+  if (isPS5 && !ps4_is_production_env() && !hasPremium()) {
     suggest_psplus("psPlusSuggested", {})
     return false
   }
@@ -47,8 +46,8 @@ function enablePremiumFeatureReporting() {
     })
 }
 
-return {
+return freeze({
   enablePremiumFeatureReporting
   suggestAndAllowPsnPremiumFeatures
   requestPremiumStatusUpdate
-}
+})

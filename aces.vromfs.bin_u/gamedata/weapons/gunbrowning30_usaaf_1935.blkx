@@ -1,11 +1,4 @@
 {
-  "weaponType": 1,
-  "maxDeltaAngle": 0.15,
-  "shotFreq": 16.666666,
-  "traceFreq": 4,
-  "bullets": 500,
-  "shouldCollideWithRendinsts": true,
-  "recoilMultiplier": 0.25,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,25 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.15,
+  "shotFreq": 16.666666,
+  "bullets": 500,
+  "shouldCollideWithRendinsts": true,
+  "recoilMultiplier": 0.25,
+  "overheat": {
+    "overheat": [
+      [
+        15.3,
+        0.0
+      ],
+      [
+        17.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.009849433,
@@ -427,7 +439,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2479,7 +2491,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4123,7 +4135,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4531,7 +4543,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
     ]
@@ -6186,25 +6198,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m1919_high_rate_gun_outside",
-    "cockpit": "m1919_high_rate_gun_inside",
-    "ai": "m1919_high_rate_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        15.3,
-        0.0
-      ],
-      [
-        17.0,
-        0.05
-      ]
-    ]
-  },
   "bmg30_new_gun": {
     "maxDeltaAngle": 0.25,
     "overheat": {
@@ -6219,5 +6212,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m1919_high_rate_gun_outside",
+    "cockpit": "m1919_high_rate_gun_inside",
+    "ai": "m1919_high_rate_gun_ai"
   }
 }

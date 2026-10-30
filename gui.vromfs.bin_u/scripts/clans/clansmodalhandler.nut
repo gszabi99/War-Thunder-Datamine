@@ -1,4 +1,32 @@
+import "%scripts/time.nut" as time
+import "%scripts/clans/clanContextMenu.nut" as clanContextMenu
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+import "%scripts/clans/showClanPageModal.nut" as showClanPageModal
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/clans/clanPageModal.nut" import clanPageModal
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import countSizeInItems
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/clans/clanTablesConfig.nut" import getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/tasker.nut" import charRequestBlk
+from "%scripts/clans/modify/createClanModalHandler.nut" import openCreateClanWnd
+from "%scripts/clans/clanSeasonInfoModal.nut" import openClanSeasonInfoWnd
+from "%scripts/leaderboard/leaderboardCategoryType.nut" import getLbCategoryTypeById
+from "%scripts/leaderboard/leaderboardHelpers.nut" import getLbItemCell
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/clans/clanRequests.nut" import cancelMembership
+from "%scripts/clans/clanInfoTable.nut" import ranked_column_prefix, getFilteredClanData
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/chat/chatUtils.nut" import filterMessageText
+from "%scripts/clans/clanTextInfo.nut" import checkUGCAllowed
+from "%scripts/user/clanName.nut" import getMyClanTag, getMyClanName
+from "%scripts/clans/clanSeasons.nut" import isClanSeasonsEnabled, getShowInSquadronStatistics, getClanCurrentSeasonName, getClanCurrentSeasonEndDate, getClanSeasonFirstPrizePlacesRewards
 from "%sqstd/underscore.nut" import isDataBlock, isFunction
 from "string" import format
 from "%sqstd/datablock.nut" import getBlkValueByPath, convertBlk
@@ -13,37 +41,10 @@ from "types" import String
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { clanPageModal } = require("%scripts/clans/clanPageModal.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
-let time = require("%scripts/time.nut")
-let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { charRequestBlk } = require("%scripts/tasker.nut")
-let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
-let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
-let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { cancelMembership } = require("%scripts/clans/clanRequests.nut")
-let { ranked_column_prefix, getFilteredClanData } = require("%scripts/clans/clanInfoTable.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
-let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
+let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
-let { isClanSeasonsEnabled, getShowInSquadronStatistics, getClanCurrentSeasonName, getClanCurrentSeasonEndDate, getClanSeasonFirstPrizePlacesRewards } = require("%scripts/clans/clanSeasons.nut")
 
 
 const CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -593,13 +594,8 @@ let ClansModalHandler = class (clanPageModal) {
   function isColForDisplay(column) {
     let colName = column.id
     if (this.curPage != "clans_leaderboards" || colName.len() < ranked_column_prefix.len()
-      || colName.slice(0, ranked_column_prefix.len()) != ranked_column_prefix) {
-      let showByFeature = column?.showByFeature
-      if (showByFeature != null && !hasFeature(showByFeature))
-        return false
-
+      || colName.slice(0, ranked_column_prefix.len()) != ranked_column_prefix)
       return true
-    }
 
     return colName == ranked_column_prefix
   }
@@ -696,27 +692,16 @@ let ClansModalHandler = class (clanPageModal) {
       showClanPageModal(this.curClanInfo.id, "", "")
   }
 
-  function onSelectClansList(_obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (checkObj(this.scene))
-        this.onSelectClan(this.scene.findObject("clan_lboard_table"))
-    })
-  }
-
   function goToPage(obj) {
     this.curClanLbPage = obj.to_page.tointeger()
     this.requestClansLbData()
   }
 
   function onCreateClanWnd() {
-    if (hasFeature("Clans")) {
-      if (!ps4_is_ugc_enabled())
-        ps4_show_ugc_restriction()
-      else
-        openCreateClanWnd()
-    }
+    if (!ps4_is_ugc_enabled())
+      ps4_show_ugc_restriction()
     else
-      this.msgBox("not_available", loc("msgbox/notAvailbleYet"), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
+      openCreateClanWnd()
   }
 
   function onEventClanInfoUpdate(_params = {}) {
@@ -945,4 +930,4 @@ let ClansModalHandler = class (clanPageModal) {
 }
 register_gui_handler("ClansModalHandler", ClansModalHandler)
 
-return { ClansModalHandler }
+return freeze({ ClansModalHandler })

@@ -1,3 +1,4 @@
+import "%rGui/style/fontsState.nut" as fontsState
 from "%rGui/wwMap/wwOperationStates.nut" import getPlayerSideStr, isPlayerSideStr
 from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
 from "%appGlobals/worldWar/wwSettings.nut" import getSettings
@@ -8,8 +9,6 @@ from "%rGui/wwMap/wwArmyGroups.nut" import getArmyGroupsInfo
 from "math" import floor
 from "worldwar" import wwGetOperationTimeMillisec
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
 
 let battleResults = {}
 
@@ -35,7 +34,6 @@ function mkBattleResultArrow(boxSize, isDown = true) {
     size
     image = Picture($"{image}:{size[0]}:{size[1]}")
     transform = {
-      pivot = [0.5, 0.5]
       rotate = isDown ? 0 : 180
     }
   }
@@ -73,8 +71,8 @@ function mkBattleResult(battleInfo, areaBounds) {
     pos = battleResultBoxPos
     size = battleResultBoxSize
     image = Picture($"{image}:{battleResultBoxSize[0]}:{battleResultBoxSize[1]}")
-    screenOffs = [hdpx(3), hdpx(3), hdpx(3), hdpx(3)]
-    texOffs = [3, 3, 3, 3]
+    screenOffs = hdpx(3)
+    texOffs = 3
     children = [
       battleResultText.__update({ vplace = ALIGN_CENTER hplace = ALIGN_CENTER }),
       mkBattleResultArrow(battleResultBoxSize)
@@ -106,7 +104,7 @@ function mkBattleDetroyedArmy(battleInfo, areaBounds, mpZoom) {
         {
           rendObj = ROBJ_IMAGE
           keepAspect = true
-          size = [armyIconSize, armyIconSize]
+          size = armyIconSize
           image = Picture($"{armyIcon.iconName}:{armyIconSize}:{armyIconSize}")
           color = getMapColor(armyColor)
         },
@@ -147,8 +145,8 @@ function mkBattleDetroyedArmy(battleInfo, areaBounds, mpZoom) {
     pos = battleResultBoxPos
     size = battleResultBoxSize
     image = Picture($"{image}:{battleResultBoxSize[0]}:{battleResultBoxSize[1]}")
-    screenOffs = [hdpx(3), hdpx(3), hdpx(3), hdpx(3)]
-    texOffs = [3, 3, 3, 3]
+    screenOffs = hdpx(3)
+    texOffs = 3
     children = [
       armiesAfterBattleContent.__update({ vplace = ALIGN_CENTER, hplace = ALIGN_CENTER }),
       mkBattleResultArrow(battleResultBoxSize, false)
@@ -190,6 +188,6 @@ let mkBattlesMessages = function() {
   }
 }
 
-return {
+return freeze({
   mkBattlesMessages
-}
+})

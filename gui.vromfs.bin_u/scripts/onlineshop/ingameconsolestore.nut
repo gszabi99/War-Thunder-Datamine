@@ -1,23 +1,23 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/sqDagui/timer/mkHoverHoldAction.nut" as mkHoverHoldAction
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndWidgets/navigationPanel.nut" import navigationPanel
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj, getObjValidIndex, move_mouse_on_child_by_value, move_mouse_on_obj
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/viewUtils/paginator.nut" import generatePaginator, hidePaginator
+from "%scripts/onlineShop/entitlementView.nut" import getEntitlementView
+from "%scripts/items/itemVisual.nut" import setWidthAndPosForItemNameElements
 from "math" import ceil
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { show_obj, getObjValidIndex, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
-let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
 let IngameConsoleStore = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -135,6 +135,9 @@ let IngameConsoleStore = class (BaseGuiHandlerWT) {
   }
 
   function initNavigation() {
+    if (this.navigationHandlerWeak)
+      return
+
     let handler = handlersManager.loadHandler(
       navigationPanel,
       { scene                  = this.scene.findObject("control_navigation")
@@ -144,7 +147,7 @@ let IngameConsoleStore = class (BaseGuiHandlerWT) {
         needShowCollapseButton = true
         headerHeight           = "1@buttonHeight"
       })
-    this.registerSubHandler(this.navigationHandlerWeak)
+    this.registerSubHandler(handler)
     this.navigationHandlerWeak = handler.weakref()
     this.headerOffsetX = handler.headerOffsetX
   }
@@ -620,4 +623,4 @@ let IngameConsoleStore = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("IngameConsoleStore", IngameConsoleStore)
 
-return { IngameConsoleStore }
+return freeze({ IngameConsoleStore })

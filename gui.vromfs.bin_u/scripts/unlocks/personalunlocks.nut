@@ -1,24 +1,28 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksWhereInBlkOrder
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit
+from "%scripts/unlocks/commandersHandbookState.nut" import CMH_CHAPTER
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
-let { CMH_CHAPTER } = require("%scripts/unlocks/commandersHandbookState.nut")
 
-let markerUnlocks = persist("markerUnlocksCache", @() [])
-let manualUnlocks = persist("manualUnlocksCache", @() [])
-let nightBattlesUnlocks = persist("nightBattlesUnlocks", @() [])
-let isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
+const NIGHT_BATTLES_CHAPTER = "tank_realistic_night_battles"
+
+let markerUnlocks = []
+let manualUnlocks = []
+let nightBattlesUnlocks = []
+local isCacheValid = false
 
 function cache() {
-  if (isCacheValid.value || !isLoggedIn.get())
+  if (isCacheValid || !hasFullLoginState.get())
     return
 
-  foreach (unlockBlk in getAllUnlocksWithBlkOrder()) {
+  let unlocks = getUnlocksWhereInBlkOrder("shouldMarkUnits || manualOpen || chapter == $nightChapter",
+    { nightChapter = NIGHT_BATTLES_CHAPTER })
+  foreach (unlockBlk in unlocks) {
     if (unlockBlk?.shouldMarkUnits
         && !isUnlockOpened(unlockBlk.id)
         && !isUnlockExpired(unlockBlk))
@@ -27,11 +31,11 @@ function cache() {
     if (canOpenUnlockManually(unlockBlk) && unlockBlk?.chapter != CMH_CHAPTER)
       manualUnlocks.append(unlockBlk)
 
-    if (unlockBlk?.chapter == "tank_realistic_night_battles" && isUnlockVisible(unlockBlk))
+    if (unlockBlk?.chapter == NIGHT_BATTLES_CHAPTER && isUnlockVisible(unlockBlk))
       nightBattlesUnlocks.append(unlockBlk)
   }
 
-  isCacheValid.value = true
+  isCacheValid = true
 }
 
 function getMarkerUnlocks() {
@@ -50,13 +54,13 @@ function getNightBattlesUnlocks() {
 }
 
 function invalidateCache() {
-  if (!isCacheValid.value)
+  if (!isCacheValid)
     return
 
   markerUnlocks.clear()
   manualUnlocks.clear()
   nightBattlesUnlocks.clear()
-  isCacheValid.value = false
+  isCacheValid = false
 
   manualUnlocksSeenList.onListChanged()
 }
@@ -69,8 +73,8 @@ addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) invalidateCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getMarkerUnlocks
   getManualUnlocks
   getNightBattlesUnlocks
-}
+})

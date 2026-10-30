@@ -1,4 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/controls/input/button.nut" import Button
+from "%scripts/controls/controlsState.nut" import getPreviewControlsPreset
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "string" import split_by_chars
@@ -6,11 +9,9 @@ from "%sqstd/string.nut" import startsWith, cutPrefix
 from "guiMission" import get_num_attempts_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Button } = require("%scripts/controls/input/button.nut")
-let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 enum hintTagCheckOrder {
   EXACT_WORD 
@@ -160,11 +161,7 @@ enumsAddTypes(g_hint_tag, {
   }
 })
 
-g_hint_tag.types.sort(function(a, b) {
-  if (a.checkOrder != b.checkOrder)
-    return a.checkOrder < b.checkOrder ? -1 : 1
-  return 0
-})
+g_hint_tag.types.sortby(@(a) a.checkOrder)
 
 
 enum HINT_PIECE_TYPE {
@@ -402,6 +399,22 @@ g_hints.splitRowToPieces <- function splitRowToPieces(row, needProtectSplitLinks
   }
 
   return (needProtectSplitLinks && slices.len() > 1) ? findLinks(slices) : slices
+}
+
+g_hints.getMaxHintTextWidthPx <- function getMaxHintTextWidthPx(texts, fontName, iconSize, guiScene = null) {
+  let spaceWidth = getStringWidthPx(" ", fontName, guiScene)
+  let iconWidth = to_pixels(iconSize)
+  local maxWidth = 0
+  foreach (text in texts) {
+    local width = 0
+    foreach (p in this.splitRowToPieces(text))
+      if (p.type == HINT_PIECE_TYPE.TAG)
+        width += iconWidth
+      else if (p.type == HINT_PIECE_TYPE.TEXT && p.piece != "")
+        width += getStringWidthPx(p.piece, fontName, guiScene) + spaceWidth
+    maxWidth = max(maxWidth, width)
+  }
+  return maxWidth
 }
 
 

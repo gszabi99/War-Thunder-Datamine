@@ -1,3 +1,17 @@
+import "%scripts/seen/seenListEvents.nut" as seenListEvents
+from "%scripts/unit/remainingTimeUnit.nut" import promoteUnits
+from "%scripts/nationBonuses/nationBonuses.nut" import getUnitsWithNationBonuses, getNationBonusMarkState
+from "%scripts/unlocks/unlockMarkers.nut" import getUnitsWithUnlock
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/markers/markerTooltipUtils.nut" import getSortedDiscountUnits, createMoreText, maxTooltipUnitsCount
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/time.nut" import TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc
+from "%scripts/discounts/discountsState.nut" import getUnitsDiscounts, haveAnyUnitDiscount
+from "%scripts/unit/unitEvents.nut" import getEventMarkersData, getEventUnitsData
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%appGlobals/timeLoc.nut" import hoursToString
 from "dagor.workcycle" import deferOnce
@@ -6,21 +20,7 @@ from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { getUnitsWithNationBonuses, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { getUnitsWithUnlock } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getSortedDiscountUnits, createMoreText, maxTooltipUnitsCount } = require("%scripts/markers/markerTooltipUtils.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { getUnitsDiscounts, haveAnyUnitDiscount } = require("%scripts/discounts/discountsState.nut")
-let { getEventMarkersData, getEventUnitsData } = require("%scripts/unit/unitEvents.nut")
 
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
@@ -223,8 +223,8 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   getCountryMarkersWidth
   buildTimeTextValue
   hasMarkers
-}
+})

@@ -1,15 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import removeTextareaTags, move_mouse_on_child
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 from "%scripts/utils_sa.nut" import call_for_handler
 from "types" import Function, Array
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { removeTextareaTags, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
@@ -181,4 +181,4 @@ function openRightClickMenu(config, owner, position = null, orientation = null, 
   })
 }
 
-return { openRightClickMenu }
+return freeze({ openRightClickMenu })

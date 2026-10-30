@@ -1,15 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/controls/controlsCompatibility.nut" import getShortcuts
+from "%scripts/controls/shortcutsUtils.nut" import isShortcutDisplayEqual
+from "%scripts/controls/controlsUtils.nut" import getRequiredControlsForUnit
+from "%scripts/controls/aircraftHelpers.nut" import getCurrentHelpersMode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { isShortcutDisplayEqual } = require("%scripts/controls/shortcutsUtils.nut")
-let { getRequiredControlsForUnit } = require("%scripts/controls/controlsUtils.nut")
-let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 
 let pseudoAxesList = {
   template = {

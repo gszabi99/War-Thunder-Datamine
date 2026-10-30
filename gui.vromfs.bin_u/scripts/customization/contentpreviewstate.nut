@@ -1,12 +1,12 @@
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/slotbar/slotbarOverride.nut" import isSlotbarOverrided
+from "%scripts/slotbar/slotbarStateData.nut" import getReserveAircraftName
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 
 function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
   local unit = null
@@ -63,6 +63,6 @@ function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnit
   return null
 }
 
-return {
+return freeze({
   getBestUnitForPreview
-}
+})

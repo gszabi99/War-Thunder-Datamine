@@ -30,6 +30,7 @@ let deathEasing = function(x) {
   const wait = showDurationOnDeath / (showDurationOnDeath + transitionDuration)
   return x < wait ? 0 : sin(PI * 0.5 * cvt(x, wait, 1, 0, 1))
 }
+let deathTransitions = [{prop = AnimProp.opacity, duration = transitionDuration + showDurationOnDeath, easing = deathEasing }]
 
 let isShotResultVisible = Computed(@() fcsShotState.get().shotState != FCSShotState.SHOT_NONE && (IsTargetDataAvailable.get() || IsTargetDead.get()))
 
@@ -41,6 +42,8 @@ function mkTargetShipComponent(size) {
   let pos = [compCenter[0] - compSize[0] / 2, compCenter[1] - compSize[1] / 2]
   let shipWidth = floor(0.192 * compSize[0])
   let shipHeight = floor(0.685 * compSize[1])
+  let shipImage = Picture($"!ui/gameuiskin#fcs_ship_enemy.svg:{shipWidth}:{shipHeight}")
+  let aliveTransitions = const [{prop = AnimProp.opacity, duration = transitionDuration, easing = InOutQuad }]
 
   return @() {
     watch = [IsTargetDataAvailable, IsTargetSelected, IsTargetDead]
@@ -49,18 +52,15 @@ function mkTargetShipComponent(size) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     opacity = IsTargetDataAvailable.get() ? 1 : 0
-    transitions = IsTargetDead.get()
-      ? [{prop = AnimProp.opacity, duration = transitionDuration + showDurationOnDeath, easing = deathEasing }]
-      : [{prop = AnimProp.opacity, duration = transitionDuration, easing = InOutQuad }]
+    transitions = IsTargetDead.get() ? deathTransitions : aliveTransitions
     children = !IsTargetSelected.get() || IsTargetDataAvailable.get() ? [
       @(){
         rendObj = ROBJ_IMAGE
         watch = TargetAzimuthAngle
         size = [shipWidth, shipHeight]
         color = redColor
-        image = Picture($"!ui/gameuiskin#fcs_ship_enemy.svg:{shipWidth}:{shipHeight}")
+        image = shipImage
         transform = {
-          pivot = [0.5, 0.5]
           rotate = TargetAzimuthAngle.get()
         }
       }
@@ -72,7 +72,7 @@ function mkTargetShipComponent(size) {
         fillColor = greenColor
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        commands = [[VECTOR_ELLIPSE, 50, 0, 2, 2]]
+        commands = const [[VECTOR_ELLIPSE, 50, 0, 2, 2]]
         transform = {
           rotate = aimAngle.get() + 180
         }
@@ -88,6 +88,10 @@ function mkHeroShipComponent(size) {
   let shipWidth = floor(0.185 * compSize[0])
   let shipHeight = floor(0.66 * compSize[1])
   let coneSize = [size[0] * 0.5, size[1] * 0.5]
+  let shipImage = Picture($"!ui/gameuiskin#fcs_ship_player.svg:{shipWidth}:{shipHeight}")
+  let coneImage = Picture("+ui/gameuiskin#map_camera")
+  let coneScale = const [sin(0.5), 1.0]
+  let aimMarkAnimations = const [{ prop = AnimProp.opacity, from = 0, to = 1, duration = transitionDuration, play = true, easing = InQuad }]
 
   return {
     size = compSize
@@ -99,10 +103,9 @@ function mkHeroShipComponent(size) {
         rendObj = ROBJ_IMAGE
         watch = HeroAzimuthAngle
         size = [shipWidth, shipHeight]
-        image = Picture($"!ui/gameuiskin#fcs_ship_player.svg:{shipWidth}:{shipHeight}")
+        image = shipImage
         color = greenColorShip
         transform = {
-          pivot = [0.5, 0.5]
           rotate = HeroAzimuthAngle.get()
         }
       }
@@ -111,11 +114,10 @@ function mkHeroShipComponent(size) {
         watch = sightAngle
         size = coneSize
         color = Color(150, 150, 150, 100)
-        image = Picture("+ui/gameuiskin#map_camera")
+        image = coneImage
         transform = {
-          pivot = [0.5, 0.5]
           rotate = sightAngle.get()
-          scale = [sin(0.5), 1.0]
+          scale = coneScale
         }
       }
       @() {
@@ -126,12 +128,12 @@ function mkHeroShipComponent(size) {
         fillColor = redColor
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        commands = IsTargetSelected.get() ? [[VECTOR_ELLIPSE, 50, 7, 2, 2]] : null
+        commands = IsTargetSelected.get() ? const [[VECTOR_ELLIPSE, 50, 7, 2, 2]] : null
         transform = {
           rotate = aimAngle.get()
         }
         key = {}
-        animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = transitionDuration, play = true, easing = InQuad }]
+        animations = aimMarkAnimations
       }
     ]
   }
@@ -140,7 +142,7 @@ function mkHeroShipComponent(size) {
 function mkBullet(bulletWidth, pos, delay, icon_type = "wrong") {
   return {
     rendObj = ROBJ_IMAGE
-    size = [bulletWidth, bulletWidth]
+    size = bulletWidth
     pos
     image = Picture($"!ui/gameuiskin#fcs_shot_{icon_type}.svg:{bulletWidth}:{bulletWidth}")
     key = {}
@@ -185,6 +187,18 @@ function mkShotResultBullets(size, shotState) {
   }
 }
 
+const shotResultAnimations = [
+  {
+    prop = AnimProp.opacity, from = 0, to = 1, play = true, duration = 0.5
+  },
+  {
+    prop = AnimProp.opacity, from = 1, to = 1, play = true, delay = 0.5, duration = 2
+  },
+  {
+    prop = AnimProp.opacity, from = 1, to = 0, play = true, delay = 2.5, duration = 0.5
+  }
+]
+
 function mkShotResultComponent(size) {
   let compSize = [floor(0.486 * size[0]), floor(0.486 * size[1])]
   let center = [0.5 * size[0], 0.286 * size[1]]
@@ -203,22 +217,11 @@ function mkShotResultComponent(size) {
         size = compSize
         image = Picture($"!ui/gameuiskin#fcs_shot_result_{imageSuffixes[imageSuff]}.svg:{compSize[0]}:{compSize[1]}")
         transform = {
-          pivot = [0.5, 0.5]
           rotate = fcsShotState.get().shotDirection
         }
         opacity = 0
         key = {}
-        animations = [
-          {
-            prop = AnimProp.opacity, from = 0, to = 1, play = true, duration = 0.5
-          },
-          {
-            prop = AnimProp.opacity, from = 1, to = 1, play = true, delay = 0.5, duration = 2
-          },
-          {
-            prop = AnimProp.opacity, from = 1, to = 0, play = true, delay = 2.5, duration = 0.5
-          }
-        ]
+        animations = shotResultAnimations
       }
     }
   }
@@ -449,15 +452,13 @@ let headingAngleLabel = {
   text = loc("fcs/heading_angle")
 }
 
-function mkHeadingAngleValue() {
-  return @() {
-    watch = HeadingAngle
-    rendObj = ROBJ_TEXT
-    color = greenColor
-    pos = const [pw(4), ph(40)]
-    font = Fonts.very_tiny_text_hud
-    text = "".concat($"{floor(HeadingAngle.get())}", loc("measureUnits/deg"))
-  }
+let headingAngleValue = @() {
+  watch = HeadingAngle
+  rendObj = ROBJ_TEXT
+  color = greenColor
+  pos = const [pw(4), ph(40)]
+  font = Fonts.very_tiny_text_hud
+  text = "".concat($"{floor(HeadingAngle.get())}", loc("measureUnits/deg"))
 }
 
 let mkTargetSpeedLabel = @() {
@@ -497,33 +498,44 @@ let targetSpeedValueComp = {
   ]
 }
 
+let measuresWidth = maxMeasuresCompWidth()
+
 function mkFCSComponent(posWatched, size) {
   const gap = sh(3)
+  let background = mkBackground(size)
+  let shotResult = mkShotResultComponent(size)
+  let heroShipPlace = mkHeroShipPlace(size)
+  let heroShip = mkHeroShipComponent(size)
+  let targetShipPlace = mkTargetShipPlace(size)
+  let targetShip = mkTargetShipComponent(size)
+  let targetSpeedLabel = mkTargetSpeedLabel()
+  let shotResultBullets = mkShotResultBulletsComponent(size)
+  let shotResultText = mkShotResultTextComponent(size)
 
   return @(){
     watch = [posWatched, IsTargetDataAvailable]
     size
-    pos = [posWatched.get()[0] + maxMeasuresCompWidth() - sh(6), posWatched.get()[1] + maxLabelHeight + gap]
+    pos = [posWatched.get()[0] + measuresWidth - sh(6), posWatched.get()[1] + maxLabelHeight + gap]
     children = [
-      mkBackground(size)
-      mkShotResultComponent(size)
-      mkHeroShipPlace(size)
-      mkHeroShipComponent(size)
-      mkTargetShipPlace(size)
-      mkTargetShipComponent(size)
-      IsTargetDataAvailable.get() ? mkHeadingAngleValue() : null
+      background
+      shotResult
+      heroShipPlace
+      heroShip
+      targetShipPlace
+      targetShip
+      IsTargetDataAvailable.get() ? headingAngleValue : null
       IsTargetDataAvailable.get() ? targetSpeedValueComp : null
       headingAngleLabel
-      mkTargetSpeedLabel()
-      mkShotResultBulletsComponent(size)
-      mkShotResultTextComponent(size)
+      targetSpeedLabel
+      shotResultBullets
+      shotResultText
     ]
     onAttach = showNewStateFromQueue
     onDetach = clearCurrentShotState
   }
 }
 
-function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
+function [pure, nodiscard] drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
   const arrowSize = sh(2)
   local arrowCommands = []
 
@@ -553,7 +565,7 @@ function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
   }
 }
 
-return {
+return freeze({
   mkFCSComponent
   drawArrow
-}
+})

@@ -35,29 +35,20 @@ let private PHASE_OPTIMIZED = 3
 let private PHASE_FUSED = 4
 let private PHASE_DONE = 999
 
-
-
-
 let private FLATTEN_BARRIERS : table<string> <- {
     "tex2d", "noise"
 }
-
-
-
 
 let private STD_WHITELIST : table<string> <- {
     "min", "max", "abs", "clamp", "saturate", "sign", "floor", "ceil", "round", "trunc", "frac",
     "sqrt", "rsqrt", "pow", "exp", "exp2", "log", "log2",
     "sin", "cos", "tan", "asin", "acos", "atan", "atan2", "sincos",
-    "radians", "degrees",   
+    "radians", "degrees",
     "dot", "cross", "length", "normalize", "distance", "reflect", "refract",
-    "hmin", "hmax", "hadd",   
+    "hmin", "hmax", "hadd",
     "lerp", "mix", "step", "smooth_step", "rcp", "mad",
     "float2", "float3", "float4", "int2", "int3", "int4", "uint2", "uint3", "uint4"
 }
-
-
-
 
 let private ASSIGN_BASE : table<string; string> <- {
     "+=" => "+", "-=" => "-", "*=" => "*", "/=" => "/", "%=" => "%",
@@ -68,28 +59,14 @@ def private twin_name(func : FunctionPtr) : string {
     return "{func.name}_flat"
 }
 
-def private get_flatten_phase(func : FunctionPtr) : int {
-    for (ann in func.annotations) {
-        if (ann.annotation.name == "flatten") {
-            let pv = find_arg(ann.arguments, "phase")
-            if (pv is tInt) return pv as tInt
+def private set_flatten_phase(var args : AnnotationArgumentList; ph : int) {
+    for (a in args) {
+        if (a.name == "phase") {
+            a.iValue = ph
+            return
         }
     }
-    return -1
-}
-
-def private set_flatten_phase(var func : FunctionPtr; ph : int) {
-    for (ann in func.annotations) {
-        if (ann.annotation.name != "flatten") continue
-        var found = false
-        for (a in ann.arguments) {
-            if ("{a.name}" == "phase") {
-                a.iValue = ph
-                found = true
-            }
-        }
-        if (!found) ann.arguments |> add_annotation_argument("phase", ph)
-    }
+    args |> add_annotation_argument("phase", ph)
 }
 
 
@@ -97,23 +74,9 @@ def private set_flatten_phase(var func : FunctionPtr; ph : int) {
 
 let public FLATTEN_MAX_UNROLL = 4096
 
-def private get_flatten_max_unroll(func : FunctionPtr) : int {
-    for (ann in func.annotations) {
-        if (ann.annotation.name == "flatten") {
-            let mv = find_arg(ann.arguments, "max_unroll")
-            if (mv is tInt) return mv as tInt
-        }
-    }
-    return FLATTEN_MAX_UNROLL
-}
-
-
-
-
-
 struct private LoopMask {
-    loopLive : string
-    iterLive : string
+    breakMaskName : string
+    continueMaskName : string
 }
 
 class private FlatCtx {
@@ -122,10 +85,10 @@ class private FlatCtx {
     retName   : string
     hasRet    : bool
     worklist  : array<string>
-    loopMasks : array<LoopMask>   
-    whitelist : table<string>     
-    unrollFactor : int            
-    maxUnroll : int               
+    loopMasks : array<LoopMask>
+    whitelist : table<string>
+    unrollFactor : int
+    maxUnroll : int
     ok        : bool
     err      : string
 }
@@ -150,20 +113,17 @@ def private p_and(a, b : ExpressionPtr) : ExpressionPtr {
     return qmacro($e(a) && $e(b))
 }
 
-
-
-
 def private live_pred(ctx : FlatCtx?; structPred : ExpressionPtr; exclude : string = "") : ExpressionPtr {
     var acc : ExpressionPtr = null
     if (ctx.liveName != exclude) {
         acc = qmacro($i(ctx.liveName))
     }
     for (lm in ctx.loopMasks) {
-        if (lm.loopLive != "" && lm.loopLive != exclude) {
-            acc = acc == null ? qmacro($i(lm.loopLive)) : qmacro($e(acc) && $i(lm.loopLive))
+        if (lm.breakMaskName != "" && lm.breakMaskName != exclude) {
+            acc = acc == null ? qmacro($i(lm.breakMaskName)) : qmacro($e(acc) && $i(lm.breakMaskName))
         }
-        if (lm.iterLive != "" && lm.iterLive != exclude) {
-            acc = acc == null ? qmacro($i(lm.iterLive)) : qmacro($e(acc) && $i(lm.iterLive))
+        if (lm.continueMaskName != "" && lm.continueMaskName != exclude) {
+            acc = acc == null ? qmacro($i(lm.continueMaskName)) : qmacro($e(acc) && $i(lm.continueMaskName))
         }
     }
     if (structPred != null) {
@@ -171,9 +131,6 @@ def private live_pred(ctx : FlatCtx?; structPred : ExpressionPtr; exclude : stri
     }
     return acc
 }
-
-
-
 
 def private emit_narrow(var out : array<ExpressionPtr>; name : string; term : ExpressionPtr) {
     if (term == null) {
@@ -189,7 +146,6 @@ def private is_user_call(e : ExpressionPtr) : bool {
     return c.func != null && !c.func.flags.builtIn && c.func.body != null
 }
 
-
 def private inline_call(var ctx : FlatCtx?; call : ExprCall?; structPred : ExpressionPtr; var out : array<ExpressionPtr>) : ExpressionPtr {
     let callee = call.func
     let cname = string(callee.name)
@@ -203,12 +159,10 @@ def private inline_call(var ctx : FlatCtx?; call : ExprCall?; structPred : Expre
     var subst : Template
     for (p, ai in callee.arguments, count()) {
         let argN = fresh(ctx, "__flat_arg")
-        
         let lifted = lift_expr(ctx, call.arguments[ai], structPred, out)
         out |> push <| qmacro_expr(${ var $i(argN) = $e(lifted); })
         subst |> replaceVariable(string(p.name)) <| qmacro($i(argN))
     }
-    
     var seenLocals : array<string>
     let calleeLocals <- collect_let_names(callee.body)
     for (ln in calleeLocals) {
@@ -217,22 +171,19 @@ def private inline_call(var ctx : FlatCtx?; call : ExprCall?; structPred : Expre
             subst |> renameVariable(ln, fresh(ctx, "__flat_loc"))
         }
     }
-    
     let seed = live_pred(ctx, structPred)
     out |> push <| qmacro_expr(${ var $i(liveN) = $e(seed); })
-    
     var retN = ""
     if (!isVoidCallee) {
         retN = fresh(ctx, "__flat_ret")
         var crt = clone_type(callee.result)
         crt.flags.constant = false
-        
         out |> push <| qmacro_expr(${ var $i(retN) : $t(crt); })
     }
     let savedLive = ctx.liveName
     let savedRet = ctx.retName
     let savedHas = ctx.hasRet
-    var savedLoops <- ctx.loopMasks   
+    var savedLoops <- ctx.loopMasks
     ctx.liveName = liveN
     ctx.retName = retN
     ctx.hasRet = !isVoidCallee
@@ -249,16 +200,19 @@ def private inline_call(var ctx : FlatCtx?; call : ExprCall?; structPred : Expre
     return qmacro($i(retN))
 }
 
-
-
-
 def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) : ExpressionPtr {   
     if (e == null) return null
     if (e is ExprCall) {
         let c = e as ExprCall
         let bname = string(c.name)
-        
         if (key_exists(ctx.whitelist, simple_name(bname))) {
+            for (ai in range(length(c.arguments))) {
+                if (writes_through_argument(c.func, ai)) {
+                    ctx.ok = false
+                    ctx.err = "flatten: '{bname}' writes through by-reference argument '{c.func.arguments[ai].name}'; a predicated twin cannot carry a store the lowering does not own - use a value-returning form"
+                    return clone_expression(e)
+                }
+            }
             var n = clone_expression(e)
             var o = n as ExprCall
             for (ai in range(length(c.arguments))) {
@@ -266,11 +220,9 @@ def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : Expres
             }
             return n
         }
-        
         if (is_user_call(e)) {
             return inline_call(ctx, c, structPred, out)
         }
-        
         if (is_all_const(e) && eval_to_const_supported(e._type)) {
             var n = clone_expression(e)
             var o = n as ExprCall
@@ -279,7 +231,6 @@ def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : Expres
             }
             return n
         }
-        
         ctx.ok = false
         ctx.err = "flatten: builtin '{bname}' is not on the whitelist (not GPU-expressible / may have side effects)"
         return clone_expression(e)
@@ -308,7 +259,6 @@ def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : Expres
         o.right = lift_expr(ctx, oe.right, structPred, out)
         return n
     }
-    
     if (e is ExprField) {
         var n = clone_expression(e)
         var o = n as ExprField
@@ -359,9 +309,9 @@ def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : Expres
         for (vi in range(length(o.values))) {
             o.values[vi] = lift_expr(ctx, o.values[vi], structPred, out)
         }
+        o.constValues = false
         return n
     }
-    
     if (e is ExprRef2Value) {
         var n = clone_expression(e)
         var o = n as ExprRef2Value
@@ -395,9 +345,6 @@ def private lower_branch(var ctx : FlatCtx?; br : ExpressionPtr; structPred : Ex
     }
 }
 
-
-
-
 def private lower_loop_exit(var ctx : FlatCtx?; structPred : ExpressionPtr; var out : array<ExpressionPtr>; isBreak : bool) {
     if (empty(ctx.loopMasks)) {
         ctx.ok = false
@@ -405,13 +352,23 @@ def private lower_loop_exit(var ctx : FlatCtx?; structPred : ExpressionPtr; var 
         return
     }
     let lm = ctx.loopMasks[length(ctx.loopMasks) - 1]
-    let nm = isBreak ? lm.loopLive : lm.iterLive
+    let nm = isBreak ? lm.breakMaskName : lm.continueMaskName
     if (nm == "") {
         ctx.ok = false
         ctx.err = "flatten: internal error - {isBreak ? "break" : "continue"} mask was not allocated"
         return
     }
     emit_narrow(out, nm, live_pred(ctx, structPred, nm))
+}
+
+def private typed_one(at : LineInfo; bt : Type) : ExpressionPtr {
+    if (bt == Type.tInt) return new ExprConstInt(at = at, value = 1)
+    if (bt == Type.tUInt) return new ExprConstUInt(at = at, value = 1u)
+    if (bt == Type.tInt64) return new ExprConstInt64(at = at, value = 1l)
+    if (bt == Type.tUInt64) return new ExprConstUInt64(at = at, value = 1ul)
+    if (bt == Type.tFloat) return new ExprConstFloat(at = at, value = 1.0)
+    if (bt == Type.tDouble) return new ExprConstDouble(at = at, value = 1.0lf)
+    return null
 }
 
 def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {   
@@ -422,7 +379,6 @@ def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : Ex
             let pred = live_pred(ctx, structPred)
             out |> push <| qmacro_expr(${ $i(ctx.retName) = $e(pred) ? $e(valExpr) : $i(ctx.retName); })
         }
-        
         emit_narrow(out, ctx.liveName, live_pred(ctx, structPred, ctx.liveName))
     } elif (stmt is ExprIfThenElse) {
         let ite = stmt as ExprIfThenElse
@@ -438,14 +394,12 @@ def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : Ex
         let pred = live_pred(ctx, structPred)
         out |> push <| qmacro_expr(${ $e(cp.left) = $e(pred) ? $e(rhs) : $e(cp.left); })
     } elif (stmt is ExprLet) {
-        
         var letClone = clone_expression(stmt)
         var lc = letClone as ExprLet
         for (v in lc.variables) {
             if (v.init != null) {
                 v.init = lower_value(ctx, v.init, structPred, out)
             } else {
-                
                 v.init = zero_const_of(v._type, v.at)
             }
         }
@@ -456,16 +410,13 @@ def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : Ex
         ctx.ok = false
         ctx.err = "flatten: while loops are not supported; use a fixed range(N) or array-literal for loop"
     } elif (stmt is ExprBreak) {
-        
         lower_loop_exit(ctx, structPred, out, true)
     } elif (stmt is ExprContinue) {
-        
         lower_loop_exit(ctx, structPred, out, false)
     } elif (stmt is ExprMove || stmt is ExprClone) {
         ctx.ok = false
         ctx.err = "flatten: move (<-) / clone (:=) cannot be predicated; only copyable-value assignment is supported"
     } elif (stmt is ExprOp2 && key_exists(ASSIGN_BASE, "{(stmt as ExprOp2).op}")) {
-        
         let o = stmt as ExprOp2
         let bop = ASSIGN_BASE?["{o.op}"] ?? ""
         let pred = live_pred(ctx, structPred)
@@ -473,27 +424,25 @@ def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : Ex
             right = lower_value(ctx, o.right, structPred, out))
         out |> push <| qmacro_expr(${ $e(o.left) = $e(pred) ? $e(combined) : $e(o.left); })
     } elif (stmt is ExprOp1 && ("{(stmt as ExprOp1).op}" == "++" || "{(stmt as ExprOp1).op}" == "--")) {
-        
         let o = stmt as ExprOp1
+        var one = typed_one(o.at, expr_bt(o.subexpr))
+        if (one == null) {
+            ctx.ok = false
+            ctx.err = "flatten: {o.op} on {describe(o.subexpr._type)} cannot be predicated"
+            return
+        }
         let bop = "{o.op}" == "++" ? "+" : "-"
         let pred = live_pred(ctx, structPred)
-        var combined = new ExprOp2(at = o.at, op := bop, left = clone_expression(o.subexpr),
-            right = new ExprConstInt(at = o.at, value = 1))
+        var combined = new ExprOp2(at = o.at, op := bop, left = clone_expression(o.subexpr), right <- one)
         out |> push <| qmacro_expr(${ $e(o.subexpr) = $e(pred) ? $e(combined) : $e(o.subexpr); })
     } elif (stmt is ExprBlock) {
-        
         lower_list(ctx, stmt as ExprBlock, structPred, out)
     } elif (stmt is ExprWith) {
-        
         lower_branch(ctx, (stmt as ExprWith).body, structPred, out)
     } else {
-        
         lower_value(ctx, stmt, structPred, out)
     }
 }
-
-
-
 
 class private LetNameScan : AstVisitor {
     names : array<string>
@@ -515,9 +464,6 @@ def private collect_let_names(body : ExpressionPtr) : array<string> {
     }
     return <- result
 }
-
-
-
 
 class private BreakContinueScan : AstVisitor {
     depth       : int
@@ -565,23 +511,19 @@ def private scan_break_continue(body : ExpressionPtr; var hasBreak : bool&; var 
     }
 }
 
-
-
-
 def private for_source_substs(var ctx : FlatCtx?; src : Expression?; at : LineInfo) : array<ExpressionPtr> {
     var substs : array<ExpressionPtr>
     if (src is ExprConstRange) {
         for (i in (src as ExprConstRange).value) {
-            var e : ExpressionPtr = new ExprConstInt(at = at, value = i)
+            var e : ExpressionPtr = new ExprConstInt(at = at, value = i, isConstLiteral = true)
             substs |> push(e)   
         }
     } elif (src is ExprConstURange) {
         for (i in (src as ExprConstURange).value) {
-            var e : ExpressionPtr = new ExprConstUInt(at = at, value = i)
+            var e : ExpressionPtr = new ExprConstUInt(at = at, value = i, isConstLiteral = true)
             substs |> push(e)   
         }
     } else {
-        
         var mk : ExprMakeArray? = null
         if (src is ExprMakeArray) {
             mk = src as ExprMakeArray
@@ -599,17 +541,13 @@ def private for_source_substs(var ctx : FlatCtx?; src : Expression?; at : LineIn
     return <- substs
 }
 
-
-
-
-def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {   
+def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {
     let nIter = length(efor.iterators)
     if (nIter == 0 || length(efor.sources) != nIter) {
         ctx.ok = false
         ctx.err = "flatten: a for loop needs one source per iterator"
         return
     }
-    
     var perSource : array<array<ExpressionPtr>>
     perSource |> reserve(nIter)
     var count = -1
@@ -626,7 +564,6 @@ def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : Expressi
         count = length(s)
         perSource |> emplace(s)
     }
-    
     let projected = int64(ctx.unrollFactor) * int64(count)
     if (projected > int64(ctx.maxUnroll)) {
         ctx.ok = false
@@ -636,7 +573,6 @@ def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : Expressi
     let savedFactor = ctx.unrollFactor
     ctx.unrollFactor = int(projected)
     let localNames <- collect_let_names(efor.body)
-    
     var hasBreak = false
     var hasContinue = false
     scan_break_continue(efor.body, hasBreak, hasContinue)
@@ -645,27 +581,24 @@ def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : Expressi
         var loopName = ""
         if (hasBreak) {
             loopName = fresh(ctx, "__flat_loop")
-            out |> push <| qmacro_expr(${ var $i(loopName) = true; })   
+            out |> push <| qmacro_expr(${ var $i(loopName) = true; })
         }
-        ctx.loopMasks |> push(LoopMask(loopLive = loopName, iterLive = ""))
+        ctx.loopMasks |> push(LoopMask(breakMaskName = loopName, continueMaskName = ""))
         pushed = true
     }
     for (k in range(count)) {
         if (pushed && hasContinue) {
-            
             let iterName = fresh(ctx, "__flat_iter")
             out |> push <| qmacro_expr(${ var $i(iterName) = true; })
-            ctx.loopMasks[length(ctx.loopMasks) - 1].iterLive = iterName
+            ctx.loopMasks[length(ctx.loopMasks) - 1].continueMaskName = iterName
         }
         var iblk = clone_expression(efor.body)
         var rules : Template
-        
         for (vi in range(nIter)) {
             let van = "{efor.iterators[vi]}"
-            remove_deref(van, iblk)            
+            remove_deref(van, iblk)
             rules |> replaceVariable(van) <| perSource[vi][k]
         }
-        
         for (ln in localNames) {
             rules |> renameVariable(ln, "{ln}_{k}")
         }
@@ -695,17 +628,12 @@ def public flatten_function(var func : FunctionPtr; whitelist : table<string>; m
     ctx.whitelist := whitelist
     if (!(func.body is ExprBlock)) return ctx
     let bodyBlk = func.body as ExprBlock
-    
-    
     ast_gc_collect_scope(func) {
         var out : array<ExpressionPtr>
         out |> push <| qmacro_expr(${ var $i(ctx.liveName) = true; })
         if (ctx.hasRet) {
             var rt = clone_type(func.result)
             rt.flags.constant = false
-            
-            
-            
             rt.flags.safeWhenUninitialized = true
             out |> push <| qmacro_expr(${ var $i(ctx.retName) : $t(rt); })
         }
@@ -714,13 +642,11 @@ def public flatten_function(var func : FunctionPtr; whitelist : table<string>; m
             out |> push <| qmacro_expr(${ return $i(ctx.retName); })
         }
         if (ctx.ok) {
-            dse_pass(out)          
-            copy_prop_pass(out)    
-                                   
-            mask_const_prop_pass(out)  
-                                   
-            dse_pass(out)          
-            ssa_rename_pass(out)   
+            dse_pass(out)
+            copy_prop_pass(out)
+            mask_const_prop_pass(out)
+            dse_pass(out)
+            ssa_rename_pass(out)
         }
         var newBody = new ExprBlock(at = func.body.at)
         for (s in out) {
@@ -730,8 +656,6 @@ def public flatten_function(var func : FunctionPtr; whitelist : table<string>; m
     }
     return ctx
 }
-
-
 
 [macro_function]
 def public flatten_no_fast_math : bool {
@@ -793,20 +717,16 @@ def public flatten_fuse(var func : FunctionPtr; no_fast_math : bool = false; had
     return fuse_body(func, no_fast_math, hadd_min_width)
 }
 
-def public flatten_opt_residuals(var func : FunctionPtr; no_fast_math : bool = false) : array<string> {
-    
+def public flatten_opt_residuals(var func : FunctionPtr; no_fast_math : bool = false;
+                                 hadd_min_width : int = 3) : array<string> {
     
     
     var res : array<string>
     ast_gc_guard() {
-        res <- opt_residuals(func, FLATTEN_BARRIERS, no_fast_math)
+        res <- opt_residuals(func, FLATTEN_BARRIERS, no_fast_math, hadd_min_width)
     }
     return <- res
 }
-
-
-
-
 
 class private FlatVerify : AstVisitor {
     sawBranch   : bool
@@ -839,10 +759,6 @@ def private verify_flat(var twin : FunctionPtr) : string {
     }
     return msg
 }
-
-
-
-
 
 class private FoldResidualVisitor : AstVisitor {
     found : array<string>
@@ -894,8 +810,6 @@ def public flatten_fold_residuals(var func : FunctionPtr; no_fast_math : bool = 
     if (func == null || func.body == null) {
         return <- res
     }
-    
-    
     ast_gc_guard() {
         var v = new FoldResidualVisitor()
         v.noFastMath = no_fast_math
@@ -906,16 +820,12 @@ def public flatten_fold_residuals(var func : FunctionPtr; no_fast_math : bool = 
         unsafe {
             delete v
         }
-        
-        
         if (func.body is ExprBlock && has_fusable_select_chain(func.body as ExprBlock)) {
             res |> push("an un-fused same-condition select chain (N selects should be 1)")
         }
     }
     return <- res
 }
-
-
 
 [function_macro(name="flatten")]
 class FlattenAnnotation : AstFunctionAnnotation {
@@ -935,11 +845,10 @@ class FlattenAnnotation : AstFunctionAnnotation {
         return true
     }
     def override patch(var func : FunctionPtr; var group : ModuleGroup;
-                       args, progArgs : AnnotationArgumentList; var errors : das_string;
+                       var args : AnnotationArgumentList; progArgs : AnnotationArgumentList; var errors : das_string;
                        var astChanged : bool&) : bool {
-        
         if (is_in_lint_check()) return true
-        let ph = get_flatten_phase(func)
+        let ph = args |> find_arg("phase") ?as tInt ?? -1
         if (ph == PHASE_DONE) return true
         var twin = find_unique_function(compiling_module(), twin_name(func), true)
         if (twin == null) {
@@ -947,46 +856,42 @@ class FlattenAnnotation : AstFunctionAnnotation {
             return false
         }
         if (ph != PHASE_LOWERED && ph != PHASE_FOLDED && ph != PHASE_OPTIMIZED && ph != PHASE_FUSED) {
-            
-            var ctx = flatten_function(twin, STD_WHITELIST, get_flatten_max_unroll(func))
+            var ctx = flatten_function(twin, STD_WHITELIST, args |> find_arg("max_unroll") ?as tInt ?? FLATTEN_MAX_UNROLL)
             if (!ctx.ok) {
                 errors := ctx.err
                 return false
             }
-            set_flatten_phase(func, PHASE_LOWERED)
+            set_flatten_phase(args, PHASE_LOWERED)
             astChanged = true
             return true
         }
         if (ph == PHASE_LOWERED || ph == PHASE_FOLDED) {
-            
             let folded = flatten_fold(twin, flatten_no_fast_math(), flatten_expand_lerp())
-            set_flatten_phase(func, PHASE_FOLDED)
+            set_flatten_phase(args, PHASE_FOLDED)
             if (folded) {
                 astChanged = true
                 return true
             }
-            
-            set_flatten_phase(func, PHASE_OPTIMIZED)
+            set_flatten_phase(args, PHASE_OPTIMIZED)
             if (flatten_optimize(twin, FLATTEN_BARRIERS, flatten_no_fast_math(), flatten_log_cse())) {
                 astChanged = true
                 return true
             }
         }
-        if (get_flatten_phase(func) == PHASE_OPTIMIZED || get_flatten_phase(func) == PHASE_FUSED) {
-            
-            set_flatten_phase(func, PHASE_FUSED)
+        let phNow = args |> find_arg("phase") ?as tInt ?? -1
+        if (phNow == PHASE_OPTIMIZED || phNow == PHASE_FUSED) {
+            set_flatten_phase(args, PHASE_FUSED)
             if (flatten_fuse(twin, flatten_no_fast_math(), flatten_hadd_pack_pairs() ? 2 : 3)) {
                 astChanged = true
                 return true
             }
         }
-        
         let problem = verify_flat(twin)
         if (problem != "") {
             errors := problem
             return false
         }
-        set_flatten_phase(func, PHASE_DONE)
+        set_flatten_phase(args, PHASE_DONE)
         return true
     }
 }

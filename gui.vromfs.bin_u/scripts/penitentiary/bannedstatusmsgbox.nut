@@ -1,11 +1,10 @@
 import "penalty" as penalty
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import leaveSessionRoom
+from "%scripts/queue/queueManager.nut" import leaveAllQueuesSilent
+from "%scripts/penitentiary/penaltyMessages.nut" import getBannedMessage
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_decals_disabled
 from "%scripts/dagui_library.nut" import *
-
-let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { leaveAllQueuesSilent } = require("%scripts/queue/queueManager.nut")
-let { getBannedMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 
 
 
@@ -62,6 +61,6 @@ function showBannedStatusMsgBox(showBanOnly = false) {
 
 eventbus_subscribe("request_show_banned_status_msgbox", @(event) showBannedStatusMsgBox(event?.showBanOnly ?? false))
 
-return {
+return freeze({
   showBannedStatusMsgBox
-}
+})

@@ -1,19 +1,19 @@
+import "%scripts/user/bhvAvatar.nut" as bhvAvatar
+import "%scripts/user/avatars.nut" as avatars
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "dagor.fs" as dagor_fs
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "dagor.math" import Point2
 from "string" import format
 from "math" import fabs
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let stdPath = require("%sqstd/path.nut")
-let avatars = require("%scripts/user/avatars.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 enum avatarPlace { 

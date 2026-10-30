@@ -3,6 +3,8 @@ options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options _comment_hygiene = true
+options _cyclomatic_complexity = 25
+options _function_length = 137
 
 module linq_fold_table shared public
 
@@ -28,8 +30,6 @@ enum TableLane {
     VALUES
 }
 
-
-
 [macro_function]
 def private build_table_walk(lane : TableLane; srcName, bindName : string; var body : Expression?;
                              var breakGuard : Expression?; at : LineInfo) : Expression? {
@@ -39,7 +39,6 @@ def private build_table_walk(lane : TableLane; srcName, bindName : string; var b
             break if ($e(breakGuard))
         }
     }
-    
     let kIter = qn("tkvk", at)
     let vIter = qn("tkvv", at)
     if (lane == TableLane.KEYS) {
@@ -54,7 +53,6 @@ def private build_table_walk(lane : TableLane; srcName, bindName : string; var b
         }
     }
     if (lane == TableLane.VALUES) {
-        
         inner |> push(body)
         return <- qmacro_block() {
             for ($i(bindName) in values($i(srcName))) {
@@ -62,15 +60,15 @@ def private build_table_walk(lane : TableLane; srcName, bindName : string; var b
             }
         }
     }
-    
     var (allUsed, usedFields) = collect_row_usage(body, bindName)
+    allUsed = needs_full_row_bind(usedFields, allUsed)
     if (allUsed) {
         inner |> push <| qmacro_expr() {
             let $i(bindName) = (key = $i(kIter), value = $i(vIter))
         }
         inner |> push(body)
         return <- qmacro_block() {
-            for ($i(kIter), $i(vIter) in keys($i(srcName)), values($i(srcName))) { 
+            for ($i(kIter), $i(vIter) in keys($i(srcName)), values($i(srcName))) {
                 $b(inner)
             }
         }
@@ -95,53 +93,47 @@ def private build_table_walk(lane : TableLane; srcName, bindName : string; var b
     }
     if (useKey && useValue) {
         return <- qmacro_block() {
-            for ($i(kIter), $i(vIter) in keys($i(srcName)), values($i(srcName))) { 
+            for ($i(kIter), $i(vIter) in keys($i(srcName)), values($i(srcName))) {
                 $b(inner)
             }
         }
     }
-    
     return <- qmacro_block() {
-        for ($i(kIter) in keys($i(srcName))) { 
+        for ($i(kIter) in keys($i(srcName))) {
             $b(inner)
         }
     }
 }
 
-
-
 class TableAdapter : SourceAdapter {
-    tabExpr  : Expression?      
-    srcName  : string           
-    elemType : TypeDeclPtr      
+    tabExpr  : Expression?
+    srcName  : string
+    elemType : TypeDeclPtr
     lane     : TableLane
     def override name_prefix() : string {
         return "tab_"
     }
     def override supports_direct_return() : bool {
-        return true   
+        return true
     }
     def override can_reserve_by_length() : bool {
-        return true   
+        return true
     }
     def override const can_join() : bool {
-        return true   
+        return true
     }
     def override const can_group_by() : bool {
-        return true   
+        return true
     }
     def override emit_join_hook(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
         return emit_array_join(c, ctx, at)
     }
     def override build_group_by_adapter(var c : Captures; var ctx : EmitCtx; at : LineInfo) : SourceAdapter? {
-        
         if (c.single |> key_exists("upstream_join")) return null
         return new TableAdapter(tabExpr = clone_expression(tabExpr), srcName = qn("tsrc", at),
                                 elemType = clone_type(elemType), lane = lane)
     }
     def override loop_source_expr() : Expression? {
-        
-        
         return tabExpr
     }
     def override loop_source_name() : string {
@@ -164,7 +156,6 @@ class TableAdapter : SourceAdapter {
         return build_table_walk(lane, srcName, bindName, perElement, breakGuard, at)
     }
     def override invoke_param_type() : TypeDeclPtr {
-        
         var tabType = strip_const_ref(clone_type(tabExpr._type))
         tabType.flags.constant = true
         return tabType
@@ -193,13 +184,8 @@ class TableAdapter : SourceAdapter {
     }
 }
 
-
-
-
-
 [macro_function]
 def private match_key_probe_side(var keySide, otherSide : Expression?; lane : TableLane; bindName : string) : Expression? {
-    
     if (!is_bare_key_ref(keySide, bindName, lane == TableLane.KV)
             || expr_uses_var(otherSide, bindName) || has_sideeffects(otherSide)) {
         return null
@@ -207,12 +193,8 @@ def private match_key_probe_side(var keySide, otherSide : Expression?; lane : Ta
     return clone_expression(otherSide)
 }
 
-
-
-
 [macro_function]
 def private extract_key_probe(var pred : Expression?; lane : TableLane; bindName : string; var residual : Expression?&) : Expression? {
-    
     var leaf = pred
     var conjuncts : array<Expression?>
     while (leaf != null && leaf is ExprOp2 && (leaf as ExprOp2).op == "&&") {
@@ -233,7 +215,6 @@ def private extract_key_probe(var pred : Expression?; lane : TableLane; bindName
     }
     return probe
 }
-
 
 [macro_function]
 def private make_probe_miss(termName : string; dName : string) : Expression? {
@@ -271,21 +252,17 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
     let kName = qn("plk_k", at)
     let dName = qn("plk_d", at)
     let pName = qn("plk_p", at)
-    
     let bindName = adapter.lane == TableLane.KEYS ? kName : qn("plk_kv", at)
     var predArg : Expression?
     if (n == 1) {
-        
         if ((termName == "any" || termName == "count") && termArgs == 2) {
             predArg = termCall.arguments[1]
         } elif (termName == "contains" && termArgs == 2 && adapter.lane == TableLane.KEYS) {
-            
             keyX = clone_expression(termCall.arguments[1])
         } else {
             return null
         }
     } else {
-        
         if (calls[0]._1.name != "where_" || length(calls[0]._0.arguments) != 2) return null
         predArg = calls[0]._0.arguments[1]
         if (n == 3) {
@@ -305,7 +282,6 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
     }
     if (keyX == null) return null
     let sn = adapter.srcName
-    
     if (residual == null && (termName == "any" || termName == "contains")) {
         var anyStmts <- qmacro_block_to_array() {
             return key_exists($i(sn), $e(keyX))
@@ -318,7 +294,6 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
         }
         return adapter->wrap_invoke(cntStmts, null, false, at)
     }
-    
     var retT : TypeDeclPtr
     if (termName == "first" || termName == "first_or_default") {
         retT = strip_const_ref(clone_type(termCall._type))
@@ -326,7 +301,6 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
     }
     var stmts : array<Expression?>
     if (termName == "first_or_default") {
-        
         stmts |> push <| qmacro_expr() {
             let $i(dName) = $e(termCall.arguments[1])
         }
@@ -341,8 +315,6 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
             }
         }
     } else {
-        
-        
         stmts |> push_from <| qmacro_block_to_array() {
             let $i(pName) = unsafe($i(sn)?[$i(kName)])
             if ($i(pName) == null) {
@@ -355,7 +327,6 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
             }
         }
     }
-    
     if (residual != null) {
         stmts |> push <| qmacro_expr() {
             if (!$e(residual)) {
@@ -396,15 +367,13 @@ def try_table_point_lookup(var calls : array<tuple<ExprCall?; LinqCall?>>; var a
     return adapter->wrap_invoke(stmts, retT, false, at)
 }
 
-
-
-
 [macro_function]
 def extract_table_source(var top : Expression?) : ExprCall? {
     if (top == null || !(top is ExprCall)) return null
     var c = top as ExprCall
     let name = get_call_short_name(c)
     if ((name != "each_kv" && name != "keys" && name != "values")
+            || match_call_in_module(top, name, "builtin") == null
             || c._type == null || !c._type.isIterator || c._type.firstType == null
             || (c.arguments |> length) != 1) {
         return null
@@ -413,9 +382,6 @@ def extract_table_source(var top : Expression?) : ExprCall? {
     if (srcT == null || !srcT.isGoodTableType) return null
     return c
 }
-
-
-
 
 [macro_function]
 def drop_redundant_distinct(var calls : array<tuple<ExprCall?; LinqCall?>>) {
@@ -426,12 +392,11 @@ def drop_redundant_distinct(var calls : array<tuple<ExprCall?; LinqCall?>>) {
             dropIdx = i
             break
         }
-        
         if (name != "where_" && name != "skip" && name != "take"
                 && name != "skip_while" && name != "take_while" && name != "reverse") {
             return
         }
     }
-    if (dropIdx < 0 || length(calls) <= 1) return   
+    if (dropIdx < 0 || length(calls) <= 1) return
     calls |> erase(dropIdx)
 }

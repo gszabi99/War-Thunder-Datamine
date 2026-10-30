@@ -1,5 +1,3 @@
-@const hintRowCenterOffsetY:0.0185@shHud;
-
 subtitles {
   font:@fontNormal;
   behaviour:textarea;
@@ -42,19 +40,18 @@ loadingHint[hintAlign=left] > hint {
 hintRow {
   position: relative;
   pos: pw/2 - w/2, 0;
-
   max-width: p.p.w;
 }
 
 hintRow > textareaNoTab {
   max-width: p.p.p.w;
-
   text-align: center;
 }
 
 loadingHint[textAlign=left] > hint > hintRow > textareaNoTab {
   text-align:left;
 }
+
 hintRow > gamepadButton,
 hintRow > shortcutAxis {
   background-repeat:aspect-ratio;
@@ -285,4 +282,74 @@ shortcutContent gamepadButton {
 shortcutContent textareaNoTab {
   position:relative;
   top:(ph-h)/2;
+}
+
+freezingBlock > massTransp > loadingHint > hint {
+  css-hier-invalidate:yes;
+}
+freezingBlock > massTransp > loadingHint > hint > hintRow {
+  css-hier-invalidate:yes;
+}
+
+freezingBlock > massTransp > loadingHint > hint > hintRow > textareaNoTab {
+  max-width:0;
+  color:@freezingTxtColor;
+}
+freezingBlock > massTransp[state=use] > loadingHint > hint > hintRow > textareaNoTab {
+  color:@freezingTxtColorUse;
+}
+loadingHint[isFreezingStyle=yes] > hint > hintRow > textareaNoTab,
+freezingBlock > massTransp[state=add] > loadingHint > hint > hintRow > textareaNoTab {
+  color:@freezingTxtColorAdd;
+}
+
+freezingBlock:hover > massTransp > loadingHint > hint > hintRow > textareaNoTab {
+  color:@freezingTxtColorHover;
+}
+freezingBlock:hover > massTransp[state=use] > loadingHint > hint > hintRow > textareaNoTab {
+  color:@freezingTxtColorUseHover;
+}
+freezingBlock:hover > massTransp[state=add] > loadingHint > hint > hintRow > textareaNoTab {
+  color:@freezingTxtColorAddHover;
+}
+
+freezingBlock > massTransp > loadingHint > hint > hintRow > img {
+  size: @tIco, @tIco;
+  pos: -0.5@blockInterval, (ph-h)/2;
+  bgcolor: @gray60;
+}
+freezingBlock > massTransp[state=use] > loadingHint > hint > hintRow > img {
+  bgcolor: @gray;
+}
+freezingBlock > massTransp[state=add] > loadingHint > hint > hintRow > img {
+  bgcolor: @white;
+}
+
+freezingBlock:hover > massTransp > loadingHint > hint > hintRow > img {
+  bgcolor: @gray;
+}
+freezingBlock:hover > massTransp[state=use] > loadingHint > hint > hintRow > img,
+freezingBlock:hover > massTransp[state=add] > loadingHint > hint > hintRow > img {
+  bgcolor: @white;
+}
+
+
+freezingBlock > massTransp > imgGradient {
+  bgcolor: @freezingBgColor;
+}
+freezingBlock > massTransp[state=use] > imgGradient {
+  bgcolor: @freezingBgColorUse;
+}
+freezingBlock > massTransp[state=add] > imgGradient {
+  bgcolor: @freezingBgColorAdd;
+}
+
+freezingBlock:hover > massTransp > imgGradient {
+  bgcolor: @freezingBgColorHover;
+}
+freezingBlock:hover > massTransp[state=use] > imgGradient {
+  bgcolor: @freezingBgColorUseHover;
+}
+freezingBlock:hover > massTransp[state=add] > imgGradient {
+  bgcolor: @freezingBgColorAddHover;
 }

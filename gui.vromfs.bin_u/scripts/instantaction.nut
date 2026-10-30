@@ -1,3 +1,16 @@
+import "%scripts/time.nut" as time
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/weaponry/weaponWarningHandler.nut" import WeaponWarningHandler
+from "%scripts/money.nut" import Cost
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/weaponry/ammoInfo.nut" import AMMO
+from "%scripts/viewUtils/interfaceCustomization.nut" import getToBattleLocId
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SKIP_WEAPON_WARNING
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/tasker.nut" import addBgTaskCb
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "string" import format
 from "guiOptions" import get_gui_option
@@ -5,20 +18,6 @@ from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modification, shop_repair_aircraft, shop_purchase_weapon
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { WeaponWarningHandler } = require("%scripts/weaponry/weaponWarningHandler.nut")
-let { Cost } = require("%scripts/money.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let time = require("%scripts/time.nut")
-let { AMMO } = require("%scripts/weaponry/ammoInfo.nut")
-let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
 
 function buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc, totalCost = Cost()) {
   if (!handler)
@@ -121,7 +120,7 @@ function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCoun
         }
         cancelFunc = cancelFunc
       })
-    return
+    return true
   }
 
   let repairAll = function() {
@@ -153,7 +152,7 @@ function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCoun
                       [["ok", onCancel]]
     let defButton = repairInfo.canFlyoutIfRepair ? repairBtnName : "ok"
     handler.msgBox("no_aircrafts", msgText, buttons, defButton)
-    return
+    return true
   }
   else if (repairInfo.broken_countries.len() > 0) {
     local msgText = repairInfo.randomCountry ? loc("msgbox/some_repared_aircrafts_random") : loc("msgbox/some_repared_aircrafts")
@@ -164,10 +163,10 @@ function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCoun
          ["RepairAll", repairAll],
          ["cancel", onCancel]
        ], "RepairAll")
-    return
+    return true
   }
   else if (repairInfo.shipsWithoutPurshasedTorpedoes.len() > 0
-    && !loadLocalAccountSettings("skipped_msg/shipsWithoutPurshasedTorpedoes", false))
+    && !loadLocalAccountSettings("skipped_msg/shipsWithoutPurshasedTorpedoes", false)) {
     loadHandler(SkipableMsgBox,
       {
         parentHandler = handler
@@ -189,10 +188,13 @@ function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCoun
         }
         cancelFunc = cancelFunc
     })
+    return true
+  }
   else
     startFunc.call(handler)
+  return false
 }
 
-return {
+return freeze({
   checkBrokenAirsAndDo
-}
+})

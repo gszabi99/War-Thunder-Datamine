@@ -1,13 +1,13 @@
+from "%scripts/items/itemsManagerChecks.nut" import checkInventoryUpdate, checkUpdateList
+from "%scripts/items/autoConsumeItems.nut" import checkAutoConsume
+from "%scripts/items/itemsManagerGetters.nut" import getItemsFromList
+from "%scripts/items/itemsChecks.nut" import isItemdefId
 from "%sqStdLibs/helpers/u.nut" import search
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { itemsList, inventory, shopItemById, itemsByItemdefId, generatorsCollection } = require("%scripts/items/itemsManagerState.nut")
-let { checkInventoryUpdate, checkUpdateList } = require("%scripts/items/itemsManagerChecks.nut")
-let { checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
-let { getItemsFromList } = require("%scripts/items/itemsManagerGetters.nut")
-let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 
 function getInventoryList(typeMask = itemType.ALL, filterFunc = null) {
   checkInventoryUpdate()
@@ -68,7 +68,7 @@ function getItemGenerator(itemdefId) {
 }
 
 
-return {
+return freeze({
   getUniversalSparesForUnit
   getInventoryList
   findItemByUid
@@ -78,4 +78,4 @@ return {
   getInventoryItemByCraftedFrom
   getItemsSortComparator
   getItemGenerator
-}
+})

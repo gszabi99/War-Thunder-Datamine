@@ -45,6 +45,12 @@
   "fireFx": "ground_model_fire",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2021,7 +2027,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/94mm_qf_28pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/94mm_qf_28pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -2095,7 +2101,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "bone_mg_body_v",
         "flash": "emtr_mg_flame_05",
         "defaultYaw": 0.0,
@@ -2137,7 +2143,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "smoke",
-        "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
         "weaponType": "rockets",
         "startFx": "",
         "useEmitter": true,
@@ -2187,8 +2193,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_tog_2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_tog_2_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3748,7 +3754,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/94mm_qf_28pdr_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/94mm_qf_28pdr_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "maxAdditionalPitch": 0.0,
@@ -3822,7 +3828,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "special",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_3inch_howitzer_MkI_tog_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_3inch_howitzer_MkI_tog_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "maxAdditionalPitch": 0.0,
@@ -3874,7 +3880,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
               "emitter": "bone_mg_body_v",
               "flash": "emtr_mg_flame_05",
               "defaultYaw": 0.0,
@@ -3916,7 +3922,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "startFx": "",
               "useEmitter": true,

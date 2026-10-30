@@ -72,9 +72,9 @@ function closeScreenHelp() {
   screenHelpSafeArea.set(null)
 }
 
-return {
+return freeze({
   screenHelpItems
   screenHelpSafeArea
   openScreenHelp
   closeScreenHelp
-}
+})

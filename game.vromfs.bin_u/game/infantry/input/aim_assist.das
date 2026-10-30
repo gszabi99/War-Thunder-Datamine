@@ -86,12 +86,12 @@ def aim_assist_target_es(info : ParallelUpdateFrameDelayed;
   ecs::query(human_attached_gun__attachedGunEid != INVALID_ENTITY_ID ? human_attached_gun__attachedGunEid : human_weap__currentGunEid) <| $ [es] (gun : Gun)
     shootPos = gun.gunTm[3]
 
-  var targetMaxDist = aim_assist__targetMaxDist
-  for modEid in human_weap__currentGunModEids
-    ecs::query(modEid) <| $ [es(REQUIRE=gunScope)] (gunmod__zoomFactor : float)
-      targetMaxDist *= max(gunmod__zoomFactor * aim_assist__gunmodZoomFactorMult, aim_assist__targetMaxDist)
+  
+  let isMounted = human_attached_gun__attachedGunEid != INVALID_ENTITY_ID
+  let scopeZoom = isMounted ? 1.0 : get_aim_optic_magnification(human_weap__currentGunEid, human_weap__currentGunModEids)
+  let targetMaxDist = aim_assist__targetMaxDist * max(scopeZoom * aim_assist__gunmodZoomFactorMult, 1.0)
 
-  var targets <- get_assist_targets(shootPos, shootDir, aim_assist__targetMaxDist, aim_assist__targetConeWidth * 1.5, cos(deg_to_rad(aim_assist__targetMaxAngle)), team)
+  var targets <- get_assist_targets(shootPos, shootDir, targetMaxDist, aim_assist__targetConeWidth * 1.5, cos(deg_to_rad(aim_assist__targetMaxAngle)), team)
   for target in targets
     var t = target.dist + 0.5
     var norm : float3
@@ -236,7 +236,6 @@ def aim_assist_rotating_aim_es(info : UpdateStageUpdateInput;
                                human_input__aimAngle : float2;
                                var human_input__aimAngleOffset : float2&;
                                
-                               human_input__touch_aim : float2 = float2();
                                human_weap__currentGunEid : EntityId;
                                human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
                                aim_assist__targetEid : EntityId;
@@ -261,8 +260,7 @@ def aim_assist_rotating_aim_es(info : UpdateStageUpdateInput;
   mouseAngles.y *= 0.5
   let aAim = mouseAngles
 
-  let touchAim = float2(human_input__touch_aim.x, human_input__touch_aim.y)
-  let isManualAiming = aAim.x != 0.0 || aAim.y != 0.0 || touchAim.x != 0.0 || touchAim.y != 0.0
+  let isManualAiming = aAim.x != 0.0 || aAim.y != 0.0
   if isManualAiming
     ecs::query(aim_assist__targetEid) <| $ [es] (collres : CollisionResource;
                                                  animchar : AnimcharBaseComponent;

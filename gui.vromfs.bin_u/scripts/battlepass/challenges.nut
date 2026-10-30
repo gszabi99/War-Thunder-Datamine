@@ -1,22 +1,21 @@
+from "%scripts/time.nut" import getTimestampFromStringUtc, buildDateStr
+from "%scripts/battlePass/seasonState.nut" import season, seasonLevel, getLevelFromStagesByExp, basicUnlockStages
+from "%scripts/unlocks/userstatUnlocksState.nut" import activeUnlocks
+from "%scripts/unlocks/userstatUnlocksView.nut" import getUnlockRewardMarkUp
+from "%scripts/userstat/userstat.nut" import refreshUserstatUnlocks
+from "%scripts/unlocks/unlocksConditions.nut" import getUnlockConditions, getHeaderCondition, isTimeRangeCondition
+from "%scripts/unlocks/unlocksState.nut" import getUnlockNameText, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import buildUnlockDesc
+from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible, isUnlockOpened
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksWhereInBlkOrder, getUnlockById
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/unlocks/battleTasksView.nut" import getBattleTaskDesc
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-
-let { getTimestampFromStringUtc, buildDateStr } = require("%scripts/time.nut")
-let { season, seasonLevel, getLevelFromStagesByExp, basicUnlockStages } = require("%scripts/battlePass/seasonState.nut")
-let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksView.nut")
-let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
-let { getUnlockConditions, getHeaderCondition, isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getAllUnlocksWithBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBattleTaskDesc } = require("%scripts/unlocks/battleTasksView.nut")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.get()
@@ -74,9 +73,9 @@ addListenersWithoutEnv({
 })
 
 function updateChallenges() {
-  if (isLoggedIn.get())
-    battlePassChallenges.set(getAllUnlocksWithBlkOrder()
-      .filter(@(unlock) (unlock?.battlePassSeason != null) && isUnlockVisible(unlock)))
+  if (hasFullLoginState.get())
+    battlePassChallenges.set(getUnlocksWhereInBlkOrder("battlePassSeason != null")
+      .filter(@(unlock) isUnlockVisible(unlock)))
 }
 
 function getChallengeStatus(userstatUnlock, unlockConfig) {
@@ -189,7 +188,7 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   updateChallenges
   curSeasonChallenges
   getChallengeView
@@ -197,4 +196,4 @@ return {
   mainChallengeOfSeason
   curSeasonChallengesByStage
   hasChallengesReward
-}
+})

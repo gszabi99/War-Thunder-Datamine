@@ -1,8 +1,7 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "DataBlock" as DataBlock
 from "worldwar" import wwGetLoadedTransport
 from "%scripts/dagui_library.nut" import *
-
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local cachedLoadedTransport = null
 function getLoadedTransport() {
@@ -29,9 +28,9 @@ subscriptions.addListenersWithoutEnv({
   WWLoadOperation = @(_p) clearCacheLoadedTransport()
 })
 
-return {
+return freeze({
   getLoadedTransport
   isEmptyTransport
   isFullLoadedTransport
   clearCacheLoadedTransport
-}
+})

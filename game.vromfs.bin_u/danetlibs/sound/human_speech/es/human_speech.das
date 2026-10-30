@@ -114,6 +114,9 @@ def start_speech(eid : EntityId;
             locale = resolve_speech_locale(human_speech__locale, human_speech__localeMap)
 
         let locPath = empty(locale) ? path : "{path}/{locale}"
+        
+        if (desc?.optional ?? false) && !soundEvent::has(get_name(*desc, is_watched_sound), locPath)
+          return
         human_speech__event |> reset(play_desc_path(*desc, locPath, is_watched_sound, pos, false))
         human_speech__curPhraseIdx = phrase_idx
 

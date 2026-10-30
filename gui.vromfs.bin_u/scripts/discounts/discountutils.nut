@@ -1,3 +1,7 @@
+import "%scripts/discounts/personalDiscount.nut" as personalDiscount
+from "%scripts/unit/unitStatus.nut" import isUnitGroup
+from "%scripts/bonusModule.nut" import showCurBonus
+from "%scripts/discounts/discountsState.nut" import getUnitDiscount, getGroupDiscount
 from "%sqstd/datablock.nut" import getBlkByPathArray, eachBlock
 from "chardResearch" import shopIsModificationPurchased
 from "blkGetters" import get_price_blk
@@ -5,11 +9,6 @@ from "string" import format
 from "%scripts/dagui_natives.nut" import item_get_personal_discount_for_mod, shop_is_weapon_purchased, item_get_personal_discount_for_weapon
 from "%scripts/dagui_library.nut" import *
 from "types" import Array
-
-let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
-let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
-let { showCurBonus } = require("%scripts/bonusModule.nut")
-let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
 
 function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback) {
   if (currentIndex == multiArray.len()) {
@@ -127,11 +126,11 @@ function generateDiscountInfo(discountsTable, headerLocId = "") {
   return { maxDiscount = maxDiscount, discountTooltip = discountText }
 }
 
-return {
+return freeze({
   showUnitDiscount
   showDiscount
   getMaxWeaponryDiscountByUnitName
   showAirDiscount
   getDiscountByPath
   generateDiscountInfo
-}
+})

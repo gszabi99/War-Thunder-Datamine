@@ -1,8 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/modalInfo/modalInfo.nut" import destroyModalInfo
 from "%scripts/dagui_library.nut" import *
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
-let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 function guiStartSelectingCrew(config) {
   if (CrewTakeUnitProcess.safeInterrupt()) {

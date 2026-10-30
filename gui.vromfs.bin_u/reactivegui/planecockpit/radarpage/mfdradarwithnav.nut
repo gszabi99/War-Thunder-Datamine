@@ -114,35 +114,31 @@ let flyDirection = @() {
 let digitalAlt = Computed(@() string.format(Altitude.get() < 1000 ? "%d0" : "%.1f", Altitude.get() < 1000 ? Altitude.get() / 10 : Altitude.get() / 1000.0))
 let roll = @() {
   size = FLEX
-  children = [
-    {
+  children = {
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = MfdRadarColor.get()
+    lineWidth = baseLineWidth * 0.7
+    commands = [
+      [VECTOR_LINE, 0, 53, 100, 53],
+      [VECTOR_LINE, 0, 54.5, 100, 54.5],
+      [VECTOR_LINE, 20, 55, 20, 70],
+      [VECTOR_LINE, 21, 55, 21, 70],
+      [VECTOR_LINE, 22, 55, 22, 70],
+      [VECTOR_LINE, 80, 55, 80, 70],
+      [VECTOR_LINE, 79, 55, 79, 70],
+      [VECTOR_LINE, 78, 55, 78, 70],
+    ]
+    children = @() {
+      watch = digitalAlt
+      rendObj = ROBJ_TEXT
+      pos = const [pw(20), ph(47)]
       size = FLEX
-      rendObj = ROBJ_VECTOR_CANVAS
       color = MfdRadarColor.get()
-      lineWidth = baseLineWidth * 0.7
-      commands = [
-        [VECTOR_LINE, 0, 53, 100, 53],
-        [VECTOR_LINE, 0, 54.5, 100, 54.5],
-        [VECTOR_LINE, 20, 55, 20, 70],
-        [VECTOR_LINE, 21, 55, 21, 70],
-        [VECTOR_LINE, 22, 55, 22, 70],
-        [VECTOR_LINE, 80, 55, 80, 70],
-        [VECTOR_LINE, 79, 55, 79, 70],
-        [VECTOR_LINE, 78, 55, 78, 70],
-      ]
-      children = [
-        @() {
-          watch = digitalAlt
-          rendObj = ROBJ_TEXT
-          pos = const [pw(20), ph(47)]
-          size = FLEX
-          color = MfdRadarColor.get()
-          fontSize = 25
-          text = digitalAlt.get()
-        }
-      ]
+      fontSize = 25
+      text = digitalAlt.get()
     }
-  ]
+  }
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
@@ -161,7 +157,7 @@ let distance = @() {
       rendObj = ROBJ_VECTOR_CANVAS
       color = MfdRadarColor.get()
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 100, 0],
         [VECTOR_LINE, 0, 16.5, 100, 16.5],
         [VECTOR_LINE, 0, 33, 100, 33],
@@ -210,9 +206,7 @@ function compassElem(width, height) {
   return {
     size = FLEX
     pos = const [pw(15), ph(3)]
-    children = [
-      compass([width * 0.7, height * 0.1], MfdRadarColor.get(), styleLine)
-    ]
+    children = compass([width * 0.7, height * 0.1], MfdRadarColor.get(), styleLine)
   }
 }
 

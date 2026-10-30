@@ -1,11 +1,12 @@
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/actionsList.nut" import ActionsList
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/slotbar/slotbarPresets.nut" import replaceCrewsInCurrentPreset
 from "%scripts/dagui_library.nut" import *
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ActionsList } = require("%scripts/actionsList.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { replaceCrewsInCurrentPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
 class SwapCrewsHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -105,7 +106,7 @@ class SwapCrewsHandler (BaseGuiHandlerWT) {
 
     for (local i = 0; i < itemsCount; i++) {
       let originalItem = this.airsTableSource.getChild(i)
-      if (originalItem?.isCrewRecruit == "yes")
+      if (!originalItem.isVisible() || originalItem?.isCrewRecruit == "yes")
         continue
       let originalItemPos = originalItem.getPosRC()
       this.fixedPositions.append(originalItemPos[0])

@@ -6,9 +6,9 @@ let isVisualWeaponSelectorVisible = extWatched("isVisualWeaponSelectorVisible", 
 let isOrderStatusVisible = extWatched("isOrderStatusVisible", false)
 let isDmgPanelVisible = extWatched("isDmgPanelVisible", false)
 
-return {
+return freeze({
   isChatPlaceVisible
   isOrderStatusVisible
   isVisualWeaponSelectorVisible
   isDmgPanelVisible
-}
+})

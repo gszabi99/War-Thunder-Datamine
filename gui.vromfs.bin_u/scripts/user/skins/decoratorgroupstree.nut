@@ -1,11 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let isGroupItem = @(id) id.indexof("/") == null
 let isCategoryItem = @(id) id.indexof("/") != null
@@ -159,6 +159,6 @@ local DecoratorGroupsTreeHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("DecoratorGroupsTreeHandler", DecoratorGroupsTreeHandler)
 
-return {
+return freeze({
   initTree = @(params = {}) handlersManager.loadHandler(DecoratorGroupsTreeHandler, params)
-}
+})

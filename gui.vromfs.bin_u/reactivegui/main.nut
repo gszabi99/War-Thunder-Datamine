@@ -5,16 +5,15 @@ from "%rGui/components/tooltip.nut" import tooltipComp
 from "%darg/helpers/inspector.nut" import inspectorRoot
 from "%rGui/globals/ui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
-from "dagor.system" import DBGLEVEL
+from "frp" import set_slow_subscriber_threshold_usec
 from "%rGui/weapons/bulletsPenetrationGraphPanel.nut" import bulletsPenetrationGraphPanel
-warn_on_deprecated_methods(DBGLEVEL > 0)
 set_slow_subscriber_threshold_usec(1000000) 
 
 clear_vm_entity_systems()
 start_es_loading()
 
-gui_scene.setConfigProps({ clickRumbleEnabled = false })
+
+gui_scene.setConfigProps({ clickRumbleEnabled = false, gamepadCursorMovesMouse = true })
 
 require("%rGui/hudChatCtrlsState.nut") 
 require("%rGui/ctrlsState.nut")
@@ -25,13 +24,19 @@ require("%rGui/consoleCmd.nut")
 require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 
 let widgets = require("%rGui/widgets.nut")
+let testBackground = require("%rGui/debugTools/testBackground.nut")
+let axisSetupWnd = require("%rGui/controls/axisSetupWnd.nut")
+let assignShortcutWnd = require("%rGui/controls/assignShortcutWnd.nut")
 
 end_es_loading()
 
 return {
   size = FLEX
   children = [
+    testBackground
     widgets
+    axisSetupWnd
+    assignShortcutWnd
     bulletsPenetrationGraphPanel
     modalWindowsComponent
     tooltipComp

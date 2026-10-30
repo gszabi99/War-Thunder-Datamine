@@ -1,15 +1,15 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "ww_leaderboard" as ww_leaderboard
+from "%scripts/clans/clanInfo.nut" import getClansInfoByClanIds
+from "%scripts/leaderboard/requestLeaderboardData.nut" import requestLeaderboardData, convertLeaderboardData
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import isWWSeasonActive
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "math" import round
 from "%sqstd/string.nut" import isStringInteger
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
 
-let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
-let { requestLeaderboardData, convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let modes = [
   {
@@ -119,7 +119,7 @@ function addClanInfoIfNeedAndConvert(modeName, result, applyLocalisationToName =
     return lbRows
 
   let clanInfoList = getClansInfoByClanIds(lbRows.rows.map(@(row) row?.clanId ?? ""))
-  lbRows.rows.map(@(row) row.__update({
+  lbRows.rows.each(@(row) row.__update({
     needAddClanTag = true
     clanTag = clanInfoList?[row?.clanId ?? ""].tag ?? ""
   }))
@@ -153,7 +153,7 @@ function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
         if (idx != null)
           clanInfo.place <- idx + 1
       }
-      clanInfo.hasLBData <- lbData != null && clanInfo.canShowActivity()
+      clanInfo.hasLBData <- lbData != null
       afterUpdate(clanInfo)
     }, { userId =  clanInfo.id })
 }

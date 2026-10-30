@@ -1,5 +1,42 @@
+import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
+import "%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut" as wwHelpSlotbarGroupsModal
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+import "%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut" as getLockedCountryData
+from "%scripts/unit/unitsData.nut" import getAllUnits
+import "%scripts/worldWar/wwEvent.nut" as wwEvent
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/worldWar/handler/wwSquadList.nut" import WwSquadList
+from "%scripts/worldWar/handler/wwMyClanSquadInviteModal.nut" import WwMyClanSquadInviteModal
+from "%scripts/worldWar/handler/wwJoinBattleCondition.nut" import WwJoinBattleCondition
+from "%scripts/wndLib/skipableMsgBox.nut" import SkipableMsgBox
+from "%scripts/slotbar/slotbarWidget.nut" import SlotbarWidget
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/timer/timer.nut" import Timer
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" import setCurPreset
+from "%scripts/slotbar/generatePreset.nut" import getBestPresetData, generatePreset
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById, getMapByName
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/missions/mapPreview.nut" import setMapPreview
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo
+from "%scripts/slotbar/slotbarStateData.nut" import isCountryAllCrewsUnlockedInHangar
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/queue/queueState.nut" import getActiveQueueWithType, hasActiveQueueWithType
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getAllOperationUnitsBySide
+from "%scripts/worldWar/worldWarState.nut" import getBattles, getBattleById
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getOppositeSide, getSidesOrder
 from "%appGlobals/ranks_common_shared.nut" import get_mp_team_by_team_name
 from "guiTacticalMap" import tacticalMapSetTeamForBriefing
 from "worldwar" import wwGetOperationId, wwGetPlayerSide
@@ -7,47 +44,10 @@ from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WwSquadList } = require("%scripts/worldWar/handler/wwSquadList.nut")
 let { WwQueueInfo } = require("%scripts/worldWar/handler/wwQueueInfo.nut")
-let { WwMyClanSquadInviteModal } = require("%scripts/worldWar/handler/wwMyClanSquadInviteModal.nut")
-let { WwJoinBattleCondition } = require("%scripts/worldWar/handler/wwJoinBattleCondition.nut")
-let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
-let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
-let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById, getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
-let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarStateData.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { getActiveQueueWithType, hasActiveQueueWithType } = require("%scripts/queue/queueState.nut")
-let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { getBattles, getBattleById } = require("%scripts/worldWar/worldWarState.nut")
-let { getOppositeSide, getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { tryToJoin, getCantJoinReasonData, getBattleStatusWithCanJoinText, isAutoBattle, isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
@@ -1287,4 +1287,4 @@ let WwBattleDescription = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("WwBattleDescription", WwBattleDescription)
 
-return { WwBattleDescription }
+return freeze({ WwBattleDescription })

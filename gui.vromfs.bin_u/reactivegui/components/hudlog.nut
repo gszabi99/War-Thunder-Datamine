@@ -1,7 +1,7 @@
+import "%rGui/style/colors.nut" as colors
 from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = require("%rGui/style/colors.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 
 let logContainer = @() {

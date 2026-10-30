@@ -1,13 +1,13 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/langUtils/language.nut" import isChineseVersion
+from "%scripts/user/countryUtils.nut" import getPlayerCountryCode
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isChineseVersion } = require("%scripts/langUtils/language.nut")
-let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
 
 const CUSTOM_COUNTRIES_DATA_ID = "customCountriesData"
 const USE_OPERATOR_FLAGS_IN_BATTLE_ID = "useOperatorFlagsInBattle"
@@ -157,7 +157,7 @@ addListenersWithoutEnv({
   }
 })
 
-if (isLoggedIn.get())
+if (hasFullLoginState.get())
   loadCustomCountriesData()
 else
   initCustomCountriesData()

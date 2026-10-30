@@ -90,24 +90,27 @@ function compassLine(line_style, total_width, width, height, color) {
   }
 }
 
-let mkLwsMark = @(lwsDirection, size, color) function(){
-  let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
+function mkLwsMark(lwsDirection, size, color) {
+  let image = Picture($"ui/gameuiskin#laser_alert_azimut.svg:{imageSize[0]}:{imageSize[1]}:P")
+  return function(){
+    let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
 
-  local delta = lwsDirection - compassAngle
-  let sign = (delta > 0) ? 1 : -1
-  delta = fabs(delta) > 180 ? delta - sign * 360 : delta
+    local delta = lwsDirection - compassAngle
+    let sign = (delta > 0) ? 1 : -1
+    delta = fabs(delta) > 180 ? delta - sign * 360 : delta
 
-  let offset = delta * hdpx(16)
-  let halfImageSize = imageSize[0] / 2
-  let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
+    let offset = delta * hdpx(16)
+    let halfImageSize = imageSize[0] / 2
+    let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
 
-  return {
-    watch = CompassValue
-    rendObj = ROBJ_IMAGE
-    color = color
-    size = imageSize
-    pos = [posX, 0]
-    image = Picture($"ui/gameuiskin#laser_alert_azimut.svg:{imageSize[0]}:{imageSize[1]}:P")
+    return {
+      watch = CompassValue
+      rendObj = ROBJ_IMAGE
+      color = color
+      size = imageSize
+      pos = [posX, 0]
+      image
+    }
   }
 }
 
@@ -170,9 +173,7 @@ function compass(elemStyle, size, color) {
   return {
     size
     clipChildren = true
-    children = [
-      compassLine(elemStyle, size[0], oneElementWidth, size[1], color)
-    ]
+    children = compassLine(elemStyle, size[0], oneElementWidth, size[1], color)
   }
 }
 

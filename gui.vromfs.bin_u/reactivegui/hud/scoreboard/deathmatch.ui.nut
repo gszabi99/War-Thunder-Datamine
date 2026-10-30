@@ -74,12 +74,11 @@ return @() {
   children = !isHudVisible.get() ? null : [
     getScoreObj("localTeam")
     {
-      children = [
-      {
+      children = {
         size = const [hdpx(92), hdpx(46)]
         pos = const [0, -hdpx(8)]
         rendObj = ROBJ_VECTOR_CANVAS
-        commands = [ [VECTOR_POLY, 0, 0, 100, 0, 90, 100, 10, 100] ]
+        commands = const [ [VECTOR_POLY, 0, 0, 100, 0, 90, 100, 10, 100] ]
         fillColor = 0x8C364854
         color = 0
         halign = ALIGN_CENTER
@@ -104,7 +103,7 @@ return @() {
             text = secondsToTimeSimpleString(timeLeft.get())
           }
         ]
-      }]
+      }
     }
     getScoreObj("enemyTeam")
   ]

@@ -1,20 +1,20 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/loading/loadingBgData.nut" import getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg, getLoadingBgTooltip
+from "%scripts/loading/animBg.nut" import animBgLoad, releaseUnusedBgTextures
+from "%scripts/options/preloaderOptions.nut" import isLoadingScreenBanned, toggleLoadingScreenBan
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unlocks/favoriteUnlocks.nut" import isUnlockFav, toggleUnlockFav
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqstd/string.nut" import utf8ToLower, trim
 from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg, getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { isLoadingScreenBanned, toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local class PreloaderOptionsModal (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
@@ -49,7 +49,7 @@ local class PreloaderOptionsModal (BaseGuiHandlerWT) {
       })
     }
 
-    view.items.sort(@(a, b) a.itemText <=> b.itemText)
+    view.items.sortby(@(a) a.itemText)
     let selectedIdx = view.items.findindex((@(a) a.id == this.selectedId).bindenv(this)) ?? 0
     let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     let itemsListObj = this.scene.findObject("items_list")
@@ -152,7 +152,6 @@ local class PreloaderOptionsModal (BaseGuiHandlerWT) {
 
     this.updateBg()
     this.updateButtons()
-    this.guiScene.discardUnusedPicture()
   }
 
   function onFilterEditBoxCancel() {
@@ -196,7 +195,7 @@ local class PreloaderOptionsModal (BaseGuiHandlerWT) {
   onChapterSelect = @() null
 
   function onDestroy() {
-    defer(@() get_cur_gui_scene().discardUnusedPicture())
+    defer(releaseUnusedBgTextures)
   }
 }
 

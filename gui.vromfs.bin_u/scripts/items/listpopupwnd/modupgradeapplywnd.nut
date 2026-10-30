@@ -1,12 +1,13 @@
-from "%scripts/dagui_natives.nut" import get_modification_level, calculate_mod_or_weapon_effect_with_level
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/items/listPopupWnd/itemsListWndBase.nut" import ItemsListWndBase
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
+from "%scripts/dagui_natives.nut" import get_modification_level
+from "%scripts/unit/unitCalcRequests.nut" import calculateModOrWeaponEffectWithLevel
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 let ModUpgradeApplyWnd = class (ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
@@ -35,12 +36,8 @@ let ModUpgradeApplyWnd = class (ItemsListWndBase) {
     base.initScreen()
 
     let newLevel = get_modification_level(this.unit.name, this.mod.name) + 1
-    calculate_mod_or_weapon_effect_with_level(this.unit.name, this.mod.name, newLevel, true, this,
-      function(effect, ...) {
-        if (this.isValid())
-          this.showEffects(effect)
-      },
-      null)
+    calculateModOrWeaponEffectWithLevel(this.unit.name, this.mod.name, newLevel, true,
+      Callback(this.showEffects, this))
   }
 
   function showEffects(effect) {
@@ -57,4 +54,4 @@ let ModUpgradeApplyWnd = class (ItemsListWndBase) {
 }
 register_gui_handler("ModUpgradeApplyWnd", ModUpgradeApplyWnd)
 
-return { ModUpgradeApplyWnd }
+return freeze({ ModUpgradeApplyWnd })

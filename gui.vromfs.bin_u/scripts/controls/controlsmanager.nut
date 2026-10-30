@@ -1,7 +1,10 @@
 import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import isPC, isSony
+from "%scripts/options/optionsExt.nut" import set_option
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
-from "%sqstd/platform.nut" import isPC
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "%sqstd/datablock.nut" import eachBlock
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
@@ -12,13 +15,9 @@ from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_contro
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
 let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 local isControlsCommitPerformed = false
@@ -199,7 +198,7 @@ addListenersWithoutEnv({
   
   
   function MissionStarted(_) {
-    if (isPlatformSony)
+    if (isSony)
       commitControls()
   }
 
@@ -225,9 +224,9 @@ function onLoadControls(blkOrPresetPath) {
 }
 registerRespondent("load_controls", onLoadControls)
 
-return {
+return freeze({
   restoreHardcodedKeys
   commitControls
   setAndCommitCurControlsPreset
   isLastLoadControlsSucceeded
-}
+})

@@ -1,14 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.04,
-  "shotFreq": 6.6,
-  "alternativeShotFreq": 3.3,
-  "traceFreq": 4,
-  "bullets": 350,
-  "mass": 55.0,
-  "dragCx": 0.1,
-  "shouldCollideWithRendinsts": true,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -24,7 +14,29 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.04,
+  "shotFreq": 6.6,
+  "alternativeShotFreq": 3.3,
+  "bullets": 350,
+  "mass": 55.0,
+  "dragCx": 0.1,
+  "shouldCollideWithRendinsts": true,
   "iconType": "cannon_inner",
+  "overheat": {
+    "overheat": [
+      [
+        60.0,
+        0.0
+      ],
+      [
+        80.0,
+        0.01
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.176,
@@ -5031,25 +5043,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_type_23l_outside",
-    "cockpit": "cannon_type_23l_inside",
-    "ai": "cannon_type_23l_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        60.0,
-        0.0
-      ],
-      [
-        80.0,
-        0.01
-      ]
-    ]
-  },
   "type_23l_new_gun": {
     "maxDeltaAngle": 0.06,
     "overheat": {
@@ -5064,5 +5057,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_type_23l_outside",
+    "cockpit": "cannon_type_23l_inside",
+    "ai": "cannon_type_23l_ai"
   }
 }

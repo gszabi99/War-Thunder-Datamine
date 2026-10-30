@@ -1,8 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "json" import object_to_json_string
 from "string" import format
-from "%sqstd/string.nut" import stripTags, cutPrefix
+from "%sqstd/string.nut" import cutPrefix
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "dagor.random" import rnd
 from "guiMission" import get_player_army_for_hud
 from "multiplayer" import is_mplayer_host, is_mplayer_peer
@@ -11,8 +13,6 @@ from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, is_myself_gra
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "types" import Table
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false) {
   let amountText = []
@@ -201,7 +201,7 @@ function call_for_handler(handler, func) {
   return func()
 }
 
-return {
+return freeze({
   getAmountAndMaxAmountText
   colorTextByValues
   get_flush_exp_text
@@ -224,4 +224,4 @@ return {
   get_tomoe_unit_icon
   check_aircraft_tags
   call_for_handler
-}
+})

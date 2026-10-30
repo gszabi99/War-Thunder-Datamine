@@ -255,10 +255,10 @@ let planeIlsSwitcher = @() {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT
-  children = IlsVisible.get() ? [ planeIls(IlsPosSize[2], IlsPosSize[3])] : null
+  children = IlsVisible.get() ? planeIls(IlsPosSize[2], IlsPosSize[3]) : null
 }
 
-return {
+return freeze({
   planeIlsSwitcher
   ilsSettingsUpd
-}
+})

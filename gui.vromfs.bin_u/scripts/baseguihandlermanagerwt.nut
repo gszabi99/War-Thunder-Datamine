@@ -1,9 +1,29 @@
-import "colorCorrector" as colorCorrector
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "fonts" as fonts
+import "%appGlobals/style/cssColors.nut" as cssColors
+import "%appGlobals/style/cssConsts.nut" as cssConsts
+from "%appGlobals/options/screenInfo.nut" import getMainScreenSizePx, getScreenHeightForFonts
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler, is_gui_handler_instance
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/safeAreaMenu.nut" import getSafearea, getCurrentFont, setCurrentFont
+from "%sqstd/platform.nut" import is_android, isSony, isXbox, platformId
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/clientState/clientStates.nut" import getFromSettingsBlk
+from "%scripts/sqDagui/daguiUtil.nut" import check_obj
+from "%scripts/options/consoleMode.nut" import showConsoleButtons, getIsConsoleModeEnabled, switchShowConsoleButtons
+from "%scripts/sqDagui/framework/msgBox.nut" import is_active_msg_box_in_scene
+from "%scripts/contacts/contactsHandlerState.nut" import getContactsHandler
+from "%scripts/hangar/hangarModule.nut" import blurHangar
+from "%scripts/chat/mpChatState.nut" import getMpChatControlsAllowMask
+from "%scripts/waitScreen/waitScreen.nut" import getCurrentWaitScreen
+from "%scripts/chat/chatHandler.nut" import menuChatHandler
+from "%scripts/gamercard/gamercardHelpers.nut" import setLastGamercardSceneIfExist
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
+from "%appGlobals/style/cssTeamColors.nut" import calcTeamColors
+from "daguiScene" import register_css_block
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isAuthorized
-from "%sqstd/platform.nut" import is_android
-from "controlsMask" import setAllowedControlsMask
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isAuthorized
+from "controlsMask" import setAllowedControlsMaskDagui
 from "string" import format
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "dagor.workcycle" import deferOnce
@@ -14,31 +34,13 @@ from "guiMission" import get_team_colors
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
-
-let { get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+from "%scripts/options/fonts.nut" import getCurrentFontType
+from "%scripts/viewUtils/daguiFonts.nut" import getCssFontConsts
 let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let screenInfo = require("%scripts/options/screenInfo.nut")
-let { getSafearea, getCurrentFont, setCurrentFont } = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
-let { isPlatformSony, isPlatformXbox, targetPlatform } = require("%scripts/clientState/platform.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { showConsoleButtons, getIsConsoleModeEnabled, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { is_active_msg_box_in_scene } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
-let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
-let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
-let g_font = require("%scripts/options/fonts.nut")
-let { getCurrentWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
-let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
-let { setLastGamercardSceneIfExist } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 dagui_propid_add_name_id("has_ime")
 dagui_propid_add_name_id("platformId")
@@ -76,8 +78,8 @@ function generatePreLoadCssString() {
   let menuSafearea = getSafearea()
 
   let config = [
-    { name = "target_pc",         value = (isPlatformSony || isPlatformXbox) ? "no" : "yes" }
-    { name = "swMain",            value = screenInfo.getMainScreenSizePx()[0].tostring() }
+    { name = "target_pc",         value = (isSony || isXbox) ? "no" : "yes" }
+    { name = "swMain",            value = getMainScreenSizePx()[0].tostring() }
     { name = "_safearea_menu_w",  value = format("%.2f", menuSafearea[0]) }
     { name = "_safearea_menu_h",  value = format("%.2f", menuSafearea[1]) }
     { name = "_safearea_hud_w",   value = format("%.2f", hudSafearea[0]) }
@@ -91,67 +93,11 @@ function generatePreLoadCssString() {
 
 
 function generateColorConstantsConfig() {
-  if (!isAuthorized.get())
-    return []
-
-  let cssConfig = []
-  let standardColors = !isLoggedIn.get() || !isPlayerDedicatedSpectator()
-  let forcedColors = get_team_colors()
-  let hasForcedColors = ("colorTeamA" in forcedColors) && ("colorTeamB" in forcedColors)
-  local allyTeam, allyTeamColor, enemyTeamColor
-  if (hasForcedColors) {
-    allyTeam = get_mp_local_team()
-    allyTeamColor = allyTeam == 2 ? forcedColors.colorTeamB : forcedColors.colorTeamA
-    enemyTeamColor = allyTeam == 2 ? forcedColors.colorTeamA : forcedColors.colorTeamB
-    cssConfig.append(
-      {
-        name = "mainPlayerColor"
-        value = $"#{allyTeamColor}"
-      },
-      {
-        name = "chatSenderMeColor"
-        value = $"#{allyTeamColor}"
-      },
-      {
-        name = "hudColorHero"
-        value = $"#{allyTeamColor}"
-      }
-    )
-  }
-
-  let theme = {
-    squad = standardColors ? colorCorrector.TARGET_HUE_SQUAD : colorCorrector.TARGET_HUE_SPECTATOR_ALLY
-    ally  = standardColors ? colorCorrector.TARGET_HUE_ALLY  : colorCorrector.TARGET_HUE_SPECTATOR_ALLY
-    enemy = standardColors ? colorCorrector.TARGET_HUE_ENEMY : colorCorrector.TARGET_HUE_SPECTATOR_ENEMY
-  }
-
-  let config = [
-    { style = "squad", baseColor = "3E9E2F", names = [ "mySquadColor", "hudColorSquad", "chatSenderMySquadColor", "chatTextSquadVoiceColor" ] }
-    { style = "squad", baseColor = "65FF4D", names = [ "chatTextSquadColor" ] }
-    { style = "squad", baseColor = "A5FF97", names = [ "mySquadLightColor" ] }
-    { style = "ally",  baseColor = "527AFF", names = [ "teamBlueColor", "hudColorBlue", "chatSenderFriendColor", "chatTextTeamVoiceColor" ] }
-    { style = "ally",  baseColor = "99B1FF", names = [ "teamBlueLightColor", "hudColorDeathEnemy" ] }
-    { style = "ally",  baseColor = "5C637A", names = [ "teamBlueInactiveColor", "hudColorDarkBlue" ] }
-    { style = "ally",  baseColor = "0F1834", names = [ "teamBlueDarkColor" ] }
-    { style = "ally",  baseColor = "82C2FF", names = [ "chatTextTeamColor" ] }
-    { style = "enemy", baseColor = "FF5A52", names = [ "teamRedColor", "hudColorRed", "chatSenderEnemyColor", "chatTextEnemyVoiceColor" ] }
-    { style = "enemy", baseColor = "FFA29D", names = [ "teamRedLightColor", "hudColorDeathAlly" ] }
-    { style = "enemy", baseColor = "7C5F5D", names = [ "teamRedInactiveColor", "hudColorDarkRed" ] }
-    { style = "enemy", baseColor = "34110F", names = [ "teamRedDarkColor" ] }
-  ]
-
-  foreach (cfg in config) {
-    let color = hasForcedColors ? (cfg.style == "enemy" ? enemyTeamColor : allyTeamColor)
-      : colorCorrector.correctHueTarget(cfg.baseColor, theme[cfg.style])
-
-    foreach (name in cfg.names)
-      cssConfig.append({
-        name = name,
-        value = $"#{color}"
-      })
-  }
-
-  return cssConfig
+  let isCorrected = isAuthorized.get()
+  let standardColors = !hasFullLoginState.get() || !isPlayerDedicatedSpectator()
+  
+  let colors = calcTeamColors(isCorrected ? get_team_colors() : {}, get_mp_local_team(), standardColors, isCorrected)
+  return colors.keys().sort().map(@(name) { name, value = colors[name] })
 }
 
 
@@ -181,6 +127,10 @@ function generatePostLoadCssString() {
 }
 
 
+register_css_block("const/colors.css", { colors = cssColors })
+register_css_block("const/_const.css", { consts = cssConsts })
+
+
 function getHandlerControlsAllowMask(handler) {
   local res = null
   if ("getControlsAllowMask" in handler)
@@ -192,25 +142,31 @@ function getHandlerControlsAllowMask(handler) {
 
 let reloadDarg = @() reloadDargUiScript(false)
 
-function writeDargFont(font) {
-  return updateExtWatched({
-    fontGenId = font.fontGenId
-    fontSizePx = font.getFontSizePx(screen_width(), screen_height())
-    fontSizeMultiplier = font.sizeMultiplier
-  })
-}
+let writeDargLayout = @(font) updateExtWatched({
+  fontGenId = font.fontGenId
+  fontSizeMultiplier = font.sizeMultiplier
+  safeAreaMenu = getSafearea()
+})
 
+let hardPersistWatched = mkHardPersistWatched("baseGuiHandlerManagerWT")
 
-writeDargFont(g_font.getCurrent())
-
-let curControlsAllowMask = persist("curControlsAllowMask", @() {val = CtrlsInGui.CTRL_ALLOW_FULL})
-let isCurSceneBgBlurred = persist("isCurSceneBgBlurred", @() {val = false})
+let curControlsAllowMask = hardPersistWatched("curControlsAllowMask", CtrlsInGui.CTRL_ALLOW_FULL)
+let isCurSceneBgBlurred = hardPersistWatched("isCurSceneBgBlurred", false)
+let hadActiveDargScreen = hardPersistWatched("hadActiveDargScreen", false)
 
 handlersManager.__update({
   shouldResetFontsCache = false
 
+  function reloadSceneOnLangOrScreenChange(needReloadNow) {
+    let handler = needReloadNow ? this.getActiveBaseHandler() : null
+    if (handler)
+      handler.fullReloadScene()
+    else
+      this.markfullReloadOnSwitchScene()
+  }
+
   function beforeClearScene(_guiScene) {
-    let sh = screenInfo.getScreenHeightForFonts(screen_width(), screen_height())
+    let sh = getScreenHeightForFonts(screen_width(), screen_height())
     if (lastScreenHeightForFont && lastScreenHeightForFont != sh)
       this.shouldResetFontsCache = true
     lastScreenHeightForFont = sh
@@ -244,7 +200,7 @@ handlersManager.__update({
   function beforeLoadHandler(hType) {
     
     if ((hType == handlerType.BASE || hType == handlerType.ROOT)
-        && isLoggedIn.get()
+        && hasFullLoginState.get()
         && this.lastGuiScene
         && this.lastGuiScene.isEqual(get_main_gui_scene())
         && !this.isMainGuiSceneActive())
@@ -252,7 +208,7 @@ handlersManager.__update({
   }
 
   function onBaseHandlerLoadFailed(handler) {
-    if (!isLoggedIn.get()
+    if (!hasFullLoginState.get()
         || handler.getclass() == get_gui_handler("MainMenu")
         || handler.getclass() == get_gui_handler("FlightMenu")
        )
@@ -264,7 +220,7 @@ handlersManager.__update({
   }
 
   function onSwitchBaseHandler() {
-    if (!isLoggedIn.get())
+    if (!hasFullLoginState.get())
       return
     let curHandler = this.getActiveBaseHandler()
     if (curHandler)
@@ -281,7 +237,7 @@ handlersManager.__update({
       needReloadMainGuiSceneAfterFinishLoading = false
       return
     }
-    if (!hasCssChanged || isLoggedIn.get()) 
+    if (!hasCssChanged || hasFullLoginState.get()) 
       return
     needReloadMainGuiSceneAfterFinishLoading = true
   }
@@ -289,24 +245,21 @@ handlersManager.__update({
   function updatePostLoadCss() {
     local haveChanges = false
 
-    let font = g_font.getCurrent()
+    let font = getCurrentFontType()
     if (getCurrentFont() != font) {
       this.shouldResetFontsCache = true
       haveChanges = true
-      if (writeDargFont(font))
-        deferOnce(reloadDarg)
     }
     setCurrentFont(font)
 
-    let cssStringPre = "".concat(font.genCssString(), "\n", generatePreLoadCssString(), "\n", gamepadIcons.getCssString())
+    let cssStringPre = "".concat(generateCssString(getCssFontConsts(font)), "\n", generatePreLoadCssString(), "\n", gamepadIcons.getCssString())
     if (get_dagui_pre_include_css_str() != cssStringPre) {
       let safearea = safeAreaHud.getSafearea()
       set_dagui_pre_include_css_str(cssStringPre)
       set_hud_width_limit(safearea[0])
-      updateExtWatched({
-        safeAreaHud = safearea
-        safeAreaMenu = getSafearea()
-      })
+      updateExtWatched({ safeAreaHud = safearea })
+      if (writeDargLayout(font))
+        deferOnce(reloadDarg)
       haveChanges = true
     }
 
@@ -315,7 +268,7 @@ handlersManager.__update({
     let cssStringPost = generatePostLoadCssString()
     if (get_dagui_post_include_css_str() != cssStringPost) {
       set_dagui_post_include_css_str(cssStringPost)
-      let forcedColors = isLoggedIn.get() ? get_team_colors() : {}
+      let forcedColors = hasFullLoginState.get() ? get_team_colors() : {}
       eventbus_send("recalculateTeamColors", { forcedColors })
       haveChanges = true
     }
@@ -330,9 +283,9 @@ handlersManager.__update({
     let rootObj = guiScene.getRoot()
 
     
-    let hasIME = isPlatformSony || isPlatformXbox || is_android || is_steam_big_picture()
+    let hasIME = isSony || isXbox || is_android || is_steam_big_picture()
     rootObj["has_ime"] = hasIME ? "yes" : "no"
-    rootObj["platformId"] = targetPlatform
+    rootObj["platformId"] = platformId
   }
 
 
@@ -373,31 +326,39 @@ handlersManager.__update({
 
   function _updateControlsAllowMask() {
     let newMask = this.calcCurrentControlsAllowMask()
-    if (newMask == curControlsAllowMask.val)
+    if (newMask == curControlsAllowMask.get())
       return
 
-    curControlsAllowMask.val = newMask
-    setAllowedControlsMask(curControlsAllowMask.val)
+    curControlsAllowMask.set(newMask)
+    setAllowedControlsMaskDagui(newMask)
     
   }
 
   function restoreAllowControlMask() {
-    setAllowedControlsMask(curControlsAllowMask.val)
+    setAllowedControlsMaskDagui(curControlsAllowMask.get())
   }
 
   function updateWidgets() {
     let widgetsList = []
     local hasActiveDargScene = false
+    local hasActiveDargScreen = false
     foreach (group in this.handlers)
       foreach (h in group)
         if (this.isHandlerValid(h, true) && h.isSceneActive() && h?.getWidgetsList) {
           let wList = h.getWidgetsList()
           widgetsList.extend(wList)
-          if (wList.len() > 0 && h.isSceneActiveNoModals())
+          if (wList.len() > 0 && h.isSceneActiveNoModals()) {
             hasActiveDargScene = true
+            hasActiveDargScreen = hasActiveDargScreen
+              || wList.findvalue(@(w) w.widgetId == DargWidgets.SCREEN && w?.transform == null) != null
+          }
         }
 
     setSceneActive(hasActiveDargScene)
+    
+    if (hasActiveDargScreen || hadActiveDargScreen.get()) 
+      enable_dirpad_control_mouse(!hasActiveDargScreen)
+    hadActiveDargScreen.set(hasActiveDargScreen)
     eventbus_send("updateWidgets", { widgetsList })
   }
 
@@ -420,11 +381,11 @@ handlersManager.__update({
 
   function _updateSceneBgBlur(forced = false) {
     let isBlur = this.calcCurrentSceneBgBlur()
-    if (!forced && isBlur == isCurSceneBgBlurred.val)
+    if (!forced && isBlur == isCurSceneBgBlurred.get())
       return
 
-    isCurSceneBgBlurred.val = isBlur
-    blurHangar(isCurSceneBgBlurred.val)
+    isCurSceneBgBlurred.set(isBlur)
+    blurHangar(isBlur)
   }
 
   function updateSceneVrParams() {
@@ -470,7 +431,7 @@ handlersManager.__update({
     if (focusFrame.isEnabled)
       handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
 
-    if (!isLoggedIn.get() || is_gui_handler_instance(handler, "BaseGuiHandlerWT"))
+    if (!hasFullLoginState.get() || is_gui_handler_instance(handler, "BaseGuiHandlerWT"))
       return
 
     this.initVoiceChatWidget(handler)
@@ -480,12 +441,12 @@ handlersManager.__update({
     if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
       return
 
-    if (isLoggedIn.get() && (handler?.needVoiceChat ?? true))
+    if (hasFullLoginState.get() && (handler?.needVoiceChat ?? true))
       handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
   }
 
   needFullReloadMainScene = @() needReloadMainGuiSceneAfterFinishLoading
-    && !isLoggedIn.get() && this.isMainGuiSceneActive()
+    && !hasFullLoginState.get() && this.isMainGuiSceneActive()
 
   function validateHandlersAfterLoading() {
     this.clearInvalidHandlers()
@@ -539,6 +500,8 @@ handlersManager.init()
 
 eventbus_subscribe("onGuiFinishLoading", @(_) gui_finish_loading())
 eventbus_subscribe("gui_start_empty_screen", gui_start_empty_screen)
+
+eventbus_subscribe("gui_start_after_hard_reload", @(_) handlersManager.startMainSceneAfterHardReload())
 
 return {
   handlersManager

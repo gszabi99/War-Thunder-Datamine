@@ -1,17 +1,16 @@
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/userstat/userstatItemsRewards.nut" import receiveRewards
+from "%scripts/tasker.nut" import addTask
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost
+from "%scripts/unlocks/regionalUnlocks.nut" import isRegionalUnlock
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/hud/serverMessages.nut" import getErrorText
 from "%sqStdLibs/helpers/u.nut" import isString
 from "chard" import charSendBlk
 from "hangar" import hangar_get_current_unit_name
 from "%scripts/dagui_library.nut" import *
-
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
-let { isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 
 function openUnlockManually(unlockId, onSuccess = null) {
   if (isRegionalUnlock(unlockId)) {
@@ -56,8 +55,8 @@ function buyUnlock(unlock, onSuccessCb = null, onAfterCheckCb = null) {
   buyUnlockImpl(unlockBlk.id, null, cost, onSuccessCb)
 }
 
-return {
+return freeze({
   openUnlockManually
   buyUnlockImpl
   buyUnlock
-}
+})

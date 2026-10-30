@@ -53,7 +53,7 @@ function reorderZones(zones, highlightedFlag) {
     }
   }
 
-  highlighted.sort(@(a, b) a.order <=> b.order)
+  highlighted.sortby(@(a) a.order)
   return [].extend(outlined, highlighted, ordinary)
 }
 
@@ -97,8 +97,9 @@ function mkMapHoveredZone() {
   }
 }
 
+let isShowGrid = Computed(@() zonesHighlightedFlag.get().len() > 0 && isShowZonesFilter.get())
+
 function mkMapZonesEdges() {
-  let isShowGrid = Computed(@() zonesHighlightedFlag.get().len() > 0 && isShowZonesFilter.get())
   if (!isShowGrid.get())
     return {
       watch = [isShowGrid, activeAreaBounds, gridWidth]
@@ -107,7 +108,7 @@ function mkMapZonesEdges() {
   let uniqParts = getUniqParts(reorderZones(getZones(), zonesHighlightedFlag.get()))
 
   return {
-    watch = [isShowGrid, activeAreaBounds, gridWidth]
+    watch = [isShowGrid, zonesHighlightedFlag, activeAreaBounds, gridWidth]
     size = activeAreaBounds.get().size
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
@@ -115,7 +116,7 @@ function mkMapZonesEdges() {
   }
 }
 
-return {
+return freeze({
   mkMapZonesEdges
   mkMapHoveredZone
-}
+})

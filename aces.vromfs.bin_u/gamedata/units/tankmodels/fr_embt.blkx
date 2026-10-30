@@ -411,7 +411,10 @@
       "composite_armor_hull_01_dm": {
         "armorClass": "leopard_2a5_turret_nera"
       },
-      "composite_armor_hull_05_dm": {},
+      "composite_armor_hull_05_dm": {
+        "armorThickness": 100.0,
+        "armorClass": "leopard_2a5_turret_nera"
+      },
       "composite_armor_turret_01_dm": {
         "armorClass": "leopard_2a5_turret_nera"
       },
@@ -787,6 +790,9 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -862,6 +868,14 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1178,6 +1192,33 @@
         "armorThrough": 20.0,
         "armorThickness": 10.0,
         "hp": 20.0
+      }
+    }
+  },
+  "PhysSys": {
+    "find": "^bone_suspension_(._\\d\\d)$",
+    "points": {
+      "suspension": {
+        "name": "bone_suspension_$1"
+      },
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      }
+    },
+    "constraints": {
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
       }
     }
   },
@@ -2444,7 +2485,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2542,7 +2583,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_twin_flame_01",
         "defaultYaw": 0.0,
@@ -2567,7 +2608,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
@@ -2590,7 +2630,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2646,7 +2686,7 @@
   "weapon_presets": {
     "preset": {
       "name": "tank_weapon_preset_default",
-      "blk": "gameData/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2706,12 +2746,12 @@
       "model": "mb_873_ka_501"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.312,
+      "neutralGearRatio": 17.0,
+      "steerType": "clutch_braking",
       "mainGearRatio": 4.99,
       "sideGearRatio": 1.0,
-      "neutralGearRatio": 9.0,
       "gearRatios": {
         "ratio": [
           -2.209,
@@ -3606,7 +3646,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3704,7 +3744,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_twin_flame_01",
               "defaultYaw": 0.0,
@@ -3729,7 +3769,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
@@ -3752,7 +3791,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3806,7 +3845,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3873,6 +3912,27 @@
           ]
         }
       }
+    }
+  },
+  "nightVision": {
+    "nightVisionDmPart": "fire_control_system_dm",
+    "commanderViewIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
   },
   "default_skin": {
@@ -3968,6 +4028,7 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 13.0,
@@ -3978,7 +4039,10 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "autoLoad": true,
-          "autoloader": "autoloader_dm",
+          "autoloader": [
+            "autoloader_dm",
+            "power_system_dm"
+          ],
           "ammo_turret_05_dm": {
             "count": 1
           },
@@ -4128,12 +4192,32 @@
       "overrideTitle": "gun_trunnion",
       "hideDescription": true
     },
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
-      "hideDescription": true
-    },
     "turret_hydraulics_dm": {
       "overrideTitle": "power_electronics"
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.53,
+      1.27,
+      1.47
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

@@ -1,10 +1,9 @@
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/unit/unitInfo.nut" import getUnitName
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/dagui_natives.nut" import shop_unit_research_status
-
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 function isUnitGift(unit) {
   return unit.gift != null
@@ -38,10 +37,10 @@ function canSpendGoldOnUnitWithPopup(unit) {
   return false
 }
 
-return {
+return freeze({
   isUnitGift
   canBuyUnit
   canBuyUnitEvenNotInShop
   isUnitBought
   canSpendGoldOnUnitWithPopup
-}
+})

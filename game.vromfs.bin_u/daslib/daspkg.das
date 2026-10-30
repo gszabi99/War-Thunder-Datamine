@@ -5,6 +5,9 @@ options strict_smart_pointers = true
 
 module daspkg shared public
 
+require strings
+require daslib/strings_boost
+
 
 
 
@@ -22,9 +25,8 @@ struct PackageMeta {
     license : string
     tags : array<string>
     min_sdk : string
+    platforms : array<string>           
 }
-
-
 
 var _pkg_meta : PackageMeta
 
@@ -61,6 +63,43 @@ def package_min_sdk(version : string) {
 }
 
 
+let PLATFORM_NAMES <- ["windows", "darwin", "linux", "emscripten"]
+let PLATFORM_ALIASES : table<string; string> <- { "wasm" => "emscripten", "wasm32" => "emscripten", "wasm64" => "emscripten", "macos" => "darwin", "osx" => "darwin", "win" => "windows", "win32" => "windows", "win64" => "windows" }
+
+
+def is_known_platform(name : string) : bool {
+    return find_index(PLATFORM_NAMES, name) >= 0
+}
+
+
+def unknown_platforms(platforms : array<string>) : array<string> {
+    return <- [for (p in platforms); p; where !is_known_platform(p)]
+}
+
+
+def unknown_platforms_error(subject : string; platforms : array<string>) : string {
+    let bad <- unknown_platforms(platforms)
+    if (empty(bad)) return ""
+    return "Error: {subject} names unknown platform(s) {join(bad, ", ")} - package_platform takes {join(PLATFORM_NAMES, ", ")}\n"
+}
+
+
+def normalize_platform_name(name : string) : string {
+    let lower = to_lower(strip(name))
+    return unsafe(PLATFORM_ALIASES?[lower] ?? lower)
+}
+
+
+def package_platform(name : string) {
+    _pkg_meta.platforms |> push(normalize_platform_name(name))
+}
+
+
+def package_platforms(names : array<string>) {
+    for (n in names) {
+        package_platform(n)
+    }
+}
 
 enum DownloadKind {
     unset
@@ -89,8 +128,6 @@ def download_redirect(source, ref : string) {
     _download_ref = ref
 }
 
-
-
 struct Dependency {
     source : string
     version_constraint : string
@@ -101,8 +138,6 @@ var _dependencies : array<Dependency>
 def require_package(source : string; version_constraint : string = "") {
     _dependencies |> emplace(Dependency(source = source, version_constraint = version_constraint))
 }
-
-
 
 enum BuildKind {
     no_build
@@ -126,8 +161,6 @@ def custom_build(command : string) {
     _build_command = command
 }
 
-
-
 struct ReleaseSpec {
     name : string                       
     main_script : string                
@@ -141,11 +174,15 @@ struct ReleaseSpec {
     emcc_args : array<string>           
     embed_paths : array<string>         
     web_shell : string                  
+    wasm_disabled_modules : array<string> 
     wasm_build_command : string         
     wasm_archives : array<string>       
     requires_jit : bool                 
     include_symbols : bool              
     external_files : array<string>      
+    tools : array<string>               
+    launcher : string                   
+    programs : array<string>            
 }
 
 var _release_spec : ReleaseSpec
@@ -165,9 +202,7 @@ def release_requires_jit() {
     _release_spec.requires_jit = true
 }
 
-
-
-
+[arch(at="ARCHITECTURE.md#package-release-symbols")]
 def release_include_symbols() {
     _release_spec.include_symbols = true
 }
@@ -192,9 +227,22 @@ def release_include_from(source, dest : string) {
 }
 
 def release_include_from(source : string) {
-    
-    
     _release_spec.external_files |> push("{source}@")
+}
+
+
+def release_include_tool(name : string) {
+    _release_spec.tools |> push(name)
+}
+
+
+def release_launcher(tool : string) {
+    _release_spec.launcher = tool
+}
+
+
+def release_program(name, script : string) {
+    _release_spec.programs |> push("{name}@{script}")
 }
 
 def release_exclude(pattern : string) {
@@ -222,6 +270,13 @@ def release_emcc_arg(arg : string) {
 
 def release_embed_file(src, dst : string) {
     _release_spec.embed_paths |> push("{src}@{dst}")
+}
+
+
+
+
+def release_wasm_disable_module(name : string) {
+    _release_spec.wasm_disabled_modules |> push(name)
 }
 
 

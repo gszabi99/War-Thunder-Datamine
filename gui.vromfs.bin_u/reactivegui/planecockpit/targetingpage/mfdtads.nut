@@ -114,64 +114,60 @@ function fieldOfRegard(width, height) {
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
     borderWidth = baseLineWidth
-    children = [
-      {
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color = baseColor
-        lineWidth = baseLineWidth
-        commands = [
-          [VECTOR_LINE, 50, 1, 50, 10],
-          [VECTOR_LINE, 50, 90, 50, 99],
-          [VECTOR_LINE, 12.5, 0, 12.5, 10],
-          [VECTOR_LINE, 12.5, 90, 12.5, 100],
-          [VECTOR_LINE, 87.5, 0, 87.5, 10],
-          [VECTOR_LINE, 87.5, 90, 87.5, 100],
-          [VECTOR_LINE, 1, 30, 5, 30],
-          [VECTOR_LINE, 95, 30, 99, 30]
-        ]
-        children =
-        @(){
-          watch = [hmdPosX, hmdPosY]
-          size = const [pw(16.7), ph(33.3)]
-          pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
-          rendObj = ROBJ_BOX
-          fillColor = Color(0, 0, 0, 0)
-          borderColor = baseColor
-          borderWidth = baseLineWidth * 0.8
-        }
+    children = {
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = FLEX
+      color = baseColor
+      lineWidth = baseLineWidth
+      commands = [
+        [VECTOR_LINE, 50, 1, 50, 10],
+        [VECTOR_LINE, 50, 90, 50, 99],
+        [VECTOR_LINE, 12.5, 0, 12.5, 10],
+        [VECTOR_LINE, 12.5, 90, 12.5, 100],
+        [VECTOR_LINE, 87.5, 0, 87.5, 10],
+        [VECTOR_LINE, 87.5, 90, 87.5, 100],
+        [VECTOR_LINE, 1, 30, 5, 30],
+        [VECTOR_LINE, 95, 30, 99, 30]
+      ]
+      children =
+      @(){
+        watch = [hmdPosX, hmdPosY]
+        size = const [pw(16.7), ph(33.3)]
+        pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
+        rendObj = ROBJ_BOX
+        fillColor = Color(0, 0, 0, 0)
+        borderColor = baseColor
+        borderWidth = baseLineWidth * 0.8
       }
-    ]
+    }
   }
 }
 
-let losReticle = @(size = FLEX, color = baseColor, line_width = baseLineWidth) {
+let losReticle = @(size = FLEX, color = baseColor, lineWidth = baseLineWidth) {
   size
   hplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
   color
-  line_width
+  lineWidth
   commands = [
     [VECTOR_LINE, 39, 50, 48, 50],
     [VECTOR_LINE, 52, 50, 61, 50],
     [VECTOR_LINE, 50, 42, 50, 48],
     [VECTOR_LINE, 50, 52, 50, 58]
   ]
-  children = [
-    @(){
-      watch = AimLockValid
-      size = FLEX
-      rendObj = ROBJ_VECTOR_CANVAS
-      color
-      line_width
-      commands = AimLockValid.get() ? [
-        [VECTOR_LINE, 44, 44, 47, 47],
-        [VECTOR_LINE, 56, 44, 53, 47],
-        [VECTOR_LINE, 44, 56, 47, 53],
-        [VECTOR_LINE, 56, 56, 53, 53]
-      ] : null
-    }
-  ]
+  children = @(){
+    watch = AimLockValid
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color
+    lineWidth
+    commands = AimLockValid.get() ? const [
+      [VECTOR_LINE, 44, 44, 47, 47],
+      [VECTOR_LINE, 56, 44, 53, 47],
+      [VECTOR_LINE, 44, 56, 47, 53],
+      [VECTOR_LINE, 56, 56, 53, 53]
+    ] : null
+  }
 }
 
 let flir = {
@@ -319,13 +315,13 @@ function constraintBox(width, height) {
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth
       commands = !AimLockValid.get() ?
-        [
+        const [
           [VECTOR_LINE_DASHED, -20, -20, 20, -20, 3, 3],
           [VECTOR_LINE_DASHED, 20, -20, 20, 20, 3, 3],
           [VECTOR_LINE_DASHED, 20, 20, -20, 20, 3, 3],
           [VECTOR_LINE_DASHED, -20, -20, -20, 20, 3, 3]
         ] :
-        [
+        const [
           [VECTOR_RECTANGLE, -50, -50, 100, 100]
         ]
       behavior = Behaviors.RtPropUpdate
@@ -363,7 +359,7 @@ function root(width, height, is_apache) {
   }
 }
 
-return {
+return freeze({
   root
   losReticle
-}
+})

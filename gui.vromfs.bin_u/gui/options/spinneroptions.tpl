@@ -97,12 +97,6 @@
         <<@tooltipParams>>
       }
     <</tooltipObj>>
-    <<#idx>>
-    idx:t='<<idx>>'
-    <</idx>>
-    <<#onOptHoverFnName>>
-    on_hover:t='<<onOptHoverFnName>>'
-    <</onOptHoverFnName>>
     <<#tooltipOnHold>>
     tooltipId:t='<<tooltipId>>'
     <</tooltipOnHold>>

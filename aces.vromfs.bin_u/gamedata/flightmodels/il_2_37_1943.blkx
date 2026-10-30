@@ -1,22 +1,22 @@
 {
   "model": "il_2_37_1943",
   "fmFile": "fm/il_2_37_1943.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeStormovik",
   "paratrooper": "ally",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
@@ -2320,7 +2320,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunShKAS.blk",
+        "blk": "gamedata/weapons/gunShKAS.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2332,7 +2332,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunShKAS.blk",
+        "blk": "gamedata/weapons/gunShKAS.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "shell": "emtr_shellrejection2",
@@ -2345,7 +2345,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNS37.blk",
+        "blk": "gamedata/weapons/cannonNS37.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2358,7 +2358,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNS37.blk",
+        "blk": "gamedata/weapons/cannonNS37.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection4",
@@ -2369,7 +2369,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunUB_turret.blk",
+        "blk": "gamedata/weapons/gunUB_turret.blk",
         "breechInCockpit": true,
         "emitter": "gun1",
         "flash": "flare5",
@@ -2439,16 +2439,21 @@
     "preset": [
       {
         "name": "default",
-        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+        "blk": "gamedata/flightModels/weaponPresets/empty.blk"
       },
       {
         "name": "il_2_4xfab50",
-        "blk": "gameData/FlightModels/weaponPresets/il_2_4xfab50.blk",
+        "blk": "gamedata/flightModels/weaponPresets/il_2_4xfab50.blk",
+        "reqModification": "der-21"
+      },
+      {
+        "name": "il_2_4xzab50",
+        "blk": "gamedata/flightModels/weaponPresets/il_2_4xzab50.blk",
         "reqModification": "der-21"
       },
       {
         "name": "il_2_37_2xfab100",
-        "blk": "gameData/FlightModels/weaponPresets/il_2_37_2xfab100.blk",
+        "blk": "gamedata/flightModels/weaponPresets/il_2_37_2xfab100.blk",
         "reqModification": "der-21"
       }
     ]

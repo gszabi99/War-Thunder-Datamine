@@ -243,8 +243,24 @@ function overheatLines(color, line_width_factor) {
     }
   }
 }
+let overheatBg = overheatLines(Color(0, 0, 0, 120), CanonSightShadowLineWidthFactor)
 
 function fixedGunsDirection(colorWatch) {
+
+  function shadowLines() {
+    let shadowLineWidth = hdpx(LINE_WIDTH * CanonSightShadowLineWidthFactor.get())
+    return styleLineForeground.__merge({
+      watch = [FixedGunSightMode, colorWatch, CanonSightShadowLineWidthFactor]
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = shadowLineWidth
+      size = sh(0.625)
+      fillColor = Color(0, 0, 0, 0)
+      color = isDarkColor(colorWatch.get()) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
+      commands = fixedGunsSight(FixedGunSightMode.get())
+      children = overheatBg
+    })
+  }
+
   return function() {
     if (!FixedGunDirectionVisible.get())
       return { watch = FixedGunDirectionVisible }
@@ -262,22 +278,6 @@ function fixedGunsDirection(colorWatch) {
         commands = fixedGunsSight(FixedGunSightMode.get())
         children = overheatFg
       }
-    }
-
-    let overheatBg = overheatLines(Color(0, 0, 0, 120), CanonSightShadowLineWidthFactor)
-
-    function shadowLines() {
-      let shadowLineWidth = hdpx(LINE_WIDTH * CanonSightShadowLineWidthFactor.get())
-      return styleLineForeground.__merge({
-        watch = [FixedGunSightMode, colorWatch, CanonSightShadowLineWidthFactor]
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = shadowLineWidth
-        size = sh(0.625)
-        fillColor = Color(0, 0, 0, 0)
-        color = isDarkColor(colorWatch.get()) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
-        commands = fixedGunsSight(FixedGunSightMode.get())
-        children = overheatBg
-      })
     }
 
     return {
@@ -349,7 +349,7 @@ function laserDesignatorComponent(colorWatch, posX, posY) {
   function laserDesignator(width, height) {
     let color = Computed(@() IsAgmEmpty.get() ? AlertColorHigh.get() : colorWatch.get())
     return @() styleLineForeground.__merge({
-      watch = [color]
+      watch = color
       rendObj = ROBJ_VECTOR_CANVAS
       size = [width, height]
       color = color.get()
@@ -365,6 +365,7 @@ function laserDesignatorComponent(colorWatch, posX, posY) {
 
   let width = hdpx(150)
   let height = hdpx(100)
+  let laserDesignatorMark = laserDesignator(width, height)
   return @() {
     pos = [posX - 0.5 * width, posY - 0.5 * height]
     halign = ALIGN_CENTER
@@ -372,7 +373,7 @@ function laserDesignatorComponent(colorWatch, posX, posY) {
     watch = IsLaserDesignatorEnabled
     opacity = IsLaserDesignatorEnabled.get() ? 1 : 0
     size = SIZE_TO_CONTENT
-    children = laserDesignator(width, height)
+    children = laserDesignatorMark
   }
 }
 
@@ -590,7 +591,7 @@ let bombSightComponent = @(width, height, crosshairColorWatch) function() {
   })
 }
 
-return {
+return freeze({
   aircraftTurretsComponent
   gunDirection
   fixedGunsDirection
@@ -603,4 +604,4 @@ return {
   aircraftRocketSight
   bombSightComponent
   getTooFastText
-}
+})

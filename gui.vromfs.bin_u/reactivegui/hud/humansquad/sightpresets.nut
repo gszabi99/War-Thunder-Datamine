@@ -1,11 +1,10 @@
+from "%rGui/style/colors.nut" import hud, transparent
 from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunInfo, humanCurGunModeInfo
 from "%appGlobals/hud/humanPhysState.nut" import canSightChange
-from "%rGui/style/colors.nut" import transparent
 from "%rGui/options/measureUnits.nut" import measureUnitsCfg, DISTANCE_SHORT
 from "%rGui/globals/ui_library.nut" import *
 from "math" import fabs
 
-let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryHudActiveColor } = hud
 
 let sightPresetsData = Computed(@()

@@ -1,6 +1,7 @@
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/missions/missionsUtils.nut" import isMissionExtr
+
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 enum ControlsHelpHintConditionType {
   ARACHIS_EVENT = 1,
@@ -31,7 +32,7 @@ function maybeOfferControlsHelp() {
     g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", { conditionSeenCountType })
 }
 
-return {
+return freeze({
   maybeOfferControlsHelp
   getEventConditionControlHelp
-}
+})

@@ -801,6 +801,7 @@
     "engines": {
       "maxSpeed": 5.2,
       "maxReverseSpeed": 2.5,
+      "horsePowers": 1500.0,
       "speedToTime": {
         "row": [
           [
@@ -893,6 +894,64 @@
       "cls_turret_03": "convex_hull",
       "cls_turret_04": "convex_hull"
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1.4,
+        0.0
+      ],
+      [
+        2.9,
+        100.0
+      ],
+      [
+        4.3,
+        100.0
+      ],
+      [
+        5.8,
+        200.0
+      ],
+      [
+        7.2,
+        400.0
+      ],
+      [
+        8.7,
+        600.0
+      ],
+      [
+        10.1,
+        800.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        300.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
@@ -1881,29 +1940,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -5000.0,
-    "waterMassMult": 300.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 500000.0,
+    "waterMassVel": -18724.0,
+    "waterMassMult": 234.0,
+    "additionalWaterDeathThreshold": 294262.0,
     "additionalWaterShouldDiePercent": 0.4,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 6.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 4.7,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.15
+    "sideCenterOfMassOffsetPercent": 0.424
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.5,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
@@ -1923,18 +1986,32 @@
       },
       {
         "part": "compartment_05_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "engine_01_dm",
-            "critWaterLevel": 0.5
-          }
+          "part": [
+            {
+              "partNo": "engine_01_dm",
+              "critWaterLevel": 0.3
+            },
+            {
+              "partNo": "engine_02_dm",
+              "critWaterLevel": 0.3
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.15
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.15
+            }
+          ]
         }
       },
       {
         "part": "compartment_06_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0
       },
       {
@@ -1954,14 +2031,8 @@
       },
       {
         "part": "compartment_10_dm",
-        "weight": 0.5,
-        "maxWaterAlive": 1.0,
-        "innerParts": {
-          "part": {
-            "partNo": "engine_02_dm",
-            "critWaterLevel": 0.5
-          }
-        }
+        "weight": 0.15,
+        "maxWaterAlive": 1.0
       }
     ]
   },
@@ -3322,7 +3393,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3422,7 +3493,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3511,7 +3582,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -3600,7 +3671,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/88mm_56_flak36_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -3689,7 +3760,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -3769,7 +3840,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_65_c38_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -3851,7 +3922,7 @@
   "weapon_presets": {
     "preset": {
       "name": "germ_sf40_schwere_flakkampffaehre_default",
-      "blk": "gameData/units/ships/weaponPresets/germ_sf40_schwere_flakkampffaehre_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/germ_sf40_schwere_flakkampffaehre_default.blk"
     }
   },
   "modifications": {

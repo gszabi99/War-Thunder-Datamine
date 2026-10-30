@@ -1,17 +1,17 @@
+import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
+import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/worldWar/operations/handler/wwMapDescription.nut" import WwMapDescription
+from "%scripts/sqDagui/daguiUtil.nut" import countSizeInItems, toPixels
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/worldWarState.nut" import getBattles, getArmyGroupsBySide
+from "%scripts/worldWar/worldWarCfgState.nut" import fillConfigurableValues
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_preview_operation_from_file
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
-let { countSizeInItems, toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getBattles, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
-let { fillConfigurableValues } = require("%scripts/worldWar/worldWarCfgState.nut")
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 
 

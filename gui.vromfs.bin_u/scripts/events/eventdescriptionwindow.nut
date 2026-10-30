@@ -1,12 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/events/eventDescription.nut" import create_event_description
+from "%scripts/events/eventsManager.nut" import events
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { create_event_description } = require("%scripts/events/eventDescription.nut")
-
-let { events } = require("%scripts/events/eventsManager.nut")
 
 register_gui_handler("EventDescriptionWindow", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

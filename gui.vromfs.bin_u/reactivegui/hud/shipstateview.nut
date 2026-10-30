@@ -47,7 +47,7 @@ let machineSpeedDirection = [
   "back"
 ]
 
-local fitTextToBox = kwarg(function(box, text, font, fontSize = null, minSize = 8) {
+let fitTextToBox = kwarg(function(box, text, font, fontSize = null, minSize = 8) {
   local sz = calc_comp_size({ rendObj = ROBJ_TEXT, text, font, fontSize })
   fontSize = fontSize ?? calc_comp_size({ rendObj = ROBJ_TEXT, text = "A", font, fontSize })
   sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]

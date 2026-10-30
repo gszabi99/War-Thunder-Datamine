@@ -2097,7 +2097,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2122,7 +2122,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/380mm_aster_30_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/380mm_aster_30_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2501,8 +2501,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_samp_t_launcher_default",
-      "blk": "gameData/units/tankModels/weaponPresets/it_samp_t_launcher_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4026,5 +4026,29 @@
       10.0
     ]
   },
-  "wreckedParts": {}
+  "wreckedParts": {},
+  "stopSignalLights": {
+    "leftLightPos": [
+      -4.97,
+      0.5969,
+      1.0354
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

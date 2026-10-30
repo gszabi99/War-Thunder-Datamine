@@ -9,314 +9,124 @@
       "position": "absolute",
       "size": "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar - 0.01@scrn_tgt",
       "padding-bottom": "1@frameFooterHeightLarge",
-      "flow": "vertical",
-      "textAreaCentered": {
-        "id": "battle_start_countdown",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "display": "hide",
-        "wink": "no",
-        "text": "",
-        "titleFont": "yes"
-      },
-      "activeText": {
-        "id": "battle_in_progress",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "display": "hide",
-        "changeColor": "inQueue",
-        "text": "#multiplayer/battleInProgress",
-        "titleFont": "yes"
-      },
-      "tdiv": {
-        "size": "pw, fh",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "tdiv": [
-          {
-            "pos": "0, 50%ph-50%h",
-            "position": "relative",
-            "size": "33%pw, ph",
+      "sessionPanel": [
+        {
+          "size": "480@sf/@pf, ph",
+          "sessionPanelHeader": {
+            "activeText": {
+              "text": "#multiplayer/sessionSettings",
+              "caption": "yes"
+            }
+          },
+          "sessionInfoList": {
+            "id": "session_info_list",
+            "size": "pw, fh",
+            "padding": "1@frameHeaderPadding, 1@blockInterval",
+            "overflow-y": "auto",
+            "scrollbarShortcuts": "yes",
             "flow": "vertical",
             "tdiv": [
               {
-                "size": "pw, fh",
-                "flow": "vertical",
-                "optionlist_line_left": {
-                  "size": "pw, 1@baseTrHeight",
-                  "activeText": {
-                    "pos": "pw-w, 50%ph-50%h",
-                    "text": "#multiplayer/sessionSettings",
-                    "caption": "yes",
-                    "text-align": "right"
+                "margin-y": "1@blockInterval",
+                "tdiv": [
+                  {
+                    "id": "countries1",
+                    "sessionFlags": "yes",
+                    "pos": "0, 50%ph-50%h",
+                    "position": "relative"
+                  },
+                  {
+                    "id": "countries2",
+                    "sessionFlags": "yes",
+                    "pos": "0.01@sf, 50%ph-50%h",
+                    "position": "relative"
                   }
-                },
-                "tdiv": {
-                  "size": "pw, fh",
-                  "margin": "0, 1@blockInterval",
-                  "overflow-y": "auto",
-                  "flow": "vertical",
-                  "tdiv": [
-                    {
-                      "pos": "pw-w, 0",
-                      "position": "relative",
-                      "tdiv": [
-                        {
-                          "id": "countries1",
-                          "pos": "0, 50%ph-50%h",
-                          "position": "relative"
-                        },
-                        {
-                          "id": "countries2",
-                          "pos": "0.01@sf, 50%ph-50%h",
-                          "position": "relative"
-                        }
-                      ],
-                      "activeText": {
-                        "id": "vsText",
-                        "text": "#country/VS",
-                        "pos": "0.01@sf, 50%ph-50%h",
-                        "position": "relative",
-                        "style": "font:@fontMedium;"
-                      }
-                    },
-                    {
-                      "id": "vehicles_info_button_block",
-                      "pos": "pw-w, 0",
-                      "position": "relative",
-                      "Button_text": {
-                        "text": "#lobby/vehicles",
-                        "on_click": "onVehiclesInfo",
-                        "btnName": "L3",
-                        "ButtonImg": {}
-                      }
-                    }
-                  ],
-                  "sessionInfoText": [
-                    {
-                      "id": "session_mapName"
-                    },
-                    {
-                      "id": "session_difficulty"
-                    },
-                    {
-                      "id": "session_creator"
-                    },
-                    {
-                      "id": "session_hasPassword"
-                    },
-                    {
-                      "id": "session_teamLimit"
-                    },
-                    {
-                      "id": "session_battleRating"
-                    },
-                    {
-                      "id": "session_environment"
-                    },
-                    {
-                      "id": "session_laps"
-                    },
-                    {
-                      "id": "session_winners"
-                    },
-                    {
-                      "id": "session_can_shoot"
-                    },
-                    {
-                      "id": "session_timeLimit"
-                    },
-                    {
-                      "id": "limited_fuel"
-                    },
-                    {
-                      "id": "limited_ammo"
-                    },
-                    {
-                      "id": "session_respawn"
-                    },
-                    {
-                      "id": "session_takeoff"
-                    },
-                    {
-                      "id": "session_allowbots"
-                    },
-                    {
-                      "id": "session_allow_empty_teams"
-                    },
-                    {
-                      "id": "session_jip"
-                    },
-                    {
-                      "id": "session_cluster"
-                    },
-                    {
-                      "id": "disable_airfields"
-                    },
-                    {
-                      "id": "spawn_ai_tank_on_tank_maps"
-                    },
-                    {
-                      "id": "slotbar_override"
-                    },
-                    {
-                      "id": "content_allowed_preset"
-                    }
-                  ]
+                ],
+                "activeText": {
+                  "id": "vsText",
+                  "text": "#country/VS",
+                  "pos": "0.01@sf, 50%ph-50%h",
+                  "position": "relative",
+                  "style": "font:@fontMedium;"
                 }
               },
               {
+                "id": "session_info_rows",
                 "width": "pw",
-                "id": "player_info",
-                "flow": "vertical",
-                "optionlist_line_left": {
-                  "size": "pw, 1@baseTrHeight",
-                  "activeText": {
-                    "pos": "pw-w, 50%ph-50%h",
-                    "text": "#multiplayer/playerDetails",
-                    "caption": "yes",
-                    "text-align": "right"
-                  }
-                },
-                "tdiv": {
-                  "size": "pw, 1.2@avatarButtonSize",
-                  "flow": "vertical",
-                  "playerTeam": "",
-                  "tdiv": [
-                    {
-                      "pos": "pw-w, 0",
-                      "position": "relative",
-                      "DummyButton": {
-                        "id": "btn_user_options",
-                        "pos": "-w - 1@blockInterval, 0",
-                        "position": "absolute",
-                        "btnName": "A",
-                        "_on_click": "onUserOption",
-                        "ButtonImg": {
-                          "class": "independent"
-                        }
-                      },
-                      "tdiv": {
-                        "id": "player_team",
-                        "valign": "center",
-                        "css-hier-invalidate": "yes",
-                        "team": "",
-                        "teamImg": {
-                          "id": "player_team_ico",
-                          "size": "@cIco, @cIco",
-                          "background-svg-size": "@cIco, @cIco",
-                          "tooltip": ""
-                        },
-                        "cardImg": {
-                          "id": "player_country",
-                          "isCountryIcon": "yes",
-                          "pos": "@tablePad, 0",
-                          "position": "relative"
-                        }
-                      },
-                      "textareaNoTab": [
-                        {
-                          "id": "player_clanTag",
-                          "pos": "@tablePad, 0",
-                          "position": "relative"
-                        },
-                        {
-                          "id": "player_name",
-                          "pos": "@tablePad, 0",
-                          "position": "relative"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "curAircraft",
-                      "display": "hide",
-                      "pos": "pw -w, -0.003@sf",
-                      "position": "relative"
-                    }
-                  ],
-                  "textarea": [
-                    {
-                      "id": "player_title",
-                      "hideEmptyText": "yes",
-                      "smallFont": "yes",
-                      "pos": "pw-w, 0",
-                      "position": "relative"
-                    },
-                    {
-                      "id": "player_spectator",
-                      "hideEmptyText": "yes",
-                      "smallFont": "yes",
-                      "pos": "pw-w, 0",
-                      "position": "relative"
-                    }
-                  ],
-                  "Button_text": {
-                    "position": "absolute",
-                    "pos": "0.1@avatarButtonSize, 0.1@avatarButtonSize",
-                    "class": "profileImg",
-                    "_on_click": "onUserCard",
-                    "tdiv": {
-                      "id": "player_icon",
-                      "size": "pw,ph",
-                      "behavior": "bhvAvatar",
-                      "isFull": "yes",
-                      "avatarFrame": {
-                        "id": "player_frame",
-                        "display": "hide"
-                      }
-                    }
-                  }
-                }
+                "flow": "vertical"
               }
-            ]
+            ],
+            "sessionInfoText": {
+              "id": "slotbar_override",
+              "margin-top": "1@blockInterval",
+              "talign": "left"
+            }
           },
-          {
-            "size": "fw, ph",
-            "pos": "2%pw, 50%ph-50%h",
-            "position": "relative",
+          "tdiv": {
+            "id": "session_vehicles",
+            "width": "pw",
             "flow": "vertical",
+            "display": "hide",
+            "sessionPanelHeader": {
+              "activeText": {
+                "text": "#multiplayer/allowedVehiclesByTeams",
+                "caption": "yes"
+              }
+            },
+            "tdiv": {
+              "width": "pw",
+              "sessionTeamVehicles": [
+                {
+                  "id": "session_vehicles_A"
+                },
+                {
+                  "id": "session_vehicles_B"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "size": "fw, ph",
+          "margin-left": "16@sf/@pf",
+          "sessionPanelHeader": {
             "tdiv": [
               {
                 "id": "common_list_header",
-                "width": "pw",
-                "optionlist_line_right": {
-                  "size": "pw, @baseTrHeight",
-                  "activeText": {
-                    "id": "num_players",
-                    "text": "#multiplayer/playerList",
-                    "caption": "yes",
-                    "left": "10",
-                    "position": "relative"
-                  },
-                  "div": {
-                    "pos": "pw-w,50%ph-50%h",
-                    "position": "absolute",
-                    "id": "num_teams",
-                    "css-hier-invalidate": "yes",
-                    "teamAImg": {},
-                    "activeText": [
-                      {
-                        "id": "num_teamA",
-                        "style": "text-align:center;"
-                      },
-                      {
-                        "id": "num_teamB",
-                        "text": "",
-                        "left": "0.002*@scrn_tgt",
-                        "position": "relative"
-                      }
-                    ],
-                    "teamBImg": {
-                      "margin-left": "1*@scrn_tgt/100.0"
+                "size": "pw, ph",
+                "activeText": {
+                  "id": "num_players",
+                  "pos": "0, 50%ph-50%h",
+                  "position": "relative",
+                  "text": "#multiplayer/playerList",
+                  "caption": "yes"
+                },
+                "div": {
+                  "id": "num_teams",
+                  "pos": "pw-w, 50%ph-50%h",
+                  "position": "absolute",
+                  "css-hier-invalidate": "yes",
+                  "teamAImg": {},
+                  "activeText": [
+                    {
+                      "id": "num_teamA",
+                      "style": "text-align:center;"
+                    },
+                    {
+                      "id": "num_teamB",
+                      "text": "",
+                      "left": "0.002*@scrn_tgt",
+                      "position": "relative"
                     }
+                  ],
+                  "teamBImg": {
+                    "margin-left": "1*@scrn_tgt/100.0"
                   }
                 }
               },
               {
                 "id": "list_by_teams_header",
-                "width": "pw",
-                "pos": "0, 0.5@baseTrHeight - 0.5h",
-                "position": "relative",
+                "size": "pw, ph",
                 "css-hier-invalidate": "yes",
                 "teamAImg": {
                   "margin-right": "1@blockInterval"
@@ -340,41 +150,68 @@
                 "teamBImg": {
                   "margin-left": "1@blockInterval"
                 }
-              },
-              {
-                "id": "lobby_chat_place",
-                "size": "pw, fh"
               }
             ],
+            "DummyButton": {
+              "id": "btn_user_options",
+              "pos": "50%pw-50%w, 50%ph-50%h",
+              "position": "absolute",
+              "display": "hide",
+              "btnName": "A",
+              "_on_click": "onUserOption",
+              "ButtonImg": {
+                "class": "independent"
+              }
+            }
+          },
+          "tdiv": {
+            "size": "pw, fh",
+            "padding": "1@blockInterval, 0, 1@blockInterval, 1@blockInterval",
+            "flow": "vertical",
             "div": [
               {
-                "height": "0.055*@scrn_tgt",
-                "pos": "pw-w, 0",
-                "position": "relative",
-                "overflow": "visible",
+                "size": "pw, 0.06@scrn_tgt",
+                "textAreaCentered": {
+                  "id": "battle_start_countdown",
+                  "pos": "50%pw-50%w, 50%ph-50%h",
+                  "position": "absolute",
+                  "display": "hide",
+                  "wink": "no",
+                  "text": "",
+                  "titleFont": "yes"
+                },
+                "activeText": {
+                  "id": "battle_in_progress",
+                  "pos": "50%pw-50%w, 50%ph-50%h",
+                  "position": "absolute",
+                  "display": "hide",
+                  "changeColor": "inQueue",
+                  "text": "#multiplayer/battleInProgress",
+                  "titleFont": "yes"
+                },
                 "textarea": [
                   {
-                    "width": "100%p.p.w",
                     "id": "session_status",
-                    "text": "",
-                    "text-align": "right",
+                    "width": "pw",
                     "pos": "0, 50%ph-50%h",
-                    "position": "relative"
+                    "position": "absolute",
+                    "text": "",
+                    "text-align": "right"
                   },
                   {
                     "id": "team_status_B",
-                    "width": "50%p.p.w",
-                    "pos": "0, 50%ph-50%h",
-                    "position": "relative",
+                    "width": "50%pw",
+                    "pos": "pw-w, 50%ph-50%h",
+                    "position": "absolute",
                     "text-align": "right",
                     "display": "hide"
                   }
                 ],
                 "textareaNoTab": {
                   "id": "team_status_A",
-                  "width": "50%p.p.w",
+                  "width": "50%pw",
                   "pos": "0, 50%ph-50%h",
-                  "position": "relative",
+                  "position": "absolute",
                   "display": "hide"
                 }
               },
@@ -390,10 +227,14 @@
                 "window-size-border-mask": "B",
                 "padding-bottom": "5"
               }
-            ]
+            ],
+            "tdiv": {
+              "id": "lobby_chat_place",
+              "size": "pw, fh"
+            }
           }
-        ]
-      }
+        }
+      ]
     }
   },
   "navBar": {
@@ -449,7 +290,7 @@
         {
           "id": "btn_ready",
           "class": "battle",
-          "navButtonFont": "yes",
+          "fontOverride": "fontNormal",
           "text": "#mainmenu/btnReady",
           "_on_click": "onReady",
           "css-hier-invalidate": "yes",

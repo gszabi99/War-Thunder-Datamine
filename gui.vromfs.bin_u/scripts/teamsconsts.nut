@@ -5,6 +5,6 @@ enum Team {
   none  = 3
 }
 
-return {
+return freeze({
   Team
-}
+})

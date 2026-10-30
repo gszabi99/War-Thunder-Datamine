@@ -1,7 +1,7 @@
+import "%scripts/time.nut" as time
 from "%scripts/dagui_library.nut" import *
 
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let time = require("%scripts/time.nut")
 
 elemViewType.addTypes({
   COPYRIGHT_TEXT = {

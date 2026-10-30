@@ -1,17 +1,18 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/onlineShop/onlineShopModel.nut" import openBrowserByPurchaseData
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
 from "%sqstd/datablock.nut" import getBlkByPathArray
 from "%sqstd/string.nut" import cutPrefix
 from "blkGetters" import get_gui_regional_blk
 from "%scripts/dagui_natives.nut" import has_entitlement
+from "%globalScripts/loc_helpers.nut" import getVendorLocId
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 
 
@@ -34,7 +35,7 @@ let ReqPurchaseWnd = class (BaseGuiHandlerWT) {
   text = ""
   image = ""
   imageRatioHeight = 0.75 
-  btnStoreText = "#msgbox/btn_onlineShop"
+  btnStoreText = $"#{getVendorLocId("msgbox/btn_onlineShop")}"
 
   static function open(config) {
     if (!("purchaseData" in config) || !config.purchaseData.canBePurchased)
@@ -111,4 +112,4 @@ let ReqPurchaseWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ReqPurchaseWnd", ReqPurchaseWnd)
 
-return { ReqPurchaseWnd }
+return freeze({ ReqPurchaseWnd })

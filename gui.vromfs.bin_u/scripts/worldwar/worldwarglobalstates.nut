@@ -1,14 +1,14 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled
+from "%sqstd/platform.nut" import isSony
+from "%scripts/user/balance.nut" import hasMultiplayerRestritionByBalance
+from "%scripts/user/xboxFeatures.nut" import isMultiplayerPrivilegeAvailable
+from "%scripts/worldWar/worldWarCfgState.nut" import getWwSetting
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 
-let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-
 let isWorldWarEnabled = @() hasFeature("WorldWar")
-  && (!isPlatformSony || isCrossPlayEnabled())
+  && (!isSony || isCrossPlayEnabled())
 
 function canPlayWorldwar() {
   if (!isMultiplayerPrivilegeAvailable.get()
@@ -36,8 +36,8 @@ function getPlayWorldwarConditionText(fullText = false) {
 
   if (!isCrossPlayEnabled())
     return fullText
-      ? loc("xbox/actionNotAvailableCrossNetworkPlay")
-      : loc("xbox/crossPlayRequired")
+      ? locByVendor("xbox/actionNotAvailableCrossNetworkPlay")
+      : locByVendor("xbox/crossPlayRequired")
 
   let rankText = colorize("@unlockHeaderColor",
     get_roman_numeral(getWwSetting("minCraftRank", 0)))
@@ -48,10 +48,10 @@ function getCantPlayWorldwarReasonText() {
   return !canPlayWorldwar() ? getPlayWorldwarConditionText(true) : ""
 }
 
-return {
+return freeze({
   isWorldWarEnabled
   canPlayWorldwar
   getPlayWorldwarConditionText
   getCantPlayWorldwarReasonText
   canJoinWorldwarBattle
-}
+})

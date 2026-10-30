@@ -1,4 +1,15 @@
+import "%scripts/missions/mapPreferencesParams.nut" as mapPreferencesParams
 import "mapPreferences" as mapPreferences
+from "%scripts/viewUtils/daguiFonts.nut" import getFontLineHeightPx
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/missions/mapPreview.nut" import setMapPreview, getMissionBriefingConfig
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
 from "math" import ceil, floor
 from "dagor.random" import rnd
 from "%sqstd/string.nut" import trim, utf8ToLower
@@ -7,18 +18,7 @@ from "%scripts/dagui_natives.nut" import save_online_single_job
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/mapPreview.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -48,10 +48,10 @@ let mapPreferencesModal = class (BaseGuiHandlerWT) {
     let banList = this.getBanList()
     let mapsCountY = ceil(this.mapsList.len() * 1.0 / maxCountX)
     let mapItemHeight = to_pixels("1@mapPreferenceIconSize + 3@blockInterval")
-      + daguiFonts.getFontLineHeightPx("fontSmall")
+      + getFontLineHeightPx("fontSmall")
     let mapsRowsHeight = mapsCountY * mapItemHeight
     let title = mapPreferencesParams.getPrefTitle(this.curEvent)
-    let textRowHeight = daguiFonts.getFontLineHeightPx("fontNormal")
+    let textRowHeight = getFontLineHeightPx("fontNormal")
     let banListHeight = to_pixels("".concat("1@maxWindowHeight-1@frameFooterHeight",
       "-1@frameTopPadding-1@frameHeaderHeight-1@mapPreferencePreviewSize-3@checkboxSize",
       "-2@buttonHeight-3@blockInterval-2@buttonMargin")) - 2 * textRowHeight
@@ -456,11 +456,11 @@ let mapPreferencesModal = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("mapPreferencesModal", mapPreferencesModal)
 
-return {
+return freeze({
   open = function(params) {
     if (!mapPreferencesParams.hasPreferences(params.curEvent))
       return
 
     handlersManager.loadHandler(mapPreferencesModal, params)
   }
-}
+})

@@ -29,22 +29,28 @@ function isImagePrefetched(img) {
   return res
 }
 
-function isAllBlkImagesPrefetched(blk) {
-  local res = true
+function getBlkImages(blk, res = null) {
+  res = res ?? []
   foreach (tag in ["background-image", "foreground-image"])
     foreach (img in (blk % tag))
       if (img instanceof String)
-        if (!isImagePrefetched(img))
-          res = false
+        res.append(img)
 
   let totalBlocks = blk.blockCount()
   for (local i = 0; i < totalBlocks; i++)
-    if (!isAllBlkImagesPrefetched(blk.getBlock(i)))
-      res = false
-
+    getBlkImages(blk.getBlock(i), res)
   return res
 }
 
-return {
-  isAllBlkImagesPrefetched = isAllBlkImagesPrefetched
+function isAllBlkImagesPrefetched(blk) {
+  local res = true
+  foreach (img in getBlkImages(blk))
+    if (!isImagePrefetched(img))
+      res = false
+  return res
 }
+
+return freeze({
+  getBlkImages
+  isAllBlkImagesPrefetched
+})

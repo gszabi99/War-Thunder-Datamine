@@ -1,5 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/discounts/discountUtils.nut" import getDiscountByPath
+from "%scripts/crew/crew.nut" import getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, loadCrewSkillsOnce
 from "%sqstd/datablock.nut" import convertBlk
 from "string" import format
 from "blkGetters" import get_warpoints_blk, get_skills_blk, get_price_blk
@@ -7,12 +13,7 @@ from "%scripts/dagui_natives.nut" import expert_to_ace_get_unit_exp, wp_get_spec
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
-let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq, crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
+let { unitCrewTrainReq, crewSkillPages } = require("%scripts/crew/crew.nut")
 
 const CREW_BONUS_TO_SKILL_EXPERT = 3
 const CREW_BONUS_TO_SKILL_ACE = 2
@@ -446,13 +447,7 @@ enums.addTypes(crewSpecTypes, {
       foreach (stageBlk in reduceBlk % "stage")
         discountData.append(convertBlk(stageBlk))
 
-      discountData.sort(function (a, b) {
-        let percentA = (a?.percent ?? 0)
-        let percentB = (b?.percent ?? 0)
-        if (percentA != percentB)
-          return percentA > percentB ? 1 : -1
-        return 0
-      })
+      discountData.sortby(@(a) a?.percent ?? 0)
       return discountData
     }
   }
@@ -467,7 +462,7 @@ enums.addTypes(crewSpecTypes, {
   }
 })
 
-crewSpecTypes.types.sort(@(a, b) a.code <=> b.code)
+crewSpecTypes.types.sortby(@(a) a.code)
 
 return {
   crewSpecTypes

@@ -1,6 +1,6 @@
 {
   "type": "radar",
-  "name": "Type-13",
+  "name": "Type 3 Mark 1 Model 3",
   "transivers": {
     "search": {
       "pulsePower": 30000.0,
@@ -8,8 +8,8 @@
       "prf": 1000.0,
       "band": 0,
       "rcs": 5.0,
-      "range": 20000.0,
-      "rangeMax": 20000.0,
+      "range": 50000.0,
+      "rangeMax": 100000.0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 60.0,
@@ -51,12 +51,14 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 20000.0
+        "maxValue": 100000.0
       }
     }
   },
   "scopeRanges": {
-    "range1": 20000.0
+    "range1": 20000.0,
+    "range2": 50000.0,
+    "range3": 100000.0
   },
   "fsms": {
     "main": {
@@ -76,7 +78,7 @@
             ],
             "distanceRange": [
               0.0,
-              20000.0
+              100000.0
             ]
           }
         },

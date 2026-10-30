@@ -23,7 +23,7 @@ function flyDirection(width, height, isLockedFlyPath = false) {
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 0, 0, 20, 20],
       [VECTOR_LINE, -50, 0, -20, 0],
       [VECTOR_LINE, 20, 0, 50, 0],
@@ -49,7 +49,7 @@ function angleTxt(num, isLeft, textFont, invVPlace = 1, font_size = 60, x = 0, y
 let aosOffset = Computed(@() Aos.get().tointeger())
 let yawIndicator = @() {
   size = const [pw(3), ph(3)]
-  pos = [pw(50), ph(80)]
+  pos = const [pw(50), ph(80)]
   watch = [IlsColor, aosOffset]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -57,7 +57,7 @@ let yawIndicator = @() {
   fillColor = Color(0, 0, 0, 0)
   commands = [
     [VECTOR_ELLIPSE, aosOffset.get() * 10, 0, 50, 50],
-    [VECTOR_LINE, 0, -100, 0, 100],
+    const [VECTOR_LINE, 0, -100, 0, 100],
   ]
 }
 
@@ -74,7 +74,7 @@ function cancelBombing(posY, size) {
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_LINE, -50, -50, 50, 50],
           [VECTOR_LINE, -50, 50, 50, -50]
         ]
@@ -125,7 +125,7 @@ let shimadzuRoll = @(width) {
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 0, 10, 0],
       [VECTOR_LINE, 10, 0, 30, 100],
       [VECTOR_LINE, 30, 100, 50, 0],
@@ -199,12 +199,12 @@ let aimMark = @() {
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
-        [VECTOR_LINE, 0, 0, 0, 0],
-        [VECTOR_LINE, 0, 50, 50, 0],
-        [VECTOR_LINE, 50, 0, 0, -50],
-        [VECTOR_LINE, 0, -50, -50, 0],
-        [VECTOR_LINE, -50, 0, 0, 50],
-        (CCIPMode.get() ? [VECTOR_LINE, -50, -50, 50, -50] : [])
+        const [VECTOR_LINE, 0, 0, 0, 0],
+        const [VECTOR_LINE, 0, 50, 50, 0],
+        const [VECTOR_LINE, 50, 0, 0, -50],
+        const [VECTOR_LINE, 0, -50, -50, 0],
+        const [VECTOR_LINE, -50, 0, 0, 50],
+        (CCIPMode.get() ? const [VECTOR_LINE, -50, -50, 50, -50] : const [])
       ]
       behavior = Behaviors.RtPropUpdate
       update = @() {
@@ -222,7 +222,7 @@ let ASPAirSymbol = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, -30, 0],
     [VECTOR_LINE, -40, 0, -40, 10],
     [VECTOR_LINE, 100, 0, 30, 0],
@@ -238,7 +238,7 @@ let ASPAirSymbolWrap = {
   update = @() {
     transform = {
       rotate = Roll.get()
-      pivot = [0, 0]
+      pivot = 0
     }
   }
 }
@@ -302,17 +302,15 @@ function SUMAltitude(font_size, posiiton = [pw(60), ph(25)]) {
     watch = SUMAltVis
     size = FLEX
     pos = posiiton
-    children = SUMAltVis.get() ? [
-      @() {
-        watch = [SUMAltValue, IlsColor]
-        size = SIZE_TO_CONTENT
-        rendObj = ROBJ_TEXT
-        color = IlsColor.get()
-        fontSize = font_size
-        font = Fonts.hud
-        text = string.format("R%s.%03d", SUMAltThousands.get(), SUMAltValue.get() % 1000)
-      }
-    ] : null
+    children = SUMAltVis.get() ? @() {
+      watch = [SUMAltValue, IlsColor]
+      size = SIZE_TO_CONTENT
+      rendObj = ROBJ_TEXT
+      color = IlsColor.get()
+      fontSize = font_size
+      font = Fonts.hud
+      text = string.format("R%s.%03d", SUMAltThousands.get(), SUMAltValue.get() % 1000)
+    } : null
   }
 }
 

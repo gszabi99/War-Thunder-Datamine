@@ -1743,7 +1743,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_driver",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1768,7 +1768,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_aim_9x_nomads_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_aim_9x_nomads_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -1926,7 +1926,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_400.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_400.blk",
         "emitter": "emtr_mg_flame",
         "flash": "emtr_mg_flame",
         "useEmitter": true,
@@ -2024,8 +2024,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_nomads_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_nomads_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3513,14 +3513,14 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/nw_xenta_m_5.blk",
+              "blk": "gamedata/sensors/nw_xenta_m_5.blk",
               "turretIndex": -1,
               "designationFromBody": true,
               "designationTurretIndex": -1,
               "dmPart": "antenna_target_location_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]
@@ -3538,7 +3538,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_camera_driver",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3563,7 +3563,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/127mm_aim_9x_nomads_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/127mm_aim_9x_nomads_user_cannon.blk",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
               "emitterGenRange": [
@@ -3721,7 +3721,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_400.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_400.blk",
               "emitter": "emtr_mg_flame",
               "flash": "emtr_mg_flame",
               "useEmitter": true,
@@ -3812,7 +3812,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3943,7 +3943,7 @@
   ],
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/nw_xenta_m_5.blk",
+      "blk": "gamedata/sensors/nw_xenta_m_5.blk",
       "turretIndex": -1,
       "designationFromBody": true,
       "designationTurretIndex": -1,
@@ -3956,5 +3956,29 @@
     "hasTurretView": false,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 12.0
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.181,
+      0.8646,
+      0.7438
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

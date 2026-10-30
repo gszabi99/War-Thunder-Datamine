@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%appGlobals/login/loginState.nut" import hasLoginState
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
-
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { hasLoginState } = require("%scripts/login/loginStates.nut")
 
 let WaitForLoginWnd = class (BaseGuiHandler) {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
@@ -53,4 +52,4 @@ let WaitForLoginWnd = class (BaseGuiHandler) {
 }
 register_gui_handler("WaitForLoginWnd", WaitForLoginWnd)
 
-return { WaitForLoginWnd }
+return freeze({ WaitForLoginWnd })

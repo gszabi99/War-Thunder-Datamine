@@ -6,7 +6,7 @@ from "%scripts/contacts/contactsConsts.nut" import GAME_GROUP_NAME
 
 let contactsWndSizes = Watched(null)
 
-let steamContactsGroup = mkWatched(persist, "steamContactsGroup", null)
+let steamContactsGroup = mkWatchedClearedOnReload(null)
 let recentGroup = hardPersistWatched("recentGroup", null)
 let blockedMeUids = hardPersistWatched("blockedMeUids", {})
 let psnApprovedUids = hardPersistWatched("psnApprovedUids", {})
@@ -14,7 +14,8 @@ let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
 let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
 let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
 
-let clanUserTable = mkWatched(persist, "clanUserTable", {})
+let clanUserTable = mkHardPersistWatched("contacts.contactsListState")("clanUserTable", {})
+
 let contactsGroups = persist("contactsGroups", @() [])
 let contactsByName = persist("contactsByName", @() {})
 let contactsPlayers = persist("contactsPlayers", @() {})

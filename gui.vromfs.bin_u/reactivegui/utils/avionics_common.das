@@ -142,9 +142,9 @@ def get_hud_aam_seeker() : AamSeeker // TODO: Decouple from hud/darg, get worldp
 
 def get_hmd_aam_seeker() : AamSeeker
   var aamSeeker : AamSeeker
-  if get_aam_tracker_visible()
+  if get_hmd_aam_tracker_visible()
     aamSeeker.isScreenPosValid = true
-    aamSeeker.screenPos = get_screen_aam_tracker_pos()
+    aamSeeker.screenPos = get_hmd_aam_tracker_pos()
   return <- aamSeeker
 
 struct GunBoresight : ScreenPos

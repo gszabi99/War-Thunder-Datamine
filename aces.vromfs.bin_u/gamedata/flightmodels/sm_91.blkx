@@ -1,24 +1,24 @@
 {
   "fmFile": "fm/sm_91.blk",
   "model": "sm_91",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_attacker_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_low_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_attacker_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_low_common.blk",
   "gearSinkRangeLR": 0.217,
   "gearSinkRangeC": 0.0,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "italy_para",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
@@ -724,15 +724,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -769,7 +773,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -799,15 +805,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -844,7 +854,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -2542,7 +2554,7 @@
     "Weapon": [
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
@@ -2552,7 +2564,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "shell": "emtr_shellrejection1",
@@ -2562,7 +2574,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2572,7 +2584,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "shell": "emtr_shellrejection3",
@@ -2583,7 +2595,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare5",
         "flash": "flare5",
         "shell": "emtr_shellrejection5",
@@ -2594,7 +2606,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "blk": "gamedata/weapons/cannonMG15120.blk",
         "emitter": "flare6",
         "flash": "flare6",
         "shell": "emtr_shellrejection6",
@@ -2605,7 +2617,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/cannonMG15120_turret.blk",
+        "blk": "gamedata/weapons/cannonMG15120_turret.blk",
         "emitter": "gun1",
         "flash": "flare7",
         "turret": [
@@ -2659,16 +2671,16 @@
     "preset": [
       {
         "name": "sm_91_default",
-        "blk": "gameData/FlightModels/weaponPresets/sm_91_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/sm_91_default.blk"
       },
       {
         "name": "sm_91_6x50kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/sm_91_6x50kg_t.blk",
+        "blk": "gamedata/flightModels/weaponPresets/sm_91_6x50kg_t.blk",
         "reqModification": "it50_mod"
       },
       {
         "name": "sm_91_6x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/sm_91_6x100kg_t.blk",
+        "blk": "gamedata/flightModels/weaponPresets/sm_91_6x100kg_t.blk",
         "reqModification": "it100_mod"
       }
     ]

@@ -72,17 +72,15 @@ function createRwrGrid(gridStyle) {
 function createRwrGridMarks(gridStyle, settings) {
   return {
     size = FLEX,
-    children = [
-      styleText.__merge({
-        rendObj = ROBJ_TEXT
-        pos = const [ph(0), ph(90)]
-        size = FLEX
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
-        text = format("%.f", settings.rangeMax * 1.0 * metrToNavMile)
-      })
-    ]
+    children = styleText.__merge({
+      rendObj = ROBJ_TEXT
+      pos = const [ph(0), ph(90)]
+      size = FLEX
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
+      text = format("%.f", settings.rangeMax * 1.0 * metrToNavMile)
+    })
   }
 }
 
@@ -260,7 +258,7 @@ function createRadarScanSector(gridStyle) {
         fillColor = 0,
         commands = [
           [VECTOR_LINE, 120, -ElevationMin.get() * ElevationScale.get() * 100, 120, -ElevationMax.get() * ElevationScale.get() * 100],
-          [VECTOR_LINE, 112, 0, 120, 0],
+          const [VECTOR_LINE, 112, 0, 120, 0],
           [VECTOR_LINE, 115,  elevation5DegInRad * ElevationScale.get() * 100, 120,  elevation5DegInRad * ElevationScale.get() * 100],
           [VECTOR_LINE, 115, -elevation5DegInRad * ElevationScale.get() * 100, 120, -elevation5DegInRad * ElevationScale.get() * 100]
         ]
@@ -268,21 +266,19 @@ function createRadarScanSector(gridStyle) {
       @() {
         watch = RadarTargetDist
         size = FLEX
-        children = RadarTargetDist.get() > 0 ? [
-          @() {
-            rendObj = ROBJ_VECTOR_CANVAS,
-            watch = [AzimuthAbs, ElevationAbs, ElevationScale]
-            pos = const [pw(50), ph(50)],
-            size = FLEX,
-            color = radarScanSectorColor,
-            lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
-            fillColor = 0,
-            commands = [
-              [VECTOR_LINE, 0, 0, sin(AzimuthAbs.get()) * 100, -cos(AzimuthAbs.get()) * 100],
-              [VECTOR_LINE, 120, -ElevationAbs.get() * ElevationScale.get() * 100.0, 122, -ElevationAbs.get() * ElevationScale.get() * 100.0]
-            ]
-          }
-        ] :
+        children = RadarTargetDist.get() > 0 ? @() {
+          rendObj = ROBJ_VECTOR_CANVAS,
+          watch = [AzimuthAbs, ElevationAbs, ElevationScale]
+          pos = const [pw(50), ph(50)],
+          size = FLEX,
+          color = radarScanSectorColor,
+          lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+          fillColor = 0,
+          commands = [
+            [VECTOR_LINE, 0, 0, sin(AzimuthAbs.get()) * 100, -cos(AzimuthAbs.get()) * 100],
+            [VECTOR_LINE, 120, -ElevationAbs.get() * ElevationScale.get() * 100.0, 122, -ElevationAbs.get() * ElevationScale.get() * 100.0]
+          ]
+        } :
         [
           @() {
             rendObj = ROBJ_VECTOR_CANVAS,
@@ -564,113 +560,111 @@ function scope(scale, style) {
     size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      {
-        size = const [pw(100), ph(100)],
-        children = [
-          {
-            size = FLEX,
-            children = [
-              rwrTargetsComponent(style.object),
-              createRwrGrid(style.grid),
-              rwrGridMarksComponent(style.grid)
-            ]
-          },
-          @()
-            styleText.__merge({
-              watch = Speed
-              rendObj = ROBJ_TEXT
-              pos = const [pw(-90), ph(-115)]
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
-              text = format("%.0f", Speed.get() * mpsToKnots)
-            }),
+    children = {
+      size = const [pw(100), ph(100)],
+      children = [
+        {
+          size = FLEX,
+          children = [
+            rwrTargetsComponent(style.object),
+            createRwrGrid(style.grid),
+            rwrGridMarksComponent(style.grid)
+          ]
+        },
+        @()
           styleText.__merge({
+            watch = Speed
             rendObj = ROBJ_TEXT
-            pos = const [pw(-75), ph(-115)]
+            pos = const [pw(-90), ph(-115)]
             size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-            text = "KT"
+            fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
+            text = format("%.0f", Speed.get() * mpsToKnots)
           }),
-          @()
-            styleText.__merge({
-              watch = CompassValue
-              rendObj = ROBJ_TEXT
-              pos = const [pw(0), ph(-115)]
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
-              text = format("% 3.0f'", CompassValue.get() > 0.0 ? CompassValue.get() : 360.0 + CompassValue.get())
-            }),
-          @()
-            styleText.__merge({
-              watch = Altitude
-              rendObj = ROBJ_TEXT
-              pos = const [pw(85), ph(-115)]
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
-              text = format("% 3.0f,%03.f", Altitude.get() * metrToFeet * 0.001, Altitude.get() * metrToFeet - floor(Altitude.get() * metrToFeet * 0.001) * 1000.0)
-            }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-75), ph(-115)]
+          size = FLEX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+          text = "KT"
+        }),
+        @()
           styleText.__merge({
+            watch = CompassValue
             rendObj = ROBJ_TEXT
-            pos = const [pw(110), ph(-115)]
+            pos = const [pw(0), ph(-115)]
             size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-            text = "FT"
+            fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
+            text = format("% 3.0f'", CompassValue.get() > 0.0 ? CompassValue.get() : 360.0 + CompassValue.get())
           }),
+        @()
           styleText.__merge({
+            watch = Altitude
             rendObj = ROBJ_TEXT
-            pos = const [pw(-87), ph(110)]
+            pos = const [pw(85), ph(-115)]
             size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-            text = "C"
+            fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
+            text = format("% 3.0f,%03.f", Altitude.get() * metrToFeet * 0.001, Altitude.get() * metrToFeet - floor(Altitude.get() * metrToFeet * 0.001) * 1000.0)
           }),
-          @()
-            styleText.__merge({
-              watch = ChaffsCount
-              rendObj = ROBJ_TEXT
-              pos = const [pw(-75), ph(110)]
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
-              text = format("%d", ChaffsCount.get())
-            }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(110), ph(-115)]
+          size = FLEX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+          text = "FT"
+        }),
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-87), ph(110)]
+          size = FLEX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+          text = "C"
+        }),
+        @()
           styleText.__merge({
+            watch = ChaffsCount
             rendObj = ROBJ_TEXT
-            pos = const [pw(-87), ph(125)]
+            pos = const [pw(-75), ph(110)]
             size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-            text = "F"
+            fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
+            text = format("%d", ChaffsCount.get())
           }),
-          @()
-            styleText.__merge({
-              watch = FlaresCount
-              rendObj = ROBJ_TEXT
-              pos = const [pw(-75), ph(125)]
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
-              text = format("%d", FlaresCount.get())
-            }),
-          createRadarScanSector(style.grid)
-        ]
-      }
-    ]
+        styleText.__merge({
+          rendObj = ROBJ_TEXT
+          pos = const [pw(-87), ph(125)]
+          size = FLEX
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+          text = "F"
+        }),
+        @()
+          styleText.__merge({
+            watch = FlaresCount
+            rendObj = ROBJ_TEXT
+            pos = const [pw(-75), ph(125)]
+            size = FLEX
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
+            text = format("%d", FlaresCount.get())
+          }),
+        createRadarScanSector(style.grid)
+      ]
+    }
   }
 }
 

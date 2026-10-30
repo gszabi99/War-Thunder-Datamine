@@ -1,8 +1,7 @@
+import "%scripts/utils/systemMsg.nut" as systemMsg
 import "%sqStdLibs/helpers/u.nut" as u
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_escape_target
-
-let systemMsg = require("%scripts/utils/systemMsg.nut")
 
 
 
@@ -42,9 +41,9 @@ function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, ne
   return true
 }
 
-return {
+return freeze({
   MAX_MSG_LEN
   LOCALIZED_MESSAGE_PREFIX
   validateChatMessage
   sendLocalizedMessage
-}
+})

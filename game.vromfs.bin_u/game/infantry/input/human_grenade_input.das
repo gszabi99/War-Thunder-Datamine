@@ -1,16 +1,20 @@
 
 require ecs
+require app
 require net
 require hud
 require DagorMath
 require DagorDataBlock
 require inventory
 require DngHuman
+require DngWeapon
 require WTInput
 require AnimV20
 require GeomNodeTree
+require %game.events
 require %game.input.input_events
 require %appGame.wt_events
+require %appGame.infantry.es.human_weap_common
 
 
 def find_grenade_ammo_item_id(item_container : EidList; grenade_type : string)
@@ -44,6 +48,7 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
                                             human_weap__currentGunEid : EntityId;
                                             human_weap__throwMode : bool;
                                             human_weap__grenadeThrowServerConfirmed : bool;
+                                            human_net_phys : HumanActor;
                                             input__enabled : bool = true;
                                             isInVehicle : bool = false;
                                             itemContainer : EidList)
@@ -53,13 +58,33 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
     return
   if isInVehicle
     return
-  if human_weap__throwMode || !human_weap__grenadeThrowServerConfirmed
+  if !can_quick_throw_via_rethrow(human_weap__throwMode, human_weap__grenadeThrowServerConfirmed,
+                                  human_net_phys.phys)
     return
   if has(human_weap__currentGunEid, "disableQuickThrow")
     using() <| $(var eventData : DataBlock)
       hud_notify_script("hint:human_hands_full:show", eventData)
     return
   try_quick_throw_grenade_slot(eid, itemContainer, "")
+
+
+[es(tag=input, REQUIRE=hero)]
+def human_grenade_cook_input_es(evt : EventOnKeyDown;
+                                eid : EntityId;
+                                human_weap__grenadeThrower : EntityId;
+                                human_weap__currentGunSlot : int;
+                                input__enabled : bool = true)
+  if !input__enabled || evt.eventId != int(ShortcutEventId.ID_HUMAN_COOK_GRENADE)
+    return
+  if human_weap__currentGunSlot != int(HUWeaponSlots.EWS_GRENADE)
+    return
+  query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower : GrenadeThrower;
+                                               grenade_thrower__projectileEntity : EntityId)
+    if grenade_thrower.state != GrenadeThrowState.GTS_DRAW
+      return
+    let atTime = get_sync_time()
+    sendEvent(grenade_thrower__projectileEntity, CmdStartCookingGrenade(atTime = atTime))
+    send_net_event(eid, RequestCookGrenade(atTime = atTime))
 
 
 [es(tag=input, REQUIRE=hero, before=human_grenade_input_action_triggered_es)]

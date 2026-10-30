@@ -1,3 +1,6 @@
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/respawn/respawnState.nut" import isCrewAvailableInSession
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
 from "mission" import get_game_mode, get_game_type, get_mp_local_team
 from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_local_player_country, is_crew_slot_was_ready_at_host
@@ -6,9 +9,6 @@ from "%scripts/dagui_library.nut" import *
 from "guiRespawn" import getAvailableRespawnBases
 
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 
 function hasAvailableSlots() {
   if (!(get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
@@ -60,6 +60,6 @@ function hasAvailableSlots() {
   return false
 }
 
-return {
+return freeze({
   hasAvailableSlots
-}
+})

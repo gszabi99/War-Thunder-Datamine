@@ -1,7 +1,8 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%scripts/dagui_library.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 function open_browser_modal(url = "", tags = [], baseUrl = "") {
   loadHandler(get_gui_handler("BrowserModalHandler"), { url, urlTags = tags, baseUrl })
@@ -26,8 +27,8 @@ function browser_set_external_url(url) {
     handler.externalUrl = url;
 }
 
-return {
+return freeze({
   open_browser_modal
   close_browser_modal
   browser_set_external_url
-}
+})

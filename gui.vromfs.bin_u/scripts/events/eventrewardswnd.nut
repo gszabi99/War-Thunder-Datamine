@@ -1,19 +1,16 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/time.nut" import buildDateTimeStr, getTimestampFromStringUtc
+from "%scripts/events/eventRewards.nut" import getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField, getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon
+  , getRewardDescText, getRewardTooltipId, getConditionText, isRewardReceived
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
 from "%scripts/dagui_natives.nut" import get_tournament_desk_blk
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
-  getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
-  getRewardTooltipId, getConditionText, isRewardReceived
-} = require("%scripts/events/eventRewards.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let EventRewardsWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -151,4 +148,4 @@ let EventRewardsWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("EventRewardsWnd", EventRewardsWnd)
 
-return { EventRewardsWnd }
+return freeze({ EventRewardsWnd })

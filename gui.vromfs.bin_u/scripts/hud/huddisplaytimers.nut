@@ -1,3 +1,5 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/time.nut" import millisecondsToSeconds
 from "eventbus" import eventbus_subscribe
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import resetTimeout
@@ -9,12 +11,11 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/timeBar.nut" import g_time_bar
+from "%scripts/hud/actionBarState.nut" import hasAAComplexMenuItem
 from "types" import Array
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { millisecondsToSeconds } = require("%scripts/time.nut")
 
 const REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
@@ -35,12 +36,14 @@ local zoneCaptureOutdateTimeMsec = 3000
 let timersList = [
   {
     id = "repair_status"
+    isHiddenForRadarUnit = true
     color = "#787878"
     icon = "#ui/gameuiskin#icon_repair_in_progress.svg"
     needTimeText = true
   },
   {
     id = "repair_auto_status"
+    isHiddenForRadarUnit = true
     color = "#787878"
     icon = function () {
       if (timersUnitType == ES_UNIT_TYPE_SHIP)
@@ -51,11 +54,13 @@ let timersList = [
   },
   {
     id = "rearm_primary_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#icon_weapons_in_progress.svg"
   },
   {
     id = "rearm_secondary_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#icon_weapons_in_progress.svg"
   },
@@ -71,11 +76,13 @@ let timersList = [
   },
   {
     id = "rearm_rocket_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#icon_rocket_in_progress.svg"
   },
   {
     id = "rearm_smoke_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#icon_smoke_screen_in_progress.svg"
   },
@@ -91,6 +98,7 @@ let timersList = [
   },
   {
     id = "driver_status"
+    isHiddenForRadarUnit = true
     color = "@crewTransferColor"
     icon = function () {
       if (timersUnitType == ES_UNIT_TYPE_SHIP)
@@ -100,6 +108,7 @@ let timersList = [
   },
   {
     id = "gunner_status"
+    isHiddenForRadarUnit = true
     color = "@crewTransferColor"
     icon = function () {
       if (timersUnitType == ES_UNIT_TYPE_SHIP)
@@ -110,6 +119,7 @@ let timersList = [
   },
   {
     id = "healing_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#medic_status_indicator.svg"
   },
@@ -154,23 +164,27 @@ let timersList = [
   },
   {
     id = "move_cooldown_status"
+    isHiddenForRadarUnit = true
     color = "@white"
     icon = "#ui/gameuiskin#icon_repair_in_progress.svg"
   },
   {
     id = "battery_status"
+    isHiddenForRadarUnit = true
     color = "#DD1111"
     icon = "#ui/gameuiskin#icon_battery_in_progress.svg"
     needTimeText = true
   },
   {
     id = "building_status"
+    isHiddenForRadarUnit = true
     color = "#787878"
     icon = "#ui/gameuiskin#icon_building_in_progress.svg"
     needTimeText = true
   },
   {
     id = "inextinguishable_fire_status"
+    isHiddenForRadarUnit = true
     color = "#DD1111"
     icon = "#ui/gameuiskin#fire_indicator.svg"
     needTimeText = true
@@ -196,6 +210,16 @@ let timersList = [
     id = "mining_wall"
     color = "@white"
     icon = "#ui/gameuiskin#time_bomb.svg"
+  },
+  {
+    id = "plant_site"
+    color = "@white"
+    icon = "#ui/gameuiskin#time_bomb.svg"
+  },
+  {
+    id = "supply_transport_cargo"
+    color = "@white"
+    icon = "#ui/gameuiskin#confrontation_supplies_icon_bw.svg"
   },
   {
     id = "reanimation_progress"
@@ -237,6 +261,14 @@ let timersList = [
     icon = "#ui/gameuiskin#extinguish_fire.svg"
   }
 ]
+
+let hiddenForRadarUnitTimerIds = timersList.reduce(function(res, timer) {
+  if (timer?.isHiddenForRadarUnit ?? false)
+    res.append(timer.id)
+  return res
+}, [])
+
+let isTimerHidden = @(timerId) hiddenForRadarUnitTimerIds.contains(timerId) && hasAAComplexMenuItem()
 
 function getViewData() {
   return {
@@ -291,6 +323,11 @@ function onInextinguishableFire(debuffs_data) {
   let placeObj = scene.findObject("inextinguishable_fire_status")
   if (!checkObj(placeObj))
     return
+
+  if (isTimerHidden("inextinguishable_fire_status")) {
+    placeObj.animation = "hide"
+    return
+  }
 
   let showTimer = debuffs_data.totalTime > 0;
   placeObj.animation = showTimer ? "show" : "hide"
@@ -436,6 +473,11 @@ function onCrewState(newStateData) {
   if (!checkObj(placeObj))
     return
 
+  if (isTimerHidden("healing_status")) {
+    placeObj["animation"] = "hide"
+    return
+  }
+
   let showTimer = newStateData.healing
   placeObj.animation = showTimer ? "show" : "hide"
   if (!showTimer)
@@ -453,7 +495,7 @@ function onRearm(debuffs_data) {
   if (!checkObj(placeObj))
     return
 
-  let showTimer = debuffs_data.state == "rearming"
+  let showTimer = debuffs_data.state == "rearming" && !isTimerHidden(debuffs_data.object_name)
   placeObj.animation = showTimer ? "show" : "hide"
 
   if (!showTimer)
@@ -505,6 +547,8 @@ function onRepair(debuffs_data) {
   destoyRepairUpdater()
   hideAnimTimer("repair_status")
   hideAnimTimer("repair_auto_status")
+  if (isTimerHidden("repair_status"))
+    return
   let { state = "notInRepair", time, totalTime, repairingParts = null } = debuffs_data
   if (time <= REPAIR_SHOW_TIME_THRESHOLD && state != "prepareRepair")
     return
@@ -584,6 +628,11 @@ function onMoveCooldown(debuffs_data) {
   if (!checkObj(placeObj))
     return
 
+  if (isTimerHidden("move_cooldown_status")) {
+    placeObj["animation"] = "hide"
+    return
+  }
+
   let showTimer = debuffs_data.time >= 0
   placeObj.animation = showTimer ? "show" : "hide"
 
@@ -607,6 +656,11 @@ function onBattery(debuffs_data) {
   if (!checkObj(placeObj))
     return
 
+  if (isTimerHidden("battery_status")) {
+    placeObj["animation"] = "hide"
+    return
+  }
+
   let showTimer = debuffs_data.charge < 100
   placeObj.animation = showTimer ? "show" : "hide"
 
@@ -624,6 +678,11 @@ function onBuilding(debuffs_data) {
   let placeObj = scene.findObject("building_status")
   if (!checkObj(placeObj))
     return
+
+  if (isTimerHidden("building_status")) {
+    placeObj.animation = "hide"
+    return
+  }
 
   let { timer, totalTime, pause, backward, showTimer } = debuffs_data
   placeObj.animation = showTimer ? "show" : "hide"
@@ -796,12 +855,20 @@ function onCancelExtinguish(debuffs_data) {
 function onDriverState(newStateData) {
   if (!scene?.isValid())
     return
+  if (isTimerHidden("driver_status")) {
+    hideAnimTimer("driver_status")
+    return
+  }
   onCrewMemberState("driver", newStateData)
 }
 
 function onGunnerState(newStateData) {
   if (!scene?.isValid())
     return
+  if (isTimerHidden("gunner_status")) {
+    hideAnimTimer("gunner_status")
+    return
+  }
   onCrewMemberState("gunner", newStateData)
   onAvailableMemberState("gunner", newStateData)
 }
@@ -866,6 +933,48 @@ function onMiningWallEvent(eventData) {
 
   g_time_bar.setPeriod(timebarObj, eventData.miningWallTimeTotal, true)
   g_time_bar.setCurrentTime(timebarObj, 0)
+}
+
+function onPlantSiteEvent(eventData) {
+  if (!scene?.isValid())
+    return
+
+  let placeObj = scene.findObject("plant_site")
+  if (!placeObj?.isValid())
+    return
+
+  let showTimer = eventData.isActive
+  placeObj.animation = showTimer ? "show" : "hide"
+
+  let timebarObj = placeObj.findObject("timer")
+
+  if (!showTimer) {
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
+    return
+  }
+
+  g_time_bar.setPeriod(timebarObj, eventData.actionDuration, true)
+  g_time_bar.setCurrentTime(timebarObj, 0)
+}
+
+function onSupplyTransportEvent(eventData) {
+  if (!scene?.isValid())
+    return
+
+  let placeObj = scene.findObject("supply_transport_cargo")
+  if (!placeObj?.isValid())
+    return
+
+  placeObj.animation = eventData.isActive ? "show" : "hide"
+  if (eventData.isActive)
+    placeObj.findObject("icon")["background-image"] = eventData.isLoading
+      ? "#ui/gameuiskin#confrontation_supplies_loading_icon_bw.svg"
+      : "#ui/gameuiskin#confrontation_supplies_unloading_icon_bw.svg"
+
+  let timebarObj = placeObj.findObject("timer")
+  g_time_bar.setPeriod(timebarObj, 0)
+  g_time_bar.setValue(timebarObj, eventData.progress)
 }
 
 function onReanimationEvent(eventData) {
@@ -1093,6 +1202,8 @@ function hudDisplayTimersInit(nest, v_unitType) {
 
   g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent, scene)
   g_hud_event_manager.subscribe("miningWallInProgress", onMiningWallEvent, scene)
+  g_hud_event_manager.subscribe("plantSiteInProgress", onPlantSiteEvent, scene)
+  g_hud_event_manager.subscribe("supplyTransportInProgress", onSupplyTransportEvent, scene)
   g_hud_event_manager.subscribe("reanimationInProgress", onReanimationEvent, scene)
   g_hud_event_manager.subscribe("reanimationDeclineInProgress", onReanimationDeclineEvent, scene)
   g_hud_event_manager.subscribe("deathInProgress", onDeathInProgress, scene)
@@ -1119,7 +1230,7 @@ eventbus_subscribe("CrewState:CrewState", onCrewState)
 eventbus_subscribe("CrewState:DriverState", onDriverState)
 eventbus_subscribe("CrewState:GunnerState", onGunnerState)
 
-return {
+return freeze({
   hudDisplayTimersInit
   hudDisplayTimersReInit
-}
+})

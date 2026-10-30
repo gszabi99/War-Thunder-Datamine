@@ -1,34 +1,36 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/money.nut" import Cost
+from "%scripts/unlocks/unlocksState.nut" import getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk, getUnlockNameText, getUnlockableMedalImage, buildConditionsConfig, getAnimFrameObjTextProps
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTypeText, getUnlockCostText, buildUnlockDesc, buildUnlockTooltipByConfig
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocksWithBlkOrder
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, hasMultiStageLocId, getMultiStageLocId, cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask, getBattleTaskById, getBattleTaskNameById, getDifficultyTypeByTask
+from "%scripts/unlocks/battleTasks.nut" import isBattleTaskDone, isBattleTaskExpired
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByUnlockedItemType
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/langUtils/language.nut" import getLocTextFromConfig
+from "%scripts/crew/crewPointsText.nut" import getCrewSpTextIfNotZero
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/unlocks/unlockSmoke.nut" import shopSmokeItems
+from "%scripts/crew/crew.nut" import getCrewName
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
+from "%scripts/items/itemsChecks.nut" import isItemdefId
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "string" import format
 from "%sqstd/string.nut" import isStringInteger
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
 
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk, getUnlockNameText, getUnlockableMedalImage, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTypeText, getUnlockCostText, buildUnlockDesc, buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, hasMultiStageLocId, getMultiStageLocId, cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { isBattleTask, getBattleTaskById, getBattleTaskNameById, getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { isBattleTaskDone, isBattleTaskExpired } = require("%scripts/unlocks/battleTasks.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
-let { getCrewName } = require("%scripts/crew/crew.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
-let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
-let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 function buildLogUnlockData(config) {
   let showLocalState = config?.showLocalState ?? true
@@ -152,8 +154,13 @@ function buildLogUnlockData(config) {
   }
   else if (uType == UNLOCKABLE_FRAME) {
     if (id != "") {
-      res.descrImage <- $"!ui/images/avatar_frames/{id}.avif"
+      let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(id)
+      res.descrImage <- frameImagePath
       res.descrImageSize <- "100, 100"
+      if (framesCount != null) {
+        res.isAnimatedImage <- true
+        res.iconParams <- { imageProps = getAnimFrameObjTextProps(framesCount) }
+      }
     }
   }
 
@@ -521,7 +528,7 @@ addTooltipTypes({
   }
 })
 
-return {
+return freeze({
   buildLogUnlockData
   getNextAwardText
-}
+})

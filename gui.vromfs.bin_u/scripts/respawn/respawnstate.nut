@@ -1,3 +1,6 @@
+from "%scripts/items/itemsManagerModule.nut" import getUniversalSparesForUnit
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "%appGlobals/ranks_common_shared.nut" import get_unit_spawn_score_weapon_mul, get_spawn_score_type_mul
 from "guiRespawn" import getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, getBrokenSlotsMask, getDisabledByMatchingSlotsMask, getNumFreeSparesUsed, getNumFreeSparesPerDay
 from "%sqstd/math.nut" import is_bit_set
@@ -5,10 +8,6 @@ from "mission" import get_game_mode
 from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
-
-let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
 
@@ -73,7 +72,7 @@ isInBattleState.subscribe(function(status) {
   hasAirfieldRespawn.set(false)
 })
 
-return {
+return freeze({
   isCrewAvailableInSession
   isSpareAircraftInSlot
   getWasReadySlotsMask
@@ -85,4 +84,4 @@ return {
   hasDailyFreeSpares
   getDailyFreeSparesLeftCount
   canUseOnlyDailyFreeSpares
-}
+})

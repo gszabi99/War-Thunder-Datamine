@@ -1,9 +1,8 @@
+from "%rGui/planeRwrs/rwrL150.nut" import scope
 from "%rGui/globals/ui_library.nut" import *
 
-let { scope } = require("%rGui/planeRwrs/rwrL150.nut")
-
-let migBarColor = Color(0, 50, 200, 255)
-let migWhite = Color(255, 255, 255, 255)
+const migBarColor = Color(0, 50, 200, 255)
+const migWhite = Color(255, 255, 255, 255)
 
 const MIG_BAR_THICK   = 6.0
 const MIG_FRAME_SCALE = 190.0

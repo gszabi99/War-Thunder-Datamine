@@ -1,29 +1,31 @@
 import "DataBlock" as DataBlock
 import "statsd" as statsd
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/money.nut" import Cost
+from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
+from "%scripts/time.nut" import getUtcDays
+from "%scripts/user/xboxFeatures.nut" import isMultiplayerPrivilegeAvailable
+from "%scripts/unlocks/unlocksConditions.nut" import loadConditionsFromBlk
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/battleTaskDifficulty.nut" import updateTimeParamsFromBlk
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/tasker.nut" import addTask
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask, getBattleTaskById, getDifficultyTypeByTask, isMediumTaskComplete, isEasyTaskComplete, isHardTaskIncomplete
+from "%scripts/warbonds/warbondsManager.nut" import checkWarbondsOverLimit
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
 from "%sqStdLibs/helpers/u.nut" import isDataBlock, isString, isEmpty, search
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "eventbus" import eventbus_subscribe
 from "blkGetters" import get_personal_unlocks_blk, get_proposed_personal_unlocks_blk
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "types" import Integer
 
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getUtcDays } = require("%scripts/time.nut")
-let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { loadConditionsFromBlk } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { updateTimeParamsFromBlk, EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { isBattleTask, getBattleTaskById, currentTasksArray, activeTasksArray, proposedTasksArray, getDifficultyTypeByTask, isMediumTaskComplete, isEasyTaskComplete, isHardTaskIncomplete } = require("%scripts/unlocks/battleTasksState.nut")
-let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { currentTasksArray, activeTasksArray, proposedTasksArray } = require("%scripts/unlocks/battleTasksState.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -176,10 +178,9 @@ function isTaskForGM(task, gameModeId) {
   let conditions = loadConditionsFromBlk(modes.top(), task)
 
   foreach (condition in conditions) {
-    let values = condition?.values
-    if (isEmpty(values))
-      continue
-    if (isInArray(gameModeId, values))
+    let values = condition?.values ?? []
+    let hideValues = condition?.hideValues ?? []
+    if (values.contains(gameModeId) || hideValues.contains(gameModeId))
       return true
   }
   return false
@@ -431,7 +432,7 @@ function updateCompleteTaskWatched() {
 
 function updateTasksData() {
   currentTasksArray.clear()
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return
 
   updatedProposedTasks()
@@ -547,7 +548,7 @@ addListenersWithoutEnv({
 
 updateTasksData()
 
-return {
+return freeze({
   isBattleTasksAvailable
   resetBattleTasks
   checkNewSpecialTasks
@@ -587,4 +588,4 @@ return {
   getTaskStatus
   getTotalActiveTasksNum
   getGenerationIdInt
-}
+})

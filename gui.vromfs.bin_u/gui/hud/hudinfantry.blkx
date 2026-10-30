@@ -91,21 +91,6 @@
           "flow": "vertical"
         }
       }
-    },
-    {
-      "id": "hud_kill_log",
-      "pos": "pw - w, ph - h - 1@hudInfantryActionBarHeight - 0.04*@shHud - 1@hudInfantryWeaponryMargin - 0.19*@shHud - 0.03@shHud",
-      "position": "relative",
-      "height": "0.2*@shHud",
-      "overflow": "hidden",
-      "hudMessages": {
-        "id": "hud_message_kill_log_notification",
-        "message_style": "kill_log_notification",
-        "position": "relative",
-        "pos": "pw - w, ph - h",
-        "width": "0.5@shHud",
-        "flow": "vertical"
-      }
     }
   ],
   "hudActionBar": {
@@ -135,26 +120,17 @@
         "_pos-timer": "0"
       }
     },
+    "actionBarTimersNest": {
+      "id": "action_bar_timers",
+      "input-transparent": "yes",
+      "verticalOffset": "textShortcut"
+    },
     "tdiv": [
       {
         "position": "absolute",
         "pos": "pw/2-w/2, 0",
         "width": "@shHud",
         "flow": "vertical",
-        "multiplayerScore": {
-          "id": "hud_multiplayer_score",
-          "behaviour": "bhvUpdateByWatched",
-          "left": "50%pw-50%w",
-          "top": "1@multiplayerScoreTopPosUnderCompass",
-          "position": "relative",
-          "height": "1@multiplayerScoreHeight",
-          "tdiv": {
-            "id": "hud_multiplayer_score_progress_bar",
-            "size": "11ph, ph",
-            "position": "absolute",
-            "pos": "50%pw-50%w, 0"
-          }
-        },
         "hudMessages": [
           {
             "id": "hud_messages_race_messages",
@@ -609,38 +585,12 @@
               }
             }
           ],
-          "hudMessages": [
-            {
-              "id": "hud_message_zone_capture_notification",
-              "width": "pw",
-              "message_style": "zone_capture_notification",
-              "input-transparent": "yes"
-            },
-            {
-              "id": "hud_message_player_damage_notification",
-              "message_style": "player_damage_notification",
-              "left": "0.2@shHud",
-              "position": "relative",
-              "flow": "vertical",
-              "width": "pw - 0.2@shHud"
-            },
-            {
-              "id": "hud_message_tank_notification",
-              "message_style": "player_damage_notification",
-              "left": "0.2@shHud",
-              "position": "relative",
-              "flow": "vertical",
-              "width": "pw - 0.2@shHud"
-            },
-            {
-              "id": "hud_message_ship_notification",
-              "message_style": "player_damage_notification",
-              "left": "0.2@shHud",
-              "position": "relative",
-              "flow": "vertical",
-              "width": "pw - 0.2@shHud"
-            }
-          ],
+          "hudMessages": {
+            "id": "hud_message_zone_capture_notification",
+            "width": "pw",
+            "message_style": "zone_capture_notification",
+            "input-transparent": "yes"
+          },
           "textAreaCentered": {
             "id": "low-quality-model-warning",
             "width": "pw",

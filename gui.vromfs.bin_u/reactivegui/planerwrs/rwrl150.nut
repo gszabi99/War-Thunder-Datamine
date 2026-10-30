@@ -7,22 +7,20 @@ let { styleText } = require("%rGui/planeRwrs/rwrL150Components.nut")
 function createRwrGrid(gridStyle) {
   return {
     size = FLEX
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS,
-        color = color,
-        lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
-        fillColor = 0,
-        commands = [
-          [VECTOR_ELLIPSE,  50,    50,  33,  33],
-          [VECTOR_ELLIPSE,  50,    50,  67,  67],
-          [VECTOR_ELLIPSE,  50,    50, 100, 100],
-          [VECTOR_LINE,     50,   -50,  50, 150],
-          [VECTOR_LINE,    -50,    50, 150,  50]
-        ]
-      }
-    ]
+    children = {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS,
+      color = color,
+      lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+      fillColor = 0,
+      commands = [
+        [VECTOR_ELLIPSE,  50,    50,  33,  33],
+        [VECTOR_ELLIPSE,  50,    50,  67,  67],
+        [VECTOR_ELLIPSE,  50,    50, 100, 100],
+        [VECTOR_LINE,     50,   -50,  50, 150],
+        [VECTOR_LINE,    -50,    50, 150,  50]
+      ]
+    }
   }
 }
 
@@ -80,24 +78,22 @@ function scope(size, scale, style) {
     size = [compSize, compSizeVert]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      {
-        size = const [pw(90), ph(90)]
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        children = [
-          {
-            size = FLEX
-            children = [
-              rwrTargetsComponent(style.object, 100.0),
-              createRwrGrid(style.grid),
-              rwrGridMarksComponent(style.grid)
-            ]
-          },
-          createCompass(style.grid, 100.0, true)
-        ]
-      }
-    ]
+    children = {
+      size = const [pw(90), ph(90)]
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      children = [
+        {
+          size = FLEX
+          children = [
+            rwrTargetsComponent(style.object, 100.0),
+            createRwrGrid(style.grid),
+            rwrGridMarksComponent(style.grid)
+          ]
+        },
+        createCompass(style.grid, 100.0, true)
+      ]
+    }
   }
 }
 
@@ -112,4 +108,4 @@ function tws(posWatched, sizeWatched, scale, style) {
   }
 }
 
-return { tws, scope }
+return freeze({ tws, scope })

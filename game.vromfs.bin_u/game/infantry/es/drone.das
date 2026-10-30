@@ -18,24 +18,6 @@ require %appGame.infantry.es.hitpoints_common
 require %appGame.infantry.es.drone_common
 
 
-[es(on_appear, REQUIRE=drone_type__recon)]
-def drone_type_recon_init(evt : Event;
-                          var drone__type : int&)
-  drone__type = int(DroneType.Recon)
-
-
-[es(on_appear, REQUIRE=drone_type__bombing)]
-def drone_type_bombing_init(evt : Event;
-                            var drone__type : int&)
-  drone__type = int(DroneType.Bombing)
-
-
-[es(on_appear, REQUIRE=drone_type__kamikaze)]
-def drone_type_kamikaze_init(evt : Event;
-                             var drone__type : int&)
-  drone__type = int(DroneType.Kamikaze)
-
-
 [es(tag=server, REQUIRE=isDrone)]
 def drone_destroy_on_unit_collision_es(evt : EventUnitToUnitCollision; eid : EntityId)
   if !evt.isFriction

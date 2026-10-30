@@ -1,7 +1,6 @@
+from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/dagui_library.nut" import *
 from "types" import Integer
-
-let { itemsTab, itemType } = require("%scripts/items/itemsConsts.nut")
 
 let itemTypeFeatures = {
   [itemType.WAGER] = "Wagers",
@@ -27,8 +26,8 @@ function checkItemsMaskFeatures(itemsMask) {
   return itemsMask
 }
 
-return {
+return freeze({
   isItemdefId
   isItemVisible
   checkItemsMaskFeatures
-}
+})

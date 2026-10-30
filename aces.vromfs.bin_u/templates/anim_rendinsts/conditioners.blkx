@@ -1,0 +1,40 @@
+{
+  "conditioner_fan_anim_base": {
+    "_use": [
+      "rendinst_owned",
+      "simple_anim_spin",
+      "simple_anim_client_only"
+    ],
+    "simple_anim_spin__rotationAxis": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "ri_extra_moves_every_frame:tag": {}
+  },
+  "airconditioner_a_fan_anim": {
+    "_use": "conditioner_fan_anim_base",
+    "ri_extra__name": "airconditioner_a_fan",
+    "simple_anim_spin__speed": 0.95
+  },
+  "airconditioner_b_fan_anim": {
+    "_use": "conditioner_fan_anim_base",
+    "ri_extra__name": "airconditioner_b_fan",
+    "simple_anim_spin__speed": 0.5
+  },
+  "airconditioner_c_fan_anim": {
+    "_use": "conditioner_fan_anim_base",
+    "ri_extra__name": "airconditioner_c_fan",
+    "simple_anim_spin__speed": 0.7
+  },
+  "air_conditioner_small_a_fan_anim": {
+    "_use": "conditioner_fan_anim_base",
+    "ri_extra__name": "air_conditioner_small_a_fan",
+    "simple_anim_spin__speed": 0.8
+  },
+  "air_conditioner_small_b_fan_anim": {
+    "_use": "conditioner_fan_anim_base",
+    "ri_extra__name": "air_conditioner_small_a_fan",
+    "simple_anim_spin__speed": 1.6
+  }
+}

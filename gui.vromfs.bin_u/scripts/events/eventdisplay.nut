@@ -1,12 +1,13 @@
+from "%scripts/onlineInfo/onlineInfo.nut" import getMatchingServerTime
+from "%scripts/events/eventInfo.nut" import getEventDisplayType
+from "%scripts/events/eventsState.nut" import getEvent, getEventsList
+from "%scripts/events/eventTeamsInfo.nut" import isUnitTypeAvailable
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
 
-let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
-let { getEventDisplayType, eventIdsForMainGameModeList } = require("%scripts/events/eventInfo.nut")
-let { getEvent, getEventsList } = require("%scripts/events/eventsState.nut")
-let { isUnitTypeAvailable } = require("%scripts/events/eventTeamsInfo.nut")
+let { eventIdsForMainGameModeList } = require("%scripts/events/eventInfo.nut")
 
 
 
@@ -139,7 +140,7 @@ function getEventsChapter(event) {
   return chapterName
 }
 
-return {
+return freeze({
   countEventsList
   getEventStartTime
   getEventEndTime
@@ -160,4 +161,4 @@ return {
   getEventsVisibleInEventsWindowCount
   getEventUiSortPriority
   getEventsChapter
-}
+})

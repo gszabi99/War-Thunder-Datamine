@@ -1,3 +1,5 @@
+import "%rGui/planeCockpit/targetingPage/mfdTads.nut" as tads
+import "%rGui/hudUnitType.nut" as hudUnitType
 import "%rGui/opticAtgmSight.nut" as opticAtgmSight
 import "%rGui/planeCockpit/targetingPage/mfdHeliCamera.nut" as heliStockCamera
 import "%rGui/planeCockpit/targetingPage/mfdShkval.nut" as shkval
@@ -9,8 +11,6 @@ from "%rGui/planeCockpit/targetingPage/mfdLitening2.nut" import litening2, mfdCa
 from "%rGui/globals/ui_library.nut" import *
 
 let shkvalKa52 = require("%rGui/planeCockpit/targetingPage/mfdShkvalKa52.nut")
-let tads = require("%rGui/planeCockpit/targetingPage/mfdTads.nut")
-let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let eurocopter = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdCamEurocopter.das", {
   fontId = Fonts.hud
@@ -123,27 +123,25 @@ let planeMfdCamera = @(width, height) function() {
     isMi35, isMi35en, isAtlis2, isAtflir, isEurocopter, isLantirn, isF4Agm65, isOraoCam, isB52hEvs, isYak130Kab, isChina} = mfdCameraSetting.get()
   return {
     watch = mfdCameraSetting
-    children = [
-      isShkval ? shkval(width, height, lineWidthScale, fontScale) :
-      isShkvalKa52 ? shkvalKa52.root(width, height) :
-      isTads ? tads.root(width, height, false) :
-      isTadsApache ? tads.root(width, height, true) :
-      isPlatan ? platan(width, height, isChina) :
-      isMig35Ols ? mig35Ols(width, height) :
-      isDamocles ? damocles(width, height) :
-      isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :
-      isMi35 ? mi35ACC(width, height) :
-      isMi35en ? mi35ACCEn(width, height) :
-      isAtlis2 ? atlis2(width, height) :
-      isAtflir ? atflir(width, height) :
-      isEurocopter ? eurocopter(width, height) :
-      isLantirn ? lantirn(width, height) :
-      isF4Agm65 ? f4Agm65(width, height) :
-      isOraoCam ? oraoCam(width, height) :
-      isB52hEvs ? b52hEvs(width, height) :
-      isYak130Kab ? yak130Kab(width, height) :
-      hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
-    ]
+    children = isShkval ? shkval(width, height, lineWidthScale, fontScale) :
+    isShkvalKa52 ? shkvalKa52.root(width, height) :
+    isTads ? tads.root(width, height, false) :
+    isTadsApache ? tads.root(width, height, true) :
+    isPlatan ? platan(width, height, isChina) :
+    isMig35Ols ? mig35Ols(width, height) :
+    isDamocles ? damocles(width, height) :
+    isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :
+    isMi35 ? mi35ACC(width, height) :
+    isMi35en ? mi35ACCEn(width, height) :
+    isAtlis2 ? atlis2(width, height) :
+    isAtflir ? atflir(width, height) :
+    isEurocopter ? eurocopter(width, height) :
+    isLantirn ? lantirn(width, height) :
+    isF4Agm65 ? f4Agm65(width, height) :
+    isOraoCam ? oraoCam(width, height) :
+    isB52hEvs ? b52hEvs(width, height) :
+    isYak130Kab ? yak130Kab(width, height) :
+    hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
   }
 }
 
@@ -153,11 +151,11 @@ let planeMfdCameraSwitcher = @() {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT
-  children = IsMfdSightHudVisible.get() ? [ planeMfdCamera(MfdSightPosSize.get()[2], MfdSightPosSize.get()[3])] : null
+  children = IsMfdSightHudVisible.get() ? planeMfdCamera(MfdSightPosSize.get()[2], MfdSightPosSize.get()[3]) : null
 }
 
-return {
+return freeze({
   planeMfdCameraSwitcher
   mfdCameraSettingUpd
   mfdCameraSetting
-}
+})

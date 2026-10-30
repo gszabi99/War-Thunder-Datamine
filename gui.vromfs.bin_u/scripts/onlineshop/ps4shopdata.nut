@@ -1,15 +1,15 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "DataBlock" as datablock
+from "%sqstd/platform.nut" import isSony
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
 let storeData = require("%sonyLib/storeData.nut")
 
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let psnStoreItem = require("%scripts/onlineShop/psnStoreItem.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -25,7 +25,7 @@ let visibleSeenIds = []
 
 let getShopItem = @(id) PS4ShopData.itemsList?[id]
 
-let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
+let canUseIngameShop = @() isSony && hasFeature("PS4IngameShop")
 
 local haveItemDiscount = null
 
@@ -158,7 +158,7 @@ subscriptions.addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   canUseIngameShop
   haveDiscount
 
@@ -168,4 +168,4 @@ return {
 
   isItemsUpdated = @() isFinishedUpdateItems
   needEntStoreDiscountIcon = true
-}
+})

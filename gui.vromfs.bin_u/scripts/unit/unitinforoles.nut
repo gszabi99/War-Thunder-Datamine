@@ -1,10 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/unit/unitParams.nut" import getEsUnitType
 from "blkGetters" import get_unittags_blk
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "types" import String
-
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 
 let basicUnitRoles = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],

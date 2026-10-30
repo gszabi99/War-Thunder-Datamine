@@ -1,3 +1,7 @@
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%scripts/unit/unitParams.nut" import getEsUnitType, getFullUnitBlk
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "string" import format
 from "math" import abs
@@ -7,11 +11,7 @@ from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
 let anyWaterVehicle = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ]
@@ -352,6 +352,6 @@ addTooltipTypes({
 
 })
 
-return {
+return freeze({
   fillTooltipsIds
-}
+})

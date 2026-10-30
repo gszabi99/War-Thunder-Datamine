@@ -55,4 +55,4 @@ let UrlMission = class {
   }
 }
 
-return { UrlMission }
+return freeze({ UrlMission })

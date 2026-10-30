@@ -67,6 +67,6 @@ function export(params = EXPORT_PARAMS) {
   exportImpl(params, DataBlock(), 0, get_local_unixtime())
 }
 
-return {
+return freeze({
   export = export
-}
+})

@@ -182,7 +182,7 @@ let hsd = @(pos_size) function() {
   }
 }
 
-return {
+return freeze({
   hsd
   hsdSettingsUpd
-}
+})

@@ -1569,7 +1569,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/122mm_D25T_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/122mm_D25T_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -1623,9 +1623,10 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
-        "emitter": "bone_mg_gun_twin",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
+        "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "useAnimFlashNode": true,
@@ -1667,7 +1668,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -1708,7 +1709,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1738,7 +1739,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_is_4m_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_is_4m_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_is_4m_default.blk"
     }
   },
   "ammoStowages": {
@@ -1839,6 +1840,11 @@
       "minRPM": 500.0
     },
     "mechanics": {
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringOuterSideGearRatio": 0.772,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 220000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 1.45,
@@ -1872,7 +1878,18 @@
         190000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "ammo": {

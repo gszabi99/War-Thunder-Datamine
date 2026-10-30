@@ -7,4 +7,4 @@ enum debrState {
   done
 }
 
-return { debrState }
+return freeze({ debrState })

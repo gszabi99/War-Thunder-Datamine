@@ -27,6 +27,7 @@ const longAnimDuration = 0.75
 const shortAnimsCount = 4
 const shortAnimDuration = 0.5
 
+const ZONE_ICON_PATH = "ui/gameuiskin#basezone_small_mark_no_bg"
 
 let mkSuperiorityIcon = @(color) {
   size = const [superiorityIconSize, superiorityIconSize ]
@@ -154,6 +155,8 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
     : curTeam == localTeamW.get() ? teamScoreBlueColor
     : teamScoreRedColor
 
+  let zSymbol = zoneSymbols?[id] ?? zoneSymbols[zoneSymbols.len() - 1]
+
   return {
     watch = [captureZoneW, teamColors, localTeamW]
     flow = FLOW_VERTICAL
@@ -163,7 +166,7 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
         size = const [ SIZE_TO_CONTENT, cpInZoneSize ]
         valign = ALIGN_CENTER
         children = {
-          size = [cpSize, cpSize]
+          size = cpSize
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
@@ -182,7 +185,7 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
             {
               size = FLEX
               rendObj = ROBJ_IMAGE
-              image = Picture($"ui/gameuiskin#basezone_small_mark_no_bg_{zoneSymbols[id]}.svg:{cpInZoneSize}:{cpInZoneSize}:P")
+              image = Picture($"{ZONE_ICON_PATH}_{zSymbol}.svg:{cpInZoneSize}:{cpInZoneSize}:P")
               color = darkColor
             }
           ]
@@ -293,7 +296,7 @@ let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
       color = teamColor
       opacity = arrowOpacity.get()
       bindProps = { opacity = arrowOpacity }
-      transform = isAlly ? { rotate = 180 } : {}
+      transform = isAlly ? const { rotate = 180 } : true
       animations
       onAttach = isStartArrow ? tryStartMultRelay : null
     })
@@ -318,9 +321,7 @@ function mkTeamProgressLine(isAlly, teamColor, progress, reflectionAnimTrigger) 
     animations = [ mkScoreBlinkAnim(reflectionAnimTrigger) ]
     children = {
       size = [progressLineSize[0], FLEX]
-      children = [
-        isAlly ? allyProgressDecor : enemyProgressDecor
-      ]
+      children = isAlly ? allyProgressDecor : enemyProgressDecor
      }
   }
 }
@@ -347,9 +348,7 @@ function mkTeamProgress(isAlly, ticketsW, maxTicketsW, reflectionAnimTrigger) {
           @() {
             watch = [progress, teamColorW]
             size = progressLineSize
-            children = [
-              mkTeamProgressLine(isAlly, teamColorW.get(), progress.get(), reflectionAnimTrigger)
-            ]
+            children = mkTeamProgressLine(isAlly, teamColorW.get(), progress.get(), reflectionAnimTrigger)
           }
         ]
       }
@@ -384,7 +383,7 @@ console.register_command(function(mult = 7, team = 2, enable = 1) {
   totalDomMult.set(clamp(mult, 1, 10))
 }, "debug.total_dom.show_arrows")
 
-return {
+return freeze({
   mkTeamCapPoint
   mkTeamProgress
-}
+})

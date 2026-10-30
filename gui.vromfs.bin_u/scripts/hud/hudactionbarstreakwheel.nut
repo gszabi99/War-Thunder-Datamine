@@ -1,3 +1,4 @@
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "hudActionBarConst" import EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT, EII_MEDICALKIT, EII_TERRAFORM, EII_WINCH
   , EII_WINCH_ATTACH, EII_WINCH_DETACH, EII_EXTINGUISHER, EII_TOOLKIT, EII_REPAIR_BREACHES, EII_SPEED_BOOSTER, EII_SUBMARINE_SONAR
@@ -17,7 +18,6 @@ from "%scripts/dagui_library.nut" import *
 
 
 
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -196,6 +196,6 @@ function arrangeStreakWheelActions(unitId, hudUnitType, actions) {
   return res
 }
 
-return {
+return freeze({
   arrangeStreakWheelActions
-}
+})

@@ -1,3 +1,14 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/chat/squadChatRoom.nut" import SQUAD_ROOM_PREFIX, mkSquadRoomId
+from "%scripts/user/matchingFeature.nut" import hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatSystem, hasMenuChatMPlobby
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/chat/chatStorage.nut" import getThreadInfo, canCreateThreads
+from "%scripts/chat/chatColors.nut" import chatColors, getSenderColor
+from "%scripts/contacts/contactsListState.nut" import clanUserTable
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "string" import format
 from "%sqstd/string.nut" import startsWith, slice
@@ -5,18 +16,8 @@ from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatStates.nut" import isCrossNetworkMessageAllowed, checkChatEnableWithPlayer, hasChatCharPermission
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { SQUAD_ROOM_PREFIX, mkSquadRoomId } = require("%scripts/chat/squadChatRoom.nut")
-let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
-let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 let { langsList, globalChatRooms } = require("%scripts/chat/chatConsts.nut")
 
 enum chatRoomCheckOrder {
@@ -311,7 +312,7 @@ enumsAddTypes(g_chat_room_type, {
   }
 }, null, "typeName")
 
-let resortRooms = @() g_chat_room_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+let resortRooms = @() g_chat_room_type.types.sortby(@(a) a.checkOrder)
 
 resortRooms()
 

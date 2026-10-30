@@ -1,3 +1,5 @@
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, getAmmoMaxAmount
+from "%scripts/options/optionsExtNames.nut" import USEROPT_MODIFICATIONS
 from "%globalScripts/templates.nut" import getTemplateCompValue
 from "blkGetters" import get_modifications_blk
 from "chardResearch" import shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificationEnabled
@@ -8,9 +10,6 @@ from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
-
-let { AMMO, getAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
-let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null
@@ -241,7 +240,7 @@ function calcHumanModEffects(unit, mod, templateParamKey) {
 }
 
 
-return {
+return freeze({
   canBuyMod
   isModMounted
   isModResearched
@@ -260,4 +259,4 @@ return {
   updateRelationModificationList
   getModificationsByModClass
   calcHumanModEffects
-}
+})

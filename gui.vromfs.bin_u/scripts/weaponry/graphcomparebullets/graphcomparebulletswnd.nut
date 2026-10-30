@@ -1,3 +1,12 @@
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/weaponry/shellSelectOptions/shellSelectOptionsHandler.nut" import loadShellSelectOptionsHandler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import enableObjsByTable
+from "%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut" import getBulletCacheSaveId
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "eventbus" import eventbus_send
 from "dagor.time" import get_time_msec
 from "%sqstd/string.nut" import cutPrefix
@@ -6,16 +15,8 @@ from "%sqstd/math.nut" import round_by_value
 from "%sqstd/time.nut" import secondsToMilliseconds, millisecondsToSeconds
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { loadProtectionAnalysisOptionsHandler } = require("%scripts/dmViewer/protectionAnalysisOptionsHandler.nut")
 let bulletsBallisticOptions = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptions.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { enableObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
-let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { graphColorList } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 
 
 const MAX_PLAY_VALUE = 1000
@@ -90,7 +91,7 @@ let GraphCompareBulletsWnd = class (BaseGuiHandlerWT) {
     this.compareBulletsList = []
     this.cacheForPages = {}
 
-    let optionsHandler = loadProtectionAnalysisOptionsHandler({
+    let optionsHandler = loadShellSelectOptionsHandler({
       scene            = this.scene.findObject("options_list_nest")
       unit             = this.unit
       ammoName         = this.ammoName
@@ -589,6 +590,6 @@ let GraphCompareBulletsWnd = class (BaseGuiHandlerWT) {
 
 register_gui_handler("GraphCompareBulletsWnd", GraphCompareBulletsWnd)
 
-return {
+return freeze({
   GraphCompareBulletsWnd
-}
+})

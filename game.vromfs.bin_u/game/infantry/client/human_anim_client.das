@@ -6,6 +6,7 @@ require DagorMath
 require DagorMathUtils
 require MotionMatching
 require %game.events
+require %appGame.infantry.es.animchar.anim_phys_update_common
 
 
 [es(REQUIRE_NOT=(animchar__actOnDemand, menuSoldier), after=human_anim_es)]
@@ -15,7 +16,14 @@ def human_anim_aim_es(info : ParallelUpdateFrameDelayed;
                       human_anim__rootRotateVarId : int;
                       motion_matching__controller : MotionMatchingController;
                       human_net_phys : HumanActor;
+                      animchar__updatable : bool = true;
+                      animchar__visible : bool = false;
+                      animchar__accumDt = -1.f;
+                      animchar__dtThreshold = 0.f;
+                      phys_vars__skipVisibilityCheck : Tag const?;
                       var phys_vars : PhysVars)
+  if !is_anim_phys_update_frame(info.dt, animchar__updatable, animchar__visible, animchar__accumDt, animchar__dtThreshold, phys_vars__skipVisibilityCheck)
+    return
   assume phys = human_net_phys.phys
   let isCrawling = phys.currentState.standState == HUStandState.ESS_CRAWL
   if isCrawling || human_anim__isFpv

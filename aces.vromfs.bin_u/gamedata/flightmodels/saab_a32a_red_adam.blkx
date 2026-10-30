@@ -2,7 +2,7 @@
   "model": "saab_a32a",
   "fmFile": "fm/saab_a32a.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -15,17 +15,17 @@
   "haveCCIPForGun": true,
   "type": "typeFighter",
   "advancedInstructor": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
   "fightAiBehaviour": "assault",
   "paratrooper": "usa_irvin_5000_ejection_para",
@@ -637,15 +637,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -688,7 +692,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2479,15 +2485,15 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/sw_ps-42_search.blk",
+        "blk": "gamedata/sensors/sw_ps-42_search.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/sw_ps-42_track.blk",
+        "blk": "gamedata/sensors/sw_ps-42_track.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/sw_app_f9_5.blk"
+        "blk": "gamedata/sensors/sw_app_f9_5.blk"
       }
     ]
   },
@@ -2583,7 +2589,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m49.blk",
+              "blk": "gamedata/weapons/cannonAkan_m49.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2592,7 +2598,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m49.blk",
+              "blk": "gamedata/weapons/cannonAkan_m49.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -2601,7 +2607,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m49.blk",
+              "blk": "gamedata/weapons/cannonAkan_m49.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "cannon3_dm",
@@ -2610,7 +2616,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonAkan_m49.blk",
+              "blk": "gamedata/weapons/cannonAkan_m49.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "cannon4_dm",
@@ -2640,7 +2646,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_001",
                 "bullets": 1,
                 "minSize": [
@@ -2656,7 +2662,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_001",
                 "bullets": 1,
                 "minSize": [
@@ -2685,7 +2691,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_001",
                 "bullets": 1,
                 "minSize": [
@@ -2701,7 +2707,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_001",
                 "bullets": 1,
                 "minSize": [
@@ -2729,7 +2735,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_001",
               "bullets": 1,
               "minSize": [
@@ -2753,7 +2759,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_001",
               "bullets": 1,
               "external": true,
@@ -2782,7 +2788,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_002",
                 "bullets": 1,
                 "minSize": [
@@ -2798,7 +2804,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_002",
                 "bullets": 1,
                 "minSize": [
@@ -2827,7 +2833,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_002",
                 "bullets": 1,
                 "minSize": [
@@ -2843,7 +2849,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_002",
                 "bullets": 1,
                 "minSize": [
@@ -2871,7 +2877,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_002",
               "bullets": 1,
               "minSize": [
@@ -2895,7 +2901,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_002",
               "bullets": 1,
               "external": true,
@@ -2914,7 +2920,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_250kg_minb_m50.blk",
               "emitter": "250kg_minb_m50_001",
               "bullets": 1,
               "external": true,
@@ -2943,7 +2949,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_003",
                 "bullets": 1,
                 "minSize": [
@@ -2959,7 +2965,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_003",
                 "bullets": 1,
                 "minSize": [
@@ -2988,7 +2994,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_003",
                 "bullets": 1,
                 "minSize": [
@@ -3004,7 +3010,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_003",
                 "bullets": 1,
                 "minSize": [
@@ -3032,7 +3038,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_003",
               "bullets": 1,
               "minSize": [
@@ -3056,7 +3062,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_003",
               "bullets": 1,
               "external": true,
@@ -3085,7 +3091,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_004",
                 "bullets": 1,
                 "minSize": [
@@ -3101,7 +3107,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_004",
                 "bullets": 1,
                 "minSize": [
@@ -3130,7 +3136,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_004",
                 "bullets": 1,
                 "minSize": [
@@ -3146,7 +3152,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_004",
                 "bullets": 1,
                 "minSize": [
@@ -3174,7 +3180,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_004",
               "bullets": 1,
               "minSize": [
@@ -3198,7 +3204,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_004",
               "bullets": 1,
               "external": true,
@@ -3227,7 +3233,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_005",
                 "bullets": 1,
                 "minSize": [
@@ -3243,7 +3249,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_005",
                 "bullets": 1,
                 "minSize": [
@@ -3272,7 +3278,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_005",
                 "bullets": 1,
                 "minSize": [
@@ -3288,7 +3294,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_005",
                 "bullets": 1,
                 "minSize": [
@@ -3316,7 +3322,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_005",
               "bullets": 1,
               "minSize": [
@@ -3340,7 +3346,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_005",
               "bullets": 1,
               "external": true,
@@ -3359,7 +3365,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_250kg_minb_m50.blk",
               "emitter": "250kg_minb_m50_002",
               "bullets": 1,
               "external": true,
@@ -3378,7 +3384,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m56.blk",
+              "blk": "gamedata/weapons/bombguns/swd_500kg_minb_m56.blk",
               "emitter": "500kg_minb_m56_001",
               "bullets": 1,
               "external": true,
@@ -3397,7 +3403,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_600kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_600kg_minb_m50.blk",
               "emitter": "600kg_minb_m50_001",
               "bullets": 1,
               "external": true,
@@ -3416,7 +3422,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/sw_500kg_brandbomb_m58.blk",
+              "blk": "gamedata/weapons/bombguns/sw_500kg_brandbomb_m58.blk",
               "emitter": "600kg_minb_m50_001",
               "bullets": 1,
               "external": true,
@@ -3445,7 +3451,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_006",
                 "bullets": 1,
                 "minSize": [
@@ -3461,7 +3467,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_006",
                 "bullets": 1,
                 "minSize": [
@@ -3490,7 +3496,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_006",
                 "bullets": 1,
                 "minSize": [
@@ -3506,7 +3512,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_006",
                 "bullets": 1,
                 "minSize": [
@@ -3534,7 +3540,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_006",
               "bullets": 1,
               "minSize": [
@@ -3558,7 +3564,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_006",
               "bullets": 1,
               "external": true,
@@ -3582,7 +3588,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_250kg_minb_m50.blk",
               "emitter": "250kg_minb_m50_003",
               "bullets": 1,
               "external": true,
@@ -3598,7 +3604,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m56.blk",
+              "blk": "gamedata/weapons/bombguns/swd_500kg_minb_m56.blk",
               "emitter": "500kg_minb_m56_002",
               "bullets": 1,
               "external": true,
@@ -3614,7 +3620,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_600kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_600kg_minb_m50.blk",
               "emitter": "600kg_minb_m50_002",
               "bullets": 1,
               "external": true,
@@ -3630,7 +3636,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/sw_500kg_brandbomb_m58.blk",
+              "blk": "gamedata/weapons/bombguns/sw_500kg_brandbomb_m58.blk",
               "emitter": "600kg_minb_m50_002",
               "bullets": 1,
               "external": true,
@@ -3659,7 +3665,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_007",
                 "bullets": 1,
                 "minSize": [
@@ -3675,7 +3681,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_007",
                 "bullets": 1,
                 "minSize": [
@@ -3704,7 +3710,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_007",
                 "bullets": 1,
                 "minSize": [
@@ -3720,7 +3726,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_007",
                 "bullets": 1,
                 "minSize": [
@@ -3748,7 +3754,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_007",
               "bullets": 1,
               "minSize": [
@@ -3772,7 +3778,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_007",
               "bullets": 1,
               "external": true,
@@ -3801,7 +3807,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_008",
                 "bullets": 1,
                 "minSize": [
@@ -3817,7 +3823,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_008",
                 "bullets": 1,
                 "minSize": [
@@ -3846,7 +3852,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_008",
                 "bullets": 1,
                 "minSize": [
@@ -3862,7 +3868,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_008",
                 "bullets": 1,
                 "minSize": [
@@ -3890,7 +3896,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_008",
               "bullets": 1,
               "minSize": [
@@ -3914,7 +3920,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_008",
               "bullets": 1,
               "external": true,
@@ -3933,7 +3939,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_250kg_minb_m50.blk",
               "emitter": "250kg_minb_m50_004",
               "bullets": 1,
               "external": true,
@@ -3952,7 +3958,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m56.blk",
+              "blk": "gamedata/weapons/bombguns/swd_500kg_minb_m56.blk",
               "emitter": "500kg_minb_m56_003",
               "bullets": 1,
               "external": true,
@@ -3971,7 +3977,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_600kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_600kg_minb_m50.blk",
               "emitter": "600kg_minb_m50_003",
               "bullets": 1,
               "external": true,
@@ -3990,7 +3996,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/sw_500kg_brandbomb_m58.blk",
+              "blk": "gamedata/weapons/bombguns/sw_500kg_brandbomb_m58.blk",
               "emitter": "600kg_minb_m50_003",
               "bullets": 1,
               "external": true,
@@ -4019,7 +4025,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_009",
                 "bullets": 1,
                 "minSize": [
@@ -4035,7 +4041,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_009",
                 "bullets": 1,
                 "minSize": [
@@ -4064,7 +4070,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_009",
                 "bullets": 1,
                 "minSize": [
@@ -4080,7 +4086,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_009",
                 "bullets": 1,
                 "minSize": [
@@ -4108,7 +4114,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_009",
               "bullets": 1,
               "minSize": [
@@ -4132,7 +4138,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_009",
               "bullets": 1,
               "external": true,
@@ -4161,7 +4167,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_010",
                 "bullets": 1,
                 "minSize": [
@@ -4177,7 +4183,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_010",
                 "bullets": 1,
                 "minSize": [
@@ -4206,7 +4212,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_010",
                 "bullets": 1,
                 "minSize": [
@@ -4222,7 +4228,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_010",
                 "bullets": 1,
                 "minSize": [
@@ -4250,7 +4256,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_010",
               "bullets": 1,
               "minSize": [
@@ -4274,7 +4280,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_010",
               "bullets": 1,
               "external": true,
@@ -4303,7 +4309,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_011",
                 "bullets": 1,
                 "minSize": [
@@ -4319,7 +4325,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_011",
                 "bullets": 1,
                 "minSize": [
@@ -4348,7 +4354,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_011",
                 "bullets": 1,
                 "minSize": [
@@ -4364,7 +4370,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_011",
                 "bullets": 1,
                 "minSize": [
@@ -4392,7 +4398,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_011",
               "bullets": 1,
               "minSize": [
@@ -4416,7 +4422,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_011",
               "bullets": 1,
               "external": true,
@@ -4435,7 +4441,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m50.blk",
+              "blk": "gamedata/weapons/bombguns/swd_250kg_minb_m50.blk",
               "emitter": "250kg_minb_m50_005",
               "bullets": 1,
               "external": true,
@@ -4458,7 +4464,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large_a32a.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_chaff_only_large_a32a.blk",
               "emitter": "emtr_flare1",
               "bullets": 464,
               "external": true,
@@ -4489,7 +4495,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
                 "emitter": "145mm_psrak_m49a_down_012",
                 "bullets": 1,
                 "minSize": [
@@ -4505,7 +4511,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
                 "emitter": "145mm_psrak_m49a_up_012",
                 "bullets": 1,
                 "minSize": [
@@ -4534,7 +4540,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
                 "emitter": "150mm_srak_m51_down_012",
                 "bullets": 1,
                 "minSize": [
@@ -4550,7 +4556,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "blk": "gamedata/weapons/rocketGuns/swd_150mm_srak_m51.blk",
                 "emitter": "150mm_srak_m51_up_012",
                 "bullets": 1,
                 "minSize": [
@@ -4578,7 +4584,7 @@
               "trigger": "rockets",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "blk": "gamedata/weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
               "emitter": "180mm_hpsrak_m49_012",
               "bullets": 1,
               "minSize": [
@@ -4602,7 +4608,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/swd_120kg_sb_m61.blk",
+              "blk": "gamedata/weapons/bombguns/swd_120kg_sb_m61.blk",
               "emitter": "120kg_sb_m61_012",
               "bullets": 1,
               "external": true,
@@ -4984,39 +4990,39 @@
     "preset": [
       {
         "name": "saab_a32a_red_adam_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_a32a_red_adam_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_red_adam_default.blk"
       },
       {
         "name": "saab_a32a_145mm_psrak_m49a",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_145mm_psrak_m49a.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_145mm_psrak_m49a.blk"
       },
       {
         "name": "saab_a32a_150mm_srak_m51",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_150mm_srak_m51.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_150mm_srak_m51.blk"
       },
       {
         "name": "saab_a32a_180mm_hpsrak_m49",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_180mm_hpsrak_m49.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_180mm_hpsrak_m49.blk"
       },
       {
         "name": "saab_a32a_120kg_m61",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_120kg_m61.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_120kg_m61.blk"
       },
       {
         "name": "saab_a32a_250kg_m50",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_250kg_m50.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_250kg_m50.blk"
       },
       {
         "name": "saab_a32a_red_adam_500kg_m56",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_red_adam_500kg_m56.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_red_adam_500kg_m56.blk"
       },
       {
         "name": "saab_a32a_red_adam_600kg_m50",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_red_adam_600kg_m50.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_red_adam_600kg_m50.blk"
       },
       {
         "name": "saab_a32a_red_adam_brandbomb_m58",
-        "blk": "gameData/flightModels/weaponPresets/saab_a32a_red_adam_brandbomb_m58.blk"
+        "blk": "gamedata/flightModels/weaponPresets/saab_a32a_red_adam_brandbomb_m58.blk"
       }
     ]
   },

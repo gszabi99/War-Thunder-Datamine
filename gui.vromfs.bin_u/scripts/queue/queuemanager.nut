@@ -1,30 +1,34 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/clusterSelect.nut" as clustersModule
+import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/events/eventsState.nut" import isEventMultiSlotEnabled
+from "%scripts/slotbar/slotbarState.nut" import getSelSlotsData
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/matching/api.nut" import checkMatchingError, matchingErrorString, matchingRpcSubscribe
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setWaitForQueueRoom
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes, addQueueToList, getQueuesList
+  , removeQueueFromList, clearAllQueues, applyQueueInfo, pushQueueInfoUpdatedEvent, findAllQueues
+from "%scripts/queue/queueInfo.nut" import getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
 from "%sqStdLibs/helpers/u.nut" import isTable
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "matching.errors" import SERVER_ERROR_REQUEST_REJECTED
 from "dagor.random" import rnd
+from "modules" import on_module_unload
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
+from "%scripts/squads/squadState.nut" import isNotAloneOnline, isSquadMember
 
-let { isEventMultiSlotEnabled } = require("%scripts/events/eventsState.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let QueueStats = require("%scripts/queue/queueStats.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
-let { isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes, addQueueToList, getQueuesList, removeQueueFromList, clearAllQueues, applyQueueInfo, pushQueueInfoUpdatedEvent, findAllQueues } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let lastQueueId = mkWatched(persist, "lastQueueId", -1)
 local lastQueueReqParams = null
@@ -393,7 +397,18 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   addDelayedAction(@() joinQueue(lastQueueReqParams), 5000 + rnd() % 5000)
 })
 
-return {
+local isAppExiting = false
+eventbus_subscribe("app.shutdown", @(_) isAppExiting = true)
+
+
+on_module_unload(function(isClosing) {
+  if (!isClosing || isAppExiting || (isSquadMember() && isNotAloneOnline()))
+    return
+  foreach (queueType in getActiveQueueTypes())
+    queueType.leaveAllQueues(@(_) null, @(_) null, false)
+})
+
+return freeze({
   afterLeaveQueue
   notifyQueueLeave
   createQueue
@@ -407,4 +422,4 @@ return {
   joinFriendsQueue
   checkQueueAndStart
   isCanModifyCrew
-}
+})

@@ -14,22 +14,20 @@ function createRwrGrid(gridStyle) {
   return {
     pos = const [pw(50), ph(50)],
     size = FLEX,
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS,
-        color = color,
-        lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
-        fillColor = 0,
-        commands = [
-          [VECTOR_ELLIPSE,  0,    0,  33,  33],
-          [VECTOR_ELLIPSE,  0,    0,  67,  67],
-          [VECTOR_ELLIPSE,  0,    0, 100, 100],
-          [VECTOR_LINE,     0, -100,   0, 100],
-          [VECTOR_LINE,  -100,    0, 100,   0]
-        ]
-      }
-    ]
+    children = {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS,
+      color = color,
+      lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+      fillColor = 0,
+      commands = [
+        [VECTOR_ELLIPSE,  0,    0,  33,  33],
+        [VECTOR_ELLIPSE,  0,    0,  67,  67],
+        [VECTOR_ELLIPSE,  0,    0, 100, 100],
+        [VECTOR_LINE,     0, -100,   0, 100],
+        [VECTOR_LINE,  -100,    0, 100,   0]
+      ]
+    }
   }
 }
 
@@ -82,23 +80,21 @@ function scope(scale, style) {
     size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      {
-        pos = const [pw(22), ph(17)],
-        size = const [pw(70), ph(70)],
-        children = [
-          {
-            size = const [ph(100), ph(100)],
-            children = [
-              rwrTargetsComponent(style.object, 100.0),
-              createRwrGrid(style.grid),
-              rwrGridMarksComponent(style.grid)
-            ]
-          },
-          createCompass(style.grid, 100.0)
-        ]
-      }
-    ]
+    children = {
+      pos = const [pw(22), ph(17)],
+      size = const [pw(70), ph(70)],
+      children = [
+        {
+          size = const [ph(100), ph(100)],
+          children = [
+            rwrTargetsComponent(style.object, 100.0),
+            createRwrGrid(style.grid),
+            rwrGridMarksComponent(style.grid)
+          ]
+        },
+        createCompass(style.grid, 100.0)
+      ]
+    }
   }
 }
 

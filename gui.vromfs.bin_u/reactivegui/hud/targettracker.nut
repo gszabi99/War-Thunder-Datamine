@@ -19,7 +19,7 @@ function lockSight(colorWatched, width, height, _posX, _posY) {
     color = colorWatched.get()
     watch = [IsSightLocked, IsTargetTracked, colorWatched]
     commands = IsSightLocked.get() && !IsTargetTracked.get()
-      ? [
+      ? const [
           [VECTOR_LINE, 0, 0, hl, vl],
           [VECTOR_LINE, 0, 100, vl, 100 - vl],
           [VECTOR_LINE, 100, 100, 100 - hl, 100 - vl],
@@ -153,7 +153,7 @@ function targetSizeComponent(
   }
 }
 
-return {
+return freeze({
   lockSight
   targetSize = targetSizeComponent
-}
+})

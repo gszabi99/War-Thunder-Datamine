@@ -94,9 +94,9 @@ function blkToData(blk) {
   return res
 }
 
-return {
+return freeze({
   dataToBlk
   blkToData
   keyToStr
   strToKey
-}
+})

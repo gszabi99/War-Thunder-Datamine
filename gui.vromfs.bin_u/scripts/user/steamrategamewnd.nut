@@ -1,15 +1,15 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "eventbus" import eventbus_subscribe
 from "string" import format
 from "steam" import steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 let SteamRateGame = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -56,6 +56,6 @@ register_gui_handler("SteamRateGame", SteamRateGame)
 
 eventbus_subscribe("steam.overlay_activation", @(p) broadcastEvent("SteamOverlayStateChanged", p))
 
-return {
+return freeze({
   open = @(params = {}) handlersManager.loadHandler(SteamRateGame, params)
-}
+})

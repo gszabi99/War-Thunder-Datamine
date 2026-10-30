@@ -1,10 +1,9 @@
-from "%sqstd/string.nut" import stripTags
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/time.nut" import buildDateStr
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "string" import format
 from "math" import abs
 from "%scripts/dagui_library.nut" import *
-
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { buildDateStr } = require("%scripts/time.nut")
 
 const pad1 = "1@lines_pad"
 const pad2 = "1@lines_pad"
@@ -383,6 +382,6 @@ let ShopLines = class {
 
 }
 
-return {
+return freeze({
   ShopLines
-}
+})

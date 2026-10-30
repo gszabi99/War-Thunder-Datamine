@@ -255,7 +255,7 @@ let fwdMarker = @() {
   size = const [pw(2), ph(2)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-  commands = [
+  commands = const [
     [VECTOR_LINE, -120, 0, -80, 0, -40, 40, 0, 0, 40, 40, 80, 0, 120, 0]
   ]
   behavior = Behaviors.RtPropUpdate
@@ -304,10 +304,10 @@ function generatePitchLine(num) {
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         color = IlsColor.get()
         commands = [
-          (num == 0 ? [VECTOR_LINE, -10, 0, 40, 0] : []),
-          (num == 0 ? [VECTOR_LINE, 60, 0, 110, 0] : []),
-          (num == 0 ? [VECTOR_LINE, 110, 0, 110, 5] : []),
-          (num == 0 ? [VECTOR_LINE, -10, 0, -10, 5] : []),
+          (num == 0 ? const [VECTOR_LINE, -10, 0, 40, 0] : const []),
+          (num == 0 ? const [VECTOR_LINE, 60, 0, 110, 0] : const []),
+          (num == 0 ? const [VECTOR_LINE, 110, 0, 110, 5] : const []),
+          (num == 0 ? const [VECTOR_LINE, -10, 0, -10, 5] : const []),
           (num > 0 ? [VECTOR_LINE, 12, 0, 40, 40 * sin(angle)] : []),
           (num > 0 ? [VECTOR_LINE, 60, 40 * sin(angle), 88, 0] : []),
           (num != 0 ? [VECTOR_LINE, 88, 0, 88, 5 * sign] : []),
@@ -362,7 +362,7 @@ function tvvLinked(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 40, 40],
           [VECTOR_LINE, -100, 0, -40, 0],
           [VECTOR_LINE, 100, 0, 40, 0],
@@ -402,7 +402,7 @@ let rollIndicator = @(){
       size = FLEX
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 90, 0, 95],
         [VECTOR_LINE, 90 * sin(10 * degToRad), 90 * cos(10 * degToRad), 95 * sin(10 * degToRad), 95 * cos(10 * degToRad)],
         [VECTOR_LINE, 90 * sin(20 * degToRad), 90 * cos(20 * degToRad), 95 * sin(20 * degToRad), 95 * cos(20 * degToRad)],
@@ -430,14 +430,14 @@ let rollIndicator = @(){
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
       fillColor = Color(0, 0, 0, 0)
-      commands = [
+      commands = const [
         [VECTOR_POLY, 0, 88, -3, 80, 3, 80]
       ]
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
           rotate = -Roll.get()
-          pivot = [0.0, 0.0]
+          pivot = 0.0
         }
       }
     }
@@ -526,7 +526,7 @@ let haveRadatTarget = Computed(@() RadarTargetDist.get() > 0)
 let radarTargetDistValue = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
 let targetAltValue = Computed(@() (RadarTargetHeight.get() * metrToFeet * 0.01).tointeger())
 let radarTargetParams = @(){
-  watch = [haveRadatTarget]
+  watch = haveRadatTarget
   size = FLEX
   children = haveRadatTarget.get() ? [
     @(){
@@ -606,40 +606,37 @@ function radarReticle(width, height) {
   return @() {
     watch = RadarTargetPosValid
     size = FLEX
-    children = RadarTargetPosValid.get() ?
-    [
-      @() {
-        watch = [IlsColor, isAamAvailable, CurWeaponGidanceType, AamIsInRange]
-        size = const [pw(7), ph(7)]
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.get()
-        fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-        commands = isAamAvailable.get() && CurWeaponGidanceType.get() != GuidanceType.TYPE_INVALID && AamIsInRange.get() ?
-          (CurWeaponGidanceType.get() == GuidanceType.TYPE_ARH ? radarReticleActiveRadarMissileReadyCmd : radarReticleMissileReadyCmd) :
-          radarReticleCmd
-        animations = [
-          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
-        ],
-        behavior = Behaviors.RtPropUpdate
-        update = function() {
-          let reticleLim = [0.4 * width, 0.4 * height]
-          if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
-            anim_start("radar_target_out_of_limit")
-          else
-            anim_request_stop("radar_target_out_of_limit")
-          let RadarTargetPosLim =  [
-            0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
-            0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
-          ]
-          return {
-            transform = {
-              translate = RadarTargetPosLim
-            }
+    children = RadarTargetPosValid.get() ? @() {
+      watch = [IlsColor, isAamAvailable, CurWeaponGidanceType, AamIsInRange]
+      size = const [pw(7), ph(7)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.get()
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+      commands = isAamAvailable.get() && CurWeaponGidanceType.get() != GuidanceType.TYPE_INVALID && AamIsInRange.get() ?
+        (CurWeaponGidanceType.get() == GuidanceType.TYPE_ARH ? radarReticleActiveRadarMissileReadyCmd : radarReticleMissileReadyCmd) :
+        radarReticleCmd
+      animations = [
+        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+      ],
+      behavior = Behaviors.RtPropUpdate
+      update = function() {
+        let reticleLim = [0.4 * width, 0.4 * height]
+        if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+          anim_start("radar_target_out_of_limit")
+        else
+          anim_request_stop("radar_target_out_of_limit")
+        let RadarTargetPosLim =  [
+          0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+          0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+        ]
+        return {
+          transform = {
+            translate = RadarTargetPosLim
           }
         }
       }
-    ] : null
+    } : null
   }
 }
 
@@ -653,7 +650,7 @@ let adlMarker = @() {
   size = const [pw(2), ph(2)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, 100, 0],
     [VECTOR_LINE, 0, -100, 0, 100]
   ]
@@ -747,30 +744,28 @@ let GunTargetDistSector = Computed(@() cvt((CannonMode.get() ? DistToTarget.get(
 let gunReticle = @() {
   watch = ShowGunReticle
   size = ph(8)
-  children = ShowGunReticle.get() ? [
-    @(){
-      watch = HasGunTarget
-      size = FLEX
+  children = ShowGunReticle.get() ? @(){
+    watch = HasGunTarget
+    size = FLEX
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+    commands = gunReticleCommands
+    children = HasGunTarget.get() ? @(){
+      watch = GunTargetDistSector
       rendObj = ROBJ_VECTOR_CANVAS
+      size = FLEX
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = gunReticleCommands
-      children = HasGunTarget.get() ? @(){
-        watch = GunTargetDistSector
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color = IlsColor.get()
-        fillColor = Color(0, 0, 0, 0)
-        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-        commands = [
-          [VECTOR_SECTOR, 0, 0, 80, 80, -90, GunTargetDistSector.get()],
-          [VECTOR_LINE, 80 * cos(PI * GunTargetDistSector.get() / 180.), 80 * sin(PI * GunTargetDistSector.get() / 180.),
-           70 * cos(PI * GunTargetDistSector.get() / 180.), 70 * sin(PI * GunTargetDistSector.get() / 180.)]
-        ]
-      } : null
-    }
-  ] : null
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 80, 80, -90, GunTargetDistSector.get()],
+        [VECTOR_LINE, 80 * cos(PI * GunTargetDistSector.get() / 180.), 80 * sin(PI * GunTargetDistSector.get() / 180.),
+         70 * cos(PI * GunTargetDistSector.get() / 180.), 70 * sin(PI * GunTargetDistSector.get() / 180.)]
+      ]
+    } : null
+  } : null
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
@@ -829,7 +824,7 @@ let aamReticle = @(){
     lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
     fillColor = Color(0, 0, 0, 0)
     commands = CurWeaponGidanceType.get() == GuidanceType.TYPE_ARH ?
-      [
+      const [
         [VECTOR_SECTOR, 0, 0, 100, 100, 0, 9],
         [VECTOR_SECTOR, 0, 0, 100, 100, 18, 27],
         [VECTOR_SECTOR, 0, 0, 100, 100, 36, 45],
@@ -852,10 +847,10 @@ let aamReticle = @(){
         [VECTOR_SECTOR, 0, 0, 100, 100, 342, 351]
       ] :
       (CurWeaponGidanceType.get() == GuidanceType.TYPE_SARH ?
-        [
+        const [
           [VECTOR_ELLIPSE, 0, 0, 100, 100]
         ] :
-        [
+        const [
           [VECTOR_ELLIPSE, 0, 0, 60, 60]
         ])
     children = RadarTargetDist.get() >= 0.0 ? @(){
@@ -871,7 +866,7 @@ let aamReticle = @(){
       update = @() {
         transform = {
           rotate = 180 - RadarTargetAngle.get() * radToDeg
-          pivot = [0, 0]
+          pivot = 0
         }
       }
     } : null
@@ -889,7 +884,7 @@ let seekerReticle = @() {
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
+      commands = const [
         [VECTOR_ELLIPSE, 0, 0, 50, 50]
       ]
       behavior = Behaviors.RtPropUpdate
@@ -934,7 +929,7 @@ let launchZone = @(){
           size = const [pw(20), ph(5)]
           color = IlsColor.get()
           lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-          commands = [
+          commands = const [
             [VECTOR_LINE, 0, 0, 100, 50],
             [VECTOR_LINE, 0, 100, 100, 50]
           ]
@@ -962,7 +957,7 @@ let launchZone = @(){
               color = IlsColor.get()
               size = FLEX
               lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-              commands = [
+              commands = const [
                 [VECTOR_LINE, 0, 0, 0, 100],
                 [VECTOR_LINE, 0, 0, 60, 0],
                 [VECTOR_LINE, 0, 100, 60, 100],
@@ -986,20 +981,18 @@ let launchZone = @(){
                 @(){
                   watch = IsDgftLaunchZoneVisible
                   size = FLEX
-                  children = IsDgftLaunchZoneVisible.get() ? [
-                    @(){
-                      watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
-                      rendObj = ROBJ_VECTOR_CANVAS
-                      size = FLEX
-                      color = IlsColor.get()
-                      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-                      commands = [
-                        [VECTOR_LINE, 0, MaxLaunchDgftPos.get(), 100, MaxLaunchDgftPos.get()],
-                        [VECTOR_LINE, 0, MinLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()],
-                        [VECTOR_LINE, 100, MaxLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()]
-                      ]
-                    }
-                  ] : null
+                  children = IsDgftLaunchZoneVisible.get() ? @(){
+                    watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
+                    rendObj = ROBJ_VECTOR_CANVAS
+                    size = FLEX
+                    color = IlsColor.get()
+                    lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+                    commands = [
+                      [VECTOR_LINE, 0, MaxLaunchDgftPos.get(), 100, MaxLaunchDgftPos.get()],
+                      [VECTOR_LINE, 0, MinLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()],
+                      [VECTOR_LINE, 100, MaxLaunchDgftPos.get(), 100, MinLaunchDgftPos.get()]
+                    ]
+                  } : null
                 },
                 @(){
                   watch = MaxDistLaunch
@@ -1044,14 +1037,12 @@ function rotatedBombReleaseReticle() {
       lowerSolutionCue,
       {
         size = FLEX
-        children = [
-          @() {
-            watch = IlsColor
-            size = [baseLineWidth * IlsLineScale.get() * 0.5, FLEX]
-            rendObj = ROBJ_SOLID
-            color = IlsColor.get()
-          }
-        ]
+        children = @() {
+          watch = IlsColor
+          size = [baseLineWidth * IlsLineScale.get() * 0.5, FLEX]
+          rendObj = ROBJ_SOLID
+          color = IlsColor.get()
+        }
       }
     ]
     behavior = Behaviors.RtPropUpdate
@@ -1102,7 +1093,7 @@ let spi = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-    commands = [
+    commands = const [
       [VECTOR_LINE, -100, -50, -100, -100],
       [VECTOR_LINE, -50, -100, -100, -100],
       [VECTOR_LINE, 100, -50, 100, -100],

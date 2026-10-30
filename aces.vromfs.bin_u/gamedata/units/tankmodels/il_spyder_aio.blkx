@@ -2103,7 +2103,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
         "animatedEmitter": "bone_roll_33",
         "defaultYaw": 0.0,
@@ -2130,7 +2130,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/160mm_spyder_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/160mm_spyder_launcher_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2190,13 +2190,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2584,8 +2594,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "il_spyder_aio_default",
-      "blk": "gameData/units/tankModels/weaponPresets/il_spyder_aio_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4179,7 +4189,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/il_spyder_search.blk",
+              "blk": "gamedata/sensors/il_spyder_search.blk",
               "turretIndex": -1,
               "designationFromBody": true,
               "designationTurretIndex": -1,
@@ -4191,7 +4201,7 @@
               "ai": false
             },
             {
-              "blk": "gameData/sensors/il_spyder_search_ai.blk",
+              "blk": "gamedata/sensors/il_spyder_search_ai.blk",
               "turretIndex": -1,
               "designationFromBody": true,
               "designationTurretIndex": -1,
@@ -4281,7 +4291,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/il_spyder_search.blk",
+        "blk": "gamedata/sensors/il_spyder_search.blk",
         "turretIndex": -1,
         "designationFromBody": true,
         "designationTurretIndex": -1,
@@ -4293,7 +4303,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/il_spyder_search_ai.blk",
+        "blk": "gamedata/sensors/il_spyder_search_ai.blk",
         "turretIndex": -1,
         "designationFromBody": true,
         "designationTurretIndex": -1,

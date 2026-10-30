@@ -1,3 +1,17 @@
+import "%scripts/utils/memoizeByEvents.nut" as memoizeByEvents
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/wheelmenu/voiceMessages.nut" import getCantUseVoiceMessagesReason
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitPresets
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import getWeaponryCustomPresets
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk, getFmFile
+from "%scripts/hud/humanCommandsUtils.nut" import canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenade, canMateAttackVehicle, canGiveOrders, commandFragGrenade, commandSmokeGrenade
+  , commandFlashGrenade, commandAttackVehicle, cancelAllCommandsForSelectedBot, cancelAllCommandsForSquad, isAnyPersonalOrderSet, canCancelMateOrder
+from "%scripts/hud/humanWeaponUtils.nut" import canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus, hasLaserMod, laserModActive, hasFlashlightMod
+  , flashlightModActive, sightPresetsInfo, selectSightPreset, needShowWeaponMenu
+from "%scripts/hud/actionBarState.nut" import actionBarItems
+from "%scripts/hud/supplyTransportState.nut" import SUPPLY_TRANSPORT_BUY_SECTION, supplyTransportOffers, buySupplyTransport, canAffordSupplyTransport
 from "%sqstd/datablock.nut" import blkOptFromPath
 from "%sqstd/math.nut" import is_bit_set, number_of_set_bits
 from "controls" import emulateShortcut, isXInputDevice
@@ -6,10 +20,10 @@ from "guiMission" import get_mission_difficulty_int
 from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
 from "vehicleModel" import hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns, hasCountermeasureSystemIRCM, hasCollimatorSight
   , hasSightStabilization, canSwitchCockpitSightMode, hasCCRPSightMode, hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision
-  , hasHelmetDesignator, hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem, getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons
-  , hasAiGunners, hasGunStabilizer, hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview
-  , hasOpticsFps, hasTvOpticalGuidance, hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask
-  , hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride, hasMfdZoomLevels
+  , hasHelmetDesignator, hasInfraredProjector, isTerraformAvailable, canToggleApu, canUseRangefinder, hasMissileLaunchWarningSystem, getDisplaysWithTogglablePagesBitMask
+  , hasPrimaryWeapons, hasAiGunners, hasGunStabilizer, hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners
+  , hasBombview, hasOpticsFps, hasTvOpticalGuidance, hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl
+  , getEngineControlBitMask, hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride, hasMfdZoomLevels
 from "dagor.workcycle" import deferOnce
 from "weaponSelector" import has_secondary_weapons
 from "hudActionBarConst" import EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT
@@ -19,21 +33,10 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%globalScripts/weaponConsts.nut" import *
 
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
-let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
-let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let getHandler = @() handlersManager.findHandlerClassInScene(get_gui_handler("multifuncMenuHandler"))
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
-let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
-let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenade, canMateAttackVehicle, canGiveOrders, commandFragGrenade, commandSmokeGrenade, commandFlashGrenade, commandAttackVehicle, cancelAllCommandsForSelectedBot, cancelAllCommandsForSquad, isAnyPersonalOrderSet, canCancelMateOrder } = require("%scripts/hud/humanCommandsUtils.nut")
 
-let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus, hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive, sightPresetsInfo, selectSightPreset, needShowWeaponMenu } = require("%scripts/hud/humanWeaponUtils.nut")
-let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
@@ -333,6 +336,8 @@ function resizeSecondaryWeaponSeries() {
   emulateShortcut(isAir ? "ID_RESIZE_SECONDARY_WEAPON_SERIES" : "ID_RESIZE_SECONDARY_WEAPON_SERIES_HELICOPTER")
 }
 
+eventbus_subscribe("voiceMessageListQuit", @(_) emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU"))
+
 function voiceMessagesMenuFunc() {
   if (!isXInputDevice())
     return null
@@ -341,8 +346,7 @@ function voiceMessagesMenuFunc() {
   let shouldUseSquadMsg = is_last_voice_message_list_for_squad()
     && getCantUseVoiceMessagesReason(true) == ""
   return {
-    action = Callback(@() request_voice_message_list(shouldUseSquadMsg,
-      @() emulateShortcut("ID_SHOW_MULTIFUNC_WHEEL_MENU")), this)
+    action = Callback(@() request_voice_message_list(shouldUseSquadMsg), this)
     label  = loc(shouldUseSquadMsg
       ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD"
       : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
@@ -412,11 +416,11 @@ function hasSpecialUnit(unitType) {
     && get_mission_time() > blockedCooldownEndTime
 }
 
-let weaponMenuAvailable = Computed(@() needShowWeaponMenu.get()
+let isWeaponMenuAvailable = @() needShowWeaponMenu.get()
   || hasActionBarItem(EII_ARTILLERY_TARGET)
   || hasActionBarItem(EII_SPECIAL_UNIT, "fighter")
   || hasActionBarItem(EII_SPECIAL_UNIT, "attacker")
-  || hasActionBarItem(EII_SPECIAL_UNIT, "bomber"))
+  || hasActionBarItem(EII_SPECIAL_UNIT, "bomber")
 
 
 
@@ -863,7 +867,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_GM_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_TRANSMISSION_MODE_GM" ] }
       { shortcut = [ "ID_GM_TERRAFORM_TOGGLE" ], enable = @(_unitId) isTerraformAvailable() }
-      null
+      { shortcut = [ "ID_TOGGLE_APU_AUTO" ], enable = @(_unitId) canToggleApu() }
       null
       null
       null
@@ -989,7 +993,7 @@ let cfg = {
   },
   ["human_weapon_menu"] = {
     title = "weapon_menu/human/header"
-    enable = @(_) weaponMenuAvailable.get()
+    enable = @(_) isWeaponMenuAvailable()
     items = [
       {
         shortcut = [ "ID_HUMAN_FIRING_MOD_NEXT" ]
@@ -1062,6 +1066,16 @@ let cfg = {
     mkItems = @() sightPresetsInfo.get().map(@(l, idx) {
       action = @() selectSightPreset(idx)
       label  = loc(l)
+      closeOnAction = true
+    })
+  },
+  [SUPPLY_TRANSPORT_BUY_SECTION] = {
+    title = "supply/buyTransportMenu"
+    enable = @(_unitId) supplyTransportOffers.get().offers.len() > 0
+    mkItems = @() supplyTransportOffers.get().offers.map(@(offer, idx) {
+      action = @() buySupplyTransport(idx)
+      label  = loc("supply/transportOffer", { name = loc(offer.name), cost = offer.cost })
+      enable = @(_unitId) canAffordSupplyTransport(offer.cost)
       closeOnAction = true
     })
   },

@@ -1,3 +1,20 @@
+import "%scripts/controls/help/controlsHelpTabs.nut" as helpTabs
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler, is_gui_handler_instance
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/controls/hotas.nut" import hotasControlImagePath
+from "%scripts/controls/controlsUtils.nut" import getControlsList
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, HELP_CONTENT_SET
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/controls/controlsVisual.nut" import getLocalizedControlName
+from "%scripts/linesGenerator.nut" import getLinkLinesMarkup
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
 from "%sqStdLibs/helpers/u.nut" import search, isEmpty, isTMatrix
 from "controls" import isXInputDevice
 from "math" import ceil
@@ -7,36 +24,20 @@ from "guiMission" import get_meta_mission_info_by_name
 from "%sqstd/datablock.nut" import blkFromPath
 from "hudActionBarConst" import EII_BULLET
 from "%globalScripts/inputDeviceConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locCtrlId
 from "%scripts/dagui_library.nut" import *
-from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "types" import Table
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { register_gui_handler, get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
-let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
-let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -580,7 +581,7 @@ let helpWndModalHandler = class (BaseGuiHandlerWT) {
 
     let tObj = this.scene.findObject("joy_btn_share")
     if (checkObj(tObj)) {
-      let title = loc(helpMarkup.btnBackLocId)
+      let title = locCtrlId(helpMarkup.btnBackLocId)
       tObj.setValue(title)
       tObj.tooltip = "".concat(loc("controls/help/press"), loc("ui/colon"), "\n", title)
     }
@@ -747,7 +748,7 @@ let helpWndModalHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("helpWndModalHandler", helpWndModalHandler)
 
-return {
+return freeze({
   helpWndModalHandler
   gui_modal_help
-}
+})

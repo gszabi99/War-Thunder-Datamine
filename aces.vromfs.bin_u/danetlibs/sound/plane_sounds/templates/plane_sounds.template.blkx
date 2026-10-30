@@ -10,12 +10,60 @@
   "plane_watertracks_sound": {
     "_group": {
       "_tags": "sound",
-      "plane_watertracks_sound__path": "aircraft/effects/hydroplane",
+      "plane_watertracks_sound__path": "aircraft/effects/hydroplane"
+    }
+  },
+  "plane_watertracks_sound_subtemplate": {
+    "_group": {
+      "_tags": "sound",
       "plane_watertracks_sound__event:SoundEvent": {}
+    }
+  },
+  "plane_tracks_sound": {
+    "_group": {
+      "_tags": "sound",
+      "plane_tracks_sound__speedThresholds": [
+        0.1,
+        0.3
+      ],
+      "plane_tracks_sound__path:shared:object": {}
+    }
+  },
+  "plane_tracks_sound_subtemplate": {
+    "_group": {
+      "_tags": "sound",
+      "plane_tracks_sound__event:SoundEvent": {}
+    }
+  },
+  "plane_tracks_touchdown_sound": {
+    "_group": {
+      "_tags": "sound",
+      "plane_tracks_touchdown_sound__contactDuration": 0.2,
+      "plane_tracks_touchdown_sound__startDelay": 0.1,
+      "plane_tracks_touchdown_sound__forceToParam": [
+        0.5,
+        4.0
+      ],
+      "plane_tracks_touchdown_sound__path:shared:object": {}
+    }
+  },
+  "plane_tracks_touchdown_sound_subtemplate": {
+    "_group": {
+      "_tags": "sound",
+      "plane_tracks_touchdown_sound__contactAt": -1.0,
+      "plane_tracks_touchdown_sound__startAt": -1.0,
+      "plane_tracks_touchdown_sound__shouldStart": true,
+      "plane_tracks_touchdown_sound__maxForce": 0.0,
+      "plane_tracks_touchdown_sound__maxSpeedSq": 0.0,
+      "plane_tracks_touchdown_sound__cooldownOnAppear": 1.5
     }
   },
   "plane_damage_sound": {
     "_use": "vehicle_damage_sound",
+    "_group": {
+      "_tags": "server",
+      "vehicle_damage_net_sound__partDamageToAll": true
+    },
     "vehicle_damage_sound__paths:shared:object": {
       "_tags": "sound",
       "destroy:object": {
@@ -98,7 +146,10 @@
     }
   },
   "plane_sound_subtemplate": {
-    "_use": "base_vehicle_sound_subtemplate"
+    "_use": [
+      "base_vehicle_sound_subtemplate",
+      "plane_watertracks_sound_subtemplate"
+    ]
   },
   "plane_sound": {
     "_use": [

@@ -14,7 +14,7 @@ let userOptDamageIndicatorSize = extWatched("userOptDamageIndicatorSize", 1)
 
 let damageIndicatorScale = Computed(@() (1 + DAMAGE_INDICATOR_SCALE_FACTOR * (userOptDamageIndicatorSize.get().tofloat() / DAMAGE_INDICATOR_MAX_VALUE)))
 
-return {
+return freeze({
   crosshairColorOpt
   isHeliPilotHudDisabled
   isVisibleTankGunsAmmoIndicator
@@ -22,4 +22,4 @@ return {
   isChatReputationFilterEnabled
   userOptDamageIndicatorSize
   damageIndicatorScale
-}
+})

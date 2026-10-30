@@ -1,8 +1,8 @@
 {
   "model": "shackleton_mr_mk_2",
   "fmFile": "fm/shackleton_mr_mk_2.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_piston_inline_bomber_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_high_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/4x_engine_piston_inline_bomber_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_high_common.blk",
   "gearSinkRangeLR": 0.168,
   "gearSinkRangeC": 0.095,
   "gyroSight": false,
@@ -13,18 +13,18 @@
   "paratrooper": "raf_para",
   "isCapableOfAttackTurn": false,
   "ignoreArcadeWep": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects_bomber_heavy.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "500kph_nb",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects_bomber_heavy.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
+  "fireParamsPreset": "500kph_nb_m",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "DamageParts": {
@@ -44,22 +44,22 @@
     },
     "armor30": {
       "spar1_l_dm": {
-        "hp": 122.8
+        "hp": 130.0
       },
       "spar1_r_dm": {
-        "hp": 122.8
+        "hp": 130.0
       },
       "spar2_l_dm": {
-        "hp": 61.5
+        "hp": 90.0
       },
       "spar2_r_dm": {
-        "hp": 61.5
+        "hp": 90.0
       },
       "spar_l_dm": {
-        "hp": 180.0
+        "hp": 200.0
       },
       "spar_r_dm": {
-        "hp": 180.0
+        "hp": 200.0
       }
     },
     "armor8": {
@@ -86,9 +86,6 @@
       }
     },
     "dural": {
-      "cover1_dm": {
-        "hp": 19.5
-      },
       "cover2_dm": {
         "hp": 28.6
       },
@@ -101,11 +98,16 @@
       "cover5_dm": {
         "hp": 28.6
       },
-      "cover6_dm": {
-        "hp": 19.5
-      },
       "cover7_dm": {
         "hp": 27.1
+      }
+    },
+    "plexiglass_nb": {
+      "cover1_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
+        "hp": 19.5
       }
     },
     "dural2_nb_elevator": {
@@ -190,20 +192,20 @@
       },
       "wing_r_dm": {
         "hp": 1000.0
-      },
-      "wingcontrol_dm": {
-        "hp": 1000.0
-      },
-      "wingcontrol_l_dm": {
-        "hp": 1000.0
-      },
-      "wingcontrol_r_dm": {
-        "hp": 1000.0
       }
     },
-    "protected_controls": {
+    "steel_controls_nb": {
+      "wingcontrol_l_dm": {
+        "hp": 80.0
+      },
+      "wingcontrol_r_dm": {
+        "hp": 80.0
+      },
+      "wingcontrol_dm": {
+        "hp": 80.0
+      },
       "tailcontrol_dm": {
-        "hp": 120.5
+        "hp": 200.0
       }
     },
     "steel": {
@@ -269,28 +271,36 @@
     },
     "steel_pilot": {
       "gunner1_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner2_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner3_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner4_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner5_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner6_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner7_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner8_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "pilot1_dm": {
         "hp": 20.0
@@ -3030,28 +3040,41 @@
         "name": "spar_l_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -3062,27 +3085,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -3090,28 +3118,41 @@
         "name": "spar_r_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -3122,27 +3163,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -3473,7 +3519,83 @@
         ]
       },
       {
-        "name": "tailcontrol_dm"
+        "name": "tailcontrol_dm",
+        "onHit": [
+          {
+            "damageType": "generic",
+            "leak": 0.05
+          },
+          {
+            "damageType": "generic",
+            "damage": 3.0,
+            "leak": 0.08
+          },
+          {
+            "damageType": "generic",
+            "damage": 10.0,
+            "leak": 0.12
+          },
+          {
+            "damageType": "generic",
+            "damage": 30.0,
+            "leak": 0.25
+          },
+          {
+            "damageType": "generic",
+            "damage": 50.0,
+            "leak": 0.35
+          },
+          {
+            "damageType": "generic",
+            "damage": 80.0,
+            "leak": 0.5
+          },
+          {
+            "damageType": "shatter",
+            "leak": 0.03
+          },
+          {
+            "damageType": "shatter",
+            "damage": 4.0,
+            "leak": 0.06
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0,
+            "leak": 0.1
+          },
+          {
+            "damageType": "shatter",
+            "damage": 13.0,
+            "leak": 0.2
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0,
+            "leak": 0.3
+          }
+        ],
+        "onKill": [
+          {
+            "leak": 15.0,
+            "nothing": 85.0
+          },
+          {
+            "damage": 30.0,
+            "leak": 35.0,
+            "nothing": 65.0
+          },
+          {
+            "damage": 50.0,
+            "leak": 50.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 80.0,
+            "leak": 70.0,
+            "nothing": 30.0
+          }
+        ]
       },
       {
         "name": "tank1_dm",
@@ -3492,26 +3614,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -3595,26 +3717,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -3698,26 +3820,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -3801,26 +3923,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -3904,26 +4026,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -4007,26 +4129,26 @@
           {
             "damageType": "generic",
             "damage": 10.0,
-            "fire": 0.1,
-            "leak": 0.08
+            "fire": 0.02,
+            "leak": 0.06
           },
           {
             "damageType": "generic",
             "damage": 30.0,
-            "fire": 0.15,
-            "leak": 0.12
+            "fire": 0.04,
+            "leak": 0.22
           },
           {
             "damageType": "generic",
             "damage": 50.0,
-            "fire": 0.17,
-            "leak": 0.16
+            "fire": 0.05,
+            "leak": 0.3
           },
           {
             "damageType": "generic",
             "damage": 80.0,
-            "fire": 0.2,
-            "leak": 0.2
+            "fire": 0.06,
+            "leak": 0.4
           },
           {
             "damage": 250.0,
@@ -6714,7 +6836,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/cannonHispanoMkV_turret.blk",
+        "blk": "gamedata/weapons/cannonHispanoMkV_turret.blk",
         "breechInCockpit": true,
         "emitter": "flare1",
         "flash": "flare1",
@@ -6794,7 +6916,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/cannonHispanoMkV_turret.blk",
+        "blk": "gamedata/weapons/cannonHispanoMkV_turret.blk",
         "breechInCockpit": true,
         "emitter": "flare2",
         "flash": "flare2",
@@ -6874,7 +6996,7 @@
       },
       {
         "trigger": "gunner1",
-        "blk": "gameData/Weapons/cannonHispanoMkV_turret.blk",
+        "blk": "gamedata/weapons/cannonHispanoMkV_turret.blk",
         "breechInCockpit": true,
         "emitter": "flare3",
         "flash": "flare3",
@@ -6901,7 +7023,7 @@
       },
       {
         "trigger": "gunner1",
-        "blk": "gameData/Weapons/cannonHispanoMkV_turret.blk",
+        "blk": "gamedata/weapons/cannonHispanoMkV_turret.blk",
         "breechInCockpit": true,
         "emitter": "flare4",
         "flash": "flare4",
@@ -6932,10 +7054,10 @@
     "preset": [
       {
         "name": "shackleton_mr_mk_2_default",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_250lbs.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_250lbs.blk",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+            "blk": "gamedata/weapons/bombguns/uk_250lbs.blk",
             "iconType": "bombs_small_group",
             "amountPerTier": 3.0,
             "tier": [
@@ -6963,11 +7085,11 @@
       },
       {
         "name": "shackleton_mr_mk_2_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_500lbs.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_500lbs.blk",
         "reqModification": "subc_mk1",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+            "blk": "gamedata/weapons/bombguns/uk_500lb_he_mc_mk2.blk",
             "tier": [
               {
                 "iconType": "bombs_middle_group_x2",
@@ -7020,11 +7142,11 @@
       },
       {
         "name": "shackleton_mr_mk_2_1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_1000lbs.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_1000lbs.blk",
         "reqModification": "subc_mk3",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+            "blk": "gamedata/weapons/bombguns/uk_1000lbs_mc_mk1.blk",
             "tier": [
               {
                 "iconType": "bombs_large_group",
@@ -7057,11 +7179,11 @@
       },
       {
         "name": "shackleton_mr_mk_2_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_rockets.blk",
         "reqModification": "halker_rc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+            "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
             "iconType": "rockets_he_small_group",
             "amountPerTier": 4.0,
             "tier": [
@@ -7077,12 +7199,12 @@
       },
       {
         "name": "shackleton_mr_mk_2_250lbs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_250lbs_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_250lbs_rockets.blk",
         "reqModification": "halker_rc",
         "weaponConfig": {
           "Weapon": [
             {
-              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "blk": "gamedata/weapons/bombguns/uk_250lbs.blk",
               "iconType": "bombs_small_group",
               "amountPerTier": 3.0,
               "tier": [
@@ -7107,7 +7229,7 @@
               ]
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "iconType": "rockets_he_small_group",
               "amountPerTier": 4.0,
               "tier": [
@@ -7124,7 +7246,7 @@
       },
       {
         "name": "shackleton_mr_mk_2_500lbs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_500lbs_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_500lbs_rockets.blk",
         "reqModification": [
           "subc_mk1",
           "halker_rc"
@@ -7132,7 +7254,7 @@
         "weaponConfig": {
           "Weapon": [
             {
-              "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+              "blk": "gamedata/weapons/bombguns/uk_500lb_he_mc_mk2.blk",
               "tier": [
                 {
                   "iconType": "bombs_middle_group_x2",
@@ -7182,7 +7304,7 @@
               ]
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "iconType": "rockets_he_small_group",
               "amountPerTier": 4.0,
               "tier": [
@@ -7199,7 +7321,7 @@
       },
       {
         "name": "shackleton_mr_mk_2_1000lbs_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/shackleton_mr_mk_2_1000lbs_rockets.blk",
+        "blk": "gamedata/flightModels/weaponPresets/shackleton_mr_mk_2_1000lbs_rockets.blk",
         "reqModification": [
           "subc_mk3",
           "halker_rc"
@@ -7207,7 +7329,7 @@
         "weaponConfig": {
           "Weapon": [
             {
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk",
+              "blk": "gamedata/weapons/bombguns/uk_1000lbs_mc_mk1.blk",
               "tier": [
                 {
                   "iconType": "bombs_large_group",
@@ -7237,7 +7359,7 @@
               ]
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "blk": "gamedata/weapons/rocketGuns/uk_rp3.blk",
               "iconType": "rockets_he_small_group",
               "amountPerTier": 4.0,
               "tier": [
@@ -7262,17 +7384,974 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
-  "fireParams": {
-    "engineExtinguishFireSpeed": [
-      116.0,
-      155.0
+  "fireParams": {},
+  "FuelTankFireParams0": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
     ],
-    "engineExtinguishFireSpeedChance": [
-      0.02,
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
       0.8
     ],
-    "fireDamagePowerRel": 0.15,
-    "nonExtinguishFireTime": 55.0
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams1": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams2": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams3": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams4": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams5": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams6": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams7": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams8": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams9": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams10": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams11": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams12": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams13": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams14": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams15": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "EngineFireParams0": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams1": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams2": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams3": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams4": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams5": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams6": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams7": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
   },
   "balanceData": {
     "accSpd": 0.78981,

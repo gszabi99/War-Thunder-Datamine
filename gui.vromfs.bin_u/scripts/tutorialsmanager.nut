@@ -1,13 +1,12 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/shop/shopCheckResearch.nut" import ShopCheckResearch
+from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TAG, isUnitHaveAnyWeaponsTags
+from "%scripts/tutorials/nextTutorialHandler.nut" import tryOpenNextTutorialHandler
+from "%scripts/clientState/clientStates.nut" import isInMenu
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import check_aircraft_tags
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { ShopCheckResearch } = require("%scripts/shop/shopCheckResearch.nut")
-let { WEAPON_TAG, isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
-let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 
 let g_tutorials_manager = {
   actions = []

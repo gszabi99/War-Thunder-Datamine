@@ -18,7 +18,7 @@ isMouseCursorVisible.subscribe(function(isVisible) {
   broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })
 })
 
-return {
+return freeze({
   isMouseCursorVisible
   forceHideCursor
-}
+})

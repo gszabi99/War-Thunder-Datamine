@@ -16,12 +16,6 @@ function updateArtilleryStrikeStates() {
   let as = DataBlock()
   wwGetArtilleryStrikes(as)
   let strikesCount = as?.artilleryStrikes.blockCount() ?? 0
-  if (strikesCount == 0) {
-    artilleryStrikesInfo.set([])
-    samStrikesInfo.set([])
-    return
-  }
-
   let artilleryStrikesData = []
   let samStrikesData = []
 
@@ -59,11 +53,11 @@ function updateArtilleryAction() {
   artilleryReadyToStrike.set(getArmyByName(selectedArmy.get()))
 }
 
-return {
+return freeze({
   artilleryStrikesInfo
   samStrikesInfo
   updateArtilleryStrikeStates
   artilleryReadyToStrike
   updateArtilleryAction
   artilleryAttackRaduis
-}
+})

@@ -82,6 +82,16 @@
       display: inline-block;
       width: 9ch;
       color: #8a8;
+      /* the hanging indent of .rec is inherited and would put the time 9ch left, off the page */
+      text-indent: 0;
+    }
+
+    .prose {
+      color: #a0a0a0;
+    }
+
+    .delim {
+      color: #6c6c6c;
     }
 
     .hl {
@@ -101,6 +111,9 @@
     // bare %f prints six decimals; %.1f and %.2f lines must stay untouched
     var LONG_FRACTION_RE = /\d+\.\d{6,}/g;
 
+    // a word with a digit or an underscore (us_m4a1, hull_02) is a name, so one value as a whole
+    var TOKEN_RE = /('[^']*'|"[^"]*"|-?\b\d+(?:\.\d+)?\b|\b\w*[_\d]\w*\b)|-->| \/ |[,:()\[\]]+/g;
+
     var lastDMLogRecId = -1;
     var logGeneration = 0;
     var lastTimeText = null;
@@ -114,36 +127,74 @@
       return text.replace(LONG_FRACTION_RE, function (m) { return parseFloat(m).toFixed(2); });
     }
 
-    function appendHighlighted(parent, text, needle) {
-      if (!needle) {
-        parent.appendChild(document.createTextNode(text));
-        return;
+    function lexRuns(text) {
+      var runs = [];
+      var from = 0;
+      var token;
+      TOKEN_RE.lastIndex = 0;
+      while ((token = TOKEN_RE.exec(text)) !== null) {
+        if (token.index > from)
+          runs.push({ className: 'prose', from: from, to: token.index });
+        runs.push({ className: token[1] ? '' : 'delim', from: token.index, to: TOKEN_RE.lastIndex });
+        from = TOKEN_RE.lastIndex;
       }
+      if (from < text.length)
+        runs.push({ className: 'prose', from: from, to: text.length });
+      return runs;
+    }
 
+    function findMatches(text, needle) {
+      var matches = [];
+      if (!needle)
+        return matches;
       var hay = text.toLowerCase();
       var find = needle.toLowerCase();
-      var from = 0;
+      for (var at = hay.indexOf(find); at >= 0; at = hay.indexOf(find, at + find.length))
+        matches.push({ from: at, to: at + find.length });
+      return matches;
+    }
 
-      for (;;) {
-        var at = hay.indexOf(find, from);
-        if (at < 0)
-          break;
-        if (at > from)
-          parent.appendChild(document.createTextNode(text.slice(from, at)));
-        var mark = document.createElement('span');
-        mark.className = 'hl';
-        mark.appendChild(document.createTextNode(text.slice(at, at + find.length)));
-        parent.appendChild(mark);
-        from = at + find.length;
+    // matches cover the whole line, not one run, so one that spans a value and its prose stays whole
+    function appendStyled(parent, text, matches) {
+      var runs = lexRuns(text);
+      var next = 0;
+
+      for (var i = 0; i < runs.length; ++i) {
+        var run = runs[i];
+        var target = parent;
+        if (run.className) {
+          target = document.createElement('span');
+          target.className = run.className;
+          parent.appendChild(target);
+        }
+
+        for (var pos = run.from; pos < run.to;) {
+          while (next < matches.length && matches[next].to <= pos)
+            ++next;
+          var match = next < matches.length ? matches[next] : null;
+          if (match && match.from <= pos) {
+            var markEnd = Math.min(match.to, run.to);
+            var mark = document.createElement('span');
+            mark.className = 'hl';
+            mark.appendChild(document.createTextNode(text.slice(pos, markEnd)));
+            target.appendChild(mark);
+            pos = markEnd;
+          } else {
+            var plainEnd = match ? Math.min(match.from, run.to) : run.to;
+            target.appendChild(document.createTextNode(text.slice(pos, plainEnd)));
+            pos = plainEnd;
+          }
+        }
       }
-
-      parent.appendChild(document.createTextNode(text.slice(from)));
     }
 
     function renderRow(row, needle) {
       var el = row.el;
       while (el.firstChild)
         el.removeChild(el.firstChild);
+
+      var matches = findMatches(row.text, needle);
+      var shown = !needle || matches.length > 0;
 
       var time = document.createElement('span');
       time.className = 't';
@@ -152,10 +203,10 @@
       el.appendChild(time);
 
       var msg = document.createElement('span');
-      appendHighlighted(msg, row.text, needle);
+      if (shown)
+        appendStyled(msg, row.text, matches);
       el.appendChild(msg);
 
-      var shown = !needle || row.text.toLowerCase().indexOf(needle.toLowerCase()) >= 0;
       el.style.display = shown ? '' : 'none';
     }
 

@@ -21,7 +21,7 @@ function getArmyGroupsInfo() {
   return armyGroupsInfo
 }
 
-return {
+return freeze({
   getArmyGroupsInfo
   clearArmyGroupsInfo = @() armyGroupsInfo = null
-}
+})

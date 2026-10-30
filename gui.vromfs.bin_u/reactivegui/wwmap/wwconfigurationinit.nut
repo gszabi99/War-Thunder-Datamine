@@ -19,8 +19,8 @@ function invalidateConfiguration() {
   clearSettingsCache()
 }
 
-return {
+return freeze({
   configurationLoaded
   initConfiguration
   invalidateConfiguration
-}
+})

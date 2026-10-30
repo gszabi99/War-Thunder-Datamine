@@ -1,10 +1,10 @@
+from "%scripts/unit/unitInfo.nut" import image_for_air
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ItemUnitCouponMod = class (ItemExternal) {
   static iType = itemType.UNIT_COUPON_MOD

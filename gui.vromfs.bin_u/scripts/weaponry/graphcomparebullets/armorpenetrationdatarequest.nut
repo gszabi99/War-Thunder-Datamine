@@ -1,4 +1,4 @@
-from "unitCalculcation" import buildArmorPenetrationData
+from "%scripts/unit/unitCalcRequests.nut" import buildArmorPenetrationData
 from "%globalScripts/unitTypeConsts.nut" import *
 
 const DEFAULT_MAX_DISTANCE = 2000.0
@@ -15,6 +15,6 @@ function requestArmorPenetrationData(bullet, _settings, handlerCb) {
   buildArmorPenetrationData(weaponBlkName, bulletName, getMaxDistance(esUnitType), cb)
 }
 
-return {
+return freeze({
   requestArmorPenetrationData
-}
+})

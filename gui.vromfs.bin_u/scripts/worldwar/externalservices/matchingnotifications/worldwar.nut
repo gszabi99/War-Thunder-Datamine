@@ -1,4 +1,13 @@
 import "DataBlock" as DataBlock
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/services/wwService.nut" import subscribeOperationNotify, unsubscribeOperationNotify
+from "%scripts/matching/api.nut" import matchingRpcSubscribe
+from "%scripts/chat/mpChatModel.nut" import chatSystemMessage
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setWaitForQueueRoom
+from "%scripts/queue/queue/queueClasses.nut" import getQueueClass
+from "%scripts/queue/queueManager.nut" import afterLeaveQueue, createQueue, afterJoinQueue
+from "%scripts/queue/queueState.nut" import findQueueByName
 from "guiMission" import get_current_mission_desc
 from "gameplayBinding" import isInFlight
 from "worldwar" import wwGetOperationId
@@ -6,15 +15,6 @@ from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_local_player_country, ww_process_server_notification
 from "%scripts/dagui_library.nut" import *
 from "%scripts/webRPC.nut" import webRpcRegister
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
-let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { afterLeaveQueue, createQueue, afterJoinQueue } = require("%scripts/queue/queueManager.nut")
-let { findQueueByName } = require("%scripts/queue/queueState.nut")
 
 matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let operationId = params?.operationId ?? ""

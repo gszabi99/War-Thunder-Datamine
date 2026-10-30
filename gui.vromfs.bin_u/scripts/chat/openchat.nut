@@ -1,13 +1,13 @@
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne
+from "%scripts/chat/chatStates.nut" import hasMenuChat
+from "%scripts/gamercard/gamercardHelpers.nut" import getLastGamercardScene
+from "%scripts/contacts/contactsActions.nut" import find_contact_by_name_and_do
+from "%scripts/chat/chatHandler.nut" import openChatHandlerScene
+from "%scripts/chat/chatUtils.nut" import getChatObject
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { isPlayerFromXboxOne } = require("%scripts/clientState/platform.nut")
-let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
-let { openChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
-let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 
 function openChatScene(ownerHandler = null) {
@@ -65,8 +65,8 @@ function openChatPrivate(playerName, ownerHandler = null) {
   })
 }
 
-return {
+return freeze({
   openChatRoom
   openWWOperationChatRoomById
   openChatPrivate
-}
+})

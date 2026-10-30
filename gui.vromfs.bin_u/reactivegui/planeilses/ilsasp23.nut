@@ -47,7 +47,7 @@ let ASPRoll = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, -100, 0, -80, 0],
     [VECTOR_LINE, -96.6, 25.9, -77.3, 20.7],
     [VECTOR_LINE, -86.6, 50, -69.3, 40],
@@ -71,7 +71,7 @@ let ASPCompassMark = @() {
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
   fillColor = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 32, 33, 68, 33],
     [VECTOR_POLY, 49, 36, 50, 33, 51, 36]
   ]
@@ -92,30 +92,28 @@ function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
-          [VECTOR_ELLIPSE, 0, 0, 100, 100],
-          (!is_radar ? [VECTOR_LINE, 0, 0, 0, 0] : [])
+          const [VECTOR_ELLIPSE, 0, 0, 100, 100],
+          (!is_radar ? const [VECTOR_LINE, 0, 0, 0, 0] : const [])
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
             translate = watchVar.get() ? (is_aam ? [IlsTrackerX.get(), IlsTrackerY.get()] : (is_radar ? RadarTargetPos : TargetPos.get())) : [width * 0.5, height * 0.575]
             rotate = -Roll.get()
-            pivot = [0, 0]
+            pivot = 0
           }
         }
-        children = [
-          isIpp && BombingMode.get() ? @() {
-            watch = DistToTargetBuc
-            size = FLEX
-            rendObj = ROBJ_VECTOR_CANVAS
-            color = IlsColor.get()
-            fillColor = Color(0, 0, 0, 0)
-            lineWidth = baseLineWidth * IlsLineScale.get()
-            commands = [
-              [VECTOR_SECTOR, 0, 0, 200, 200, -90, DistToTargetBuc.get()],
-            ]
-          } : null
-        ]
+        children = isIpp && BombingMode.get() ? @() {
+          watch = DistToTargetBuc
+          size = FLEX
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.get()
+          fillColor = Color(0, 0, 0, 0)
+          lineWidth = baseLineWidth * IlsLineScale.get()
+          commands = [
+            [VECTOR_SECTOR, 0, 0, 200, 200, -90, DistToTargetBuc.get()],
+          ]
+        } : null
       }
       : null
   }
@@ -139,7 +137,7 @@ let ASPLRGrid = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 5, 0, 5, 100],
     [VECTOR_LINE, 5, 0, 8, 0],
     [VECTOR_LINE, 5, 16.5, 8, 16.5],
@@ -192,7 +190,7 @@ let ASPRadarRoll = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 25, 30, 42, 30],
     [VECTOR_LINE, 58, 30, 75, 30]
   ]
@@ -271,7 +269,7 @@ function ASP23LongRange(width, height) {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
     color = IlsColor.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, 45, 30, 48, 30],
       [VECTOR_LINE, 52, 30, 55, 30],
       [VECTOR_LINE, 50, 24, 50, 28],
@@ -298,13 +296,13 @@ function ASPCCIPDistanceGrid() {
     size = FLEX
     color = IlsColor.get()
     commands = [
-      [VECTOR_LINE, 27, 38, 27, 80],
-      [VECTOR_LINE, 25, 38, 27, 38],
-      [VECTOR_LINE, 25, 46.4, 27, 46.4],
-      [VECTOR_LINE, 25, 54.8, 27, 54.8],
-      [VECTOR_LINE, 25, 63.2, 27, 63.2],
-      [VECTOR_LINE, 25, 72, 27, 72],
-      [VECTOR_LINE, 25, 80, 27, 80],
+      const [VECTOR_LINE, 27, 38, 27, 80],
+      const [VECTOR_LINE, 25, 38, 27, 38],
+      const [VECTOR_LINE, 25, 46.4, 27, 46.4],
+      const [VECTOR_LINE, 25, 54.8, 27, 54.8],
+      const [VECTOR_LINE, 25, 63.2, 27, 63.2],
+      const [VECTOR_LINE, 25, 72, 27, 72],
+      const [VECTOR_LINE, 25, 80, 27, 80],
       [VECTOR_WIDTH, baseLineWidth * 2.2 * IlsLineScale.get()],
       [VECTOR_LINE, 27.5, (80 - minDist.get() / 5000.0 * 42), 30, (80 - minDist.get() / 5000.0 * 42)]
     ]
@@ -332,7 +330,7 @@ let ASPCCIPDistanceMark = @() {
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
     size = FLEX
     color = IlsColor.get()
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, 0, 40, -100],
       [VECTOR_LINE, 0, 0, 40, 100],
       [VECTOR_LINE, 40, -100, 40, -50],
@@ -351,14 +349,14 @@ function IPPCCRPLine(_width, height) {
     size = FLEX
     color = IlsColor.get()
     commands = [
-      (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get()) ? [VECTOR_LINE, 0, 0, 0, -100] : [])
+      (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get()) ? const [VECTOR_LINE, 0, 0, 0, -100] : const [])
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
         translate = TargetPosValid.get() ? [TargetPos.get()[0], clamp(TargetPos.get()[1], 0, height)] : [TargetPos.get()[0], height]
         rotate = -Roll.get()
-        pivot = [0, 0]
+        pivot = 0
       }
     }
   }
@@ -384,7 +382,7 @@ let IPPAcceleration = @() {
   size = const [pw(10), ph(5)]
   pos = const [pw(15), ph(35)]
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 0, 50],
     [VECTOR_LINE, 25, 25, 25, 25],
     [VECTOR_LINE, 100, 0, 100, 50],
@@ -413,7 +411,7 @@ let IPPClimb = @() {
   size = const [pw(5), ph(30)]
   pos = const [pw(70), ph(40)]
   color = IlsColor.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 50, 0],
     [VECTOR_LINE, 0, 16.6, 50, 16.6],
     [VECTOR_LINE, 0, 33.3, 50, 33.3],
@@ -472,7 +470,7 @@ let IPPAimLockPosMark = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, -20, 0, -100],
     [VECTOR_LINE, 0, 20, 0, 100],
     [VECTOR_LINE, 20, 0, 50, 0],
@@ -489,9 +487,7 @@ let IPPAimLockPosMark = @() {
 let IPPAimLockPos = @() {
   watch = AimLockValid
   size = FLEX
-  children = AimLockValid.get() ? [
-    IPPAimLockPosMark
-  ] : null
+  children = AimLockValid.get() ? IPPAimLockPosMark : null
 }
 
 function basicIPP253(width, height) {
@@ -578,7 +574,7 @@ function J7EAdditionalHud(width, height) {
   }
 }
 
-return {
+return freeze({
   J7EAdditionalHud
   ASP23ModeSelector
-}
+})

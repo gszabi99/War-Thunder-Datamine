@@ -1,3 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/unit/unitInfo.nut" import getUnitCountry
+from "%scripts/unit/unitStatus.nut" import isUnitFeatureLocked
+from "%scripts/unit/unitActions.nut" import CheckFeatureLockAction
+from "%scripts/onlineShop/onlineShopState.nut" import getAllFeaturePurchases, getPurchaseData
+from "%scripts/onlineShop/onlineShopModel.nut" import openBrowserByPurchaseData
+from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "string" import format
 from "math" import floor
 from "%sqstd/string.nut" import cutPrefix, capitalize
@@ -6,22 +19,7 @@ from "%scripts/dagui_natives.nut" import is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
-
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
-let { CheckFeatureLockAction } = require("%scripts/unit/unitActions.nut")
-let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
-let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 register_gui_handler("VehicleRequireFeatureWindow", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

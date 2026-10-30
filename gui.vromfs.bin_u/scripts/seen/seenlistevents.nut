@@ -64,7 +64,7 @@ function notifyChanged(listId, entitiesList) {
     cb()
 }
 
-return {
+return freeze({
   subscribe = subscribe
   notifyChanged = notifyChanged
-}
+})

@@ -1724,7 +1724,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/us_lav_ad_track.blk",
+      "blk": "gamedata/sensors/us_lav_ad_track.blk",
       "turretIndex": 0,
       "dmPart": [
         "optic_gun_dm",
@@ -2065,7 +2065,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
         "animatedEmitter": "bone_roll_21",
         "defaultYaw": 0.0,
@@ -2092,7 +2092,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/166mm_camm_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/166mm_camm_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2158,13 +2158,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2532,8 +2542,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_sky_sabre_launcher_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_sky_sabre_launcher_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -4167,7 +4177,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/us_lav_ad_track.blk",
+              "blk": "gamedata/sensors/us_lav_ad_track.blk",
               "turretIndex": 0,
               "dmPart": [
                 "optic_gun_dm",
@@ -4175,7 +4185,7 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]

@@ -1,18 +1,17 @@
-from "gpuBenchmark" import initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
-  closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality, getGpuName,
-  getPresetForMaxFPS, isGpuBenchmarkRunning
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/localProfile.nut" import saveLocalSharedSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/systemOptions.nut" import setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate, localizaQualityPreset
+from "%scripts/time.nut" import secondsToString
+from "%scripts/options/gpuBenchmarkUtils.nut" import GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID, needShowGpuBenchmark
+from "gpuBenchmark" import initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark, closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality, getGpuName
+  , getPresetForMaxFPS, isGpuBenchmarkRunning
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate, localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID, needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 let gpuBenchmarkPresets = [
   {
@@ -169,7 +168,7 @@ function showGpuBenchmarkWnd(curTabUnitType) {
   handlersManager.loadHandler(GpuBenchmarkWnd, { curTabUnitType, needUiUpdate = true })
 }
 
-return {
+return freeze({
   checkShowGpuBenchmarkWnd
   showGpuBenchmarkWnd
-}
+})

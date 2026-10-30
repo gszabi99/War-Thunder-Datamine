@@ -821,7 +821,7 @@
     },
     "gun_masks": {
       "armorClass": "ship_structural_steel",
-      "armorThickness": 5.0
+      "armorThickness": 25.0
     },
     "gun_barrels": {
       "armorClass": "tank_barrel",
@@ -1536,6 +1536,7 @@
     "engines": {
       "maxSpeed": 4.37,
       "maxReverseSpeed": 3.3,
+      "horsePowers": 330.0,
       "speedToTime": {
         "row": [
           [
@@ -1624,6 +1625,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        1.2,
+        0.0
+      ],
+      [
+        2.4,
+        100.0
+      ],
+      [
+        3.6,
+        200.0
+      ],
+      [
+        4.9,
+        400.0
+      ],
+      [
+        6.1,
+        600.0
+      ],
+      [
+        7.3,
+        800.0
+      ],
+      [
+        8.5,
+        1000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        1300.0
+      ],
+      [
+        -2.0,
+        600.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -1632,7 +1691,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1730,7 +1789,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/20mm_mg151_20_1938_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -1784,7 +1843,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_50_2pdr_qf_mk9_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_50_2pdr_qf_mk9_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1889,7 +1948,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -1943,7 +2002,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -1999,7 +2058,7 @@
   "weapon_presets": {
     "preset": {
       "name": "fr_lcm_monitor_default",
-      "blk": "gameData/units/ships/weaponPresets/fr_lcm_monitor_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/fr_lcm_monitor_default.blk"
     }
   },
   "cockpit": {
@@ -3014,29 +3073,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -10000.0,
-    "waterMassMult": 40.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 100000.0,
+    "waterMassVel": -25404.0,
+    "waterMassMult": 318.0,
+    "additionalWaterDeathThreshold": 159383.0,
     "additionalWaterShouldDiePercent": 0.4,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 25.0,
+    "maxHeelingAngle": 24.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 10.7,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18
+    "sideCenterOfMassOffsetPercent": 0.234
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 1.0,
+        "weight": 0.64,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3052,17 +3115,25 @@
       },
       {
         "part": "compartment_03_dm",
-        "weight": 1.0,
+        "weight": 0.63,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.3
+              "critWaterLevel": 0.46
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.46
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.04
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.04
             }
           ]
         }

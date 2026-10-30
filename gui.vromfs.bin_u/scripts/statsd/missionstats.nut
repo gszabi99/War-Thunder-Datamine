@@ -8,14 +8,10 @@ from "%scripts/utils_sa.nut" import is_multiplayer
 
 const SEND_DELAY_SEC = 30
 
-let missionStatsState = persist("missionStatsState", @() { spawnTime = -1 })
-
-function reset() {
-  missionStatsState.spawnTime = -1
-}
+let spawnTime = mkHardPersistWatched("statsd.missionStats")("spawnTime", -1)
 
 function onEventPlayerQuitMission(_) {
-  if (missionStatsState.spawnTime >= 0 && (get_time_msec() - missionStatsState.spawnTime > 1000 * SEND_DELAY_SEC))
+  if (spawnTime.get() >= 0 && (get_time_msec() - spawnTime.get() > 1000 * SEND_DELAY_SEC))
     return
   if (get_game_mode() != GM_DOMINATION)
     return
@@ -26,9 +22,7 @@ function onEventPlayerQuitMission(_) {
 }
 
 addListenersWithoutEnv({
-  RoomJoined         = @(_) reset()
-  PlayerSpawn        = @(_) missionStatsState.spawnTime = get_time_msec()
+  RoomJoined         = @(_) spawnTime.set(-1)
+  PlayerSpawn        = @(_) spawnTime.set(get_time_msec())
   PlayerQuitMission  = onEventPlayerQuitMission
 })
-
-reset()

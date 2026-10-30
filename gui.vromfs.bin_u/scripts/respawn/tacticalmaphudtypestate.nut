@@ -1,8 +1,8 @@
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "guiTacticalMap" import setForcedHudType, resetForcedHudType, setTacticalMapHudType
+from "%scripts/dagui_library.nut" import mkHardPersist
 
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-
-let tacticalMapHudTypeState = persist("tacticalMapHudTypeState", @() {})
+let tacticalMapHudTypeState = mkHardPersist("respawn.tacticalMapHudTypeState")("tacticalMapHudTypeState", {})
 
 function getCachedMapHudType(unitName) {
   return tacticalMapHudTypeState?[unitName]
@@ -28,8 +28,8 @@ isInBattleState.subscribe(function(isInBattle) {
   }
 })
 
-return {
+return freeze({
   getCachedMapHudType
   setCachedMapHudType
   applyMapHudType
-}
+})

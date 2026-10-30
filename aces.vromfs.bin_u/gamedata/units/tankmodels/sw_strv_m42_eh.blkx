@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1910,7 +1916,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/75mm_kan_m41_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/75mm_kan_m41_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "maxAdditionalPitch": 0.0,
@@ -1973,7 +1979,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2016,7 +2022,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
         "emitter": "bone_mg_v_02",
         "flash": "emtr_mg_flame_02",
         "barrelDP": "gun_barrel_03_dm",
@@ -2059,8 +2065,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_strv_m42_eh_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_strv_m42_eh_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

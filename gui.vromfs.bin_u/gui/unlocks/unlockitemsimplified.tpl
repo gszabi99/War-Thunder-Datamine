@@ -95,7 +95,7 @@ expandable {
         id:t='removeFromFavoritesBtn'
         smallIcon:t='yes'
         on_click:t='onRemoveUnlockFromFavorites'
-        tooltip:t='#mainmenu/UnlockAchievementsRemoveFromFavorite/hint'
+        tooltip:t='#<<removeFromFavoritesLocId>>'
         unlockId:t='null'
         have_shortcut:t='no'
       }

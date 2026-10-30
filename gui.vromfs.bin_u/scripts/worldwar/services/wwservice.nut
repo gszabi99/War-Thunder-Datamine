@@ -1,9 +1,8 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%scripts/matching/api.nut" import request_matching
 from "%scripts/dagui_library.nut" import *
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { request_matching } = require("%scripts/matching/api.nut")
-
-let curSubscribeOperationId = mkWatched(persist, "curSubscribeOperationId", -1)
+let curSubscribeOperationId = mkHardPersistWatched("worldWar.services.wwService")("curSubscribeOperationId", -1)
 
 function unsubscribeOperationNotify(operationId, successCallback = null, errorCallback = null, requestOptions = null) {
   request_matching("worldwar.unsubscribe_operation_notify", successCallback,
@@ -36,8 +35,8 @@ subscriptions.addListenersWithoutEnv({
   WWStopWorldWar = @(_p) unsubscribeCurOperation()
 })
 
-return {
+return freeze({
   subscribeOperationNotify = subscribeOperationNotify
   unsubscribeOperationNotify = unsubscribeOperationNotify
   subscribeOperationNotifyOnce = subscribeOperationNotifyOnce
-}
+})

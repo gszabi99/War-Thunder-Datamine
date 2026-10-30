@@ -90,7 +90,6 @@ def create_new_rendinst_asset()
       if imgui::Button("save asset")
         let assetPath = get_dlg_save_file("", "", "rendinst.blk")
         if !empty(assetPath)
-          get_base_name_without_ext(assetPath)
           importedRI = true
           import_rendinst(assetPath, activeRI__lodDistances, activeRI__lodFiles)
       imgui::NewLine()

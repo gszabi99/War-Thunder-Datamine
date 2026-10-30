@@ -1,11 +1,10 @@
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/time.nut" import secondsToHours, hoursToString
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "string" import format
 from "penalty" import getPenaltyStatus, DEVOICE, BAN_USER_INFINITE_PENALTY
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_time_till_decals_disabled
-
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { secondsToHours, hoursToString } = require("%scripts/time.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
   let st = getPenaltyStatus()
@@ -71,4 +70,4 @@ function getBannedMessage(status = null, banType = "ban") {
   return "\n".join(txtArr)
 }
 
-return { getDevoiceMessage, getBannedMessage }
+return freeze({ getDevoiceMessage, getBannedMessage })

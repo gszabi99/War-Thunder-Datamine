@@ -92,8 +92,8 @@ const AXIS = {
 
 let GAMEPAD_ENTER_SHORTCUT = ps4_is_circle_selected_as_enter_button() ? SHORTCUT.GAMEPAD_B : SHORTCUT.GAMEPAD_A
 
-return {
+return freeze({
   SHORTCUT
   AXIS
   GAMEPAD_ENTER_SHORTCUT
-}
+})

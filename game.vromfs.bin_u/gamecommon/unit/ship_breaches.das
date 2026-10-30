@@ -376,7 +376,6 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                      ship_damage_control__isPresetBased : bool;
                                      ship_cover_parts__disableDeadParts : bool;
                                      ship__repairBreachesRemainingTime : float -const;
-                                     repair_system_remaining_repair_time : float;
                                      ship_damage_control__unwateringSpeedMult : float;
                                      ship_damage_control__repairSpeedMult : float;
                                      ship_breaches__id : IntList;
@@ -387,14 +386,15 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                      ship__pumpsPartId : IntList;
                                      ship__waterMassVelMult : float;
                                      ship__unwateringRemainingTime : float -const
-                                     >) : void
+                                     >;
+                                   repair_system_remaining_repair_time : float = -1.0f) : void
   let unit = unit__ref.unit
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
     return
 
   let was_repairing_breaches = v.ship__repairBreachesRemainingTime > 0.0f
-  if v.ship__repairBreachesRemainingTime > 0.0f || v.repair_system_remaining_repair_time > 0.0f && v.ship_damage_control__isPresetBased
+  if v.ship__repairBreachesRemainingTime > 0.0f || repair_system_remaining_repair_time > 0.0f && v.ship_damage_control__isPresetBased
     let repair_speed_mult = calc_repair_speed_mult(unit) <| v
     v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 

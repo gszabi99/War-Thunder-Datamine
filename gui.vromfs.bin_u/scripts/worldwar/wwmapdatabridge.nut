@@ -1,10 +1,10 @@
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
+from "%scripts/worldWar/wwMapEventsHandler.nut" import selectBattle, selectArmy, selectAirfield, selectRearZone, hoverBattle, hoverArmy, doAction
+  , moveArmy, sendAircraft, showAirfieldTooltip
 from "eventbus" import eventbus_send, eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { selectBattle, selectArmy, selectAirfield, selectRearZone, hoverBattle, hoverArmy, doAction, moveArmy, sendAircraft, showAirfieldTooltip } = require("%scripts/worldWar/wwMapEventsHandler.nut")
-
-let dargMapVisible = mkWatched(persist, "dargMapVisible", true)
+let dargMapVisible = Watched(true)
 
 let wwMapEventHandlers = {
   selectBattle
@@ -41,7 +41,7 @@ let showArmiesIndex = @(groupIdxs, isShow) eventbus_send("ww.showArmiesIndex", {
 
 let selectArmyByName = @(armyName) eventbus_send("ww.selectArmyByName", armyName)
 
-return {
+return freeze({
   setWWMapParams
 
   hoverArmyByName
@@ -49,4 +49,4 @@ return {
 
   selectArmyByName
   dargMapVisible
-}
+})

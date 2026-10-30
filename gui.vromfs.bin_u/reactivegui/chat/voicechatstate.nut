@@ -69,6 +69,6 @@ function updateVoiceChatStatus(config) {
 
 eventbus_subscribe("updateVoiceChatStatus", updateVoiceChatStatus)
 
-return {
+return freeze({
   voiceChatMembers
-}
+})

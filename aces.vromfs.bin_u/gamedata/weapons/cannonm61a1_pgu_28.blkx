@@ -1,13 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 100.0,
-  "traceFreq": 4,
-  "bullets": 250,
-  "shootingCharge": 5.5,
-  "dragCx": 0.15,
-  "mass": 368.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -23,7 +14,44 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 100.0,
+  "bullets": 250,
+  "shootingCharge": 5.5,
+  "dragCx": 0.15,
+  "mass": 368.0,
   "iconType": "multibarrel_box",
+  "overheat": {
+    "overheat": [
+      [
+        6.3,
+        0.0
+      ],
+      [
+        7.9,
+        0.02
+      ],
+      [
+        9.0,
+        0.12
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        0.5,
+        1.5
+      ],
+      [
+        2.5,
+        2.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.09979,
@@ -845,7 +873,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2908,7 +2936,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -5794,43 +5822,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m61_gun_outside",
-    "cockpit": "m61_gun_inside",
-    "charge": "m61_gun_rotor",
-    "charge_inside": "m61_gun_rotor_interior",
-    "ai": "m61_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.3,
-        0.0
-      ],
-      [
-        7.9,
-        0.02
-      ],
-      [
-        9.0,
-        0.12
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        0.5,
-        1.5
-      ],
-      [
-        2.5,
-        2.0
-      ]
-    ]
-  },
   "M60_new_gun": {
     "maxDeltaAngle": 0.2,
     "deviation": {
@@ -5861,6 +5852,15 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m61_gun_outside",
+    "cockpit": "m61_gun_inside",
+    "charge": "m61_gun_rotor",
+    "charge_inside": "m61_gun_rotor_interior",
+    "ai": "m61_gun_ai"
   },
   "M60_armor_targets": {
     "bullet": {

@@ -1455,6 +1455,7 @@
     "engines": {
       "maxSpeed": 20.6,
       "maxReverseSpeed": 7.6,
+      "horsePowers": 6200.0,
       "speedToTime": {
         "row": [
           [
@@ -1623,6 +1624,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.7,
+        0.0
+      ],
+      [
+        11.5,
+        100.0
+      ],
+      [
+        17.2,
+        200.0
+      ],
+      [
+        22.9,
+        400.0
+      ],
+      [
+        28.6,
+        600.0
+      ],
+      [
+        34.4,
+        900.0
+      ],
+      [
+        40.1,
+        1300.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        300.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
   },
@@ -1630,7 +1689,7 @@
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/40mm_qf_bofors_mk7_single_naval_user_cannon.blk",
+      "blk": "gamedata/weapons/navalModels_weapons/40mm_qf_bofors_mk7_single_naval_user_cannon.blk",
       "emitter": "emtr_gun_flame_01",
       "flash": "emtr_gun_flame_01",
       "useEmitter": true,
@@ -1730,22 +1789,22 @@
     "preset": [
       {
         "name": "depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/uk_gay_class_archer_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_gay_class_archer_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "torpedo_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/uk_gay_class_archer_depth_charges_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_gay_class_archer_depth_charges_torpedoes.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/uk_gay_class_archer_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/uk_gay_class_archer_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "uk_gay_class_archer_default",
-        "blk": "gameData/units/ships/weaponPresets/uk_gay_class_archer_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/uk_gay_class_archer_default.blk"
       }
     ]
   },
@@ -1837,34 +1896,38 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -11000.0,
-    "waterMassMult": 110.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 350000.0,
+    "waterMassVel": -6252.0,
+    "waterMassMult": 78.0,
+    "additionalWaterDeathThreshold": 403305.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 35.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 10.2,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.546
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.5,
+        "weight": 0.13,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.6,
+        "weight": 0.23,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -1881,7 +1944,7 @@
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.8,
+        "weight": 0.35,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -1898,27 +1961,27 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.46
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.46
             },
             {
               "partNo": "engine_03_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.46
             },
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.3
+              "critWaterLevel": 0.01
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.01
             },
             {
               "partNo": "transmission_03_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.01
             }
           ]
         }

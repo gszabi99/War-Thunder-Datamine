@@ -1,4 +1,25 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/money.nut" import Cost, Money, money_type
+from "%scripts/chat/mpChatModel.nut" import getLogForBanhammer
+from "%scripts/chat/mpChat.nut" import getGameChatLogText
+from "%scripts/debriefing/rewardSources.nut" import getRewardSources
+from "%scripts/matchingRooms/matchingGameModesUtils.nut" import isGameModeVersus
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/statistics/mpStatisticsInfo.nut" import getSkillBonusTooltipText
+from "%scripts/statistics/mplayersList.nut" import getMplayersList
+from "%scripts/unit/unitInfo.nut" import getRomanNumeralRankByUnitName
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyPlayersInfo
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/weaponry/weaponryDescription.nut" import getModItemName
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList, isUserlogVisible
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent, getRoomUnitTypesMask
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled
 from "%appGlobals/ranks_common_shared.nut" import get_pve_trophy_name, get_mission_mode
 from "math" import fabs
 from "multiplayer" import get_mp_session_id_str, is_mplayer_peer
@@ -23,29 +44,8 @@ from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "types" import Table, Array
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { Cost, Money, money_type } = require("%scripts/money.nut")
-let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
-let { getGameChatLogText } = require("%scripts/chat/mpChat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
-let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getUserLogsList, isUserlogVisible } = require("%scripts/userLog/userlogUtils.nut")
-let { getRoomEvent, getRoomUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 const TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT = 0.95
 
@@ -1532,6 +1532,13 @@ function getMoneyFromDebriefingResult() {
 }
 
 eventbus_subscribe("onQuitToDebriefing", @(_) gatherDebriefingResult())
+
+
+let storedDebriefing = hardPersistOnUnload("debriefing.debriefingFull", "results", @() { debriefingResult, dynamicResult })
+debriefingResult = storedDebriefing?.debriefingResult
+dynamicResult = storedDebriefing?.dynamicResult ?? -1
+if (debriefingResult != null)
+  recountDebriefingResult()
 
 return {
   getDebriefingResult = @() debriefingResult

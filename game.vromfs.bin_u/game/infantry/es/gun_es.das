@@ -14,6 +14,7 @@ require WTPhysActor
 require %game.events
 
 require %appGame.wt_events
+require %appGame.infantry.es.grenade_thrower_common
 
 struct GunUpdateInput
   atTime : float
@@ -26,6 +27,7 @@ struct GunUpdateInput
   extraDeviation : float
   zeroingAngle : float
   projectileVelocityMult : float
+  shellPitchMult : float
 
 def private init_ammo_set(ammo_set__shellIds : IntList; gun__shell_prop_ids : PropsIdList; var ammo_set_indices : array<int>&)
   let shellPropsSize = length(gun__shell_prop_ids)
@@ -123,7 +125,7 @@ def private gun_launch(var gun : Gun&;
     spreadSettings.horzMult *= shellStartProps.mulMaxDeltaAngle.x
     spreadSettings.vertMult *= shellStartProps.mulMaxDeltaAngle.y
     let dir = calc_projectile_dir(spreadSettings, gun.gunProps.spread, shellStartProps.spread, launchTm, state.randSeed,
-      shellStartProps.pitch + input.zeroingAngle)
+      shellStartProps.pitch * input.shellPitchMult + input.zeroingAngle)
     let vel = dir * shellStartProps.speed * (1.f + _srnd(state.randSeed) * shellStartProps.speedDispersion) * input.projectileVelocityMult + input.pointVel
     var evt = EventShot()
     if (length_sq(launchTm[3]) < 1e10 && length_sq(vel) < 1e10)
@@ -322,8 +324,11 @@ def gun_update_es(evt : CmdGunUpdate;
                   gun__zeroingAngle : float = 0.;
                   gun__launchVerticalAngle : float = 0.;
                   gun__projectileVelocityMult : float = 1.;
+                  grenade_thrower__quickThrowSpeedMult : float = 1.;
+                  grenade_thrower__quickThrowPitchMult : float = 1.;
                   gun__ignoreWeaponVelocity : bool = false;
-                  mounted_gun : MountedGun const?)
+                  mounted_gun : MountedGun const?;
+                  grenade_thrower : GrenadeThrower const?)
   if evt.isForReal
     gun.prevState = gun.curState
     gun_update_tms(gun, gun_deviation, gun__owner, evt.gloc, evt.gctrl, evt.atTime)
@@ -347,6 +352,10 @@ def gun_update_es(evt : CmdGunUpdate;
   gunIn.extraDeviation = gun_deviation.extraDev
   gunIn.zeroingAngle = gun__zeroingAngle + gun__launchVerticalAngle
   gunIn.projectileVelocityMult = gun__projectileVelocityMult
+  gunIn.shellPitchMult = 1.
+  if grenade_thrower != null && !is_grenade_thrower_in_hands(gun__owner)
+    gunIn.projectileVelocityMult *= grenade_thrower__quickThrowSpeedMult
+    gunIn.shellPitchMult = grenade_thrower__quickThrowPitchMult
 
   var curShellId = -1
   var ammo_set_indices : array<int>

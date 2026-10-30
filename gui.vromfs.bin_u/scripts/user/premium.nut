@@ -1,13 +1,11 @@
 import "%appGlobals/timeLoc.nut" as timeBase
+from "%scripts/time.nut" import getExpireText
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "chard" import getPremiumSavedTimeMinutes
 from "dagor.workcycle" import setTimeout, clearTimer
 from "console" import register_command
 from "%scripts/dagui_natives.nut" import entitlement_expires_in, shop_get_premium_account_ent_name
 from "%scripts/dagui_library.nut" import *
-
-let { getExpireText } = require("%scripts/time.nut")
-
 
 const PREM_TIMER_ID = "timer_premium_update"
 
@@ -54,11 +52,11 @@ register_command(function() {
   log($"subscriptionPremium: { getExpireText(lastSubscription) }, normalPremium: { getExpireText(getPremiumSavedTimeMinutes()) }")
 }, "premium.remaining")
 
-return {
+return freeze({
   havePremium = Computed(@() forcePremium.get() != null
     ? forcePremium.get()
     : haveProfilePremium.get()
   )
 
   getRemainingPremiumTime
-}
+})

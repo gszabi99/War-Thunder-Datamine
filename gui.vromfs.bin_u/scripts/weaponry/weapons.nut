@@ -1,9 +1,79 @@
+import "%scripts/user/newbieTutorialDisplay.nut" as tutorialModule
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+import "%scripts/weaponry/prepareUnitsForPurchaseMods.nut" as prepareUnitsForPurchaseMods
+import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/items/listPopupWnd/universalSpareApplyWnd.nut" import UniversalSpareApplyWnd
+from "%scripts/items/listPopupWnd/modUpgradeApplyWnd.nut" import ModUpgradeApplyWnd
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal, findPlaceForHint, updateHintPosition
+from "%scripts/genericOptions.nut" import GenericOptionsModal
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_obj, getObjValidIndex
+from "%scripts/weaponry/modsTree.nut" import getModsTreeSize, generateModsTree, generateModsBgElems, isModificationInTree, getNextTierModsCount
+from "%scripts/weaponry/modificationInfo.nut" import canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium, isModClassExpendable, getModificationByName
+  , findAnyNotResearchedMod, getModificationBulletsGroup
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
+from "%scripts/weaponry/itemInfo.nut" import getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl, isCanBeDisabled, isModInResearch
+  , getBundleCurItem, canResearchItem
+from "%scripts/weaponry/weaponryDescription.nut" import getModItemName, getReqModElements, getBulletsListHeader
+from "%scripts/weaponry/weaponryVisual.nut" import updateModItem, createModItem, createModBundle, createModItemLayout, isMrankLockedCardItem
+from "%scripts/weaponry/bulletsInfo.nut" import isBullets, getBulletsList, setUnitLastBullets, getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName, isMrankLockCardType
+  , getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup
+from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets, checkUnitSecondaryWeapons, getLastPrimaryWeapon
+  , getPrimaryWeaponsList, getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton, placePriceTextToButton
+from "%scripts/weaponry/weaponsPurchase.nut" import weaponsPurchase
+from "%scripts/damageControl/damageControlWnd.nut" import showDamageControl
+from "%scripts/damageControl/damageControlModule.nut" import hasShipDamageControl
+from "%scripts/unit/unitParams.nut" import isShipDamageControlEnabled
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
+from "%scripts/weaponry/checkInstallMods.nut" import promptReqModInstall, needReqModInstall
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/customization/skinUtils.nut" import getSkinId
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/unlocks/unlocksModule.nut" import canDoUnlock, isUnlockVisible
+from "%scripts/user/balance.nut" import get_balance
+from "%scripts/tasker.nut" import addTask
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_TRAINING, USEROPT_DIFFICULTY
+from "%scripts/missions/modificationTutorial.nut" import needShowUnseenModTutorialForUnitMod, markSeenModTutorial, startModTutorialMission
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/slotbar/slotbarPresetsList.nut" import getSlotbarPresetsList
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/unit/unitMrankSelectionState.nut" import setSelectedUnitAddMrank, resetSelectedUnitAddMrank, getMrankComboDelta, persistUnitSelectedAddMrank, getSelectableAddMranks, hasAnyAddMrankMod, isUnitMrankLockAvailable, isMrankLockableItem
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/discounts/discountUtils.nut" import showAirDiscount
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/unit/unitActions.nut" import flushExcessExpToModule
+from "%scripts/guiTutorial.nut" import gui_modal_tutor
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/weaponry/weaponryActions.nut" import enable_modifications
+from "%scripts/researches/researchActions.nut" import checkNonApprovedResearches
+from "%scripts/unlocks/unlocksState.nut" import buildConditionsConfig
+from "%scripts/squads/squadUtils.nut" import canJoinFlightMsgBox
+from "%scripts/weaponry/weaponryTypes.nut" import getWeaponryGroupHeader
+from "%scripts/weaponry/infantryWeapons.nut" import getWeaponsForInfantryUnit, createEmptyWeaponSlot, getPresetCompositionByName, getSoldiersWeaponsListForPreset, createCustomInfantryPreset, createEmptyInfantryPreset, isEmptyPresetAlreadyExist
+  , getPresetSpecialWeapons, getSoldiersCount, getWeaponDataByWeaponInfo
+from "%scripts/weaponry/infantryArmor.nut" import getUnitArmorData, getAppliedArmorForUnit
+from "%scripts/unit/unitWeaponryCustomPresets.nut" import addCustomPreset, deleteCustomPreset
+from "%scripts/weaponry/weaponryPresets.nut" import isCustomPreset, EMPTY_PRESET_NAME, INF_VIEW_SIZE_MULTIPLIER
+from "%scripts/unit/unitChecks.nut" import checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/underscore.nut" import deep_clone
 from "string" import format
 from "chardResearch" import shopIsModificationEnabled
 from "math" import floor
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "dagor.workcycle" import defer
 from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen, shop_set_researchable_unit_module
@@ -18,73 +88,12 @@ from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text, roman_numerals, check_aircraft_tags
 from "types" import String, Table, Array
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { UniversalSpareApplyWnd } = require("%scripts/items/listPopupWnd/universalSpareApplyWnd.nut")
-let { ModUpgradeApplyWnd } = require("%scripts/items/listPopupWnd/modUpgradeApplyWnd.nut")
-let { HelpInfoHandlerModal, findPlaceForHint, updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods, isModificationInTree, modsWndWidthRestrictions, getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium, isModClassExpendable, getModificationByName, findAnyNotResearchedMod, getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl, isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem } = require("%scripts/weaponry/itemInfo.nut")
-let { getModItemName, getReqModElements, getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
-let { updateModItem, createModItem, createModBundle, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { isBullets, getBulletsList, setUnitLastBullets, getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName, getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup } = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets, checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList, getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { setDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { commonProgressMods, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
-let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
-let { hasShipDamageControl } = require("%scripts/damageControl/damageControlModule.nut")
-let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
-let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getSkinId } = require("%scripts/customization/skinUtils.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { canDoUnlock, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { get_balance } = require("%scripts/user/balance.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial, startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { flushExcessExpToModule } = require("%scripts/unit/unitActions.nut")
-let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { RESEARCHED_MODE_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
-let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { getWeaponryGroupHeader } = require("%scripts/weaponry/weaponryTypes.nut")
-let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot, getPresetCompositionByName, getSoldiersWeaponsListForPreset, createCustomInfantryPreset, createEmptyInfantryPreset, isEmptyPresetAlreadyExist, getPresetSpecialWeapons, getSoldiersCount, getWeaponDataByWeaponInfo } = require("%scripts/weaponry/infantryWeapons.nut")
-let { getUnitArmorData, getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
-let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { isCustomPreset, EMPTY_PRESET_NAME, INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
-let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
+let { infantryWeaponsSlotIdx } = require("%scripts/weaponry/infantryWeapons.nut")
 
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
@@ -184,6 +193,8 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   curEdiff = null
   purchasedModifications = null
   needHideSlotbar = false
+  mrankHoverDelta = null
+  mrankDeltaIds = null
 
   shouldBeRestoredOnMainMenu = false
   isHeaderHidden = false
@@ -396,11 +407,22 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.expendablesArray = this.getExpendableModificationsArray(this.air)
   }
 
-  function updateWndWidth() {
-    let weaponsAndBulletsLen = 1               
-      +(isUnitHaveSecondaryWeapons(this.air) ? 1 : 0) 
-      +this.bulletGroups.len()
+  function getHumanWeaponsColumnsCount() {
+    return (getUnitArmorData(this.air).len() > 0 ? 1 : 0)
+      + getSoldiersCount(this.air, this.curEdiff).maxCount
+      + (isUnitHaveSecondaryWeapons(this.air) ? 1 : 0)
+  }
+
+  function getWeaponsColumnsCount() {
+    return 1 
+      + (isUnitHaveSecondaryWeapons(this.air) ? 1 : 0)
+      + this.bulletGroups.len()
       + this.expendablesArray.len()
+  }
+
+  function updateWndWidth() {
+    let weaponsAndBulletsLen = this.air.isHuman() ? this.getHumanWeaponsColumnsCount()
+      : this.getWeaponsColumnsCount()
     let premiumModsLen = this.premiumModsList.len() + (this.air.spare && !this.researchMode ? 1 : 0)
     this.wndWidth = clamp(max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(this.air).guiPosX),
       modsWndWidthRestrictions.min, modsWndWidthRestrictions.max)
@@ -419,6 +441,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.air = newUnit
     this.airName = this.air?.name ?? ""
     unitNameForWeapons.set(this.airName)
+    this.mrankHoverDelta = null
 
     this.initMainParams()
     if (this.needHideSlotbar)
@@ -608,6 +631,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
     this.updateWindowHeightAndPos()
     this.updateWeaponsDropDownBackdropPos()
+    this.updateMrankSelection()
   }
 
   function fillAvailableRPText() {
@@ -783,6 +807,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       if (item.type == weaponsItem.weapon) {
         this.items[idx] = selWeapon
         this.updateItem(idx)
+        this.applyMrankLocks()
         return
       }
   }
@@ -849,8 +874,9 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     return createModItem(id, this.air, item, iType, holderObj, this, {
       posX, posY
       curEdiff = currentEdiff
-      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff, mrankDelta = this.mrankHoverDelta })
       itemWidth
+      mrankDelta = this.mrankHoverDelta
     })
   }
 
@@ -863,9 +889,10 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     return createModItemLayout(id, this.air, item, iType, {
       posX, posY
       curEdiff = currentEdiff
-      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+      tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff, mrankDelta = this.mrankHoverDelta })
       researchFinished = this?.researchBlock.prevMod == item.name
       isModeEnabledFn = @() shopIsModificationEnabled(this.air.name, item.name)
+      mrankDelta = this.mrankHoverDelta
     })
   }
 
@@ -957,9 +984,11 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       curEdiff = currentEdiff
       tooltipId = getCustomTooltipId(this.air.name, item, {
         curEdiff = currentEdiff
+        mrankDelta = this.mrankHoverDelta
       })
       researchFinished = this?.researchBlock.prevMod == item.name && this.lastResearchMod == null
       isModeEnabledFn = @() shopIsModificationEnabled(this.air.name, item.name)
+      mrankDelta = this.mrankHoverDelta
     })
   }
 
@@ -1233,6 +1262,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   }
 
   function updateProgressStatus() {
+    this.updateMrankSelection()
     if(commonProgressMods.hasSummary == false) {
       this.scene.findObject("progressMods").show(false)
       return
@@ -1247,6 +1277,114 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.scene.findObject("progressModsPercent").setValue(progress)
     const thumbWidth = 60
     this.scene.findObject("progressModsTrack")["width"] = $"{commonProgressMods.progress}(pw - {thumbWidth}@sf/@pf) + {thumbWidth/2}@sf/@pf"
+  }
+
+  function applyMrankLocks() {
+    if (!isUnitMrankLockAvailable(this.air))
+      return
+    let lockDelta = this.mrankHoverDelta
+    foreach (idx, item in this.items) {
+      let isMrankLockCard = isMrankLockCardType(item)
+      if (!isMrankLockableItem(item) && !isMrankLockCard)
+        continue
+      let isLocked = isMrankLockedCardItem(this.air, item, lockDelta)
+      let obj = this.getItemObj(idx)
+      if (!checkObj(obj))
+        continue
+      let lockVal = isLocked ? "yes" : "no"
+      if (obj?.mrankLock == lockVal)
+        continue
+      obj["mrankLock"] = lockVal
+      this.updateItem(idx)
+    }
+  }
+
+  function onMrankOptionHover(obj) {
+    let id = obj?.id
+    if (id == null || this.mrankDeltaIds?.indexof(id) == null)
+      return
+    this.mrankHoverDelta = id.tointeger()
+    this.applyMrankLocks()
+  }
+
+  function onMrankListUnhover(_obj) {
+    this.mrankHoverDelta = null
+    this.applyMrankLocks()
+  }
+
+  function updateMrankSelection() {
+    let rowObj = this.scene.findObject("mrank_selection_row")
+    if (!hasFeature("SelectableBattleRating") || this.air == null || !hasAnyAddMrankMod(this.air)) {
+      rowObj.show(false)
+      return
+    }
+
+    let deltas = getSelectableAddMranks(this.air)
+    deltas.sort()
+
+    let baseMrank = this.air.getEconomicRank(this.getCurrentEdiff())
+    let curIdx = deltas.indexof(getMrankComboDelta(this.air)) ?? 0
+    this.mrankDeltaIds = deltas.map(@(d) d.tostring())
+
+    let view = {
+      id = "mrank_selection"
+      funcName = "onMrankSelect"
+      hoverFuncName = "onMrankOptionHover"
+      popupLeaveFuncName = "onMrankListUnhover"
+      values = deltas.map(@(delta, idx) {
+        valueId = delta.tostring()
+        text = format("%.1f", calcBattleRatingFromRank(baseMrank + delta))
+        isSelected = idx == curIdx
+      })
+    }
+    let data = handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
+    this.guiScene.replaceContentFromText(this.scene.findObject("mrank_selection_combo_block"), data, data.len(), this)
+    let comboObj = this.scene.findObject("mrank_selection")
+
+    let isUnlocked = deltas.len() > 1
+    comboObj.enable(isUnlocked)
+    let tooltipText = isUnlocked ? "" : loc("modification/mrankSelectLockedTooltip")
+    let labelObj = this.scene.findObject("mrank_selection_label")
+    labelObj.setValue("".concat(loc("shop/battle_rating"), loc("ui/colon")))
+    rowObj.tooltip = tooltipText
+    rowObj.show(true)
+    this.applyMrankLocks()
+  }
+
+  function onMrankSelect(obj) {
+    let value = getObjValidIndex(obj)
+    if (value < 0)
+      return
+    let unitName = this.air.name
+    let newDelta = obj.getChild(value).id.tointeger()
+    let prevDelta = getMrankComboDelta(this.air)
+    if (newDelta == prevDelta)
+      return
+
+    let cancelPick = function() {
+      this.updateMrankSelection()
+    }
+    let applyPick = function() {
+      setSelectedUnitAddMrank(unitName, newDelta)
+      this.mrankHoverDelta = null
+      this.applyMrankLocks()
+      let revertMrankSelect = function(_result) {
+        resetSelectedUnitAddMrank(unitName)
+        if (!this?.isValid())
+          return
+        this.updateMrankSelection()
+        showInfoMsgBox(loc("modification/mrankSelectError"))
+      }.bindenv(this)
+      persistUnitSelectedAddMrank(unitName, newDelta, revertMrankSelect)
+    }
+
+    this.checkedCrewAirChange(applyPick, cancelPick)
+  }
+
+  function updateUnitItems() {
+    foreach (idx, item in this.items)
+      if (this.isItemTypeUnit(item.type))
+        this.updateItem(idx)
   }
 
   function updateTiersStatus(size) {
@@ -1320,8 +1458,9 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       : 0
     local nextX = offsetX
     local data = ""
+    
     if (this.air.spare && !this.researchMode)
-      data = "\n".concat(data, this.createItemLayout(this.air.spare, weaponsItem.spare, nextX++, offsetY))
+      data = "\n".concat(data, this.createItemLayout({ ...this.air.spare }, weaponsItem.spare, nextX++, offsetY))
     foreach (mod in this.premiumModsList)
       data = "\n".concat(data, this.createItemLayout(mod, weaponsItem.modification, nextX++, offsetY))
 
@@ -1713,9 +1852,10 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   }
 
   function unstickCurBundle() {
-    if (!checkObj(this.curBundleTblObj))
+    let hoverSizeObj = this.getCurBundleHoverSizeObj()
+    if (hoverSizeObj == null)
       return
-    this.onDropDownToggle(this.curBundleTblObj.getParent().getParent()) 
+    this.onDropDownToggle(hoverSizeObj)
     this.curBundleTblObj = null
   }
 
@@ -1762,6 +1902,11 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     if (needDropdownForceOpen) {
       this.curBundleTblObj = hoveredBundleObj
       this.onDropDownToggle(obj)
+      this.guiScene.performDelayed(this, function() {
+        if (!this.isValid())
+          return
+        this.applyMrankLocks()
+      })
       return
     }
     if (!showConsoleButtons.get() || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
@@ -1844,6 +1989,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
 
       setLastWeapon(this.airName, item.name)
       this.updateItemBundle(item)
+      this.applyMrankLocks()
       checkSecondaryWeaponModsRecount(this.air)
       return
     }
@@ -2002,7 +2148,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       }
       applyAtClose = false
       wndOptionsMode = OPTIONS_MODE_TRAINING
-      applyFunc = function() {
+      applyFunc = function(_) {
         if (!canJoinFlightMsgBox())
           return
         this.shouldBeRestoredOnMainMenu = true
@@ -2084,6 +2230,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       this.guiScene.playSound("check")
     }
     this.updateItemBundle(item)
+    this.applyMrankLocks()
     return isChanged
   }
 
@@ -2232,6 +2379,13 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       handlersManager.requestHandlerRestore(this, MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
+  }
+
+  function onEventProfileUpdated(_p) {
+    if (this.air == null)
+      return
+    this.updateUnitItems()
+    this.applyMrankLocks()
   }
 
   function getHandlerRestoreData() {
@@ -2531,8 +2685,21 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.markSeenModTutorialIfNeeded(item)
   }
 
+  function getCurBundleHoverSizeObj() {
+    if (!this.curBundleTblObj?.isValid())
+      return null
+    return this.curBundleTblObj.getParent().getParent()
+  }
+
   function onEventBeforeOpenWeaponryPresetsWnd(_) {
     handlersManager.requestHandlerRestore(this)
+  }
+
+  function onEventRemoveOpenedModalInfo(_) {
+    let hoverSizeObj = this.getCurBundleHoverSizeObj()
+    if (hoverSizeObj == null || hoverSizeObj.isHovered())
+      return
+    this.onBundleUnHover(hoverSizeObj)
   }
 })
 

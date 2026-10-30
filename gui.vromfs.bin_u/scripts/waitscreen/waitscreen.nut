@@ -1,9 +1,8 @@
+from "%scripts/sqDagui/framework/msgBox.nut" import update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "eventbus" import eventbus_subscribe
 from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
-
-let { update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 local currentWaitScreen = null
 local currentWaitScreenText = ""
@@ -55,8 +54,8 @@ function closeWaitScreen() {
 eventbus_subscribe("showWaitScreenNative", @(payloadText) showWaitScreen(payloadText.txt))
 eventbus_subscribe("closeWaitScreenNative", @(_) closeWaitScreen())
 
-return {
+return freeze({
   getCurrentWaitScreen = @() currentWaitScreen
   showWaitScreen
   closeWaitScreen
-}
+})

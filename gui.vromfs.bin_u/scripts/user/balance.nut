@@ -1,6 +1,6 @@
+from "%scripts/money.nut" import Balance
 from "%scripts/dagui_natives.nut" import get_cur_rank_info, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
-let { Balance } = require("%scripts/money.nut")
 
 function get_balance() {
   let info = get_cur_rank_info()
@@ -14,8 +14,8 @@ function get_gui_balance() {
 
 let hasMultiplayerRestritionByBalance = @() get_cur_rank_info().gold < 0
 
-return {
+return freeze({
   get_balance
   get_gui_balance
   hasMultiplayerRestritionByBalance
-}
+})

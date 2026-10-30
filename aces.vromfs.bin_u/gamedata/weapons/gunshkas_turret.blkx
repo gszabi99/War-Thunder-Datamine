@@ -1,11 +1,4 @@
 {
-  "cannon": false,
-  "weaponType": 1,
-  "maxDeltaAngle": 0.31,
-  "shotFreq": 30.0,
-  "shotFreqRndK": 0.1,
-  "traceFreq": 4,
-  "bullets": 750,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,29 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": false,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.31,
+  "shotFreq": 30.0,
+  "shotFreqRndK": 0.1,
+  "bullets": 750,
+  "overheat": {
+    "overheat": [
+      [
+        6.0,
+        0.0
+      ],
+      [
+        8.0,
+        0.05
+      ],
+      [
+        10.0,
+        0.1
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.00955,
@@ -428,7 +444,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "black"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -3712,7 +3728,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
     ]
@@ -4124,7 +4140,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4532,7 +4548,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4940,7 +4956,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmWhite",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -5360,29 +5376,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "shkasi_gun_outside",
-    "cockpit": "shkasi_gun_inside",
-    "ai": "shkasi_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        6.0,
-        0.0
-      ],
-      [
-        8.0,
-        0.05
-      ],
-      [
-        10.0,
-        0.1
-      ]
-    ]
-  },
   "shkas_turret_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -5401,5 +5394,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "shkasi_gun_outside",
+    "cockpit": "shkasi_gun_inside",
+    "ai": "shkasi_gun_ai"
   }
 }

@@ -1,20 +1,19 @@
+import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
+import "%scripts/weaponry/guiStartWeaponrySelectModal.nut" as guiStartWeaponrySelectModal
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
+from "%scripts/weaponry/weaponryVisual.nut" import updateModItem, createModItemLayout
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes, needSecondaryWeaponsWnd, isWeaponUnavailableInMission, isWeaponAllowedByGameModeRestrictions
+from "%scripts/weaponry/bulletsInfo.nut" import getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx
+from "%scripts/weaponry/weaponryPresets.nut" import INF_VIEW_SIZE_MULTIPLIER
+from "%scripts/unit/unitStatus.nut" import isUnitRandomUnit
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "math" import ceil, sqrt
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import shop_get_spawn_score
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes, needSecondaryWeaponsWnd, isWeaponUnavailableInMission, isWeaponAllowedByGameModeRestrictions } = require("%scripts/weaponry/weaponryInfo.nut")
-let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
-let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
-let { INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
-let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 
 local CHOOSE_WEAPON_PARAMS = {
   itemParams = null
@@ -213,6 +212,6 @@ register_gui_handler("WeaponrySelectModal", class (BaseGuiHandlerWT) {
   }
 })
 
-return {
+return freeze({
   guiStartChooseUnitWeapon
-}
+})

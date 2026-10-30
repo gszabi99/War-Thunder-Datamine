@@ -252,13 +252,15 @@ def private check_placement_valid(solve_trace_tm : float3x4; diff : float3; barr
   return res
 
 
+def is_bipod_context_moved(pos_a : float3; dir_a : float3; pos_b : float3; dir_b : float3) : bool
+  return distance_sq(pos_a, pos_b) > BIPOD_OFF_DIST_EPSILON_SQ || distance_sq(dir_a, dir_b) > BIPOD_OFF_DIR_EPSILON_SQ
+
 def private check_bipod_context(gun_eid : EntityId; at_pos : float3; aim_dir : float3; is_crawl : bool;
-                                for_gun_eid : EntityId; for_pos : float3; for_dir : float3; for_crawl : bool)
-  if gun_eid != for_gun_eid
+                                for_gun_eid : EntityId; for_pos : float3; for_dir : float3; for_crawl : bool;
+                                mount_point : int; for_mount_point : int)
+  if gun_eid != for_gun_eid || mount_point != for_mount_point
     return false
-  if distance_sq(at_pos, for_pos) > BIPOD_OFF_DIST_EPSILON_SQ
-    return false
-  if distance_sq(aim_dir, for_dir) > BIPOD_OFF_DIR_EPSILON_SQ
+  if is_bipod_context_moved(at_pos, aim_dir, for_pos, for_dir)
     return false
   if is_crawl != for_crawl
     return false
@@ -290,7 +292,8 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                          var placePos : float3&; var placeHeight : float&; var placeOffset : float3&;
                          var placeNormal : float3&; var placeYawLimit : float&; var placeRecoilMult : float&;
                          var placeIsRest : bool&;
-                         force_bipod_offset : float3; force_bipod_recoil_mult : float; mount_points : Array; barrel_offset : float3; barrel_radius : float;
+                         var placeMountPoint : int&;
+                         force_bipod_offset : float3; force_bipod_recoil_mult : float; mount_points : Array; cur_mount_point : int; barrel_offset : float3; barrel_radius : float;
                          trace_handle : TraceMeshFaces?)
   query(bipod_eid) <| $ [es] (bipod__solveMaxIterationsPerCall : int = 5;
                               var bipod__solveStep : int&;
@@ -300,6 +303,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                               var bipod__solveForDir : float3&;
                               var bipod__solveForCrawl : bool&;
                               var bipod__solveForGun : EntityId&;
+                              var bipod__solveForMountPoint : int&;
                               var bipod__solveGunPosHigh : float3&;
                               var bipod__solveGunPosLow : float3&;
                               var bipod__solveHumanRadius : float&;
@@ -313,11 +317,15 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                               var bipod__solveBestHeight : float&;
                               var bipod__solveBestOffset : float3&;
                               var bipod__solveBestNormal : float3&;
-                              var bipod__solveBestRecoilMult : float&)
+                              var bipod__solveBestRecoilMult : float&;
+                              var bipod__solveBestMountPoint : int&)
     if full_check
       placeable = false
       bipod__solveFunc = BIPOD_FUNC_INIT
 
+    let hasSelectedMountPoint = cur_mount_point >= 0 && cur_mount_point < length(mount_points)
+    let firstMountPoint = hasSelectedMountPoint ? cur_mount_point : 0
+    let endMountPoint = hasSelectedMountPoint ? cur_mount_point + 1 : length(mount_points)
     let maxIterations = full_check ? 1000 : bipod__solveMaxIterationsPerCall
 
     
@@ -329,7 +337,8 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
       
       if bipod__solveFunc != BIPOD_FUNC_INIT
         if !check_bipod_context(gun_eid, at_pos, aim_dir, is_crawl,
-                                bipod__solveForGun, bipod__solveForPos, bipod__solveForDir, bipod__solveForCrawl)
+                                bipod__solveForGun, bipod__solveForPos, bipod__solveForDir, bipod__solveForCrawl,
+                                cur_mount_point, bipod__solveForMountPoint)
           placeable = false
           bipod__solveFunc = BIPOD_FUNC_INIT
 
@@ -352,12 +361,14 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
         bipod__solveForDir      = aim_dir
         bipod__solveForCrawl    = is_crawl
         bipod__solveForGun      = gun_eid
+        bipod__solveForMountPoint = cur_mount_point
         bipod__solveGunPosHigh  = is_crawl ? gun_pos_crawl : (gun_pos_stand + BIPOD_STAND_HIGHER)
         bipod__solveGunPosLow   = is_crawl ? (gun_pos_crawl + BIPOD_CRAWL_LOWER - float3(0.0, crawl_lower_extra, 0.0)) : gun_pos_crouch
         bipod__solveHumanRadius = human_radius
         bipod__solveHumanHeight = is_crawl ? human_radius : human_height
         bipod__solveLastPos     = at_pos
         bipod__solveBestType    = BIPOD_RESULT_NONE
+        bipod__solveBestMountPoint = -1
         bipod__solveBestScore   = 0
 
         
@@ -374,7 +385,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
       
       
       elif bipod__solveFunc == BIPOD_FUNC_TRY_POINTS
-        let idx = bipod__solveIter >> 4  
+        let idx = firstMountPoint + (bipod__solveIter >> 4)  
         if idx < length(mount_points)
           let obj = mount_points[idx] as Object
           let typ = obj?["type"] ?? ""
@@ -450,6 +461,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                           bipod__solveBestNormal     = queryOut.norm
                           bipod__solveBestNormal.y   = abs(bipod__solveBestNormal.y)
                           bipod__solveBestRecoilMult = (idx == 0 && force_bipod_recoil_mult >= 0.0) ? force_bipod_recoil_mult : (obj?.recoil ?? 0.5)
+                          bipod__solveBestMountPoint = idx
 
           
           
@@ -489,6 +501,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                           bipod__solveBestNormal     = queryOut.norm
                           bipod__solveBestNormal.y   = abs(bipod__solveBestNormal.y)
                           bipod__solveBestRecoilMult = (idx == 0 && force_bipod_recoil_mult >= 0.0) ? force_bipod_recoil_mult : (obj?.recoil ?? 0.5)
+                          bipod__solveBestMountPoint = idx
                           if isFlatWeaponInCrawl
                             let inHandsRecoilMult = 1.2
                             bipod__solveBestRecoilMult = min(1.0, bipod__solveBestRecoilMult * inHandsRecoilMult)
@@ -498,14 +511,14 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
           if nxt
             ++bipod__solveIter
           else
-            bipod__solveIter = (idx + 1) << 4
+            bipod__solveIter = (idx + 1 - firstMountPoint) << 4
 
         
         
         finish = false
 
-        let idxNext = bipod__solveIter >> 4
-        if idxNext >= length(mount_points)
+        let idxNext = firstMountPoint + (bipod__solveIter >> 4)
+        if idxNext >= endMountPoint
           
           
           
@@ -565,7 +578,10 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
           bipod__solveTraceTm[0] = float3(bipod__solveForDir.x * kcos, ksin,  bipod__solveForDir.z * kcos)
           bipod__solveTraceTm[1] = float3(-bipod__solveForDir.x * ksin, kcos, -bipod__solveForDir.z * ksin)
           bipod__solveTraceTm[2] = float3(-bipod__solveForDir.z, 0.0, bipod__solveForDir.x)
-          bipod__solveTraceTm[3] = lerp(bipod__solveGunPosHigh, bipod__solveGunPosLow, float3(ratio))
+          var gunTm : float3x4
+          let stepOfs = bipod__solveLastPos - bipod__solveForPos
+          let scanPos = lerp(bipod__solveGunPosHigh, bipod__solveGunPosLow, float3(ratio))
+          bipod__solveTraceTm[3] = get_gun_tm(gun_eid, gunTm) ? float3(gunTm[3].x + stepOfs.x, scanPos.y, gunTm[3].z + stepOfs.z) : scanPos
           if check_place_gun_barrel(bipod__solveTraceTm, barrel_offset, barrel_radius, trace_handle)
             bipod__solveFunc = BIPOD_FUNC_TRY_POINTS  
             bipod__solveIter = 0
@@ -674,6 +690,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
           placeYawLimit   = 0.0
           placeRecoilMult = bipod__solveBestRecoilMult
           placeIsRest     = bipod__solveBestType == BIPOD_RESULT_REST
+          placeMountPoint = bipod__solveBestMountPoint
 
           query(gun_eid) <| $ [es] (gun__mountBipodYawLimit : float = BIPOD_DEFAULT_YAWLIMIT_BIPOD_DEGREES;
                                     gun__mountRestYawLimit : float = BIPOD_DEFAULT_YAWLIMIT_REST_DEGREES;
@@ -693,7 +710,14 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
     
 
 
-def solve_bipod_placing(eid : EntityId; full_check : bool)
+def is_bipod_solver_idle(eid : EntityId) : bool
+  var idle = true
+  query(eid) <| $ [es] (bipod__solveFunc : int)
+    idle = bipod__solveFunc == BIPOD_FUNC_INIT
+  return idle
+
+
+def solve_bipod_placing(eid : EntityId; full_check : bool; mount_point : int = -1)
   query(eid) <| $ [es] (human_weap__currentGunEid : EntityId;
                         human_input__aimAngle : float2;
                         human_input__standState : int;
@@ -713,6 +737,7 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                         var bipod__placeYawLimit : float&;
                         var bipod__placeRecoilMult : float&;
                         var bipod__placeIsRest : bool&;
+                        var bipod__placeMountPoint : int&;
                         human_cam__calculatedOffset : DPoint3 const?;
                         human_cam__offsetMult : float = 1.0;
                         human_weap__gunMods : Array;
@@ -779,6 +804,6 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                            bipod__placeable, bipod__placeCrawl,
                            bipod__placePos, bipod__placeHeight, bipod__placeOffset,
                            bipod__placeNormal, bipod__placeYawLimit, bipod__placeRecoilMult,
-                           bipod__placeIsRest,
-                           gun__bipodOffset, gun__bipodRecoilMult, gun__mountPoints, gun__barrelTipOffset, gun__barrelRadius,
+                           bipod__placeIsRest, bipod__placeMountPoint,
+                           gun__bipodOffset, gun__bipodRecoilMult, gun__mountPoints, mount_point, gun__barrelTipOffset, gun__barrelRadius,
                            humanTraceHandle)

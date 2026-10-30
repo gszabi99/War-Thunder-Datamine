@@ -1,4 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/clientState/clientStates.nut" import isMatchingOnline
 from "%sqStdLibs/helpers/u.nut" import shuffle
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
@@ -16,8 +18,6 @@ from "%scripts/dagui_library.nut" import *
 from "types" import String, Table
 
 let logBQ = log_with_prefix("[BQ] ")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 
 const MAX_TIME_STAMP_VALUE_SEC = 2145916800 
 const MIN_TIME_BETWEEN_MSEC = 5000 
@@ -175,7 +175,7 @@ addListenersWithoutEnv({
   LoginComplete = @(_p) startSendTimer()
 })
 
-return {
+return freeze({
   sendBqEvent
   forceSendBqQueue = sendAll
-}
+})

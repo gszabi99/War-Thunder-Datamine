@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/leaderboard/requestLeaderboardData.nut" import requestLeaderboardData, convertLeaderboardData
+from "%scripts/user/profileStates.nut" import userIdInt64
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 from "types" import String
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { requestLeaderboardData, convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 local selfRowData       = null
 local leaderboardData   = null

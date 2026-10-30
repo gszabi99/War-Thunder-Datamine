@@ -5,10 +5,11 @@ from "types" import Table
 
 let { DE4_MODE_CREATE_ENTITY = null, get_instance = @() null } = require_optional("entity_editor")
 let { LogsWindowId, EntitySelectWndId, SceneOutlinerWndId, propPanelVisible, propPanelClosed,
-  showHelp, markedScenes, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop,
+  showHelp, de4editMode, de4workMode, de4workModes, selectWorkMode, showUIinEditor, editorTimeStop,
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
   gizmoCenterTypeNames } = require("state.nut")
-let { sceneIdMap, sortedScenes, updateAllScenes } = require("sceneModel.nut")
+let { sceneIdMap, sortedScenes } = require("sceneModel.nut")
+let { selection } = require("selection.nut")
 
 let pictureButton = require("components/pictureButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
@@ -22,7 +23,7 @@ let { hideWindow, toggleWindow, mkIsWindowVisible } = require("%daeditor/compone
 let { hasNewLogerr } = require("%daeditor/state/logsWindow.nut")
 
 let {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_MOVE_SURF, DE4_MODE_SELECT,
-     DE4_MODE_POINT_ACTION, getEditMode, setEditMode} = daEditor
+     DE4_MODE_POINT_ACTION, setEditMode, setGizmoBasisType, setGizmoCenterType} = daEditor
 
 let invert = @(v): bool !v
 function toolbarButton(image, action, tooltip_text, checked=null, styles = {}) {
@@ -45,20 +46,17 @@ function toolbarButton(image, action, tooltip_text, checked=null, styles = {}) {
 function modeButton(image, mode, tooltip_text, next_mode=null, next_action=null) {
   local params = (image instanceof Table) ? image : {image}
   params = params.__merge({
-    checked = mode == getEditMode()
     imageMargin = fsh(0.5)
     onHover = @(on) cursors.setTooltip(on ? tooltip_text : null)
     action = function() {
       hideWindow(EntitySelectWndId)
       hideWindow(SceneOutlinerWndId)
-      if (next_mode && mode==getEditMode())
-        mode = next_mode
-      daEditor.setEditMode(mode)
+      setEditMode(next_mode != null && mode == de4editMode.get() ? next_mode : mode)
       if (next_action)
         next_action()
     }
   })
-  return pictureButton(params)
+  return @() { watch = de4editMode, children = pictureButton(params.__update({checked = mode == de4editMode.get()})) }
 }
 
 
@@ -72,12 +70,12 @@ let separator = const {
 let svg = @(name) {image = $"!%daeditor/images/{name}.svg"} 
 
 function toggleEntitySelect() {
-  if (getEditMode() == DE4_MODE_CREATE_ENTITY || getEditMode() == DE4_MODE_POINT_ACTION)
+  if (de4editMode.get() == DE4_MODE_CREATE_ENTITY || de4editMode.get() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
   toggleWindow(EntitySelectWndId)
 }
 function toggleSceneOutliner() {
-  if (getEditMode() == DE4_MODE_CREATE_ENTITY || getEditMode() == DE4_MODE_POINT_ACTION)
+  if (de4editMode.get() == DE4_MODE_CREATE_ENTITY || de4editMode.get() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
   toggleWindow(SceneOutlinerWndId)
 }
@@ -87,10 +85,7 @@ function toggleLogsWindows() {
 function toggleCreateEntityMode() {
   hideWindow(EntitySelectWndId)
   hideWindow(SceneOutlinerWndId)
-  local mode = DE4_MODE_CREATE_ENTITY
-  if (DE4_MODE_CREATE_ENTITY==getEditMode())
-    mode = DE4_MODE_SELECT
-  daEditor.setEditMode(mode)
+  setEditMode(de4editMode.get() == DE4_MODE_CREATE_ENTITY ? DE4_MODE_SELECT : DE4_MODE_CREATE_ENTITY)
 }
 function togglePropPanel() {
   propPanelClosed.set(propPanelVisible.get() && !showHelp.get())
@@ -207,23 +202,13 @@ function showMessageboxSaveScenes(modifiedSceneIds) {
 }
 
 let markedSceneText = Computed(function() {
-  local nMrk = 0
-  local path = ""
-  foreach (scene in sortedScenes.get()) {
-    local isMarked = markedScenes.get()?[scene?.id] ?? false
-    if (isMarked) {
-      if (nMrk == 0) {
-        path = scene.path
-      }
-      nMrk++
-    }
+  let marked = selection.get().scenes
+  let scenes = sortedScenes.get().filter(@(scene) scene.id in marked)
+  if (scenes.len() == 0) {
+    return ""
   }
-
-  if (nMrk > 0) {
-    local andMore = nMrk > 1 ? $", and {nMrk - 1} more" : ""
-    return $"Editing: {path}{andMore}"
-  }
-  return ""
+  let andMore = scenes.len() > 1 ? $", and {scenes.len() - 1} more" : ""
+  return $"Editing: {scenes[0].path}{andMore}"
 })
 
 function mainToolbar() {
@@ -236,8 +221,6 @@ function mainToolbar() {
   function save() {
     let modifiedSceneIds = get_instance()?.getModifiedSceneIds() ?? []
     if (modifiedSceneIds.len() != 0) {
-      updateAllScenes()
-
       if (modifiedSceneIds.len() == 1 && isMainScene(modifiedSceneIds[0])) {
         get_instance()?.saveMainScene()
       }
@@ -261,7 +244,7 @@ function mainToolbar() {
 
   return {
     flow = FLOW_VERTICAL
-    watch = [de4editMode, de4workMode, de4workModes, markedScenes]
+    watch = [de4workMode, de4workModes, markedSceneText]
     size = flex()
     children = [
       {
@@ -311,19 +294,19 @@ function mainToolbar() {
           de4workModes.get().len() <= 1 ? null : separator
           de4workModes.get().len() <= 1 ? null : {
             size = const [hdpx(100),fontH(100)]
-            children = combobox(de4workMode, de4workModes)
+            children = combobox({value = de4workMode, update = selectWorkMode}, de4workModes)
           }
 
           separator
           @() {
             watch = gizmoBasisTypeEditingDisabled
             size = const [hdpx(150), fontH(100)]
-            children = combobox({value = gizmoBasisType, disable = gizmoBasisTypeEditingDisabled}, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo basis mode (X)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo basis mode (X)")
+            children = combobox({value = gizmoBasisType, update = setGizmoBasisType, disable = gizmoBasisTypeEditingDisabled, changeVarOnListUpdate = false}, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo basis mode (X)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo basis mode (X)")
           }
           @() {
             watch = gizmoBasisTypeEditingDisabled
             size = const [hdpx(150), fontH(100)]
-            children = combobox({value = gizmoCenterType, disable = gizmoBasisTypeEditingDisabled}, gizmoCenterTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo transformation center mode (C)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo transformation center mode (C)")
+            children = combobox({value = gizmoCenterType, update = setGizmoCenterType, disable = gizmoBasisTypeEditingDisabled, changeVarOnListUpdate = false}, gizmoCenterTypeNames, gizmoBasisTypeEditingDisabled.get() ? "Set gizmo transformation center mode (C)\n\nEnabled when the move/rotate/scale/surf over ground edit mode is active." : "Set gizmo transformation center mode (C)")
           }
         ]
 

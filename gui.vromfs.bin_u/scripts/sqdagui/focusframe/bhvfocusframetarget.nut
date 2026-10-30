@@ -52,9 +52,9 @@ function setCallbacks(onSetTargetCb, onUnsetTargetCb) {
 
 replace_script_gui_behaviour("focusFrameTarget", bhvFocusFrameTarget)
 
-return {
+return freeze({
   setCallbacks
   setShouldHideImage = @(shouldHide) shouldHideImage = shouldHide
   hideImage
   unhideImage
-}
+})

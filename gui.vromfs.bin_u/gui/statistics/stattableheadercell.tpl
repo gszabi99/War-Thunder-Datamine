@@ -1,5 +1,5 @@
 <<#cells>>
-td {
+statCell {
   id:t='<<id>>';
   width:t='<<width>>';
   text-halign:t='center'

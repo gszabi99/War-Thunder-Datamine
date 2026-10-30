@@ -93,7 +93,7 @@ function mkImageComp(text, params = {}) {
     rendObj = ROBJ_IMAGE
     image = Picture($"!{text}:{height}:{height}:K")
     keepAspect = true
-    size = [height, height]
+    size = height
   }.__merge(params)
 }
 
@@ -115,6 +115,6 @@ function mkImageCompByDargKey(key, sf = null, params = {}) {
   return mkImageComp(textureName, params)
 }
 
-return {
+return freeze({
   mkImageCompByDargKey = mkImageCompByDargKey
-}
+})

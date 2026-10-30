@@ -1,10 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/worldWar/operations/model/wwGlobalStatus.nut" import refreshGlobalStatusData, getValidGlobalStatusListMask, setValidGlobalStatusListMask, getGlobalStatusData, updateCurData, pushStatusChangedEvent
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { refreshGlobalStatusData, getValidGlobalStatusListMask, setValidGlobalStatusListMask, getGlobalStatusData, updateCurData, pushStatusChangedEvent } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 
 

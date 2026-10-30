@@ -1,51 +1,55 @@
+import "%scripts/time.nut" as time
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/globalCallbacks/globalCallbacks.nut" import getGcbName, getGcbParamsMarkup
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitClassColor
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName, getEntitlementDescription, getEntitlementLocParams, getPremiumAccountDescriptionArr
+from "%scripts/items/prizeChance.nut" import getPrizeChanceConfig
+from "%scripts/loading/loadingBgData.nut" import isLoadingBgUnlock
+from "%scripts/items/trophyMultiAward.nut" import isPrizeMultiAward
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType, addTooltipTypes
+from "%scripts/viewUtils/objectTextUpdate.nut" import formatLocalizationArrayToDescription
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName, getUnlockNameText, buildConditionsConfig
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockType, isUnlockOpened
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByResourceType, getViewTypeByUnlockedItemType
+from "%scripts/shop/giftSpares.nut" import getGiftSparesCost
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon, image_for_air, getUnitTypeText
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import isUnitBought
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/items/itemsTypeClasses.nut" import BASE_ITEM_TYPE_ICON
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/crew/crew.nut" import getCrewName
+from "%scripts/items/workshop/workshop.nut" import getMarkingPresetsById, shouldDisguiseItem
+from "%scripts/items/prizesUtils.nut" import getPrizeType, hasKnowPrize, PRIZE_TYPE
+from "%scripts/items/trophyReward.nut" import getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/items/prizeUtils.nut" import getFullWPIcon
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
 from "%sqStdLibs/helpers/u.nut" import values
 from "%sqstd/string.nut" import utf8ToLower
 from "%sqstd/datablock.nut" import isDataBlock, convertBlk
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type, get_name_by_unlock_type
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
 from "types" import String, Array
 
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getEntitlementConfig, getEntitlementName, getEntitlementDescription, getEntitlementLocParams, getPremiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
-let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
-let { TrophyMultiAward, isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getFullUnlockDescByName, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByResourceType, getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { getUnitName, getUnitCountryIcon, image_for_air, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { BASE_ITEM_TYPE_ICON } = require("%scripts/items/itemsTypeClasses.nut")
-let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getCrewName } = require("%scripts/crew/crew.nut")
-let { getMarkingPresetsById, shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
-let { unlockAddProgressView, getPrizeType, hasKnowPrize, PRIZE_TYPE } = require("%scripts/items/prizesUtils.nut")
-let { getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList } = require("%scripts/items/trophyReward.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getFullWPIcon } = require("%scripts/items/prizeUtils.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
+let { TrophyMultiAward } = require("%scripts/items/trophyMultiAward.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
+let { unlockAddProgressView } = require("%scripts/items/prizesUtils.nut")
 
 
 
@@ -83,6 +87,7 @@ enum STACK_TYPE {
 
 const UNITS_STACK_DETAILED_COUNT = 3
 const UNITS_STACK_BY_TYPE_COUNT  = 6
+const DEFAULT_PRIZE_ICON_PADDING = "20@sf/@pf"
 
 let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
@@ -94,6 +99,19 @@ local getMultiAwardDescription = @(_tma, _useBoldAsSmaller = false) ""
 
 function getFullWarbondsIcon() {
   return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("item_warbonds"))
+}
+
+
+
+function calcDecoratorIconSize(sizeParams, ratio) {
+  let { w = null, h = null } = sizeParams
+  if (w != null && h != null)
+    return { w, h }
+  if (h != null)
+    return { h, w = typeof h == "string" ? $"{ratio}*({h})" : h * ratio }
+  if (w != null)
+    return { w, h = typeof w == "string" ? $"({w})/{ratio}" : w / ratio }
+  return {}
 }
 
 function getDecoratorVisualConfig(config) {
@@ -108,8 +126,19 @@ function getDecoratorVisualConfig(config) {
     let decorator = getDecorator(config?.resource, decoratorType)
     let cfg = clone LayersIcon.findLayerCfg("item_decal")
     cfg.img <- viewDecoratorType.getImage(decorator)
-    if (cfg.img != "")
-      res.image = LayersIcon.genDataFromLayer(cfg)
+    let overrideCfg = config?.sizeParams
+      ? calcDecoratorIconSize(config.sizeParams, viewDecoratorType.getRatio(decorator).tofloat())
+      : {}
+    if (cfg.img != "") {
+      res.image = LayersIcon.genDataFromLayer(cfg, "", 0, overrideCfg)
+      let { w = null, h = null } = overrideCfg
+      
+      if (typeof w == "string" && typeof h == "string")
+        res.containerSize <- {
+          w = $"{w} + {DEFAULT_PRIZE_ICON_PADDING}"
+          h = $"{h} + {DEFAULT_PRIZE_ICON_PADDING}"
+        }
+    }
   }
 
   if (res.image == "") {
@@ -158,7 +187,7 @@ let prizeViewConfig = {
     getTooltipConfig = @(prize) { tooltipId = getTooltipType("UNLOCK").getTooltipId(prize.unlock) }
   },
   [PRIZE_TYPE.UNLOCK_TYPE] = {
-    getDescription = @(config) loc($"trophy/unlockables_names/{config.unlockType}")
+    getDescription = @(config) locByVendor($"trophy/unlockables_names/{config.unlockType}")
     getTooltipConfig = @(prize) { tooltipId = getTooltipType("UNLOCK").getTooltipId(prize.unlockType) }
   },
   [PRIZE_TYPE.UNIT] = {
@@ -302,7 +331,7 @@ function getPrizeText(prize, colored = true, v_typeName = false,
 
     local unlockTypeName = isLoadingBgUnlock(unlockId)
       ? loc("loading_bg")
-      : loc($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
+      : locByVendor($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
     unlockTypeName = colored ? colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
 
     name = unlockTypeName
@@ -318,7 +347,7 @@ function getPrizeText(prize, colored = true, v_typeName = false,
     color = "commonTextColor"
   }
   else if (prize?.unlockType)
-    name = loc($"trophy/unlockables_names/{prize.unlockType}")
+    name = locByVendor($"trophy/unlockables_names/{prize.unlockType}")
   else if (prize?.resource) {
     if (prize?.resourceType) {
       let decoratorType = getTypeByResourceType(prize.resourceType)
@@ -973,6 +1002,7 @@ function getPrizeImageByConfig(config = null, onlyImage = true, layerCfgName = "
 
   let rewardValue = config[rewardType]
   local style = $"reward_{rewardType}"
+  local containerSizeCfg = {}
 
   if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit") {
     let trophyMultiAward = TrophyMultiAward(DataBlockAdapter(config))
@@ -1007,6 +1037,7 @@ function getPrizeImageByConfig(config = null, onlyImage = true, layerCfgName = "
       let visCfg = getDecoratorVisualConfig(config)
       style = visCfg.style
       image = visCfg.image
+      containerSizeCfg = visCfg?.containerSize ?? containerSizeCfg
     }
   }
   else if (rewardType == "unlockType") {
@@ -1025,7 +1056,7 @@ function getPrizeImageByConfig(config = null, onlyImage = true, layerCfgName = "
       let unlockConditions = buildConditionsConfig(rewardConfig)
       unlock = buildLogUnlockData(unlockConditions)
     }
-    image = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+    image = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "", null, null, unlock?.iconParams)
   }
   else if (rewardType == "unlockAddProgress") {
     image = LayersIcon.getIconData("", getPrizeTypeIcon(config))
@@ -1039,7 +1070,7 @@ function getPrizeImageByConfig(config = null, onlyImage = true, layerCfgName = "
   if (!isRewardMultiAward(config) && !onlyImage)
     image = "".concat(image, getMoneyLayer(config))
 
-  let resultImage = LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg(layerCfgName), image)
+  let resultImage = LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg(layerCfgName), image, 0, containerSizeCfg)
   if (!imageAsItem)
     return resultImage
 
@@ -1686,7 +1717,7 @@ function getCommonRewardText(configsArray) {
   }
 
   currencies = values(currencies)
-  currencies.sort(@(a, b) a.type <=> b.type)
+  currencies.sortby(@(a) a.type)
   currencies = currencies.map(@(c) c.printFunc(c.val))
   currencies = loc("ui/comma").join(currencies, true)
 
@@ -1737,7 +1768,7 @@ function getRewardsListViewData(config, params = {}) {
   return getPrizesListView(rewardsList, params)
 }
 
-return {
+return freeze({
   getPrizeText
   getTrophyRewardText
   getTrophyReward
@@ -1761,4 +1792,4 @@ return {
   getPrizesListViewData
   getPrizesListMarkupByData
   prizesStackLevel = prizesStack
-}
+})

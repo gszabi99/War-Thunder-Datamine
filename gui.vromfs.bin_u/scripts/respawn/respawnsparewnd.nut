@@ -1,13 +1,13 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/items/listPopupWnd/itemsListWndBase.nut" import ItemsListWndBase
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/items/itemsManagerModule.nut" import getUniversalSparesForUnit
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/respawn/respawnDailyFreeSpare.nut" import createDailyFreeSpareItem
 from "guiRespawn" import getNumFreeSparesPerDay
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { createDailyFreeSpareItem } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
 
 const NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID = "needSkipSpareActivationConfirm"
 
@@ -81,6 +81,6 @@ function openRespawnSpareWnd(unit, onOkCb, alignObj, showDailySparesOnly) {
   })
 }
 
-return {
+return freeze({
   openRespawnSpareWnd
-}
+})

@@ -1,18 +1,17 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/bulletsInfo.nut" import setUnitLastBullets, getBulletsNamesBySet
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BULLETS0
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/weaponry/infantryTemplates.nut" import getUnitTemplateNames
 from "%globalScripts/templates.nut" import getTemplateCompValue
 from "string" import format
 from "chardResearch" import shopIsModificationPurchased
 from "%sqstd/datablock.nut" import blkOptFromPath
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, infantryDefaultBeltName
-
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setUnitLastBullets, getBulletsNamesBySet } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { USEROPT_BULLETS0 } = require("%scripts/options/optionsExtNames.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 
 const DEFAULT_BELT_IMAGE = "!#ui/gameuiskin#magazine_medium.svg"
 const PRIMARY_WEAPON_SLOT_NAME = "primary"
@@ -263,9 +262,9 @@ let InfantryBeltGroup = class {
   }
 }
 
-return {
+return freeze({
   getUnitAmmoBelts
   getInfantryBeltBulletsSet
   getInfantryBeltAnnotation
   InfantryBeltGroup
-}
+})

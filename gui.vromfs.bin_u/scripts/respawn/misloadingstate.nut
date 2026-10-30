@@ -1,14 +1,13 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/slotbar/slotbarState.nut" import reinitAllSlotbars
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/slotbar/crewsList.nut" import invalidateCrewsList, getCrewsListByCountry
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "eventbus" import eventbus_subscribe
 from "guiRespawn" import getAvailableRespawnBases
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { invalidateCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 
 enum MIS_LOAD { 
   
@@ -34,9 +33,10 @@ eventbus_subscribe("on_mission_changed", function on_mission_changed(...) {
   broadcastEvent("ChangedMissionRespawnBasesStatus")
 })
 
-let mis_loading_state = persist("mis_loading_state", @() {val = 0})
-let getCurState = @() mis_loading_state.val
-let setCurState = @(v) mis_loading_state.val = v
+
+let mis_loading_state = mkHardPersistWatched("respawn.misLoadingState")("mis_loading_state", 0)
+let getCurState = @() mis_loading_state.get()
+let setCurState = @(v) mis_loading_state.set(v)
 
 let g_mis_loading_state = {
   getCurState

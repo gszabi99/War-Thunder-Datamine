@@ -228,6 +228,14 @@ let compassVal = @(){
   text = CompassInt.get().tostring()
 }
 
+const rpmLimitBox = {
+  size = FLEX
+  rendObj = ROBJ_BOX
+  fillColor = Color(0, 0, 0, 0)
+  borderColor = baseColor
+  borderWidth = baseLineWidth
+  borderRadius = hdpx(5)
+}
 let engineTorq = @(){
   watch = Rpm
   size = const [pw(10), ph(6)]
@@ -239,14 +247,7 @@ let engineTorq = @(){
   font = Fonts.ah64
   fontSize = baseFontSize * 1.2
   text = string.format("%d%%", Rpm.get())
-  children = Rpm.get() >= 98 ? {
-    size = FLEX
-    rendObj = ROBJ_BOX
-    fillColor = Color(0, 0, 0, 0)
-    borderColor = baseColor
-    borderWidth = baseLineWidth
-    borderRadius = hdpx(5)
-  } : null
+  children = Rpm.get() >= 98 ? rpmLimitBox : null
 }
 
 function angleTxt(num, isLeft, x = 0, y = 0) {
@@ -269,39 +270,34 @@ function generatePitchLine(num) {
     size = const [pw(60), ph(18)]
     pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
-        color = Color(128, 64, 48)
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -50, 0, 150, 0]
-        ]
-        children = [angleTxt(-10, true, pw(-32)), angleTxt(-10, false, pw(32))]
-      }
-    ] :
-    [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * 2.0
-        color = newNum > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
-        commands = [
-          [VECTOR_LINE, 0, 10 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0 ],
-          (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
-          [VECTOR_LINE, 100, 10 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
-          (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : []),
-          [VECTOR_LINE, 47, 50, 53, 50]
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, pw(-25)), angleTxt(newNum, false, pw(25))] : null
-      }
-    ]
+    children = num == 0 ? {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = Color(128, 64, 48)
+      padding = const [0, 10]
+      commands = [
+        [VECTOR_LINE, -50, 0, 150, 0]
+      ]
+      children = [angleTxt(-10, true, pw(-32)), angleTxt(-10, false, pw(32))]
+    } : {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * 2.0
+      color = newNum > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
+      commands = [
+        [VECTOR_LINE, 0, 10 * sign, 0, 0],
+        [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0 ],
+        (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
+        (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
+        [VECTOR_LINE, 100, 10 * sign, 100, 0],
+        [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
+        (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
+        (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : []),
+        [VECTOR_LINE, 47, 50, 53, 50]
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, pw(-25)), angleTxt(newNum, false, pw(25))] : null
+    }
   }
 }
 
@@ -331,6 +327,22 @@ function pitch(width, height, generateFunc) {
 }
 
 let bankExtendSign= Computed(@() Roll.get() > 20.0 ? 1 : (Roll.get() < -20 ? -1 : 0))
+let bankPointer = {
+  size = FLEX
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = baseColor
+  lineWidth = baseLineWidth
+  fillColor = baseColor
+  commands = [
+    [VECTOR_POLY, 50, 21, 49, 23, 51, 23]
+  ]
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = -Roll.get()
+    }
+  }
+}
 let bankAngle = @(){
   watch = bankExtendSign
   size = FLEX
@@ -338,50 +350,35 @@ let bankAngle = @(){
   color = bankExtendSign.get() == 0 ? baseColor : Color(255, 255, 255)
   lineWidth = baseLineWidth * 3.0
   commands = [
-    [VECTOR_LINE, 35, 24, 36, 25.75],
-    [VECTOR_LINE, 65, 24, 64, 25.75],
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 20, 50, 22, 50] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 20.46, 44.8, 22.43, 45.14] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 21.8, 39.74, 23.7, 40.4] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 24, 35, 25.75, 36] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 27, 30.72, 28.55, 32] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 30.72, 27, 32, 28.55] : []),
-    (bankExtendSign.get() == 1 ? [VECTOR_LINE, 18, 50, 22, 50] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 79.54, 44.8, 77.57, 45.14] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 78.2, 39.74, 76.3, 40.4] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 76, 35, 74.25, 36] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 73, 30.72, 71.45, 32] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 69.28, 27, 68, 28.55] : []),
-    (bankExtendSign.get() == -1 ? [VECTOR_LINE, 82, 50, 78, 50] : []),
-    [VECTOR_WIDTH, baseLineWidth * 2.0],
-    [VECTOR_LINE, 39.7, 21.8, 40.4, 23.7],
-    [VECTOR_LINE, 60.3, 21.8, 59.6, 23.7],
-    [VECTOR_LINE, 44.8, 20.45, 45.14, 22.43],
-    [VECTOR_LINE, 55.2, 20.45, 54.86, 22.43],
-    [VECTOR_WIDTH, baseLineWidth],
-    [VECTOR_LINE, 37.32, 22.8, 37.74, 23.72],
-    [VECTOR_LINE, 62.68, 22.8, 62.26, 23.72],
-    [VECTOR_LINE, 42.24, 21, 42.5, 22],
-    [VECTOR_LINE, 57.76, 21, 57.5, 22],
-    [VECTOR_LINE, 47.4, 20.1, 47.47, 21.1],
-    [VECTOR_LINE, 52.6, 20.1, 52.53, 21.1],
+    const [VECTOR_LINE, 35, 24, 36, 25.75],
+    const [VECTOR_LINE, 65, 24, 64, 25.75],
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 20, 50, 22, 50] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 20.46, 44.8, 22.43, 45.14] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 21.8, 39.74, 23.7, 40.4] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 24, 35, 25.75, 36] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 27, 30.72, 28.55, 32] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 30.72, 27, 32, 28.55] : const []),
+    (bankExtendSign.get() == 1 ? const [VECTOR_LINE, 18, 50, 22, 50] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 79.54, 44.8, 77.57, 45.14] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 78.2, 39.74, 76.3, 40.4] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 76, 35, 74.25, 36] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 73, 30.72, 71.45, 32] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 69.28, 27, 68, 28.55] : const []),
+    (bankExtendSign.get() == -1 ? const [VECTOR_LINE, 82, 50, 78, 50] : const []),
+    const [VECTOR_WIDTH, baseLineWidth * 2.0],
+    const [VECTOR_LINE, 39.7, 21.8, 40.4, 23.7],
+    const [VECTOR_LINE, 60.3, 21.8, 59.6, 23.7],
+    const [VECTOR_LINE, 44.8, 20.45, 45.14, 22.43],
+    const [VECTOR_LINE, 55.2, 20.45, 54.86, 22.43],
+    const [VECTOR_WIDTH, baseLineWidth],
+    const [VECTOR_LINE, 37.32, 22.8, 37.74, 23.72],
+    const [VECTOR_LINE, 62.68, 22.8, 62.26, 23.72],
+    const [VECTOR_LINE, 42.24, 21, 42.5, 22],
+    const [VECTOR_LINE, 57.76, 21, 57.5, 22],
+    const [VECTOR_LINE, 47.4, 20.1, 47.47, 21.1],
+    const [VECTOR_LINE, 52.6, 20.1, 52.53, 21.1],
   ]
-  children = {
-    size = FLEX
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = baseColor
-    lineWidth = baseLineWidth
-    fillColor = baseColor
-    commands = [
-      [VECTOR_POLY, 50, 21, 49, 23, 51, 23]
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        rotate = -Roll.get()
-      }
-    }
-  }
+  children = bankPointer
 }
 
 let flyPath = {
@@ -420,7 +417,7 @@ let climbSpeedGrid = @(){
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
   color = baseColor
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 0, 40, 0],
     [VECTOR_LINE, 0, 25, 40, 25],
     [VECTOR_LINE, 20, 30, 40, 30],
@@ -441,7 +438,7 @@ let climbSpeedGrid = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth
     color = baseColor
-    commands = [
+    commands = const [
       [VECTOR_LINE, 60, 0, 100, 0],
       [VECTOR_LINE, 60, 25, 100, 25],
       [VECTOR_LINE, 60, 50, 100, 50],
@@ -584,7 +581,7 @@ function tvvMark(width, height) {
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * 2
-      commands = [
+      commands = const [
         [VECTOR_ELLIPSE, 0, 0, 50, 50],
         [VECTOR_LINE, -100, 0, -50, 0],
         [VECTOR_LINE, 100, 0, 50, 0],
@@ -620,7 +617,7 @@ let skidBall = {
     lineWidth = baseLineWidth
     color = baseColor
     fillColor = baseColor
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 0, 0, 30, 30]
     ]
   }

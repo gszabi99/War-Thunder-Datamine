@@ -1,11 +1,10 @@
+import "%scripts/customization/shipFlags.nut" as getShipFlags
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "blkGetters" import get_decals_blk, get_skins_blk, get_attachable_blk
 from "unitCustomization" import get_avail_ship_flags_blk
 from "%scripts/dagui_library.nut" import *
-
-let getShipFlags = require("%scripts/customization/shipFlags.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 let cachedBlkByType = {}
 
@@ -55,7 +54,7 @@ addListenersWithoutEnv({
   HangarModelLoaded = @(_) invalidateFlagCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   getDecorTypeBlk
   needCacheDecorTypeByCategories
-}
+})

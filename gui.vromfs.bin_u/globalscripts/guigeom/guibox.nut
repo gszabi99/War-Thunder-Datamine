@@ -126,7 +126,7 @@ function cutBoxesAroundTargets(rootBox, targetBoxes, sizeIncAdd = 0, sizeIncMul 
   return darkBoxes
 }
 
-return {
+return freeze({
   GuiBox
   cutBoxesAroundTargets
-}
+})

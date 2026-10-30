@@ -17,7 +17,7 @@ function getTemplateCompValue(templateName, compName, defValue = null) {
   return cacheCompValues[templateName][compName] ?? defValue
 }
 
-return {
+return freeze({
   getTemplateCompValue
   getTemplate
-}
+})

@@ -1,18 +1,18 @@
+from "%scripts/money.nut" import zero_money
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/clans/modify/modifyClanModalHandler.nut" import ModifyClanModalHandler
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/clans/clanActions.nut" import createClan
+from "%scripts/clans/clanRequests.nut" import prepareCreateRequest
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { zero_money } = require("%scripts/money.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { ModifyClanModalHandler } = require("%scripts/clans/modify/modifyClanModalHandler.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { createClan } = require("%scripts/clans/clanActions.nut")
-let { prepareCreateRequest } = require("%scripts/clans/clanRequests.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 
 function clanTypesEnabled() {
@@ -138,6 +138,6 @@ register_gui_handler("CreateClanModalHandler", CreateClanModalHandler)
 
 let openCreateClanWnd = @() loadHandler(CreateClanModalHandler)
 
-return {
+return freeze({
   openCreateClanWnd
-}
+})

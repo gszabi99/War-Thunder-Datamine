@@ -2110,7 +2110,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2163,7 +2163,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/136mm_mephisto_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/136mm_mephisto_launcher_user_cannon.blk",
         "flash": "bone_rocket_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2258,8 +2258,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_vcac_mephisto_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_vcac_mephisto_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3889,7 +3889,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_gun_01",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3942,7 +3942,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/136mm_mephisto_launcher_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/136mm_mephisto_launcher_user_cannon.blk",
               "flash": "bone_rocket_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -4033,7 +4033,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4246,5 +4246,29 @@
         }
       ]
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -2.863,
+      1.349,
+      1.1
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

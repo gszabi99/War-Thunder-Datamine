@@ -1,5 +1,13 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/items/workshop/workshopCraftTree.nut" as workshopCraftTree
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/user/features.nut" import hasAllFeatures
+from "%scripts/time.nut" import getTimestampFromStringUtc
+from "%scripts/utils/delayedActions.nut" import addDelayedAction
+from "%scripts/items/itemsManager.nut" import getItemOrRecipeBundleById
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "string" import format
 from "%sqstd/string.nut" import startsWith
@@ -7,15 +15,6 @@ from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "types" import Integer
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let workshopCraftTree = require("%scripts/items/workshop/workshopCraftTree.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 const KNOWN_ITEMS_SAVE_ID = "workshop/known"
 const KNOWN_REQ_ITEMS_SAVE_ID = "workshop/knownReqItems"
@@ -437,8 +436,7 @@ local WorkshopSet = class {
   }
 
   function getSubsetsList() {
-    return this.subsetsList.filter(this.isVisibleSubset.bindenv(this)).values().sort(
-      @(a, b) a.sortIdx <=> b.sortIdx)
+    return this.subsetsList.filter(this.isVisibleSubset.bindenv(this)).values().sortby(@(a) a.sortIdx)
   }
 
   getCurSubsetId = @() this.curSubsetId

@@ -1,6 +1,39 @@
+import "%scripts/clusterSelect.nut" as clustersModule
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+import "%scripts/onlineInfo/clustersMenuWnd.nut" as openClustersMenuWnd
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
 import "%sqstd/math.nut" as stdMath
+from "%scripts/teams.nut" import g_team
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/events/eventsHandler.nut" import EventsHandler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_child
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton
+from "%scripts/tutorials/tutorialsData.nut" import checkDiffTutorial
+from "%scripts/user/psnFeatures.nut" import suggestAndAllowPsnPremiumFeatures
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_MP_DOMINATION
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/myStats.nut" import getMissionsComplete
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/user/antiAddictSystem.nut" import checkShowMultiplayerAasWarningMsg
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isSessionStartedInRoom
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/events/eventJoinProcess.nut" import EventJoinProcess
+from "%scripts/events/eventDescription.nut" import create_event_description
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
 from "dagor.time" import get_time_msec
 from "string" import format
 from "%sqstd/string.nut" import cutPrefix
@@ -9,43 +42,10 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { g_team } = require("%scripts/teams.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { EventsHandler } = require("%scripts/events/eventsHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
-let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getMissionsComplete } = require("%scripts/myStats.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { isSessionStartedInRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { create_event_description } = require("%scripts/events/eventDescription.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
-let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 enum eRoomFlags { 
   CAN_JOIN              = 0x8000 
@@ -550,9 +550,9 @@ let EventRoomsHandler = class (BaseGuiHandlerWT) {
       }
     }
 
-    this.chaptersTree.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
+    this.chaptersTree.sortby(@(a) -a[EROOM_FLAGS_KEY_NAME])
     foreach (_idx, chapter in this.chaptersTree)
-      chapter.rooms.sort(@(a, b) b[EROOM_FLAGS_KEY_NAME] <=> a[EROOM_FLAGS_KEY_NAME])
+      chapter.rooms.sortby(@(a) -a[EROOM_FLAGS_KEY_NAME])
 
     return this.chaptersTree
   }
@@ -835,4 +835,4 @@ let EventRoomsHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("EventRoomsHandler", EventRoomsHandler)
 
-return { EventRoomsHandler }
+return freeze({ EventRoomsHandler })

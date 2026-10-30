@@ -1,9 +1,9 @@
 {
   "model": "fokker_d7",
   "fmFile": "fm/fokker_d7.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_small_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_piston_inline_small_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.048,
   "gearSinkRangeC": 0.055,
   "gyroSight": false,
@@ -14,18 +14,18 @@
   ],
   "type": "typeFighter",
   "paratrooper": "german",
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "fighter",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_biplane.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_biplane.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map_biplane.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map_biplane.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
     "armor10": {
       "mgun1_dm": {
@@ -1868,130 +1868,6 @@
         }
       ]
     },
-    "interactables": {
-      "elevator": {
-        "attachmentPoint": "vr_stick_grip_center",
-        "lever": {
-          "limits": [
-            -1.0,
-            1.0
-          ]
-        },
-        "capsule": {
-          "attachmentOffset": [
-            0.0,
-            0.07,
-            0.0
-          ],
-          "a": [
-            0.0,
-            0.016,
-            0.0
-          ],
-          "b": [
-            0.0,
-            0.1,
-            0.0
-          ],
-          "radius": 0.016
-        }
-      },
-      "ailerons": {
-        "linkedTo": "elevator",
-        "attachmentPoint": "vr_stick_grip_center",
-        "lever": {
-          "limits": [
-            -1.0,
-            1.0
-          ]
-        }
-      },
-      "throttle": [
-        {
-          "attachmentPoint": "vr_throttle_grip_center",
-          "lever": {
-            "limits": [
-              0.0,
-              1.0
-            ]
-          },
-          "capsule": {
-            "attachmentOffset": [
-              0.0,
-              0.04,
-              0.0
-            ],
-            "a": [
-              0.0,
-              0.01,
-              0.0
-            ],
-            "b": [
-              0.0,
-              0.1,
-              0.0
-            ],
-            "radius": 0.011
-          }
-        },
-        {
-          "attachmentPoint": "vr_throttle_grip_center_1",
-          "relativeToNode": "stick_elevator",
-          "lever": {
-            "limits": [
-              0.0,
-              1.0
-            ]
-          },
-          "capsule": {
-            "attachmentOffset": [
-              0.0,
-              0.04,
-              0.0
-            ],
-            "a": [
-              0.0,
-              0.01,
-              0.0
-            ],
-            "b": [
-              0.0,
-              0.07,
-              0.0
-            ],
-            "radius": 0.016
-          }
-        },
-        {
-          "attachmentPoint": "vr_throttle_grip_center_2",
-          "relativeToNode": "stick_elevator",
-          "lever": {
-            "limits": [
-              0.0,
-              1.0
-            ]
-          },
-          "capsule": {
-            "attachmentOffset": [
-              0.0,
-              0.04,
-              0.0
-            ],
-            "a": [
-              0.0,
-              0.01,
-              0.0
-            ],
-            "b": [
-              0.0,
-              0.07,
-              0.0
-            ],
-            "radius": 0.016
-          }
-        }
-      ]
-    },
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2115,7 +1991,7 @@
     "Weapon": [
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunLMG0815.blk",
+        "blk": "gamedata/weapons/gunLMG0815.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "dm": "mgun1_dm",
@@ -2129,7 +2005,7 @@
       },
       {
         "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunLMG0815.blk",
+        "blk": "gamedata/weapons/gunLMG0815.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "mgun2_dm",
@@ -2147,7 +2023,7 @@
   "weapon_presets": {
     "preset": {
       "name": "fokker_dr1_default",
-      "blk": "gameData/FlightModels/weaponPresets/fokker_dr7_default.blk"
+      "blk": "gamedata/flightModels/weaponPresets/fokker_dr7_default.blk"
     }
   },
   "jetwash": {

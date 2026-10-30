@@ -65,6 +65,6 @@ let InputBase = class {
   }
 }
 
-return {
+return freeze({
   InputBase
-}
+})

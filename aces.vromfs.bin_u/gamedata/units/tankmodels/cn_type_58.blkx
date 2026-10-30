@@ -43,6 +43,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "attachables": {
     "body_01_back_dm": true
   },
@@ -1168,7 +1174,11 @@
         "ammo_body_r_27_dm",
         "ammo_body_r_28_dm",
         "ammo_body_r_29_dm",
-        "ammo_body_r_30_dm"
+        "ammo_body_r_30_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm"
       ],
       "effect": [
         {
@@ -2868,7 +2878,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/85mm_Type_56_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/85mm_Type_56_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2911,7 +2921,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Type_54_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_Type_54_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "barrelDP": "gun_barrel_03_dm",
@@ -2952,7 +2962,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type_55_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type_55_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2995,8 +3005,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_type_58_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_type_58_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "modifications": {

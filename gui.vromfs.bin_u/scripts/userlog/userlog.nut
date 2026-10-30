@@ -1,36 +1,37 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_obj
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/userLog/userlogUtils.nut" import saveOnlineJob, getUserLogsList, isUserlogVisible
+from "%scripts/userLog/userlogPlainText.nut" import get_userlog_plain_text
+from "%scripts/unlocks/battleTasks.nut" import isUserlogForBattleTasksGroup
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
+from "%scripts/tasker.nut" import restoreCharCallback
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled
+from "%scripts/unlocks/battleTasksHandler.nut" import guiStartBattleTasksWnd
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/missions/missionsUtils.nut" import isMissionExtrByName
+from "%scripts/userLog/userlogViewData.nut" import getUserlogViewData
+from "%scripts/matchingRooms/sessionLobbyActions.nut" import joinBattle
+from "%scripts/invites/invites.nut" import showLeaveSessionFirstPopup
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/clans/clanTextInfo.nut" import checkUGCAllowed
 from "string" import format
 from "guiOptions" import set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 from "dagor.time" import get_local_unixtime
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
+from "%globalScripts/loc_helpers.nut" import locByVendor, getVendorLocId
 from "%scripts/dagui_library.nut" import *
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { saveOnlineJob, getUserLogsList, isUserlogVisible } = require("%scripts/userLog/userlogUtils.nut")
-let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
-let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
-let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER } = require("%scripts/options/optionsExtNames.nut")
-let { restoreCharCallback } = require("%scripts/tasker.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
-let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 function isMissionExtrCheckFucn(userLog) {
   if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
@@ -145,7 +146,7 @@ let actionByLogType = {
       return
 
     if (!isCrossPlayEnabled())
-      return addPopup(null, colorize("warningTextColor", loc("xbox/crossPlayRequired")))
+      return addPopup(null, colorize("warningTextColor", locByVendor("xbox/crossPlayRequired")))
 
     log($"join to tournament battle with id {battleId}")
     get_cur_gui_scene().performDelayed({}, @() joinBattle(logObj.battleId))
@@ -218,7 +219,7 @@ register_gui_handler("UserLogHandler", class (BaseGuiHandlerWT) {
         cornerImg = "#ui/gameuiskin#new_icon.svg"
         cornerImgId =$"img_new_{page.id}"
         cornerImgSmall = true
-        tabName =$"#userlog/page/{page.id}"
+        tabName = $"#{getVendorLocId($"userlog/page/{page.id}")}"
         navImagesText = getNavigationImagesText(idx, userlogPages.len())
       })
     }
@@ -499,6 +500,6 @@ register_gui_handler("UserLogHandler", class (BaseGuiHandlerWT) {
   }
 })
 
-return {
+return freeze({
   gerRecentItemsLogs
-}
+})

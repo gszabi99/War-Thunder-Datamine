@@ -248,3 +248,34 @@ activatedGamepadShortcut {
 actionBarItemInfantryDiv > action_bar_item > action_item_content > activatedGamepadShortcut {
   pos: pw/2-w/2, ph/2-h;
 }
+
+actionBarTimersNest {
+  position:root;
+  left:sw/2 - w/2;
+}
+actionBarTimersNest[verticalOffset=textShortcut] {
+  top:@actionBarBottomPos - @hudActionBarItemSize - h - 0.006@shHud;
+}
+actionBarTimersNest[verticalOffset=gamepadShortcut] {
+  top:@actionBarBottomPos - @hudActionBarItemSize - h - 0.016@shHud;
+}
+
+actionBarExpandMenuBtn {
+  behaviour: button;
+  re-type: 9rect;
+  position: absolute;
+  size: pw, 1@hudActionBarExpandBtnHeight;
+  top: -h-1@hudActionBarExpandBtnGap;
+  background-color: #C0FFFFFF;
+  background-repeat: expand;
+  background-image: #ui/gameuiskin#block_bg_rounded_gray;
+  background-position: 4, 4, 4, 4;
+}
+
+actionBarExpandMenuBtn[shortcutType=text] {
+  top: -h-1@hudActionBarTextShHight-1@hudActionBarExpandBtnGap;
+}
+
+actionBarExpandMenuBtn[shortcutType=gamepad] {
+  top: -h-0.036@shHud-1@hudActionBarExpandBtnGap;
+}

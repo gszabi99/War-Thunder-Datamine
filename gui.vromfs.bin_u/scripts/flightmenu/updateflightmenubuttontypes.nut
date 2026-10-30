@@ -11,4 +11,4 @@ flightMenuButtonTypes.types = [
   flightMenuButtonTypes.BAILOUT
   flightMenuButtonTypes.QUIT_MISSION
 ]
-.sort(@(a, b) a.idx <=> b.idx)
+.sortby(@(a) a.idx)

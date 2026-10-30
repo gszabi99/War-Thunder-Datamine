@@ -8,6 +8,7 @@ require %appGame.infantry.es.gun_reload_common
 require %appGame.infantry.es.gun_anim_common
 require DngHuman
 require DaWeapons
+require %appGame.infantry.es.animchar.anim_phys_update_common
 
 
 [es(on_appear, before=anim_phys_init_es)]
@@ -105,7 +106,11 @@ def gun_and_module_anim_updater_es(info : ParallelUpdateFrameDelayed&;
                                    gun_anim__boltActionVarId : int;
                                    gun__showChamberedAmmo : bool = true;
                                    gun : Gun&;
+                                   animchar__visible : bool = false;
+                                   phys_vars__skipVisibilityCheck : Tag const?;
                                    var phys_vars : PhysVars)
+  if !is_anim_phys_demand_update(animchar__visible, phys_vars__skipVisibilityCheck)
+    return
   setVar(phys_vars, gun_anim__boltActionVarId, gun |> gun_lerpBoltActionTime(info.curTime))
   setVar(phys_vars, gun_anim__haveProjectileInChamberVarId, (gun__showChamberedAmmo &&  gun.curState.loaded) ? 1.f : 0.f)
 
@@ -228,7 +233,11 @@ def gun_anim_sync_vars_from_human(info : ParallelUpdateFrameDelayed;
   query(gunEid) <| $ [es(REQUIRE_NOT=tnt_exploder)] (gun_anim__changeWeaponVarId : int;
                                                      gun_anim__changeDirVarId : int;
                                                      gun_anim__actionProgressVarId : int;
+                                                     animchar__visible : bool = false;
+                                                     phys_vars__skipVisibilityCheck : Tag const?;
                                                      var phys_vars aka gun_phys_vars : PhysVars)
+    if !is_anim_phys_demand_update(animchar__visible, phys_vars__skipVisibilityCheck)
+      return
     setVar(gun_phys_vars, gun_anim__changeWeaponVarId, human_phys_vars |> getVar(human_anim__changeWeaponVarId))
     setVar(gun_phys_vars, gun_anim__changeDirVarId, human_phys_vars |> getVar(human_anim__changeDirVarId))
     setVar(gun_phys_vars, gun_anim__actionProgressVarId, human_phys_vars |> getVar(human_melee_charge__animProgressVarId))

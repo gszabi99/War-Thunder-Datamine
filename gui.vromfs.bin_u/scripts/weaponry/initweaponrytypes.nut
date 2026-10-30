@@ -1,19 +1,18 @@
+from "%scripts/money.nut" import Cost
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
+from "%scripts/weaponry/bulletsInfo.nut" import getModificationName, getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx
+from "%scripts/weaponry/itemInfo.nut" import getByCurBundle
+from "%scripts/weaponry/modificationInfo.nut" import canBuyMod
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/unit/unitStatus.nut" import isUnitUsable
+from "%scripts/weaponry/weaponryTypes.nut" import addEnumWeaponryTypes, getUpgradeTypeByItem
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "chardResearch" import shopIsModificationPurchased
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold2, wp_get_cost2, get_spare_aircrafts_count, wp_get_modification_cost, wp_get_weapon_max_count, wp_get_modification_open_cost_gold, shop_is_weapon_purchased
   , shop_get_spawn_score, wp_get_spare_cost_gold, wp_get_spare_cost, wp_get_modification_max_count, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
-
-let { Cost } = require("%scripts/money.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationName, getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
-let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { addEnumWeaponryTypes, getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 
 function getUnlockCostImpl(unit, item) {
   if (item.name == "")

@@ -1,4 +1,30 @@
+import "%scripts/time.nut" as time
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/sqDagui/timer/mkHoverHoldAction.nut" as mkHoverHoldAction
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/unlocks/battleTasksHandler.nut" import BattleTasksWnd, guiStartBattleTasksWnd
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/battlePass/battlePassWnd.nut" import BattlePassWnd, openBattlePassWnd
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj, getObjValidIndex
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/viewUtils/paginator.nut" import generatePaginator
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%scripts/warbonds/warbondsManager.nut" import getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId
+from "%scripts/warbonds/warbondAwardView.nut" import fillWarbondAwardDesc
+from "%scripts/battlePass/seasonState.nut" import getBPStageByShopLevel
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
+from "%scripts/tasker.nut" import addTask
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/items/itemVisual.nut" import setWidthAndPosForItemNameElements
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "math" import ceil
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
@@ -6,34 +32,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BattleTasksWnd, guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BattlePassWnd, openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
-let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId } = require("%scripts/warbonds/warbondsManager.nut")
-let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
 
 register_gui_handler("WarbondsShop", class (BaseGuiHandlerWT) {

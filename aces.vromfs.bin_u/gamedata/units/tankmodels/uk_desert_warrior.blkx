@@ -2030,7 +2030,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_desert_warrior_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/25mm_M242_desert_warrior_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingMesh": "auto_cannon_cartridge_case",
@@ -2164,7 +2164,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2208,7 +2208,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_BGM_71_tow_M3A3_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/127mm_BGM_71_tow_M3A3_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2273,7 +2273,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "smoke",
-        "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "emtr_mortar_flame_01",
@@ -2322,7 +2322,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "speedYaw": 0.0,
         "speedPitch": 0.0,
@@ -2358,8 +2358,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_desert_warrior_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_desert_warrior_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "controlDevices": {
@@ -3626,7 +3626,7 @@
         "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": {
-            "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+            "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
             "dmPart": "fire_control_system_dm"
           }
         }
@@ -3722,5 +3722,29 @@
     "fov": 12.0,
     "zoomFov": 7.3,
     "hookNodeName": "atgm_sight"
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.066,
+      1.0943,
+      1.3855
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

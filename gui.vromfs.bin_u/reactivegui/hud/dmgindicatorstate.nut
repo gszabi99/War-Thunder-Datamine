@@ -37,8 +37,8 @@ function updateDmgIndicatorElement(_initial, elem) {
     eventbus_send("update_damage_panel_state", {})
 }
 
-return {
+return freeze({
   dmgIndicatorWidth
   dmgIndicatorPos
   updateDmgIndicatorElement
-}
+})

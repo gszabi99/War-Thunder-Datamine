@@ -41,9 +41,9 @@ ecs.register_es("hud_stamina_state_es",
   }
 )
 
-return {
+return freeze({
   stamina
   staminaCanAim
   showStamina = Computed(@() stamina.get() != null)
   isLowStamina
-}
+})

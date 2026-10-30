@@ -1,45 +1,47 @@
+import "%scripts/guidParser.nut" as guidParser
+import "%scripts/items/itemRarity.nut" as itemRarity
+import "%scripts/time.nut" as time
+import "%scripts/wndLib/chooseAmountWnd.nut" as chooseAmountWnd
+import "%scripts/items/listPopupWnd/recipesListWnd.nut" as recipesListWnd
+import "%scripts/items/itemsTransfer.nut" as itemTransfer
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/items/itemGeneratorsManager.nut" import findItemGeneratorByReceptUid
+from "%scripts/items/exchangeRecipes.nut" import hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime
+from "%scripts/items/workshop/workshop.nut" import getMarkingPresetsById, getCustomLocalizationPresets, getEffectOnOpenChestPresetById
+from "%appGlobals/debugTools/dbgEnum.nut" import getEnumValName
+from "%scripts/customization/decoratorGetters.nut" import getDecorator, buildLiveDecoratorFromResource
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/tasker.nut" import addTask
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/items/buyAndOpenChestWndStyles.nut" import hasBuyAndOpenChestWndStyle
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission, isCustomMissionFlight
+from "%scripts/missions/missionsText.nut" import getMissionName
+from "%scripts/warbonds/warbondsState.nut" import maxAllowedWarbondsBalance
+from "%scripts/items/itemsManager.nut" import refreshExtInventory, markInventoryUpdateDelayed
+from "%scripts/items/itemsManagerModule.nut" import findItemById, findItemByUid, getInventoryItemByCraftedFrom, getItemGenerator
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/items/prizesView.nut" import getPrizesListView
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "math" import ceil
 from "string" import format, split_by_chars
 from "guiMission" import select_training_mission, get_meta_mission_info_by_name
-from "%sqstd/string.nut" import utf8ToLower, stripTags
+from "%sqstd/string.nut" import utf8ToLower
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import char_send_blk, inventory_generate_key
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/inventory/inventoryItemdefs.nut" import getItemdefTagValues
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
-let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
-let guidParser = require("%scripts/guidParser.nut")
-let itemRarity = require("%scripts/items/itemRarity.nut")
-let time = require("%scripts/time.nut")
-let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
-let recipesListWnd = require("%scripts/items/listPopupWnd/recipesListWnd.nut")
-let itemTransfer = require("%scripts/items/itemsTransfer.nut")
-let { getMarkingPresetsById, getCustomLocalizationPresets, getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
-let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { getDecorator, buildLiveDecoratorFromResource } = require("%scripts/customization/decoratorGetters.nut")
-let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
-let { getMissionName } = require("%scripts/missions/missionsText.nut")
-let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { refreshExtInventory, markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
-let { findItemById, findItemByUid, getInventoryItemByCraftedFrom, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { getPrizesListView } = require("%scripts/items/prizesView.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 let emptyBlk = DataBlock()
 
@@ -125,9 +127,9 @@ let ItemExternal = class (BaseItem) {
     this.updateSubstitutionItemDataOnce()
 
     this.aditionalConfirmationMsg = {}
-    let confirmationActions = itemDefDesc?.tags ? (itemDefDesc.tags % "confirmationAction") : []
+    let confirmationActions = getItemdefTagValues(itemDefDesc, "confirmationAction")
     if (confirmationActions.len()) {
-       let confirmationMsg = itemDefDesc.tags % "confirmationMsg"
+       let confirmationMsg = getItemdefTagValues(itemDefDesc, "confirmationMsg")
        foreach (idx, action in confirmationActions)
          this.aditionalConfirmationMsg[action] <- confirmationMsg?[idx] ?? ""
     }
@@ -761,7 +763,7 @@ let ItemExternal = class (BaseItem) {
 
    function hasLink() {
     return !this.isDisguised && base.hasLink()
-      && this.itemDef?.marketable && this.getNoTradeableTimeLeft() == 0
+      && (this.itemDef?.marketable ?? false) && this.getNoTradeableTimeLeft() == 0
       && hasFeature("Marketplace")
   }
 
@@ -1091,18 +1093,22 @@ let ItemExternal = class (BaseItem) {
   canRunCustomMission = @() this.amount > 0 && this.hasCustomMission()
   getCustomMissionButtonText = @() getMissionName(this.itemDef.tags.canRunCustomMission, this.getCustomMissionBlk())
 
+  function startCustomMission(misBlk) {
+    broadcastEvent("BeforeStartCustomMission")
+    isCustomMissionFlight.set(true)
+    currentCampaignMission.set(this.itemDef.tags.canRunCustomMission)
+    select_training_mission(misBlk)
+  }
+
   function runCustomMission() {
     if (!this.canRunCustomMission())
         return false
 
     let misBlk = get_meta_mission_info_by_name(this.itemDef.tags.canRunCustomMission)
-    if (misBlk?.requiredPackage != null && !checkPackageAndAskDownload([misBlk.requiredPackage]))
-      return true
-
-    broadcastEvent("BeforeStartCustomMission")
-    isCustomMissionFlight.set(true)
-    currentCampaignMission.set(this.itemDef.tags.canRunCustomMission)
-    select_training_mission(misBlk)
+    if (misBlk?.requiredPackage != null)
+      checkPackageAndAskDownload([misBlk.requiredPackage], null, @() this.startCustomMission(misBlk), this)
+    else
+      this.startCustomMission(misBlk)
     return true
   }
 

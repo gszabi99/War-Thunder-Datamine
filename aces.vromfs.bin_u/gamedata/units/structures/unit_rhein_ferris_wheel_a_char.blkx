@@ -1,0 +1,383 @@
+{
+  "model": "unit_rhein_ferris_wheel_a",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": true,
+  "damageableByGun": true,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": true,
+  "destrPhysObjReplacesUnit": true,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "explosionImpulse": 100.0,
+  "explosionFx": "dust_building_ferris_wheel",
+  "timeForBodiesDestr": 600.0,
+  "timeToKinematicDestr": 12.0,
+  "timeToLiveDestr": 600.0,
+  "timeToFire": 4.0,
+  "DamageParts": {
+    "formatVersion": 2,
+    "steel": {
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0,
+      "hp": 20.0,
+      "body_dm": {},
+      "main_ring_dm": {}
+    },
+    "cabin": {
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 3.0,
+      "hp": 60.0,
+      "cabin_000_dm": {},
+      "cabin_001_dm": {},
+      "cabin_002_dm": {},
+      "cabin_003_dm": {},
+      "cabin_004_dm": {},
+      "cabin_005_dm": {},
+      "cabin_006_dm": {},
+      "cabin_007_dm": {},
+      "cabin_008_dm": {},
+      "cabin_009_dm": {},
+      "cabin_010_dm": {},
+      "cabin_011_dm": {},
+      "cabin_012_dm": {},
+      "cabin_013_dm": {},
+      "cabin_014_dm": {},
+      "cabin_015_dm": {},
+      "cabin_016_dm": {},
+      "cabin_017_dm": {}
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "MetaParts": {
+    "cabin_000": {
+      "part": "cabin_000_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 0
+      }
+    },
+    "cabin_001": {
+      "part": "cabin_001_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 1
+      }
+    },
+    "cabin_002": {
+      "part": "cabin_002_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 2
+      }
+    },
+    "cabin_003": {
+      "part": "cabin_003_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 3
+      }
+    },
+    "cabin_004": {
+      "part": "cabin_004_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 4
+      }
+    },
+    "cabin_005": {
+      "part": "cabin_005_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 5
+      }
+    },
+    "cabin_006": {
+      "part": "cabin_006_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 6
+      }
+    },
+    "cabin_007": {
+      "part": "cabin_007_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 7
+      }
+    },
+    "cabin_008": {
+      "part": "cabin_008_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 8
+      }
+    },
+    "cabin_009": {
+      "part": "cabin_009_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 9
+      }
+    },
+    "cabin_010": {
+      "part": "cabin_010_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 10
+      }
+    },
+    "cabin_011": {
+      "part": "cabin_011_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 11
+      }
+    },
+    "cabin_012": {
+      "part": "cabin_012_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 12
+      }
+    },
+    "cabin_013": {
+      "part": "cabin_013_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 13
+      }
+    },
+    "cabin_014": {
+      "part": "cabin_014_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 14
+      }
+    },
+    "cabin_015": {
+      "part": "cabin_015_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 15
+      }
+    },
+    "cabin_016": {
+      "part": "cabin_016_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 16
+      }
+    },
+    "cabin_017": {
+      "part": "cabin_017_dm",
+      "effect": {
+        "conditionPartsDead": 1,
+        "cutWrecked": 17
+      }
+    }
+  },
+  "wreckedParts": {
+    "part": [
+      {
+        "node": "cabin_000",
+        "idx": 0,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_000_dm"
+      },
+      {
+        "node": "cabin_001",
+        "idx": 1,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_001_dm"
+      },
+      {
+        "node": "cabin_002",
+        "idx": 2,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_002_dm"
+      },
+      {
+        "node": "cabin_003",
+        "idx": 3,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_003_dm"
+      },
+      {
+        "node": "cabin_004",
+        "idx": 4,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_004_dm"
+      },
+      {
+        "node": "cabin_005",
+        "idx": 5,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_005_dm"
+      },
+      {
+        "node": "cabin_006",
+        "idx": 6,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_006_dm"
+      },
+      {
+        "node": "cabin_007",
+        "idx": 7,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_007_dm"
+      },
+      {
+        "node": "cabin_008",
+        "idx": 8,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_008_dm"
+      },
+      {
+        "node": "cabin_009",
+        "idx": 9,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_009_dm"
+      },
+      {
+        "node": "cabin_010",
+        "idx": 10,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_010_dm"
+      },
+      {
+        "node": "cabin_011",
+        "idx": 11,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_011_dm"
+      },
+      {
+        "node": "cabin_012",
+        "idx": 12,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_012_dm"
+      },
+      {
+        "node": "cabin_013",
+        "idx": 13,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_013_dm"
+      },
+      {
+        "node": "cabin_014",
+        "idx": 14,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_014_dm"
+      },
+      {
+        "node": "cabin_015",
+        "idx": 15,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_015_dm"
+      },
+      {
+        "node": "cabin_016",
+        "idx": 16,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_016_dm"
+      },
+      {
+        "node": "cabin_017",
+        "idx": 17,
+        "mass": 400.0,
+        "cutDamage": 0.0,
+        "deviation": 0.3,
+        "rotation": 0.3,
+        "collisionNode": "cabin_017_dm"
+      }
+    ]
+  },
+  "animatedBones": {
+    "node": [
+      "main_ring",
+      "cabin_000",
+      "cabin_001",
+      "cabin_002",
+      "cabin_003",
+      "cabin_004",
+      "cabin_005",
+      "cabin_006",
+      "cabin_007",
+      "cabin_008",
+      "cabin_009",
+      "cabin_010",
+      "cabin_011",
+      "cabin_012",
+      "cabin_013",
+      "cabin_014",
+      "cabin_015",
+      "cabin_016",
+      "cabin_017"
+    ]
+  }
+}

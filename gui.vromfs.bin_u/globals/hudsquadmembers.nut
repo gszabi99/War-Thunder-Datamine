@@ -11,10 +11,10 @@ let watchedHeroSquadMembersRaw = sharedWatched("watchedHeroSquadMembersRaw", @()
 
 let watchedHeroSquadEid = Computed(@() watchedHeroSquadMembersRaw.get().watchedHeroSquadEid)
 
-let sortMembers = @(a,b) a.memberIdx <=> b.memberIdx
+let sortMembers = @(a) a.memberIdx
 
 let watchedHeroSquadMembers = Computed(@()
-  watchedHeroSquadMembersRaw.get().members.values().sort(sortMembers))
+  watchedHeroSquadMembersRaw.get().members.values().sortby(sortMembers))
 
 
 let localPlayerSquadMembers = Computed(@() 

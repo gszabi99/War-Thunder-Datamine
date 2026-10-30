@@ -1,15 +1,14 @@
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/time.nut" import secondsToMilliseconds, minutesToSeconds
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/controls/controlsPresets.nut" import getControlsPresetFilename
+from "%scripts/controls/isDeviceConnected.nut" import isDeviceConnected
+from "%scripts/controls/controlsTypeUtils.nut" import applyJoyPresetXchange
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "debug" import getstackinfos
 from "%scripts/dagui_library.nut" import *
-
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
-let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getControlsPresetFilename } = require("%scripts/controls/controlsPresets.nut")
-let { isDeviceConnected } = require("%scripts/controls/isDeviceConnected.nut")
-let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 const hotasPS4DevId = "044F:B67B"
 const hotasXONEDevId = "044F:B68C"
@@ -21,23 +20,23 @@ function unreachable() {
   script_net_assert_once(id, msg)
 }
 
-let hotasControlImageFileName = isPlatformXbox ? "t-flight-hotas-one" : "t-flight-hotas-4"
+let hotasControlImageFileName = isXbox ? "t-flight-hotas-one" : "t-flight-hotas-4"
 
 function askHotasPresetChange() {
-  if ((!isPlatformSony && !isPlatformXbox) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
+  if ((!isSony && !isXbox) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
   saveLocalByAccount("wnd/detectThrustmasterHotas", true)
 
   let questionLocId =
-    isPlatformSony ? "msgbox/controller_hotas4_found" :
-    isPlatformXbox ? "msgbox/controller_hotas_one_found" :
+    isSony ? "msgbox/controller_hotas4_found" :
+    isXbox ? "msgbox/controller_hotas_one_found" :
     unreachable()
 
   let mainAction = function() {
     let presetName =
-      isPlatformSony ? "thrustmaster_hotas4" :
-      isPlatformXbox ? "xboxone_thrustmaster_hotas_one" :
+      isSony ? "thrustmaster_hotas4" :
+      isXbox ? "xboxone_thrustmaster_hotas_one" :
       unreachable()
     applyJoyPresetXchange(getControlsPresetFilename(presetName))
   }
@@ -60,16 +59,16 @@ function askHotasPresetChange() {
   )
 }
 
-return {
+return freeze({
   hotasControlImagePath = $"!ui/images/joystick/{hotasControlImageFileName}?P1"
 
   checkJoystickThustmasterHotas = function(changePreset = true) {
     let deviceId =
-      isPlatformSony ? hotasPS4DevId :
-      isPlatformXbox ? hotasXONEDevId :
+      isSony ? hotasPS4DevId :
+      isXbox ? hotasXONEDevId :
       null
 
-    if (deviceId == null || !isLoggedIn.get())
+    if (deviceId == null || !hasFullLoginState.get())
       return false
 
     if (!isDeviceConnected(deviceId))
@@ -77,4 +76,4 @@ return {
 
     return changePreset ? askHotasPresetChange() : true
   }
-}
+})

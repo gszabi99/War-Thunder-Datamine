@@ -6,11 +6,11 @@ let { isWWSeasonActive = @() false, isWwOperationInviteEnable = @() false
 let { saveLastPlayed = @(_opId, _opCountry) null
 } = require_optional("%scripts/worldWar/worldWarCfgState.nut")
 
-return {
+return freeze({
   isWorldWarEnabled
   canPlayWorldwar
   getCantPlayWorldwarReasonText
   isWWSeasonActive
   isWwOperationInviteEnable
   saveLastPlayed
-}
+})

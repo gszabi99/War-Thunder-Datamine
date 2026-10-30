@@ -1,3 +1,12 @@
+import "%scripts/penitentiary/localDevoice.nut" as localDevoice
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%sqstd/platform.nut" import isSony
+from "%scripts/chat/mpChatModel.nut" import chatSystemMessage
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/controls/controlsVisual.nut" import getShortcutText
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
 from "unit" import get_player_unit_name
 from "string" import format
 from "mission" import get_game_mode, get_game_type
@@ -10,16 +19,7 @@ from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -102,7 +102,7 @@ function getFavoriteVoiceMessagesVariants() {
 
 function getVoiceMessageListLine(index, is_category, name, squad, targetName, _messageIndex = -1) {
   let scText = []
-  if (!isPlatformSony) {
+  if (!isSony) {
     let shortcutNames = [];
     let key = $"ID_VOICE_MESSAGE_{index + 1}" 
     shortcutNames.append(key);
@@ -267,11 +267,11 @@ registerRespondent("isVoiceMessagesMutedNative", isVoiceMessagesMuted)
 
 let getVoiceMessageNames = @() voiceMessageNames
 
-return {
+return freeze({
   getVoiceMessageNames = getVoiceMessageNames
   getCategoryLoc = getCategoryLoc
   getFavoriteVoiceMessagesVariants = getFavoriteVoiceMessagesVariants
   getCantUseVoiceMessagesReason = getCantUseVoiceMessagesReason
   resetFastVoiceMessages = resetFastVoiceMessages
   closeCurVoicemenu
-}
+})

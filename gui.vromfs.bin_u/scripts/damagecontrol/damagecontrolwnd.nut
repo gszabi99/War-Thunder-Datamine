@@ -1,17 +1,17 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/controls/controlsCompatibility.nut" import getShortcuts
+from "%scripts/controls/controlsVisual.nut" import getShortcutText
+from "%scripts/sqDagui/daguiUtil.nut" import getDaguiObjAabb
+from "%scripts/damageControl/damageControlModule.nut" import gatherShipDamageControlData, hasShipDamageControl
 from "math" import abs
 from "console" import register_command
 from "chard" import getUnitExtraData, saveUnitExtraData
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
-let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
-let { gatherShipDamageControlData, hasShipDamageControl } = require("%scripts/damageControl/damageControlModule.nut")
 
 register_command(
   function () {
@@ -75,7 +75,7 @@ function findIntersectsObj(draggedPresetRect, presets) {
   let objs = presets
     .filter(@(p) isIntersects(draggedPresetRect, p.dropTargetObjRect))
     .map(@(p) p.__update({ dist = distanceOfCenters(draggedPresetRect, p.dropTargetObjRect) }))
-    .sort(@(p1, p2) p1.dist <=> p2.dist)
+    .sortby(@(p1) p1.dist)
 
   return objs.len() > 0 ? objs[0] : null
 }
@@ -367,10 +367,10 @@ let DamageControlWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("DamageControlWnd", DamageControlWnd)
 
-return {
+return freeze({
   showDamageControl = function(unit) {
     if (unit == null || !unit.isShipOrBoat() || !hasShipDamageControl(unit.name))
       return
     handlersManager.loadHandler(DamageControlWnd, { unitName = unit.name })
   }
-}
+})

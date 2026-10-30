@@ -48,11 +48,11 @@ function restoreCurControlPreset() {
 }
 restoreCurControlPreset()
 
-return {
+return freeze({
   getCurControlsPreset
   setCurControlsPreset
   getPreviewControlsPreset
   setPreviewControlsPreset
   isPresetChanged
   clearControlsPresetGuiOptions
-}
+})

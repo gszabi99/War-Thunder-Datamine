@@ -1,12 +1,11 @@
+import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
 from "worldwar" import wwGetZoneSideByName, wwGetOperationId, wwGetPlayerSide, wwGetOperationTimeMillisec
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_rear_zones, ww_side_val_to_name, ww_get_operation_objectives
 
-let time = require("%scripts/time.nut")
-
-let curOperationCountry = mkWatched(persist, "curOperationCountry", null)
+let curOperationCountry = mkHardPersistWatched("worldWar.inOperation.wwOperationStates")("curOperationCountry", null)
 
 
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
@@ -78,7 +77,7 @@ let getOperationTimeSec = @()
   time.millisecondsToSecondsInt(wwGetOperationTimeMillisec())
 
 
-return {
+return freeze({
   curOperationCountry
   invalidateRearZones = @() rearZones = null
   getRearZones
@@ -89,4 +88,4 @@ return {
   getOppositeSide
   getSidesOrder
   getOperationTimeSec
-}
+})

@@ -1,8 +1,7 @@
+import "%rGui/style/colors.nut" as colors
 from "%rGui/hints/shortcuts.nut" import getShortcut
 from "fonts" import getFontName
 from "%rGui/globals/ui_library.nut" import *
-
-let colors = require("%rGui/style/colors.nut")
 
 let hintTags = {
   shortcut = getShortcut
@@ -37,6 +36,7 @@ function getHintBySlices(slices, override, addChild = []) {
     return null
 
   return {
+    size = [SIZE_TO_CONTENT, override?.rowHeight ?? SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

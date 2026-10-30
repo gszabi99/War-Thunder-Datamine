@@ -44,58 +44,53 @@ function generatePitchLineEP(num, isEP12, textPad) {
   return {
     size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
-    children = num >= 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = [0, textPad]
-        commands = [
-          [VECTOR_LINE, 0, 0, !isEP12 && num == 0 ? 45 : 34, 0],
-          (isEP12 && num != 0 ? [VECTOR_LINE, 66, 0, 100, 0] : [VECTOR_LINE, 66, 0, 74, 0]),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 90, 0, 100,  0] : []),
-          (!isEP12 ? [VECTOR_LINE, num == 0 ? 55 : 66, 0, 100, 0] : []),
-          [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.get()],
-          (!isEP12 && num == 0 ? [VECTOR_LINE, 50, 0, 50, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 37, 0, 37,  0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 42, 0, 42, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 47, 0, 47, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 53, 0, 53, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 58, 0, 58, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 63, 0, 63, 0] : [])
-        ]
-        children =
-        [
-          isEP12 || newNum != 0 ? angleTxtEP(newNum, true, Fonts.hud) : null,
-          !isEP12 && newNum != 0 ? angleTxtEP(newNum, false, Fonts.hud) : null
-        ]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = [10, textPad]
-        commands = [
-          (isEP12 ? [VECTOR_LINE, 0, 0, 7, 0] : [VECTOR_LINE, 0, 0, 34, 0]),
-          (isEP12 ? [VECTOR_LINE, 15, 0, 21, 0] : []),
-          (isEP12 ? [VECTOR_LINE, 28, 0, 34, 0] : []),
-          (isEP12 ? [VECTOR_LINE, 100, 0, 93, 0] : [VECTOR_LINE, 100, 0, 66, 0]),
-          (isEP12 ? [VECTOR_LINE, 85, 0, 79, 0] : []),
-          (isEP12 ? [VECTOR_LINE, 72, 0, 66, 0] : [])
-        ]
-        children = newNum >= -90 ?
-        [
-          angleTxtEP(newNum, true, Fonts.hud),
-          !isEP12 ? angleTxtEP(newNum, false, Fonts.hud) : null
-        ] : null
-      }
-    ]
+    children = num >= 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = [0, textPad]
+      commands = [
+        [VECTOR_LINE, 0, 0, !isEP12 && num == 0 ? 45 : 34, 0],
+        (isEP12 && num != 0 ? const [VECTOR_LINE, 66, 0, 100, 0] : const [VECTOR_LINE, 66, 0, 74, 0]),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 90, 0, 100,  0] : const []),
+        (!isEP12 ? [VECTOR_LINE, num == 0 ? 55 : 66, 0, 100, 0] : []),
+        [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.get()],
+        (!isEP12 && num == 0 ? const [VECTOR_LINE, 50, 0, 50, 0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 37, 0, 37,  0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 42, 0, 42, 0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 47, 0, 47, 0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 53, 0, 53, 0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 58, 0, 58, 0] : const []),
+        (isEP12 && num == 0 ? const [VECTOR_LINE, 63, 0, 63, 0] : const [])
+      ]
+      children =
+      [
+        isEP12 || newNum != 0 ? angleTxtEP(newNum, true, Fonts.hud) : null,
+        !isEP12 && newNum != 0 ? angleTxtEP(newNum, false, Fonts.hud) : null
+      ]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = [10, textPad]
+      commands = [
+        (isEP12 ? const [VECTOR_LINE, 0, 0, 7, 0] : const [VECTOR_LINE, 0, 0, 34, 0]),
+        (isEP12 ? const [VECTOR_LINE, 15, 0, 21, 0] : const []),
+        (isEP12 ? const [VECTOR_LINE, 28, 0, 34, 0] : const []),
+        (isEP12 ? const [VECTOR_LINE, 100, 0, 93, 0] : const [VECTOR_LINE, 100, 0, 66, 0]),
+        (isEP12 ? const [VECTOR_LINE, 85, 0, 79, 0] : const []),
+        (isEP12 ? const [VECTOR_LINE, 72, 0, 66, 0] : const [])
+      ]
+      children = newNum >= -90 ?
+      [
+        angleTxtEP(newNum, true, Fonts.hud),
+        !isEP12 ? angleTxtEP(newNum, false, Fonts.hud) : null
+      ] : null
+    }
   }
 }
 
@@ -145,38 +140,36 @@ let EP12RadarTargetVisible = Computed(@() RadarTargetDist.get() > 0.0 && !Bombin
 let EP12RadarTargetMark = @(){
   watch = EP12RadarTargetVisible
   size = FLEX
-  children = EP12RadarTargetVisible.get() ? [
-    {
-      size = const [pw(3), ph(3)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, 180, 0]
-      ]
-      animations = [
-        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true , trigger = "outside_hud_zone"}
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = function() {
-        let shouldClamp = RadarTargetPos[0] < IlsPosSize[2] * 0.04 || RadarTargetPos[0] > IlsPosSize[2] * 0.96 || RadarTargetPos[1] < IlsPosSize[3] * 0.04 || RadarTargetPos[1] > IlsPosSize[3] * 0.96
-        local pos = RadarTargetPos
-        if(shouldClamp) {
-          anim_start("outside_hud_zone")
-          pos = [clamp(RadarTargetPos[0], IlsPosSize[2] * 0.04, IlsPosSize[2] * 0.96),
-            clamp(RadarTargetPos[1], IlsPosSize[3] * 0.04, IlsPosSize[3] * 0.96)]
-        }
-        else
-          anim_request_stop("outside_hud_zone")
-        return {
-          transform = {
-            translate = pos
-          }
+  children = EP12RadarTargetVisible.get() ? {
+    size = const [pw(3), ph(3)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = const [
+      [VECTOR_SECTOR, 0, 0, 100, 100, 180, 0]
+    ]
+    animations = [
+      { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true , trigger = "outside_hud_zone"}
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      let shouldClamp = RadarTargetPos[0] < IlsPosSize[2] * 0.04 || RadarTargetPos[0] > IlsPosSize[2] * 0.96 || RadarTargetPos[1] < IlsPosSize[3] * 0.04 || RadarTargetPos[1] > IlsPosSize[3] * 0.96
+      local pos = RadarTargetPos
+      if(shouldClamp) {
+        anim_start("outside_hud_zone")
+        pos = [clamp(RadarTargetPos[0], IlsPosSize[2] * 0.04, IlsPosSize[2] * 0.96),
+          clamp(RadarTargetPos[1], IlsPosSize[3] * 0.04, IlsPosSize[3] * 0.96)]
+      }
+      else
+        anim_request_stop("outside_hud_zone")
+      return {
+        transform = {
+          translate = pos
         }
       }
     }
-  ] : null
+  } : null
 }
 
 let generateAltMarkEP = function(num) {
@@ -245,7 +238,7 @@ function EPAltitudeWrap(width, height, generateFunc) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
         color = IlsColor.get()
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 45, 10, 50],
           [VECTOR_LINE, 0, 55, 10, 50]
         ]
@@ -263,7 +256,7 @@ function EPAltitudeWrap(width, height, generateFunc) {
 function EP08Alt(width, height) {
   return {
     size = const [pw(15), ph(10)]
-    children = [EPAltCCIP]
+    children = EPAltCCIP
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -308,16 +301,14 @@ function getBulletImpactLineCommand() {
 let bulletsImpactLine = @() {
   watch = [CCIPMode, BulletImpactLineEnable]
   size = FLEX
-  children = BulletImpactLineEnable.get() && !CCIPMode.get() ? [
-    @() {
-      watch = [BulletImpactPoints, IlsColor]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = FLEX
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = getBulletImpactLineCommand()
-    }
-  ] : null
+  children = BulletImpactLineEnable.get() && !CCIPMode.get() ? @() {
+    watch = [BulletImpactPoints, IlsColor]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = FLEX
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = getBulletImpactLineCommand()
+  } : null
 }
 
 let haveShell = Computed(@() ShellCnt.get() > 0)
@@ -334,15 +325,15 @@ function EPAimMark(width, height, is_need_gun_ret) {
         fillColor = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
-          [VECTOR_ELLIPSE, 0, 0, 3, 6],
-          [VECTOR_LINE, -100, -100, -100, 100],
-          [VECTOR_LINE, 100, -100, 100, 100],
-          [VECTOR_FILL_COLOR, Color(0, 0, 0, 0)],
-          (haveShell.get() ? [VECTOR_ELLIPSE, 60, -80, 10, 20] : []),
-          (TargetPosValid.get() ? [VECTOR_LINE, -50, 90, 50, 90] : []),
-          (TargetPosValid.get() ? [VECTOR_LINE, -30, 90, -30, 70] : []),
-          (TargetPosValid.get() ? [VECTOR_LINE, 0, 90, 0, 70] : []),
-          (TargetPosValid.get() ? [VECTOR_LINE, 30, 90, 30, 70] : [])
+          const [VECTOR_ELLIPSE, 0, 0, 3, 6],
+          const [VECTOR_LINE, -100, -100, -100, 100],
+          const [VECTOR_LINE, 100, -100, 100, 100],
+          const [VECTOR_FILL_COLOR, Color(0, 0, 0, 0)],
+          (haveShell.get() ? const [VECTOR_ELLIPSE, 60, -80, 10, 20] : const []),
+          (TargetPosValid.get() ? const [VECTOR_LINE, -50, 90, 50, 90] : const []),
+          (TargetPosValid.get() ? const [VECTOR_LINE, -30, 90, -30, 70] : const []),
+          (TargetPosValid.get() ? const [VECTOR_LINE, 0, 90, 0, 70] : const []),
+          (TargetPosValid.get() ? const [VECTOR_LINE, 30, 90, 30, 70] : const [])
         ]
         children = EPAltCCIP
         behavior = Behaviors.RtPropUpdate
@@ -359,7 +350,7 @@ function EPAimMark(width, height, is_need_gun_ret) {
         color = IlsColor.get()
         fillColor = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get() * 2.0
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 0, 0],
           [VECTOR_LINE, 0, 100, 0, 100],
           [VECTOR_LINE, 0, -100, 0, -100],
@@ -392,7 +383,7 @@ function EPCCRPTargetMark(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 100, 100],
         ]
         behavior = Behaviors.RtPropUpdate
@@ -417,15 +408,15 @@ let EP08AAMMarker = @() {
     fillColor = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = [
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_ELLIPSE, 50, 50, 0.5, 0.5] : []),
-      (GuidanceLockState.get() != GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 60, 47, 60, 53] : []),
-      (GuidanceLockState.get() != GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 40, 47, 40, 53] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 65, 45, 65, 55] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 35, 45, 35, 55] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 42, 55, 57, 55] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 55, 55, 55, 53] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 50, 55, 50, 53] : []),
-      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? [VECTOR_LINE, 45, 55, 45, 53] : [])
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_ELLIPSE, 50, 50, 0.5, 0.5] : const []),
+      (GuidanceLockState.get() != GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 60, 47, 60, 53] : const []),
+      (GuidanceLockState.get() != GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 40, 47, 40, 53] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 65, 45, 65, 55] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 35, 45, 35, 55] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 42, 55, 57, 55] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 55, 55, 55, 53] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 50, 55, 50, 53] : const []),
+      (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING ? const [VECTOR_LINE, 45, 55, 45, 53] : const [])
     ]
     children =
       @() {
@@ -435,8 +426,8 @@ let EP08AAMMarker = @() {
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
-          (AamAccelLock.get() ? [VECTOR_LINE, 42, 50, 48, 50] : []),
-          (AamAccelLock.get() ? [VECTOR_LINE, 52, 50, 58, 50] : [])
+          (AamAccelLock.get() ? const [VECTOR_LINE, 42, 50, 48, 50] : const []),
+          (AamAccelLock.get() ? const [VECTOR_LINE, 52, 50, 58, 50] : const [])
         ]
         animations = [
           { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, play = true, loop = true }

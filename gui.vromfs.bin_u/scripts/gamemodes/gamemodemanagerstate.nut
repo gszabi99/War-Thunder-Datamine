@@ -1,7 +1,29 @@
+import "%scripts/gameModes/rbGmTypes.nut" as RB_GM_TYPE
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
 import "DataBlock" as DataBlock
+from "%scripts/events/eventTeamsInfo.nut" import checkUnitRelevanceForEvent, getAvailableCountriesByEvent, getEDiffByEvent, isUnitAllowedForEvent, isUnitTypeAvailable, isUnitTypeRequired
+from "%scripts/events/eventTexts.nut" import getEventNameText, getAbbrLocKey
+from "%scripts/events/eventDisplay.nut" import getEventPreviewVideoName, getEventTileImageName, getEventsForGcDrawer, getEventsVisibleInEventsWindowCount, isEventDisplayWide, isEventEnableOnDebug
+from "%scripts/squads/squadState.nut" import getLeaderGameModeId, isInSquad, isNotAloneOnline, isSquadLeader, isSquadMember
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/crossModuleEvents.nut" import LEADER_GAME_MODE_APPLIED
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, needShowCrossPlayInfo
+from "%scripts/firstChoice/firstChoice.nut" import getFirstChosenUnitType
+from "%scripts/user/xboxFeatures.nut" import isMultiplayerPrivilegeAvailable
+from "%scripts/user/balance.nut" import hasMultiplayerRestritionByBalance
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/events/eventInfo.nut" import getEventDisplayType, isEventForClan, isEventForNewbies, hasEventFeature, getEventEconomicName
+from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
+from "%scripts/myStats.nut" import getNextNewbieEvent, isMeNewbie
+from "%scripts/user/myStatsState.nut" import getUnitTypeByNewbieEventId
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled, canPlayWorldwar
+from "%scripts/queue/queueState.nut" import isQueueActive, findQueue, checkQueueType
+from "%scripts/worldWar/operations/model/wwOperationView.nut" import getPlayedOperationText
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/worldWarCfgState.nut" import getLastPlayedOperationId
 from "%appGlobals/ranks_common_shared.nut" import EDifficulties
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "%sqstd/platform.nut" import isPC
 from "dagor.workcycle" import deferOnce
 from "mission" import get_game_mode
@@ -15,31 +37,9 @@ let { g_difficulty } = require("%scripts/difficulty.nut")
 let eventsState = require("%scripts/events/eventsState.nut")
 let { getEventDiffCode, getLastPlayedEvent, isEventsLoaded } = eventsState
 let getEventById = eventsState.getEvent 
-let { checkUnitRelevanceForEvent, getAvailableCountriesByEvent, getEDiffByEvent, isUnitAllowedForEvent, isUnitTypeAvailable, isUnitTypeRequired } = require("%scripts/events/eventTeamsInfo.nut")
-let { getEventNameText, getAbbrLocKey } = require("%scripts/events/eventTexts.nut")
-let { diffCodeCompare, getEventPreviewVideoName, getEventTileImageName, getEventsForGcDrawer, getEventsVisibleInEventsWindowCount, isEventDisplayWide, isEventEnableOnDebug } = require("%scripts/events/eventDisplay.nut")
 let { eventChaptersManager } = require("%scripts/events/eventsChapter.nut")
-let { getLeaderGameModeId, isInSquad, isNotAloneOnline, isSquadLeader, isSquadMember } = require("%scripts/squads/squadState.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let { LEADER_GAME_MODE_APPLIED } = require("%scripts/crossModuleEvents.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
-let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getEventDisplayType, isEventForClan, isEventForNewbies, hasEventFeature, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { getNextNewbieEvent, isMeNewbie } = require("%scripts/myStats.nut")
-let { getUnitTypeByNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
-let { isQueueActive, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
-let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { slotbarPresetsByCountry } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
 
@@ -201,7 +201,7 @@ let featuredModes = [
     
     image = @() $"{imgFolder}events_thin?P1"
     videoPreview = null
-    isVisible = @() hasFeature("Events") && getEventsVisibleInEventsWindowCount() > 0
+    isVisible = @() getEventsVisibleInEventsWindowCount() > 0
     hasNewIconWidget = false
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.get()
   }
@@ -241,19 +241,20 @@ let customGameModesBattles = [
       let chapter = eventChaptersManager.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
-      local openEventId = null
+      local eventIdToOpen  = null
       if (chapterEvents.len()) {
         let lastPlayedEventId = getLastPlayedEvent()?.name
-        let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
+        let hasLastPlayedEventInChapter = chapterEvents.contains(lastPlayedEventId)
+        let lastPlayedEventRelevance = hasLastPlayedEventInChapter ?
           checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
         let relevanceList = chapterEvents.map(@(id) { eventId = id,
           relevance = checkUnitRelevanceForEvent(id, curUnit) })
         relevanceList.sort(@(a, b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
-        openEventId = relevanceList.findvalue(@(item) lastPlayedEventRelevance >= item.relevance)?.eventId
-          ?? lastPlayedEventId
-          ?? relevanceList[0].eventId
+        eventIdToOpen = hasLastPlayedEventInChapter && (lastPlayedEventRelevance >= relevanceList[0].relevance)
+          ? lastPlayedEventId
+          : relevanceList[0].eventId
       }
-      return openEventId
+      return eventIdToOpen
     }
     inactiveColor = function() {
       if (!isMultiplayerPrivilegeAvailable.get())
@@ -352,9 +353,7 @@ function getGameModesPartitions() {
     
     
     if (diffCode == -1) {
-      partition.gameModes.sort(function (gm1, gm2) {
-        return diffCodeCompare(gm1.diffCode, gm2.diffCode)
-      })
+      partition.gameModes.sortby(@(gm1) gm1.diffCode)
     }
     partitions.append(partition)
   }
@@ -508,8 +507,6 @@ function createEventGameMode(event, isTempGameMode = false) {
     return
 
   let isForClan = isEventForClan(event)
-  if (isForClan && !hasFeature("Clans"))
-    return
 
   let gameMode = {
     id = event.name
@@ -569,6 +566,7 @@ function createCustomGameMode(gm) {
     enableOnDebug = false
     inactiveColor = gm?.inactiveColor ?? @() false
     unitTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER]
+    isDependsOnUnit = gm?.isDependsOnUnit ?? true
     getEventId = @() gm?.getEventId()
     getEvent = @() getEventById(gm?.getEventId())
   }
@@ -623,7 +621,7 @@ function initShowingGameModesSeen() {
   if (seenShowingGameModesInited)
     return true
 
-  if (!isLoggedIn.get())
+  if (!hasFullLoginState.get())
     return false
 
   let blk = loadLocalByAccount(SEEN_MODES_SAVE_PATH, DataBlock())
@@ -800,7 +798,7 @@ addListenersWithoutEnv({
   CrewTakeUnit               = @(_) updateManager()
   SquadStatusChanged         = @(_) updateManager()
   function GameLocalizationChanged(_) {
-    if (!isLoggedIn.get())
+    if (!hasFullLoginState.get())
       return
     updateManager()
   }
@@ -830,7 +828,7 @@ function getCurrentEvent() {
   return gameMode ? getGameModeEvent(gameMode) : null
 }
 
-return {
+return freeze({
   getCurrentGameModeId
   getUserGameModeId
   setUserGameModeId
@@ -859,4 +857,4 @@ return {
   getCurrentGameModeEdiff
   isGameModeWithSpendableWeapons
   getCurrentEvent
-}
+})

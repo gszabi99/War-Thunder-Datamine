@@ -1,12 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, getObjValue
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/safeAreaMenu.nut" import is_low_width_screen
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, getObjValue } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 
 let navigationPanel = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -241,4 +240,4 @@ let navigationPanel = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("navigationPanel", navigationPanel)
 
-return { navigationPanel }
+return freeze({ navigationPanel })

@@ -1,6 +1,7 @@
+import "%sqstd/datablock.nut" as datablockCommon
 from "%sqstd/underscore.nut" import isEqual
 from "types" import Table, Array
-let datablockCommon = require("%sqstd/datablock.nut")
+
 let { fillBlock } = datablockCommon
 
 local blkTypes = [ "string", "bool", "float", "integer", "int64", "instance", "null"]
@@ -72,7 +73,7 @@ function setBlkValueByPath(blk, path, val) {
   return true
 }
 
-return datablockCommon.__merge({
+return freeze(datablockCommon.__merge({
   copyFromDataBlock
   setBlkValueByPath
-})
+}))

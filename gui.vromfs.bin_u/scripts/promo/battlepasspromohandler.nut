@@ -1,16 +1,16 @@
+from "%scripts/battlePass/seasonState.nut" import seasonEndsTime
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut" import stashBhvValueConfig
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/promo/promo.nut" import PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey, getPromoVisibilityById
 from "%appGlobals/timeLoc.nut" import hoursToString
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { seasonEndsTime } = require("%scripts/battlePass/seasonState.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj, seasonEndsTimeWatchObj } = require("%scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 
 let BattlePassPromoHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

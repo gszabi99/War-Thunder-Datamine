@@ -1,9 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/measureType.nut" import getMeasureTypeByName
+from "%scripts/crew/crew.nut" import getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel, getSkillMaxCrewLevel, loadCrewSkillsOnce
 from "blkGetters" import get_skills_blk
 from "%scripts/dagui_library.nut" import *
 
-let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel, getSkillMaxCrewLevel, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 const DEFAULT_MAX_SKILL_LEVEL = 50
 
@@ -171,7 +172,7 @@ function getSkillsNotAffectedByLeadership(crewUnitType) {
 
   return affectedBySkillName
     .reduce(@(acc, isAffected, skillName) isAffected ? acc : acc.append(skillName), [])
-    .sort(@(a, b) a <=> b)
+    .sort()
 }
 
 function getMinSkillsUnitRepairRank(unitRank) {
@@ -188,7 +189,7 @@ function getMinSkillsUnitRepairRank(unitRank) {
   return -1
 }
 
-return {
+return freeze({
   getSkillCategories = getSkillCategories
   getSkillCategoryByName = getSkillCategoryByName
   getMeasureTypeBySkillParameterName = getMeasureTypeBySkillParameterName
@@ -202,4 +203,4 @@ return {
   isAffectedByLeadership = isAffectedByLeadership
   getMinSkillsUnitRepairRank = getMinSkillsUnitRepairRank
   getSkillsNotAffectedByLeadership
-}
+})

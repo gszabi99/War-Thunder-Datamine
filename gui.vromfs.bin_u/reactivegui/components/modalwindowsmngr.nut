@@ -17,6 +17,8 @@ let modalWindows = []
 let modalWindowsGeneration = Watched(0)
 let hasModalWindows = Computed(@() modalWindowsGeneration.get() >= 0 && modalWindows.len() > 0)
 
+modalWindowsGeneration.subscribe(@(_) gui_scene.requestHoverUpdate())
+
 function removeModalWindow(key) {
   let idx = modalWindows.findindex(@(w) w.key == key)
   if (idx == null)
@@ -54,10 +56,10 @@ let modalWindowsComponent = @() {
   children = modalWindows
 }
 
-return {
+return freeze({
   addModalWindow
   removeModalWindow
   hideAllModalWindows
   modalWindowsComponent
   hasModalWindows
-}
+})

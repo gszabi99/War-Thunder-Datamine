@@ -1,11 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%scripts/controls/controlsManager.nut" import commitControls
 from "%scripts/dagui_natives.nut" import get_axis_name
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
 
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 
 
@@ -136,9 +136,9 @@ function joystickSetCurSettings(other) {
       params[name] <- value
 }
 
-return {
+return freeze({
   setShortcutsAndSaveControls
   joystickSetCurSettings
   joystickGetCurSettings
   getShortcuts
-}
+})

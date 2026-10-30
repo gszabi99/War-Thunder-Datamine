@@ -1,17 +1,16 @@
+from "%scripts/weaponry/weaponryDescription.nut" import getBulletsListHeader
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/bulletsInfo.nut" import setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit, setBulletsOptForRandomUnit, calcBulletLimits
+from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, isAmmoFree
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BULLETS0, USEROPT_BULLET_COUNT0
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/options/optionsExt.nut" import get_option
 from "string" import format
 from "guiOptions" import get_unit_option, set_unit_option, clearUnitOption
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 from "types" import String
-
-let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit, setBulletsOptForRandomUnit, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO, getAmmoAmount, isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
-let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
 
 class BulletGroup {
   unit = null
@@ -22,6 +21,7 @@ class BulletGroup {
   maxBulletsCount = -1
   gunInfo = null
   guns = 1
+  cartridgesPerStep = 1
   active = false
   canChangeActivity = false
   isForcedAvailable = false
@@ -38,6 +38,7 @@ class BulletGroup {
     this.groupIndex = v_groupIndex
     this.gunInfo = v_gunInfo
     this.guns = max(this.gunInfo?.guns ?? 1, 1)
+    this.cartridgesPerStep = max(this.gunInfo?.cartridgesPerStep ?? 1, 1)
     this.active = params?.isActive ?? this.active
     this.canChangeActivity = params?.canChangeActivity ?? this.canChangeActivity
     this.isForcedAvailable = params?.isForcedAvailable ?? this.isForcedAvailable
@@ -69,7 +70,7 @@ class BulletGroup {
     if (count instanceof String) 
       clearUnitOption(this.unit.name, bulletOptionId)
     else if (count != null)
-      this.bulletsCount = (count / this.guns).tointeger()
+      this.bulletsCount = (count / this.cartridgesPerStep).tointeger()
     this.updateCounts()
   }
 
@@ -131,7 +132,7 @@ class BulletGroup {
       return
 
     this.bulletsCount = count
-    let countToSet = (count * this.guns).tointeger()
+    let countToSet = (count * this.cartridgesPerStep).tointeger()
     if (this.isBulletForRandomUnit)
       setBulletsOptForRandomUnit("USEROPT_BULLET_COUNT", this.unit.name, this.groupIndex, countToSet)
     else
@@ -145,18 +146,18 @@ class BulletGroup {
 
     local totalBulletsInGun = this.gunInfo.total
     if (this.constrainedTotalCount > 0)
-      totalBulletsInGun = min(totalBulletsInGun, (this.constrainedTotalCount / this.guns).tointeger())
+      totalBulletsInGun = min(totalBulletsInGun, (this.constrainedTotalCount / this.cartridgesPerStep).tointeger())
 
     this.maxBulletsCount = totalBulletsInGun
     if (!isAmmoFree(this.unit, this.selectedName, AMMO.PRIMARY)) {
-      let boughtCount = (getAmmoAmount(this.unit, this.selectedName, AMMO.PRIMARY) / this.guns).tointeger()
+      let boughtCount = (getAmmoAmount(this.unit, this.selectedName, AMMO.PRIMARY) / this.cartridgesPerStep).tointeger()
       this.maxBulletsCount = this.isForcedAvailable ? totalBulletsInGun : min(boughtCount, totalBulletsInGun)
     }
 
     if (this.maxToRespawn > 0)
       this.maxBulletsCount = min(this.maxBulletsCount, this.maxToRespawn)
 
-    if (this.bulletsCount < 0 || this.bulletsCount <= this.maxBulletsCount)
+    if (this.bulletsCount < 0 || this.bulletsCount <= this.maxBulletsCount || this.gunInfo.total == 0)
       return false
 
     this.setBulletsCount(this.maxBulletsCount)

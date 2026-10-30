@@ -1,19 +1,19 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
+from "%scripts/unlocks/unlockMarkers.nut" import getUnitsWithUnlock
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/time.nut" import getTimestampFromStringUtc
+from "%scripts/markers/markerTooltipUtils.nut" import getSortedUnits, prepareForTooltip, createMoreText
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/markers/markerUtils.nut" import buildTimeTextValue
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { getUnitsWithUnlock } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { getSortedUnits, prepareForTooltip, createMoreText } = require("%scripts/markers/markerTooltipUtils.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { buildTimeTextValue } = require("%scripts/markers/markerUtils.nut")
 
 elemModelType.addTypes({
   UNLOCK_MARKER = {

@@ -1,5 +1,17 @@
+import "%scripts/clans/clanMembershipAcceptance.nut" as clanMembershipAcceptance
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES
+  , USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP
+from "%scripts/tasker.nut" import addTask
+from "%scripts/options/optionsExt.nut" import create_options_container, get_option
+from "%scripts/clans/clanRequests.nut" import clan_request_set_membership_requirements
+from "%scripts/clans/clanInfoTable.nut" import get_clan_info_table
+from "%scripts/clans/clanState.nut" import myClanInfo
+from "%scripts/clans/clanTextInfo.nut" import checkUGCAllowed
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "string" import format
@@ -9,18 +21,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP } = require("%scripts/options/optionsExtNames.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { clan_request_set_membership_requirements } = require("%scripts/clans/clanRequests.nut")
-let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
-let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
 let clanChangeMembershipReqWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
@@ -300,4 +301,4 @@ let clanChangeMembershipReqWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("clanChangeMembershipReqWnd", clanChangeMembershipReqWnd)
 
-return { clanChangeMembershipReqWnd }
+return freeze({ clanChangeMembershipReqWnd })

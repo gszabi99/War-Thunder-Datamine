@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 3.0,
-  "traceFreq": 2,
-  "bullets": 30,
-  "dragCx": 0.003,
-  "mass": 295.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,46 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 3.0,
+  "bullets": 30,
+  "dragCx": 0.003,
+  "mass": 295.0,
+  "overheat": {
+    "overheat": [
+      [
+        1.5,
+        0.0
+      ],
+      [
+        17.0,
+        0.5
+      ],
+      [
+        27.5,
+        0.9
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        3.0
+      ],
+      [
+        10.0,
+        9.0
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.405,
@@ -2787,45 +2819,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bk37_gun_outside",
-    "cockpit": "bk37_gun_inside",
-    "ai": "bk37_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        1.5,
-        0.0
-      ],
-      [
-        17.0,
-        0.5
-      ],
-      [
-        27.5,
-        0.9
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        3.0
-      ],
-      [
-        10.0,
-        9.0
-      ]
-    ]
-  },
   "bk37_new_gun": {
     "maxDeltaAngle": 0.13,
     "overheat": {
@@ -2844,5 +2837,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bk37_gun_outside",
+    "cockpit": "bk37_gun_inside",
+    "ai": "bk37_gun_ai"
   }
 }

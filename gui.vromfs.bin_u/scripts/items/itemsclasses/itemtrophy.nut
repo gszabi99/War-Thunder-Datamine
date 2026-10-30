@@ -1,5 +1,18 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/items/trophyGroupShopWnd.nut" import TrophyGroupShopWnd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/items/prizeChance.nut" import getPrizeChanceLegendMarkup, getTrophyChancesData, isTrophyChancesCalculated
+from "%scripts/time.nut" import hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears, TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS
+from "%scripts/langUtils/localization.nut" import getLocIdsArray
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/prizesView.nut" import getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText, getPrizesStacksView
+from "%scripts/user/countryUtils.nut" import getPlayerCountryCode
+from "%scripts/onlineShop/url.nut" import openUrl
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "chard" import get_charserver_time_sec
 from "%sqstd/math.nut" import roundToDigits
@@ -7,20 +20,8 @@ from "%scripts/dagui_natives.nut" import char_send_blk, get_trophy_info, wp_get_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
 
-let { isHandlerInScene, handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { TrophyGroupShopWnd } = require("%scripts/items/trophyGroupShopWnd.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getPrizeChanceLegendMarkup, getTrophyChancesData, isTrophyChancesCalculated } = require("%scripts/items/prizeChance.nut")
-let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears, TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
-let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText, getPrizesStacksView } = require("%scripts/items/prizesView.nut")
-let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
 
 function fillContentRaw(contentRaw, blk) {
   let blksArray = [blk]
@@ -62,13 +63,27 @@ let Trophy = class (BaseItem) {
   static isPreferMarkupDescInTooltip = true
   static userlogOpenLoc = "open_trophy"
   static hasTopRewardAsFirstItem = true
+  static rareFieldDefaults = freeze({
+    ...BaseItem.rareFieldDefaults
+    showRangePrize = false
+    showCountryFlag = ""
+    subtrophyShowAsPack = null
+    openingCaptionLocId = null
+    instantOpening = false
+    isGroupTrophy = false
+    numTotal = 0
+    showDropChance = false
+    showChances = false
+    showTillValue = false
+    showNameAsSingleAward = false
+    isCrossPromo = null
+    hasBtnLinkToChances = false
+    endDate = null
+  })
 
   canBuy = true
 
   showTypeInName = null 
-  showRangePrize = false
-  showCountryFlag = ""
-  subtrophyShowAsPack = false
 
   allowBigPicture = false
 
@@ -76,20 +91,9 @@ let Trophy = class (BaseItem) {
   contentUnpacked = []
   topPrize = null
 
-  openingCaptionLocId = null
-  instantOpening = false
-  isGroupTrophy = false
   groupTrophyStyle = ""
-  numTotal = -1
-  showDropChance = false
-  showChances = false
-  showTillValue = false
-  showNameAsSingleAward = false
-  isCrossPromo = false
-  hasBtnLinkToChances = false
 
   beginDate = null
-  endDate = null
   blk = null
 
   constructor(blk, invBlk = null, slotData = null) {

@@ -1,19 +1,19 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/matching/matchingGameModes.nut" import getAllCountriesSets
+from "%scripts/events/eventTeamsInfo.nut" import isCountryAvailable
+from "%scripts/events/eventsState.nut" import needRankInfoInQueue
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/optionsExtNames.nut" import USEROPT_COUNTRY
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/queue/queueState.nut" import findQueue
+from "%scripts/queue/queueInfo.nut" import getQueueEvent, getQueueCountry, getMyRankInQueue
 from "%scripts/dagui_library.nut" import *
 
-let { getAllCountriesSets } = require("%scripts/matching/matchingGameModes.nut")
-let { isCountryAvailable } = require("%scripts/events/eventTeamsInfo.nut")
-let { needRankInfoInQueue } = require("%scripts/events/eventsState.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { findQueue } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, getQueueCountry, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 function getQueueInfo(queue, txt = null) {
   if (!queue)
@@ -135,8 +135,8 @@ function updateShortQueueInfo(timerObj, textObj, iconObj, txt = null) {
   })
 }
 
-return {
+return freeze({
   createQueueViewByCountries
   updateQueueViewByCountries
   updateShortQueueInfo
-}
+})

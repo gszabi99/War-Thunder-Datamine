@@ -1,3 +1,42 @@
+import "%scripts/openCrossPromoWnd.nut" as openCrossPromoWnd
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/sqDagui/daguiUtil.nut" import getObjValidIndex
+from "%scripts/wishlist/wishlistManager.nut" import requestRemoveFromWishlist
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagForUnitTooltip
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry, getUnitCost
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor
+from "%scripts/time.nut" import buildDateTimeStr
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
+from "%scripts/shop/shopSearchCore.nut" import isUnitLocNameMatchSearchStr
+from "%scripts/wishlist/wishlistFilter.nut" import getFiltersView, applyFilterChange, getSelectedFilters
+from "%scripts/airInfo.nut" import fillAirInfo
+from "%scripts/unit/unitStatus.nut" import isUnitResearched, canBuyNotResearched
+from "%scripts/unit/unitEvents.nut" import isUnitOnlyFromEvent
+from "%scripts/wishlist/filterUtils.nut" import getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getInventoryListByShopMask
+from "%scripts/onlineShop/onlineShopModel.nut" import showUnitGoods
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/onlineShop/onlineShopState.nut" import searchEntitlementsByUnit
+from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%sqstd/platform.nut" import is_console
+from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName, isPS4PlayerName
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/user/suggestionEmailRegistration.nut" import canEmailRegistration
+from "%scripts/discounts/discountUtils.nut" import showUnitDiscount
+from "%scripts/unit/unitActions.nut" import buyUnit
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/u.nut" import isEqual
 from "string" import format
 from "chard" import getWishList, getMaxWishListSize
@@ -7,45 +46,7 @@ from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let { requestRemoveFromWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { buildDateTimeStr } = require("%scripts/time.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
-let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
-let { fillAirInfo } = require("%scripts/airInfo.nut")
-let { isUnitResearched, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { isUnitOnlyFromEvent } = require("%scripts/unit/unitEvents.nut")
-let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/wishlist/filterUtils.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { findItemById, getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
-let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { is_console, isXBoxPlayerName, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
-let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { buyUnit } = require("%scripts/unit/unitActions.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let unitButtonDiscount = ["btn_buy_discount_", "btn_shop_discount_"]
 
@@ -627,6 +628,6 @@ class WishListWnd (BaseGuiHandlerWT) {
 
 register_gui_handler("WishListWnd", WishListWnd)
 
-return {
+return freeze({
   openWishlist = @(params = {}) handlersManager.loadHandler(WishListWnd, params)
-}
+})

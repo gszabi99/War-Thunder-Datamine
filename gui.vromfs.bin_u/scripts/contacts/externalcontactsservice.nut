@@ -1,11 +1,11 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
 from "%sqstd/datablock.nut" import convertBlk
 from "steam_wt" import steam_find_friends, steam_find_friends_result
 from "%scripts/dagui_natives.nut" import xbox_find_friends_result, ps4_find_friends_result, xbox_find_friends, ps4_find_friends
 from "%scripts/dagui_library.nut" import *
 
 const MAX_UNKNOWN_IDS_PEER_REQUEST = 100
-let { addTask } = require("%scripts/tasker.nut")
 
 local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} 
 requestUnknownXboxIds = function(playersList, knownUsers, cb) {
@@ -84,8 +84,8 @@ function requestUnknownSteamIds(playersList, knownUsers, cb) {
   addTask(taskId, null, taskCb, taskCb)
 }
 
-return {
+return freeze({
   requestUnknownXboxIds = requestUnknownXboxIds
   requestUnknownPSNIds = requestUnknownPSNIds
   requestUnknownSteamIds
-}
+})

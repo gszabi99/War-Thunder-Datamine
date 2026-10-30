@@ -1,8 +1,7 @@
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/contacts/contacts.nut" import getContact
 from "%sqStdLibs/helpers/u.nut" import isEqual, isArray, isEmpty
 from "%scripts/dagui_library.nut" import *
-
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getContact } = require("%scripts/contacts/contacts.nut")
 
 class SquadMember {
   uid = ""
@@ -16,6 +15,7 @@ class SquadMember {
   selAirs = null
   selSlots = null
   crewAirs = null
+  mrankDeltaByUnit = null
   brokenAirs = null
   missedPkg = null
   wwOperations = null
@@ -47,7 +47,7 @@ class SquadMember {
   isFullDataReceived = false
 
   updatedProperties = ["name", "rank", "country", "clanTag", "pilotIcon", "platform", "selAirs",
-                       "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
+                       "selSlots", "crewAirs", "mrankDeltaByUnit", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
                        "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "hideClan", "queueProfileJwt",
@@ -70,6 +70,7 @@ class SquadMember {
     this.selAirs = {}
     this.selSlots = {}
     this.crewAirs = {}
+    this.mrankDeltaByUnit = {}
     this.brokenAirs = []
     this.missedPkg = []
     this.wwOperations = {}

@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/queue/curEsUnitTypesMask.nut" import getCurEsUnitTypesList
 from "dagor.random" import rnd
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCurEsUnitTypesList } = require("%scripts/queue/curEsUnitTypesMask.nut")
 const FULL_CIRCLE_GRAD = 360
 
 function getQueueWaitIconImageMarkup() {
@@ -33,6 +32,6 @@ function getQueueWaitIconImageMarkup() {
   return handyman.renderCached("%gui/queue/queueWaitingIcon.tpl", view)
 }
 
-return {
+return freeze({
   getQueueWaitIconImageMarkup
-}
+})

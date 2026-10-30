@@ -1,4 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/shop/shopDifficulty.nut" import getShopDiffCode
+from "%scripts/unit/unitStatus.nut" import isUnitGroup
+from "%scripts/slotbar/slotbarView.nut" import getUnitSlotRankText
+from "%scripts/money.nut" import Cost
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "string" import format
@@ -7,26 +11,22 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES, BATTLE_TYPES_O
 from "%scripts/unit/unitInfoTexts.nut" import getFontIconByBattleType
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
-let { getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { Cost } = require("%scripts/money.nut")
 
 enum ShopDevModeOption {
   SHOW_ALL_BATTLE_RATINGS = 1
   SHOW_ECONOMIC_RANKS = 2
 }
 
-let devMode = persist("shopDevMode", @() {mode = null})
+local devMode = null
 
 function setShopDevMode(val) {
-  if (val == devMode.mode)
+  if (val == devMode)
     return
-  devMode.mode = val
+  devMode = val
   broadcastEvent("ShopDevModeChange", { moode = val })
 }
 
-let getShopDevMode = @() devMode.mode
+let getShopDevMode = @() devMode
 
 let getShopDevModeOptions = @() [
   {
@@ -108,7 +108,7 @@ function getUnitDebugRankText(unit) {
   return ""
 }
 
-return {
+return freeze({
   setShopDevMode
   getShopDevMode
   getUnitDebugRankText
@@ -116,4 +116,4 @@ return {
   getUnitDebugBattleRatingsText
   getShopDevModeOptions
   ShopDevModeOption
-}
+})

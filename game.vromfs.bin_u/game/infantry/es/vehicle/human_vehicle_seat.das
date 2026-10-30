@@ -149,6 +149,16 @@ def human_phys_track_vehicle_seats_es(event : Event;
   human_phys_state_set_disableCollision(human_net_phys.phys.currentState, isInVehicle)
   disable_collision = isInVehicle
 
+[es(tag=gameClient, track=isInVehicle, on_appear)]
+def human_seated_tag_es(evt : Event;
+                        eid : EntityId;
+                        isInVehicle : bool;
+                        seatedHuman : Tag const? = null)
+  if isInVehicle && seatedHuman == null
+    addSubTemplate(eid, "human_seated")
+  elif !isInVehicle && seatedHuman != null
+    removeSubTemplate(eid, "human_seated")
+
 
 def update_transform_from_local_seat_tm(is_shooter : bool;
                                         human_anim__vehicleSelected : EntityId;
@@ -268,7 +278,7 @@ def hero_seated_human_bake_pre_camera_es(act : UpdateStageInfoAct;
 
 
 
-[es(tag=gameClient, REQUIRE_NOT=watchedByPlr, after=vehicle_seats_post_pausable_es)]
+[es(tag=gameClient, REQUIRE=seatedHuman, REQUIRE_NOT=watchedByPlr, after=vehicle_seats_post_pausable_es)]
 def seated_human_bake_post_pausable_effectors_es(act : UpdateStageInfoAct;
                                                  eid : EntityId;
                                                  isInVehicle : bool;
@@ -279,7 +289,7 @@ def seated_human_bake_post_pausable_effectors_es(act : UpdateStageInfoAct;
     return
   sendEventImmediate(eid, CmdApplyAnimcharEffectorsImmediate())
 
-[es(tag=gameClient, REQUIRE_NOT=watchedByPlr, parallel_for=4, after=seated_human_bake_post_pausable_effectors_es)]
+[es(tag=gameClient, REQUIRE=seatedHuman, REQUIRE_NOT=watchedByPlr, parallel_for=4, after=seated_human_bake_post_pausable_effectors_es)]
 def seated_human_bake_post_pausable_animchar_es(act : UpdateStageInfoAct;
                                                 eid : EntityId;
                                                 isInVehicle : bool;

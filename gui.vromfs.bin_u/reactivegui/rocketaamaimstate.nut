@@ -17,6 +17,11 @@ let aamAimState = {
   IlsTrackerX = Watched(0.0)
   IlsTrackerY = Watched(0.0)
   IlsTrackerVisible = Watched(false)
+
+  HmdTrackerX = Watched(0.0)
+  HmdTrackerY = Watched(0.0)
+  HmdTrackerVisible = Watched(false)
+
   CurRocketRelPosZ = Watched(0.0)
   LastShotTime = Watched(0.0)
 
@@ -41,4 +46,4 @@ interopGen({
   postfix = "Update"
 })
 
-return aamAimState
+return freeze(aamAimState)

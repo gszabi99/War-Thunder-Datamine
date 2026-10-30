@@ -1,5 +1,9 @@
 import "regexp2" as regexp2
 import "DataBlock" as DataBlock
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/string.nut" import utf8Capitalize, utf8ToLower, toIntegerSafe
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%sqstd/path.nut" import fileName
 from "math" import min, max, abs, round, sin, PI
 from "string" import format
 from "blkGetters" import get_unittags_blk, get_game_params_blk
@@ -8,11 +12,6 @@ from "%globalScripts/logs.nut" import *
 from "dagor.math" import Point2, IPoint2
 from "%sqstd/underscore.nut" import isEqual, tablesCombine, unique
 from "types" import Float
-
-let { round_by_value } = require("%sqstd/math.nut")
-let { utf8Capitalize, utf8ToLower, toIntegerSafe } = require("%sqstd/string.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { fileName } = require("%sqstd/path.nut")
 
 
 
@@ -541,7 +540,7 @@ function mkTransmissionDesc(_partType, _params, commonData) {
     if (maxSpeed != 0 && info?.gearRatios) {
       let devMode = !!getXrayDevMode()
       let gearRatios = info.gearRatios % "ratio"
-      gearRatios.sort(@(a, b) abs(b) <=> abs(a))
+      gearRatios.sortby(@(a) -abs(a))
 
       local gearsF = 0
       local gearsB = 0
@@ -988,11 +987,54 @@ let getAmmoStowageReloadTimeMult = @(unitBlk, trigger)
 let haveFirstStageShells = @(unitBlk, trigger)
   getAmmoStowageBlockByParam(unitBlk, trigger, "firstStage") ?? false
 
+let hasAutoLoad = @(unitBlk, trigger)
+  getAmmoStowageBlockByParam(unitBlk, trigger, "autoLoad") ?? false
+
+function getTankWeaponReloadTime(weaponInfoBlk, status, commonData) {
+  let { getUnitWeaponsList, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode } = commonData
+
+  local reloadTimeS = 0
+  local topValue = 0.0
+
+  if (status.isPrimary) {
+    let mainWeaponInfoBlk = getUnitWeaponsList(commonData)?[0]
+    if (mainWeaponInfoBlk != null) {
+      let mainGunReloadTime = getProp_tankReloadTime(commonData)
+
+      if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk) {
+        reloadTimeS = mainGunReloadTime
+      }
+      else {
+        let thisGunReloadTimeMax = getGunReloadTimeMax(weaponInfoBlk)
+        if (thisGunReloadTimeMax) {
+          if (weaponInfoBlk?.autoLoader) {
+            reloadTimeS = thisGunReloadTimeMax
+          }
+          else {
+            let mainGunReloadTimeMax = getGunReloadTimeMax(mainWeaponInfoBlk)
+            if (mainGunReloadTimeMax)
+              reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
+          }
+          topValue = round_by_value(thisGunReloadTimeMax, 0.1)
+        }
+      }
+      if(topValue == 0)
+        topValue = getProp_tankReloadTimeTop(commonData)
+    }
+  }
+  else if (status.isMachinegun && !!getXrayDevMode())
+    reloadTimeS = getGunReloadTimeMax(weaponInfoBlk) ?? 0
+
+
+  return {
+    reloadTimeS
+    topValue
+  }
+}
+
 function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData) {
-  let { unitBlk, crewId, simUnitType, getUnitWeaponsList, getProp_tankReloadTime,
-    getProp_tankReloadTimeTop, getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef,
-    getProp_shipReloadTimeAaDef, getXrayDevMode
-  } = commonData
+  let { unitBlk, crewId, simUnitType, getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef,
+    getProp_shipReloadTimeAaDef } = commonData
 
   local shotFreqRPM = 0.0 
   local reloadTimeS = 0 
@@ -1009,34 +1051,9 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
     shotFreqRPM = cyclicShotFreqS * 60
   }
   else if (simUnitType == S_TANK) {
-    if (status.isPrimary) {
-      let mainWeaponInfoBlk = getUnitWeaponsList(commonData)?[0]
-      if (mainWeaponInfoBlk != null) {
-        let mainGunReloadTime = getProp_tankReloadTime(commonData)
-
-        if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk) {
-          reloadTimeS = mainGunReloadTime
-        }
-        else {
-          let thisGunReloadTimeMax = getGunReloadTimeMax(weaponInfoBlk)
-          if (thisGunReloadTimeMax) {
-            if (weaponInfoBlk?.autoLoader) {
-              reloadTimeS = thisGunReloadTimeMax
-            }
-            else {
-              let mainGunReloadTimeMax = getGunReloadTimeMax(mainWeaponInfoBlk)
-              if (mainGunReloadTimeMax)
-                reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
-            }
-            topValue = round_by_value(thisGunReloadTimeMax, 0.1)
-          }
-        }
-        if(topValue == 0)
-          topValue = getProp_tankReloadTimeTop(commonData)
-      }
-    }
-    else if (status.isMachinegun && !!getXrayDevMode())
-      reloadTimeS = getGunReloadTimeMax(weaponInfoBlk) ?? 0
+    let reloadTimeData = getTankWeaponReloadTime(weaponInfoBlk, status, commonData)
+    reloadTimeS = reloadTimeData.reloadTimeS
+    topValue = reloadTimeData.topValue
   }
   else if (simUnitType == S_BOAT || simUnitType == S_SHIP) {
     if (isCartridge) {
@@ -1142,49 +1159,87 @@ function getAmmoStowageBlockByTrigger(unitBlk, trigger) {
   return null
 }
 
+enum AMMO_CLUSTER_STAGE {
+  LOADED_IN_GUN
+  FIRST_STAGE
+  SECOND_STAGE
+  NO_RELOAD
+}
+
+function getAmmoClusterStageOrder(clusterBlk) {
+  if (clusterBlk?.ammoLoadedInGun)
+    return AMMO_CLUSTER_STAGE.LOADED_IN_GUN
+  if ((clusterBlk?.firstStage ?? false) || (clusterBlk?.autoLoad ?? false))
+    return AMMO_CLUSTER_STAGE.FIRST_STAGE
+  if (clusterBlk?.noReload)
+    return AMMO_CLUSTER_STAGE.NO_RELOAD
+  return AMMO_CLUSTER_STAGE.SECOND_STAGE
+}
+
+function hasAmmoStowageReserveBlocks(ammoStowage) {
+  foreach (blockName in [ "shells", "charges" ])
+    foreach (block in (ammoStowage % blockName))
+      if (getAmmoClusterStageOrder(block) == AMMO_CLUSTER_STAGE.SECOND_STAGE)
+        return true
+  return false
+}
+
+let hasBackupManualLoading = @(ammoStowage) ammoStowage?.backupManualLoading ?? false
+
 let toStr_secTrimmed = @(v) (v % 1) ? format("%.1f", v) : format("%d", v)
 
 
 
 
 
-function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
-  let { unitBlk, simUnitType, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode }
-    = commonData
+function getWeaponAmmoReserveReplenishDesc(trigger, commonData, stowageInfo) {
+  let { unitBlk, simUnitType, getUnitWeaponsList } = commonData
   let desc = []
-  if (!getXrayDevMode())
-    return desc
 
   if (simUnitType == S_TANK) {
-    let trigger = weaponInfoBlk?.trigger
-    if (!haveFirstStageShells(unitBlk, trigger))
+    if (!haveFirstStageShells(unitBlk, trigger) && !hasAutoLoad(unitBlk, trigger))
       return desc
 
     let ammoStowage = getAmmoStowageBlockByTrigger(unitBlk, trigger)
+    if (ammoStowage == null || !hasAmmoStowageReserveBlocks(ammoStowage))
+      return desc
+
     let replenishmentDelay = ammoStowage?.replenishmentDelay ?? 0
     let replenishmentTime = ammoStowage?.replenishmentTime ?? 0
+
     if (replenishmentDelay)
       desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_delay", ""), colon,
-        toStr_secTrimmed(replenishmentDelay), getUnitsSec())
-        isDevParam = true })
+        toStr_secTrimmed(replenishmentDelay), getUnitsSec()) })
     if (replenishmentTime)
       desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_time", ""), colon,
-        toStr_secTrimmed(replenishmentTime), getUnitsSec())
-        isDevParam = true })
+        toStr_secTrimmed(replenishmentTime), getUnitsSec()) })
 
-    let reloadTime = getProp_tankReloadTime(commonData)
-    if (reloadTime) {
-      let reloadTimeMult = getAmmoStowageReloadTimeMult(unitBlk, trigger)
-      let reserveReloadTime = round_by_value(reloadTime * reloadTimeMult, 0.1)
-      let reserveTopValue = round_by_value(getProp_tankReloadTimeTop(commonData) * reloadTimeMult, 0.1)
-      let res = {
-        value = "".concat(loc("xray/ammo/first_stage/reload_time_when_empty", ""), colon,
-          toStr_secTrimmed(reserveReloadTime), getUnitsSec())
-        isDevParam = true
+    if (stowageInfo.stowageOrder != 1) {
+      let unitWeaponsList = getUnitWeaponsList(commonData)
+      let weaponInfoBlk = unitWeaponsList.findvalue(@(v) v?.trigger == trigger)
+      if (weaponInfoBlk != null) {
+        local { reloadTimeMult, stowageOrder } = stowageInfo
+
+        if (stowageOrder == -1)
+          reloadTimeMult = getAmmoStowageReloadTimeMult(unitBlk, trigger)
+
+        let status = getWeaponStatus(weaponInfoBlk?.barrelDP, weaponInfoBlk, commonData)
+        local { reloadTimeS, topValue } = getTankWeaponReloadTime(weaponInfoBlk, status, commonData)
+        reloadTimeS = round_by_value(reloadTimeS * reloadTimeMult, 0.1)
+        let isReloadWhenEmptyUnavailable = stowageOrder <= 0 && hasAutoLoad(unitBlk, trigger)
+          && !hasBackupManualLoading(ammoStowage)
+        if (reloadTimeS > 0 && !isReloadWhenEmptyUnavailable) {
+          topValue = round_by_value(topValue * reloadTimeMult, 0.1)
+          let stageNumberText = stowageOrder > 0 ? loc($"xray/ammo/reload_time_stowage_{stowageOrder}", $"{stowageOrder}")
+            : loc($"xray/ammo/first_stage/reload_time_when_empty", "")
+          let res = {
+            value = "".concat(stageNumberText, colon, toStr_secTrimmed(reloadTimeS), getUnitsSec())
+          }
+          if (topValue != 0 && topValue < reloadTimeS)
+            res.topValue <- " ".concat(toStr_secTrimmed(topValue), getUnitsSec())
+          desc.append(res)
+        }
       }
-      if (reserveTopValue != 0 && reserveTopValue < reserveReloadTime)
-        res.topValue <- " ".concat(toStr_secTrimmed(reserveTopValue), getUnitsSec())
-      desc.append(res)
     }
   }
 
@@ -1230,10 +1285,10 @@ function getPartPressureCompartmentDesc(partName, commonData) {
   return desc
 }
 
-
-
 function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collectOnlyThisStowage = false) {
-  let res = { firstStageCount = 0, isAutoLoad = false, isCharges = false }
+  let res = { isFirstStage = false, isAutoLoad = false, isCharges = false, reloadTimeMult = 1
+    stowageOrder = -1, stageCount = 0 }
+
   for (local ammoNum = 1; ammoNum <= 20; ammoNum++) { 
     let ammoId = $"ammo{ammoNum}"
     let stowage = unitBlk?.ammoStowages[ammoId]
@@ -1248,15 +1303,23 @@ function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collec
         if (ammoStowageId && !block?[ammoStowageId])
           continue
         res.isCharges = blockName == "charges"
+
+        if (block?.index != null)
+          res.stowageOrder = block.index + 1
+
         if (block?.autoLoad)
           res.isAutoLoad = true
-        if (block?.firstStage || block?.autoLoad) {
-          if (ammoStowageId && collectOnlyThisStowage)
-            res.firstStageCount += block?[ammoStowageId].count ?? 0
-          else
-            for (local i = 0; i < block.blockCount(); i++)
-              res.firstStageCount += block.getBlock(i)?.count ?? 0
-        }
+        if (block?.firstStage || block?.autoLoad)
+          res.isFirstStage = true
+
+        res.reloadTimeMult = block?.reloadTimeMult ?? 1
+
+        if (ammoStowageId && collectOnlyThisStowage)
+          res.stageCount += block?[ammoStowageId].count ?? 0
+        else
+          for (local i = 0; i < block.blockCount(); i++)
+            res.stageCount += block.getBlock(i)?.count ?? 0
+
         return res
       }
     }
@@ -1336,16 +1399,15 @@ function mkWeaponDesc(partType, params, commonData) {
         if (ammo > 1)
           desc.append("".concat(loc("shop/ammo"), colon, ammo))
         desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData))
-        desc.extend(getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData))
       }
       desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
       if (status?.isPrimary || status?.isSecondary) {
         if (weaponInfoBlk?.autoLoader)
           desc.append(loc("xray/ammo/auto_load"))
-        let firstStageCount = getAmmoStowageInfo(unitBlk, weaponInfoBlk?.trigger).firstStageCount
-        if (firstStageCount)
+        let { isFirstStage, stageCount } = getAmmoStowageInfo(unitBlk, weaponInfoBlk?.trigger)
+        if (isFirstStage && stageCount > 0)
           desc.append("".concat(loc([S_SHIP, S_BOAT].contains(simUnitType) ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage"),
-            colon, firstStageCount))
+            colon, stageCount))
       }
       desc.extend(getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, true, true))
     }
@@ -1368,23 +1430,6 @@ function getAmmoStowageCountByWeapons(commonData, ammoStowageBlk) {
     if (weaponTriggers.contains(weapon?.trigger ?? ""))
       res += weapon?.bullets ?? 0
   return res
-}
-
-enum AMMO_CLUSTER_STAGE {
-  LOADED_IN_GUN
-  FIRST_STAGE
-  SECOND_STAGE
-  NO_RELOAD
-}
-
-function getAmmoClusterStageOrder(clusterBlk) {
-  if (clusterBlk?.ammoLoadedInGun)
-    return AMMO_CLUSTER_STAGE.LOADED_IN_GUN
-  if ((clusterBlk?.firstStage ?? false) || (clusterBlk?.autoLoad ?? false))
-    return AMMO_CLUSTER_STAGE.FIRST_STAGE
-  if (clusterBlk?.noReload)
-    return AMMO_CLUSTER_STAGE.NO_RELOAD
-  return AMMO_CLUSTER_STAGE.SECOND_STAGE
 }
 
 
@@ -1541,6 +1586,7 @@ function getAmmoStowageDesc(unitBlk, partName, commonData, isShipOrBoat) {
 function mkAmmoDesc(partType, params, commonData) {
   let { unitBlk, simUnitType } = commonData
   let partName = params.name
+  let weaponTrigger = params?.weapon_trigger
   let desc = []
   local partLocId = partType
   let isShipOrBoat = [S_SHIP, S_BOAT].contains(simUnitType)
@@ -1556,17 +1602,29 @@ function mkAmmoDesc(partType, params, commonData) {
     if (!shown && ammo.slotCount > 1)
       desc.append("".concat(loc("shop/ammo"), colon, ammo.slotCount))
   }
-  let stowageInfo = getAmmoStowageInfo(unitBlk, null, partName, isShipOrBoat)
+
+  let stowageInfo = getAmmoStowageInfo(unitBlk, weaponTrigger, partName, isShipOrBoat)
   if (stowageInfo.isCharges)
     partLocId = isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
-  if (stowageInfo.firstStageCount) {
-    local txt = loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
-    if (simUnitType == S_TANK)
-      txt = "".concat(txt, comma, stowageInfo.firstStageCount, " ", getUnitsPcs())
-    desc.append(txt)
+
+  if (simUnitType == S_TANK) {
+    if (stowageInfo.stowageOrder > 1) {
+      let stageNumberText = loc($"xray/ammo/stowage_order_{stowageInfo.stowageOrder}", "${stowageInfo.stowageOrder}")
+      let txt = "".concat(stageNumberText, comma, stowageInfo.stageCount, " ", getUnitsPcs())
+      desc.append(txt)
+    }
+    else if (stowageInfo.isFirstStage && stowageInfo.stageCount > 0)
+      desc.append("".concat(loc("xray/ammo/first_stage"), comma, stowageInfo.stageCount, " ", getUnitsPcs()))
   }
+
+  if (stowageInfo.isFirstStage && isShipOrBoat)
+    desc.append(loc("xray/ammo/first_stage_ship"))
+
   if (stowageInfo.isAutoLoad)
     desc.append(loc("xray/ammo/mechanized_ammo_rack"))
+
+  desc.extend(getWeaponAmmoReserveReplenishDesc(weaponTrigger, commonData, stowageInfo))
+
   if (ammo.isConstrainedInert)
     desc.append(loc("xray/ammo/constrained_inert"))
   return { desc, partLocId }
@@ -2287,10 +2345,86 @@ function mkOpticBodyDesc(_partType, params, commonData) {
   return { desc }
 }
 
+function calcUnitAutoCMData(unitBlk) {
+  local autoCmFusedSensors = false
+  local autoCmMultiProgram = 0
+  let threatFlagNames = {}
+
+  let autoCmBlk = unitBlk.getBlockByName("countermeasure")
+  if (autoCmBlk != null) {
+    for (local b = 0; b < autoCmBlk.blockCount(); b++) {
+      let block = autoCmBlk.getBlock(b)
+      if (block.getBlockName() == "threatId") {
+        for (local p = 0; p < block.paramCount(); ++p)
+          if (block.getParamName(p) == "threatFlag") {
+            let threatFlagName = block.getParamValue(p)
+            if (!threatFlagNames?[threatFlagName])
+              threatFlagNames[threatFlagName] <- true
+          }
+      }
+    }
+    autoCmFusedSensors = autoCmBlk.getBool("sensorsFusion", false)
+    autoCmMultiProgram = countBlocksByName(autoCmBlk, "program")
+  }
+
+  return {
+    autoCmFusedSensors
+    autoCmMultiProgram
+    threatFlagNames
+  }
+}
+
+function getUnitAutoCMData(commonData) {
+  let { unitDataCache, unitBlk } = commonData
+  if ("autoCMData" not in unitDataCache)
+    unitDataCache.autoCMData <- calcUnitAutoCMData(unitBlk)
+  return unitDataCache.autoCMData
+}
+
+function isAutoCM(sensorType, sensorPropsBlk, threatFlagNames) {
+  if (sensorType != "rwr" && sensorType != "mlws")
+    return false
+  if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
+    return true
+  foreach (threatFlagName, _flag in threatFlagNames) {
+    let found = sensorType == "rwr"
+      ? findBlockByNameWithParamValue(sensorPropsBlk, "group", "threatFlag", threatFlagName)
+      : findParamValue(sensorPropsBlk, "threatFlag", threatFlagName)
+    if (found)
+      return true
+  }
+  return false
+}
+
+function mkAutoCMTexts(autoCMData, autoCmByRwr, autoCmByMlws) {
+  let { autoCmFusedSensors, autoCmMultiProgram } = autoCMData
+  let desc = []
+  if (autoCmByRwr || autoCmByMlws) {
+    desc.append(loc("avionics_auto_cm"))
+    local autoCmSensorsText = "".concat(loc("avionics_auto_cm_sensors"), colon)
+    if (autoCmByRwr && autoCmByMlws)
+      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_rwr"), autoCmFusedSensors ? "+" : ", ", loc("avionics_auto_cm_by_mlws"))
+    else if (autoCmByRwr)
+      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_rwr"))
+    else if (autoCmByMlws)
+      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_mlws"))
+    desc.append("".concat("  ", autoCmSensorsText))
+    if (autoCmMultiProgram > 0)
+      desc.append("".concat("  ", loc("avionics_auto_cm_programs"), colon, autoCmMultiProgram))
+  }
+  return desc
+}
+
+let sensorTypesWithDmPartDesc = ["radar", "rwr", "mlws"]
+
 function mkSensorDesc(partType, params, commonData) {
   let { unitBlk, simUnitType, findAnyModEffectValueBlk } = commonData
   let partName = params.name
+  let autoCMData = getUnitAutoCMData(commonData)
+  local isAutoCmByRwr = false
+  local isAutoCmByMlws = false
   let desc = []
+
   foreach (sensorBlk in getUnitSensorsList(commonData)) {
     if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
       continue
@@ -2308,6 +2442,18 @@ function mkSensorDesc(partType, params, commonData) {
         continue
       desc.extend(mkRadarTexts(commonData, sensorPropsBlk, ""))
     }
+    else if (sensorType == "rwr") {
+      desc.append("".concat(loc($"avionics_sensor_{sensorType}"), colon,
+        getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+      desc.extend(mkRwrTexts(commonData, sensorPropsBlk, "  "))
+      isAutoCmByRwr = isAutoCmByRwr || isAutoCM(sensorType, sensorPropsBlk, autoCMData.threatFlagNames)
+    }
+    else if (sensorType == "mlws") {
+      desc.append("".concat(loc($"avionics_sensor_{sensorType}"), colon,
+        getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+      desc.extend(mkMlwsTexts(commonData, sensorPropsBlk, "  "))
+      isAutoCmByMlws = isAutoCmByMlws || isAutoCM(sensorType, sensorPropsBlk, autoCMData.threatFlagNames)
+    }
   }
   if (partType == "optic_gun" && ![S_SHIP, S_BOAT].contains(simUnitType)) {
     let info = unitBlk?.cockpit
@@ -2317,6 +2463,9 @@ function mkSensorDesc(partType, params, commonData) {
       desc.extend(mkNVDGenerationText("gunner", commonData))
     }
   }
+
+  desc.extend(mkAutoCMTexts(autoCMData, isAutoCmByRwr, isAutoCmByMlws))
+
   return { desc }
 }
 
@@ -2345,7 +2494,6 @@ function mkApsLauncherDesc(_partType, params, commonData) {
   }
   return { desc }
 }
-
 
 function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
   let { unitBlk, simUnitType, findAnyModEffectValueBlk } = commonData
@@ -2384,61 +2532,34 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
       }
     }
 
-  local autoCmByRwr = false
-  local autoCmByMlws = false
-  local autoCmFusedSensors = false
-  local autoCmMultiProgram = 0
-
-  local threatFlagNames = {}
-  let autoCmBlk = unitBlk.getBlockByName("countermeasure")
-  if (autoCmBlk != null) {
-    for (local b = 0; b < autoCmBlk.blockCount(); b++) {
-      let block = autoCmBlk.getBlock(b)
-      if (block.getBlockName() == "threatId") {
-        for (local p = 0; p < block.paramCount(); ++p)
-          if (block.getParamName(p) == "threatFlag") {
-            let threatFlagName = block.getParamValue(p)
-            if (!threatFlagNames?[threatFlagName])
-              threatFlagNames[threatFlagName] <- true
-          }
-      }
-    }
-    autoCmFusedSensors = autoCmBlk.getBool("sensorsFusion", false)
-    autoCmMultiProgram = countBlocksByName(autoCmBlk, "program")
-  }
-
+  let autoCMData = getUnitAutoCMData(commonData)
+  local isAutoCmByRwr = false
+  local isAutoCmByMlws = false
   foreach (sensorBlk in getUnitSensorsList(commonData)) {
     let sensorFilePath = sensorBlk.getStr("blk", "")
+
     if (sensorFilePath == "")
       continue
+
     let sensorPropsBlk = DataBlock()
     sensorPropsBlk.load(sensorFilePath)
     local sensorType = sensorPropsBlk.getStr("type", "")
+    if (sensorTypesWithDmPartDesc.contains(sensorType) && sensorBlk.getStr("dmPart", "") != "")
+      continue
     if (sensorType == "radar")
       sensorType = getRadarSensorType(sensorPropsBlk)
     else if (sensorType == "lds")
       continue
     desc.append("".concat(loc($"avionics_sensor_{sensorType}"), colon,
       getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+
     if (sensorType == "rwr") {
       desc.extend(mkRwrTexts(commonData, sensorPropsBlk, "  "))
-      if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
-        autoCmByRwr = true
-      foreach (threatFlagName, _flag in threatFlagNames)
-        if (findBlockByNameWithParamValue(sensorPropsBlk, "group", "threatFlag", threatFlagName)) {
-          autoCmByRwr = true
-          break
-        }
+      isAutoCmByRwr = isAutoCmByRwr || isAutoCM(sensorType, sensorPropsBlk, autoCMData.threatFlagNames)
     }
     else if (sensorType == "mlws") {
       desc.extend(mkMlwsTexts(commonData, sensorPropsBlk, "  "))
-      if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
-        autoCmByMlws = true
-      foreach (threatFlagName, _flag in threatFlagNames)
-        if (findParamValue(sensorPropsBlk, "threatFlag", threatFlagName)) {
-          autoCmByMlws = true
-          break
-        }
+      isAutoCmByMlws = isAutoCmByMlws || isAutoCM(sensorType, sensorPropsBlk, autoCMData.threatFlagNames)
     }
   }
 
@@ -2451,19 +2572,7 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
   if (unitBlk.getBool("laserDesignator", false))
     desc.append(loc("avionics_aim_laser_designator"))
 
-  if (autoCmByRwr || autoCmByMlws) {
-    desc.append(loc("avionics_auto_cm"))
-    local autoCmSensorsText = "".concat(loc("avionics_auto_cm_sensors"), colon)
-    if (autoCmByRwr && autoCmByMlws)
-      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_rwr"), autoCmFusedSensors ? "+" : ", ", loc("avionics_auto_cm_by_mlws"))
-    else if (autoCmByRwr)
-      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_rwr"))
-    else if (autoCmByMlws)
-      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_mlws"))
-    desc.append("".concat("  ", autoCmSensorsText))
-    if (autoCmMultiProgram > 0)
-      desc.append("".concat("  ", loc("avionics_auto_cm_programs"), colon, autoCmMultiProgram))
-  }
+  desc.extend(mkAutoCMTexts(autoCMData, isAutoCmByRwr, isAutoCmByMlws))
 
   let slots = unitBlk?.WeaponSlots
   if (slots) {
@@ -2789,12 +2898,31 @@ function mkElectronicEquipmentDesc(partType, params, commonData) {
   return { desc }
 }
 
-function mkPowerSystemDesc(partType, _params, _commonData) {
-  let partsList = "\n".concat(
-    loc("armor_class/fire_control_system"),
-    loc("armor_class/gun_stabilizer"),
-    loc("armor_class/radar"))
-  return { desc = [ loc($"armor_class/desc/{partType}", { partsList }) ] }
+function isAmmoAutoloaderPart(unitBlk, partName) {
+  let stowagesBlk = unitBlk?.ammoStowages
+  if (stowagesBlk == null)
+    return false
+  for (local i = 0; i < stowagesBlk.blockCount(); i++) {
+    let stowageBlk = stowagesBlk.getBlock(i)
+    if ((stowageBlk % "autoloader").contains(partName))
+      return true
+    foreach (blockName in const ["shells", "charges"])
+      foreach (clusterBlk in (stowageBlk % blockName))
+        if ((clusterBlk % "autoloader").contains(partName))
+          return true
+  }
+  return false
+}
+
+function mkPowerSystemDesc(partType, params, commonData) {
+  let partsList = [
+    loc("armor_class/fire_control_system")
+    loc("armor_class/gun_stabilizer")
+    loc("armor_class/radar")
+  ]
+  if (isAmmoAutoloaderPart(commonData.unitBlk, params.name))
+    partsList.append(loc("armor_class/autoloader"))
+  return { desc = [ loc($"armor_class/desc/{partType}", { partsList = "\n".join(partsList) }) ] }
 }
 
 let mkSimpleDescByPartType = @(partType, _params, _commonData)
@@ -2816,7 +2944,7 @@ function mkSupportPlaneDesc(partType, _params, commonData) {
 
 
 
-return {
+return freeze({
   
   S_UNDEFINED
   S_AIRCRAFT
@@ -2878,4 +3006,4 @@ return {
   mkRwrTexts
   mkMlwsTexts
   getPartPressureCompartmentDesc
-}
+})

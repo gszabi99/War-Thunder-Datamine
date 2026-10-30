@@ -1,5 +1,6 @@
 from "frp" import FRP_INITIAL
 from "hudActionBar" import getActionBarItems
+from "hudActionBarConst" import EII_ANTI_AIR_COMPLEX_MENU
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
 
@@ -69,7 +70,12 @@ let actionBarItems = keepref(Computed(function(prev) {
 }))
 
 let updateActionBar = @() actionBar.set(getActionBarItems())
-return {
+
+let hasAAComplexMenuItem = @() actionBarItems.get()
+  .findindex(@(item) item.type == EII_ANTI_AIR_COMPLEX_MENU) != null
+
+return freeze({
   updateActionBar
   actionBarItems
-}
+  hasAAComplexMenuItem
+})

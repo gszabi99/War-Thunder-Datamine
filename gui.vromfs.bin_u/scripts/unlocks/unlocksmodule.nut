@@ -1,6 +1,14 @@
 import "sony.user" as psnUser
+from "%scripts/money.nut" import Cost
+from "%sqstd/platform.nut" import platformId, is_gdk, isSony
+from "%scripts/unlocks/unlocksConditions.nut" import getUnlockConditions, getTimeRangeCondition, isBitModeType
+from "%scripts/time.nut" import getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById, getAllUnlocks
+from "%scripts/unlocks/regionalUnlocks.nut" import isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById, regionalUnlocks, isRegionalUnlockCompleted
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/missions/missionsText.nut" import buildRewardText
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%sqStdLibs/helpers/u.nut" import isInstance, isEmpty
-from "%sqstd/platform.nut" import platformId, is_gdk
 from "%sqstd/math.nut" import number_of_set_bits
 from "string" import strip, split_by_chars, format
 from "chard" import isUnlockReadyToOpen, get_charserver_time_sec
@@ -11,16 +19,6 @@ from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, req_unlock, get_unlock_type, is_unlocked, wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-
-let { Cost } = require("%scripts/money.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { getUnlockConditions, getTimeRangeCondition, isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
-let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
-let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById, regionalUnlocks, isRegionalUnlockCompleted } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { buildRewardText } = require("%scripts/missions/missionsText.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 let multiStageLocIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
@@ -66,7 +64,7 @@ function isUnlockOpened(unlockId, unlockType = -1) {
   if (unlockType == -1)
     unlockType = getUnlockType(unlockId)
 
-  if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
+  if (isSony && unlockType == UNLOCKABLE_TROPHY_PSN)
     return isPsnTrophyUnlocked(getPsnTrophyIdByName(unlockId))
   if (is_gdk && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
     return is_achievement_unlocked(unlockId)
@@ -182,7 +180,7 @@ function isHiddenByUnlockedUnlocks(unlockBlk) {
 }
 
 function isUnlockVisibleOnCurPlatform(unlockBlk) {
-  if (unlockBlk?.psn && !isPlatformSony)
+  if (unlockBlk?.psn && !isSony)
     return false
   if (unlockBlk?.ps_plus && !psnUser.hasPremium())
     return false
@@ -191,7 +189,7 @@ function isUnlockVisibleOnCurPlatform(unlockBlk) {
     return false
 
   let unlockType = get_unlock_type(unlockBlk?.type ?? "")
-  if (unlockType == UNLOCKABLE_TROPHY_PSN && !isPlatformSony)
+  if (unlockType == UNLOCKABLE_TROPHY_PSN && !isSony)
     return false
   if (unlockType == UNLOCKABLE_TROPHY_XBOXONE && !is_gdk)
     return false

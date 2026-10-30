@@ -1,10 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/missions/missionsStates.nut" import isUrlMission
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "dynamicMission" import dynamicLoadPreview, dynamicUnloadPreview, dynamicLoadSummary
 from "%scripts/dagui_library.nut" import *
-
-let { isUrlMission } = require("%scripts/missions/missionsStates.nut")
 
 enum MAP_PREVIEW_TYPE {
   MISSION_MAP
@@ -124,8 +123,8 @@ addListenersWithoutEnv({
 })
 
 
-return {
+return freeze({
   setMapPreview
   setSummaryPreview
   getMissionBriefingConfig
-}
+})

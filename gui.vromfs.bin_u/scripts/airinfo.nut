@@ -1,3 +1,61 @@
+from "%scripts/difficulty.nut" import get_battle_type_by_ediff, get_difficulty_by_ediff
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/time.nut" import hoursToString, secondsToHours, secondsToString
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage, getFontIconByBattleType, getChanceToMeetText, getUnitItemStatusText, getCantBuyUnitReason, getUnitRarity, getCharacteristicActualValue
+from "%scripts/unit/unitStatus.nut" import isUnitDefault, canResearchUnit, isUnitInResearch, isUnitResearched, isPrevUnitResearched, isPrevUnitBought
+from "%scripts/unit/unitBitStatus.nut" import getBitStatus
+from "%scripts/unit/unitChecks.nut" import checkUnitModsUpdate, checkSecondaryWeaponModsRecount
+from "%scripts/options/optionsMeasureUnits.nut" import countMeasure
+from "%scripts/weaponry/weaponryDescription.nut" import makeWeaponInfoData, getWeaponInfoMarkup, getAdditionalWeaponInfoMarkup
+from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
+from "%scripts/items/boosterEffect.nut" import getActiveBoostersArray, getBoostersEffects
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/unit/unitWeaponryInfo.nut" import getUnitMassPerSecValue, getWeaponModsInfoTexts, isUnitHaveSecondaryWeapons, getWeaponUsedMods
+from "%scripts/unit/remainingTimeUnit.nut" import fillPromUnitInfo
+from "%scripts/langUtils/localization.nut" import getLocIdsArray
+from "%scripts/shop/giftSpares.nut" import getGiftSparesCount, getGiftSparesCost
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagForUnitTooltip
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
+from "%scripts/unit/unitParams.nut" import getEsUnitType
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift, isUnitBought
+from "%scripts/respawn/respawnState.nut" import isCrewAvailableInSession
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/slotbar/slotbarStateData.nut" import getCrewUnlockTimeByUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewById
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
+from "%scripts/items/itemsManager.nut" import getBestItemSpecialOfferByUnit
+from "%scripts/bonusModule.nut" import hideBonus
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/airLimits.nut" import getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/items/unitCoupons.nut" import hasUnitCoupon
+from "%scripts/discounts/discountUtils.nut" import showAirDiscount
+from "%scripts/warbonds/warbondsManager.nut" import findWarbond
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getNotAvailableUnitByBRText
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIconAndTypeCaption
+from "%scripts/discounts/discountsState.nut" import getUnitDiscountByName
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, getUnitAdditionWeaponry
+from "%scripts/unit/unitSystems.nut" import hasUnitSystems, getUnitSystemsMarkup
+from "%scripts/unit/unitMrankSelectionState.nut" import getUnitSelectedBattleRating
+from "%scripts/unit/unitSupportPlane.nut" import hasSupportPlane, getUnitSupportPlaneData
+from "%scripts/unit/unitBullets.nut" import getUnitBulletsMarkup
+from "%scripts/unit/unitEngine.nut" import getUnitEngineMarkup
+from "%scripts/unit/unitProtection.nut" import getUnitProtectionMarkup
+from "%scripts/unit/unitSecondaryWeapon.nut" import getSelectedPresetMarkup
+from "%scripts/weaponry/weaponryVisual.nut" import getWeaponModsInfoIcons
+from "%scripts/weaponry/infantryWeapons.nut" import getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons, INF_SOLDIER_EMPTY
+from "%scripts/weaponry/infantryTemplates.nut" import getUnitTemplateNames
+from "%scripts/weaponry/modificationInfo.nut" import calcHumanModEffects
+from "%scripts/weaponry/infantryArmor.nut" import getAppliedArmorForUnit
+from "%scripts/unit/unitInfoTooltips.nut" import fillTooltipsIds
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/modalInfo/modalInfo.nut" import isUseGamePad
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT
 from "%globalScripts/templates.nut" import getTemplateCompValue
 from "math" import abs
@@ -17,71 +75,15 @@ from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/debugTools/dbgShop.nut" import getUnitDebugBattleRatingsText
 from "types" import Table
 
-let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let { hoursToString, secondsToHours, secondsToString } = require("%scripts/time.nut")
-let { getUnitTooltipImage, getFontIconByBattleType, getChanceToMeetText, getUnitItemStatusText, getCantBuyUnitReason, getUnitRarity, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
-let { isUnitDefault, canResearchUnit, isUnitInResearch, isUnitResearched, isPrevUnitResearched, isPrevUnitBought } = require("%scripts/unit/unitStatus.nut")
-let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
-let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
-let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { makeWeaponInfoData, getWeaponInfoMarkup, getAdditionalWeaponInfoMarkup } = require("%scripts/weaponry/weaponryDescription.nut")
-let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
-let { getUnitMassPerSecValue, getWeaponModsInfoTexts, isUnitHaveSecondaryWeapons, getWeaponUsedMods } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
-let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut")
-let { hideBonus } = require("%scripts/bonusModule.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength } = require("%scripts/airLimits.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
-let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
-let { getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
-let { getUnitDiscountByName } = require("%scripts/discounts/discountsState.nut")
-let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
-let { getLastWeapon, getUnitAdditionWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
-let { hasUnitSystems, getUnitSystemsMarkup } = require("%scripts/unit/unitSystems.nut")
-let { hasSupportPlane, getUnitSupportPlaneData } = require("%scripts/unit/unitSupportPlane.nut")
-let { getUnitBulletsMarkup } = require("%scripts/unit/unitBullets.nut")
-let { getUnitEngineMarkup } = require("%scripts/unit/unitEngine.nut")
-let { getUnitProtectionMarkup } = require("%scripts/unit/unitProtection.nut")
-let { getSelectedPresetMarkup } = require("%scripts/unit/unitSecondaryWeapon.nut")
-let { getWeaponModsInfoIcons } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons, INF_SOLDIER_EMPTY } = require("%scripts/weaponry/infantryWeapons.nut")
-let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
-let { calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
-let { getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { fillTooltipsIds } = require("%scripts/unit/unitInfoTooltips.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { isUseGamePad } = require("%scripts/modalInfo/modalInfo.nut")
 
 
 
@@ -618,7 +620,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   }
 
   
-  let battleRating = unit.getBattleRating(ediff)
+  let battleRating = getUnitSelectedBattleRating(unit, ediff)
   let debugBrText = needShowDebugInfo ? getUnitDebugBattleRatingsText(unit) : ""
   let hasDebugBrText = debugBrText != ""
   let showBr = !unit.hideBrForVehicle || hasDebugBrText
@@ -633,7 +635,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   let brByTypeTexts = []
   if (!hasDebugBrText)
     foreach (battleTypeIter in BATTLE_TYPES_ORDER) {
-      let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
+      let battleRatingByBattleType = getUnitSelectedBattleRating(unit, ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
       let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) 
       if (battleRatingByBattleType != battleRating && !isShipHardcore)
         brByTypeTexts.append($"{getFontIconByBattleType(battleTypeIter)} {format("%.1f", battleRatingByBattleType)}")

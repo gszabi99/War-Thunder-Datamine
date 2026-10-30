@@ -1,20 +1,20 @@
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInJoiningGame, getSessionLobbyMissionParams, sessionLobbyStatus, getSessionLobbyGameMode
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent, getSessionLobbyMissionNameLoc
+from "%scripts/events/eventInfo.nut" import getEventDisplayType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import leaveSessionRoom
 from "mission" import set_game_mode, get_game_mode, get_cur_game_mode_name
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { isInJoiningGame, getSessionLobbyMissionParams, sessionLobbyStatus, getSessionLobbyGameMode } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 register_gui_handler("JoiningGameWaitBox", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

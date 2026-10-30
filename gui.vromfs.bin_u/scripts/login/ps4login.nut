@@ -1,26 +1,27 @@
+import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
 import "statsd" as statsd
-from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%sqstd/string.nut" import stripTags
+from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setVersionText
+from "%sqstd/platform.nut" import platformId
+from "%scripts/controls/mousePointerVisibility.nut" import forceHideCursor
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%appGlobals/clientState/localProfile.nut" import loadLocalSharedSettings
+from "%scripts/eulaWnd.nut" import LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/viewUtils/projectAwards.nut" import setProjectAwards
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "sony" import requestPackageUpdateStatus
 from "guiOptions" import setGuiOptionsMode
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_initial_check_settings, ps4_login
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils/nativeRequests.nut" import mkNativeResultReceiver
 
-let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
-let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 eventbus_subscribe("PsnAutologin", function(_p) {
   let loginHandlerPs4 = handlersManager.findHandlerClassInScene(get_gui_handler("LoginWndHandlerPs4"))
@@ -28,6 +29,9 @@ eventbus_subscribe("PsnAutologin", function(_p) {
     return
   loginHandlerPs4.onOk()
 })
+
+const PACKAGE_UPDATE_STATUS_EVENT = "sonyPackageUpdateStatus"
+let onPackageUpdateStatus = mkNativeResultReceiver(PACKAGE_UPDATE_STATUS_EVENT)
 
 let LoginWndHandlerPs4 = class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -116,7 +120,7 @@ let LoginWndHandlerPs4 = class (BaseGuiHandler) {
 
         loadHandler(get_gui_handler("UpdaterModal"),
           {
-            configPath = $"/app0/{targetPlatform}/{cfgName}"
+            configPath = $"/app0/{platformId}/{cfgName}"
             onFinishCallback = ps4_load_after_login
           })
         return
@@ -137,11 +141,8 @@ let LoginWndHandlerPs4 = class (BaseGuiHandler) {
       return
 
     this.isPendingPackageCheck = true
-    requestPackageUpdateStatus(@(isUpdateAvailable) broadcastEvent("PackageUpdateStatusReceived", { isUpdateAvailable }))
-  }
-
-  function onEventPackageUpdateStatusReceived(p) {
-    this.onPackageUpdateCheckResult(p.isUpdateAvailable)
+    onPackageUpdateStatus(requestPackageUpdateStatus(PACKAGE_UPDATE_STATUS_EVENT),
+      Callback(this.onPackageUpdateCheckResult, this))
   }
 
   function onDestroy() {

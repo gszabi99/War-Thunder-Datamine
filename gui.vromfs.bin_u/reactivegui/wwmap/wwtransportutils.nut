@@ -7,7 +7,7 @@ let { actionType } = require("%rGui/wwMap/wwMapTypes.nut")
 let transportReadyToUnload = Watched(null)
 let transportReadyToLoad = Watched(null)
 
-let isTransport = @(armyData) armyData?.specs.transportInfo.type != "TT_NONE"
+let isTransport = @[pure, nodiscard](armyData) armyData?.specs.transportInfo.type != "TT_NONE"
 
 function getLoadedArmyType(armyData, loadedTransport) {
   let lt = loadedTransport?.loadedTransport
@@ -65,7 +65,7 @@ function updateTransportAction() {
   }
 }
 
-return {
+return freeze({
   isTransport
   getLoadedArmyType
   getLoadedArmyName
@@ -73,4 +73,4 @@ return {
   updateTransportAction
   transportReadyToUnload
   transportReadyToLoad
-}
+})

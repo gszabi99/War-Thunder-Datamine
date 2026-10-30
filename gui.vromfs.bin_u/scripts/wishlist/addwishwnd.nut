@@ -1,20 +1,19 @@
+from "%scripts/wishlist/wishlistManager.nut" import getCurrentWishListSize, requestAddToWishlist, isWishlistFull, canAddUnitToWishlist
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagForUnitTooltip
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor
 from "chard" import getMaxWishListSize, getMaxWishListCommentSize
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { getCurrentWishListSize, requestAddToWishlist, isWishlistFull, canAddUnitToWishlist
-} = require("%scripts/wishlist/wishlistManager.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 
 class WishListHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -100,8 +99,8 @@ function updateWishlistButton(parentObj, unit, btnId = "btn_add_to_wishlist") {
     btnObj["status"] = isWishlistFull() ? "red" : ""
 }
 
-return {
+return freeze({
   addToWishlist
   tryAddToWishlist
   updateWishlistButton
-}
+})

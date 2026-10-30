@@ -1,3 +1,4 @@
+from "%scripts/clientState/clientStates.nut" import isInBattleState
 from "%appGlobals/login/loginState.nut" import isAuthorized, isProfileReceived, isLoginRequired, isOnlineBinariesInited
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqstd/frp.nut" import WatchedImmediate
@@ -9,11 +10,15 @@ from "hangar" import activate_downloadable_hangar, get_current_downloadable_hang
 from "auth_wt" import setLoginHangarDelayed
 from "console" import register_command
 from "%sqstd/globalState.nut" import hardPersistWatched
-
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-
+from "blkGetters" import get_settings_blk
 
 const MAX_HANGAR_DELAY_TIME = 60
+
+const DEFAULT_REGULAR_HANGAR_PATH = "config/hangar.blk"
+
+let getCustomHangar = @() get_settings_blk()?.hangarBlk
+
+let getRegularHangarPath = @() getCustomHangar() ?? DEFAULT_REGULAR_HANGAR_PATH
 
 let debugHangar = hardPersistWatched("debugHangar")
 let selectedHangar = hardPersistWatched("selectedHangar")
@@ -56,7 +61,15 @@ isInBattleState.subscribe(function(isInBattle) {
 })
 set_gui_fps_limit_mode_active(!isInBattleState.get())
 
-let needReloadHangarScene = @() lastAppliedHangar.get() != curHangar.get()
+function needReloadHangarScene() {
+  let lastPath = lastAppliedHangar.get()
+  let curPath = curHangar.get()
+  if (lastPath == curPath)
+    return false
+
+  let regularPath = getRegularHangarPath() 
+  return (lastPath == "" ? regularPath : lastPath) != (curPath == "" ? regularPath : curPath)
+}
 
 function reloadHangarSceneIfNeed() {
   if (!needReloadHangarScene())
@@ -80,6 +93,8 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   selectedHangar
-}
+  getCustomHangar
+  getRegularHangarPath
+})

@@ -1,12 +1,11 @@
+from "%scripts/events/eventInfo.nut" import getEventEconomicName
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/userLog/userlogUtils.nut" import getUserLogsList
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "string" import format
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
-
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 
 
@@ -85,6 +84,6 @@ addListenersWithoutEnv({
   }
 })
 
-return {
+return freeze({
   requestRewardProgress
-}
+})

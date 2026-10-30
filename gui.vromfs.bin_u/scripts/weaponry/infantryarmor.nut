@@ -1,11 +1,10 @@
+from "%scripts/weaponry/modificationInfo.nut" import getModificationsByModClass
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 from "%globalScripts/templates.nut" import getTemplate, getTemplateCompValue
 from "chardResearch" import shopIsModificationEnabled
 from "blkGetters" import get_modifications_blk
 from "%scripts/dagui_library.nut" import *
-
-let { getModificationsByModClass } = require("%scripts/weaponry/modificationInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { weaponsItem } = require("%scripts/weaponry/weaponryConsts.nut")
 
 const INF_EQUIPMENT_MOD_CLASS = "equipment_common"
 const INF_ARMOR_GROUP_NAME = "bulletproof_vest"
@@ -151,7 +150,7 @@ function getUnitArmorData(unit) {
   }
   unitArmorDataCache[unit.name] <- res
 
-  return res.sort(@(a,b) a.armorWeight <=> b.armorWeight)
+  return res.sortby(@(a) a.armorWeight)
 }
 
 function getAppliedArmorForUnit(unit) {
@@ -178,8 +177,8 @@ function getArmorIconViewData(unit) {
   }
 }
 
-return {
+return freeze({
   getUnitArmorData
   getAppliedArmorForUnit
   getArmorIconViewData
-}
+})

@@ -1,3 +1,9 @@
+import "%rGui/style/colors.nut" as colors
+import "%rGui/penitentiary/penalty.nut" as penalty
+import "%rGui/hudChatState.nut" as state
+import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/control/gui_buttons.nut" as JB
+import "%rGui/components/scrollableData.nut" as scrollableData
 import "%rGui/globals/extWatched.nut" as extWatched
 import "%rGui/style/teamColors.nut" as teamColors
 import "%rGui/components/hudLog.nut" as hudLog
@@ -10,15 +16,9 @@ from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "chat" import chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = require("%rGui/style/colors.nut")
 let textInput =  require("%rGui/components/textInput.nut")
-let penalty = require("%rGui/penitentiary/penalty.nut")
-let state = require("%rGui/hudChatState.nut")
 let hudState = require("%rGui/hudState.nut")
-let fontsState = require("%rGui/style/fontsState.nut")
-let JB = require("%rGui/control/gui_buttons.nut")
 
-let scrollableData = require("%rGui/components/scrollableData.nut")
 
 
 let mpChatHint = extWatched("mpChatHint", "")
@@ -184,9 +184,7 @@ let inputField = @() {
   size = FLEX_H
   flow = FLOW_VERTICAL
   watch = state.modeId
-  children = [
-    chat.inputField(chatInputCtor)
-  ]
+  children = chat.inputField(chatInputCtor)
 }
 
 
@@ -207,7 +205,7 @@ let getMessageColor = function(message) {
 
 let getSenderColor = function (message) {
   if (message.isMyself)
-    return colors.hud.mainPlayerColor
+    return teamColors.get().hudColorHero
   else if (message?.isSenderSpectator ?? false)
     return colors.hud.spectatorColor
   else if (message.team != hudState.playerArmyForHud.get() || !isModeWithTeams())

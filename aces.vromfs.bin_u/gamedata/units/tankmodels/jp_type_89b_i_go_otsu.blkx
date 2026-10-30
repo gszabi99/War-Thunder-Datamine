@@ -44,6 +44,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1857,7 +1863,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_Type90_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_Type90_user_cannon.blk",
         "shotFreq": 0.3,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -1946,7 +1952,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/6_5mm_Type_91_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/6_5mm_Type_91_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1993,8 +1999,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "jp_type_89b_i_go_otsu_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_89b_i_go_otsu_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2036,7 +2042,10 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 44000.0,
       "driveGearRadius": 0.32,
       "mainGearRatio": 1.0,
@@ -2077,6 +2086,17 @@
           0.0,
           0.0,
           0.0
+        ]
+      },
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
         ]
       }
     }

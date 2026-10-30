@@ -66,6 +66,10 @@ struct CmdHumanBackblastTinnitus
   position : float3
   power : float
 
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct EventApuAutoToggle
+{}
+
 [cpp_event(unicast)]
 struct EventAnimIrq
   irqType : int
@@ -121,6 +125,27 @@ struct CmdStartPlantingMineOnWall
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdStopPlantingMineOnWall {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdStopInteractPlantSite {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestSpawnVehicle
+  supplyLaptopEid : EntityId
+  transportIdx : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventSupplyReward
+  kind : int
+  score : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventSupplyTransportHint
+  hint : int
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
+struct RequestSupplyTransfer
+  unload : bool
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdStartReassemblingWall
@@ -729,6 +754,10 @@ struct RequestQuickThrowGrenade
   grenade_ammo_id : int
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestCookGrenade
+  atTime : float
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdThrowGrenadeFromClient
   gunEid : EntityId
   shellId : uint
@@ -886,3 +915,6 @@ struct HumanRequestReload
 struct CmdDebugTestAIAimRay
   pos1 : float3
   pos2 : float3
+
+[event(unicast)]
+struct EventReinitCoverUnits {}

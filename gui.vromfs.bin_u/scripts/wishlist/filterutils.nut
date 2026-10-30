@@ -1,14 +1,13 @@
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, isUnitResearched
+from "%scripts/user/balance.nut" import get_balance
+from "%scripts/unit/unitInfo.nut" import getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit, isUnitGift
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline, isAvailableBuyUnitOnline
+from "%scripts/unit/canBuyUnitOnMarketplace.nut" import canBuyUnitOnMarketplace, isAvailableBuyUnitOnMarketPlace
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/discounts/discountsState.nut" import getUnitDiscount
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_library.nut" import *
-
-let { canBuyNotResearched, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
-let { get_balance } = require("%scripts/user/balance.nut")
-let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { canBuyUnitOnline, isAvailableBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
-let { canBuyUnitOnMarketplace, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 
 function getUnitBuyTypes(unit, isFriendWishList = false) {
   let res = []
@@ -78,9 +77,9 @@ function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
   return res
 }
 
-return {
+return freeze({
   getUnitBuyTypes
   isIntersects
   isFullyIncluded
   getUnitAvailabilityForBuyType
-}
+})

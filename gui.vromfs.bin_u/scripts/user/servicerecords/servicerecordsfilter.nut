@@ -1,11 +1,11 @@
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
+from "%scripts/ranks.nut" import maxCountryRank
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
@@ -55,10 +55,11 @@ function fillRanks() {
   return res
 }
 
+let hardPersist = mkHardPersist("user.serviceRecords.serviceRecordsFilter")
 let filterNames = [
-  { name = "country", fillFunction = fillCountries, selectedArr = persist("serviceRecordsFilterCountry", @() []) }
-  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = persist("serviceRecordsFilterUnitType", @() []) }
-  { name = "rank", fillFunction = fillRanks, selectedArr = persist("serviceRecordsFilterRank", @() []) }
+  { name = "country", fillFunction = fillCountries, selectedArr = hardPersist("serviceRecordsFilterCountry", []) }
+  { name = "unitType", fillFunction = fillUnitTypes, selectedArr = hardPersist("serviceRecordsFilterUnitType", []) }
+  { name = "rank", fillFunction = fillRanks, selectedArr = hardPersist("serviceRecordsFilterRank", []) }
 ]
 
 function getUnitsStatsFiltersView() {
@@ -79,7 +80,7 @@ function getUnitsStatsFiltersView() {
           value = selectedArr.indexof(key) != null
         })
 
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+      view.checkbox.sortby(@(a) a.idx)
       return view
     })
 }
@@ -118,8 +119,8 @@ function applyUnitsStatsFilterChange(objId, tName, value) {
   }
 }
 
-return {
+return freeze({
   getUnitsStatsFiltersView
   applyUnitsStatsFilterChange
   getUnitsStatsSelectedFilters
-}
+})

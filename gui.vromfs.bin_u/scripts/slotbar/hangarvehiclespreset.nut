@@ -1,14 +1,14 @@
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/slotbar/slotbarStateData.nut" import getSelectedCrews
+from "%scripts/slotbar/slotbarPresetsState.nut" import getCurrentPresetIdx
+from "%scripts/slotbar/slotbarPresetsHelpers.nut" import getCurrentSlotbarPreset
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "hangar" import hangar_current_preset_changed
 from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
@@ -16,7 +16,7 @@ local curPresetId = -1
 local curUnitsCount = -1
 
 function updateHangarPreset(forceUpdate = false) {
-  if (!isInMenu.get() || !isLoggedIn.get())
+  if (!isInMenu.get() || !hasFullLoginState.get())
     return
 
   let country = profileCountrySq.get()
@@ -47,7 +47,7 @@ isInMenu.subscribe(function(v) {
     updateHangarPreset(true)
 })
 
-isLoggedIn.subscribe(function(v) {
+hasFullLoginState.subscribe(function(v) {
   if (v)
     updateHangarPreset(true)
 })

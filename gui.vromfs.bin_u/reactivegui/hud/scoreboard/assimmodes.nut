@@ -110,8 +110,8 @@ let power_plant_strbomb = mkHudForAssimBattles(
   [hdpxi(28), hdpxi(28)]
 )
 
-return {
+return freeze({
   sead,
   oil_refinery_strbomb,
   power_plant_strbomb
-}
+})

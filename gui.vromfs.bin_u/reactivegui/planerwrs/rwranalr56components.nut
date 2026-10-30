@@ -20,7 +20,7 @@ let styleText = {
   fontSize = getFontDefHt("hud") * 2.5
 }
 
-function calcRwrTargetRadius(target) {
+function [pure, nodiscard] calcRwrTargetRadius(target) {
   return 0.2 + target.rangeRel * 0.8
 }
 

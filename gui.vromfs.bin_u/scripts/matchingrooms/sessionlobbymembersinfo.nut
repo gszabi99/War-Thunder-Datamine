@@ -1,3 +1,9 @@
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam
+  , getSessionLobbyMaxMembersCount, getMemberByName, isMemberHost
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/matching/serviceNotifications/mroomsApi.nut" import invitePlayerToRoom, kickMember
+from "%scripts/user/profileStates.nut" import isMyUserId
+from "%scripts/matching/api.nut" import checkMatchingError
 from "matching.errors" import INVALID_ROOM_ID, INVALID_SQUAD_ID
 from "math" import abs
 from "mission" import get_local_mplayer
@@ -7,11 +13,7 @@ from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom, SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam, getSessionLobbyMaxMembersCount, getMemberByName, isMemberHost } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { invitePlayerToRoom, kickMember } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { isMyUserId } = require("%scripts/user/profileStates.nut")
-let { checkMatchingError } = require("%scripts/matching/api.nut")
+let { SessionLobbyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let memberDefaults = freeze({
   team = Team.Any
@@ -177,10 +179,11 @@ function isPlayerDedicatedSpectator(name = null) {
   return !!get_local_mplayer()?.spectator
 }
 
-return {
+return freeze({
   getRoomMemberPublicParam
   isRoomMemberInSession
   isRoomMemberReady
+  getRoomMemberInfo
   getRoomMembersInfoList
   isRoomMemberOperator
   invitePlayerToSessionRoom
@@ -188,4 +191,4 @@ return {
   isUsedPlayersOwnUnit
   getRoomMembersReadyStatus
   isPlayerDedicatedSpectator
-}
+})

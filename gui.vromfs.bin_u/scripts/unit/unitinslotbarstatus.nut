@@ -1,7 +1,6 @@
+from "%scripts/crew/crewInfo.nut" import getCrewByAir
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
-
-let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 
 let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
 
@@ -17,7 +16,7 @@ function isUnitAvailableForGM(air, gm) {
   return true
 }
 
-return {
+return freeze({
   isUnitAvailableForGM
   isUnitInSlotbar
-}
+})

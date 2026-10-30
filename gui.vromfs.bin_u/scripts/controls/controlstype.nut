@@ -1,15 +1,14 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/controls/controlsUtils.nut" import gui_modal_controlsWizard
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%scripts/controls/controlsState.nut" import isPresetChanged
+from "%scripts/controls/controlsTypeUtils.nut" import setControlTypeByID
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "controls" import hasXInputDevice
 from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { isPresetChanged } = require("%scripts/controls/controlsState.nut")
-let { setControlTypeByID } = require("%scripts/controls/controlsTypeUtils.nut")
 
 register_gui_handler("ControlType", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

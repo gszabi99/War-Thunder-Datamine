@@ -2,6 +2,8 @@ module capzones_common shared
 
 require math
 require math.base
+require ecs
+require %appGame.infantry.es.team_common
 
 enum CapZoneAIHint
   NONE = 0
@@ -22,3 +24,10 @@ def is_pos_inside_capture_point(pos; margin_distance; transform; capzone__approx
     return scaledDistanceSq < square(sphere_zone__radius)
   let halfDiag = length(transform[0] + transform[2]) * 0.5
   return distanceSq < square(margin_distance + halfDiag)
+
+def strongpoint_owner(strongpoint_eid : EntityId) : int
+  var owner = TEAM_UNASSIGNED
+  query(strongpoint_eid) <| $ [es] (active : bool; capzone__owningTeam : int)
+    if active
+      owner = capzone__owningTeam
+  return owner

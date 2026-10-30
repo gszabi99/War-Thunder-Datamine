@@ -71,9 +71,9 @@ function slidesReplace(level, sector, target_type) {
     $"dynamic_missions/mission_targets/{level}_{target_side}_{target_type}")
 }
 
-return {
+return freeze({
   getEnemyPlaneByWpCost
   planeCostCalculate
   warpointCalculate
   slidesReplace
-}
+})

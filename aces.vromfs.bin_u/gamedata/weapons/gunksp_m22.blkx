@@ -1,12 +1,4 @@
 {
-  "weaponType": 1,
-  "maxDeltaAngle": 0.38,
-  "shotFreq": 20.0,
-  "traceFreq": 4,
-  "bullets": 500,
-  "dragCx": 0.017,
-  "mass": 23.0,
-  "recoilMultiplier": 0.15,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,14 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_8mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.38,
+  "shotFreq": 20.0,
+  "bullets": 500,
+  "dragCx": 0.017,
+  "mass": 23.0,
+  "recoilMultiplier": 0.15,
   "bullet": [
     {
       "mass": 0.011,
@@ -428,7 +428,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -1244,7 +1244,7 @@
         ],
         "traceFreq": 1,
         "tracer": "7mmRed",
-        "trail": "smallTrail"
+        "trail": "tinyTrail"
       }
     },
     {
@@ -2063,7 +2063,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -3711,7 +3711,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4527,7 +4527,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -4935,7 +4935,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       }
     ]
@@ -7403,7 +7403,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -8631,7 +8631,7 @@
           ],
           "traceFreq": 1,
           "tracer": "7mmRed",
-          "trail": "smallTrail"
+          "trail": "tinyTrail"
         }
       },
       {
@@ -9872,13 +9872,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m1919_high_rate_gun_outside",
-    "cockpit": "m1919_high_rate_gun_inside",
-    "ai": "m1919_high_rate_gun_ai"
-  },
   "8_63_new_gun": {
     "maxDeltaAngle": 0.7,
     "overheat": {
@@ -9893,5 +9886,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m1919_high_rate_gun_outside",
+    "cockpit": "m1919_high_rate_gun_inside",
+    "ai": "m1919_high_rate_gun_ai"
   }
 }

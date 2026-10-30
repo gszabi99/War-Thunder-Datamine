@@ -1,6 +1,6 @@
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/itemsManagerModule.nut" import findItemById
 from "%scripts/dagui_library.nut" import *
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 function isAvailableBuyUnitOnMarketPlace(unit) {
   return unit.marketplaceItemdefId != null
@@ -15,7 +15,7 @@ function canBuyUnitOnMarketplace(unit) {
   return isAvailableBuyUnitOnMarketPlace(unit)
 }
 
-return {
+return freeze({
   isAvailableBuyUnitOnMarketPlace
   canBuyUnitOnMarketplace
-}
+})

@@ -1,6 +1,13 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/sqDagui/framework/progressMsg.nut" as progressMsg
 import "%sqStdLibs/helpers/u.nut" as u
 import "inventory" as inventory
 import "DataBlock" as DataBlock
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/tasker.nut" import TASK_CB_TYPE, addTask
+from "%scripts/langUtils/language.nut" import getCurrentSteamLanguage
+from "%scripts/matching/serviceNotifications/mrpc.nut" import mnSubscribe, mrSubscribe
+from "%scripts/utils/delayedActions.nut" import addDelayedAction, LOST_DELAYED_ACTION_MSEC
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/login/loginState.nut" import isProfileReceived
@@ -15,18 +22,12 @@ from "steam" import steam_is_running, steam_get_my_id, steam_get_app_id
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/charActionConsts.nut" import *
-from "%scripts/utils/delayedActions.nut" import LOST_DELAYED_ACTION_MSEC
-from "types" import Table
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "modules" import on_module_unload
+from "%scripts/inventory/inventoryItemdefs.nut" import addItemdefs
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
-let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
-let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
-let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -55,7 +56,17 @@ let validateValueFunction = {
   icon_url_large = getPremultipliedAlphaIcon
 }
 
+
+
+local isStale = false
+
 let requestInternal = function(requestData, data, callback, progressBoxData = null) {
+  if (isStale)
+    return
+  if (disableNetwork) {
+    callback({ error = "DISABLE_NETWORK" })
+    return
+  }
   if (data) {
     requestData["data"] <- data;
   }
@@ -64,15 +75,16 @@ let requestInternal = function(requestData, data, callback, progressBoxData = nu
     progressMsg.create(INVENTORY_PROGRESS_MSG_ID, progressBoxData)
 
   inventory.request(requestData, function(res) {
-    callback(res)
+    if (!isStale)
+      callback(res)
     if (progressBoxData)
       progressMsg.destroy(INVENTORY_PROGRESS_MSG_ID, true)
   })
 }
 
 let getErrorId = @(result) result.error.split(":")[0]
-let priceEagles = mkWatched(persist, "priceEagles", {})
-let priceWarPoint = mkWatched(persist, "priceWarPoint", {})
+let priceEagles = Watched({})
+let priceWarPoint = Watched({})
 let prices = Computed(function() {
   let res = clone priceWarPoint.get()
 
@@ -138,14 +150,6 @@ let validateResponseData = {
   }
 }
 
-let tagsValueRemap = {
-  yes         = true,
-  no          = false,
-  ["true"]    = true,
-  ["false"]   = false,
-}
-
-
 function _validate(data, name) {
   let validation = validateResponseData?[name]
   if (!data || !validation)
@@ -173,7 +177,7 @@ function _validate(data, name) {
         foreach (key, defVal in keys) {
           let isExist = (key in item)
           let val = item?[key]
-          let isTypeCorrect = isExist && (type(val) == type(defVal) || is_numeric(val) == is_numeric(defVal))
+          let isTypeCorrect = type(val) == type(defVal) || (is_numeric(val) && is_numeric(defVal))
 
           let isMissing   = shouldCheckExistence && !isExist
           let isWrongType = shouldCheckType && isExist && !isTypeCorrect
@@ -471,14 +475,7 @@ class InventoryClient {
           return
         }
 
-        local hasItemDefChanges = false
-        foreach (itemdef in itemdef_json) {
-          let itemdefid = itemdef.itemdefid
-          this.itemdefidsRequested?.$rawdelete(itemdefid)
-          hasItemDefChanges = hasItemDefChanges || requestData.shouldRefreshAll || u.isEmpty(this.itemdefs?[itemdefid])
-          this.addItemDef(itemdef)
-        }
-
+        let hasItemDefChanges = this.addItemDefs(itemdef_json) || requestData.shouldRefreshAll
         this.notifyInventoryUpdate(true, hasItemDefChanges)
         requestData.fireCb()
         this.requestItemDefsImpl()
@@ -519,30 +516,23 @@ class InventoryClient {
     this.requestItemDefs(cb)
   }
 
-  function addItemDef(itemdef) {
-    let originalItemDef = this.itemsForRequest?[itemdef.itemdefid] ?? this.itemdefs?[itemdef.itemdefid] ?? {}
-    originalItemDef.clear()
-    originalItemDef.__update(itemdef)
-    originalItemDef.tags = this.getTagsItemDef(originalItemDef)
-    this.itemdefs[itemdef.itemdefid] <- originalItemDef
-    if (itemdef.itemdefid in this.itemsForRequest)
-      this.itemsForRequest.$rawdelete(itemdef.itemdefid)
+  function addItemDefs(itemdefList) {
+    local hasNewItemdefs = false
+    foreach (itemdef in itemdefList) {
+      let itemdefid = itemdef.itemdefid
+      this.itemdefidsRequested?.$rawdelete(itemdefid)
+      this.itemsForRequest?.$rawdelete(itemdefid)
+      hasNewItemdefs = hasNewItemdefs || itemdefid not in this.itemdefs
+    }
+    addItemdefs(this.itemdefs, itemdefList)
+    this.updateItemsItemdefs(this.items)
+    return hasNewItemdefs
   }
 
-  function getTagsItemDef(itemdef) {
-    let tags = itemdef?.tags
-    if (!tags)
-      return null
-
-    let parsedTags = DataBlock()
-    foreach (pair in split_by_chars(tags, ";")) {
-      let parsed = split_by_chars(pair, ":")
-      if (parsed.len() == 2) {
-        let v = parsed[1]
-        parsedTags[parsed[0]] <- tagsValueRemap?[v] ?? v
-      }
-    }
-    return parsedTags
+  
+  function updateItemsItemdefs(items) {
+    foreach (item in items)
+      item.itemdef = this.itemdefs?[item.itemdefid] ?? item.itemdef
   }
 
   function parseRecipesString(recipesStr) {
@@ -627,11 +617,7 @@ class InventoryClient {
         if (!cb)
           return
 
-        for (local i = newItems.len() - 1; i >= 0; --i)
-          if (!(newItems[i].itemdef instanceof Table)) {
-            newItems.remove(i)
-          }
-
+        this.updateItemsItemdefs(newItems)
         cb(newItems)
       })
     }
@@ -768,6 +754,7 @@ class InventoryClient {
 }
 
 let client = InventoryClient()
+on_module_unload(@(_is_closing) isStale = true)
 
 function handleRpc(params) {
   if (params.func == "changed") {

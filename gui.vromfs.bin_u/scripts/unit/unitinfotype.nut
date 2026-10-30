@@ -1,6 +1,19 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
-from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial, EDIFF_SHIFT
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitInfoTexts.nut" import getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco, getCharacteristicActualValue
+from "%scripts/unit/unitInfoRoles.nut" import getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
+from "%scripts/options/optionsMeasureUnits.nut" import countMeasure
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, makeWeaponInfoData
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/bulletsInfo.nut" import isBullets, getModificationInfo, getModificationName, isAntiRadarGuidance
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponNameByBlkPath
+from "%scripts/unit/unitWeaponryInfo.nut" import getUnitMassPerSecValue, getUnitWeaponPresetsCount
+from "%scripts/unit/unitInfo.nut" import image_for_air, getUnitName, getUnitCost
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%scripts/utils/datablockConverter.nut" import dataToBlk
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "string" import format
 from "%sqstd/datablock.nut" import eachBlock, blkOptFromPath
@@ -13,21 +26,9 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT, getWeaponBlkParams
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { Cost } = require("%scripts/money.nut")
-let time = require("%scripts/time.nut")
-let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE, isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { BULLET_TYPE } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 
 let UNIT_INFO_ARMY_TYPE  = {
   AIR        = unitTypes.AIRCRAFT.bit
@@ -326,7 +327,7 @@ function symmetricWeaponArrange(slots) {
     }
   }
 
-  weaponPairs.sort(@(a, b) a.amount <=> b.amount)
+  weaponPairs.sortby(@(a) a.amount)
 
   local symmPairs = []
   for (local i = 0; i < slots.len() / 2; i++) {
@@ -339,7 +340,7 @@ function symmetricWeaponArrange(slots) {
       dist = i
     })
   }
-  symmPairs.sort(@(a, b) b.dist <=> a.dist)
+  symmPairs.sortby(@(a) -a.dist)
 
   foreach (i, pair in weaponPairs) {
     if (i >= symmPairs.len())
@@ -897,17 +898,10 @@ enumsAddTypes(g_unit_info_type, [
       foreach (diff in g_difficulty.types)
         if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
-          let ediff = diff.getEdiff()
-          let battleRating = unit.getBattleRating(ediff)
-
-          foreach (battleTypeIter in BATTLE_TYPES) {
-            let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
-            let isShipHardcore = (battleTypeIter == BATTLE_TYPES.SHIP) && (diff == g_difficulty.SIMULATOR)
-
-            if (battleRatingByBattleType != battleRating && !isShipHardcore) {
-              blk.value[mode] = battleRatingByBattleType
-              blk.valueText[mode] = format("%.1f", blk.value[mode])
-            }
+          let groundBattleRating = unit.getBattleRating(diff.getEdiff(BATTLE_TYPES.TANK))
+          if (groundBattleRating != unit.getBattleRating(diff.getEdiff())) {
+            blk.value[mode] = groundBattleRating
+            blk.valueText[mode] = format("%.1f", groundBattleRating)
           }
         }
     }

@@ -1,10 +1,9 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%sqStdLibs/helpers/u.nut" import isArray
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 const FAVORITE_DECORATORS_SAVE_ID = "favoritesDecorators"
 const FAVORITE_CATEGORY_ID = "favorites"
@@ -59,10 +58,10 @@ addListenersWithoutEnv({
   SignOut = @(_) favoritesCache.clear()
 } g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   isDecorInFavorites
   addDecorToFavorite
   removeDecorFromFavorite
   getFavoriteDecorators
   FAVORITE_CATEGORY_ID
-}
+})

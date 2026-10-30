@@ -1,10 +1,9 @@
+from "%scripts/user/xboxFeatures.nut" import isMultiplayerPrivilegeAvailable
+from "%scripts/sqDagui/daguiUtil.nut" import show_obj
+from "%scripts/options/optionsExtNames.nut" import USEROPT_RANDB_CLUSTERS
+from "%scripts/options/optionsExt.nut" import get_option
 from "%sqstd/math.nut" import is_bit_set
 from "%scripts/dagui_library.nut" import *
-
-let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
 
 function isAutoSelected(clusterOpt) {
   let autoOptBit = clusterOpt.values.findindex(@(v) v == "auto")
@@ -61,7 +60,7 @@ function getCurrentClusters() {
   return result
 }
 
-return {
+return freeze({
   updateClusters
   getCurrentClusters
-}
+})

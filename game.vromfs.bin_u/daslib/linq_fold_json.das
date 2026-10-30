@@ -17,22 +17,18 @@ module linq_fold_json shared public
 
 
 
+
+
+
 require daslib/ast_boost
 require daslib/ast_match
 require daslib/templates_boost
 require daslib/linq_fold_common public
 
-
-
-
-
-
-
-
-
 [macro_function]
 def private emit_full_row_by_name(bindName : string; declT : TypeDeclPtr; defName, curName : string;
                                   var dest : array<Expression?>) {
+    
     for (fld in declT.structType.fields) {
         let fname = string(fld.name)
         dest |> push <| qmacro_expr() {
@@ -40,9 +36,6 @@ def private emit_full_row_by_name(bindName : string; declT : TypeDeclPtr; defNam
         }
     }
 }
-
-
-
 
 [macro_function]
 def private try_json_under_guard_materialize(var body : Expression?; bindName : string; declT : TypeDeclPtr;
@@ -52,7 +45,7 @@ def private try_json_under_guard_materialize(var body : Expression?; bindName : 
     var ite = body as ExprIfThenElse
     if (ite.if_false != null || ite.cond == null || ite.if_true == null) return false
     var (condAllUsed, condFields) = collect_row_usage(ite.cond, bindName)
-    if (condAllUsed || empty(condFields)) return false   
+    if (condAllUsed || empty(condFields)) return false
     sort(condFields)
     var fieldToLocal <- {for (f in condFields); f => qn("jf_{f}", at)}
     prelude |> push <| qmacro_expr() {
@@ -66,8 +59,7 @@ def private try_json_under_guard_materialize(var body : Expression?; bindName : 
         }
     }
     ite.cond = flatten_row_to_locals(ite.cond, bindName, fieldToLocal)
-    
-    var guarded : array<Expression?>   
+    var guarded : array<Expression?>
     guarded |> push <| qmacro_expr() {
         var $i(bindName) <- default<$t(declT)>
     }
@@ -78,9 +70,6 @@ def private try_json_under_guard_materialize(var body : Expression?; bindName : 
     return true
 }
 
-
-
-
 [macro_function]
 def private build_json_materializer(var body : Expression?; bindName : string; declT : TypeDeclPtr;
                                     defName, curName : string; at : LineInfo;
@@ -90,7 +79,6 @@ def private build_json_materializer(var body : Expression?; bindName : string; d
         if (try_json_under_guard_materialize(body, bindName, declT, defName, curName, at, prelude, inner)) {
             return
         }
-        
         if (declT.baseType == Type.tStructure) {
             prelude |> push <| qmacro_expr() {
                 let $i(defName) = default<$t(declT)>
@@ -111,7 +99,7 @@ def private build_json_materializer(var body : Expression?; bindName : string; d
         inner |> push(body)
         return
     }
-    sort(usedFields)   
+    sort(usedFields)
     var fieldToLocal <- {for (f in usedFields); f => qn("jf_{f}", at)}
     prelude |> push <| qmacro_expr() {
         let $i(defName) = default<$t(declT)>
@@ -126,9 +114,6 @@ def private build_json_materializer(var body : Expression?; bindName : string; d
     body = flatten_row_to_locals(body, bindName, fieldToLocal)
     inner |> push(body)
 }
-
-
-
 
 [macro_function]
 def private build_json_array_walk(srcName : string; curName : string; var inner : array<Expression?>;
@@ -149,8 +134,6 @@ def private build_json_array_walk(srcName : string; curName : string; var inner 
     }
 }
 
-
-
 [macro_function]
 def private build_pruned_array_walk(srcName : string; elemType : TypeDeclPtr; bindName : string;
                                     var body : Expression?; var breakGuard : Expression?; at : LineInfo) : Expression? {
@@ -163,9 +146,6 @@ def private build_pruned_array_walk(srcName : string; elemType : TypeDeclPtr; bi
     var loop = build_json_array_walk(srcName, curName, inner, breakGuard)
     return hoist_prelude(prelude, loop, at)
 }
-
-
-
 
 [macro_function]
 def private build_json_join_invoke(var jsonExpr : Expression?; srcName : string; var bodyStmts : array<Expression?>;
@@ -196,8 +176,6 @@ def private build_json_join_invoke(var jsonExpr : Expression?; srcName : string;
     return emission
 }
 
-
-
 class JsonAdapter : SourceAdapter {
     jsonExpr : Expression?
     srcName  : string
@@ -206,7 +184,7 @@ class JsonAdapter : SourceAdapter {
         return "json_"
     }
     def override supports_direct_return() : bool {
-        return true   
+        return true
     }
     def override const can_group_by() : bool {
         return true
@@ -215,9 +193,6 @@ class JsonAdapter : SourceAdapter {
         return true
     }
     def override emit_join_hook(var c : Captures; var ctx : EmitCtx; at : LineInfo) : Expression? {
-        
-        
-        
         if (c.single_name |> key_exists("join") && c.single_name["join"] == "group_join") return null
         var joinCall = c.single["join"]
         if (!srcb_is_array_shaped(c, "join")) return null
@@ -236,9 +211,6 @@ class JsonAdapter : SourceAdapter {
         var leadWhereLam = extract_join_lead_where(c)
         if (c.single |> key_exists("lead_where") && leadWhereLam == null) return null
         let countOnly = c.single |> key_exists("term")
-        
-        
-        
         let wrapIter = !countOnly && ctx.expr_is_iterator
         var srcbSrc = joinCall.arguments[1]
         if (srcbSrc == null || srcbSrc._type == null || srcbSrc._type.firstType == null) return null
@@ -247,7 +219,7 @@ class JsonAdapter : SourceAdapter {
         if (keyaLam == null || keybLam == null || keyaLam._type == null) return null
         let keyType = strip_const_ref(clone_type(keyaLam._type.firstType))
         if (!is_primitive_join_key_type(keyType)) return null
-        let tupAName = bind_name(at)   
+        let tupAName = bind_name(at)
         let srcBName = qn("jjoin_srcB", at)
         let tupBName = qn("jjoin_tup_b", at)
         let hashName = qn("jjoin_hash", at)
@@ -258,12 +230,9 @@ class JsonAdapter : SourceAdapter {
         var pieces = build_join_standalone_pieces(joinCall, whereLam, selectLam, leadWhereLam, countOnly, keyaBody, tupAName, hashName, tupBType, false, "jjoin", at)
         if (pieces == null) return null
         var allStmts := pieces.preludeStmts
-        allStmts |> push <| qmacro_expr() {
-            var $i(hashName) : table<$t(keyType); array<$t(tupBType)>>
-        }
+        allStmts |> push(join_hash_decl(hashName, keyType, tupBType))
         allStmts |> push <| qmacro_expr() {
             for ($i(tupBName) in $i(srcBName)) {
-                
                 $i(hashName)[$e(keybBody)] |> push_clone($i(tupBName))
             }
         }
@@ -273,8 +242,6 @@ class JsonAdapter : SourceAdapter {
     }
     def override build_group_by_adapter(var c : Captures; var ctx : EmitCtx; at : LineInfo) : SourceAdapter? {
         if (c.single |> key_exists("upstream_join")) {
-            
-            
             var joinCall = c.single["upstream_join"]
             var core = extract_upstream_join_core(joinCall)
             var srcb = extract_upstream_join_array_srcb(joinCall)
@@ -296,7 +263,6 @@ class JsonAdapter : SourceAdapter {
                 resultType = core.resultType,
                 resBindName = qn("jjoin_jres", at)))
         }
-        
         return new JsonAdapter(jsonExpr = clone_expression(jsonExpr), srcName = qn("jsrc", at),
                                elemType = clone_type(elemType))
     }
@@ -313,13 +279,10 @@ class JsonAdapter : SourceAdapter {
         return build_pruned_array_walk(srcName, elemType, bind_name(at), body, null, at)
     }
     def override emit_distinct_take_loop(bindName : string; takenName : string; takeLimName : string; var perElement : Expression?; at : LineInfo) : Expression? {
-        
         var breakGuard = qmacro($i(takenName) >= $i(takeLimName))
         return build_pruned_array_walk(srcName, elemType, bindName, perElement, breakGuard, at)
     }
     def override wrap_invoke(var stmts : array<Expression?>; retType : TypeDeclPtr; wrapIter : bool; at : LineInfo) : Expression? {
-        
-        
         var jsonType = strip_const_ref(clone_type(jsonExpr._type))
         jsonType.flags.constant = true
         var jsonClone = clone_expression(jsonExpr)
@@ -342,16 +305,13 @@ class JsonAdapter : SourceAdapter {
         }
         return emission
     }
-    
-    
-    
     def override const defers_materialization() : bool {
         return true
     }
     def override handle_type() : TypeDeclPtr {
         var ht = strip_const_ref(clone_type(jsonExpr._type))
         if (ht.firstType != null) {
-            ht.firstType.flags.constant = true   
+            ht.firstType.flags.constant = true
         }
         return ht
     }
@@ -366,9 +326,6 @@ class JsonAdapter : SourceAdapter {
                 $i(outBind) <- from_JV($e(handleExpr), type<$t(declT)>)
             }
         }
-        
-        
-        
         let defName = qn("jhdef", at)
         let curName = qn("jhandle", at)
         var stmts : array<Expression?>   
@@ -383,7 +340,6 @@ class JsonAdapter : SourceAdapter {
     }
 }
 
-
 struct JsonJoinShape {
     jsonExpr : Expression?
     srcName  : string
@@ -396,16 +352,13 @@ struct JsonJoinShape {
     resBindName : string
 }
 
-
-
-
 class JsonJoinAdapter : SourceAdapter {
     shape : JsonJoinShape
     def override name_prefix() : string {
         return "jjoin_"
     }
     def override supports_direct_return() : bool {
-        return true   
+        return true
     }
     def override bind_name(at : LineInfo) : string {
         return shape.resBindName
@@ -417,7 +370,7 @@ class JsonJoinAdapter : SourceAdapter {
         let jhashName = qn("jjoin_jhash", at)
         let arrName   = qn("jjoin_jarr", at)
         let tupBName  = qn("jjoin_jtb", at)
-        let tupAName  = qn("it", at)   
+        let tupAName  = qn("it", at)
         var pieces = build_join_adapter_pieces(shape.keyaLam, shape.keybLam, shape.resultLam, tupAName, tupBName, jhashName, arrName, shape.resBindName, shape.tupBType, shape.resultType, body, at)
         if (pieces == null) return null
         var probeWalk = build_pruned_array_walk(shape.srcName, shape.elemType, tupAName, pieces.probeOuter, null, at)
@@ -425,7 +378,7 @@ class JsonJoinAdapter : SourceAdapter {
         let tupBType = shape.tupBType
         let srcBName = shape.srcBName
         return <- qmacro_block() {
-            var $i(jhashName) : table<$t(keyType); array<$t(tupBType)>>
+            $e(join_hash_decl(jhashName, keyType, tupBType))
             for ($i(tupBName) in $i(srcBName)) {
                 $e(pieces.collectInner)
             }
@@ -437,17 +390,12 @@ class JsonJoinAdapter : SourceAdapter {
     }
 }
 
-
-
-
 [macro_function]
 def extract_json_source(var top : Expression?) : ExprCall? {
     if (top == null || !(top is ExprCall)) return null
     var c = top as ExprCall
     if (get_call_short_name(c) != "from_json" || c._type == null || !c._type.isIterator
             || c._type.firstType == null || length(c.arguments) != 2) return null
-    
-    
     let srcT = c.arguments[0]._type
     if (srcT == null || !srcT.isPointer || srcT.firstType == null || srcT.firstType.structType == null
             || srcT.firstType.structType.name != "JsonValue"

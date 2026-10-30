@@ -35,6 +35,11 @@ def get_short_template_name(tmpl_name : string) : string
   return tmpl_name
 
 
+def get_item_template_name(item_eid : EntityId; full_template : bool) : string
+  let tmplName = string(getEntityTemplateName(item_eid))
+  return full_template ? tmplName : get_short_template_name(tmplName)
+
+
 [es(no_order, REQUIRE=equipmentDrawDebug)]
 def draw_equipment_slots(evt : UpdateStageInfoRenderDebug;
                          showFullTemplate : bool;
@@ -49,6 +54,7 @@ def draw_equipment_slots(evt : UpdateStageInfoRenderDebug;
   begin_draw_cached_debug_lines(false, false, false)
   query() <| $ [es] (eid : EntityId;
                      human_equipment__slots : Object;
+                     human_equipment__clientSlots : Object const?;
                      transform aka human_transform : float3x4)
     if tpsTargetEid != INVALID_ENTITY_ID
       if eid != tpsTargetEid
@@ -59,13 +65,16 @@ def draw_equipment_slots(evt : UpdateStageInfoRenderDebug;
     drawPos.y += tpsTargetEid != INVALID_ENTITY_ID ? 2.0 : 1.0
     var lineOffset = 0.0
     for slot in human_equipment__slots
-      let slotObj = slot.value as Object
-      if slotObj == null
-        continue
-      let itemEid = slotObj.item ?? INVALID_ENTITY_ID
+      let itemEid = (slot.value as Object)?.item ?? INVALID_ENTITY_ID
       if itemEid == INVALID_ENTITY_ID || !doesEntityExist(itemEid)
         continue
-      let tmplName = showFullTemplate ? string(getEntityTemplateName(itemEid)) : get_short_template_name(string(getEntityTemplateName(itemEid)))
-      add_debug_text_mark(drawPos, "{slot.key}: {tmplName}", -1, -lineOffset, E3DCOLOR(0xFF68D3C5))
+      add_debug_text_mark(drawPos, "{slot.key}: {get_item_template_name(itemEid, showFullTemplate)}", -1, -lineOffset, E3DCOLOR(0xFF68D3C5))
       lineOffset += 1.5
+    if human_equipment__clientSlots != null
+      for slot in *human_equipment__clientSlots
+        let itemEid = (slot.value as Object)?.item ?? INVALID_ENTITY_ID
+        if itemEid == INVALID_ENTITY_ID || !doesEntityExist(itemEid) || !has(itemEid, "clientLocalWearItem")
+          continue
+        add_debug_text_mark(drawPos, "{slot.key}: {get_item_template_name(itemEid, showFullTemplate)}", -1, -lineOffset, E3DCOLOR(0xFF017A6A))
+        lineOffset += 1.5
   end_draw_cached_debug_lines()

@@ -45,11 +45,7 @@ eventbus_subscribe("on_renderer_settings_applied", function onRendererSettingsAp
 
     if (isRequestedReloadScene) {
       reloadDargUiScript(false)
-      let handler = isRequestedOnSceneSwitch ? null : handlersManager.getActiveBaseHandler()
-      if (handler)
-        handler.fullReloadScene()
-      else
-        handlersManager.markfullReloadOnSwitchScene()
+      handlersManager.reloadSceneOnLangOrScreenChange(!isRequestedOnSceneSwitch)
     }
 
     cbFunc?()

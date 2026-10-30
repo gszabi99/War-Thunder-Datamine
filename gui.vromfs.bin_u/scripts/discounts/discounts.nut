@@ -1,3 +1,19 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%scripts/time.nut" import getTimestampFromStringUtc
+from "%sqstd/platform.nut" import platformId, isPC, isPS4
+from "%scripts/onlineShop/entitlementsShopData.nut" import canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIcon
+from "%scripts/onlineShop/onlineBundles.nut" import getEntitlementId
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig
+from "%scripts/onlineShop/discountBundles.nut" import discountUnitsBundles
+from "%scripts/unit/unitShopInfo.nut" import isUnitGift
+from "%scripts/unit/unitStatus.nut" import canBuyNotResearched, isUnitResearched
+from "%scripts/firstChoice/firstChoice.nut" import isCountryAvailable
+from "%scripts/discounts/discountUtils.nut" import getDiscountByPath
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/discounts/discountsState.nut" import getEntitlementUnitDiscount, getUnitDiscountByName, canBeVisibleDiscountOnUnit
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList
+from "%scripts/tasker.nut" import addTask
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "dagor.workcycle" import deferOnce, setTimeout, clearTimer
 from "%sqstd/datablock.nut" import eachBlock
@@ -7,38 +23,21 @@ from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, get_en
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/sceRegionConsts.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
-
-let { canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIcon } = require("%scripts/onlineShop/entitlementsShopData.nut")
-
-let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { discountUnitsBundles } = require("%scripts/onlineShop/discountBundles.nut")
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitGift, canBuyUnitEvenNotInShop } = require("%scripts/unit/unitShopInfo.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
-let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount, getUnitDiscountByName, canBeVisibleDiscountOnUnit } = require("%scripts/discounts/discountsState.nut")
-let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { addTask } = require("%scripts/tasker.nut")
+let { discountsList, consoleEntitlementUnits } = require("%scripts/discounts/discountsState.nut")
 
 const UPDATE_DISCOUNT_DATA_TIMER_ID = "update_discount_data"
 const TOP_MENU_ONLINE_SHOP_ID = "online_shop"
 
 let prevDiscountUnitsBundles = {}
 let platformMapForDiscountFromGuiBlk = {
-  pc = isPlatformPC
-  ps4_scee = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEE
-  ps4_scea = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEA
-  ps4_scej = isPlatformPS4 && ps4_get_region() == SCE_REGION_SCEJ
+  pc = isPC
+  ps4_scee = isPS4 && ps4_get_region() == SCE_REGION_SCEE
+  ps4_scea = isPS4 && ps4_get_region() == SCE_REGION_SCEA
+  ps4_scej = isPS4 && ps4_get_region() == SCE_REGION_SCEJ
 }
 
 function clearDiscountsList() {
@@ -83,7 +82,7 @@ function checkEntitlement(entName, entlBlock, giftUnits) {
 
   local chapterVal = true
   if (chapter == TOP_MENU_ONLINE_SHOP_ID)
-    chapterVal = canUseIngameShop() || isPlatformPC
+    chapterVal = canUseIngameShop() || isPC
   discountsList[chapter] <- chapterVal
 
   if (entlBlock?.aircraftGift)
@@ -103,7 +102,7 @@ function updateGiftUnitsDiscountFromGuiBlk(giftUnits) {
     let platforms = (discountConfigBlk?.platform ?? "pc").split(";")
     local isSuitableForCurrentPlatform = false
     foreach (platform in platforms) {
-      if (targetPlatform != platform && !(platformMapForDiscountFromGuiBlk?[platform] ?? false))
+      if (platformId != platform && !(platformMapForDiscountFromGuiBlk?[platform] ?? false))
         continue
 
       isSuitableForCurrentPlatform = true
@@ -198,7 +197,7 @@ updateDiscountData = function(isSilentUpdate = false) {
         && !air.isBought()
         && air.isVisibleInShop()) {
       if (isUnitGift(air)) {
-        if (isPlatformPC)
+        if (isPC)
           giftUnits[air.name] <- 0
         continue
       }
@@ -207,7 +206,7 @@ updateDiscountData = function(isSilentUpdate = false) {
       if (discount == 0)
         continue
 
-      if (!canBuyUnitEvenNotInShop(air)) {
+      if (!isUnitResearched(air)) {
         discountsList.skippedUnitsList[air.name] <- true
         continue
       }
@@ -257,6 +256,9 @@ function updateOnlineShopDiscounts() {
 }
 
 clearDiscountsList()
+
+if (isLoggedIn.get())
+  deferOnce(@() updateDiscountData())
 
 function updateDiscountUnits(unitsBundles) {
   unitsBundles = convertUnitsBundlesData(unitsBundles)
@@ -315,7 +317,7 @@ addListenersWithoutEnv({
   function ProfileUpdated(_) {
     foreach (unitName, _ in discountsList.skippedUnitsList) {
       let unit = getAircraftByName(unitName)
-      if (unit != null && canBuyUnitEvenNotInShop(unit)) {
+      if (unit != null && isUnitResearched(unit) && !unit.isBought()) {
         updateDiscountData(true)
         deferOnce(pushDiscountsUpdateEvent)
         return
@@ -324,7 +326,7 @@ addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   updateDiscountData
   updateOnlineShopDiscounts
-}
+})

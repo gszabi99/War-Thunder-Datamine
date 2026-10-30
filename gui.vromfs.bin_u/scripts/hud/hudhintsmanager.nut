@@ -1,4 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "DataBlock" as DataBlock
+from "%scripts/hud/hudElementsAabb.nut" import getHudElementAabb, dmPanelStatesAabb
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/hud/hudHints.nut" import getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime, getHintByShowEvent
+from "%scripts/hud/hudAirWeaponSelector.nut" import isVisualHudAirWeaponSelectorOpened
+from "%scripts/hud/hudState.nut" import isPlayerAlive
 from "%sqStdLibs/helpers/u.nut" import isNull
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "chard" import get_charserver_time_sec
@@ -14,18 +21,13 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/timeBar.nut" import g_time_bar
+from "%appGlobals/hud/hudMessageStacks.nut" import hintMessagesHeight
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%scripts/sqDagui/timer/daguiSceneTimers.nut")
-let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime, getHintByShowEvent, g_hud_hints } = require("%scripts/hud/hudHints.nut")
+let { g_hud_hints } = require("%scripts/hud/hudHints.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
-let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -39,7 +41,7 @@ let activeHints = persist("activeHints", @() [])
 foreach (hintData in activeHints) 
   hintData.hint = g_hud_hints.getByName(hintData.hint.name)
 
-let shipFireControlPos = persist("shipFireControlPos", @() {
+let hudHintsAnchorPos = mkHardPersist("hud.hudHintsManager")("hudHintsAnchorPos", {
   x = 0
   y = 0
 })
@@ -115,6 +117,7 @@ function updatePosHudHintBlock() {
   let hudUnitType = getHudUnitType()
   let isTank = hudUnitType == HUD_UNIT_TYPE.TANK
   let isShip = hudUnitType == HUD_UNIT_TYPE.SHIP
+   || hudUnitType == HUD_UNIT_TYPE.SHIP_EX
   let isAir = hudUnitType == HUD_UNIT_TYPE.AIRCRAFT
    || hudUnitType == HUD_UNIT_TYPE.HUMAN_DRONE
   let isHeli = hudUnitType == HUD_UNIT_TYPE.HELICOPTER
@@ -122,7 +125,7 @@ function updatePosHudHintBlock() {
 
   local posY = "ph - h - @hudActionBarItemHeight"
   if (isShip) {
-    posY = $"{shipFireControlPos.y} - 1@bhHud - h"
+    posY = $"{hudHintsAnchorPos.y} - 1@bhHud - h"
   } else if (isTank) {
     posY = "ph - h - @hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
   } else if (isAir || isHeli) {
@@ -132,14 +135,14 @@ function updatePosHudHintBlock() {
 
   hintBlockObj.pos = $"0.5pw - 0.5w, {posY}"
   guiScene.applyPendingChanges(false)
+  updateWidgets() 
 }
 
-function onUpdateShipFireControlPanel(value) {
-  shipFireControlPos.__update({ x = value.pos[0], y = value.pos[1] })
+function onUpdateHudHintsAnchorPos(value) {
+  hudHintsAnchorPos.__update({ x = value.pos[0], y = value.pos[1] })
   if (!(nest?.isValid() ?? false))
     return
   updatePosHudHintBlock()
-  updateWidgets() 
 }
 
 
@@ -691,7 +694,8 @@ function hudHintsManagerInit(v_nest, params = {}) {
 
 let isHintWillBeShown = @(event_name) isHintShowAllowed(event_name, null, {needCheckCountOnly = true})
 
-eventbus_subscribe("update_ship_fire_control_panel", @(value) onUpdateShipFireControlPanel(value))
+eventbus_subscribe("update_hud_hints_anchor_pos", @(value) onUpdateHudHintsAnchorPos(value))
+hintMessagesHeight.subscribe(@(_) deferOnce(updateWidgets))
 
 eventbus_subscribe("onHudHintEvent", function(v) {
   let { eventName, eventData = {} } = v
@@ -729,8 +733,8 @@ dmPanelStatesAabb.subscribe(function(value) {
 
 register_command(@(hintName) isHintShowAllowed(hintName, null), "smart_hints.isHintShowAllowed")
 
-return {
+return freeze({
   hudHintsManagerInit
   hudHintsManagerReinit
   isHintWillBeShown
-}
+})

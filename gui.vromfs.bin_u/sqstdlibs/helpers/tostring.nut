@@ -226,8 +226,8 @@ function intToHexString(number) {
   return res
 }
 
-return {
+return freeze({
   debugTableData
   toString
   intToHexString
-}
+})

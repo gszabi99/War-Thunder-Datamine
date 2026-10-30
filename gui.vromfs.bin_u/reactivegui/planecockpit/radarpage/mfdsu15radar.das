@@ -182,7 +182,7 @@ class Su15Radar : Canvas
 
   def drawRangeLabels()
     setColor(props.phosphorColor)
-    setFontSize(25)
+    setFontSize(40)
     let lineR = props.innerRadius * 1.15
     let labelX = -0.5 + 0.09
     drawStrAnchored(float2(labelX, -lineR), "30", AnchorHorz.Left, AnchorVert.Center)
@@ -206,9 +206,9 @@ class Su15Radar : Canvas
 
 
 [export]
-def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
+def draw_radar_hud(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
   new Su15Radar(guiCtx, rdata, rstate, props).draw()
 
 [export]
-def setup(props : Properties&; var propStorage : PropStorage&)
-  propStorage.fontId = props |> getInt("fontId", 0)
+def setup_radar_data(props : Properties&; var propStorage : PropStorage&)
+  propStorage.fontId = props |> getFontId()

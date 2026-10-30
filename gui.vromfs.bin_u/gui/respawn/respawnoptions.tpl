@@ -57,6 +57,7 @@ cell {
         clicks-by-points:t='no'
         on_change_value:t='<<cb>>'
         focus_border{}
+        tdiv{}
       }
     }
     <</isSlider>>

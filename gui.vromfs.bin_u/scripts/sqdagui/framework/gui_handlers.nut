@@ -43,11 +43,11 @@ function each_gui_handler(func:function) {
     func(name, hClass)
 }
 
-return {
+return freeze({
   register_gui_handler
   get_gui_handler
   has_gui_handler
   is_gui_handler_instance
   find_gui_handler_name
   each_gui_handler
-}
+})

@@ -2,7 +2,7 @@ from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-let HUD_UNIT_TYPE = {
+const HUD_UNIT_TYPE = {
   TANK             = "tank"
   SHIP             = "ship"
   SHIP_EX          = "shipEx"
@@ -23,7 +23,7 @@ let { TANK, SHIP, SHIP_EX, AIRCRAFT, HELICOPTER, HUMAN
   , HUMAN_DRONE, HUMAN_DRONE_HELI
 } = HUD_UNIT_TYPE
 
-let unitTypeByHudUnitType = {
+let unitTypeByHudUnitType = freeze({
   [TANK]             = unitTypes.TANK,
   [SHIP]             = unitTypes.SHIP,
   [SHIP_EX]          = unitTypes.SHIP,
@@ -35,9 +35,9 @@ let unitTypeByHudUnitType = {
 
   [HUMAN_DRONE]      = unitTypes.AIRCRAFT,
   [HUMAN_DRONE_HELI] = unitTypes.HELICOPTER,
-}
+})
 
-let hudTypeByHudUnitType = {
+let hudTypeByHudUnitType = freeze({
   [TANK]             = HUD_TYPE.TANK,
   [SHIP]             = HUD_TYPE.SHIP,
   [SHIP_EX]          = HUD_TYPE.SHIP,
@@ -49,10 +49,10 @@ let hudTypeByHudUnitType = {
 
   [HUMAN_DRONE]      = HUD_TYPE.HUMAN_DRONE,
   [HUMAN_DRONE_HELI] = HUD_TYPE.HUMAN_DRONE_HELI,
-}
+})
 
-return {
+return freeze({
   HUD_UNIT_TYPE
   unitTypeByHudUnitType
   hudTypeByHudUnitType
-}
+})

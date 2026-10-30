@@ -1,16 +1,15 @@
+from "%sqstd/platform.nut" import isPS4, isPS5, isPC
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/options/optionsExtNames.nut" import USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y
+from "%scripts/controls/controlsManager.nut" import commitControls
 from "controls" import isTrackerJoystick
 from "%scripts/dagui_natives.nut" import ps4_headtrack_is_attached
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y } = require("%scripts/options/optionsExtNames.nut")
-let { commitControls } = require("%scripts/controls/controlsManager.nut")
-
 function isHeadTrackerAvailable() {
-  return isPlatformPC
+  return isPC
       || (ps4_headtrack_is_attached()
-        && (isPlatformPS4 || (isPlatformPS5 && hasFeature("PS5HeadTracking"))))
+        && (isPS4 || (isPS5 && hasFeature("PS5HeadTracking"))))
       || isTrackerJoystick()
 }
 

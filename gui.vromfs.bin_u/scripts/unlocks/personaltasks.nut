@@ -1,28 +1,29 @@
+import "%scripts/unlocks/unlockGroupWnd.nut" as showUnlocksGroupWnd
+import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import getSelectedChild, move_mouse_on_obj
+from "%scripts/battlePass/challenges.nut" import updateChallenges, curSeasonChallenges, getChallengeView
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/favoriteUnlocks.nut" import getFavoriteUnlocks
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockType
+from "%scripts/unlocks/unlocksState.nut" import getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg, buildConditionsConfig
+from "%scripts/unlocks/unlocksViewModule.nut" import getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView
+from "%scripts/unlocks/battleTasksState.nut" import isBattleTask, getBattleTaskById
+from "%scripts/unlocks/battleTasks.nut" import isBattleTasksAvailable, isBattleTaskDone, getCurBattleTasksByGm
+from "%scripts/unlocks/battleTasksView.nut" import mkUnlockConfigByBattleTask, getBattleTaskView
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent
+from "%scripts/unlocks/unlocks.nut" import buildLogUnlockData
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor, getVendorLocId
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getSelectedChild, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { updateChallenges, curSeasonChallenges, getChallengeView } = require("%scripts/battlePass/challenges.nut")
-let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBattleTask, getBattleTaskById } = require("%scripts/unlocks/battleTasksState.nut")
-let { isBattleTasksAvailable, isBattleTaskDone, getCurBattleTasksByGm } = require("%scripts/unlocks/battleTasks.nut")
-let { mkUnlockConfigByBattleTask, getBattleTaskView } = require("%scripts/unlocks/battleTasksView.nut")
-let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
-let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
@@ -122,7 +123,7 @@ let tabsConfig = [
   }
   {
     isVisible = @() true
-    text = "#mainmenu/btnFavoritesUnlockAchievement"
+    text = $"#{getVendorLocId("mainmenu/btnFavoritesUnlockAchievement")}"
     noTasksLocId = "mainmenu/noFavoriteAchievements"
     getTasksView = getFavUnlocksView
     tasksTpl = "%gui/unlocks/unlockExpandable.tpl"
@@ -171,7 +172,7 @@ class PersonalTasksModal (BaseGuiHandlerWT) {
       tasksObj.setValue(idx)
     }
     else
-      noTasksObj.setValue(loc(noTasksLocId))
+      noTasksObj.setValue(locByVendor(noTasksLocId))
   }
 
   function onTaskSelect(obj) {
@@ -195,6 +196,6 @@ class PersonalTasksModal (BaseGuiHandlerWT) {
 
 register_gui_handler("PersonalTasksModal", PersonalTasksModal)
 
-return {
+return freeze({
   openPersonalTasks = @() handlersManager.loadHandler(PersonalTasksModal)
-}
+})

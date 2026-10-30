@@ -1,14 +1,13 @@
+from "%scripts/matching/api.nut" import matchingRpcSubscribe, request_matching
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { matchingRpcSubscribe, request_matching } = require("%scripts/matching/api.nut")
-
 matchingRpcSubscribe("postbox.notify_mail", @(p) broadcastEvent("PostboxNewMsg", p))
 
-return {
+return freeze({
   addMail = @(data, succCb = null, errCb = null, reqOpt = null)
     request_matching("postbox.add_mail", succCb, errCb, data, reqOpt)
 
   notifyMailRead = @(mailId, succCb = null, errCb = null, reqOpt = null)
     request_matching("postbox.notify_read", succCb, errCb, { mail_id = mailId }, reqOpt)
-}
+})

@@ -59,8 +59,8 @@ ecs.register_es("apply_squad_formation_order_es", {
   { tags = "gameClient" }
 )
 
-return {
+return freeze({
   setSquadFormation
   squadFormation
   SquadFormationSpreadEnum
-}
+})

@@ -1950,7 +1950,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1962,13 +1962,23 @@
           "gun": "bone_gun_01",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "gunnerDm": "gunner_dm"
         },
         "limits": {
@@ -2018,7 +2028,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/239mm_9M331_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/239mm_9M331_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2302,8 +2312,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_tor_m1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_tor_m1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3353,7 +3363,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_9k_330_search.blk",
+        "blk": "gamedata/sensors/su_9k_330_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -3363,7 +3373,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/su_9k_330_track.blk",
+        "blk": "gamedata/sensors/su_9k_330_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",

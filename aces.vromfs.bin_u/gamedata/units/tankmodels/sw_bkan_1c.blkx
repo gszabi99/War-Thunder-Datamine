@@ -959,6 +959,9 @@
       ]
     }
   },
+  "forceVisibleVisualNodes": {
+    "node": "ammo_turret_anim"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1841,13 +1844,14 @@
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/155mm_Bkan_user_cannon.blk",
+      "blk": "gamedata/weapons/groundModels_weapons/155mm_Bkan_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
       "recoilMultiplier": 0.5,
       "shellCasingEmitter": "emtr_shell",
       "shellCasingMesh": "cartridge_case",
-      "openHatchTime": 0.5,
+      "hatchAnimVar": "gun_shutter_move",
+      "openHatchTime": 1.8,
       "shellCasingLifeTime": 10.0,
       "shellCasingImpulse": [
         7.0,
@@ -1922,8 +1926,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "sw_bkan_1c_default",
-      "blk": "gameData/units/tankModels/weaponPresets/sw_bkan_1c_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

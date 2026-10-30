@@ -1,30 +1,27 @@
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, canInteractCrossConsole
+import "%scripts/contacts/updateContacts.nut" as updateContacts
+import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqstd/platform.nut" import isSony
+from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/contacts/contactsListState.nut" import contactsWndSizes
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/clans/clanActions.nut" import updateClanContacts
+from "%scripts/squads/squadUtils.nut" import canSquad
+from "%scripts/chat/openChat.nut" import openChatPrivate
 from "eventbus" import eventbus_subscribe
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { canInteractCrossConsole, isXBoxPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let updateContacts = require("%scripts/contacts/updateContacts.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { contactsWndSizes, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
-let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { updateClanContacts } = require("%scripts/clans/clanActions.nut")
-let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { canSquad } = require("%scripts/squads/squadUtils.nut")
-let { openChatPrivate } = require("%scripts/chat/openChat.nut")
 
 function guiStartSearchSquadPlayer(_ = null) {
   if (!g_squad_manager.canInviteMember()) {
@@ -94,7 +91,7 @@ let SearchForSquadHandler = class (ContactsHandler) {
     let contactName = this.curPlayer?.name ?? ""
     let isBlock = this.curPlayer ? this.curPlayer.isInBlockGroup() : false
     let isXBoxOnePlayer = isXBoxPlayerName(contactName)
-    let canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
+    let canInteractCrossPlatform = isXBoxOnePlayer || isCrossPlayEnabled()
 
     local thisCapture = this
     local checkIfPlayerCanInvite = function(callback) {
@@ -107,7 +104,6 @@ let SearchForSquadHandler = class (ContactsHandler) {
 
     checkIfPlayerCanInvite(function(canInvite) {
       let showSquadInvite = !showConsoleButtons.get()
-        && hasFeature("SquadInviteIngame")
         && !isBlock
         && canInteractCrossConsole(contactName)
         && canInteractCrossPlatform
@@ -148,7 +144,7 @@ let SearchForSquadHandler = class (ContactsHandler) {
       this.sg_groups.append(EPLX_CLAN)
       updateClanContacts()
     }
-    if (isPlatformSony) {
+    if (isSony) {
       this.sg_groups.insert(2, EPLX_PS4_FRIENDS)
       if (!(EPLX_PS4_FRIENDS in contactsByGroups))
         contactsByGroups[EPLX_PS4_FRIENDS] <- {}
@@ -160,24 +156,6 @@ let SearchForSquadHandler = class (ContactsHandler) {
 }
 register_gui_handler("SearchForSquadHandler", SearchForSquadHandler)
 
-addPromoAction("squad_contacts", @(_handler, _params, _obj) openSearchSquadPlayer())
-
-const promoButtonId = "invite_squad_mainmenu_button"
-
-addPromoButtonConfig({
-  promoButtonId = promoButtonId
-  updateFunctionInHandler = function() {
-    const id = promoButtonId
-    let show = !isMeNewbie() && getPromoVisibilityById(id)
-    let buttonObj = showObjById(id, show, this.scene)
-    if (!show || !checkObj(buttonObj))
-      return
-
-    buttonObj.inactiveColor = isAnyQueuesActive() ? "yes" : "no"
-  }
-  updateByEvents = ["QueueChangeState"]
-})
-
-return {
+return freeze({
   openSearchSquadPlayer
-}
+})

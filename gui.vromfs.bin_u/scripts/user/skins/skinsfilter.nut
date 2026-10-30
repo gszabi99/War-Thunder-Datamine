@@ -1,8 +1,7 @@
+from "%scripts/popups/popupFilterWidget.nut" import RESET_ID, SELECT_ALL_ID
+from "%scripts/ranks.nut" import maxCountryRank
 from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
-
-let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let filterTypes = {}
 
@@ -31,18 +30,19 @@ function fillBought() {
   return res
 }
 
+let hardPersist = mkHardPersist("user.skins.skinsFilter")
 let filterNames = [
   {
     name = "bought"
     fillFunction = fillBought
     filterFunction = @(cond) cond
-    selectedArr = persist("skinsFilterBought", @() [])
+    selectedArr = hardPersist("skinsFilterBought", [])
   }
   {
     name = "rank"
     fillFunction = fillRanks
     filterFunction = @(_cond) true
-    selectedArr = persist("skinsFilterRank", @() [])
+    selectedArr = hardPersist("skinsFilterRank", [])
   }
 ]
 
@@ -64,7 +64,7 @@ function getFiltersView(hasReceived) {
           value = selectedArr.indexof(key) != null
         })
 
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
+      view.checkbox.sortby(@(a) a.idx)
       return view
     })
 }
@@ -103,8 +103,8 @@ function applyFilterChange(objId, tName, value) {
   }
 }
 
-return {
+return freeze({
   getFiltersView
   applyFilterChange
   getSelectedFilters
-}
+})

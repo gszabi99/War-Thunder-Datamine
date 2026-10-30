@@ -1,12 +1,12 @@
+from "%scripts/weaponry/weaponryDescription.nut" import getWeaponDescTextByTriggerGroup, getDefaultBulletName
+from "%scripts/weaponry/bulletsInfo.nut" import getBulletSetNameByBulletName
 from "mission" import get_mission_time
 from "hudActionBarConst" import EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON, EII_MISSION_SUPPORT_PLANE, EII_GRENADE
 from "guiMission" import get_mission_difficulty_int
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import utf8_strlen
-
-let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
+from "%scripts/langUtils/textFormat.nut" import shortTextFromNum
 
 let curHeroTemplates = Watched({})
 
@@ -39,25 +39,24 @@ let getActionDesc = function(unitId, triggerGroup) {
 }
 
 function getActionItemAmountText(modData, isFull = false) {
-  let count = modData?.count ?? 0
+  let { count = 0, countEx = 0, salvo = null, isStreakEx = false } = modData
   if (count < 0)
     return ""
 
-  local text = ""
-  if (modData.type == EII_SMOKE_GRENADE && "salvo" in modData)
-    text = $"{modData.salvo}/{modData.count}"
-  else {
-    let countEx = modData?.countEx ?? 0
-    let countStr = count.tostring()
-    local countExText = modData?.isStreakEx ? loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
-    let shouldTruncate = !isFull
-      && countExText.len() > 0
-      && countExText.len() + countStr.len() + ITEM_AMOUNT_SEPARATOR_LENGTH > ITEM_AMOUNT_TEXT_MAX_LEN
-    if (shouldTruncate)
-      countExText = loc("weapon/bigAmountNumberIcon")
-    text = countExText.len() > 0 ? $"{countStr}/{countExText}" : countStr
-    if (modData.type == EII_MISSION_SUPPORT_PLANE)
-      text = $"{countStr} {loc("multiplayer/spawnScore/abbr")}"
+  let itemType = modData.type
+  let countStr = count.tostring()
+  local text = countStr
+  if (itemType == EII_SMOKE_GRENADE && salvo != null)
+    text = $"{salvo}/{count}"
+  else if (itemType == EII_MISSION_SUPPORT_PLANE)
+    text = $"{shortTextFromNum(count)} {loc("multiplayer/spawnScore/abbr")}"
+  else if (isStreakEx)
+    text = $"{countStr}/{loc("icon/nuclear_bomb")}"
+  else if (countEx >= 0) {
+    let countExStr = countEx.tostring()
+    let isCountExTooLong = !isFull
+      && countStr.len() + ITEM_AMOUNT_SEPARATOR_LENGTH + countExStr.len() > ITEM_AMOUNT_TEXT_MAX_LEN
+    text = $"{countStr}/{isCountExTooLong ? loc("weapon/bigAmountNumberIcon") : countExStr}"
   }
 
   return isFull ? $"{loc("options/count")}{loc("ui/colon")}{text}" : text
@@ -87,7 +86,7 @@ function getActionItemStatus(item) {
   }
 }
 
-return {
+return freeze({
   cacheActionDescs
   getActionDesc
   shouldActionBarFontBeTiny
@@ -95,4 +94,4 @@ return {
   getActionItemModificationName
   getActionItemStatus
   curHeroTemplates
-}
+})

@@ -49,7 +49,7 @@ let getEnemyTeamColorW = @() Computed(@() teamColors.get().teamRedColor)
 
 let getTimeLeftStrW = @() Computed(@() secondsToTimeSimpleString(timeLeft.get()))
 
-return {
+return freeze({
   getAllyTeamColorW
   getEnemyTeamColorW
   getCountKillsToWinW
@@ -60,4 +60,4 @@ return {
   getEnemyTeamScoreW
   getCapZoneStateW
   getCapZoneColorW
-}
+})

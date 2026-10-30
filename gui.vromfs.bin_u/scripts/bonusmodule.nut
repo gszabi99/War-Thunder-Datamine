@@ -143,10 +143,10 @@ function showAirExpWpBonus(obj, airName, showExp = true, showWp = true) {
     obj[name] = result
 }
 
-return {
+return freeze({
   showCurBonus
   hideBonus
   showAirExpWpBonus
   getBonus
   getBonusImage
-}
+})

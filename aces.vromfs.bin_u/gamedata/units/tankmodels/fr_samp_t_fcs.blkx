@@ -3038,7 +3038,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/fr_arabel.blk",
+        "blk": "gamedata/sensors/fr_arabel.blk",
         "turretIndex": -1,
         "designationFromBody": true,
         "designationTurretIndex": -1,
@@ -3050,7 +3050,7 @@
         "ai": false
       },
       {
-        "blk": "gameData/sensors/fr_arabel_ai.blk",
+        "blk": "gamedata/sensors/fr_arabel_ai.blk",
         "turretIndex": -1,
         "designationFromBody": true,
         "designationTurretIndex": -1,
@@ -3069,6 +3069,30 @@
     "hasTurretView": false,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 12.0
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -4.97,
+      0.5969,
+      1.0354
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   },
   "DamageParts": {
     "formatVersion": 2,
@@ -3723,7 +3747,7 @@
       "dummy": true,
       "trigger": "gunner0",
       "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "blk": "gamedata/weapons/dummy_weapon.blk",
       "emitter": "bone_camera_gunner",
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
@@ -3776,8 +3800,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_samp_t_launcher_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_samp_t_launcher_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "supportPlanes": {

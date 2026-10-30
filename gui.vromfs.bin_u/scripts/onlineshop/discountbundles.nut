@@ -1,12 +1,11 @@
+from "%scripts/onlineShop/entitlementsInfo.nut" import bundlesShopInfo
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig
+from "%scripts/unit/availabilityBuyOnline.nut" import isAvailableBuyUnitOnline
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/math.nut" import calcPercent
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "types" import Integer
-
-let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { isAvailableBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 const DISCOUNT_BUNDLES_TIMER_ID = "timer_discount_bundles_update"
 
@@ -54,6 +53,6 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
 
 bundlesShopInfo.subscribe(updateDiscountUnitsBundles)
 
-return {
+return freeze({
   discountUnitsBundles
-}
+})

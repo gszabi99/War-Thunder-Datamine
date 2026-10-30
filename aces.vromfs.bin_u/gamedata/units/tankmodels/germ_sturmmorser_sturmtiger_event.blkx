@@ -49,6 +49,12 @@
   "customClassIco": "!#ui/gameuiskin#germ_sturmmorser_sturmtiger_ico.svg",
   "customImage": "!#ui/unitskin#germ_sturmmorser_sturmtiger.ddsx",
   "customTooltipImage": "!#ui/tanks/germ_sturmmorser_sturmtiger.avif",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1735,7 +1741,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/380mm_RW_61_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/380mm_RW_61_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.4,
@@ -1814,7 +1820,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1858,8 +1864,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_sturmmorser_sturmtiger_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_sturmmorser_sturmtiger_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2905,7 +2911,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/380mm_RW_61_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/380mm_RW_61_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilMultiplier": 0.4,
@@ -2984,7 +2990,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3027,7 +3033,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

@@ -48,6 +48,7 @@
       "light__render_gpu_objects": false,
       "light__force_max_light_radius": false,
       "light__radius_scale": 1.0,
+      "light__source_radius": 0.0,
       "light__enable_lens_flares": false
     }
   },
@@ -173,5 +174,45 @@
   "undestroyable_spot_light": {
     "_use": "base_spot_light",
     "light:tag": {}
+  },
+  "base_lamppost": {
+    "_use": "spot_light",
+    "_group": {
+      "spot_light__inner_attenuation": 0.5,
+      "spot_light__dynamic_obj_shadows": true
+    }
+  },
+  "lamppost_a": {
+    "_use": "base_lamppost",
+    "light__max_radius": 14.0,
+    "light__brightness": 60.0,
+    "light__color": [
+      160,
+      220,
+      255,
+      255
+    ]
+  },
+  "lamppost_b": {
+    "_use": "base_lamppost",
+    "light__max_radius": 9.0,
+    "light__brightness": 15.0,
+    "light__color": [
+      180,
+      250,
+      255,
+      255
+    ]
+  },
+  "lamppost_c": {
+    "_use": "base_lamppost",
+    "light__max_radius": 19.0,
+    "light__brightness": 150.0,
+    "light__color": [
+      180,
+      250,
+      255,
+      255
+    ]
   }
 }

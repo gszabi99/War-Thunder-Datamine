@@ -1,10 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/web/webpoll.nut" import getPollIdByFullUrl, invalidateTokensCache
+from "%scripts/onlineShop/url.nut" import validateLink, openUrl
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
 from "%scripts/dagui_library.nut" import *
-
-let { getPollIdByFullUrl, invalidateTokensCache } = require("%scripts/web/webpoll.nut")
-let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
 function openLinkWithSource(params = [], source = "promo_open_link") {
   local link = ""
@@ -34,6 +33,6 @@ addPromoButtonConfig({
   collapsedIconLocKey = "icon/web_poll"
 })
 
-return {
+return freeze({
   openLinkWithSource
-}
+})

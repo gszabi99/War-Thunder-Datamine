@@ -1,5 +1,15 @@
+import "%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut" as generateSubmarineActionBars
 import "%sqStdLibs/helpers/enums.nut" as enums
 import "DataBlock" as DataBlock
+from "%scripts/controls/hotas.nut" import checkJoystickThustmasterHotas
+from "%sqstd/platform.nut" import isSony
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/controls/help/controlsHelpUnitRankGetters.nut" import getTankRankForHelp
+from "%scripts/unit/unitWeaponryInfo.nut" import isUnitWithRadar
+from "%scripts/hud/maybeOfferControlsHelp.nut" import getEventConditionControlHelp
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "controls" import hasXInputDevice
 from "math" import abs, round
 from "controllerState" import is_keyboard_connected, is_mouse_connected
@@ -15,17 +25,7 @@ from "app" import is_dev_version
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRankGetters.nut")
 let aircraftControls = require("%scripts/controls/help/aircraftControls.nut")
-let { isUnitWithRadar } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getEventConditionControlHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
 const DEF_PERESCOPE_DEPTH_VALUE = 10
@@ -450,7 +450,7 @@ enums.addTypes(result, {
     }
     customUpdateSheetFunc = function(obj) {
       let wBlk = DataBlock()
-      if (!wBlk.tryLoad("gameData/weapons/groundModels_weapons/acoustic_heavy_user_cannon.blk"))
+      if (!wBlk.tryLoad("gamedata/weapons/groundModels_weapons/acoustic_heavy_user_cannon.blk"))
         return
       let sdBlk = wBlk?.sonic_wave.bullet.sonicDamage ?? wBlk?.bullet.sonicDamage
       let soundwaveDescTextObj = obj.findObject("soundwave_txt")
@@ -537,7 +537,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
-    specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
+    specificCheck = @() isSony || isKeyboardOrMouseConnected()
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
     pageBlkName = "%gui/help/controllerKeyboard.blk"
@@ -549,7 +549,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
-    specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
+    specificCheck = @() isSony || isKeyboardOrMouseConnected()
     checkFeature = unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
 
@@ -562,7 +562,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
-    specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
+    specificCheck = @() isSony || isKeyboardOrMouseConnected()
     checkFeature = unitTypes.SHIP.isAvailable
     pageUnitTypeBit = unitTypes.SHIP.bit
 
@@ -575,7 +575,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
-    specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
+    specificCheck = @() isSony || isKeyboardOrMouseConnected()
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
@@ -588,7 +588,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.KEYBOARD_MOUSE
 
-    specificCheck = @() isPlatformSony || isKeyboardOrMouseConnected()
+    specificCheck = @() isSony || isKeyboardOrMouseConnected()
     checkFeature = @() unitTypes.SHIP.isAvailable() && hasFeature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"

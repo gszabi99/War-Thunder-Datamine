@@ -1,11 +1,11 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+from "%scripts/unit/unitNews.nut" import hasUnitNews, getUnitNewsId
+from "%scripts/changelog/changeLogState.nut" import unitNews
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
-let { hasUnitNews, getUnitNewsId } = require("%scripts/unit/unitNews.nut")
-let { unitNews } = require("%scripts/changelog/changeLogState.nut")
 
 elemModelType.addTypes({
   NEWS_MARKER = {
@@ -43,4 +43,4 @@ elemViewType.addTypes({
 })
 
 
-return {}
+return freeze({})

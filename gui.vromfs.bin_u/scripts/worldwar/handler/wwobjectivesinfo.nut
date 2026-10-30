@@ -1,16 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/worldWar/inOperation/handler/wwObjective.nut" import wwObjective
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import getSidesOrder
 from "worldwar" import wwGetOperationId, wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { wwObjective } = require("%scripts/worldWar/inOperation/handler/wwObjective.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 let WwObjectivesInfo = class (BaseGuiHandlerWT) {

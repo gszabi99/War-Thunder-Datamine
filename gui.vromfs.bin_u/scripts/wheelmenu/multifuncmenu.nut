@@ -1,11 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wheelmenu/wheelmenu.nut" import wheelMenuHandler
+from "%scripts/wheelmenu/multifuncMenuTools.nut" import openMfm, getMfmSectionTitle, getMfmHandler
 from "controls" import emulateShortcut, isXInputDevice
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
-let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 
 
@@ -25,6 +25,10 @@ register_gui_handler("multifuncMenuHandler", class (wheelMenuHandler) {
   path = null
 
   function initScreen() {
+    if (this.mfmDescription == null) { 
+      this.showScene(false)
+      return
+    }
     base.initScreen()
 
     this.path = this.path ?? []

@@ -3,4 +3,4 @@ enum ReputationType {
   REP_BAD
 };
 
-return({ ReputationType });
+return(freeze({ ReputationType }));

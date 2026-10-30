@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.17,
-  "maxDeltaAngleVertical": 0.115,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bullets": 250,
-  "mass": 41.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,46 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.17,
+  "maxDeltaAngleVertical": 0.115,
+  "shotFreq": 12.5,
+  "bullets": 250,
+  "mass": 41.0,
+  "overheat": {
+    "overheat": [
+      [
+        9.0,
+        0.0
+      ],
+      [
+        11.0,
+        0.02
+      ],
+      [
+        13.0,
+        0.05
+      ]
+    ]
+  },
+  "deviation": {
+    "deviation": [
+      [
+        3.0,
+        1.0
+      ],
+      [
+        6.0,
+        2.2
+      ],
+      [
+        10.0,
+        3.96
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.136,
@@ -1344,7 +1376,7 @@
         ],
         "traceFreq": 1,
         "tracer": "20mmWhiteGreen",
-        "trail": "smallTrail"
+        "trail": "black"
       }
     },
     {
@@ -5419,7 +5451,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhiteGreen",
-          "trail": "smallTrail"
+          "trail": "black"
         }
       },
       {
@@ -7080,7 +7112,7 @@
           ],
           "traceFreq": 1,
           "tracer": "20mmWhiteGreen",
-          "trail": "smallTrail"
+          "trail": "black"
         }
       }
     ]
@@ -7908,45 +7940,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "hs404_gun_outside",
-    "cockpit": "hs404_gun_inside",
-    "ai": "hs404_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        9.0,
-        0.0
-      ],
-      [
-        11.0,
-        0.02
-      ],
-      [
-        13.0,
-        0.05
-      ]
-    ]
-  },
-  "deviation": {
-    "deviation": [
-      [
-        3.0,
-        1.0
-      ],
-      [
-        6.0,
-        2.2
-      ],
-      [
-        10.0,
-        3.96
-      ]
-    ]
-  },
   "cannon_ff_k_45_new_gun": {
     "maxDeltaAngle": 0.25,
     "overheat": {
@@ -7977,5 +7970,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "hs404_gun_outside",
+    "cockpit": "hs404_gun_inside",
+    "ai": "hs404_gun_ai"
   }
 }

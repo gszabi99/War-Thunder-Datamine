@@ -1,8 +1,32 @@
+import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/clientState/clientStates.nut" import isInMenu, isInBattleState
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isMeSessionLobbyRoomOwner, getRoomCreatorUid, isSessionStartedInRoom, getSessionLobbyMaxMembersCount, getSessionLobbyPlayerInfoByUid, isInSessionLobbyEventRoom
+  , isMemberHost, sessionLobbyStatus
+from "%scripts/user/profileStates.nut" import userIdInt64, userName, isMyUserId
+from "%scripts/matching/api.nut" import matchingApiFunc, checkMatchingError
+from "%scripts/matching/serviceNotifications/mroomsApi.nut" import requestJoinRoom, serializeDyncampaign, requestCreateRoom
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import leaveSessionRoom, setSessionLobbySettings, switchSessionLobbyStatus, updateMemberHostParams, changeRoomPassword, needCheckReconnect, syncAllSessionLobbyInfo
+  , initMyParamsByMemberInfo, returnStatusToRoom, checkAutoStart, destroyRoom, setLastRound, setRoomInSession, prepareSettings
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import needAutoInviteSquadToSessionRoom, getRoomMGameMode, haveLobby, getRoomEvent
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import invitePlayerToSessionRoom, isRoomMemberOperator
+from "%scripts/matchingRooms/sessionDebugInfo.nut" import set_last_session_debug_info
+from "%scripts/queue/queueManager.nut" import leaveAllQueuesSilent, notifyQueueLeave
+from "%scripts/penitentiary/antiCheat.nut" import showMsgboxIfEacInactive
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/user/antiAddictSystem.nut" import checkShowMultiplayerAasWarningMsg
+from "%scripts/clientState/localProfileDeprecated.nut" import saveLocalByAccount
+from "%scripts/statistics/squadIcon.nut" import initListLabelsSquad
+from "%scripts/contacts/contactsListState.nut" import getContactsGroupUidList
+from "%scripts/events/eventInfo.nut" import getEventEconomicName, isEventWithLobby
+from "%scripts/chat/mpChatModel.nut" import clearMpChatLog
+from "%scripts/userPresence.nut" import setUserPresence
+from "%scripts/squads/squadUtils.nut" import updateMyCountryData
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import search, isEmpty
 from "%appGlobals/login/loginState.nut" import isLoggedIn
-from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "guiMission" import quit_to_debriefing, interrupt_multiplayer, leave_mp_session
 from "penalty" import getPenaltyStatus, BAN
 from "dynamicMission" import dynamicMissionPlayed
@@ -17,29 +41,7 @@ from "gameplayBinding" import inFlightMenu, isInFlight
 from "%scripts/webRPC.nut" import webRpcRegister
 from "types" import String
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { isInMenu, isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { SessionLobbyState, isInSessionRoom, isMeSessionLobbyRoomOwner, getRoomCreatorUid, isSessionStartedInRoom, getSessionLobbyMaxMembersCount, getSessionLobbyPlayerInfoByUid, isInSessionLobbyEventRoom, isMemberHost, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdInt64, userName, isMyUserId } = require("%scripts/user/profileStates.nut")
-let { matchingApiFunc, checkMatchingError } = require("%scripts/matching/api.nut")
-let { requestJoinRoom, serializeDyncampaign, requestCreateRoom } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { leaveSessionRoom, setSessionLobbySettings, switchSessionLobbyStatus, updateMemberHostParams, changeRoomPassword, needCheckReconnect, syncAllSessionLobbyInfo, initMyParamsByMemberInfo, returnStatusToRoom, checkAutoStart, destroyRoom, setLastRound, setRoomInSession, prepareSettings } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { needAutoInviteSquadToSessionRoom, getRoomMGameMode, haveLobby, getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { invitePlayerToSessionRoom, isRoomMemberOperator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-let { leaveAllQueuesSilent, notifyQueueLeave } = require("%scripts/queue/queueManager.nut")
-let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
-let { getContactsGroupUidList } = require("%scripts/contacts/contactsListState.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { getEventEconomicName, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
-let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
-let { setUserPresence } = require("%scripts/userPresence.nut")
-let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
+let { SessionLobbyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 local delayedJoinRoomFunc = null
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
@@ -166,7 +168,7 @@ function isMeBanned() {
 }
 
 function checkReconnect() {
-  if (disableNetwork || isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
+  if (isReconnectChecking.get() || !isLoggedIn.get() || isInBattleState.get() || isMeBanned())
     return
 
   isReconnectChecking.set(true)
@@ -408,7 +410,7 @@ addListenersWithoutEnv({
   SquadStatusChanged         = @(_) checkSquadAutoInviteToRoom()
 }, DEFAULT_HANDLER)
 
-return {
+return freeze({
   joinBattle
   joinSessionRoom
   checkReconnect
@@ -417,4 +419,4 @@ return {
   startCoopBySquad
   createSessionLobbyRoom
   createSessionLobbyEventRoom
-}
+})

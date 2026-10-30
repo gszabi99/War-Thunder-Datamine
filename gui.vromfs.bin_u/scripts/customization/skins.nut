@@ -1,4 +1,22 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/customization/skinLocations.nut" as skinLocations
 import "%sqstd/string.nut" as string
+from "%scripts/money.nut" import zero_money
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%scripts/customization/downloadableDecorators.nut" import getDownloadableSkins
+from "%scripts/guidParser.nut" import isGuid
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/customization/decorator.nut" import Decorator
+from "%scripts/customization/skinUtils.nut" import getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource
+from "%scripts/customization/bannedSkins.nut" import isSkinBanned
+from "%scripts/options/optionsExtNames.nut" import USEROPT_USER_SKIN
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_ROTATION_SLIDER_FACTOR
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyRoomId
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/customization/prioritySkins.nut" import getPrioritySkin
 from "%sqStdLibs/helpers/u.nut" import find_in_array, isDataBlock
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "chard" import save_profile
@@ -13,26 +31,8 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
-let { zero_money } = require("%scripts/money.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
-let { isGuid } = require("%scripts/guidParser.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { Decorator } = require("%scripts/customization/decorator.nut")
-let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
-let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
-let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getPrioritySkin } = require("%scripts/customization/prioritySkins.nut")
 
 let previewedLiveSkinIds = []
 

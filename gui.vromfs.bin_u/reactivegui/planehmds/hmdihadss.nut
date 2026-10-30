@@ -1,11 +1,11 @@
 import "string" as string
 from "%rGui/style/screenState.nut" import isInVr
-from "%rGui/airState.nut" import HorVelX, HorVelY, TATargetVisible, Rpm, RocketAimX, RocketAimY
+from "%rGui/airState.nut" import HorVelX, HorVelY, Rpm, HmdRocketAimX, HmdRocketAimY, HmdRocketAimVisible
 from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet, mpsToFpm
 from "%rGui/planeState/planeFlyState.nut" import Speed, CompassValue, Altitude, ClimbSpeed, BarAltitude, Tangage, Roll
   , HorAccelX, HorAccelY, Accel
 from "%rGui/style/airHudStyle.nut" import hudFontHgt
-from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
+from "%rGui/hud/targetTrackerState.nut" import HmdTargetX, HmdTargetY, HmdTargetVisible
 from "%rGui/planeState/planeToolsState.nut" import HmdYaw, HmdPitch, AimLockYaw, AimLockPitch, AimLocked, ScreenFwdDirPosValid, RocketMode
   , HmdTargetPosValid, HmdGunTargeting
 from "%sqstd/math.nut" import floor, abs, fabs
@@ -53,7 +53,7 @@ let accel = @() {
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_ELLIPSE, 0, 0, 2, 2]
       ]
     }
@@ -166,7 +166,7 @@ let compassVal = @(){
   text = CompassInt.get().tostring()
 }
 
-let cuedLosReticleVis = Computed(@() TATargetVisible.get() && TargetX.get() >= sw(30) && TargetX.get() <= sw(70) && TargetY.get() >= sh(30) && TargetY.get() <= sh(80))
+let cuedLosReticleVis = Computed(@() HmdTargetVisible.get() && HmdTargetX.get() >= sw(30) && HmdTargetX.get() <= sw(70) && HmdTargetY.get() >= sh(30) && HmdTargetY.get() <= sh(80))
 let cuedLosReticle = @(){
     watch = cuedLosReticleVis
     size = FLEX
@@ -175,7 +175,7 @@ let cuedLosReticle = @(){
       size = ph(3)
       color = baseColor
       lineWidth = baseLineWidth * 2.0
-      commands = [
+      commands = const [
         [VECTOR_LINE, 30, 0, 50, 0],
         [VECTOR_LINE, 80, 0, 100, 0],
         [VECTOR_LINE, -30, 0, -50, 0],
@@ -188,20 +188,20 @@ let cuedLosReticle = @(){
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [TargetX.get(), TargetY.get()]
+          translate = [HmdTargetX.get(), HmdTargetY.get()]
         }
       }
     } : null
 }
 
-let upCueDotVis = Computed(@() sh(50) - TargetY.get() > sh(4))
-let leftCueDotVis = Computed(@() sw(50) - TargetX.get() > sh(4))
-let rightCueDotVis = Computed(@() TargetX.get() - sw(50) > sh(4))
-let bottomCueDotVis = Computed(@() TargetY.get() - sh(50) > sh(4))
+let upCueDotVis = Computed(@() sh(50) - HmdTargetY.get() > sh(4))
+let leftCueDotVis = Computed(@() sw(50) - HmdTargetX.get() > sh(4))
+let rightCueDotVis = Computed(@() HmdTargetX.get() - sw(50) > sh(4))
+let bottomCueDotVis = Computed(@() HmdTargetY.get() - sh(50) > sh(4))
 let cueDots = @(){
-  watch = TATargetVisible
+  watch = HmdTargetVisible
   size = FLEX
-  children = TATargetVisible.get() ? [
+  children = HmdTargetVisible.get() ? [
     @() {
       watch = upCueDotVis
       size = FLEX
@@ -210,7 +210,7 @@ let cueDots = @(){
         pos = const [pw(50), ph(46.5)]
         color = baseColor
         lineWidth = baseLineWidth * 3.5
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
       } : null
@@ -223,7 +223,7 @@ let cueDots = @(){
         pos = const [pw(48.3), ph(50)]
         color = baseColor
         lineWidth = baseLineWidth * 3.5
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
       } : null
@@ -236,7 +236,7 @@ let cueDots = @(){
         pos = const [pw(51.7), ph(50)]
         color = baseColor
         lineWidth = baseLineWidth * 3.5
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
       } : null
@@ -249,7 +249,7 @@ let cueDots = @(){
         pos = const [pw(50), ph(53.5)]
         color = baseColor
         lineWidth = baseLineWidth * 3.5
-        commands = [
+        commands = const [
           [VECTOR_LINE, 0, 0, 0, 0]
         ]
       } : null
@@ -266,27 +266,27 @@ let climbSpeedGrid = @(){
   lineWidth = baseLineWidth
   color = baseColor
   commands = [
-    [VECTOR_LINE, 0, 0, 40, 0],
-    [VECTOR_LINE, 0, 25, 40, 25],
-    [VECTOR_LINE, 20, 30, 40, 30],
-    [VECTOR_LINE, 20, 35, 40, 35],
-    [VECTOR_LINE, 20, 40, 40, 40],
-    [VECTOR_LINE, 20, 45, 40, 45],
-    [VECTOR_LINE, 20, 55, 40, 55],
-    [VECTOR_LINE, 20, 60, 40, 60],
-    [VECTOR_LINE, 20, 65, 40, 65],
-    [VECTOR_LINE, 20, 70, 40, 70],
-    [VECTOR_LINE, 0, 75, 40, 75],
-    [VECTOR_LINE, 0, 100, 40, 100],
+    const [VECTOR_LINE, 0, 0, 40, 0],
+    const [VECTOR_LINE, 0, 25, 40, 25],
+    const [VECTOR_LINE, 20, 30, 40, 30],
+    const [VECTOR_LINE, 20, 35, 40, 35],
+    const [VECTOR_LINE, 20, 40, 40, 40],
+    const [VECTOR_LINE, 20, 45, 40, 45],
+    const [VECTOR_LINE, 20, 55, 40, 55],
+    const [VECTOR_LINE, 20, 60, 40, 60],
+    const [VECTOR_LINE, 20, 65, 40, 65],
+    const [VECTOR_LINE, 20, 70, 40, 70],
+    const [VECTOR_LINE, 0, 75, 40, 75],
+    const [VECTOR_LINE, 0, 100, 40, 100],
     [VECTOR_WIDTH, baseLineWidth * 1.8],
-    [VECTOR_LINE, 0, 50, 50, 50]
+    const [VECTOR_LINE, 0, 50, 50, 50]
   ]
   children = showAltitudeBar.get() ? {
     size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth
     color = baseColor
-    commands = [
+    commands = const [
       [VECTOR_LINE, 60, 0, 100, 0],
       [VECTOR_LINE, 60, 25, 100, 25],
       [VECTOR_LINE, 60, 50, 100, 50],
@@ -374,6 +374,15 @@ function climbSpeed(width, height) {
   }
 }
 
+let limitBox = freeze({
+  size = FLEX
+  rendObj = ROBJ_BOX
+  fillColor = Color(0, 0, 0, 0)
+  borderColor = baseColor
+  borderWidth = baseLineWidth
+  borderRadius = hdpx(5)
+})
+
 let speedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedVal
@@ -386,14 +395,7 @@ let speed = @(){
   font = Fonts.hud
   fontSize = hudFontHgt
   text = speedVal.get().tointeger()
-  children = speedVal.get() >= 210 ? {
-    size = FLEX
-    rendObj = ROBJ_BOX
-    fillColor = Color(0, 0, 0, 0)
-    borderColor = baseColor
-    borderWidth = baseLineWidth
-    borderRadius = hdpx(5)
-  } : null
+  children = speedVal.get() >= 210 ? limitBox : null
 }
 
 let engineTorq = @(){
@@ -407,14 +409,7 @@ let engineTorq = @(){
   font = Fonts.hud
   fontSize = hudFontHgt
   text = string.format("%d%%", Rpm.get())
-  children = Rpm.get() >= 98 ? {
-    size = FLEX
-    rendObj = ROBJ_BOX
-    fillColor = Color(0, 0, 0, 0)
-    borderColor = baseColor
-    borderWidth = baseLineWidth
-    borderRadius = hdpx(5)
-  } : null
+  children = Rpm.get() >= 98 ? limitBox : null
 }
 
 let hmdPosX = Computed(@() cvt(HmdYaw.get(), -72.0, 72.0, 0.0, 80.0).tointeger())
@@ -429,46 +424,44 @@ function fieldOfRegard(width, height) {
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
     borderWidth = baseLineWidth
-    children = [
-      {
-        rendObj = ROBJ_VECTOR_CANVAS
-        size = FLEX
-        color = baseColor
-        lineWidth = baseLineWidth
-        commands = [
-          [VECTOR_LINE, 50, 1, 50, 10],
-          [VECTOR_LINE, 50, 90, 50, 99],
-          [VECTOR_LINE, 1, 30, 5, 30],
-          [VECTOR_LINE, 95, 30, 99, 30]
-        ]
-        children = [
-          @(){
-            watch = [hmdPosX, hmdPosY]
-            size = const [pw(20), ph(40)]
-            pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
-            rendObj = ROBJ_BOX
-            fillColor = Color(0, 0, 0, 0)
-            borderColor = baseColor
-            borderWidth = baseLineWidth * 0.8
-          }
-          @() {
-            watch = AimLocked
+    children = {
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = FLEX
+      color = baseColor
+      lineWidth = baseLineWidth
+      commands = [
+        [VECTOR_LINE, 50, 1, 50, 10],
+        [VECTOR_LINE, 50, 90, 50, 99],
+        [VECTOR_LINE, 1, 30, 5, 30],
+        [VECTOR_LINE, 95, 30, 99, 30]
+      ]
+      children = [
+        @(){
+          watch = [hmdPosX, hmdPosY]
+          size = const [pw(20), ph(40)]
+          pos = [pw(hmdPosX.get()), ph(hmdPosY.get())]
+          rendObj = ROBJ_BOX
+          fillColor = Color(0, 0, 0, 0)
+          borderColor = baseColor
+          borderWidth = baseLineWidth * 0.8
+        }
+        @() {
+          watch = AimLocked
+          size = FLEX
+          children = AimLocked.get() ? @(){
+            watch = [aimLockX, aimLockY]
             size = FLEX
-            children = AimLocked.get() ? @(){
-              watch = [aimLockX, aimLockY]
-              size = FLEX
-              pos = [pw(aimLockX.get()), ph(aimLockY.get())]
-              rendObj = ROBJ_VECTOR_CANVAS
-              color = baseColor
-              lineWidth = baseLineWidth * 5
-              commands = [
-                [VECTOR_LINE, 0, 0, 0, 0]
-              ]
-            } : null
-          }
-        ]
-      }
-    ]
+            pos = [pw(aimLockX.get()), ph(aimLockY.get())]
+            rendObj = ROBJ_VECTOR_CANVAS
+            color = baseColor
+            lineWidth = baseLineWidth * 5
+            commands = const [
+              [VECTOR_LINE, 0, 0, 0, 0]
+            ]
+          } : null
+        }
+      ]
+    }
   }
 }
 
@@ -557,7 +550,7 @@ let skidBall = {
     lineWidth = baseLineWidth
     color = baseColor
     fillColor = baseColor
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 0, 0, 30, 30]
     ]
   }
@@ -584,38 +577,33 @@ function generatePitchLine(num) {
     size = const [pw(60), ph(50)]
     pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
-        color = baseColor
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -50, 0, 150, 0]
-        ]
-        children = [angleTxt(-10, true, pw(-20)), angleTxt(-10, false, pw(20))]
-      }
-    ] :
-    [
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth
-        color = baseColor
-        commands = [
-          [VECTOR_LINE, 0, 10 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0 ],
-          (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
-          [VECTOR_LINE, 100, 10 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
-          (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, pw(-15)), angleTxt(newNum, false, pw(15))] : null
-      }
-    ]
+    children = num == 0 ? {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = baseColor
+      padding = const [0, 10]
+      commands = [
+        [VECTOR_LINE, -50, 0, 150, 0]
+      ]
+      children = [angleTxt(-10, true, pw(-20)), angleTxt(-10, false, pw(20))]
+    } : {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth
+      color = baseColor
+      commands = [
+        [VECTOR_LINE, 0, 10 * sign, 0, 0],
+        [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0 ],
+        (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
+        (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
+        [VECTOR_LINE, 100, 10 * sign, 100, 0],
+        [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
+        (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
+        (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : [])
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, pw(-15)), angleTxt(newNum, false, pw(15))] : null
+    }
   }
 }
 
@@ -646,7 +634,8 @@ function pitch(width, height, generateFunc) {
   }
 }
 
-let rocketVisible = Computed(@() RocketAimX.get() >= sw(30) && RocketAimX.get() <= sw(70) && RocketAimY.get() >= sh(30) && RocketAimY.get() <= sh(80))
+let rocketVisible = Computed(@() HmdRocketAimVisible.get() && HmdRocketAimX.get() >= sw(30) && HmdRocketAimX.get() <= sw(70)
+  && HmdRocketAimY.get() >= sh(30) && HmdRocketAimY.get() <= sh(80))
 let rocketReticle = @(){
   watch = [RocketMode, rocketVisible]
   size = FLEX
@@ -655,7 +644,7 @@ let rocketReticle = @(){
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth * 1.5
-    commands = [
+    commands = const [
       [VECTOR_LINE, 0, -90, 0, -20],
       [VECTOR_LINE, 0, 90, 0, 20],
       [VECTOR_LINE, -100, -100, -20, -100],
@@ -666,7 +655,7 @@ let rocketReticle = @(){
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [RocketAimX.get(), RocketAimY.get()]
+        translate = [HmdRocketAimX.get(), HmdRocketAimY.get()]
       }
     }
   } : null
@@ -681,7 +670,7 @@ let tvvMark = @(){
     color = baseColor
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * 1.5
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 0, 0, 50, 50],
       [VECTOR_LINE, -100, 0, -50, 0],
       [VECTOR_LINE, 100, 0, 50, 0],
@@ -710,14 +699,13 @@ function pitchWrap(width, height) {
         color = baseColor
         lineWidth = baseLineWidth
         fillColor = baseColor
-        commands = [
+        commands = const [
           [VECTOR_POLY, 49.25, 10, 50, 8, 50.75, 10]
         ]
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
             rotate = -Roll.get()
-            pivot = [0.5, 0.5]
           }
         }
       }
@@ -736,7 +724,7 @@ function horizontLine(height) {
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       lineWidth = baseLineWidth
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, 0, 40, 0],
         [VECTOR_LINE, 60, 0, 100, 0]
       ]
@@ -760,7 +748,7 @@ let gunReticle = @(){
       size = ph(3)
       color = baseColor
       lineWidth = baseLineWidth * 2.0
-      commands = [
+      commands = const [
         [VECTOR_LINE, 30, 0, 50, 0],
         [VECTOR_LINE, 80, 0, 100, 0],
         [VECTOR_LINE, -30, 0, -50, 0],

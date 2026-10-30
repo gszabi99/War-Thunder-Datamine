@@ -1,4 +1,29 @@
 import "regexp2" as regexp2
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "%scripts/unit/unitMrankSelectionState.nut" import getUnitSelectedBattleRating
+from "%scripts/events/eventsState.nut" import getEvent, isCustomGameMode
+from "%scripts/events/eventTeamsInfo.nut" import getCountries, getCountriesByTeams, getEventRequiredUnitTypesMask, getEventUnitTypesMask, getRequiredCrafts, getSidesList, getTeamData
+  , getTeamName, hasUnitRequirements, isUnitAllowedByTeamData, isUnitMatchesRule, isUnitTypeRequired
+from "%scripts/events/eventTexts.nut" import getEventNameText
+from "%scripts/teams.nut" import g_team
+from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyPublicData, getSessionLobbyMissionData, getSessionLobbyGameMode, isInSessionRoom, isPlayerInMyRoom, isMeSessionLobbyRoomOwner, getSessionLobbyCurRoomEdiff
+  , getSessionLobbyMGameModeId, isInSessionLobbyEventRoom, getSessionLobbyPlayerInfoByUid, getRoomSize, getSessionLobbyPlayerInfoByName, getSessionLobbyMaxRespawns, getSessionInfo
+  , getSessionLobbyPublicParam, getRoomMembers, isMemberHost, hasSessionInLobby, isMemberSpectator, getRoomMembersCnt, isUrlMissionByRoom
+  , getMissionUrl, isUserMission
+from "%scripts/user/profileStates.nut" import userIdInt64, isMyUserId
+from "%scripts/user/nameMapping.nut" import getRealName
+from "%scripts/missions/missionsText.nut" import getCombineLocNameMission
+from "%scripts/events/eventInfo.nut" import getEventRankCalcMode, isEventWithLobby
+from "%scripts/missions/missionsUtilsModule.nut" import getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMissionName
+from "%scripts/matching/matchingGameModes.nut" import getModeById
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
+from "%scripts/slotbar/crewsList.nut" import getCrewsListByCountry
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/time.nut" import secondsToString
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isRoomMemberInSession, isRoomMemberReady
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/onlineInfo/onlineInfo.nut" import getMatchingServerTime
 from "guiMission" import get_meta_mission_info_by_name
 from "string" import format
 from "matching.errors" import INVALID_SQUAD_ID
@@ -9,28 +34,11 @@ from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
+from "%appGlobals/missions/respawnCountModes.nut" import isRespawnAllowed
 
-let { getEvent, isCustomGameMode } = require("%scripts/events/eventsState.nut")
-let { getCountries, getCountriesByTeams, getEventRequiredUnitTypesMask, getEventUnitTypesMask, getRequiredCrafts, getSidesList, getTeamData, getTeamName, hasUnitRequirements, isUnitAllowedByTeamData, isUnitMatchesRule, isUnitTypeRequired } = require("%scripts/events/eventTeamsInfo.nut")
-let { getEventNameText } = require("%scripts/events/eventTexts.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { getSessionLobbyPublicData, getSessionLobbyMissionData, getSessionLobbyGameMode, isInSessionRoom, isPlayerInMyRoom, isMeSessionLobbyRoomOwner, SessionLobbyState, getSessionLobbyCurRoomEdiff, getSessionLobbyMGameModeId, isInSessionLobbyEventRoom, getSessionLobbyPlayerInfoByUid, getRoomSize, getSessionLobbyPlayerInfoByName, getSessionLobbyMaxRespawns, getSessionInfo, getSessionLobbyPublicParam, getRoomMembers, isMemberHost, hasSessionInLobby, isMemberSpectator, getRoomMembersCnt, isUrlMissionByRoom, getMissionUrl, isUserMission } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { userIdInt64, isMyUserId } = require("%scripts/user/profileStates.nut")
-let { getRealName } = require("%scripts/user/nameMapping.nut")
-let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
-let { getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
-let { getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { secondsToString } = require("%scripts/time.nut")
-let { isRoomMemberInSession, isRoomMemberReady } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { SessionLobbyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
-let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
@@ -285,7 +293,8 @@ function getBattleRatingParamByPlayerInfo(member, ediff, esUnitTypeFilter = null
 
     units.append({
       unitName
-      rating = unit?.getBattleRating(ediff) ?? 0
+      rating = (unitInfo?.mrank ?? -1) >= 0 ? calcBattleRatingFromRank(unitInfo.mrank)
+        : (unit?.getBattleRating(ediff) ?? 0)
       name = loc($"{unitName}_shop")
       rankUnused = unitInfo?.rankUnused ?? false
     })
@@ -302,7 +311,7 @@ function getNotAvailableUnitByBRText(unit, ediff, room = null) {
   if (!mGameMode)
     return null
 
-  let curBR = unit.getBattleRating(ediff)
+  let curBR = getUnitSelectedBattleRating(unit, ediff)
   let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.get()), ediff,
     ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
   return (isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
@@ -351,11 +360,7 @@ function isMemberInMySquadById(userId) {
 }
 
 function canBeSpectator() {
-  if (!hasFeature("Spectator"))
-    return false
-  if (getSessionLobbyGameMode() != GM_SKIRMISH) 
-    return false
-  return true
+  return getSessionLobbyGameMode() == GM_SKIRMISH
 }
 
 
@@ -384,7 +389,7 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
   local hasUnitsInSlotbar = false
   local hasAnyAvailable = false
   local isCurUnitAvailable = false
-  let hasRespawns = getSessionLobbyMaxRespawns() != 1
+  let hasRespawns = isRespawnAllowed(getSessionLobbyMaxRespawns())
   let ediff = getSessionLobbyCurRoomEdiff()
   let curUnit = getCurSlotbarUnit()
   let crews = getCrewsListByCountry(countryName)
@@ -568,7 +573,7 @@ function getMisListType(v_settings = null) {
   return g_mislist_type.BASE
 }
 
-return {
+return freeze({
   getRoomEvent
   getSessionLobbyMissionNameLoc
   getSessionLobbyMissionNameText
@@ -603,4 +608,4 @@ return {
   getMembersCountByTeams
   getRoomsInfoTbl
   getMisListType
-}
+})

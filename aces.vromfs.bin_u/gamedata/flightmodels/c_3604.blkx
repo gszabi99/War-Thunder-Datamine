@@ -1,24 +1,23 @@
 {
   "model": "c_3604",
   "fmFile": "fm/c_3604.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.03,
   "gearSinkRangeC": 0.02,
   "gyroSight": false,
   "type": "typeStormovik",
   "paratrooper": "ally",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_c_3604.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map_c_3604.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "assault",
   "DamageParts": {
@@ -55,21 +54,17 @@
     },
     "armor_engine": {
       "engine1_dm": {
-        "genericDamageMult": 1.6,
         "hp": 60.5
       }
     },
     "c_dural3": {
       "aileron_l_dm": {
-        "genericDamageMult": 0.3,
         "hp": 25.6
       },
       "aileron_r_dm": {
-        "genericDamageMult": 0.3,
         "hp": 25.6
       },
-      "elevator0_dm": {
-        "genericDamageMult": 0.3,
+      "elevator_dm": {
         "hp": 30.5
       },
       "fin1_dm": {
@@ -85,11 +80,9 @@
         "hp": 30.5
       },
       "rudder0_dm": {
-        "genericDamageMult": 0.3,
         "hp": 14.5
       },
       "rudder1_dm": {
-        "genericDamageMult": 0.3,
         "hp": 14.5
       },
       "stab1_dm": {
@@ -101,37 +94,32 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 65.5
+        "hp": 65.5,
+        "deadExplProb": 0.5
       },
       "fuse_dm": {
-        "hp": 50.5
+        "hp": 50.5,
+        "deadExplProb": 0.5
       },
       "tail_dm": {
-        "genericDamageMult": 0.5,
         "hp": 94.4
       },
       "wing1_l_dm": {
-        "genericDamageMult": 0.3,
         "hp": 80.5
       },
       "wing1_r_dm": {
-        "genericDamageMult": 0.3,
         "hp": 80.5
       },
       "wing2_l_dm": {
-        "genericDamageMult": 0.3,
         "hp": 68.1
       },
       "wing2_r_dm": {
-        "genericDamageMult": 0.3,
         "hp": 68.1
       },
       "wing_l_dm": {
-        "genericDamageMult": 0.3,
         "hp": 80.5
       },
       "wing_r_dm": {
-        "genericDamageMult": 0.3,
         "hp": 80.5
       }
     },
@@ -215,8 +203,8 @@
         "hp": 20.0
       },
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       }
     },
     "steel_tank_s": {
@@ -364,7 +352,7 @@
         "name": "cover3_dm"
       },
       {
-        "name": "elevator0_dm",
+        "name": "elevator_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -620,92 +608,6 @@
             "smoke": 0.2
           },
           {
-            "damage": 30.0,
-            "wing_r_dm": 0.1,
-            "wing_l_dm": 0.1
-          },
-          {
-            "damage": 50.0,
-            "wing_r_dm": 0.2,
-            "wing_l_dm": 0.2
-          },
-          {
-            "damage": 100.0,
-            "wing_r_dm": 0.3,
-            "wing_l_dm": 0.3
-          },
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": [
-          {
-            "wingcontrol_l_dm": 1.0,
-            "wingcontrol_r_dm": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 7.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 5.0
-          },
-          {
-            "damage": 10.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 3.0
-          },
-          {
-            "damage": 30.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true,
-            "nothing": 2.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 5.0,
-            "spar1_r_dm": 1.0,
-            "spar1_l_dm": 1.0,
-            "canCut": true
-          },
-          {
-            "damage": 200.0,
-            "wingcontrol_dm": 0.4,
-            "wingcontrol_l_dm": 0.4,
-            "wingcontrol_r_dm": 0.4
-          }
-        ]
-      },
-      {
-        "name": "fuse_dm",
-        "onHit": [
-          {
-            "flame": 0.2,
-            "smoke": 0.2
-          },
-          {
             "damage": 45.0,
             "tail_dm": 0.4
           },
@@ -720,15 +622,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -771,7 +677,99 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
+            "canCut": true
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
+          }
+        ]
+      },
+      {
+        "name": "fuse_dm",
+        "onHit": [
+          {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
+            "damage": 45.0,
+            "tail_dm": 0.4
+          },
+          {
+            "damage": 40.0,
+            "tail_dm": 0.6
+          },
+          {
+            "damage": 50.0,
+            "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": [
+          {
+            "tail_dm": 1.0,
+            "nothing": 10.0
+          },
+          {
+            "damage": 3.0,
+            "tail_dm": 1.0,
+            "nothing": 7.0
+          },
+          {
+            "damage": 7.0,
+            "tail_dm": 1.0,
+            "nothing": 6.0
+          },
+          {
+            "damage": 10.0,
+            "tail_dm": 1.0,
+            "nothing": 5.0
+          },
+          {
+            "damage": 20.0,
+            "tail_dm": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 30.0,
+            "tail_dm": 1.0,
+            "nothing": 3.0
+          },
+          {
+            "damage": 40.0,
+            "tail_dm": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 5.0,
+            "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
+            "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -2113,6 +2111,7 @@
       },
       {
         "name": "wing_l_dm",
+        "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -2174,6 +2173,7 @@
       },
       {
         "name": "wing_r_dm",
+        "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -2656,15 +2656,15 @@
     "preset": [
       {
         "name": "c_3604_default",
-        "blk": "gameData/FlightModels/weaponPresets/c_3604_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/c_3604_default.blk"
       },
       {
         "name": "c_3604_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/c_3604_rockets.blk"
+        "blk": "gamedata/flightModels/weaponPresets/c_3604_rockets.blk"
       },
       {
         "name": "c_3604_200kg",
-        "blk": "gameData/FlightModels/weaponPresets/c_3604_200kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/c_3604_200kg.blk"
       }
     ]
   },
@@ -2707,7 +2707,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannon_fm_k_45.blk",
+              "blk": "gamedata/weapons/cannon_fm_k_45.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2718,7 +2718,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannon_ff_k_45.blk",
+              "blk": "gamedata/weapons/cannon_ff_k_45.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "shell": "emtr_shellrejection2",
@@ -2729,7 +2729,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannon_ff_k_45.blk",
+              "blk": "gamedata/weapons/cannon_ff_k_45.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "shell": "emtr_shellrejection1",
@@ -2740,7 +2740,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gun_fl_mg_27.blk",
+              "blk": "gamedata/weapons/gun_fl_mg_27.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "shell": "emtr_shellrejection3",
@@ -2751,7 +2751,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gun_fl_mg_27.blk",
+              "blk": "gamedata/weapons/gun_fl_mg_27.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "shell": "emtr_shellrejection4",
@@ -2763,7 +2763,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/gun_mg_29_turret.blk",
+              "blk": "gamedata/weapons/gun_mg_29_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun1",
               "flash": "flare6",
@@ -2789,7 +2789,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/gun_mg_29_turret.blk",
+              "blk": "gamedata/weapons/gun_mg_29_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun1",
               "flash": "flare7",
@@ -2827,7 +2827,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late004",
                 "external": true,
                 "separate": true,
@@ -2836,7 +2836,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late007",
                 "external": true,
                 "separate": true,
@@ -2845,7 +2845,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late005",
                 "external": true,
                 "separate": true,
@@ -2854,7 +2854,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late006",
                 "external": true,
                 "separate": true,
@@ -2878,7 +2878,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_001",
                 "bullets": 1,
                 "external": true,
@@ -2890,7 +2890,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_002",
                 "bullets": 1,
                 "external": true,
@@ -2902,7 +2902,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_003",
                 "bullets": 1,
                 "external": true,
@@ -2914,7 +2914,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_004",
                 "bullets": 1,
                 "external": true,
@@ -2935,7 +2935,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/sws_200_kg_sprengbombe.blk",
+              "blk": "gamedata/weapons/bombguns/sws_200_kg_sprengbombe.blk",
               "emitter": "swiss_200_kg_bomb_001",
               "bullets": 1,
               "external": true,
@@ -2959,7 +2959,7 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late",
                 "external": true,
                 "separate": true,
@@ -2968,7 +2968,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late001",
                 "external": true,
                 "separate": true,
@@ -2977,7 +2977,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late002",
                 "external": true,
                 "separate": true,
@@ -2986,7 +2986,7 @@
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/sws_80mm_oerlikon_late.blk",
+                "blk": "gamedata/weapons/containers/sws_80mm_oerlikon_late.blk",
                 "emitter": "swiss_oerlikon_launcher_late003",
                 "external": true,
                 "separate": true,
@@ -3010,7 +3010,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_008",
                 "bullets": 1,
                 "external": true,
@@ -3022,7 +3022,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_007",
                 "bullets": 1,
                 "external": true,
@@ -3034,7 +3034,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_006",
                 "bullets": 1,
                 "external": true,
@@ -3046,7 +3046,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/sws_50_kg_sprengbombe.blk",
+                "blk": "gamedata/weapons/bombguns/sws_50_kg_sprengbombe.blk",
                 "emitter": "swiss_50kg_37_59_bomb_005",
                 "bullets": 1,
                 "external": true,
@@ -3070,7 +3070,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/sws_200_kg_sprengbombe.blk",
+              "blk": "gamedata/weapons/bombguns/sws_200_kg_sprengbombe.blk",
               "emitter": "swiss_200_kg_bomb_002",
               "bullets": 1,
               "external": true,
@@ -3092,6 +3092,129 @@
     "maxPower": 6.0,
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
+  },
+  "damagePartsDependencyMap": {
+    "dp": [
+      {
+        "dm": "tail_dm",
+        "separateDm": true,
+        "dp": [
+          "antenna",
+          "wire_lc",
+          "wire_rc",
+          "wire_c",
+          "aerial_c"
+        ]
+      },
+      {
+        "dm": "spar_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar1_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar2_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar1_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar2_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "wing1_l_dm",
+        "dp": [
+          "wingcontrol_l_dm",
+          "elevon1_l_dm",
+          "flaperon_l_dm"
+        ]
+      },
+      {
+        "dm": "wing1_r_dm",
+        "dp": [
+          "wingcontrol_r_dm",
+          "elevon1_r_dm",
+          "flaperon_r_dm"
+        ]
+      },
+      {
+        "dm": "wing2_l_dm",
+        "dp": [
+          "elevon_l_dm",
+          "flaperon1_l_dm"
+        ]
+      },
+      {
+        "dm": "wing2_r_dm",
+        "dp": [
+          "elevon_r_dm",
+          "flaperon1_r_dm"
+        ]
+      },
+      {
+        "dm": "stab1_dm",
+        "dp": [
+          "elevator_dm",
+          "fin1_dm",
+          "rudder0_dm",
+          "antenna"
+        ]
+      },
+      {
+        "dm": "stab2_dm",
+        "dp": [
+          "elevator_dm",
+          "fin2_dm",
+          "rudder1_dm",
+          "antenna"
+        ]
+      }
+    ]
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [

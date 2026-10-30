@@ -134,6 +134,7 @@ let DEF_SIDE_SCROLL_OPTIONS = {
   
   
   
+  
   virtualItems = null
   virtualItemHeight = null
   virtualItemHeights = null
@@ -156,7 +157,8 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
     else
       bhv = clone bhv
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
-    let virtual = options.virtualItems != null
+    let vitems = options.virtualItems
+    let virtual = vitems != null
     if (virtual)
       bhv.append(Behaviors.VirtualList)
 
@@ -170,22 +172,30 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
       maxHeight = options.maxHeight
       maxWidth = options.maxWidth
     })
+    if (!virtual)
+      return rootDesc.__merge({ children = content })
+
     
     
-    return virtual
-      ? rootDesc.__merge({
-          
-          
-          
-          flow = options.orientation == O_VERTICAL ? FLOW_VERTICAL : FLOW_HORIZONTAL
-          virtualItems = options.virtualItems
-          virtualItemHeight = options.virtualItemHeight
-          virtualItemHeights = options.virtualItemHeights
-          virtualOverscan = options.virtualOverscan
-          virtualInitialCount = options.virtualInitialCount
-          virtualTail = options.virtualTail
-        })
-      : rootDesc.__merge({ children = content })
+    let virtualDesc = rootDesc.__merge({
+      
+      
+      
+      flow = options.orientation == O_VERTICAL ? FLOW_VERTICAL : FLOW_HORIZONTAL
+      virtualItems = isObservable(vitems) ? vitems.get() : vitems
+      virtualItemHeight = options.virtualItemHeight
+      virtualItemHeights = options.virtualItemHeights
+      virtualOverscan = options.virtualOverscan
+      virtualInitialCount = options.virtualInitialCount
+      virtualTail = options.virtualTail
+    })
+    if (isObservable(vitems)) {
+      local watch = rootBase?.watch ?? []
+      watch = watch instanceof Array ? clone watch : [watch]
+      watch.append(vitems)
+      virtualDesc.watch <- watch
+    }
+    return virtualDesc
   }
 
   let childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP

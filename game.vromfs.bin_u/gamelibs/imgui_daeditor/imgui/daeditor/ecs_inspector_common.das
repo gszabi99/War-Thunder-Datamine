@@ -19,13 +19,14 @@ require math.base
 require daslib/static_let
 require daslib/safe_addr
 require daslib/instance_function
-require daslib/defer
+require daslib/rtti
 require gameLibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_common
 require gameLibs.imgui_daeditor.imgui.daEditor.ecs_inspectors_macro
 require gameLibs.imgui_daeditor.daEditor.daEditor_common
-require gameLibs.imgui_daeditor.imgui.ecs_struct_walker_common
+require ecs.ecs_struct_walker_common
 require %gameLibs.imgui_daeditor.imgui.imgui_common
 require %gameLibs.imgui_daeditor.imgui.ecs_plot_common
+require ecs.serialize_common public
 
 
 
@@ -66,7 +67,7 @@ def private draw_add_to_plot_buttons(eid_val : uint; name, type_name : string)
     imgui::SetCursorPosY(group_start_y + (group_h - imgui::GetFrameHeight()) * 0.5f)
     imgui::Checkbox("all axes##allaxes", unsafe(addr(all_axes)))
 
-def default_menu(eid : array<EntityId> implicit; name, typeName : string; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>)
+def default_menu(eid : EntityId; name, typeName : string; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>)
   imgui::TableSetColumnIndex(2)
   if imgui::Button("*##{name}")
     imgui::OpenPopup("defaultSubMenuPopup_{name}")
@@ -88,13 +89,12 @@ def default_menu(eid : array<EntityId> implicit; name, typeName : string; var ch
 
     res = sub_menu |> invoke(changed)
 
-    if !empty(eid)
-      draw_add_to_plot_buttons(uint(eid[0]), name, typeName)
+    draw_add_to_plot_buttons(uint(eid), name, typeName)
 
     imgui::EndPopup()
   return res
 
-def default_menu(eid : array<EntityId> implicit;
+def default_menu(eid : EntityId;
                  name, typeName : string;
                  val_to_str : block<() : string>;
                  str_to_val : block<(str : string) : void>;
@@ -132,8 +132,7 @@ def default_menu(eid : array<EntityId> implicit;
 
     res = sub_menu |> invoke(changed)
 
-    if !empty(eid)
-      draw_add_to_plot_buttons(uint(eid[0]), name, typeName)
+    draw_add_to_plot_buttons(uint(eid), name, typeName)
 
     imgui::EndPopup()
   return res
@@ -149,12 +148,16 @@ def to_string(val : float3x4)
 
 [no_aot]
 def to_string_via_blk(compName : string; eid : EntityId)
-  var data = ""
-  using() <| $(var blk : DataBlock)
-    let mgr & = getEntityManager()
-    component_to_blk_param(compName, mgr |> getComponentRef(eid, compName), blk)
-    data = string(blk)
-  return data
+  let compRef = getEntityManager() |> getComponentRef(eid, compName)
+  let typeName = getComponentTypes() |> component_types_findTypeName(compRef.userType)
+  var annotations : table<string; BasicStructureAnnotation?>
+  return compact_component_to_blk_text(compName, typeName, compRef, 2147483647, annotations, true)
+
+[no_aot]
+def to_string_via_blk(compRef : EntityComponentRef#; compName : string)
+  let typeName = getComponentTypes() |> component_types_findTypeName(compRef.userType)
+  var annotations : table<string; BasicStructureAnnotation?>
+  return compact_component_to_blk_text(compName, typeName, unsafe(reinterpret<EntityComponentRef> compRef), 2147483647, annotations, true)
 
 def to_int2(str : string)
   let parts <- split(str, ",")
@@ -272,54 +275,6 @@ def use_this(blk : block<(val : bool#) : void>) { blk |> invoke(false); }
 def use_this(blk : block<(val : E3DCOLOR#) : void>) { blk |> invoke(E3DCOLOR(0x0)); }
 def use_this(blk : block<(val : int64#) : void>) { blk |> invoke(0l); }
 
-
-def is_cont_type(user_type : uint) : bool
-  let typeName = getComponentTypes() |> component_types_findTypeName(user_type)
-  return is_cont_type(typeName)
-
-def is_cont_type(typeName : string) : bool
-  return (
-         typeName == "ecs::Object"
-      || typeName == "ecs::Array"
-      || typeName == "ecs::IntList"
-      || typeName == "ecs::UInt8List"
-      || typeName == "ecs::UInt16List"
-      || typeName == "ecs::StringList"
-      || typeName == "ecs::EidList"
-      || typeName == "ecs::FloatList"
-      || typeName == "ecs::Point2List"
-      || typeName == "ecs::Point3List"
-      || typeName == "ecs::Point4List"
-      || typeName == "ecs::IPoint2List"
-      || typeName == "ecs::IPoint3List"
-      || typeName == "ecs::IPoint4List"
-      || typeName == "ecs::BoolList"
-      || typeName == "ecs::TMatrixList"
-      || typeName == "ecs::ColorList"
-      || typeName == "ecs::Int64List"
-      || typeName == "ecs::SharedComponent< ::ecs::Object>"
-      || typeName == "ecs::SharedComponent< ::ecs::Array>"
-      || typeName == "ecs::SharedComponent< ::ecs::Object>"
-      || typeName == "ecs::SharedComponent< ::ecs::Array>"
-      || typeName == "ecs::SharedComponent< ::ecs::IntList>"
-      || typeName == "ecs::SharedComponent< ::ecs::UInt8List>"
-      || typeName == "ecs::SharedComponent< ::ecs::UInt16List>"
-      || typeName == "ecs::SharedComponent< ::ecs::StringList>"
-      || typeName == "ecs::SharedComponent< ::ecs::EidList>"
-      || typeName == "ecs::SharedComponent< ::ecs::FloatList>"
-      || typeName == "ecs::SharedComponent< ::ecs::Point2List>"
-      || typeName == "ecs::SharedComponent< ::ecs::Point3List>"
-      || typeName == "ecs::SharedComponent< ::ecs::Point4List>"
-      || typeName == "ecs::SharedComponent< ::ecs::IPoint2List>"
-      || typeName == "ecs::SharedComponent< ::ecs::IPoint3List>"
-      || typeName == "ecs::SharedComponent< ::ecs::IPoint4List>"
-      || typeName == "ecs::SharedComponent< ::ecs::BoolList>"
-      || typeName == "ecs::SharedComponent< ::ecs::TMatrixList>"
-      || typeName == "ecs::SharedComponent< ::ecs::ColorList>"
-      || typeName == "ecs::SharedComponent< ::ecs::Int64List>"
-    )
-
-
 def compare_eids(a, b : array<EntityId>) : int
   let na = length(a)
   let nb = length(b)
@@ -332,23 +287,23 @@ def compare_eids(a, b : array<EntityId>) : int
 
   return 0
 
-def render_item(eid : array<EntityId> implicit; flags : uint; name : string implicit; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool? implicit; sub_menu : block<(var changed : bool?) : bool>) : void
+def render_item(eid : EntityId; flags : uint; name : string implicit; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool? implicit; sub_menu : block<(var changed : bool?) : bool>) : void
   let typeName = refs[0].typeName
   render_item(eid, flags, name, typeName, refs, level, changed, sub_menu)
 
 [no_aot]
-def render_item(eid : array<EntityId> implicit; flags : uint; name, type_name : string implicit; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool? implicit; sub_menu : block<(var changed : bool?) : bool>) : void
+def render_item(eid : EntityId; flags : uint; name, type_name : string implicit; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool? implicit; sub_menu : block<(var changed : bool?) : bool>) : void
   var hasInspector = false
   if has_inspector(type_name)
     hasInspector = call_inspector(type_name, eid, flags, name, refs, level, changed, sub_menu)
   if !hasInspector && refs[0].roVal != ""
     hasInspector = get_ecs_enum_values(type_name) <| $(enumValues)
       let mgr & = getEntityManager()
-      let compRef = mgr |> getEntityComponentRef(eid[0], refs[0].idx)
+      var compRef = mgr |> getEntityComponentRef(eid, refs[0].idx)
       var curItem = find_enum_idx(type_name, compRef)
       imgui::Text("{type_name} {enumValues[curItem]}")
       if ListBox("##{name}", safe_addr(curItem), enumValues)
-        update_enum_value(type_name, unsafe(reinterpret<EntityComponentRef> refs[0]), curItem)
+        update_enum_value(type_name, compRef, curItem)
         *changed = true
 
   if !hasInspector
@@ -385,25 +340,6 @@ def DasHelpMarker(desc : string)
     EndTooltip()
 
 
-def item_flags(flags : uint; name : string implicit) : string
-  let tracked = (flags & FLAG_CHANGE_EVENT) != 0u
-  let replicated = (flags & FLAG_REPLICATED) != 0u
-  return build_string <| $(str)
-    if tracked
-      str |> write("[t]")
-    if replicated
-      str |> write("[r]")
-    if tracked || replicated
-      str |> write(" ")
-    str |> write(name)
-
-
-def match(arr : array<string>; str : string) : bool
-  for s in arr
-    if find(str, s) >= 0
-      return true
-  return false
-
 def open_inspector(idx : int; eid : EntityId; filter_str : string)
   if idx < 1 || idx > 3
     logerr("wrong inspector idx {idx}. Expected values are 1, 2, 3")
@@ -412,6 +348,7 @@ def open_inspector(idx : int; eid : EntityId; filter_str : string)
   imgui_set_blk_val("ecs_inspector_{idx}", "filter", filter_str)
   imgui_window_set_visible("Editor", "Inspector {idx+1}", true)
 
+[no_aot]
 def collect_struct_components(prefix : string; data : uint8?; type_name : string; var comps : array<tuple<name : string; cri : ComponentRenderInfo>>)
   let ann = get_basic_struct_annotation(type_name)
   if ann == null
@@ -482,30 +419,23 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     imgui::SameLine()
     if imgui::Button("copy blk")
       imgui::CloseCurrentPopup()
-      using() <| $(var blk : DataBlock)
-        blk |> datablock_add_new_block("entity") <| $(sub)
-          var tName = getEntityTemplateName(eid)
-          tName = remove_sub_template_name(tName, "daeditor_selected")
-          eid |> components_to_blk(sub, "", false)
-          sub |> add("_template", tName)
-        imgui::SetClipboardText(string(blk))
+      imgui::SetClipboardText(entity_to_blk_text(eid))
 
     imgui::SameLine()
     if imgui::Button("copy compact blk")
       imgui::CloseCurrentPopup()
-      imgui::SetClipboardText(entity_to_compact_blk_text(eid))
+      imgui::SetClipboardText(entity_to_compact_blk_text(eid, 10, false))
 
     imgui::SameLine()
     if imgui::Button("copy filtered compact blk")
       imgui::CloseCurrentPopup()
-      imgui::SetClipboardText(entity_to_filtered_compact_blk_text(eid, templateName, imgui_get_blk_val("ecs_inspector_{uid}", "filter", "")))
+      imgui::SetClipboardText(entity_to_filtered_compact_blk_text(eid, templateName, imgui_get_blk_val("ecs_inspector_{uid}", "filter", ""), 10, false))
 
     imgui::SameLine()
     if imgui::Button("copy blk diff")
       imgui::CloseCurrentPopup()
-      using() <| $(var blk : DataBlock)
-        editor_save_entity(eid, blk)
-        imgui::SetClipboardText(string(blk))
+      let list = get_active_scene() |> scene_findComponentsList(eid)
+      imgui::SetClipboardText(list != null ? components_list_to_blk_text(*list, getEntityTemplateName(eid)) : entity_to_blk_text(eid))
 
     var port = 0
     dgs_get_settings() |> datablock_get_block("debug") <| $(blk)
@@ -561,7 +491,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       EndCombo()
 
   imgui::Separator()
-  call_editor(true, eids)
+  call_editor(true, eid)
 
   DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, t:EidList)\nf:flag (f:t for tracked, f:r for replicated)")
   imgui::SameLine()
@@ -587,7 +517,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     TableSetupColumn("menu", ImGuiTableColumnFlags.WidthFixed, TEXT_BASE_WIDTH * 2f)
 
     iterate_over_filtered_components(eid, templateName, filter) <| $(name; cri; flags)
-      let inspectorFlags = inspector_get_flags(cri.typeName, eids, name)
+      let inspectorFlags = inspector_get_flags(cri.typeName, eid, name)
 
       
       
@@ -624,44 +554,18 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 
         var changed = false
         let typeName = cri.typeName
-        let refs <- [ clone(cri) ]
-        render_item(eids, flags, name, typeName, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs), 0, safe_addr(changed)) <| $ [unused_argument(_)] (_) => true
+        let refs <- [ cri ]
+        render_item(eid, flags, name, typeName, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs), 0, safe_addr(changed)) <| $ [unused_argument(_)] (_) => true
         if changed
           entity_obj_editor_saveComponent(eid, name)
           invalidate_item(eid, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs))
 
     EndTable()
 
-  call_editor(false, eids)
+  call_editor(false, eid)
   imgui::EndChild()
 
   PopID()
-
-[no_aot]
-def entity_to_filtered_compact_blk_text(eid : EntityId; templateName, filterStr : string; maxContainerItems : int = 10) : string
-  let mgr & = getEntityManager()
-
-  var filter = new ImGuiTextFilter
-  defer <|
-    unsafe
-      delete filter
-  *filter |> set() <| filterStr
-
-  var result = ""
-  var first = true
-  var lastCompName = ""
-  iterate_over_filtered_components(eid, templateName, *filter) <| $ [unused_argument(_cri, _flags)] (name; _cri; _flags)
-    let dotIdx = find(name, ".")
-    let compName = dotIdx >= 0 ? slice(name, 0, dotIdx) : name
-    if first || compName != lastCompName
-      first = false
-      lastCompName = compName
-
-      let compRef = mgr |> getComponentRef(eid, compName)
-      let compTypeName = getComponentTypes() |> component_types_findTypeName(compRef.userType)
-      result += compact_component_to_blk_text(compName, compTypeName, compRef, maxContainerItems)
-
-  return result
 
 [no_aot]
 def iterate_over_filtered_components(eid : EntityId;
@@ -698,7 +602,8 @@ def iterate_over_filtered_components(eid : EntityId;
       typeName = compTypeName,
       idx = idx,
       componentId = compRef.componentId,
-      isValidComponent = true)))
+      isValidComponent = true,
+      compRef = compRef)))
 
   comps |> sort() <| $(left; right)
     return left.name < right.name
@@ -712,38 +617,38 @@ def iterate_over_filtered_components(eid : EntityId;
   for filterRange in filter.Filters
     if filterRange |> empty()
       continue
-    let filterString = string(filterRange)
+    let filterString = string(filterRange) |> to_lower()
     if filterString |> starts_with("t:") && length(filterString) > 2
-      typeFilters |> push(slice(filterString, 2) |> strip() |> to_lower())
+      typeFilters |> push(slice(filterString, 2) |> strip())
     elif filterString |> starts_with("-t:") && length(filterString) > 3
-      excludeTypeFilters |> push(slice(filterString, 3) |> strip() |> to_lower())
+      excludeTypeFilters |> push(slice(filterString, 3) |> strip())
     elif filterString |> starts_with("f:") && length(filterString) > 2
-      flagFilters |> push(slice(filterString, 2) |> strip() |> to_lower())
+      flagFilters |> push(slice(filterString, 2) |> strip())
     elif filterString |> starts_with("-f:") && length(filterString) > 3
-      excludeFlagFilters |> push(slice(filterString, 3) |> strip() |> to_lower())
+      excludeFlagFilters |> push(slice(filterString, 3) |> strip())
     elif filterString |> starts_with("-") && length(filterString) > 1
-      excludeFilters |> push(slice(filterString, 1) |> strip() |> to_lower())
+      excludeFilters |> push(slice(filterString, 1) |> strip())
     else
-      filters |> push(filterString |> to_lower())
+      filters |> push(filterString)
 
   for c in comps
     let name = c.name
     var flags = 0u
     var flagsSet = false
     let lowerName = name |> to_lower()
-    if (length(filters) > 0 && !match(filters, lowerName)) || (length(excludeFilters) > 0 && match(excludeFilters, lowerName))
+    if (length(filters) > 0 && !contains_any_substring(filters, lowerName)) || (length(excludeFilters) > 0 && contains_any_substring(excludeFilters, lowerName))
       continue
 
     let typeName = c.cri.typeName
     let lowerTypeName = typeName |> to_lower()
-    if (length(typeFilters) > 0 && !match(typeFilters, lowerTypeName)) || (length(excludeTypeFilters) > 0 && match(excludeTypeFilters, lowerTypeName))
+    if (length(typeFilters) > 0 && !contains_any_substring(typeFilters, lowerTypeName)) || (length(excludeTypeFilters) > 0 && contains_any_substring(excludeTypeFilters, lowerTypeName))
       continue
 
     if length(flagFilters) > 0 || length(excludeFlagFilters) > 0
       flagsSet = true
       flags = tmp != null && !empty(name) ? getRegExpInheritedFlags(mgr, tmp, name) : 0u
       let nameWithFlags = item_flags(flags, "")
-      if (length(flagFilters) > 0 && !match(flagFilters, nameWithFlags)) || (length(excludeFlagFilters) > 0 && match(excludeTypeFilters, nameWithFlags))
+      if (length(flagFilters) > 0 && !contains_any_substring(flagFilters, nameWithFlags)) || (length(excludeFlagFilters) > 0 && contains_any_substring(excludeFlagFilters, nameWithFlags))
         continue
 
     if !flagsSet
@@ -813,75 +718,3 @@ def draw_edit_position_rotation_scale_tm(var val : float3x4&; name : string; var
     rotTm[3] = val[3]
 
     val = rotTm
-
-
-def entity_to_compact_blk_text(eid : EntityId; maxContainerItems : int = 10) : string
-  var result = ""
-  let mgr & = getEntityManager()
-  let compsNum = mgr |> getNumComponents(eid)
-  for idx in urange(compsNum >= 0 ? compsNum : 0)
-    let compRef = mgr |> getEntityComponentRef(eid, idx)
-    let comp = getDataComponents() |> data_components_getComponentById(compRef.componentId)
-    if (uint(comp.flags) & uint(IS_COPY)) != 0u
-      continue
-
-    let compName = getDataComponents() |> data_components_getComponentNameById(compRef.componentId)
-    let typeName = getComponentTypes() |> component_types_findTypeName(compRef.userType)
-    result += compact_component_to_blk_text(compName, typeName, compRef, maxContainerItems)
-  return result
-
-[no_aot]
-def compact_component_to_blk_text(compName, typeName : string; compRef : EntityComponentRef; maxContainerItems : int) : string
-  if typeName == "ecs::EntityId"
-    return entity_id_component_to_blk_text(compName, compRef)
-
-  if typeName == "ecs::EidList"
-    return eid_list_component_to_blk_text(compName, compRef, maxContainerItems)
-
-  if typeName == "ecs::SharedComponent< ::ecs::EidList>"
-    return shared_eid_list_component_to_blk_text(compName, compRef, maxContainerItems)
-
-  var result = ""
-  if is_cont_type(compRef.userType)
-    using() <| $(var blk : DataBlock)
-      component_to_blk_param(compName, compRef, blk)
-      var elemCount = 0
-      if blk.blockCount > 0u
-        datablock_get_block(blk, 0u) <| $(contBlk)
-          elemCount = int(contBlk.paramCount) + int(contBlk.blockCount)
-      if elemCount < maxContainerItems
-        result = "{string(blk) |> strip()}\n"
-      else
-        result = "{compName}: {typeName} [{elemCount} items]\n"
-    return result
-
-  using() <| $(var blk : DataBlock)
-    component_to_blk_param(compName, compRef, blk)
-    result = "{string(blk) |> strip()}\n"
-
-  return result
-
-def entity_id_component_to_blk_text(compName : string; compRef : EntityComponentRef) : string
-  let val = unsafe(reinterpret<EntityId?> compRef.rawData)
-  return "\"{compName}:eid\"\{ value:i={int(uint(*val))} \}\n"
-
-def eid_list_component_to_blk_text(compName : string; compRef : EntityComponentRef; maxContainerItems : int) : string
-  let val = unsafe(reinterpret<EidList?> compRef.rawData)
-  return eid_list_to_blk_text(compName, "ecs::EidList", *val, maxContainerItems, false)
-
-def shared_eid_list_component_to_blk_text(compName : string; compRef : EntityComponentRef; maxContainerItems : int) : string
-  let sharedVal = unsafe(reinterpret<SharedEidList?> compRef.rawData)
-  let val = sharedVal.get
-  return eid_list_to_blk_text(compName, "ecs::SharedComponent< ::ecs::EidList>", *val, maxContainerItems, true)
-
-def eid_list_to_blk_text(compName, typeName : string; val : EidList; maxContainerItems : int; isShared : bool) : string
-  let elemCount = length(val)
-  if elemCount >= maxContainerItems
-    return "{compName}: {typeName} [{elemCount} items]\n"
-
-  return build_string <| $(result)
-    let blockName = isShared ? "{compName}:shared:list<eid>" : "{compName}:list<eid>"
-    result |> write("\"{blockName}\"\{\n")
-    for eid in val
-      result |> write("  \"item:eid\"\{ value:i={int(uint(eid))} \}\n")
-    result |> write("\}\n")

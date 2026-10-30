@@ -1,24 +1,27 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsState.nut" import getEventDifficulty
+from "%scripts/events/eventTeamsInfo.nut" import getEDiffByEvent
+from "%scripts/squads/squadState.nut" import getLeaderGameModeId, getMemberData, getPlayerStatusInMySquad
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/user/usersInfoManager.nut" import requestUsersInfo, getUserInfo
+from "%scripts/contacts/customNicknames.nut" import getCustomNick
+from "%scripts/difficulty.nut" import get_battle_type_by_ediff
+from "%scripts/gameModes/gameModeManagerState.nut" import getGameModeById, getGameModeEvent
+from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco, getFontIconByBattleType
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "%scripts/user/presenceType.nut" import getByPresenceParams
+from "%scripts/user/clanName.nut" import getMyClanTag
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
+from "%scripts/user/profileAppearance.nut" import getProfileAvatarFrameCfg
 
-let { getEventDifficulty } = require("%scripts/events/eventsState.nut")
-let { getEDiffByEvent } = require("%scripts/events/eventTeamsInfo.nut")
-let { getLeaderGameModeId, getMemberData, getPlayerStatusInMySquad } = require("%scripts/squads/squadState.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { contactsPlayers } = require("%scripts/contacts/contactsListState.nut")
-let { requestUsersInfo, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { missed_contacts_data } = require("%scripts/contacts/contactsInfo.nut")
-let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
-let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
-let { getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitClassIco, getFontIconByBattleType } = require("%scripts/unit/unitInfoTexts.nut")
-let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
-let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 function getContact(uid, nick = null, clanTag = null, forceUpdate = false) {
   if (!uid)
@@ -70,11 +73,9 @@ function fillContactTooltip(obj, contact, handler) {
   local playerName = customNick == null
     ? contact.getName()
     : $"{contact.getName()}{loc("ui/parentheses/space", { text = customNick })}"
-  let clanTag = hasFeature("Clans")
-    ? contact.isMe()
-      ? getMyClanTag()
-      : contact.clanTag
-    : null
+  let clanTag = contact.isMe()
+    ? getMyClanTag()
+    : contact.clanTag
 
   let wtName = contact.steamName == null || contact.name == ""
     ? ""
@@ -99,6 +100,8 @@ function fillContactTooltip(obj, contact, handler) {
   let presenceType = getByPresenceParams(presenceStatus)
   let battleOrSquadStatusTxt = getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, { presenceType, presenceStatus })
   let onlineStatusColor = contact.onlinePresence.getColorInTooltip()
+  let { frame = "" } = userInfo
+  let { frameImagePath, framesCount } = getProfileAvatarFrameCfg(frame)
 
   let view = {
     name = colorize("@white", playerName)
@@ -107,8 +110,8 @@ function fillContactTooltip(obj, contact, handler) {
     title = colorize("@white", title)
     icon = contact.steamAvatar ?? $"#ui/images/avatars/{contact.pilotIcon}.avif"
     headerBackground
-    hasAvatarFrame = (userInfo?.frame ?? "") != ""
-    frame = userInfo?.frame
+    frameImagePath
+    framesCount
     onlineStatusText = (presenceType.typeName == "IDLE") ? contact.onlinePresence.getTextInTooltip()
       : colorize(onlineStatusColor, presenceType.getLocStatusShort())
     battleOrSquadStatusTxt
@@ -129,11 +132,13 @@ function fillContactTooltip(obj, contact, handler) {
 
       if (memberData?.country != null && checkCountry(memberData.country, $"memberData of contact = {contact.uid}")
           && memberDataAirs.len() != 0) {
+        let getUnitBattleRatingText = @(unit) format("%.1f",
+          calcBattleRatingFromRank(getEffectiveMrank(unit, ediff, memberData.mrankDeltaByUnit?[unit.name] ?? 0)))
         if (!event?.multiSlot) {
           let unitName = memberData.selAirs[memberData.country]
           let unit = getAircraftByName(unitName)
           view.unitList.append({
-            rank = format("%.1f", unit.getBattleRating(ediff))
+            rank = getUnitBattleRatingText(unit)
             unit = unitName
             icon = getUnitClassIco(unit)
           })
@@ -142,7 +147,7 @@ function fillContactTooltip(obj, contact, handler) {
           foreach (id, unitName in memberDataAirs) {
             let unit = getAircraftByName(unitName)
             view.unitList.append({
-              rank = format("%.1f", unit.getBattleRating(ediff))
+              rank = getUnitBattleRatingText(unit)
               unit = unitName
               icon = getUnitClassIco(unit)
               even = id % 2 == 0
@@ -172,7 +177,7 @@ function fillContactTooltip(obj, contact, handler) {
   contentContainer.width = headerWidth
 }
 
-return {
+return freeze({
   getContact
   fillContactTooltip
-}
+})

@@ -152,13 +152,16 @@
   },
   "unit_aps": {
     "_use": "replicating",
+    "active_protection_system": {},
     "_group": {
       "_replicate": true,
       "_track": true,
       "aps__rearmState": 3,
       "aps__timeToRearm": -1.0,
       "aps__shotCountRemain:list<i>": {},
-      "aps__timeToReady:list<r>": {}
+      "aps__timeToReady:list<r>": {},
+      "aps__demandAngles:list<i16>": {},
+      "aps__engaged:list<b>": {}
     }
   },
   "tank_engine": {
@@ -177,7 +180,8 @@
       {
         "_replicate": true,
         "tank_engine__overheat": false,
-        "tank_engine__isWorking": true
+        "tank_engine__isWorking": true,
+        "apu__autoEnabled": true
       },
       {
         "_tags": "server",
@@ -688,21 +692,11 @@
       "aircraft_ext",
       "aircraft_grid_obj"
     ],
-    "agent_dangers__tag": "plane",
-    "ai_target__noiseLevel": 0.0,
     "unit_storage__aircraft": {},
     "plane_net_phys": {},
     "unit_tag__aircraft:tag": {},
     "shell_start_fx_eids:list<eid>": {
       "_tags": "render"
-    },
-    "ai_target": {
-      "_tags": "server"
-    },
-    "unitAiTargetPos:tag": {},
-    "aircraft__troubleScore:r": {
-      "value": 0.0,
-      "_tags": "server"
     }
   },
   "barrage_ballon": {
@@ -743,8 +737,6 @@
     "_use": [
       "base_unit",
       "ground_unit_ext",
-      "unit_repair",
-      "unit_fire_and_extinguish",
       "unit_fire_damage",
       "unit_fire_fx",
       "tank_engine",
@@ -755,9 +747,6 @@
     "unit_crew": {},
     "unit_fx": {},
     "fuel_tanks": {},
-    "modEids:list<eid>": {
-      "_replicate": true
-    },
     "shell_start_fx_eids:list<eid>": {
       "_tags": "render"
     }
@@ -767,15 +756,10 @@
       "ground_unit",
       "tank_ext",
       "vehicle_grid_obj",
-      "base_damage_model_ai_points",
-      "gm_engine_sound",
-      "tank_phys_tracks"
+      "gm_engine_sound"
     ],
     "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
-    "_replicated": "reloadedFromAmmoBoxCount",
-    "agent_dangers__tag": "vehicle",
-    "ai_target__noiseLevel": 0.0,
     "unit__forceBailoutTimer": -1.0,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
@@ -783,34 +767,9 @@
     "unit_tag__tank:tag": {},
     "unit_tag__ground_vehicle:tag": {},
     "unit_tag__gm:tag": {},
-    "mods:list<t>": {
-      "mod": [
-        "toolkit_ecs",
-        "extinguisher_ecs",
-        "medicalkit_ecs",
-        "tank_smokescreen_ecs"
-      ]
-    },
     "track_sound": {
       "_tags": "sound"
-    },
-    "reloadedFromAmmoBoxCount:list<i>": {
-      "primary": 0,
-      "secondary": 0,
-      "special": 0
-    },
-    "canReloadFromBox:list<b>": {
-      "primary": false,
-      "secondary": false,
-      "special": false
-    },
-    "reloadFromBoxTriggerGroupMask:u8": {
-      "value": 0
-    },
-    "ai_target": {
-      "_tags": "server"
-    },
-    "unitAiTargetPos:tag": {}
+    }
   },
   "ship": {
     "_use": [
@@ -824,14 +783,6 @@
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
     "unit_tag__gm:tag": {},
-    "mods:list<t>": {
-      "mod": [
-        "ship_toolkit_ecs",
-        "ship_extinguisher_ecs",
-        "medicalkit_ecs",
-        "ship_smokescreen_ecs"
-      ]
-    },
     "track_sound": {
       "_tags": "sound"
     }
@@ -1041,6 +992,7 @@
       0.0
     ],
     "background_model__canChange": true,
+    "background_model__need_prism_collision": false,
     "transform": [
       [
         1.0,

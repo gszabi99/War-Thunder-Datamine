@@ -2048,6 +2048,7 @@
     "engines": {
       "maxSpeed": 20.58,
       "maxReverseSpeed": 8.0,
+      "horsePowers": 11850.0,
       "speedToTime": {
         "row": [
           [
@@ -2163,6 +2164,64 @@
       ]
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.7,
+        100.0
+      ],
+      [
+        11.4,
+        100.0
+      ],
+      [
+        17.2,
+        200.0
+      ],
+      [
+        22.9,
+        300.0
+      ],
+      [
+        28.6,
+        500.0
+      ],
+      [
+        34.3,
+        700.0
+      ],
+      [
+        40.0,
+        1000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        400.0
+      ],
+      [
+        -2.0,
+        200.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        100.0
+      ],
+      [
+        5.0,
+        100.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
@@ -2204,7 +2263,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -2290,7 +2349,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -2379,11 +2438,11 @@
     "preset": [
       {
         "name": "it_p494_saetta_default",
-        "blk": "gameData/units/ships/weaponPresets/it_p494_saetta_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/it_p494_saetta_default.blk"
       },
       {
         "name": "rocket_launcher",
-        "blk": "gameData/units/ships/weaponPresets/it_p494_saetta_rocket_launcher.blk",
+        "blk": "gamedata/units/ships/weaponPresets/it_p494_saetta_rocket_launcher.blk",
         "reqModification": "ship_rocket_launcher"
       }
     ]
@@ -2391,12 +2450,12 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/it_3st_7_250.blk",
+        "blk": "gamedata/sensors/naval/it_3st_7_250.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/it_rtn_150.blk",
+        "blk": "gamedata/sensors/naval/it_rtn_150.blk",
         "dmPart": [
           "antenna_target_tagging_01_dm",
           "antenna_target_tagging_mount_01_dm"
@@ -3453,21 +3512,25 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -15000.0,
-    "waterMassMult": 45.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      10.0,
-      370.0
+      7.5,
+      63.0,
+      642.6
     ],
-    "additionalWaterDeathThreshold": 800000.0,
+    "waterMassVel": -9117.0,
+    "waterMassMult": 57.0,
+    "additionalWaterDeathThreshold": 1446351.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 34.0,
+    "maxHeelingAngle": 33.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.2,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.25
   },
@@ -3475,12 +3538,12 @@
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.65,
+        "weight": 0.12,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 1.0,
+        "weight": 0.78,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -3491,34 +3554,48 @@
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.85,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
-              "partNo": "engine_01_dm",
-              "critWaterLevel": 0.3
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.36
             },
             {
-              "partNo": "engine_02_dm",
-              "critWaterLevel": 0.5
+              "partNo": "engine_room_02_dm",
+              "critWaterLevel": 0.25
             },
             {
-              "partNo": "engine_03_dm",
-              "critWaterLevel": 0.7
+              "partNo": "engine_room_03_dm",
+              "critWaterLevel": 0.36
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 0.6,
+        "weight": 0.64,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.85
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.85
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

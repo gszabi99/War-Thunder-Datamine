@@ -1,15 +1,15 @@
+import "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" as slotbarPresets
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/unit/groupUnit.nut" import getGroupUnitMarkUp
+from "%scripts/slotbar/selectUnitHandler.nut" import SelectUnitHandler, getParamsFromSlotbarConfig
+from "%scripts/options/optionsExtNames.nut" import USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/slotbar/slotbarView.nut" import isUnitEnabledForSlotbar
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
-let { SelectUnitHandler, getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
-let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarView.nut")
 
 class SelectGroupHandler (SelectUnitHandler) {
   function getSortedGroupsArray() {
@@ -78,7 +78,7 @@ class SelectGroupHandler (SelectUnitHandler) {
 
 register_gui_handler("SelectGroupHandler", SelectGroupHandler)
 
-return {
+return freeze({
   open = function(crew, slotbar) {
     let params = getParamsFromSlotbarConfig(crew, slotbar)
     if (params == null)
@@ -86,4 +86,4 @@ return {
 
     handlersManager.destroyPrevHandlerAndLoadNew(SelectGroupHandler, params)
   }
-}
+})

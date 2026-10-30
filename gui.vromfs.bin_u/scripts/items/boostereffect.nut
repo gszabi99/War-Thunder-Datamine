@@ -1,3 +1,9 @@
+from "%scripts/items/boosterActions.nut" import registerBoosterUpdateTimer
+from "%scripts/squads/squadState.nut" import getSameCyberCafeMembersNum
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/items/bonusEffectsGetters.nut" import getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
+from "%scripts/unlocks/unlocksViewModule.nut" import getFullUnlockCondsDescInline
+from "%scripts/items/itemsManagerModule.nut" import getInventoryList, findItemByUid
 from "%appGlobals/ranks_common_shared.nut" import calc_personal_boost, calc_public_boost
 from "blkGetters" import get_warpoints_blk, get_ranks_blk
 from "string" import format
@@ -6,14 +12,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let { registerBoosterUpdateTimer } = require("%scripts/items/boosterActions.nut")
-let { getSameCyberCafeMembersNum } = require("%scripts/squads/squadState.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
-let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { getInventoryList, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
 
 function getActiveBoostersArray(effectType = null) {
   let res = []
@@ -35,13 +35,7 @@ function getActiveBoostersArray(effectType = null) {
 }
 
 function sortByParam(arr, param) {
-  let sortByBonus =  function(a, b) {
-    if (a[param] != b[param])
-      return a[param] > b[param] ? -1 : 1
-    return 0
-  }
-
-  arr.sort(sortByBonus)
+  arr.sortby(@(a) -a[param])
   return arr
 }
 

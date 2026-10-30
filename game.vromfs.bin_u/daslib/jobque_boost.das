@@ -1,6 +1,5 @@
 options gen2
 options indenting = 4
-options no_aot = true
 options strict_smart_pointers = true
 
 module jobque_boost shared public
@@ -27,13 +26,13 @@ require daslib/templates_boost
 [tag_function(new_job_tag)]
 def new_job(var l : lambda) {
     
-    invoke(l)   
+    invoke(l)
 }
 
 [tag_function(new_job_tag)]
 def new_thread(var l : lambda) {
     
-    invoke(l)   
+    invoke(l)
 }
 
 [tag_function_macro(tag="new_job_tag")]
@@ -48,7 +47,6 @@ class private NewJobMacro : AstFunctionAnnotation {
         macro_verify(asc.subexpr is ExprMakeStruct, compiling_program(), call.at, "expecting lambda declaration, ExprMakeStruct")
         var mks = asc.subexpr as ExprMakeStruct
         macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
-        
         var stype <- clone_structure(mks._type.structType)
         stype.name := "{stype.name}_new_job_clone"
         var stype_ptr = stype
@@ -61,7 +59,6 @@ class private NewJobMacro : AstFunctionAnnotation {
         let const_clone = pclone.arguments[1]._type.flags.constant
         compiling_module() |> add_function(pclone)
         compiling_module() |> add_structure(stype)
-        
         var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
         ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
         ftype.argTypes |> emplace_new <| clone_type(sttype)
@@ -69,7 +66,6 @@ class private NewJobMacro : AstFunctionAnnotation {
         if (const_clone) {
             ftype.argTypes[1].flags.constant = true
         }
-        
         var ncall = new ExprCall(at = call.at, name := "{call.name}_invoke")
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
         ncall.arguments |> emplace_new <| new ExprAddr(at = call.at, target := "clone", funcType <- ftype)
@@ -334,8 +330,6 @@ def publish(box : SeqBox?; value : auto(TT)) : bool {
     
     
     
-    
-    
     concept_assert(typeinfo is_pod(type<TT>) && typeinfo is_raw(type<TT>),
         "SeqBox payload must be raw POD - the value is copied byte-wise, heap references would dangle")
     concept_assert(typeinfo sizeof(type<TT>) <= SEQ_BOX_PAYLOAD, "SeqBox payload is at most 64 bytes")
@@ -343,8 +337,6 @@ def publish(box : SeqBox?; value : auto(TT)) : bool {
 }
 
 def read(box : SeqBox?; blk : block<(value : auto(TT)) : void>) : bool {
-    
-    
     
     
     
@@ -409,8 +401,6 @@ def each_clone(var channel : Channel?; tinfo : auto(TT)) {
         }
     }
 }
-
-
 
 require daslib/archive
 
@@ -502,6 +492,26 @@ def try_pop_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void
     return any
 }
 
+def pop_archive_with_timeout(stream : Stream?; timeout_ms : int; blk : block<(var value : auto(TT)&) : void>) : bool {
+    
+    
+    var any = false
+    var value : TT -# -& -const
+    _builtin_stream_pop_with_timeout(stream, timeout_ms) $(bytes : array<uint8># -const) {
+        if (!empty(bytes)) {
+            any = true
+            mem_archive_load(bytes, value)
+        }
+    }
+    if (any) {
+        invoke(blk, value)
+    }
+    unsafe {
+        delete value
+    }
+    return any
+}
+
 def gather_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void>) {
     
     _builtin_stream_gather(stream) $(bytes : array<uint8># -const) {
@@ -557,8 +567,6 @@ def _parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job
             offset = job_end
             invoke(blk, job_begin, job_end, wg)
         }
-        
-        
         while (!wg.isReady) {
             break if (!jobque_try_run_one())
         }
@@ -592,13 +600,13 @@ class private ParallelForJobMacro : AstFunctionAnnotation {
 [tag_function(tag_team_parallel_for), unused_argument(num_jobs)]
 def team_parallel_for(range_begin, range_end : int; num_jobs : int; var l : lambda<(job_begin : int; job_end : int) : void>) {
     
-    invoke(l, range_begin, range_end)   
+    invoke(l, range_begin, range_end)
 }
 
 [tag_function(tag_team_parallel_for_indexed), unused_argument(num_jobs)]
 def team_parallel_for_indexed(range_begin, range_end : int; num_jobs : int; var l : lambda<(slot : int; job_begin : int; job_end : int) : void>) {
     
-    invoke(l, 0, range_begin, range_end)   
+    invoke(l, 0, range_begin, range_end)
 }
 
 [tag_function(tag_team_parallel_stages)]
@@ -606,8 +614,6 @@ def team_parallel_stages(stages : array<int3>; var l : lambda<(stage : int; job_
     
     var idx = 0
     for (s in stages) {
-        
-        
         if (s.y > s.x) {
             invoke(l, idx, s.x, s.y)
         }
@@ -625,7 +631,6 @@ class private TeamParallelStagesMacro : AstFunctionAnnotation {
         macro_verify(asc.subexpr is ExprMakeStruct, compiling_program(), call.at, "expecting lambda declaration, ExprMakeStruct")
         var mks = asc.subexpr as ExprMakeStruct
         macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
-        
         var stype <- clone_structure(mks._type.structType)
         stype.name := "{stype.name}_team_stages_clone"
         var stype_ptr = stype
@@ -638,7 +643,6 @@ class private TeamParallelStagesMacro : AstFunctionAnnotation {
         let const_clone = pclone.arguments[1]._type.flags.constant
         compiling_module() |> add_function(pclone)
         compiling_module() |> add_structure(stype)
-        
         var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
         ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
         ftype.argTypes |> emplace_new <| clone_type(sttype)
@@ -646,7 +650,6 @@ class private TeamParallelStagesMacro : AstFunctionAnnotation {
         if (const_clone) {
             ftype.argTypes[1].flags.constant = true
         }
-        
         var ncall = new ExprCall(at = call.at, name := "team_parallel_stages_invoke")
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[1])
@@ -667,7 +670,6 @@ class private TeamParallelForMacro : AstFunctionAnnotation {
         macro_verify(asc.subexpr is ExprMakeStruct, compiling_program(), call.at, "expecting lambda declaration, ExprMakeStruct")
         var mks = asc.subexpr as ExprMakeStruct
         macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
-        
         var stype <- clone_structure(mks._type.structType)
         stype.name := "{stype.name}_team_pfor_clone"
         var stype_ptr = stype
@@ -680,7 +682,6 @@ class private TeamParallelForMacro : AstFunctionAnnotation {
         let const_clone = pclone.arguments[1]._type.flags.constant
         compiling_module() |> add_function(pclone)
         compiling_module() |> add_structure(stype)
-        
         var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
         ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
         ftype.argTypes |> emplace_new <| clone_type(sttype)
@@ -688,7 +689,6 @@ class private TeamParallelForMacro : AstFunctionAnnotation {
         if (const_clone) {
             ftype.argTypes[1].flags.constant = true
         }
-        
         var ncall = new ExprCall(at = call.at, name := function_name)
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[1])

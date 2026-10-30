@@ -1,3 +1,8 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits, hasUnitsPackedFields, setUnitsPackedFields
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit, restoreShowedUnit
+from "%scripts/shop/shopCountriesList.nut" import updateShopCountriesList
+from "%scripts/shop/shopUnitsInfo.nut" import generateUnitShopInfo
+from "%scripts/ranks.nut" import calculateMaxRank
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "math" import floor
 from "blkGetters" import get_shop_blk
@@ -6,15 +11,12 @@ from "%scripts/dagui_natives.nut" import get_global_stats_blk, gather_and_build_
 from "%scripts/dagui_library.nut" import *
 
 let Unit = require("%scripts/unit/unit.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
 let { usageRatingAmount } = require("%scripts/airInfo.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
-let { calculateMaxRank } = require("%scripts/ranks.nut")
 
 let allUnits = getAllUnits()
+if (!hasUnitsPackedFields())
+  setUnitsPackedFields(allUnits.values()) 
 
 foreach (name, unit in allUnits)
   allUnits[name] = Unit({}).setFromUnit(unit)
@@ -25,10 +27,13 @@ calculateMaxRank()
 function initAllUnits() { 
   allUnits.clear()
   let all_units_array = gather_and_build_aircrafts_list()
+  let sharedValues = {}
   foreach (unitTbl in all_units_array) {
-    local unit = Unit(unitTbl)
+    let unit = Unit(unitTbl, sharedValues)
     allUnits[unit.name] <- unit
   }
+  setUnitsPackedFields(all_units_array)
+  restoreShowedUnit()
 }
 
 local usageAmountCounted = false
@@ -63,13 +68,7 @@ function countUsageAmountOnce() {
   if (shopStatsAirs.len() <= usageRatingAmountLen)
     return
 
-  shopStatsAirs.sort(function(a, b) {
-    if (a > b)
-      return 1
-    else if (a < b)
-      return -1
-    return 0;
-  })
+  shopStatsAirs.sort()
 
   for (local i = 0; i < usageRatingAmountLen; i++) {
     let idx = floor((i + 1).tofloat() * shopStatsAirs.len() / (usageRatingAmountLen + 1) + 0.5)
@@ -96,8 +95,8 @@ function gui_do_debug_unlock() {
 
 register_command(gui_do_debug_unlock, "debug.gui_do_debug_unlock")
 
-return {
+return freeze({
   initAllUnits
   updateAllUnits
   gui_do_debug_unlock
-}
+})

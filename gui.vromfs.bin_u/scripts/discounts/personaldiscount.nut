@@ -53,6 +53,6 @@ let getDiscountByPath = function(path) {
   return 0
 }
 
-return {
+return freeze({
   getDiscountByPath = getDiscountByPath
-}
+})

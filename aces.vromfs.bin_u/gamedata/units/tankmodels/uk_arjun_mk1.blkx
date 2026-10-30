@@ -527,6 +527,15 @@
       },
       "ex_armor_body_l_11_dm": {
         "armorThickness": 4.0
+      },
+      "ex_decor_06_dm": {
+        "armorThickness": 4.0
+      },
+      "ex_decor_l_05_dm": {
+        "armorThickness": 4.0
+      },
+      "ex_decor_r_05_dm": {
+        "armorThickness": 4.0
       }
     },
     "optics": {
@@ -688,6 +697,9 @@
         "armorThrough": 15.0,
         "fireParamsPreset": "hydraulic_internal"
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -761,6 +773,10 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "electronic_equipment_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -772,6 +788,10 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       },
       "power_system_01_dm": {
         "hp": 60.0,
@@ -2403,10 +2423,6 @@
     }
   },
   "xrayOverride": {
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
-      "hideDescription": true
-    },
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
       "hideDescription": true
@@ -2472,15 +2488,26 @@
         }
       }
     },
-    "armorArrayHullSideInner": {
-      "xrayDmPart": "composite_armor_hull_03_dm",
-      "titleLoc": "RHA_tank_modern",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_03_dm"
+    "armorArrayHullSideInner": [
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm"
+          }
         }
       }
-    },
+    ],
     "armorArrayHullSideIn": [
       {
         "xrayDmPart": "composite_armor_hull_04_dm",
@@ -2663,7 +2690,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_arjun_mk1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_arjun_mk1_user_cannon.blk",
         "shotFreq": 0.1667,
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
@@ -2671,6 +2698,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 40.0,
         "speedPitch": 20.0,
         "fireConeAngle": 1.0,
@@ -2796,7 +2827,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame",
         "barrelDP": [
@@ -2842,7 +2873,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_aa_flame",
         "barrelDP": "gun_barrel_01_dm",
@@ -2868,7 +2899,7 @@
         "turret": {
           "head": "bone_mg_aa_h",
           "gun": "bone_mg_aa_v",
-          "gunnerDm": "commander_dm",
+          "gunnerDm": "loader_dm",
           "hasNightVision": false
         },
         "limits": {
@@ -2905,7 +2936,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2961,7 +2992,7 @@
   "weapon_presets": {
     "preset": {
       "name": "tank_weapon_preset_default",
-      "blk": "gameData/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3092,6 +3123,17 @@
   },
   "trackEffects": {
     "top": false
+  },
+  "auxiliaryPowerUnit": {
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_01",
+    "runFx": "tank_exhaust_med",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "ammo": {
     "combustionTime": 7.0,
@@ -3969,7 +4011,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_arjun_mk1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_arjun_mk1_user_cannon.blk",
               "shotFreq": 0.1667,
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
@@ -3977,6 +4019,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 40.0,
               "speedPitch": 20.0,
               "fireConeAngle": 1.0,
@@ -4102,7 +4148,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame",
               "barrelDP": [
@@ -4148,7 +4194,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_aa_flame",
               "barrelDP": "gun_barrel_01_dm",
@@ -4174,7 +4220,7 @@
               "turret": {
                 "head": "bone_mg_aa_h",
                 "gun": "bone_mg_aa_v",
-                "gunnerDm": "commander_dm",
+                "gunnerDm": "loader_dm",
                 "hasNightVision": false
               },
               "limits": {
@@ -4211,7 +4257,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4265,7 +4311,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

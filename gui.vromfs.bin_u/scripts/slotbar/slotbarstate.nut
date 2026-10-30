@@ -1,22 +1,24 @@
+from "%scripts/respawn/respawnState.nut" import isCrewAvailableInSession
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitAvailableForGM
+from "%scripts/crew/crew.nut" import getCrewUnit
+from "%scripts/matchingRooms/sessionLobbyState.nut" import canChangeCrewUnits, getSessionLobbyMaxRespawns
+from "%scripts/shop/shopCountriesList.nut" import updateShopCountriesList
+from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
+from "%scripts/slotbar/slotbarStateData.nut" import getAvailableCrewId, saveSelectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits
+from "%scripts/slotbar/crewsList.nut" import getCrewsList, invalidateCrewsList, isCrewListOverrided
+from "%scripts/crew/crewTrain.nut" import batchTrainCrew
+from "%scripts/crew/crewInfo.nut" import isCrewLockedByPrevBattle
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "mission" import get_game_mode
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
+from "%appGlobals/missions/respawnCountModes.nut" import isRespawnAllowed
 
-let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { canChangeCrewUnits, getSessionLobbyMaxRespawns } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
-let { getCrewsList, invalidateCrewsList, isCrewListOverrided } = require("%scripts/slotbar/crewsList.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
-let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { selectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 
 local isInFlightCrewsList = isInFlight()
 local isSlotbarUpdateSuspended = false
@@ -158,7 +160,7 @@ function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = fa
       && (!unit.disableFlyout || !isInFlight())
       && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
     if (unlocked && !canChangeCrewUnits() && !isInFlight()
-        && getSessionLobbyMaxRespawns() == 1)
+        && !isRespawnAllowed(getSessionLobbyMaxRespawns()))
       unlocked = getCurSlotbarUnit() == unit
   }
   return unlocked
@@ -204,7 +206,7 @@ addListenersWithoutEnv({
   }
 }, DEFAULT_HANDLER)
 
-return {
+return freeze({
   getSelSlotsData
   isUnitUnlockedInSlotbar
   initSelectedCrews
@@ -214,4 +216,4 @@ return {
   reinitAllSlotbars
   flushSlotbarUpdate
   suspendSlotbarUpdates
-}
+})

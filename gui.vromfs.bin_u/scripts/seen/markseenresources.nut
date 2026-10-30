@@ -1,6 +1,5 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%scripts/dagui_library.nut" import *
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
 
 let disableMarkSeenAllResourcesForNewUser = function() {
   saveLocalAccountSettings("seen/need_hide_decorators_unseen", false)
@@ -11,8 +10,8 @@ let needMarkSeenResource = @(currentSeenListId) loadLocalAccountSettings($"seen/
 
 let disableMarkSeenResource = @(currentSeenListId) saveLocalAccountSettings($"seen/need_hide_{currentSeenListId}_unseen", false)
 
-return {
+return freeze({
   disableMarkSeenAllResourcesForNewUser
   needMarkSeenResource
   disableMarkSeenResource
-}
+})

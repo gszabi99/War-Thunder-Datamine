@@ -12,8 +12,8 @@ function registerInviteClass(key, inviteClass) {
 
 let findInviteClass = @(key) invitesClasses?[key]
 
-return {
+return freeze({
   registerInviteClass
   findInviteClass
   invitesClasses = freeze(invitesClasses)
-}
+})

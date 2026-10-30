@@ -57,8 +57,8 @@ fcsShotState.subscribe(function(v) {
 
 let clearCurrentShotState = @() fcsShotState.set({shotState = FCSShotState.SHOT_NONE, shotDiscrepancy = 0, shotDirection = 0})
 
-return {
+return freeze({
   fcsShotState
   showNewStateFromQueue
   clearCurrentShotState
-}
+})

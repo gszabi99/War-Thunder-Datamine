@@ -1,4 +1,8 @@
+import "%scripts/wndLib/qrWindow.nut" as openQrWindow
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/msgBox.nut" import showInfoMsgBox
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/promo/promoActions.nut" import addPromoAction
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "dagor.localize" import loc
 from "auth_wt" import getPlayerSsoShortTokenAsync, getNickOrig
@@ -6,11 +10,7 @@ from "eventbus" import eventbus_subscribe
 from "string" import format
 from "%globalScripts/yuplay2Consts.nut" import *
 
-let { showInfoMsgBox } = require("%scripts/sqDagui/framework/msgBox.nut")
-let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { log } = require("%sqstd/log.nut")()
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 const EXTERNAL_DEEPLINK_URL_PARAM_NAME = "parameterizedDeeplinkURL"
 
@@ -171,9 +171,9 @@ eventbus_subscribe("onGetStokenForWTAssistantlDeeplink", function(msg) {
 
 addPromoAction("show_wta_baner", @(_handler, _params, _obj) openModalWTAssistantlDeeplink("PROMO"))
 
-return {
+return freeze({
   openModalWTAssistantlDeeplink
   openWTAssistantDeeplinkQr
   hasExternalAssistantDeepLink
   isExternalOperator
-}
+})

@@ -17,9 +17,9 @@ function orderStateUpdate(params) {
 
 eventbus_subscribe("orderStateUpdate", orderStateUpdate)
 
-return {
+return freeze({
   statusText
   statusTextBottom
   showOrder
   scoresTable
-}
+})

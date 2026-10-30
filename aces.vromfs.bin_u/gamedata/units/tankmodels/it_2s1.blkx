@@ -1994,7 +1994,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/122mm_2A31_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/122mm_2A31_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.5,
@@ -2061,7 +2061,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2090,8 +2090,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ussr_2s1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_2s1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2142,7 +2142,10 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.25,
       "mainGearRatio": 3.97,
@@ -2181,7 +2184,18 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "wheel_r_drive": 0.24,
-      "wheel_l_drive": 0.24
+      "wheel_l_drive": 0.24,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "chainIK": {

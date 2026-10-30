@@ -24,6 +24,11 @@ module jsonrpc shared public
 
 
 
+
+
+
+
+
 require daslib/json
 require daslib/json_boost
 require strings
@@ -38,8 +43,6 @@ let public INVALID_PARAMS   = -32602
 let public INTERNAL_ERROR   = -32603  
 
 
-
-
 struct public ParsedRequest {
     id_str          : string       
     method          : string       
@@ -47,15 +50,15 @@ struct public ParsedRequest {
     params          : JsonValue?   
     is_notification : bool         
     error_envelope  : string       
+    document        : JsonValue?   
 }
 
 struct public ParsedBatch {
     is_batch        : bool                   
     requests        : array<ParsedRequest>   
     framing_error   : string                 
+    document        : JsonValue?             
 }
-
-
 
 
 struct public ParsedResponse {
@@ -75,24 +78,30 @@ struct public ParsedResponseBatch {
 }
 
 
-
-
 def public response(id_str : string; result_json : string) : string {
     
     
     return "\{\"jsonrpc\":\"2.0\",\"id\":{id_str},\"result\":{result_json}}"
 }
 
+def public quoted(s : string) : string {
+    
+    var jsv = JV(s)
+    let text = write_json(jsv)
+    delete_json(jsv)
+    return text
+}
+
 def public error(id_str : string; code : int; message : string) : string {
     
-    let msg_json = write_json(JV(message))
+    let msg_json = quoted(message)
     return "\{\"jsonrpc\":\"2.0\",\"id\":{id_str},\"error\":\{\"code\":{code},\"message\":{msg_json}}}"
 }
 
 def public error_with_data(id_str : string; code : int; message, data_json : string) : string {
     
     
-    let msg_json = write_json(JV(message))
+    let msg_json = quoted(message)
     return "\{\"jsonrpc\":\"2.0\",\"id\":{id_str},\"error\":\{\"code\":{code},\"message\":{msg_json},\"data\":{data_json}}}"
 }
 
@@ -103,25 +112,23 @@ def public serialize_id(id_val : JsonValue?) : string {
 }
 
 
-
-
 def public make_request(method : string; params_json : string; id : int) : string {
     
     
-    let method_str = write_json(JV(method))
+    let method_str = quoted(method)
     return "\{\"jsonrpc\":\"2.0\",\"id\":{id},\"method\":{method_str},\"params\":{params_json}}"
 }
 
 def public make_request(method : string; params_json : string; id : string) : string {
     
-    let method_str = write_json(JV(method))
-    let id_str = write_json(JV(id))
+    let method_str = quoted(method)
+    let id_str = quoted(id)
     return "\{\"jsonrpc\":\"2.0\",\"id\":{id_str},\"method\":{method_str},\"params\":{params_json}}"
 }
 
 def public make_notification(method : string; params_json : string) : string {
     
-    let method_str = write_json(JV(method))
+    let method_str = quoted(method)
     return "\{\"jsonrpc\":\"2.0\",\"method\":{method_str},\"params\":{params_json}}"
 }
 
@@ -140,8 +147,6 @@ def public make_batch(messages : array<string>) : string {
 }
 
 
-
-
 def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRequest {
     var result = ParsedRequest(id_str = "null")
     if (body_value == null || !(body_value.value is _object)) {
@@ -151,20 +156,16 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
     let body & = unsafe(body_value.value as _object)
     let id_v = body?["id"] ?? null
     let method_v = body?["method"] ?? null
-    
     var params_v = unsafe(reinterpret<JsonValue?>(body?["params"] ?? null))
-    
     if (id_v != null && !(id_v.value is _string) && !(id_v.value is _number) && !(id_v.value is _longint) && !(id_v.value is _null)) {
         result.error_envelope = error("null", INVALID_REQUEST, "invalid request: id must be string, number, or null")
         return result
     }
     result.id_str = serialize_id(id_v)
     if (method_v == null || !(method_v.value is _string)) {
-        
         result.error_envelope = error(result.id_str, INVALID_REQUEST, "invalid request: missing or non-string method")
         return result
     }
-    
     if (strict) {
         let jsonrpc_v = body?["jsonrpc"] ?? null
         if (jsonrpc_v == null || !(jsonrpc_v.value is _string) || (jsonrpc_v.value as _string) != "2.0") {
@@ -172,7 +173,6 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
             return result
         }
     }
-    
     if (params_v != null && !(params_v.value is _object) && !(params_v.value is _array) && !(params_v.value is _null)) {
         result.error_envelope = error(result.id_str, INVALID_PARAMS, "invalid params: must be array or object")
         return result
@@ -186,6 +186,7 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
 
 def public parse_request(line : string; strict : bool = false) : ParsedRequest {
     
+    
     var result = ParsedRequest(id_str = "null")
     var parse_error_msg = ""
     var parsed = read_json(line, parse_error_msg)
@@ -193,10 +194,23 @@ def public parse_request(line : string; strict : bool = false) : ParsedRequest {
         result.error_envelope = error("null", PARSE_ERROR, "parse error: {parse_error_msg}")
         return result
     }
-    return parse_one_request(parsed, strict)
+    result = parse_one_request(parsed, strict)
+    result.document = parsed
+    return result
+}
+
+def public free_request(var req : ParsedRequest) {
+    
+    
+    
+    req.params = null
+    delete_json(req.document)
+    req.document = null
 }
 
 def public parse_batch(line : string; strict : bool = false) : ParsedBatch {
+    
+    
     
     var result : ParsedBatch
     var parse_error_msg = ""
@@ -205,6 +219,7 @@ def public parse_batch(line : string; strict : bool = false) : ParsedBatch {
         result.framing_error = error("null", PARSE_ERROR, "parse error: {parse_error_msg}")
         return <- result
     }
+    result.document = parsed
     if (parsed.value is _array) {
         result.is_batch = true
         let arr & = unsafe(parsed.value as _array)
@@ -219,13 +234,24 @@ def public parse_batch(line : string; strict : bool = false) : ParsedBatch {
         }
         return <- result
     }
-    
     result.is_batch = false
     result.requests |> push(parse_one_request(parsed, strict))
     return <- result
 }
 
-
+def public free_batch(var pb : ParsedBatch) {
+    
+    
+    
+    for (req in pb.requests) {
+        req.params = null
+    }
+    delete_json(pb.document)
+    pb.document = null
+    unsafe {
+        delete pb.requests
+    }
+}
 
 
 def private parse_one_response(body_value : JsonValue?) : ParsedResponse {
@@ -268,6 +294,7 @@ def private parse_one_response(body_value : JsonValue?) : ParsedResponse {
 
 def public parse_response(line : string) : ParsedResponse {
     
+    
     var result = ParsedResponse(id_str = "null", is_success = false)
     var parse_error_msg = ""
     var parsed = read_json(line, parse_error_msg)
@@ -275,10 +302,13 @@ def public parse_response(line : string) : ParsedResponse {
         result.parse_error = "parse error: {parse_error_msg}"
         return result
     }
-    return parse_one_response(parsed)
+    result = parse_one_response(parsed)
+    delete_json(parsed)
+    return result
 }
 
 def public parse_response_batch(line : string) : ParsedResponseBatch {
+    
     
     var result : ParsedResponseBatch
     var parse_error_msg = ""
@@ -295,14 +325,13 @@ def public parse_response_batch(line : string) : ParsedResponseBatch {
             let ev = unsafe(reinterpret<JsonValue?>(entry))
             result.responses |> push(parse_one_response(ev))
         }
-        return <- result
+    } else {
+        result.is_batch = false
+        result.responses |> push(parse_one_response(parsed))
     }
-    result.is_batch = false
-    result.responses |> push(parse_one_response(parsed))
+    delete_json(parsed)
     return <- result
 }
-
-
 
 
 def public compact_json_whitespace(s : string) : string {
@@ -336,20 +365,16 @@ def public compact_json_whitespace(s : string) : string {
 }
 
 
-
-
 def private dispatch_one(req : ParsedRequest; dispatcher : block<(method : string; params_json : string) : string>) : string {
-    if (!empty(req.error_envelope)) return req.is_notification ? "" : req.error_envelope
+    if (!empty(req.error_envelope)) return req.error_envelope
     let result_json = invoke(dispatcher, req.method, req.params_json)
     return req.is_notification ? "" : response(req.id_str, result_json)
 }
 
-def public dispatch_line(line : string; strict : bool; dispatcher : block<(method : string; params_json : string) : string>) : string {
-    
-    let pb = parse_batch(line, strict)
+def private dispatch_parsed(pb : ParsedBatch; dispatcher : block<(method : string; params_json : string) : string>) : string {
     if (!empty(pb.framing_error)) return pb.framing_error
     if (!pb.is_batch) return dispatch_one(pb.requests[0], dispatcher)
-    var parts : array<string>
+    var inscope parts : array<string>
     for (req in pb.requests) {
         let r = dispatch_one(req, dispatcher)
         if (!empty(r)) parts |> push(r)
@@ -365,4 +390,13 @@ def public dispatch_line(line : string; strict : bool; dispatcher : block<(metho
         }
         write_char(w, ']')
     }
+}
+
+def public dispatch_line(line : string; strict : bool; dispatcher : block<(method : string; params_json : string) : string>) : string {
+    
+    
+    var pb <- parse_batch(line, strict)
+    let wire = dispatch_parsed(pb, dispatcher)
+    free_batch(pb)
+    return wire
 }

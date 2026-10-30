@@ -28,11 +28,11 @@ let getLocalization = @(lang) doesLocTextExist(lang) ? loc(lang) : langs[lang]
 
 let hasWarningIcon = @() !doesLocTextExist("options/customLang")
 
-return {
+return freeze({
   isUsedCustomLocalization
   isEnabledCustomLocalization
   setCustomLocalization
   hasCustomLocalizationFlag
   getLocalization
   hasWarningIcon
-}
+})

@@ -1,8 +1,8 @@
 {
   "fmFile": "fm/tu-2_early.blk",
   "model": "tu_2_early",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_radial_bomber_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_piston_radial_bomber_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.195,
   "gearSinkRangeC": 0.138,
   "gyroSight": false,
@@ -11,18 +11,18 @@
     "typeTransport"
   ],
   "paratrooper": "ally",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "600kph_nb",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
+  "fireParamsPreset": "600kph_nb_s",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "DamageParts": {
@@ -67,22 +67,22 @@
     },
     "armor30": {
       "spar1_l_dm": {
-        "hp": 73.1
+        "hp": 75.0
       },
       "spar1_r_dm": {
-        "hp": 73.1
+        "hp": 75.0
       },
       "spar2_l_dm": {
-        "hp": 43.9
+        "hp": 52.0
       },
       "spar2_r_dm": {
-        "hp": 43.9
+        "hp": 52.0
       },
       "spar_l_dm": {
-        "hp": 87.3
+        "hp": 116.0
       },
       "spar_r_dm": {
-        "hp": 87.3
+        "hp": 116.0
       }
     },
     "armor6": {
@@ -112,11 +112,13 @@
       "cover1_dm": {
         "hp": 40.5
       },
-      "cover2_dm": {
-        "hp": 19.5
-      },
       "cover3_dm": {
         "hp": 40.5
+      }
+    },
+    "plexiglass_nb": {
+      "cover2_dm": {
+        "hp": 19.5
       },
       "cover4_dm": {
         "hp": 19.5
@@ -220,18 +222,18 @@
         "hp": 774.0
       }
     },
-    "protected_controls": {
-      "tailcontrol_dm": {
-        "hp": 80.5
-      },
-      "wingcontrol_dm": {
-        "hp": 59.5
-      },
+    "steel_controls_nb": {
       "wingcontrol_l_dm": {
-        "hp": 74.5
+        "hp": 80.0
       },
       "wingcontrol_r_dm": {
-        "hp": 80.5
+        "hp": 80.0
+      },
+      "wingcontrol_dm": {
+        "hp": 80.0
+      },
+      "tailcontrol_dm": {
+        "hp": 200.0
       }
     },
     "steel": {
@@ -261,10 +263,12 @@
     },
     "steel_pilot": {
       "gunner2_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner3_dm": {
-        "hp": 20.0
+        "hp": 20.0,
+        "fireProtectionHp": 20.0
       },
       "gunner4_dm": {
         "hp": 20.0
@@ -2662,28 +2666,41 @@
         "name": "spar_l_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.03
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -2694,27 +2711,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 12.0,
+            "nothing": 50.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 18.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 25.0,
+            "nothing": 45.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -2722,28 +2744,41 @@
         "name": "spar_r_dm",
         "onHit": [
           {
-            "fire": 0.001,
-            "leak": 0.1
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
           },
           {
-            "damage": 3.0,
-            "fire": 0.005,
-            "leak": 0.2
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
           },
           {
-            "damage": 20.0,
-            "fire": 0.01,
-            "leak": 0.3
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.03
           },
           {
-            "damage": 80.0,
-            "fire": 0.05,
-            "leak": 0.5
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
+            "damageType": "shatter",
+            "damage": 8.0
+          },
+          {
+            "damageType": "shatter",
+            "damage": 20.0
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "fire": 0.1,
             "canCut": true
           },
           {
@@ -2754,27 +2789,32 @@
         ],
         "onKill": [
           {
-            "leak": 12.0,
-            "cut": 4.5,
-            "nothing": 85.0
+            "cut": 1.0,
+            "nothing": 90.0
           },
           {
-            "damage": 50.0,
-            "fire": 5.0,
-            "leak": 15.0,
-            "cut": 0.0526,
-            "nothing": 80.0
+            "damage": 10.0,
+            "cut": 5.0,
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "fire": 10.0,
-            "leak": 20.0,
-            "cut": 0.087,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 12.0,
+            "nothing": 50.0
           },
           {
-            "damage": 200.0,
-            "cut": 0.25
+            "damage": 19.0,
+            "cut": 18.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 25.0,
+            "nothing": 45.0
+          },
+          {
+            "damage": 55.0,
+            "cut": 1.0
           }
         ]
       },
@@ -5328,17 +5368,974 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
-  "fireParams": {
-    "engineExtinguishFireSpeed": [
-      146.0,
-      194.0
+  "fireParams": {},
+  "FuelTankFireParams0": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
     ],
-    "engineExtinguishFireSpeedChance": [
-      0.02,
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
       0.8
     ],
-    "fireDamagePowerRel": 0.15,
-    "nonExtinguishFireTime": 55.0
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams1": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams2": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams3": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams4": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams5": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams6": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams7": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams8": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams9": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams10": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams11": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams12": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams13": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams14": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "FuelTankFireParams15": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.3,
+      0.5
+    ],
+    "FireDamageAndRadiusByTime1": [
+      20.0,
+      0.7,
+      0.8
+    ],
+    "FireDamageAndRadiusByTime2": [
+      40.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      60.0,
+      1.5,
+      1.2
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      2.0,
+      1.3
+    ],
+    "FireProbMultByHp0": [
+      0.0,
+      3.0
+    ],
+    "FireProbMultByHp1": [
+      0.1,
+      2.5
+    ],
+    "FireProbMultByHp2": [
+      0.4,
+      1.5
+    ],
+    "FireProbMultByHp3": [
+      0.7,
+      1.0
+    ],
+    "FireProbMultByHp4": [
+      1.0,
+      0.7
+    ]
+  },
+  "EngineFireParams0": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams1": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams2": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams3": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams4": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams5": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams6": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
+  },
+  "EngineFireParams7": {
+    "FireDamageAndRadiusByTime0": [
+      0.0,
+      0.5,
+      0.6
+    ],
+    "FireDamageAndRadiusByTime1": [
+      10.0,
+      0.8,
+      0.9
+    ],
+    "FireDamageAndRadiusByTime2": [
+      20.0,
+      1.0,
+      1.0
+    ],
+    "FireDamageAndRadiusByTime3": [
+      40.0,
+      1.3,
+      1.1
+    ],
+    "FireDamageAndRadiusByTime4": [
+      85.0,
+      1.5,
+      1.2
+    ]
   },
   "autoTune": {
     "data": [
@@ -5375,69 +6372,69 @@
     "preset": [
       {
         "name": "tu-2_default",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_default.blk"
       },
       {
         "name": "tu-2_early_rbs_132",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_rbs_132.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_rbs_132.blk"
       },
       {
         "name": "tu-2_early_rs_132",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_rs_132.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_rs_132.blk"
       },
       {
         "name": "tu-2_early_9xfab100",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_9xfab100.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_9xfab100.blk"
       },
       {
         "name": "tu-2_early_4x_fab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_4x_fab250.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_4x_fab250.blk"
       },
       {
         "name": "tu-2_early_6x_fab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_6x_fab250.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_6x_fab250.blk"
       },
       {
         "name": "tu-2_early_6x_brab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_6x_brab250.blk",
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_6x_brab250.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
       },
       {
         "name": "tu-2_early_1x_fab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_1x_fab500.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_1x_fab500.blk"
       },
       {
         "name": "tu-2_early_2x_fab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_2x_fab500.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_2x_fab500.blk"
       },
       {
         "name": "tu-2_early_3x_fab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_fab500.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_3x_fab500.blk"
       },
       {
         "name": "tu-2_early_3x_brab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_brab500.blk",
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_3x_brab500.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
       },
       {
         "name": "tu-2_early_1x_fab1000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_1x_fab1000.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_1x_fab1000.blk"
       },
       {
         "name": "tu-2_early_2x_fab1000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_2x_fab1000.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_2x_fab1000.blk"
       },
       {
         "name": "tu-2_early_3x_fab1000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_fab1000.blk"
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_3x_fab1000.blk"
       },
       {
         "name": "tu-2_early_3x_brab1000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_brab1000.blk",
+        "blk": "gamedata/flightModels/weaponPresets/tu-2_early_3x_brab1000.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -5571,7 +6568,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonShVAK.blk",
+              "blk": "gamedata/weapons/cannonShVAK.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "cannon1_dm",
@@ -5580,7 +6577,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonShVAK.blk",
+              "blk": "gamedata/weapons/cannonShVAK.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "dm": "cannon2_dm",
@@ -5590,7 +6587,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "blk": "gamedata/weapons/gunUB_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun1",
               "flash": "flare1",
@@ -5638,7 +6635,7 @@
             },
             {
               "trigger": "gunner1",
-              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "blk": "gamedata/weapons/gunUB_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun2",
               "flash": "flare2",
@@ -5686,7 +6683,7 @@
             },
             {
               "trigger": "gunner2",
-              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "blk": "gamedata/weapons/gunUB_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun3",
               "flash": "flare3",
@@ -5736,7 +6733,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket1",
                 "bullets": 1,
                 "order": 10
@@ -5745,7 +6742,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket2",
                 "bullets": 1,
                 "order": 12
@@ -5754,7 +6751,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket3",
                 "bullets": 1,
                 "order": 14
@@ -5763,7 +6760,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket4",
                 "bullets": 1,
                 "order": 16
@@ -5772,7 +6769,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket5",
                 "bullets": 1,
                 "order": 18
@@ -5797,7 +6794,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket1",
                 "bullets": 1,
                 "order": 10
@@ -5806,7 +6803,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket2",
                 "bullets": 1,
                 "order": 12
@@ -5815,7 +6812,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket3",
                 "bullets": 1,
                 "order": 14
@@ -5824,7 +6821,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket4",
                 "bullets": 1,
                 "order": 16
@@ -5833,7 +6830,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket5",
                 "bullets": 1,
                 "order": 18
@@ -5859,7 +6856,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab250.blk",
               "emitter": "bomb_250sv_5",
               "external": true,
               "separate": true,
@@ -5879,7 +6876,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
               "emitter": "bomb_250sv_5",
               "external": true,
               "separate": true,
@@ -5899,7 +6896,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab500.blk",
               "emitter": "bomb_500sv_1",
               "external": true,
               "separate": true,
@@ -5919,7 +6916,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_500m43_ap.blk",
               "emitter": "bomb_500sv_1",
               "external": true,
               "separate": true,
@@ -5939,7 +6936,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab1000.blk",
               "emitter": "bomb_1000sv_1",
               "external": true,
               "separate": true,
@@ -5959,7 +6956,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_1000m43_ap.blk",
               "emitter": "bomb_1000sv_1",
               "external": true,
               "separate": true,
@@ -5981,55 +6978,55 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb6",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb7",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb8",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb9",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb10",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb11",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb12",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb13",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab100.blk",
                 "emitter": "bomb14",
                 "bullets": 1
               }
@@ -6042,7 +7039,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_1",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6050,7 +7047,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_2",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6065,7 +7062,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb_250sv_1",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6073,7 +7070,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb_250sv_2",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6088,7 +7085,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_1",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6096,7 +7093,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_2",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6104,7 +7101,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_3",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6112,7 +7109,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+                "blk": "gamedata/weapons/bombguns/su_fab250.blk",
                 "emitter": "bomb_250sv_4",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6127,7 +7124,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb13",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6135,7 +7132,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb14",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6143,7 +7140,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb9",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6151,7 +7148,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
                 "emitter": "bomb10",
                 "separate": true,
                 "machLimit": 1.01,
@@ -6165,7 +7162,7 @@
             "reqModification": "pe-2_dz-40",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab500.blk",
               "emitter": "bomb3",
               "separate": true,
               "machLimit": 1.01,
@@ -6178,7 +7175,7 @@
             "reqModification": "der_19pk",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_500m43_ap.blk",
               "emitter": "bomb3",
               "separate": true,
               "machLimit": 1.01,
@@ -6191,7 +7188,7 @@
             "reqModification": "der_19pk",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab1000.blk",
               "emitter": "bomb1",
               "separate": true,
               "machLimit": 1.01,
@@ -6204,7 +7201,7 @@
             "reqModification": "der_19pk",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_1000m43_ap.blk",
               "emitter": "bomb1",
               "separate": true,
               "machLimit": 1.01,
@@ -6230,7 +7227,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab250.blk",
               "emitter": "bomb_250sv_6",
               "external": true,
               "separate": true,
@@ -6250,7 +7247,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_250_ap.blk",
               "emitter": "bomb_250sv_6",
               "external": true,
               "separate": true,
@@ -6270,7 +7267,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab500.blk",
               "emitter": "bomb_500sv_2",
               "external": true,
               "separate": true,
@@ -6290,7 +7287,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_500m43_ap.blk",
               "emitter": "bomb_500sv_2",
               "external": true,
               "separate": true,
@@ -6310,7 +7307,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab1000.blk",
               "emitter": "bomb_1000sv_2",
               "external": true,
               "separate": true,
@@ -6330,7 +7327,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
+              "blk": "gamedata/weapons/bombguns/su_brab_1000m43_ap.blk",
               "emitter": "bomb_1000sv_2",
               "external": true,
               "separate": true,
@@ -6363,7 +7360,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket10",
                 "bullets": 1,
                 "order": 11
@@ -6372,7 +7369,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket9",
                 "bullets": 1,
                 "order": 13
@@ -6381,7 +7378,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket8",
                 "bullets": 1,
                 "order": 15
@@ -6390,7 +7387,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket7",
                 "bullets": 1,
                 "order": 17
@@ -6399,7 +7396,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rbs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rbs132.blk",
                 "emitter": "rocket6",
                 "bullets": 1,
                 "order": 19
@@ -6424,7 +7421,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket10",
                 "bullets": 1,
                 "order": 11
@@ -6433,7 +7430,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket9",
                 "bullets": 1,
                 "order": 13
@@ -6442,7 +7439,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket8",
                 "bullets": 1,
                 "order": 15
@@ -6451,7 +7448,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket7",
                 "bullets": 1,
                 "order": 17
@@ -6460,7 +7457,7 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/su_rs132.blk",
+                "blk": "gamedata/weapons/rocketGuns/su_rs132.blk",
                 "emitter": "rocket6",
                 "bullets": 1,
                 "order": 19

@@ -1,21 +1,21 @@
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
+from "%sqstd/platform.nut" import is_android, isSony, isXbox
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
 from "%appGlobals/login/loginState.nut" import isProfileReceived
-from "%sqstd/platform.nut" import is_android
 from "controls" import hasXInputDevice
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, set_dagui_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, isPlatformXbox, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE } = require("%scripts/options/optionsExtNames.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
-let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
+let showConsoleButtons = mkHardPersistWatched("options.consoleMode")("showConsoleButtons", false)
 
 function getIsConsoleModeForceEnabled() {
-  return isPlatformSony
-         || isPlatformXbox
+  return isSony
+         || isXbox
          || is_android
          || isPlatformShieldTv()
          || (is_steam_big_picture() && hasXInputDevice())
@@ -50,9 +50,9 @@ function switchShowConsoleButtons(showCB) {
   return true
 }
 
-return {
+return freeze({
   showConsoleButtons
   getIsConsoleModeForceEnabled
   getIsConsoleModeEnabled
   switchShowConsoleButtons
-}
+})

@@ -1,8 +1,60 @@
 
 
+import "%scripts/time.nut" as time
+import "%scripts/options/optionsMeasureUnits.nut" as optionsMeasureUnits
+import "%scripts/social/crossplay.nut" as crossplayModule
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "%sqStdLibs/helpers/u.nut" as u
 import "soundDevice" as soundDevice
 import "holidays" as holidays
+from "%scripts/missions/missionsStates.nut" import get_current_campaign, set_mission_settings, get_mission_settings, get_mission_for_takeoff
+from "%scripts/options/optionsCtors.nut" import create_option_list, create_option_combobox, create_option_dropright, create_option_editbox, create_option_row_listbox, create_option_switchbox, create_option_slider
+  , create_option_vlistbox, createOptionRowMultiselect
+from "%scripts/utils_sa.nut" import get_bit_value_by_array, gen_rnd_password, findNearest
+from "%scripts/events/eventBrToTier.nut" import getTierByMaxBr
+from "%scripts/teams.nut" import g_team
+from "%scripts/difficulty.nut" import get_difficulty_by_ediff
+from "%scripts/sqDagui/daguiUtil.nut" import color4ToDaguiString
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/options/optionsUtils.nut" import createDefaultOption, fillBoolOption, fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption, fillDynMapOption, setHSVOption_ThermovisionColor, fillHSVOption_ThermovisionColor
+from "%scripts/weaponry/weaponryDescription.nut" import getBulletsListHeader
+from "%scripts/weaponry/bulletsInfo.nut" import setUnitLastBullets, getOptionsBulletsList
+from "%scripts/unit/unitWeaponryInfo.nut" import bombNbr
+from "%scripts/options/optionsManager.nut" import checkUnitSpeechLangPackWatch
+from "%sqstd/platform.nut" import is_ps5_pro, is_xbox_anaconda, is_xbox_lockhart, isSony
+from "%scripts/unlocks/unlockSmoke.nut" import aeroSmokesList
+from "%scripts/slotbar/slotbarOverride.nut" import getSlotbarOverrideCountriesByMissionName
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDesc, buildConditionsConfig
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/utils/colorUtil.nut" import color4ToInt
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/missions/missionsUtilsModule.nut" import getUrlOrFileMissionMetaInfo, getCurrentLevelBlk
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/langUtils/language.nut" import getGameLocalizationInfo, setGameLocalization
+from "%scripts/langUtils/customLocalization.nut" import isEnabledCustomLocalization, setCustomLocalization, getLocalization, hasWarningIcon
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, getSessionLobbyMissionParam, getSessionLobbyPublicParam
+from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
+from "%scripts/firstChoice/firstChoice.nut" import isCountryAvailable
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameMode
+from "%scripts/penitentiary/tribunal.nut" import complaintCategories
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/options/customSoundMods.nut" import isEnabledCustomSoundMods, setCustomSoundMods
+from "%scripts/weaponry/dmgModel.nut" import getTankXrayFilter, getShipXrayFilter, getAirXrayFilter
+from "%scripts/missions/misListType.nut" import getMissionsList
+from "%scripts/missions/missionsText.nut" import getMissionName, getMissionTimeText, getWeatherLocName
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/queue/queueState.nut" import getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, isAnyQueuesActive
+from "%scripts/items/orders.nut" import getOrderAutoActivateHint
+from "%scripts/options/optionsBeforeLogin.nut" import set_autologin_enabled, is_autologin_enabled
+from "%scripts/features/devFeatures.nut" import getDevFeaturesOptionsMap, getDevFeaturesOptionsSetMap
+from "%scripts/dynCampaign/campaignHelpers.nut" import getMissionTeamCountries
+from "%scripts/options/consoleMode.nut" import getIsConsoleModeForceEnabled, switchShowConsoleButtons
+from "%scripts/countries/countriesCustomization.nut" import getCountryOverride
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial, get_mission_mode, getMaxEconomicRank, calcBattleRatingFromRank
 from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
@@ -17,14 +69,14 @@ from "chat" import get_option_auto_show_chat, get_option_ptt, set_option_ptt, ge
   , set_option_voicechat, get_option_chat_messages_filter, set_option_chat_messages_filter
 from "mission" import get_game_mode
 from "guiMission" import get_mp_session_info, get_mission_set_difficulty_int, get_meta_mission_info_by_name
-from "%sqstd/string.nut" import stripTags
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "blkGetters" import get_game_params_blk, get_unittags_blk
 from "gameplayBinding" import isInFlight
 from "chard" import isWishlistEnabledForFriends, isWishlistCommentsEnabledForFriends, enableShowWishlistForFriends, enableShowWishlistCommentsForFriends, setAllowToBeAddedToLb, getAllowToBeAddedToLb
 from "hangar" import set_xray_parts_filter
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%globalScripts/unlockConsts.nut" import *
-from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
+from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS, BATTLE_TYPES
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%globalScripts/replayConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, set_option_countermeasures_series, get_option_autopilot_on_bombview
@@ -61,8 +113,6 @@ from "weaponryOptions" import get_option_torpedo_dive_depth, set_option_torpedo_
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT, TANK_ALT_CROSSHAIR_ADD_NEW, AIR_SPAWN_POINT
-from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
-from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsStorage.nut" import get_crosshair_icons
 from "crosshair" import has_forced_crosshair, set_hud_crosshair_color, get_hud_crosshair_color, set_option_tank_alt_crosshair, get_user_alt_crosshairs, set_hud_crosshair_type, get_hud_crosshair_type, get_option_tank_alt_crosshair
 from "guiOptions" import get_unit_option, set_unit_option, set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode, setCdOption
@@ -71,73 +121,25 @@ from "guiOptions" import get_unit_option, set_unit_option, set_gui_option, get_g
 from "unitCalculcation" import get_aircraft_fuel_consumption, get_aircraft_max_fuel
 from "%scripts/missions/missionsUtils.nut" import isSkirmishWithKillStreaks, getMissionAllowedUnittypesMask, getGameModeMaps
 from "graphicsOptions" import getDgsTexQuality, is_hfr_supported
-from "%sqstd/platform.nut" import is_ps5_pro, is_xbox_anaconda, is_xbox_lockhart
 from "dagor.workcycle" import defer
 from "types" import String, Array
-let { get_current_campaign, set_mission_settings, get_mission_settings, get_mission_for_takeoff } = require("%scripts/missions/missionsStates.nut")
-let { create_option_list, create_option_combobox, create_option_dropright, create_option_editbox, create_option_row_listbox, create_option_switchbox, create_option_slider, create_option_vlistbox, createOptionRowMultiselect } = require("%scripts/options/optionsCtors.nut")
-let { get_bit_value_by_array, gen_rnd_password } = require("%scripts/utils_sa.nut")
-let { getTierByMaxBr } = require("%scripts/events/eventBrToTier.nut")
+from "%scripts/options/fonts.nut" import getAvailableFonts, getCurrentFontType, setCurrentFontType, getFontsSavePath
+from "%globalScripts/loc_helpers.nut" import getVendorLocId
+from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
 let isEventCountryAvailable = require("%scripts/events/eventTeamsInfo.nut").isCountryAvailable
-let { g_team } = require("%scripts/teams.nut")
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
-let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { color4ToDaguiString } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let { createDefaultOption, fillBoolOption, fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption, fillDynMapOption, setHSVOption_ThermovisionColor, fillHSVOption_ThermovisionColor } = require("%scripts/options/optionsUtils.nut")
-let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
-let { setUnitLastBullets, getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let consoleSettings = require("%scripts/options/consoleSettings.nut")
-let { getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_option_radar_aim_elevation_control, set_option_radar_aim_elevation_control, get_option_radar_selected_target_following_in_target_cycling, set_option_radar_selected_target_following_in_target_cycling, get_option_rwr_sensitivity = @() 100, set_option_rwr_sensitivity = @(_value) null, get_option_rwr_indicate_friendly_targets_values_number = @() 1, get_option_rwr_indicate_friendly_targets = @() 0, set_option_rwr_indicate_friendly_targets = @(_value) null, get_option_seeker_auto_stabilization, set_option_seeker_auto_stabilization, get_gyro_sight_deflection, set_gyro_sight_deflection, get_option_use_tws_hud_in_cockpit = @() true, set_option_use_tws_hud_in_cockpit = @(_value) null, get_activate_bombs_auto_release_on_spawn = @() true, set_activate_bombs_auto_release_on_spawn = @(_value) null } = require("controlsOptions")
-let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUrlOrFileMissionMetaInfo, getCurrentLevelBlk } = require("%scripts/missions/missionsUtilsModule.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
-let { isEnabledCustomLocalization, setCustomLocalization, getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
-let { isInSessionRoom, getSessionLobbyMissionParam, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { get_option_radar_aim_elevation_control, set_option_radar_aim_elevation_control, get_option_radar_selected_target_following_in_target_cycling, set_option_radar_selected_target_following_in_target_cycling, get_option_rwr_sensitivity = @() 100, set_option_rwr_sensitivity = @(_value) null, get_option_rwr_indicate_friendly_targets_values_number = @() 1, get_option_rwr_indicate_friendly_targets = @() 0, set_option_rwr_indicate_friendly_targets = @(_value) null, get_option_seeker_auto_stabilization, set_option_seeker_auto_stabilization, get_gyro_sight_deflection, set_gyro_sight_deflection, get_option_use_tws_hud_in_cockpit = @() true, set_option_use_tws_hud_in_cockpit = @(_value) null } = require("controlsOptions")
 let { measureType } = require("%scripts/measureType.nut")
-let { complaintCategories } = require("%scripts/penitentiary/tribunal.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { isEnabledCustomSoundMods, setCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
-let { getTankXrayFilter, getShipXrayFilter, getAirXrayFilter } = require("%scripts/weaponry/dmgModel.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { g_mislist_type, getMissionsList } = require("%scripts/missions/misListType.nut")
-let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let g_font = require("%scripts/options/fonts.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { getOrderAutoActivateHint } = require("%scripts/items/orders.nut")
-let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
-let { getDevFeaturesOptionsMap, getDevFeaturesOptionsSetMap } = require("%scripts/features/devFeatures.nut")
-let { getMissionTeamCountries } = require("%scripts/dynCampaign/campaignHelpers.nut")
-let { getIsConsoleModeForceEnabled, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
-let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 let airSpawnPointNames = {
   [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
@@ -173,19 +175,9 @@ let crosshair_colors = persist("crosshair_colors", @() [])
 
 local get_option
 
-function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
-  local selectedRow = 0
-  local iRow = 0
-  let resDescr = {
-    name = name
-    data = []
-  }
 
-  columnsRatio = clamp(columnsRatio, 0.1, 0.9)
-  let wLeft  = format("%.2fpw", columnsRatio)
-  let wRight = format("%.2fpw", 1.0 - columnsRatio)
-
-  let rowsView = []
+function getOptionsRows(options, context = null) {
+  let rows = []
   local headerHaveContent = false
   for (local i = options.len() - 1; i >= 0; i--) {
     let opt = options[i]
@@ -196,19 +188,34 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
     if (optionData == null)
       continue
 
-    let isHeader = optionData.controlType == optionControlType.HEADER
-    if (isHeader) {
+    if (optionData.controlType == optionControlType.HEADER) {
       if (!headerHaveContent)
         continue
-      else
-        headerHaveContent = false
+      headerHaveContent = false
     }
     else
       headerHaveContent = true
 
     if (optionData?.controlName == null)
       optionData.controlName <- opt?[1] ?? "spinner"
+    rows.insert(0, optionData)
+  }
+  return rows
+}
 
+function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
+  let resDescr = {
+    name = name
+    data = getOptionsRows(options, context)
+  }
+
+  columnsRatio = clamp(columnsRatio, 0.1, 0.9)
+  let wLeft  = format("%.2fpw", columnsRatio)
+  let wRight = format("%.2fpw", 1.0 - columnsRatio)
+
+  let rowsView = []
+  foreach (optionData in resDescr.data) {
+    let isHeader = optionData.controlType == optionControlType.HEADER
     local isVlist = false
     local haveOptText = true
     local elemTxt = ""
@@ -311,12 +318,6 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
 
       if (!optionData?.skipOptContainerStyles)
         rowParams.append("optContainer:t='yes'; active:t='no'")
-      if (!isHeader) {
-        if (context?.onHoverFnName)
-          rowParams.append($"on_hover:t='{context.onHoverFnName}'")
-        if (context?.onUnhoverFnName)
-          rowParams.append($"on_unhover:t='{context.onUnhoverFnName}'")
-      }
       if (isHeader)
         rowParams.append("inactive:t='yes'; headerRow:t='yes'")
       if ("enabled" in optionData)
@@ -330,19 +331,13 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
       else if ("trParams" in optionData)
         rowParams.append(optionData.trParams)
 
-      rowsView.insert(0, {
+      rowsView.append({
         row_id = optionData.getTrId()
         trParams = "\n".join(rowParams)
         cell = cell
         hasHeaderLine = isHeader
       })
-
-      if (iRow == 0)
-        selectedRow = iRow
-      ++iRow
     }
-
-    resDescr.data.insert(0, optionData)
   }
 
   return {
@@ -350,7 +345,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
       id = name
       topPos = is_centered ? "(ph-h)/2" : "0"
       position = absolutePos ? "absolute" : "relative"
-      value = selectedRow
+      value = 0
       onClick = context?.onTblClick
       row = rowsView
     })
@@ -393,11 +388,11 @@ function getConsolePresets() {
   if (!is_ps5_pro || is_hfr_supported())
     res.append("performance")
 
-  if (isPlatformSony)
+  if (isSony)
     res.append("raytraced", "raytraced_quality")
   else if (hasFeature("optionRT"))
     res.append("raytraced")
-  return res.map(@(v) { valName = v, text = $"#options/{v}", tooltip = $"#options/{v}/tooltip" })
+  return res.map(@(v) { valName = v, text = $"#options/{v}", tooltip = $"#{getVendorLocId($"options/{v}/tooltip")}" })
 }
 
 function getConsolePresetsValues() {
@@ -814,6 +809,9 @@ let optionsMap = {
   [USEROPT_ENABLE_SOUND_SPEED] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "enableSoundSpeed", OPTION_ENABLE_SOUND_SPEED)
   },
+  [USEROPT_ALLOW_RWR_CUSTOM_SFX] = function(_optionId, descr, _context) {
+    fillBoolOption(descr, "allowRwrCustomSfx", OPTION_ALLOW_RWR_CUSTOM_SFX)
+  },
   [USEROPT_VWS_ONLY_IN_COCKPIT] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "vwsOnlyInCockpit", OPTION_VWS_ONLY_IN_COCKPIT)
   },
@@ -1071,18 +1069,20 @@ let optionsMap = {
     descr.controlName <- "combobox"
 
     descr.items = []
-    descr.values = g_font.getAvailableFonts()
+    descr.values = getAvailableFonts()
     for (local i = 0; i < descr.values.len(); i++) {
       let font = descr.values[i]
       descr.items.append({
         text = font.getOptionText()
         fontOverride = font.getFontExample()
+        fontSize = font.getFontExampleHt()
       })
     }
-    descr.value = u.find_in_array(descr.values, g_font.getCurrent(), 0)
+    let curFont = getCurrentFontType()
+    descr.value = u.find_in_array(descr.values, curFont, 0)
     descr.enabled <- descr.values.len() > 1
-    descr.fontsSavePath <- g_font.getFontsSavePath()
-    let fontSizeMultiplier = g_font.getCurrent()?.sizeMultiplier ?? 1
+    descr.fontsSavePath <- getFontsSavePath()
+    let fontSizeMultiplier = curFont?.sizeMultiplier ?? 1
     descr.trParams <- fontSizeMultiplier == 0.5 ? "optionHeight:t='doubleAndHalf'"
       : fontSizeMultiplier <= 0.75 ? "optionHeight:t='double'"
       : fontSizeMultiplier < 1 ? "optionHeight:t='oneAndHalf'"
@@ -1841,12 +1841,16 @@ let optionsMap = {
   [USEROPT_VERSUS_RESPAWN] = function(_optionId, descr, _context) {
     descr.id = "maxRespawns"
     descr.items = ["#options/resp_unlimited", "#options/resp_all", "#options/resp_none"]
-    descr.values = [-2, -1,  1]
+    descr.values = [
+      RESPAWN_COUNT_MODE.UNLIMITED,
+      RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW,
+      RESPAWN_COUNT_MODE.SINGLE_SPAWN
+    ]
     for (local i = 2; i <= 3; i++) {
       descr.items.append(loc("options/resp_limited/value", { amount = i }))
       descr.values.append(i)
     }
-    descr.defaultValue = -1
+    descr.defaultValue = RESPAWN_COUNT_MODE.ONE_FOR_EACH_CREW
     if (isInSessionRoom.get())
       descr.prevValue = getSessionLobbyMissionParam("maxRespawns", null)
   },
@@ -2340,12 +2344,6 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
     descr.defaultValue = true
-  },
-  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = function(_optionId, descr, _context) {
-    descr.id = "activate_bombs_auto_release_on_spawn"
-    descr.controlType = optionControlType.CHECKBOX
-    descr.controlName <- "switchbox"
-    descr.value = get_activate_bombs_auto_release_on_spawn()
   },
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = function(optionId, descr, _context) {
     descr.id = "automatic_empty_containers_jettison"
@@ -4295,6 +4293,7 @@ function set_useropt_damage_indicator_size(value, descr, optionId) {
 function set_xray_filter_option(value, descr, optionId) {
   def_set_gui_option(value, descr, optionId)
   set_xray_parts_filter(value)
+  broadcastEvent("XrayFilterChanged")
 }
 
 let setGuiOptionInGameplayMode =
@@ -4517,7 +4516,6 @@ let optionsSetMap = {
   [USEROPT_SAVE_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_ai_target_type(value ? 1 : 0),
   [USEROPT_DEFAULT_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_default_ai_target_type(value),
   [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = setGuiOptionInGameplayMode,
-  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = @(value, _descr, _optionId) set_activate_bombs_auto_release_on_spawn(value),
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = def_set_gui_option,
   [USEROPT_IGNORE_BAD_WEATHER] = setGuiOptionInGameplayMode,
   [USEROPT_SHOW_INDICATORS_TYPE] = function(value, descr, _optionId) {
@@ -4556,11 +4554,11 @@ let optionsSetMap = {
   [USEROPT_SAVE_ZOOM_CAMERA] = @(value, _descr, _optionId) set_option_save_zoom_camera(value),
   [USEROPT_FONTS_CSS] = function(value, descr, _optionId) {
     let hasStereoModeChanged = !!descr?.fontsSavePath
-      && descr.fontsSavePath != g_font.getFontsSavePath()
+      && descr.fontsSavePath != getFontsSavePath()
     if (hasStereoModeChanged)  
       return
     let selFont = descr.values?[value]
-    if (selFont && g_font.setCurrent(selFont))
+    if (selFont && setCurrentFontType(selFont))
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
   },
   [USEROPT_HUE_SQUAD] = function(value, descr, _optionId) {
@@ -4702,6 +4700,7 @@ let optionsSetMap = {
   [USEROPT_HIDE_MOUSE_SPECTATOR] = set_useropt_instructor_ground_avoidance,
   [USEROPT_FIX_GUN_IN_MOUSE_LOOK] = set_useropt_instructor_ground_avoidance,
   [USEROPT_ENABLE_SOUND_SPEED] = set_useropt_instructor_ground_avoidance,
+  [USEROPT_ALLOW_RWR_CUSTOM_SFX] = @(value, _descr, _optionId) set_option_allow_rwr_custom_sfx(value),
   [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_TANKS] = set_useropt_instructor_ground_avoidance,
   [USEROPT_USE_RECTANGULAR_RADAR_INDICATOR_FOR_SHIPS] = set_useropt_instructor_ground_avoidance,
   [USEROPT_VWS_ONLY_IN_COCKPIT] = function(value, descr, _optionId) {
@@ -5006,6 +5005,7 @@ function get_option_in_mode(optionId, mode) {
 return {
   set_option
   get_option
+  getOptionsRows
   create_options_container
   crosshair_colors
   get_option_in_mode

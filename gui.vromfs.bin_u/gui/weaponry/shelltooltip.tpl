@@ -1,6 +1,8 @@
 tdiv {
   flow:t='vertical'
 
+  include "%gui/weaponry/weaponTooltipMrankLock.tpl"
+
   <<#warningText>>
   weaponTooltipBlock {
     margin-bottom:t='0.5*@bulletTooltipPadding'

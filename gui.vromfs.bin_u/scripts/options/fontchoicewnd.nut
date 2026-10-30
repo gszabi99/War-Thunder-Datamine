@@ -1,16 +1,15 @@
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/optionsExtNames.nut" import USEROPT_FONTS_CSS
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
+from "%scripts/options/fonts.nut" import getAvailableFonts
 
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
 const FONT_CHOICE_SAVE_ID = "tutor/fontChange"
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_FONTS_CSS } = require("%scripts/options/optionsExtNames.nut")
-let g_font = require("%scripts/options/fonts.nut")
 
 local wasOpened = false
 
@@ -21,7 +20,7 @@ let FontChoiceWnd = class (BaseGuiHandlerWT) {
   option = null
 
   static function openIfRequired() {
-    if (!get_gui_handler("FontChoiceWnd").isSeen() && g_font.getAvailableFonts().len() > 1)
+    if (!get_gui_handler("FontChoiceWnd").isSeen() && getAvailableFonts().len() > 1)
       handlersManager.loadHandler(get_gui_handler("FontChoiceWnd"))
   }
 
@@ -62,4 +61,4 @@ let FontChoiceWnd = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("FontChoiceWnd", FontChoiceWnd)
 
-return { FontChoiceWnd }
+return freeze({ FontChoiceWnd })

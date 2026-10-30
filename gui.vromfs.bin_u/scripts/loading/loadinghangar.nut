@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/loading/animBg.nut" import animBgLoad
+from "%scripts/viewUtils/objectTextUpdate.nut" import setHelpTextOnLoading, setVersionText
 from "loading" import loading_is_finished, loading_press_apply
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 let LoadingHangarHandler = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/loading/loadingHangar.blk"
@@ -29,4 +28,4 @@ let LoadingHangarHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("LoadingHangarHandler", LoadingHangarHandler)
 
-return { LoadingHangarHandler }
+return freeze({ LoadingHangarHandler })

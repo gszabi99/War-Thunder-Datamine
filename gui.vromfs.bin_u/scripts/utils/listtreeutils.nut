@@ -1,5 +1,5 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/dagui_library.nut" import *
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 const defaultListItemTpl = "%gui/customization/treeListItem.tpl"
 
@@ -158,7 +158,7 @@ function collapseBranch(branchNest, treeData, branchPath, needCollapse, isComple
   collapseBranchRecursively(branchNest, collapseData)
 }
 
-return {
+return freeze({
   getTreeChaptersView
   getBranchView
   generateListTree
@@ -167,4 +167,4 @@ return {
   openTreeChapter
   collapseBranch
   isChapterOpened
-}
+})

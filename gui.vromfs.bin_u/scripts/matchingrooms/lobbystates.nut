@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-return {
+return freeze({
   NOT_IN_ROOM = "NOT_IN_ROOM"
   WAIT_FOR_QUEUE_ROOM = "WAIT_FOR_QUEUE_ROOM"
   CREATING_ROOM = "CREATING_ROOM"
@@ -13,4 +13,4 @@ return {
   JOINING_SESSION = "JOINING_SESSION"
   IN_SESSION = "IN_SESSION"
   IN_DEBRIEFING = "IN_DEBRIEFING"
-}
+})

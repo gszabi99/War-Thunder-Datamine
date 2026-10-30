@@ -1,8 +1,7 @@
+from "%scripts/weaponry/weaponryInfo.nut" import getWeaponByName
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let sortIdxByExpClass = {
   fighter = 0
@@ -121,7 +120,7 @@ function getWeaponNameByExpClass(unit, expClass) {
   return expClass == "assault" ? getFighterToAssaultWeapon(unit)?.name ?? "" : ""
 }
 
-return {
+return freeze({
   getSortIdx
   getText
   getIconText
@@ -129,4 +128,4 @@ return {
   getAvailableClasses
   getFighterToAssaultWeapon
   getWeaponNameByExpClass
-}
+})

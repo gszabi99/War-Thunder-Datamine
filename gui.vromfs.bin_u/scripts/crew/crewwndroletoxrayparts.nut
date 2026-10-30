@@ -1,8 +1,7 @@
 import "regexp2" as regexp2
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
 from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
-
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let tankRolesToParts = {
   driver = ["engine_dm", "transmission_dm"]
@@ -263,6 +262,6 @@ function getPartsListToHighlight(unit, role) {
   return res
 }
 
-return {
+return freeze({
   getPartsListToHighlight
-}
+})

@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "crosshairPreset": "uk_matilda_hedgehog",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1777,7 +1783,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/40mm_QF_2pdr_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 2.0,
@@ -1889,7 +1895,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/178mm_Hedgehog_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/178mm_Hedgehog_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -1938,7 +1944,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -1981,8 +1987,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "uk_matilda_hedgehog_default",
-      "blk": "gameData/units/tankModels/weaponPresets/uk_matilda_hedgehog_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

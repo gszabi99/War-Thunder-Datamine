@@ -1,21 +1,18 @@
-from "%scripts/dagui_library.nut" import *
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
-
-let { warbondsShopLevelByStages, seasonLevel, getBPStageByShopLevel
-} = require("%scripts/battlePass/seasonState.nut")
-let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
-} = require("%scripts/battlePass/unlocksRewardsState.nut")
-let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
-let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getCurrentWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+from "%scripts/battlePass/seasonState.nut" import warbondsShopLevelByStages, seasonLevel, getBPStageByShopLevel
+from "%scripts/battlePass/unlocksRewardsState.nut" import basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass, basicUnlockMeta
+from "%scripts/battlePass/challenges.nut" import curSeasonChallengesByStage
+from "%scripts/unlocks/userstatUnlocksState.nut" import getStageByIndex
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/sqDagui/globalCallbacks/globalCallbacks.nut" import getGcbName, getGcbParamsMarkup
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/warbonds/warbondsManager.nut" import getCurrentWarbond
+from "%scripts/dagui_library.nut" import *
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 10
 
-let overrideStagesIcon = Computed(@() basicUnlock.get()?.meta.overrideStageIcon ?? {})
-let doubleWidthStagesIcon = Computed(@() basicUnlock.get()?.meta.doubleWidthStageIcon ?? [])
+let overrideStagesIcon = Computed(@() basicUnlockMeta.get()?.overrideStageIcon ?? {})
+let doubleWidthStagesIcon = Computed(@() basicUnlockMeta.get()?.doubleWidthStageIcon ?? [])
 
 let getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.get() ? "past"
   : (stageIdx + 1) == seasonLevel.get() ? "current"
@@ -130,8 +127,8 @@ function getStageViewData(stageData, idxOnPage) {
   }
 }
 
-return {
+return freeze({
   seasonStages
   getStageViewData
   doubleWidthStagesIcon
-}
+})

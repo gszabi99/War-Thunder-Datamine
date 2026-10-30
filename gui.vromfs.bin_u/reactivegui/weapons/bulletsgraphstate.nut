@@ -12,7 +12,7 @@ eventbus_subscribe("update_bullets_graph_state", function(v) {
     graphPlayerParams.mutate(@(params) params.__update(graphPlayerData))
 })
 
-return {
+return freeze({
   bulletsGraphParams
   graphPlayerParams
-}
+})

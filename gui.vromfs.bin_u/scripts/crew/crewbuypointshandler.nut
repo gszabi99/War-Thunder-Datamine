@@ -1,18 +1,17 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, move_mouse_on_child
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/crew/crewPointsText.nut" import getCrewSpText
+from "%scripts/crew/crew.nut" import getCrewCountry, getCrewButtonRow
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/discounts/discountUtils.nut" import showDiscount
+from "%scripts/crew/crewPoints.nut" import getSkillPointsPacks
+from "%scripts/crew/crewPointsBuyActions.nut" import buySkillPointsPack
 from "string" import format
 from "math" import floor
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
-let { getSkillPointsPacks } = require("%scripts/crew/crewPoints.nut")
-let { buySkillPointsPack } = require("%scripts/crew/crewPointsBuyActions.nut")
 
 register_gui_handler("CrewBuyPointsHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

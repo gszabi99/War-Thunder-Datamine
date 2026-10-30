@@ -1,11 +1,28 @@
+import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/style/colors.nut" as colors
 from "fonts" import getFontName
 from "%rGui/globals/ui_library.nut" import *
-
-let fontsState = require("%rGui/style/fontsState.nut")
-let colors = require("%rGui/style/colors.nut")
+from "%rGui/dagui/units.nut" import px
 
 let antiAirMenuShortcutHeight = evenPx(30)
 let infantryShortcutHeight = evenPx(24)
+let hudMessageKeyHeight = shHud(4) * 2 / 3
+
+
+let controlsKeyH = px("0.7@kbh")
+let controlsImageSize = px("0.9@kbh")
+let controlsCellParams = freeze({
+  shortcutAxis = [controlsImageSize, controlsImageSize]
+  gamepadButtonSize = [controlsImageSize, controlsImageSize]
+  keyboardButtonSize = [SIZE_TO_CONTENT, controlsKeyH]
+  keyboardButtonMinWidth = controlsKeyH
+  keyboardButtonPad = [0, 13]
+  keyboardButtonMargin = [0, px("2@dp")]
+  keyboardButtonTextFont = fontsState.get("normal")
+  combinationGap = 0
+  texOffs = [0, 13]
+  screenOffs = [0, 13]
+})
 
 let actionItemParams = { shortcutAxis = [shHud(3), shHud(3)]
   gamepadButtonSize = [shHud(3), shHud(3)]
@@ -21,7 +38,16 @@ let actionItemParams = { shortcutAxis = [shHud(3), shHud(3)]
   screenOffs = 4
 }
 
-let shortcutsParamsByPlace = @(scale = 1) {
+let mkAntiAirMenuParams = @(scale) { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
+  gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
+  keyboardButtonSize = [SIZE_TO_CONTENT, 2 * (0.45 * antiAirMenuShortcutHeight * scale + 0.5).tointeger()]
+  keyboardButtonMinWidth = evenPx(36)
+  keyboardButtonPad = [0, hdpx(5)]
+  keyboardButtonTextFont = Fonts.tiny_text_hud
+  combinationGap = hdpx(5)
+}
+
+let shortcutsParamsByPlace = {
   defaultP = { shortcutAxis = [shHud(6), shHud(6)]
     gamepadButtonSize = [shHud(4), shHud(4)]
     keyboardButtonSize = [SIZE_TO_CONTENT, shHud(4)]
@@ -39,13 +65,16 @@ let shortcutsParamsByPlace = @(scale = 1) {
     combinationGap = fpx(6)
     combinationBackground = "ui/gameuiskin#hotkey_combo_bg.svg"
   }
-  antiAirMenu = { shortcutAxis = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
-    gamepadButtonSize = [antiAirMenuShortcutHeight * scale, antiAirMenuShortcutHeight * scale]
-    keyboardButtonSize = [SIZE_TO_CONTENT, 2 * (0.45 * antiAirMenuShortcutHeight * scale + 0.5).tointeger()]
-    keyboardButtonMinWidth = evenPx(36)
-    keyboardButtonPad = [0, hdpx(5)]
+  controlsCell = controlsCellParams
+  hudMessage = { shortcutAxis = [shHud(6), shHud(6)]
+    gamepadButtonSize = [hudMessageKeyHeight, hudMessageKeyHeight]
+    keyboardButtonSize = [SIZE_TO_CONTENT, hudMessageKeyHeight]
+    keyboardButtonMinWidth = hudMessageKeyHeight
+    keyboardButtonPad = [0, hdpx(13)]
     keyboardButtonTextFont = Fonts.tiny_text_hud
-    combinationGap = hdpx(5)
+    combinationGap = 0
+    texOffs = [0, hdpx(13)]
+    screenOffs = [0, hdpx(13)]
   }
   actionItem = actionItemParams
   airParamsTable = actionItemParams.__merge({
@@ -66,11 +95,13 @@ let shortcutsParamsByPlace = @(scale = 1) {
   }
 }
 
+let getPlaceParams = @(place, scale) place == "antiAirMenu" ? mkAntiAirMenuParams(scale) : shortcutsParamsByPlace[place]
+
 let hasImage = @(shortcutConfig) shortcutConfig?.buttonImage
   && shortcutConfig?.buttonImage != ""
 
 let mkActivationTypeImage = @(imageName, width) {
-  size = [width, width]
+  size = width
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{imageName}:{width}:P")
   color = colors.white
@@ -79,7 +110,7 @@ let mkActivationTypeImage = @(imageName, width) {
 
 function gamepadButton(shortcutConfig, override, isAxis = true, addChildrend = []) {
   let { scale = 1, place = "defaultP" } = override
-  let sizeParam = shortcutsParamsByPlace(scale)[place]
+  let sizeParam = getPlaceParams(place, scale)
   let buttonSize = isAxis ? sizeParam.shortcutAxis : sizeParam.gamepadButtonSize
   local image = shortcutConfig.buttonImage
   image = image.slice(0, 1) == "#" ? $"!{image.slice(1, image.len())}" : image
@@ -103,13 +134,14 @@ function gamepadButton(shortcutConfig, override, isAxis = true, addChildrend = [
 function keyboardButton(shortcutConfig, override, addChildrend = []) {
   let { scale = 1, place = "defaultP", shortCombinationMinWidth = null,
     shortCombination = false } = override
-  let shortcutsParams = shortcutsParamsByPlace(scale)[place]
+  let shortcutsParams = getPlaceParams(place, scale)
   let { keyboardButtonSize, keyboardButtonMinWidth, keyboardButtonPad, keyboardButtonTextFont
     shColor = override?.shColor ?? colors.menu.commonTextColor,
     bgImage = null
     bgImageColor = override?.bgImageColor ?? colors.white
     texOffs = [0, hdpx(10)]
     screenOffs = [0, hdpx(10)]
+    keyboardButtonMargin = null
   } = shortcutsParams
   let kbBgImage = bgImage ?? $"ui/gameuiskin#keyboard_btn_flat.svg:{keyboardButtonSize[1]}:P"
   let ch = {
@@ -133,6 +165,7 @@ function keyboardButton(shortcutConfig, override, addChildrend = []) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     padding = keyboardButtonPad
+    margin = keyboardButtonMargin
     gap = hdpxi(5)
     texOffs
     screenOffs
@@ -167,7 +200,7 @@ let shortcutByInputName = {
       return buttonComp
 
     let { scale = 1, place = "defaultP" } = override
-    let { gamepadButtonSize } = shortcutsParamsByPlace(scale)[place]
+    let { gamepadButtonSize } = getPlaceParams(place, scale)
     return {
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
@@ -183,7 +216,7 @@ let shortcutByInputName = {
     let { place = "defaultP", shortCombination = false } = override
     local { scale = 1 } = override
     let { elements, activationTypeImg = null } = shortcutConfig
-    let sizeParam = shortcutsParamsByPlace(scale)[place]
+    let sizeParam = getPlaceParams(place, scale)
     let { gamepadButtonSize, keyboardButtonTextFont, combinationGap,
       combinationBackground = "ui/gameuiskin#hotkey_combo_bg_hud.svg" } = sizeParam
     let activateIconHeight = gamepadButtonSize[0]
@@ -251,7 +284,7 @@ let shortcutByInputName = {
   keyboardAxis = function(shortcutConfig, override, addChildrend) {
     let needArrows = shortcutConfig?.needArrows ?? false
     let { scale = 1, place = "defaultP" } = override
-    let sizeParam = shortcutsParamsByPlace(scale)[place]
+    let sizeParam = getPlaceParams(place, scale)
     return {
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
@@ -261,7 +294,7 @@ let shortcutByInputName = {
       children = [{
         size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.leftKey, override, addChildrend)]
+        children = getShortcut(shortcutConfig.elements?.leftKey, override, addChildrend)
       },
       {
         size = SIZE_TO_CONTENT
@@ -283,7 +316,7 @@ let shortcutByInputName = {
       {
         size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.rightKey, override, addChildrend)]
+        children = getShortcut(shortcutConfig.elements?.rightKey, override, addChildrend)
       }]
     }
   }
@@ -301,7 +334,7 @@ getShortcut = function(shortcutConfig, override, addChildrend = []) {
   return shortcutByInputName?[shortcutConfig?.inputName ?? ""]?(shortcutConfig, override, addChildrend)
 }
 
-return {
+return freeze({
   getShortcut
   antiAirMenuShortcutHeight
-}
+})

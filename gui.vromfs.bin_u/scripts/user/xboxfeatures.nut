@@ -1,10 +1,9 @@
+from "%scripts/gdk/permissions.nut" import check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqstd/platform.nut" import is_gdk
 from "%gdkLib/crossnetwork.nut" import multiplayerPrivilege
 from "%scripts/dagui_library.nut" import *
-
-let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
 
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
@@ -58,7 +57,7 @@ function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
 }
 
 
-return {
+return freeze({
   isMultiplayerPrivilegeAvailable = is_gdk ? multiplayerPrivilege : dummyValue
   checkAndShowMultiplayerPrivilegeWarning = @(cb = null) checkMultiplayerPrivilege(true, cb)
   updateMultiplayerPrivilege = function() {
@@ -69,4 +68,4 @@ return {
   }
 
   checkAndShowCrossplayWarning
-}
+})

@@ -52,8 +52,8 @@ let mkMessageLine = @(message)  @() {
     ? [
         {
           prop = AnimProp.scale
-          from = [0.5, 0.5]
-          to = [1, 1]
+          from = const [0.5, 0.5]
+          to = const [1, 1]
           duration = NEW_MESSAGE_ANIM_DURATION
           easing = NEW_MESSAGE_ANIM_EASING
           play = true
@@ -80,7 +80,7 @@ let toastMessagesComp = @() {
   children = showingMessages.get().map(@(message) mkMessageLine(message))
 }
 
-return {
+return freeze({
   showMessage
   toastMessagesComp
-}
+})

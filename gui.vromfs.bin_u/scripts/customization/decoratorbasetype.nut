@@ -1,3 +1,14 @@
+import "%scripts/time.nut" as time
+import "%scripts/guidParser.nut" as guidParser
+import "%scripts/utils/memoizeByEvents.nut" as memoizeByEvents
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%sqstd/platform.nut" import isSony
+from "%scripts/money.nut" import Cost
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getSkinCost
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/tasker.nut" import addTask
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/decoratorFavoritesStorage.nut" import isDecorInFavorites, addDecorToFavorite, removeDecorFromFavorite, getFavoriteDecorators
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "sony.user" import hasPremium
@@ -11,18 +22,6 @@ from "%scripts/dagui_natives.nut" import has_entitlement, player_have_attachable
   , save_attachables, get_max_num_attachables_slots, is_decal_allowed, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
-
-let time = require("%scripts/time.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { Cost } = require("%scripts/money.nut")
-let guidParser = require("%scripts/guidParser.nut")
-let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getSkinCost } = require("%scripts/customization/skinUtils.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isDecorInFavorites, addDecorToFavorite, removeDecorFromFavorite, getFavoriteDecorators } = require("%scripts/customization/decoratorFavoritesStorage.nut")
 
 function memoizeByProfile(func, hashFunc = null) {
   
@@ -74,7 +73,7 @@ let decoratorTypes = {
         return true
       if (!this.isAllowed(block.getBlockName()))
         return false
-      if (block?.psn && !isPlatformSony)
+      if (block?.psn && !isSony)
         return false
       if (block?.ps_plus && !hasPremium())
         return false
@@ -195,7 +194,7 @@ addEnumDecoratorTypes({
     }
 
     isAllowed = function(decoratorName) { return is_decal_allowed(decoratorName, "") }
-    isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("DecalsUse")
+    isAvailable = @(unit, checkUnitUsable = true) !!unit
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(player_have_decal)
 
@@ -228,9 +227,6 @@ addEnumDecoratorTypes({
     }
 
     save = function(unitName, showProgressBox) {
-      if (!hasFeature("DecalsUse"))
-        return
-
       let name = getAircraftByName(unitName)?.masterUnit ?? unitName
       let taskId = save_decals(name)
       let taskOptions = { showProgressBox = showProgressBox }
@@ -267,7 +263,7 @@ addEnumDecoratorTypes({
     getDecoratorNameInSlot = function(slotIdx, ...) { return get_attachable_name(slotIdx) }
     getDecoratorGroupInSlot = function(slotIdx, ...) { return get_attachable_group(slotIdx) }
 
-    isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("AttachablesUse")
+    isAvailable = @(unit, checkUnitUsable = true) !!unit
       && (unit.isTank() || unit.isShipOrBoat())
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(player_have_attachable)
@@ -287,9 +283,6 @@ addEnumDecoratorTypes({
     }
 
     save = function(unitName, showProgressBox) {
-      if (!hasFeature("AttachablesUse"))
-        return
-
       let name = getAircraftByName(unitName)?.masterUnit ?? unitName
       let taskId = save_attachables(name)
       let taskOptions = { showProgressBox = showProgressBox }

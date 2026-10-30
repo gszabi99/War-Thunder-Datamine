@@ -1,22 +1,23 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%sqstd/platform.nut" import is_gdk, isSony, isXbox, isXboxScarlett, isPS4, isPS5, isPC
+from "%appGlobals/user/nickTools.nut" import isXBoxPlayerName, isPS4PlayerName
+from "%scripts/gdk/permissions.nut" import check_crossnetwork_communications_permission, CommunicationState
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/options/options.nut" import get_gui_option_in_mode
 from "%appGlobals/login/loginState.nut" import isProfileReceived
-from "%sqstd/platform.nut" import is_gdk
 from "%gdkLib/crossnetwork.nut" import crossnetworkPrivilege
 from "%scripts/dagui_library.nut" import *
+from "%appGlobals/clientState/platform.nut" import isMeXBOXPlayer, isMePS4Player
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 const PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
-let crossNetworkPlayStatus = mkWatched(persist, "crossNetworkPlayStatus", null)
+let crossNetworkPlayStatus = Watched(null)
 crossNetworkPlayStatus.subscribe(function(v) {
   logX($"Status updated -> {v}")
   if (v != null)
@@ -35,7 +36,7 @@ if (is_gdk) {
   crossNetworkPlayStatus.set(crossnetworkPrivilege.get())
 }
 
-let crossNetworkChatStatus = mkWatched(persist, "crossNetworkChatStatus", null)
+let crossNetworkChatStatus = Watched(null)
 
 let resetCrossPlayStatus = @() crossNetworkPlayStatus.set(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus.set(null)
@@ -47,7 +48,7 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
   if (!needOverrideValue && crossNetworkPlayStatus.get() != null)
     return
 
-  if (isPlatformSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
+  if (isSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
     crossNetworkPlayStatus.set(loadLocalAccountSettings(PS4_CROSSPLAY_OPT_ID, true))
   else
     crossNetworkPlayStatus.set(true)
@@ -60,7 +61,7 @@ let isCrossNetworkPlayEnabled = function() {
 }
 
 let setCrossNetworkPlayStatus = function(val) {
-  if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
+  if (!isSony || !hasFeature("PS4CrossNetwork"))
     return
 
   resetCrossPlayStatus()
@@ -74,7 +75,7 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
 
   if (is_gdk)
     crossNetworkChatStatus.set(check_crossnetwork_communications_permission())
-  else if (isPlatformSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
+  else if (isSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
     crossNetworkChatStatus.set(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, CommunicationState.Allowed))
   else
     crossNetworkChatStatus.set(CommunicationState.Allowed)
@@ -88,7 +89,7 @@ let getCrossNetworkChatStatus = function() {
 let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == CommunicationState.Allowed
 
 let setCrossNetworkChatStatus = function(boolVal) {
-  if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
+  if (!isSony || !hasFeature("PS4CrossNetwork"))
     return
 
   let val = boolVal ? CommunicationState.Allowed : CommunicationState.Blocked
@@ -101,10 +102,10 @@ let getTextWithCrossplayIcon = @(addIcon, text) addIcon ? $"{loc("icon/cross_pla
 
 let getSeparateLeaderboardPlatformValue = function() {
   if (hasFeature("ConsoleSeparateLeaderboards")) {
-    if (isPlatformSony)
+    if (isSony)
       return get_gui_option_in_mode(USEROPT_PS4_ONLY_LEADERBOARD, OPTIONS_MODE_GAMEPLAY) == true
 
-    if (isPlatformXbox)
+    if (isXbox)
       return !isCrossNetworkPlayEnabled()
   }
 
@@ -114,12 +115,36 @@ let getSeparateLeaderboardPlatformValue = function() {
 let getSeparateLeaderboardPlatformName = function() {
   
   if (getSeparateLeaderboardPlatformValue()) {
-    if (isPlatformPS4 || isPlatformPS5)
+    if (isPS4 || isPS5)
       return "ps4"      
-    if (isPlatformXbox || isPlatformXboxScarlett)
+    if (isXbox || isXboxScarlett)
       return "xboxone"  
   }
   return ""
+}
+
+function isPs4XboxOneInteractionAvailable(name) {
+  let isPS4Player = isPS4PlayerName(name)
+  let isXBOXPlayer = isXBoxPlayerName(name)
+  if (((isMePS4Player() && isXBOXPlayer) || (isMeXBOXPlayer() && isPS4Player)) && !hasFeature("Ps4XboxOneInteraction"))
+    return false
+  return true
+}
+
+function canInteractCrossConsole(name) {
+  let isPS4Player = isPS4PlayerName(name)
+  let isXBOXPlayer = isXBoxPlayerName(name)
+
+  if (!isXBOXPlayer && (isPC || isSony))
+    return true
+
+  if ((isPS4Player && isSony) || (isXBOXPlayer && is_gdk))
+    return true
+
+  if (!isPs4XboxOneInteractionAvailable(name))
+    return false
+
+  return hasFeature("XboxCrossConsoleInteraction")
 }
 
 let invalidateCache = function() {
@@ -138,7 +163,7 @@ subscriptions.addListenersWithoutEnv({
   XboxMultiplayerPrivilegeUpdated = @(_) reinitCrossNetworkStatus()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   isCrossPlayEnabled = isCrossNetworkPlayEnabled
   setCrossPlayStatus = setCrossNetworkPlayStatus
   crossNetworkPlayStatus
@@ -152,4 +177,7 @@ return {
 
   getSeparateLeaderboardPlatformName = getSeparateLeaderboardPlatformName
   getSeparateLeaderboardPlatformValue = getSeparateLeaderboardPlatformValue
-}
+
+  isPs4XboxOneInteractionAvailable
+  canInteractCrossConsole
+})

@@ -17,6 +17,9 @@ ComboBox {
   <<#funcName>>
     on_select:t='<<funcName>>'
   <</funcName>>
+  <<#popupLeaveFuncName>>
+    on_popup_mouse_leave:t='<<popupLeaveFuncName>>'
+  <</popupLeaveFuncName>>
 
   <<#values>>
     option {
@@ -26,6 +29,9 @@ ComboBox {
       <<#isSelected>>
         selected:t='yes'
       <</isSelected>>
+      <<#hoverFuncName>>
+        on_hover:t='<<hoverFuncName>>'
+      <</hoverFuncName>>
       <<#unseenIcon>>
         unseenIcon {
           <<#unseenIconId>>id:t='<<unseenIconId>>'<</unseenIconId>>

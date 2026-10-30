@@ -2146,7 +2146,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/155mm_soltam_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/155mm_soltam_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilMultiplier": 0.2,
@@ -2180,13 +2180,12 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
             "verNode": "bone_roll_01",
             "verLimits": [
@@ -2213,7 +2212,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_aa_flame",
         "barrelDP": "gun_barrel_01_dm",
@@ -2276,7 +2275,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "emtr_mg_aa_flame_01",
         "flash": "emtr_mg_aa_flame_01",
         "useEmitter": true,
@@ -2341,8 +2340,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "il_sholef_default",
-      "blk": "gameData/units/tankModels/weaponPresets/il_sholef_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3778,6 +3777,7 @@
     "ammo1": {
       "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "fatalFire": true,
       "fatalExplosion": true,
       "replenishmentDelay": 4.0,
@@ -3787,8 +3787,9 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "autoloader": "autoloader_dm",
           "firstStage": true,
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "index": 0,
           "ammo_turret_01_dm": {
             "count": 1
@@ -3798,11 +3799,12 @@
           }
         },
         {
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "reloadTimeMult": 1.58667,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "autoloader": "autoloader_dm",
           "index": 1,
           "ammo_turret_03_dm": {
             "count": 1
@@ -4038,6 +4040,8 @@
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
           "firstStage": true,
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "index": 0,
           "ammo_body_01_dm": {
             "count": 1
@@ -4047,6 +4051,8 @@
           }
         },
         {
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "reloadTimeMult": 1.58667,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
@@ -4317,5 +4323,29 @@
         "to": "isr_camo_threecolor*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.84,
+      1.462,
+      1.7265
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

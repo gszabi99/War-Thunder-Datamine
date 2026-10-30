@@ -2088,7 +2088,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2117,7 +2117,7 @@
           1.0,
           5.0
         ],
-        "bullets": 464,
+        "bullets": 500,
         "ChainfireTime": 2.5,
         "DelayAfterShoot": 2.0,
         "AttackMaxRadius": 2000.0,
@@ -2137,16 +2137,15 @@
           "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "rotatedTurret": "bone_turret",
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2208,7 +2207,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2255,18 +2254,15 @@
           "barrel": "bone_gun_barrel_01",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "rotatedTurret": "bone_turret",
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2328,7 +2324,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKTM_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKTM_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2359,13 +2355,12 @@
           "rotatedTurret": "bone_turret",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2381,7 +2376,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2437,19 +2432,19 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_bmd_4m_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_bmd_4m_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_bmd_4m_default.blk"
     }
   },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+        "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
         "turretIndex": 0,
         "designationTurretIndex": 0,
         "dmPart": "optic_gun_dm"
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+        "blk": "gamedata/sensors/LaserBeamRidingSensor.blk"
       }
     ]
   },
@@ -3682,7 +3677,7 @@
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
         "ammo_turret_39_dm": {
-          "count": 464
+          "count": 500
         }
       }
     },
@@ -3695,10 +3690,10 @@
       "replenishmentTime": 20.0,
       "shells": {
         "autoLoad": true,
+        "autoloader": "autoloader_dm",
         "fireEvent": "ammo_fire",
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
-        "autoloader": "autoloader_dm",
         "ammo_turret_01_dm": {
           "count": 1
         },
@@ -3890,7 +3885,7 @@
             {
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/30mm_2A72_BMD_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
@@ -3919,7 +3914,7 @@
                 1.0,
                 5.0
               ],
-              "bullets": 464,
+              "bullets": 500,
               "ChainfireTime": 2.5,
               "DelayAfterShoot": 2.0,
               "AttackMaxRadius": 2000.0,
@@ -3939,16 +3934,15 @@
                 "barrel": "bone_gun_barrel_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "rotatedTurret": "bone_turret",
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4010,7 +4004,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/100mm_2A70_BMD_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
@@ -4057,18 +4051,15 @@
                 "barrel": "bone_gun_barrel_01",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "rotatedTurret": "bone_turret",
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4130,7 +4121,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKTM_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKTM_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -4161,13 +4152,12 @@
                 "rotatedTurret": "bone_turret",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4183,7 +4173,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4237,7 +4227,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/81mm_tucha_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4341,7 +4331,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
               "turretIndex": 0,
               "designationTurretIndex": 0,
               "dmPart": [
@@ -4350,11 +4340,11 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
               "dmPart": "electronic_equipment_dm"
             },
             {
-              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]

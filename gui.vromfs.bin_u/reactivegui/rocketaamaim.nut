@@ -64,8 +64,6 @@ let aamAimTracker = @(color_watched, alert_color_watched) function() {
   if (!TrackerVisible.get())
     return { watch = TrackerVisible }
 
-  local snrDb = 10.0 * math.log(clamp(GuidanceLockSnr.get(), 0.1, 10.0)) / math.log(10.0)
-
   let colorTracker =
       (GuidanceLockSnr.get() > 1.0) || (GuidanceLockSnr.get() < 0.0 && GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING)
       ? alert_color_watched.get() : color_watched.get()
@@ -85,6 +83,7 @@ let aamAimTracker = @(color_watched, alert_color_watched) function() {
   let children = [shadowLines, lines]
 
   if (GuidanceLockSnr.get() >= 0.0) {
+    let snrDb = 10.0 * math.log10(clamp(GuidanceLockSnr.get(), 0.1, 10.0))
     local linesSNR = trackerLines.__merge({
       lineWidth = hdpx(LINE_WIDTH * AamSightLineWidthFactor.get())
       color = colorTracker

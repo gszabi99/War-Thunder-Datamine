@@ -15,68 +15,6 @@ def get_zone_entity_by_id_es(evt : EventGetZoneEntityById;
     evt.result = eid
 
 
-def private copy_capzone_navmesh_to_proxy(capzone_eid : EntityId;
-                                          capzone__insideNavmeshPositions : Point3List;
-                                          capzone__nearestNavmeshPos : float3;
-                                          capzone__hasNearestNavmeshPos : bool;
-                                          var dynamic_respawn__prevPositions : Point3List&;
-                                          var dynamic_respawn__prevPositionsClient : Point3List&)
-  clear(dynamic_respawn__prevPositions)
-  if !empty(capzone__insideNavmeshPositions)
-    dynamic_respawn__prevPositions := capzone__insideNavmeshPositions
-  elif capzone__hasNearestNavmeshPos
-    push(dynamic_respawn__prevPositions, capzone__nearestNavmeshPos)
-  else
-    print("[SPSQUAD] proxy init: no navmesh positions for capzone {capzone_eid}")
-  dynamic_respawn__prevPositionsClient := dynamic_respawn__prevPositions
-
-
-[es(tag=server, on_appear, after=(capzone_init_nearest_navmesh_point))]
-def capzone_init_spawn_proxy_positions_es(evt : Event;
-                                          eid : EntityId;
-                                          capzone__insideNavmeshPositions : Point3List;
-                                          capzone__nearestNavmeshPos : float3;
-                                          capzone__hasNearestNavmeshPos : bool)
-  query() <| $ [es] (infantry_spawn__capzoneEid : EntityId;
-                     var dynamic_respawn__prevPositions : Point3List&;
-                     var dynamic_respawn__prevPositionsClient : Point3List&)
-    if infantry_spawn__capzoneEid == eid && empty(dynamic_respawn__prevPositions)
-      copy_capzone_navmesh_to_proxy(eid, capzone__insideNavmeshPositions, capzone__nearestNavmeshPos,
-                                    capzone__hasNearestNavmeshPos, dynamic_respawn__prevPositions,
-                                    dynamic_respawn__prevPositionsClient)
-
-
-[es(tag=server, on_appear)]
-def infantry_spawn_proxy_init_positions_es(evt : Event;
-                                           infantry_spawn__capzoneEid : EntityId;
-                                           var dynamic_respawn__prevPositions : Point3List&;
-                                           var dynamic_respawn__prevPositionsClient : Point3List&)
-  query(infantry_spawn__capzoneEid) <| $ [es] (capzone__insideNavmeshPositions : Point3List;
-                                               capzone__nearestNavmeshPos : float3;
-                                               capzone__hasNearestNavmeshPos : bool)
-    if empty(dynamic_respawn__prevPositions)
-      copy_capzone_navmesh_to_proxy(infantry_spawn__capzoneEid, capzone__insideNavmeshPositions, capzone__nearestNavmeshPos,
-                                    capzone__hasNearestNavmeshPos, dynamic_respawn__prevPositions,
-                                    dynamic_respawn__prevPositionsClient)
-
-
-[es(tag=server, on_event=EventLevelLoaded, after=capzone_init_all_nearest_navmesh_points)]
-def infantry_spawn_proxy_init_positions_after_level_load(evt : Event)
-  query() <| $ [es(REQUIRE_NOT=moveable_capzone)] (eid : EntityId;
-                                                   capzone__insideNavmeshPositions : Point3List;
-                                                   capzone__nearestNavmeshPos : float3;
-                                                   capzone__hasNearestNavmeshPos : bool)
-    find_query() <| $ [es(REQUIRE=infantry_spawn_zone_proxy)] (infantry_spawn__capzoneEid : EntityId;
-                                                               var dynamic_respawn__prevPositions : Point3List&;
-                                                               var dynamic_respawn__prevPositionsClient : Point3List&)
-      if eid == infantry_spawn__capzoneEid && empty(dynamic_respawn__prevPositions)
-        copy_capzone_navmesh_to_proxy(eid, capzone__insideNavmeshPositions, capzone__nearestNavmeshPos,
-                                      capzone__hasNearestNavmeshPos, dynamic_respawn__prevPositions,
-                                      dynamic_respawn__prevPositionsClient)
-        return true
-      return false
-
-
 [es(tag=gameClient, REQUIRE=infantry_spawn_zone_proxy, track=dynamic_respawn__prevPositionsClient, on_appear)]
 def infantry_spawn_track_positions_client(evt : Event;
                                           dynamic_respawn__prevPositionsClient : Point3List;
@@ -88,15 +26,14 @@ def infantry_spawn_track_positions_client(evt : Event;
 def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
                                    infantry_spawn__capzoneEid : EntityId;
                                    var capzone__hasEnemyInside : bool&;
-                                   var infantry_spawn__owningTeam : int&)
+                                   var infantry_spawn__owningTeam : int&;
+                                   var infantry_spawn__hasEnoughSuppliesForSpawn : bool&)
   query(infantry_spawn__capzoneEid) <| $ [es] (capzone__capTeam : int;
                                                capzone__owningTeam : int;
-                                               teamPresence : Object)
-    let ownerTeamStr = "{capzone__capTeam}"
-    var ownerCount = 0
-    let ownerArr = get_ecs_array(teamPresence, ownerTeamStr)
-    if ownerArr != null
-      ownerCount = length(*ownerArr)
+                                               teamPresence : Object;
+                                               supply_node__points : float const?;
+                                               supply_node__spawnCost : float = 0.0)
+    let ownerCount = team_presence_count(teamPresence, capzone__capTeam)
     var totalCount = 0
     for presence in teamPresence
       let arr = get_ecs_array(presence.value)
@@ -107,6 +44,9 @@ def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
       capzone__hasEnemyInside = hasEnemy
     if infantry_spawn__owningTeam != capzone__owningTeam
       infantry_spawn__owningTeam = capzone__owningTeam
+    let hasEnoughSupplies = supply_node__points == null || *supply_node__points >= supply_node__spawnCost
+    if infantry_spawn__hasEnoughSuppliesForSpawn != hasEnoughSupplies
+      infantry_spawn__hasEnoughSuppliesForSpawn = hasEnoughSupplies
 
 
 [es(tag=server, REQUIRE=human)]
@@ -121,6 +61,7 @@ def squadmates_spawn_calculation_and_verify_zone(evt : EventCalcAndVerifySpawnTm
 
   evt.verified = false
   query(proxyEid) <| $ [es] (infantry_spawn__owningTeam : int;
+                             infantry_spawn__capzoneEid : EntityId;
                              capzone__hasEnemyInside : bool;
                              dynamic_respawn__prevPositions : Point3List)
     if infantry_spawn__owningTeam != team || capzone__hasEnemyInside
@@ -139,12 +80,20 @@ def squadmates_spawn_calculation_and_verify_zone(evt : EventCalcAndVerifySpawnTm
           break
     if !evt.verified
       print("[SPSQUAD] spawn unit {eid} on zone {proxyEid} REJECTED: requestPos=({evt.requestPos}) does not match any known position")
+    if evt.verified
+      query(infantry_spawn__capzoneEid) <| $ [es] (var supply_node__points : float&;
+                                                   supply_node__spawnCost : float)
+        if supply_node__points < supply_node__spawnCost
+          evt.verified = false
+          print("[SPSQUAD] spawn unit {eid} on zone {proxyEid} REJECTED: supplies {supply_node__points} < {supply_node__spawnCost}")
+        else
+          supply_node__points -= supply_node__spawnCost
   if dynamic_respawn__spawnOnUnitEid != null
     *dynamic_respawn__spawnOnUnitEid = evt.verified ? proxyEid : INVALID_ENTITY_ID
 
 
 def private gather_enemy_points(bot_team : int; var points : array<float3>)
-  query() <| $ [es] (capzone__owningTeam : int; active : bool; transform : float3x4)
+  query() <| $ [es(REQUIRE_NOT=(plantSiteAiZone, capzoneSector))] (capzone__owningTeam : int; active : bool; transform : float3x4)
     if active && capzone__owningTeam != bot_team && capzone__owningTeam != TEAM_UNASSIGNED
       push(points, transform[3])
   if empty(points)

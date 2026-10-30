@@ -29,6 +29,7 @@
 
 
 import "%sqstd/string.nut" as g_string
+from "%sqStdLibs/helpers/daguiString.nut" import stripTags
 from "dagor.localize" import loc
 from "%sqstd/functools.nut" import memoize
 from "dagor.fs" import read_text_from_file
@@ -40,7 +41,6 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
 
 
-local handyman
 local Scanner = class {
   string = ""
   pos = 0
@@ -92,6 +92,8 @@ local Scanner = class {
     return match
   }
 }
+
+let cacheByTemplatePath = {}
 
 local Context
 Context = class {
@@ -173,13 +175,6 @@ local Writer = class {
   static escapeRe = regexp(@"[\-\[\]{}()*+?.,\\\^$|#\s]")
 
   constructor() {
-    this.cache = {}
-  }
-
-  
-
-
-  function clearCache() {
     this.cache = {}
   }
 
@@ -279,17 +274,10 @@ local Writer = class {
           value = partials[token[1]]
 
         if (value != null) {
-          local valueTemplate
-          local valueTokens
           
-          if (value in handyman.templateByTemplatePath) {
-            valueTemplate = handyman.templateByTemplatePath[value]
-            valueTokens = handyman.tokensByTemplatePath[value]
-          }
-          else {
-            valueTemplate = value
-            valueTokens = this.parse(value)
-          }
+          let cached = cacheByTemplatePath?[value]
+          let valueTemplate = cached?.template ?? value
+          let valueTokens = cached?.tokens ?? this.parse(value)
           buffer.append(this.renderTokens(valueTokens, context, partials, valueTemplate))
         }
       }
@@ -302,7 +290,7 @@ local Writer = class {
         value = context.lookup(token[1])
         if (value != null)
           if (value instanceof String)
-            buffer.append(g_string.stripTags(value))
+            buffer.append(stripTags(value))
           else
             buffer.append(value.tostring())
 
@@ -313,7 +301,7 @@ local Writer = class {
           buffer.append(value.tostring())
       }
       else if (token[0] == "?")
-        buffer.append(g_string.stripTags(loc(token[1])))
+        buffer.append(stripTags(loc(token[1])))
       else if (token[0] == "text")
         buffer.append(token[1])
     }
@@ -547,103 +535,68 @@ local Writer = class {
   }
 }
 
-handyman = {
 
-  
-  defaultWriter = Writer()
-
-  
-  tokensByTemplatePath = {}
-  templateByTemplatePath = {}
-
-  lastCacheReset = 0
-
-  
-
-
-  function clearCache() {
-    return this.defaultWriter.clearCache()
-  }
-
-  
+let defaultWriter = Writer()
 
 
 
 
-  function parse(template, tags) {
-    return this.defaultWriter.parse(template, tags)
-  }
 
-  
-
-
-
-  function render(template, view, partials = null) {
-    return this.defaultWriter.render(template, view, partials)
-  }
-
-  
-
-
-
-
-  function renderCached(templatePath, view, partials = null, cachePartials = false) {
-    this.updateCache(templatePath)
-    if (partials != null && cachePartials)
-      foreach (partialPath in partials)
-        this.updateCache(partialPath)
-    local tokens = this.tokensByTemplatePath[templatePath]
-    local template = this.templateByTemplatePath[templatePath]
-    local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
-    return this.defaultWriter.renderTokens(tokens, context, partials, template)
-  }
-
-  function updateCache(templatePath) {
-    if (templatePath in this.tokensByTemplatePath)
-      return
-    local template = loadTemplateText(templatePath)
-    template = this.processIncludes(template)
-    this.templateByTemplatePath[templatePath] <- template
-    this.tokensByTemplatePath[templatePath] <- this.defaultWriter.parseTemplate(template)
-  }
-
-  function processIncludes(template) {
-    local startIdx = 0
-    while(true) {
-      startIdx = template.indexof("include \"", startIdx)
-      if(startIdx == null)
-        break
-
-      local fNameStart = startIdx + 9
-      local endIdx = template.indexof("\"", fNameStart)
-      if (endIdx == null)
-        break
-
-      local fName = template.slice(fNameStart, endIdx)
-      if (fName.len() >= 4 && fName.slice(-4) == ".blk") {
-        startIdx = endIdx + 1
-        continue
-      }
-
-      local includeRes = loadTemplateText(fName)
-      template = "".concat(template.slice(0, startIdx), includeRes, template.slice(endIdx + 1))
-    }
-    return template
-  }
-
-  
-
-
-
-
-  function renderNested(template, translate) {
-    return function() {
-      return function(text, render) {
-        return handyman.render(template, translate(render(text)))
-      }
-    }
-  }
+function render(template, view, partials = null) {
+  return defaultWriter.render(template, view, partials)
 }
+
+function processIncludes(template) {
+  local startIdx = 0
+  while(true) {
+    startIdx = template.indexof("include \"", startIdx)
+    if(startIdx == null)
+      break
+
+    local fNameStart = startIdx + 9
+    local endIdx = template.indexof("\"", fNameStart)
+    if (endIdx == null)
+      break
+
+    local fName = template.slice(fNameStart, endIdx)
+    if (fName.len() >= 4 && fName.slice(-4) == ".blk") {
+      startIdx = endIdx + 1
+      continue
+    }
+
+    local includeRes = loadTemplateText(fName)
+    template = "".concat(template.slice(0, startIdx), includeRes, template.slice(endIdx + 1))
+  }
+  return template
+}
+
+function updateCache(templatePath) {
+  if (templatePath in cacheByTemplatePath)
+    return
+  local template = loadTemplateText(templatePath)
+  template = processIncludes(template)
+  cacheByTemplatePath[templatePath] <- { template, tokens = defaultWriter.parseTemplate(template) }
+}
+
+
+
+
+
+
+function renderCached(templatePath, view, partials = null, cachePartials = false) {
+  updateCache(templatePath)
+  if (partials != null && cachePartials)
+    foreach (partialPath in partials)
+      updateCache(partialPath)
+  let { template, tokens } = cacheByTemplatePath[templatePath]
+  local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
+  return defaultWriter.renderTokens(tokens, context, partials, template)
+}
+
+let handyman = freeze({
+  render
+  renderCached
+})
 
 
 
@@ -696,8 +649,8 @@ function testhandyman(_temaple = null, _view = null, _partails = null) {
         {name = "blue", link= true, url= "#Blue"}
     ]
     empty = function() {
-      return function(text, render) {
-        return render(text)
+      return function(text, renderText) {
+        return renderText(text)
       }
     }
     layout_insertion = "wink:t='yes';"
@@ -708,6 +661,6 @@ function testhandyman(_temaple = null, _view = null, _partails = null) {
 
 if (__name__ == "__main__")
   testhandyman()
-return {
+return freeze({
   handyman
-}
+})

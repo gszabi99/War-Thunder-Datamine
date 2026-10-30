@@ -6,9 +6,7 @@ function scope(scale, style) {
     size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = [
-      rwrTargetsComponent(style.object)
-    ]
+    children = rwrTargetsComponent(style.object)
   }
 }
 

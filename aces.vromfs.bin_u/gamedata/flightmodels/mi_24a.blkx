@@ -1,7 +1,7 @@
 {
   "model": "mi_24a",
   "fmFile": "fm/mi_24a.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gyroSight": true,
   "hasPointOfInterestMemory": false,
@@ -18,17 +18,17 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects_helicoper.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects_helicoper.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
     "armor10": {
       "cannon2_dm": {
@@ -575,7 +575,9 @@
             "damage": 200.0,
             "tail_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ],
@@ -1833,27 +1835,27 @@
     "preset": [
       {
         "name": "mi_24a_default",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_default.blk"
       },
       {
         "name": "mi_24a_ub32",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_ub32.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_ub32.blk"
       },
       {
         "name": "mi_24a_rocket_9M17M",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_rocket_9M17M.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_rocket_9M17M.blk"
       },
       {
         "name": "mi_24a_4xfab250",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_4xfab250.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_4xfab250.blk"
       },
       {
         "name": "mi_24a_2xfab500",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_2xfab500.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_2xfab500.blk"
       },
       {
         "name": "mi_24a_upk_23_250",
-        "blk": "gameData/flightModels/weaponPresets/mi_24a_upk_23_250.blk"
+        "blk": "gamedata/flightModels/weaponPresets/mi_24a_upk_23_250.blk"
       }
     ]
   },
@@ -1936,7 +1938,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "optic1_gun",
               "parkInDeadzone": false,
               "defaultYaw": 0.0,
@@ -1962,7 +1964,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunA_12_7.blk",
+              "blk": "gamedata/weapons/gunA_12_7.blk",
               "breechInCockpit": true,
               "emitter": "flare1",
               "flash": "flare1",
@@ -2006,7 +2008,7 @@
           "Weapon": [
             {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_9M17M.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_9M17M.blk",
               "emitter": "su_9m_17m_001",
               "external": true,
               "separate": true,
@@ -2014,7 +2016,7 @@
             },
             {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_9M17M.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_9M17M.blk",
               "emitter": "su_9m_17m_002",
               "external": true,
               "separate": true,
@@ -2033,7 +2035,7 @@
             "name": "ub32",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_1",
               "external": true
             }
@@ -2047,7 +2049,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_ofab250.blk",
               "emitter": "su_ofab250_1",
               "bullets": 1,
               "external": true,
@@ -2069,7 +2071,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "bullets": 250,
@@ -2092,7 +2094,7 @@
             "name": "ub32",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_2",
               "external": true
             }
@@ -2106,7 +2108,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_ofab250.blk",
               "emitter": "su_ofab250_2",
               "bullets": 1,
               "external": true,
@@ -2122,7 +2124,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab500_m54.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab500_m54.blk",
               "emitter": "su_fab500_001",
               "bullets": 1,
               "external": true,
@@ -2144,7 +2146,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "bullets": 250,
@@ -2167,7 +2169,7 @@
             "name": "ub32",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_3",
               "external": true
             }
@@ -2181,7 +2183,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_ofab250.blk",
               "emitter": "su_ofab250_3",
               "bullets": 1,
               "external": true,
@@ -2197,7 +2199,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab500_m54.blk",
+              "blk": "gamedata/weapons/bombguns/su_fab500_m54.blk",
               "emitter": "su_fab500_002",
               "bullets": 1,
               "external": true,
@@ -2219,7 +2221,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L.blk",
               "emitter": "flare7",
               "flash": "flare7",
               "bullets": 250,
@@ -2242,7 +2244,7 @@
             "name": "ub32",
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "blk": "gamedata/weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_4",
               "external": true
             }
@@ -2256,7 +2258,7 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "blk": "gamedata/weapons/bombguns/su_ofab250.blk",
               "emitter": "su_ofab250_4",
               "bullets": 1,
               "external": true,
@@ -2278,7 +2280,7 @@
             },
             "Weapon": {
               "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
+              "blk": "gamedata/weapons/cannonGSh_23L.blk",
               "emitter": "flare9",
               "flash": "flare9",
               "bullets": 250,
@@ -2305,7 +2307,7 @@
           "Weapon": [
             {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_9M17M.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_9M17M.blk",
               "emitter": "su_9m_17m_004",
               "external": true,
               "separate": true,
@@ -2313,7 +2315,7 @@
             },
             {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_9M17M.blk",
+              "blk": "gamedata/weapons/rocketGuns/su_9M17M.blk",
               "emitter": "su_9m_17m_003",
               "external": true,
               "separate": true,
@@ -3079,8 +3081,8 @@
       "reqModification": "il_28sh_upk23_gunpod",
       "tier": 4
     },
-    "ns23_air_targets": {},
     "ns23_armor_targets": {},
+    "ns23_air_targets": {},
     "ns23_stealth": {},
     "mi_24_fab_250": {
       "modClass": "weapon",

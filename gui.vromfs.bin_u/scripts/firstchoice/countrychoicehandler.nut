@@ -1,3 +1,23 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/firstChoice/firstChoice.nut" import getFirstChosenUnitType, isFirstChoiceShown, fillUserNick
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/user/profileStates.nut" import userIdStr
+from "%scripts/unit/unitInfo.nut" import getUnitTypesInCountries, getCountriesByUnitType
+from "%scripts/user/playerCountry.nut" import switchProfileCountry
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/user/newbieTutorialDisplay.nut" import saveShowedTutorial, getFirstCountryChoice
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%appGlobals/config/countriesVehicles.nut" import unlockLaterVehicles, getRecomendedCountries
+from "%scripts/tutorials.nut" import hasRunTutorialDialog
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/slotbar/slotbarStateData.nut" import getReserveAircraftName
+from "%scripts/sqDagui/daguiUtil.nut" import findChildIndex
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqStdLibs/helpers/u.nut" import shuffle
@@ -10,30 +30,11 @@ from "%scripts/dagui_natives.nut" import is_existing_file
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getFirstChosenUnitType, isFirstChoiceShown, fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getUnitTypesInCountries, getCountriesByUnitType } = require("%scripts/unit/unitInfo.nut")
-let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { saveShowedTutorial, getFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { unlockLaterVehicles, getRecomendedCountries } = require("%appGlobals/config/countriesVehicles.nut")
-let { hasRunTutorialDialog } = require("%scripts/tutorials.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
-let { findChildIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 
+const MIN_COUNTRIES_ROWS_COUNT = 2
 
 function getReserveUnits(country, esUnitType) {
   let result = []
@@ -162,9 +163,17 @@ let CountryChoiceHandler = class (BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(this.listObj, data, data.len(), this)
 
     if (this.isNewStyleView) {
-      let countriesRowsCount = countries.len() > 0 ? floor((countries.len() - 1) / 3) + 1 : 1
-      let countryInfoObjHeight = (countriesRowsCount + 1) * to_pixels("1@unitChoiceImageHeight + 1@countryChoiceInterval") - to_pixels("1@countryChoiceInterval")
-      this.countryInfoHolderObj["height"] = $"{countryInfoObjHeight}"
+      let mainGuiScene = get_main_gui_scene()
+      let colmsCount = mainGuiScene.calcString("@firstChoiceCountriesColmns", null)
+      let countriesRowsCount = countries.len() > 0 ? floor((countries.len() - 1) / colmsCount) + 1 : 1
+      let countryBtnHeightPx = to_pixels("1@countryChoiceImageHeight")
+      let countryBtnMarginPx = to_pixels("1@countryChoiceInterval")
+      let contentHeight = (countriesRowsCount + 0.5) * countryBtnHeightPx + countriesRowsCount * countryBtnMarginPx
+      let contentMinHeight = (MIN_COUNTRIES_ROWS_COUNT + 0.5) * countryBtnHeightPx + MIN_COUNTRIES_ROWS_COUNT * countryBtnMarginPx
+
+      let mainContentObj = this.scene.findObject("main_content")
+      mainContentObj["height"] = $"{contentHeight}"
+      mainContentObj["min-height"] = $"{contentMinHeight}"
     }
     if (notAvailableCountries.len() > 0) {
       let notAvailableCountriesObj = this.scene.findObject("not_available_countries")

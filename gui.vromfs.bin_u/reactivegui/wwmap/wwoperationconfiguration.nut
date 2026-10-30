@@ -90,7 +90,7 @@ function loadOperationData() {
   isOperationDataLoaded.set(loadRes)
 }
 
-function convertPointerCoords(pos, areaBounds) {
+function [pure, nodiscard] convertPointerCoords(pos, areaBounds) {
   let { areaX, areaY, areaWidth, areaHeight } = areaBounds
   return {
     x = (pos.x - areaX) / areaWidth
@@ -98,7 +98,7 @@ function convertPointerCoords(pos, areaBounds) {
   }
 }
 
-function convertAbsoluteToMapCoords(pos, areaBounds) {
+function [pure, nodiscard] convertAbsoluteToMapCoords(pos, areaBounds) {
   let { x = 0, y = 0 } = pos
   let { areaX, areaY } = areaBounds
   return {
@@ -154,7 +154,7 @@ function convertPointerToMapCoords(pos, areaBounds) {
   }
 }
 
-return {
+return freeze({
   convertPointerCoords
   convertAbsoluteToMapCoords
   loadOperationData
@@ -170,4 +170,4 @@ return {
   convertPointerToMapCoords
   isOperationDataLoaded
   gridWidth
-}
+})

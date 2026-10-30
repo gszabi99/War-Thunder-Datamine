@@ -70,9 +70,7 @@ function J8SpeedWrap(width, height, generateFunc) {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.08, height * 0.25]
     clipChildren = true
-    children = [
-      J8Speed(height * 0.5, generateFunc)
-    ]
+    children = J8Speed(height * 0.5, generateFunc)
   }
 }
 
@@ -181,41 +179,36 @@ function generatePitchLineJ8(num) {
     size = const [pw(60), ph(50)]
     pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -20, 0, 30, 0],
-          [VECTOR_LINE, 70, 0, 120, 0]
-        ]
-        children = [angleTxt(-5, true, Fonts.hud, 1, 45, pw(-25)), angleTxt(-5, false, Fonts.hud, 1, 45, pw(25))]
-      }
-    ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, 0, 5 * sign, 0, 0],
-          [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0],
-          (num < 0 ? [VECTOR_LINE, 10, 0, 17, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 23, 0, 30, 0] : []),
-          [VECTOR_LINE, 100, 5 * sign, 100, 0],
-          [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
-          (num < 0 ? [VECTOR_LINE, 90, 0, 83, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, Fonts.hud, 1, 45, pw(-25)), angleTxt(newNum, false, Fonts.hud, 1, 45, pw(25))] : null
-      }
-    ]
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, -20, 0, 30, 0],
+        [VECTOR_LINE, 70, 0, 120, 0]
+      ]
+      children = [angleTxt(-5, true, Fonts.hud, 1, 45, pw(-25)), angleTxt(-5, false, Fonts.hud, 1, 45, pw(25))]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        [VECTOR_LINE, 0, 5 * sign, 0, 0],
+        [VECTOR_LINE, 0, 0, num > 0 ? 30 : 5, 0],
+        (num < 0 ? const [VECTOR_LINE, 10, 0, 17, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 23, 0, 30, 0] : const []),
+        [VECTOR_LINE, 100, 5 * sign, 100, 0],
+        [VECTOR_LINE, 100, 0, num > 0 ? 70 : 95, 0],
+        (num < 0 ? const [VECTOR_LINE, 90, 0, 83, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 77, 0, 70, 0] : const [])
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, Fonts.hud, 1, 45, pw(-25)), angleTxt(newNum, false, Fonts.hud, 1, 45, pw(25))] : null
+    }
   }
 }
 
@@ -253,9 +246,7 @@ function J8AltWrap(width, height, generateFunc) {
     size = [width * 0.17, height * 0.5]
     pos = [width * 0.83, height * 0.25]
     clipChildren = true
-    children = [
-      ShimadzuAlt(height * 0.5, generateFunc)
-    ]
+    children = ShimadzuAlt(height * 0.5, generateFunc)
   }
 }
 
@@ -293,7 +284,7 @@ let J8AirAimMark = {
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, -20, 0, -100],
         [VECTOR_LINE, 0, 20, 0, 100],
         [VECTOR_LINE, 20, 0, 50, 0],
@@ -322,7 +313,7 @@ function radarTarget(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get()
-        commands = [
+        commands = const [
           [VECTOR_RECTANGLE, -50, -50, 100, 100]
         ]
         animations = [
@@ -361,7 +352,7 @@ let J8AamMode = @() {
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = const [
         [VECTOR_ELLIPSE, 0, 0, 100, 100]
       ]
     },
@@ -373,7 +364,7 @@ let J8AamMode = @() {
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
+      commands = const [
         [VECTOR_LINE, 0, -100, 100, 0],
         [VECTOR_LINE, 100, 0, 0, 100],
         [VECTOR_LINE, 0, 100, -100, 0],

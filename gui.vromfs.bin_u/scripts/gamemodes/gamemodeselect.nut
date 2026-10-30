@@ -1,37 +1,41 @@
+import "%scripts/missions/mapPreferencesModal.nut" as mapPreferencesModal
+import "%scripts/missions/mapPreferencesParams.nut" as mapPreferencesParams
+import "%scripts/clusterSelect.nut" as clustersModule
+import "%scripts/social/crossplay.nut" as crossplayModule
+import "%scripts/onlineInfo/clustersMenuWnd.nut" as openClustersMenuWnd
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, getObjValidIndex
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/events/eventInfo.nut" import getEventPVETrophyName, isEventPlatformOnlyAllowed
+from "%scripts/squads/squadUtils.nut" import checkSquadUnreadyAndDo, checkCanChangeGameModeAndDo
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/events/eventsHandler.nut" import guiStartModalEvents
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameModeById, getGameModesPartitions, getFeaturedGameModes, getDebugGameModes
+  , getPveBattlesGameModes, getClanBattlesGameModes, markShowingGameModeAsSeen, isGameModeSeen, getFeaturedModesConfig, getRequiredUnitTypes, getGameModeItemId
+  , getGameModeEvent
+from "%scripts/gameModes/gameModeManagerView.nut" import getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTooltipText, getGameModeDescrAndUnlockTooltipText, getGameModeUnlockFullText
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/clientState/contentPacks.nut" import checkPackageAndAskDownload
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { move_mouse_on_child, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
-let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let clustersModule = require("%scripts/clusterSelect.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEventPVETrophyName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { checkSquadUnreadyAndDo, checkCanChangeGameModeAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameModeById, getGameModesPartitions, getFeaturedGameModes, getDebugGameModes, getPveBattlesGameModes, getClanBattlesGameModes, markShowingGameModeAsSeen, isGameModeSeen, getFeaturedModesConfig, getRequiredUnitTypes, getGameModeItemId, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTooltipText, getGameModeDescrAndUnlockTooltipText, getGameModeUnlockFullText } = require("%scripts/gameModes/gameModeManagerView.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -349,14 +353,14 @@ let GameModeSelect = class (BaseGuiHandlerWT) {
     
     
     if (crossplayModule.isCrossPlayEnabled())
-      return loc("xbox/crossPlayEnabled")
+      return locByVendor("xbox/crossPlayEnabled")
 
     
     if (isEventPlatformOnlyAllowed(event))
       return null
 
     
-    return loc("xbox/crossPlayRequired")
+    return locByVendor("xbox/crossPlayRequired")
   }
 
   function isCrossPlayEventAvailable(event) {
@@ -456,7 +460,7 @@ let GameModeSelect = class (BaseGuiHandlerWT) {
 
     let event = getGameModeEvent(gameMode)
     if (event && !this.isCrossPlayEventAvailable(event)) {
-      checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+      checkAndShowCrossplayWarning(@() showInfoMsgBox(locByVendor("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
 

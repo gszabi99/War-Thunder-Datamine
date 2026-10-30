@@ -2168,7 +2168,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/30mm_Bushmaster_2_Mk_44_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/30mm_Bushmaster_2_Mk_44_cm34_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2222,13 +2222,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
             "verNode": "bone_camera_gunner",
             "verLimits": [
@@ -2336,7 +2335,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_T74v_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_T74v_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2390,7 +2389,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_T74_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_T74_user_machinegun.blk",
         "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
         "useEmitter": true,
@@ -2435,7 +2434,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "speedYaw": 0.0,
         "speedPitch": 0.0,
@@ -2490,8 +2489,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_cm_34_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_cm_34_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3977,7 +3976,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
       "turretIndex": 0,
       "designationTurretIndex": 0,
       "dmPart": [
@@ -4081,7 +4080,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "blk": "gamedata/sensors/su_bmp_auto_target_tracker.blk",
               "turretIndex": 0,
               "designationTurretIndex": 0,
               "dmPart": [
@@ -4090,11 +4089,11 @@
               ]
             },
             {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+              "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
               "dmPart": "electronic_equipment_dm"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk",
+              "blk": "gamedata/sensors/it_ralm-101.blk",
               "dmPart": "electronic_equipment_dm"
             }
           ]
@@ -4123,7 +4122,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/30mm_Bushmaster_2_Mk_44_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/30mm_Bushmaster_2_Mk_44_cm34_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
@@ -4177,13 +4176,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
                 "linkedAnimPart": {
                   "verNode": "bone_camera_gunner",
                   "verLimits": [
@@ -4291,7 +4289,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_T74v_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_T74v_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -4345,7 +4343,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_T74_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_T74_user_machinegun.blk",
               "emitter": "emtr_mg_flame_01",
               "flash": "emtr_mg_flame_01",
               "useEmitter": true,
@@ -4390,7 +4388,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "speedYaw": 0.0,
               "speedPitch": 0.0,
@@ -4444,7 +4442,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4664,5 +4662,29 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.675,
+      1.7139,
+      1.2251
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

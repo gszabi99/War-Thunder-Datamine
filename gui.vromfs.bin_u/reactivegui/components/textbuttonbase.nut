@@ -1,7 +1,7 @@
+import "%rGui/style/fontsState.nut" as fontsState
 from "%rGui/globals/ui_library.nut" import *
 from "types" import Function
 
-let fontsState = require("%rGui/style/fontsState.nut")
 let defStyle = require("%rGui/components/textButton.style.nut")
 
 function textColor(sf, style = null, isEnabled = true) {
@@ -100,7 +100,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
         font
         fontSize
         group
-        behavior = [Behaviors.Marquee]
+        behavior = Behaviors.Marquee
         color = textColor(sf, style, isEnabled)
       }.__update(params?.textParams ?? {}), params, handler, group, sf)
 

@@ -1,8 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/loading/loadingTips.nut" import getTip
 from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { getTip } = require("%scripts/loading/loadingTips.nut")
 
 {
   class LoadingTip {

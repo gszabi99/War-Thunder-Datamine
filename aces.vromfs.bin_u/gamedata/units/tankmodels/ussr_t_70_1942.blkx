@@ -44,6 +44,12 @@
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.3,
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1788,7 +1794,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "shotFreq": 0.25,
         "flash": "emtr_gun_flame",
@@ -1834,7 +1840,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -1879,7 +1885,7 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_t_70_1942_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_70_1942_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_t_70_1942_default.blk"
     }
   },
   "VehiclePhys": {

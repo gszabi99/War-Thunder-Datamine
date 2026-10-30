@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "controlDevices": {
     "device": [
       {
@@ -232,6 +238,9 @@
       },
       "turret_01_top_dm": {
         "armorThickness": 12.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 4.0
       }
     },
     "mask": {
@@ -2113,7 +2122,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "barrelDP": "gun_barrel_02_dm",
@@ -2162,7 +2171,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/57mm_maxim_nordenfelt_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2212,7 +2221,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
         "emitter": "bone_mg_body_03",
         "flash": "emtr_gun_flame_03",
         "defaultYaw": 0.0,
@@ -2255,7 +2264,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
         "emitter": "bone_mg_v_04",
         "flash": "emtr_gun_flame_04",
         "defaultYaw": 0.0,
@@ -2298,7 +2307,7 @@
       {
         "trigger": "gunner5",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_mg_lewis_user_machinegun.blk",
         "emitter": "bone_mg_v_05",
         "flash": "emtr_gun_flame_05",
         "defaultYaw": 0.0,
@@ -2342,8 +2351,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "germ_beutepanzer_mk_iv_default",
-      "blk": "gameData/units/tankModels/weaponPresets/germ_beutepanzer_mk_iv_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

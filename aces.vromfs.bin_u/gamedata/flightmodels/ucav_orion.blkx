@@ -1,8 +1,8 @@
 {
   "model": "uav_orion",
   "fmFile": "fm/ucav_mq_1_predator.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gForceTolerationMult": 0.0001,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -29,17 +29,17 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "uav_micro",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
@@ -454,15 +454,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -505,7 +509,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -1473,22 +1479,22 @@
     "preset": [
       {
         "name": "ucav_orion_default",
-        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kornet.blk",
+        "blk": "gamedata/flightModels/weaponPresets/ucav_orion_kornet.blk",
         "tags": {
           "free": true
         }
       },
       {
         "name": "ucav_orion_kornet_fm3",
-        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kornet_fm3.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ucav_orion_kornet_fm3.blk"
       },
       {
         "name": "ucav_orion_kab_50l",
-        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kab_50l.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ucav_orion_kab_50l.blk"
       },
       {
         "name": "ucav_orion_kab_50tv",
-        "blk": "gameData/FlightModels/weaponPresets/ucav_orion_kab_50tv.blk"
+        "blk": "gamedata/flightModels/weaponPresets/ucav_orion_kab_50tv.blk"
       }
     ]
   },
@@ -1507,7 +1513,7 @@
             "dummy": true,
             "trigger": "gunner0",
             "triggerGroup": "primary",
-            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "blk": "gamedata/weapons/dummy_weapon.blk",
             "emitter": "optic1_gun",
             "defaultYaw": 0.0,
             "defaultPitch": 0.0,
@@ -1545,7 +1551,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/orion_kornet_x1_default.blk",
+              "blk": "gamedata/weapons/containers/orion_kornet_x1_default.blk",
               "emitter": "kornet_d_tpk_001",
               "external": true,
               "separate": true
@@ -1558,7 +1564,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/orion_kornet_fm3_x1.blk",
+              "blk": "gamedata/weapons/containers/orion_kornet_fm3_x1.blk",
               "emitter": "kornet_d_tpk_001",
               "external": true,
               "separate": true
@@ -1570,7 +1576,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/su_kab_50l.blk",
+              "blk": "gamedata/weapons/bombguns/su_kab_50l.blk",
               "emitter": "kab_50_001",
               "external": true,
               "separate": true,
@@ -1583,7 +1589,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/su_kab_50tv.blk",
+              "blk": "gamedata/weapons/bombguns/su_kab_50tv.blk",
               "emitter": "kab_50_001",
               "external": true,
               "separate": true,
@@ -1604,7 +1610,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/orion_kornet_x1_default.blk",
+              "blk": "gamedata/weapons/containers/orion_kornet_x1_default.blk",
               "emitter": "kornet_d_tpk_002",
               "external": true,
               "separate": true
@@ -1617,7 +1623,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/orion_kornet_fm3_x1.blk",
+              "blk": "gamedata/weapons/containers/orion_kornet_fm3_x1.blk",
               "emitter": "kornet_d_tpk_002",
               "external": true,
               "separate": true
@@ -1629,7 +1635,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/su_kab_50l.blk",
+              "blk": "gamedata/weapons/bombguns/su_kab_50l.blk",
               "emitter": "kab_50_002",
               "external": true,
               "separate": true,
@@ -1642,7 +1648,7 @@
             "hasTargetingPod": true,
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/su_kab_50tv.blk",
+              "blk": "gamedata/weapons/bombguns/su_kab_50tv.blk",
               "emitter": "kab_50_002",
               "external": true,
               "separate": true,
@@ -1656,14 +1662,14 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "blk": "gamedata/sensors/ir_tracker_tgp.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+        "blk": "gamedata/sensors/LaserBeamRidingSensor.blk",
         "node": "optic1_gun"
       }
     ]

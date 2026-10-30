@@ -237,6 +237,17 @@ def drone_launcher_enable_weapon_switching_on_anim_end(evt : Event;
       human_weap__lockedWeaponSlot = -1
 
 
+[es(tag=gameClient, on_disappear)]
+def drone_launcher_enable_weapon_switching_on_destroy(evt : Event;
+                                                      gun__owner : EntityId;
+                                                      drone_launcher_anim__launchInProgress : bool)
+  if !drone_launcher_anim__launchInProgress
+    return
+  query(gun__owner) <| $ [es] (var human_weap__lockedWeaponSlot : int&)
+    if human_weap__lockedWeaponSlot != -1
+      human_weap__lockedWeaponSlot = -1
+
+
 [es(tag=gameClient, REQUIRE=watchedPlayerItem)]
 def take_drone_launcher_or_drone_tactical_phone_es(evt : EventTakeDroneLauncherOrDroneTacticalPhone;
                                                    eid : EntityId;

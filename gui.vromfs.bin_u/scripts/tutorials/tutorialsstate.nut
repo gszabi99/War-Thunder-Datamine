@@ -1,12 +1,11 @@
+from "%scripts/clientState/localProfileDeprecated.nut" import saveLocalByAccount
+from "%scripts/user/myStatsState.nut" import getTimePlayed
 from "guiMission" import get_meta_missions_info_by_chapters
 from "mission" import set_game_mode, get_game_mode
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getTimePlayed } = require("%scripts/user/myStatsState.nut")
 
 const skipTutorialBitmaskId = "skip_tutorial_bitmask"
 

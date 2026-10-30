@@ -2155,7 +2155,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/105mm_M68_XM_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/105mm_M68_XM_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.5,
@@ -2258,7 +2258,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M240_user_machinegun.blk",
         "emitter": "bone_gun_roller_02",
         "flash": "emtr_mg_flame_02",
         "maxAdditionalPitch": 0.0,
@@ -2303,7 +2303,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": 0.0,
@@ -2380,7 +2380,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_M60D_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_flame_04",
         "barrelDP": "gun_barrel_03_dm",
@@ -2425,8 +2425,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "us_xm1_chrysler_default",
-      "blk": "gameData/units/tankModels/weaponPresets/us_xm1_chrysler_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -2480,7 +2480,13 @@
     "engine": {
       "horsePowers": 1521.0,
       "maxRPM": 3000.0,
-      "minRPM": 700.0
+      "minRPM": 700.0,
+      "type": "gasturbine",
+      "torqFormula": {
+        "a": -0.1444444,
+        "b": -0.8188888,
+        "c": 1.9633332
+      }
     },
     "mechanics": {
       "steerType": "clutch_braking",
@@ -2492,17 +2498,11 @@
       "gearRatios": {
         "ratio": [
           -0.89,
-          -2.4,
           -3.43,
-          -4.95,
           0.0,
-          5.877,
           3.021,
-          2.4,
           1.891,
-          1.278,
           0.97,
-          0.68,
           0.49
         ]
       }
@@ -3761,5 +3761,29 @@
         "to": "usa_modern_summer_verdant*"
       }
     }
-  ]
+  ],
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.939,
+      1.6034,
+      1.5624
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
+  }
 }

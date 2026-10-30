@@ -1,7 +1,13 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%sqStdLibs/helpers/u.nut" as u
 import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
 import "regexp2" as regexp2
+from "%scripts/options/countryFlagsPreset.nut" import getCountryIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/unit/unitParams.nut" import findUnitNoCase, getEsUnitType
+from "%scripts/weaponry/infantryTemplates.nut" import getUnitTemplateNames
+from "%scripts/clientState/contentPacks.nut" import havePackage
 from "scriptRespondent" import registerRespondent
 from "blkGetters" import get_ranks_blk
 from "hangar" import hangar_get_loaded_unit_name, hangar_is_high_quality
@@ -12,15 +18,9 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "types" import String
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { Cost } = require("%scripts/money.nut")
-let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
-let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 
-let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
 local slotSize = []
 function getSlotSize() {
@@ -271,7 +271,7 @@ function getCountryByAircraftName(airName) {
 
 registerRespondent("getCountryByAircraftName", @(airName) getCountryByAircraftName(airName))
 
-return {
+return freeze({
   bit_unit_status,
   getUnitTypeTextByUnit, getUnitName,
   getUnitCountry, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
@@ -292,4 +292,4 @@ return {
   getCountryByAircraftName
   reUnitLocNameSeparators
   getCountriesByUnitType
-}
+})

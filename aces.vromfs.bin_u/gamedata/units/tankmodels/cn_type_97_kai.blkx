@@ -47,6 +47,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_small",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1202,7 +1208,10 @@
       "minRPM": 800.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.287,
       "mainGearRatio": 1.45,
@@ -1234,7 +1243,18 @@
         30000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {
@@ -2959,7 +2979,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/47mm_Type1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -3047,7 +3067,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
         "emitter": "bone_mg_v_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -3090,7 +3110,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_7mm_Type_97_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": 0.0,
@@ -3151,7 +3171,7 @@
   "weapon_presets": {
     "preset": {
       "name": "jp_type_97_kai_default",
-      "blk": "gameData/units/tankModels/weaponPresets/jp_type_97_kai_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/jp_type_97_kai_default.blk"
     }
   },
   "ammoStowages": {

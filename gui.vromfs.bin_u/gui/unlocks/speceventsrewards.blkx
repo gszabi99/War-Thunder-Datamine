@@ -1,6 +1,7 @@
 {
   "position": "relative",
   "height": "@rewardSlotHeight",
+  "input-transparent": "yes",
   "tdiv": [
     {
       "position": "relative",
@@ -26,7 +27,6 @@
     {
       "id": "reward_container",
       "position": "relative",
-      "width": "@rewardSlotWidth",
       "height": "ph",
       "padding": "@dp, 0",
       "flow": "vertical",
@@ -47,8 +47,10 @@
               "size": "pw, fh",
               "position": "relative",
               "tooltip": "",
+              "left": "(pw-w)/2",
               "total-input-transparent": "yes",
               "not-input-transparent": "yes",
+              "max-width": "",
               "layeredIconContainer": {
                 "id": "achivment_ico",
                 "position": "relative",
@@ -73,12 +75,11 @@
                   "margin-right": "@blockInterval",
                   "position": "relative",
                   "overlayTextColor": "",
-                  "text": "",
-                  "smallFont": "yes"
+                  "text": ""
                 },
                 "iconLayer": {
                   "id": "progress_icon",
-                  "size": "@sIco, @sIco",
+                  "size": "@cIco, @cIco",
                   "position": "relative",
                   "background-image": "#ui/gameuiskin#default_locked.avif",
                   "background-svg-size": "@mIco, @mIco"
@@ -145,18 +146,18 @@
               "id": "complete_img",
               "position": "absolute",
               "pos": "(pw-w)/2, (ph-h)/2",
-              "size": "@sIco, @sIco",
+              "size": "1.1@cIco, 1.1@cIco",
               "background-image": "#ui/gameuiskin#reward_check.svg",
-              "background-svg-size": "@sIco, @sIco",
+              "background-svg-size": "1.1@cIco, 1.1@cIco",
               "bgcolor": "@green"
             },
             {
               "id": "locked_sign",
               "position": "absolute",
               "pos": "(pw-w)/2, (ph-h)/2",
-              "size": "@sIco, @sIco",
+              "size": "1.1@cIco, 1.1@cIco",
               "background-image": "#ui/gameuiskin#locked.svg",
-              "background-svg-size": "@sIco, @sIco",
+              "background-svg-size": "1.1@cIco, 1.1@cIco",
               "background-color": "#2D3841"
             }
           ]

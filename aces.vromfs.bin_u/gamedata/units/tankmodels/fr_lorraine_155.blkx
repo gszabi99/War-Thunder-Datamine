@@ -41,6 +41,12 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
+  "backFireFx": {
+    "fireFx": "tank_exhaust_fires_burst_med",
+    "damagedFireFx": "",
+    "thermalFireFx": "",
+    "backfireSound": "backfire_med"
+  },
   "ikGunner": [
     {
       "model": "french_gunner_char",
@@ -2557,7 +2563,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/155mm_Obusier_Modele_1950_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/155mm_Obusier_Modele_1950_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "defaultYaw": 0.0,
@@ -2612,7 +2618,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_MG151_20_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/20mm_MG151_20_user_cannon.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_01",
         "barrelDP": "gun_barrel_01_dm",
@@ -2655,8 +2661,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_lorraine_155_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_lorraine_155_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {

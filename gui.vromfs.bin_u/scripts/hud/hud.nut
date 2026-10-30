@@ -1,7 +1,41 @@
+import "%scripts/time.nut" as time
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/hud/serverMessages.nut" import serverMessageUpdateScene
+from "%scripts/statistics/mpStatisticsUtil.nut" import get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert, getMpKickCountdown
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/replays/spectator.nut" import Spectator
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/hud/startHud.nut" import isHudLoadedForCurrentMission
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/hud/hudHitCamera.nut" import hitCameraInit, hitCameraReinit, getHitCameraAABB
+from "%scripts/hud/hudUnitType.nut" import hudTypeByHudUnitType, HUD_UNIT_TYPE
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
+from "%scripts/hud/maybeOfferControlsHelp.nut" import maybeOfferControlsHelp
+from "%scripts/hud/hudAir.nut" import HudAir
+from "%scripts/hud/hudTank.nut" import HudTank
+from "%scripts/hud/hudShip.nut" import HudShip
+from "%scripts/hud/hudHeli.nut" import HudHeli
+from "%scripts/hud/hudInfantry.nut" import HudInfantry
+from "%scripts/hud/hudInfantryDrone.nut" import HudInfantryDrone
+from "%scripts/hud/hudCutscene.nut" import HudCutscene
+from "%scripts/hud/hudFreeCam.nut" import HudFreeCam
+from "%scripts/chat/mpChatState.nut" import initMpChatStates
+from "%scripts/user/matchingFeature.nut" import hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
+from "%scripts/hud/hudState.nut" import isInKillerCamera, updateHudStatesSubscribes
+from "%scripts/streaks.nut" import clearStreaks, onUpdateStreaks
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/controls/controlsUtils.nut" import getUnmappedControlsForCurrentMission
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
+from "%scripts/hud/hudHintsManager.nut" import hudHintsManagerInit, hudHintsManagerReinit, isHintWillBeShown
+from "%scripts/options/initOptions.nut" import initOptions
+from "%scripts/missions/missionsUtils.nut" import getLevelMapBackgroundColors
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, subscribe_handler
 from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "%appGlobals/hud/hudMessageStacks.nut" import killFeed
 from "blkGetters" import get_current_mission_info_cached
 from "controls" import isXInputDevice
 from "dagor.time" import get_time_msec
@@ -22,6 +56,7 @@ from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
 from "%scripts/missions/fleetTrainingMission.nut" import fleetTrainingMissionMap
+from "%scripts/wheelmenu/multifuncMenuTools.nut" import preloadMfmIfNeeded
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
@@ -29,47 +64,14 @@ let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
 let { g_hud_message_stack } = require("%scripts/hud/hudMessageStack.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
-let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert, getMpKickCountdown } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { Spectator } = require("%scripts/replays/spectator.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
-let time = require("%scripts/time.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { hitCameraInit, hitCameraReinit, getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
-let { hudTypeByHudUnitType, HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { maybeOfferControlsHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
-let { HudAir } = require("%scripts/hud/hudAir.nut")
-let { HudTank } = require("%scripts/hud/hudTank.nut")
-let { HudShip } = require("%scripts/hud/hudShip.nut")
-let { HudHeli } = require("%scripts/hud/hudHeli.nut")
-let { HudInfantry } = require("%scripts/hud/hudInfantry.nut")
-let { HudInfantryDrone } = require("%scripts/hud/hudInfantryDrone.nut")
 
 
 
 
-let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
-let { HudFreeCam } = require("%scripts/hud/hudFreeCam.nut")
-let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
 let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
-let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad } = require("%scripts/user/matchingFeature.nut")
-let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
-let { isInKillerCamera, updateHudStatesSubscribes } = require("%scripts/hud/hudState.nut")
-let { clearStreaks, onUpdateStreaks } = require("%scripts/streaks.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { hudHintsManagerInit, hudHintsManagerReinit, isHintWillBeShown } = require("%scripts/hud/hudHintsManager.nut")
-let { initOptions } = require("%scripts/options/initOptions.nut")
-let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 require("%scripts/hud/scoreboardTooltipBridge.nut")
 
 dagui_propid_add_name_id("fontSize")
@@ -111,8 +113,11 @@ eventbus_subscribe("getHudHitCameraState", function(_) {
 })
 
 eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
-  handlersManager.clearScene()
-  handlersManager.loadHandler(get_gui_handler("Hud"))
+  if (!isHudLoadedForCurrentMission()) {
+    handlersManager.clearScene()
+    handlersManager.loadHandler(get_gui_handler("Hud"))
+  }
+  preloadMfmIfNeeded()
   initMpChatStates()
 })
 
@@ -138,7 +143,6 @@ let Hud = class (BaseGuiHandlerWT) {
   curTacticalMapObj = null
   afkTimeToKick = null
   curHudVisMode = null
-  curChatData = null
   isReinitDelayed = false
   needVoiceChat = false
   sideBlockMaxWidth = null
@@ -172,13 +176,13 @@ let Hud = class (BaseGuiHandlerWT) {
     set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
     this.isXinput = isXInputDevice()
-    this.spectatorMode = isPlayerDedicatedSpectator() || is_replay_playing()
-    updateExtWatched({ isSpectatorMode = this.spectatorMode })
+    let isDedicatedSpectator = isPlayerDedicatedSpectator()
+    this.spectatorMode = isDedicatedSpectator || is_replay_playing()
+    updateExtWatched({ isSpectatorMode = this.spectatorMode, isDedicatedSpectator })
     pushMpChatHint()
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())
-    this.loadGameChat()
 
     this.scene.findObject("hud_update").setUserData(this)
     let gm = get_game_mode()
@@ -237,25 +241,13 @@ let Hud = class (BaseGuiHandlerWT) {
     this.switchControlsAllowMask(mask)
   }
 
-  function loadGameChat() {
-    if (this.curChatData) {
-      detachGameChatSceneData(this.curChatData)
-      this.curChatData = null
-    }
-    if (is_multiplayer())
-      this.curChatData = loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
-        { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
-  }
-
   function reinitScreen(params = {}) {
     this.isReinitDelayed = !this.scene.isVisible() 
     if (this.isReinitDelayed)
       return
 
     this.setParams(params)
-    if (this.switchHud(this.getHudType()))
-      this.loadGameChat()
-    else {
+    if (!this.switchHud(this.getHudType())) {
       if (this.currentHud && ("reinitScreen" in this.currentHud))
         this.currentHud.reinitScreen()
       hitCameraReinit()
@@ -351,7 +343,6 @@ let Hud = class (BaseGuiHandlerWT) {
   }
 
   function onHudSwitched() {
-    handlersManager.updateWidgets()
     this.updateHudVisModeForce()
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
@@ -416,10 +407,8 @@ let Hud = class (BaseGuiHandlerWT) {
 
     this.currentHud?.updateTacticalMapVisibility()
 
-    let objsToShow = {
-      hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-    }
+    if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
+      killFeed.clear()
 
     let isDmgPanelVisible = !isInKillerCamera.get()
       && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
@@ -432,8 +421,9 @@ let Hud = class (BaseGuiHandlerWT) {
     })
 
     this.guiScene.setUpdatesEnabled(false, false)
-    showObjectsByTable(this.scene, objsToShow)
+    showObjById("hud_enemy_damage_nest", visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA), this.scene)
     this.guiScene.setUpdatesEnabled(true, true)
+    handlersManager.updateWidgets()
   }
 
   function setTacticalMapBg() {
@@ -526,6 +516,7 @@ let Hud = class (BaseGuiHandlerWT) {
 
     this.isLowQualityWarningVisible = isShow
     showObjById("low-quality-model-warning", isShow, this.scene)
+    handlersManager.updateWidgets()
   }
 
   function onEventHudIndicatorChangedSize(params) {
@@ -564,6 +555,7 @@ let Hud = class (BaseGuiHandlerWT) {
           size = obj.getSize()
           pos = obj.getPos()
         })
+        handlersManager.updateWidgets()
       }
 
       let func = table?.onChangedFunc
@@ -574,10 +566,6 @@ let Hud = class (BaseGuiHandlerWT) {
 
   function getTacticalMapObj() {
     return this.curTacticalMapObj
-  }
-
-  function getMultiplayerScoreObj() {
-    return this.scene.findObject("hud_multiplayer_score_progress_bar")
   }
 
   function getHudActionBarObj() {
@@ -672,4 +660,4 @@ eventbus_subscribe("hudProgress:visibilityChanged", function(_) {
   handler.doWhenActiveOnce("updateMissionProgressPlace")
 })
 
-return { Hud }
+return freeze({ Hud })

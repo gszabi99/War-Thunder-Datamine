@@ -1,11 +1,11 @@
+from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 let reminderGPModal = class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
@@ -29,6 +29,6 @@ let reminderGPModal = class (BaseGuiHandler) {
 }
 register_gui_handler("reminderGPModal", reminderGPModal)
 
-return {
+return freeze({
   open = @() handlersManager.loadHandler(reminderGPModal)
-}
+})

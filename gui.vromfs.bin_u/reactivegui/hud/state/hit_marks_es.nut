@@ -241,10 +241,10 @@ ecs.register_es("script_hit_marks_position_es",
   }
 )
 
-return {
+return freeze({
   hitMarks
   killMarks
   showWorldKillMark
   hitMarkEid
   useHitMark
-}
+})

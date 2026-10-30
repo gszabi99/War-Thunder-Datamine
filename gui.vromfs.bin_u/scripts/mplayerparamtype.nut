@@ -1,5 +1,10 @@
 import "%scripts/time.nut" as time
 import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/statistics/mplayersList.nut" import buildMplayerName
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes, getTooltipType
+from "%scripts/debriefing/debriefingFull.nut" import getDebriefingResult
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
 from "guiMission" import get_player_score_for_exp_events
 from "mission" import get_mplayer_by_userid
@@ -10,12 +15,7 @@ from "%scripts/dagui_library.nut" import *
 from "%globalScripts/expEventConsts.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
-let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 
 const KG_TO_TONS = 0.001
 const KG_TO_KILOTONS = 0.000001

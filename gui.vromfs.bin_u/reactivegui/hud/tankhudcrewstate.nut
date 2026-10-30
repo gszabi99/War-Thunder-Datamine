@@ -12,10 +12,10 @@ eventbus_subscribe("CrewState:GunnerState", @(data) crewGunnerState.set(data))
 eventbus_subscribe("CrewState:DriverState", @(data) crewDriverState.set(data))
 eventbus_subscribe("CrewState:Distance", @(data) distance.set(data))
 
-return {
+return freeze({
   crewState
   crewGunnerState
   crewDriverState
   distance
   reInitHudCrewStates = hud_request_hud_crew_state
-}
+})

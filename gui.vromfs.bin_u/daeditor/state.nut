@@ -1,20 +1,45 @@
 import "console" as console
 import "%sqstd/ecs.nut" as ecs
 from "%darg/ui_imports.nut" import *
+from "%sqstd/frp.nut" import WatchedRo
 from "ecs.computed" import mkEcsComputedEidMap
 let { hideAllWindows } = require("%daeditor/components/window.nut")
+let { mkCompPathKey } = require("%daeditor/components/attrUtil.nut")
 
-let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
-     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null,
+let {setWorkMode=@(_) null, setEditMode=@(_) null, setPointActionPreview=@(_, __) null,
+     DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null,
      DE4_MODE_MOVE=null, DE4_MODE_ROTATE=null, DE4_MODE_SCALE=null, DE4_MODE_MOVE_SURF=null,
      DE4_BASIS_WORLD=null, DE4_BASIS_LOCAL=null, DE4_BASIS_PARENT=null,
      DE4_CENTER_PIVOT=null, DE4_CENTER_SELECTION=null,
-     getGizmoBasisType=@() null, setGizmoBasisType=@(_) null,
-     getGizmoCenterType=@() null, setGizmoCenterType=@(_) null} = require_optional("daEditorEmbedded")
-let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
-let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
+     workMode = WatchedRo(""), editMode = WatchedRo(null), gizmoBasisType = WatchedRo(null), gizmoCenterType = WatchedRo(null),
+     editorIsActive = WatchedRo(false), editorFreeCam = WatchedRo(false)} = require_optional("daEditorEmbedded")
+let {get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null,
+     DE4_MODE_CREATE_ENTITY=null} = require_optional("entity_editor")
 let selectedEntities = mkEcsComputedEidMap({ comps = ["eid"], comps_rq = ["daeditor__selected"] })
-let markedScenes = mkWatched(persist, "markedScenes", {})
+
+
+let focusedEntity = Watched(ecs.INVALID_ENTITY_ID)
+selectedEntities.subscribe_with_nasty_disregard_of_frp_update(@(_) focusedEntity.set(ecs.INVALID_ENTITY_ID))
+
+function focusEntity(eid) {
+  focusedEntity.set(eid)
+  get_instance()?.setFocusedEntity(eid)
+}
+let selectedEntity = Computed(function() {
+  let sel = selectedEntities.get()
+  if (sel.len() == 1)
+    return sel.keys()[0]
+  let focused = focusedEntity.get()
+  return focused in sel ? focused : ecs.INVALID_ENTITY_ID
+})
+
+let selectedComp = Watched(null)
+let deselectComp = @() selectedComp.set(null)
+let selectedCompKey = Computed(function() {
+  let sel = selectedComp.get()
+  return sel == null ? null : mkCompPathKey(sel.cname, sel.path)
+})
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(@(_) deselectComp())
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
 const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor/showPropsOnSelect"
@@ -27,14 +52,17 @@ let propPanelVisible = mkWatched(persist, "propPanelVisible", false)
 let propPanelClosed  = mkWatched(persist, "propPanelClosed", (get_setting_by_blk_path?(SETTING_EDITOR_PROPS_ON_SELECT) ?? true)==false)
 propPanelClosed.subscribe(function(v) { set_setting_by_blk_path?(SETTING_EDITOR_PROPS_ON_SELECT, (v ?? false)==false); save_settings?() })
 
-let de4workMode = Watched("")
+let de4workMode = workMode
 let de4workModes = Watched([""])
-de4workMode.subscribe(function(v) {
-  set_start_work_mode?(v ?? "")
-  setWorkMode(v ?? "")
-  set_setting_by_blk_path?(SETTING_EDITOR_WORKMODE, v ?? "")
+function selectWorkMode(mode) {
+  mode = mode ?? ""
+  if (mode == de4workMode.get())
+    return
+  set_start_work_mode?(mode)
+  setWorkMode(mode)
+  set_setting_by_blk_path?(SETTING_EDITOR_WORKMODE, mode)
   save_settings?()
-})
+}
 
 function initWorkModes(modes, defMode=null) {
   modes = modes ?? [""]
@@ -42,28 +70,18 @@ function initWorkModes(modes, defMode=null) {
   let good_mode = modes.contains(defMode) ? defMode : modes?[0] ?? ""
   let last_mode = get_setting_by_blk_path?(SETTING_EDITOR_WORKMODE) ?? good_mode
   let mode_to_set = modes.contains(last_mode) ? last_mode : good_mode
-  de4workMode.set(mode_to_set)
+  selectWorkMode(mode_to_set)
 }
 
-function canChangeGizmoBasisType(): bool {
-  local m = getEditMode()
-  return m == DE4_MODE_MOVE || m == DE4_MODE_MOVE_SURF || m == DE4_MODE_ROTATE || m == DE4_MODE_SCALE
-}
+let de4editMode = editMode
+let showTemplateSelect = Computed(@() DE4_MODE_CREATE_ENTITY != null && de4editMode.get() == DE4_MODE_CREATE_ENTITY)
+let showPointAction = Computed(@() DE4_MODE_POINT_ACTION != null && de4editMode.get() == DE4_MODE_POINT_ACTION)
+
+let gizmoEditModes = [DE4_MODE_MOVE, DE4_MODE_MOVE_SURF, DE4_MODE_ROTATE, DE4_MODE_SCALE]
 
 let gizmoBasisTypeNames = [[DE4_BASIS_WORLD, "World"], [DE4_BASIS_LOCAL, "Local"], [DE4_BASIS_PARENT, "Parent"]]
-let gizmoBasisType = Watched(getGizmoBasisType())
-let gizmoBasisTypeEditingDisabled = Watched(!canChangeGizmoBasisType())
-
-gizmoBasisType.subscribe(function(v) {
-  setGizmoBasisType(v)
-})
-
+let gizmoBasisTypeEditingDisabled = Computed(@() !gizmoEditModes.contains(de4editMode.get()))
 let gizmoCenterTypeNames = [[DE4_CENTER_PIVOT, "Pivot"], [DE4_CENTER_SELECTION, "Selection"]]
-let gizmoCenterType = Watched(getGizmoCenterType())
-
-gizmoCenterType.subscribe(function(v) {
-  setGizmoCenterType(v)
-})
 
 function proceedWithSavingUnsavedChanges(showMsgbox, callback, unsavedText=null, proceedText=null) {
   if (unsavedText == true) { unsavedText = null; proceedText = true; }
@@ -111,11 +129,11 @@ function editorUnpause(time) {
   }
 }
 
-let showPointAction = mkWatched(persist, "showPointAction", false)
 let typePointAction = mkWatched(persist, "typePointAction", "")
 let namePointAction = mkWatched(persist, "namePointAction", "")
-let sceneListUpdateTrigger = mkWatched(persist, "sceneListUpdateTrigger", 0)
 let edObjectFlagsUpdateTrigger = mkWatched(persist, "edObjectFlagsUpdateTrigger", 0)
+
+let DEPENDS_ON = @(...) null
 
 local funcPointAction = null
 function setPointActionMode(actionType, actionName, cb) {
@@ -134,7 +152,7 @@ function callPointActionCallback(action) {
 }
 function resetPointActionMode() {
   local funcFinish = funcPointAction
-  if (getEditMode() == DE4_MODE_POINT_ACTION)
+  if (de4editMode.get() == DE4_MODE_POINT_ACTION)
     setEditMode(DE4_MODE_SELECT)
   setPointActionPreview("", 0.0)
   typePointAction.set("")
@@ -143,6 +161,10 @@ function resetPointActionMode() {
   if (funcFinish != null)
     funcFinish({ op = "finish" })
 }
+showPointAction.subscribe_with_nasty_disregard_of_frp_update(function(on) {
+  if (!on)
+    resetPointActionMode()
+})
 
 let funcsEntityCreated = []
 function addEntityCreatedCallback(cb) {
@@ -180,31 +202,32 @@ return {
   LogsWindowId = "log_window"
 
   showUIinEditor = mkWatched(persist, "showUIinEditor", false)
-  editorIsActive = Watched(is_editor_activated())
-  editorFreeCam = Watched(isFreeCamMode?())
+  editorIsActive
+  editorFreeCam
   selectedEntity
   selectedEntities
+  focusEntity
   selectedTemplatesGroup
   scenePath = Watched(get_scene_filepath?())
   propPanelVisible
   propPanelClosed
   filterString = mkWatched(persist, "filterString", "")
-  selectedCompName = Watched()
-  markedScenes
-  showTemplateSelect = mkWatched(persist, "showTemplateSelect", false)
+  selectedComp
+  selectedCompKey
+  deselectComp
+  showTemplateSelect
   showHelp = mkWatched(persist, "showHelp", false)
-  entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
-  sceneListUpdateTrigger
   edObjectFlagsUpdateTrigger
-  de4editMode = Watched(getEditMode?())
+  DEPENDS_ON
+  de4editMode
   extraPropPanelCtors = Watched([])
   de4workMode
   de4workModes
   initWorkModes
+  selectWorkMode
   gizmoBasisType
   gizmoBasisTypeNames
   gizmoBasisTypeEditingDisabled
-  canChangeGizmoBasisType
   gizmoCenterType
   gizmoCenterTypeNames
   proceedWithSavingUnsavedChanges

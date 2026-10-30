@@ -2,7 +2,7 @@ import "%rGui/missileSalvoTimer.nut" as missileSalvoTimer
 import "%rGui/agmAim.nut" as agmAim
 from "%rGui/style/screenState.nut" import bw, bh, rw, rh
 from "%rGui/airHudElems.nut" import turretAngles, sight, paramsTable, targetSize, launchDistanceMax, compassElem, lockSight
-  , rangeFinder, vertSpeed, agmLaunchZone, detectAlly
+  , rangeFinder, vertSpeed, agmLaunchZone, detectAlly, mkAtgmLaunchZoneBlink
 from "%rGui/airState.nut" import TargetPodMask, EmptyMask, SightMask, HudColor, HudParamColor, AlertColorHigh, IsRangefinderEnabled
   , MfdColor, IsMfdEnabled
 from "%rGui/radar.nut" import radarHud, radarIndication
@@ -16,6 +16,16 @@ from "%rGui/options/options.nut" import crosshairColorOpt
 from "%rGui/globals/ui_library.nut" import *
 
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
+
+const aircraftBlinkDuration = 0.5
+const helicopterBlinkDuration = 0.5
+
+let blinkOutsideLaunchZone = @(key, child, duration) {
+  key
+  size = FLEX
+  animations = mkAtgmLaunchZoneBlink({ duration = duration })
+  children = child
+}
 
 function aircraftSight(width, height) {
   const paramsTableWidth = hdpx(330)
@@ -66,9 +76,9 @@ function aircraftSight(width, height) {
     size = [width, height]
     children = [
       missileSalvoTimer(HudColor, sw(50) - hdpx(150), sh(90) - hdpx(174))
-      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), 0.22)
+      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), aircraftBlinkDuration)
       sight(HudColor, sw(50), sh(50), hdpx(500))
-      targetSize(HudColor, sw(100), sh(100))
+      blinkOutsideLaunchZone("targetSizeBlink", targetSize(HudColor, sw(100), sh(100)), aircraftBlinkDuration)
       launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
       aircraftParamsTable(HudParamColor, false)
       compassElem(HudColor, compassSize, compassPos)
@@ -77,7 +87,7 @@ function aircraftSight(width, height) {
       radarIndication(HudColor)
       laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
       IsRangefinderEnabled.get() ? rangeFinder(HudColor, sw(50), sh(59)) : null
-      lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
+      blinkOutsideLaunchZone("lockSightBlink", lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50)), aircraftBlinkDuration)
       laserPointComponent(HudColor)
     ]
   }
@@ -120,12 +130,14 @@ function helicopterSight(width, height) {
     children = [
       vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudParamColor.get())
       missileSalvoTimer(HudParamColor, sw(50) - hdpx(150), sh(90) - hdpx(174))
-      turretAngles(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
+      turretAngles(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90), helicopterBlinkDuration)
       agmLaunchZone(HudParamColor, sw(100), sh(100))
       launchDistanceMax(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
       helicopterSightParamsTable(HudParamColor)
-      lockSight(HudParamColor, hdpx(150), hdpx(100), sw(50), sh(50))
-      targetSize(HudParamColor, sw(100), sh(100))
+      blinkOutsideLaunchZone("lockIndicatorsBlink", [
+        lockSight(HudParamColor, hdpx(150), hdpx(100), sw(50), sh(50))
+        targetSize(HudParamColor, sw(100), sh(100))
+      ], helicopterBlinkDuration)
       agmTrackZoneComponent(HudParamColor)
       agmTrackerStatusComponent(HudParamColor, sw(50), sh(41))
       laserDesignatorComponent(HudParamColor, sw(50), sh(42))
@@ -144,7 +156,7 @@ function helicopterSight(width, height) {
   }
 }
 
-return {
+return freeze({
   aircraftSight
   helicopterSight
-}
+})

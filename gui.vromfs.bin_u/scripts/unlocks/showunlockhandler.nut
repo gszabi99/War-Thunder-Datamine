@@ -1,36 +1,32 @@
+import "%scripts/user/newbieTutorialDisplay.nut" as tutorialModule
+import "%scripts/unit/unitActions.nut" as unitActions
+import "%scripts/wndLib/qrWindow.nut" as openQrWindow
+import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/money.nut" import Cost
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/web/webpoll.nut" import setPollBaseUrl, generatePollUrl
+from "%scripts/viewUtils/objectTextUpdate.nut" import setColoredDoubleTextToButton, placePriceTextToButton
+from "%scripts/web/webActionsForPromo.nut" import openLinkWithSource
+from "%scripts/user/suggestionEmailRegistration.nut" import showGuestEmailRegistration, needShowGuestEmailRegistration
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/promo/promo.nut" import isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction, gatherPromoActionsParamsData
+from "%scripts/langUtils/language.nut" import getLocTextFromConfig
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitRealCost, getUnitCost
+from "%scripts/unit/unitShopInfo.nut" import canBuyUnit
+from "%scripts/user/profileStates.nut" import userName, userIdStr
+from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers
+from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar
+from "%scripts/unlocks/unlocks.nut" import getNextAwardText
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/unlocks/showUnlockWnd.nut" import checkDelayedUnlockWnd
+from "%scripts/unit/availabilityBuyOnline.nut" import canBuyUnitOnline
 from "string" import format
 from "url" import shell_launch
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/social/psConsts.nut" import bit_activity
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
-let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
-let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
-let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction, gatherPromoActionsParamsData } = require("%scripts/promo/promo.nut")
-let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { getNextAwardText } = require("%scripts/unlocks/unlocks.nut")
-let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let ShowUnlockHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -126,15 +122,6 @@ let ShowUnlockHandler = class (BaseGuiHandlerWT) {
     }
   }
 
-  function onPostPs4ActivityFeed() {
-    activityFeedPostFunc(
-      this.config.ps4ActivityFeedData.config,
-      this.config.ps4ActivityFeedData.params,
-      bit_activity.PS4_ACTIVITY_FEED
-    )
-    showObjById("btn_post_ps4_activity_feed", false, this.scene)
-  }
-
   function updateButtons() {
     showObjById("btn_sendEmail", this.config?.showSendEmail ?? false, this.scene)
 
@@ -158,9 +145,6 @@ let ShowUnlockHandler = class (BaseGuiHandlerWT) {
       if (checkObj(imageObj))
         imageObj.link = linkText
     }
-    let showPs4ActivityFeed = isPlatformSony && ("ps4ActivityFeedData" in this.config)
-    showObjById("btn_post_ps4_activity_feed", showPs4ActivityFeed, this.scene)
-
 
     let showSetAir = this.unit != null && this.unit.isUsable() && !isUnitInSlotbar(this.unit)
     let canBuyOnline = this.unit != null && canBuyUnitOnline(this.unit)
@@ -308,4 +292,4 @@ let ShowUnlockHandler = class (BaseGuiHandlerWT) {
 }
 register_gui_handler("ShowUnlockHandler", ShowUnlockHandler)
 
-return { ShowUnlockHandler }
+return freeze({ ShowUnlockHandler })

@@ -8,7 +8,7 @@ let sendSlotTutorialBqEvent = @(step, params)
 let sendModificationTutorialBqEvent = @(step, params)
   sendBqEvent(NEW_USER_BQ_TABLE, "tutorialModification", { step }.__merge(params))
 
-return {
+return freeze({
   sendSlotTutorialBqEvent
   sendModificationTutorialBqEvent
-}
+})

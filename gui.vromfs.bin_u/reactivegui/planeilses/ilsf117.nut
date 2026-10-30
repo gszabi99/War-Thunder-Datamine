@@ -72,7 +72,7 @@ let rollIndicator = @(){
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 90, 0, 100],
     [VECTOR_LINE, 90 * sin(5 * degToRad), 90 * cos(5 * degToRad), 95 * sin(5 * degToRad), 95 * cos(5 * degToRad)],
     [VECTOR_LINE, 90 * sin(10 * degToRad), 90 * cos(10 * degToRad), 100 * sin(10 * degToRad), 100 * cos(10 * degToRad)],
@@ -89,14 +89,14 @@ let rollIndicator = @(){
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
     fillColor = Color(0, 0, 0, 0)
-    commands = [
+    commands = const [
       [VECTOR_POLY, 0, 88, -4, 80, 4, 80]
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
         rotate = -Roll.get()
-        pivot = [0.0, 0.0]
+        pivot = 0.0
       }
     }
   }
@@ -116,10 +116,10 @@ function generatePitchLine(num) {
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         color = IlsColor.get()
         commands = [
-          (num == 0 ? [VECTOR_LINE, 0, 0, 30, 0] : []),
-          (num == 0 ? [VECTOR_LINE, 70, 0, 100, 0] : []),
-          (num == 0 ? [VECTOR_LINE, 100, 0, 100, 5] : []),
-          (num == 0 ? [VECTOR_LINE, 0, 0, 0, 5] : []),
+          (num == 0 ? const [VECTOR_LINE, 0, 0, 30, 0] : const []),
+          (num == 0 ? const [VECTOR_LINE, 70, 0, 100, 0] : const []),
+          (num == 0 ? const [VECTOR_LINE, 100, 0, 100, 5] : const []),
+          (num == 0 ? const [VECTOR_LINE, 0, 0, 0, 5] : const []),
           (num > 0 ? [VECTOR_LINE, 12, 0, 30, 30 * sin(angle)] : []),
           (num > 0 ? [VECTOR_LINE, 70, 30 * sin(angle), 88, 0] : []),
           (num != 0 ? [VECTOR_LINE, 88, 0, 88, 5 * sign] : []),
@@ -198,7 +198,7 @@ function tvvLinked(width, height) {
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 0, 0, 30, 30],
           [VECTOR_LINE, -100, 0, -30, 0],
           [VECTOR_LINE, 100, 0, 30, 0],
@@ -284,9 +284,7 @@ function compassWrap(width, height, generateFunc) {
     size = [width * 0.4, height]
     pos = [width * 0.3, height * 0.1]
     clipChildren = true
-    children = [
-      compass(width * 0.4, generateFunc)
-    ]
+    children = compass(width * 0.4, generateFunc)
   }
 }
 
@@ -299,22 +297,20 @@ let compassVal = @(){
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
   fillColor = Color(0, 0, 0, 0)
-  commands = [
+  commands = const [
     [VECTOR_RECTANGLE, 0, 0, 100, 100]
   ]
-  children = [
-    @() {
-      watch = CompassInt
-      rendObj = ROBJ_TEXT
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      size = FLEX
-      color = IlsColor.get()
-      lineWidth = baseLineWidth
-      fontSize = 45
-      text = CompassInt.get().tostring()
-    }
-  ]
+  children = @() {
+    watch = CompassInt
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    size = FLEX
+    color = IlsColor.get()
+    lineWidth = baseLineWidth
+    fontSize = 45
+    text = CompassInt.get().tostring()
+  }
 }
 
 let gsValue = Computed(@() (Tas.get() * mpsToKnots).tointeger())
@@ -340,7 +336,7 @@ let aimLock = @(){
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
       fillColor = 0
-      commands = [
+      commands = const [
         [VECTOR_RECTANGLE, -50, -50, 100, 100]
       ]
       behavior = Behaviors.RtPropUpdate
@@ -373,13 +369,13 @@ let verticalSpeed = @() {
   fillColor = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
   commands = [
-    [VECTOR_LINE, 0, 0, 50, 0],
-    [VECTOR_LINE, 25, 16, 50, 16],
-    [VECTOR_LINE, 25, 52, 50, 52],
-    [VECTOR_LINE, 0, 68, 50, 68],
-    [VECTOR_LINE, 25, 84, 50, 84],
-    [VECTOR_LINE, 0, 100, 50, 100],
-    [VECTOR_LINE, 0, 34, 50, 34],
+    const [VECTOR_LINE, 0, 0, 50, 0],
+    const [VECTOR_LINE, 25, 16, 50, 16],
+    const [VECTOR_LINE, 25, 52, 50, 52],
+    const [VECTOR_LINE, 0, 68, 50, 68],
+    const [VECTOR_LINE, 25, 84, 50, 84],
+    const [VECTOR_LINE, 0, 100, 50, 100],
+    const [VECTOR_LINE, 0, 34, 50, 34],
     [VECTOR_POLY, 55, markH.get(), 80, markH.get() - 2, 80, markH.get() + 2],
     [VECTOR_LINE, 100, 34, 100, markH.get()],
     [VECTOR_LINE, 80, markH.get(), 100, markH.get()]
@@ -418,14 +414,12 @@ function rotatedBombReleaseReticle() {
       lowerSolutionCue,
       {
         size = FLEX
-        children = [
-          @() {
-            watch = IlsColor
-            size = [baseLineWidth * IlsLineScale.get() * 0.5, FLEX]
-            rendObj = ROBJ_SOLID
-            color = IlsColor.get()
-          }
-        ]
+        children = @() {
+          watch = IlsColor
+          size = [baseLineWidth * IlsLineScale.get() * 0.5, FLEX]
+          rendObj = ROBJ_SOLID
+          color = IlsColor.get()
+        }
       }
     ]
     behavior = Behaviors.RtPropUpdate

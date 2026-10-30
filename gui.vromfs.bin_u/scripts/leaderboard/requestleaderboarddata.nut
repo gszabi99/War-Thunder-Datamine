@@ -1,19 +1,18 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "ww_leaderboard" as ww_leaderboard
 import "DataBlock" as DataBlock
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/social/crossplay.nut" import getSeparateLeaderboardPlatformName
+from "%scripts/tasker.nut" import charRequestBlk
+from "%scripts/contacts/contactsClient.nut" import contacts_request
+from "%scripts/events/eventInfo.nut" import isRaceEvent, getLeagueConfigByLevel
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, APP_ID_CUSTOM_LEADERBOARD
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 from "types" import Table
-
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
-let { charRequestBlk } = require("%scripts/tasker.nut")
-let { contacts_request } = require("%scripts/contacts/contactsClient.nut")
-let { isRaceEvent, getLeagueConfigByLevel } = require("%scripts/events/eventInfo.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 
 
 
@@ -162,7 +161,7 @@ function convertContactLeaderboardData(result, sortStat) {
     rows.append(row)
   }
   if (sortStat != null)
-    rows.sort(@(a, b) (b?[sortStat] ?? 0) <=> (a?[sortStat] ?? 0))
+    rows.sortby(@(a) -(a?[sortStat] ?? 0))
 
   let playersCount = rows.len()
   let leagueConfig = getLeagueConfigByLevel(leagueLevel)
@@ -234,7 +233,7 @@ function convertLeaderboardData(result, applyLocalisationToName = false, valueKe
   return { rows = list }
 }
 
-return {
+return freeze({
   APP_ID_CUSTOM_LEADERBOARD
   requestLeaderboardData
   requestEventLeaderboardData
@@ -243,4 +242,4 @@ return {
   convertLeaderboardData
   requestContactLeaderboardData
   convertContactLeaderboardData
-}
+})

@@ -1,17 +1,17 @@
+import "%scripts/time.nut" as time
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut" import getOperationById
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "worldwar" import wwGetOperationId
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
-let time = require("%scripts/time.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 
 let WwBattleView = class  {

@@ -8,8 +8,8 @@ let shouldDisableMenu = (disableNetwork && (setBlk?.debug.disableMenu ?? false))
   || (setBlk?.benchmarkMode ?? false)
   || (setBlk?.viewReplay ?? false)
 
-return {
+return freeze({
   disableNetwork
   shouldDisableMenu
   isOfflineMenu = disableNetwork && !shouldDisableMenu
-}
+})

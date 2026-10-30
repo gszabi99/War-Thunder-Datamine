@@ -1,15 +1,15 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
 import "DataBlock" as DataBlock
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%scripts/ranks.nut" import maxCountryRank
+from "%scripts/warbonds/warbondsState.nut" import FULL_ID_SEPARATOR
+from "%scripts/battlePass/seasonState.nut" import getBPStageByShopLevel
 from "%scripts/dagui_natives.nut" import get_max_unit_rank
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { maxCountryRank } = require("%scripts/ranks.nut")
-let { FULL_ID_SEPARATOR } = require("%scripts/warbonds/warbondsState.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
-let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
 
 
 let WarbondAward = class {
@@ -300,4 +300,4 @@ let WarbondAward = class {
   
 }
 
-return { WarbondAward }
+return freeze({ WarbondAward })

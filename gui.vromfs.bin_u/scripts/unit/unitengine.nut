@@ -1,13 +1,13 @@
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%globalScripts/modeXrayLib.nut" import getInfoBlk
 from "blkGetters" import get_unittags_blk
 from "hangar" import DM_VIEWER_XRAY
 from "%scripts/dagui_library.nut" import *
 
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let unitEngineCache = {}
 
@@ -71,6 +71,6 @@ function getUnitEngineMarkup(unitName) {
   return handyman.renderCached("%gui/unitInfo/unitSystems.tpl", { items = engines, isTooltipByHold = showConsoleButtons.get() })
 }
 
-return {
+return freeze({
   getUnitEngineMarkup
-}
+})

@@ -4,6 +4,7 @@
   "simpleSinking": false,
   "volsmokeDafxInjector": true,
   "volsmokeForSmokeScreen": false,
+  "applyNegFxModForNotInListForBots": true,
   "infantry_render_distance": 750.0,
   "gather_sparse_freq": 0,
   "treeAOdefault": 0.8,
@@ -79,6 +80,7 @@
   "showEnemyAtKillZone": true,
   "effectsZNearOffsetInCockpit": 2.0,
   "invisibleSupportUnits": true,
+  "allowAttachableEditorInHangar": true,
   "unitDefaultVisibilityDistance": 2000.0,
   "applyViewDistKToVisibilityResolution": true,
   "tankAlwaysDetectedDistance": 215.0,
@@ -127,7 +129,9 @@
   "rocketIndicatorLosCheck": true,
   "deltaTimeMultCCIP": 1.0,
   "separateIndicationCCIP": false,
-  "guidedBombsCCRP": true,
+  "guidedBombsCCRP": false,
+  "minBombReleaseTime": 15.0,
+  "ccrpIndicationBottom": 0.89,
   "cannonDirMaxShootRange": 1500.0,
   "rocketDirMaxShootRange": 2000.0,
   "warningMessageForLWS": true,
@@ -159,10 +163,16 @@
     7.0
   ],
   "decalScaleDefaultShip": 3.0,
+  "decalScaleRangeHumanWeapon": [
+    0.03,
+    0.25
+  ],
+  "decalScaleDefaultHumanWeapon": 0.05,
   "timeBeforeEngineNoticeFire": 0.5,
   "enableImpostorTextureManager": false,
   "useCollisionResourceForProximityFuse": true,
   "lowLodForShooters": true,
+  "mpLodFocusFovMul": 3.0,
   "turretRotationResync": true,
   "turretRotationResyncFilterAlpha": 0.8,
   "turretRotationResyncFilterBetta": 0.005,
@@ -258,6 +268,8 @@
   "defaultAirCannonsSpeedDispersion": 0.025,
   "defaultTankCannonsSpeedDispersion": 0.0,
   "maxAirfieldLiftStepCount": 40,
+  "usePreciseObjectsGroupHeight": true,
+  "useObjectsGroupTerrainDig": true,
   "maxTimeToReturnToMapForTanks": 25.0,
   "killDistFromBattleAreaForTanks": 5.0,
   "maxTimeToReturnToMapForShips": 90.0,
@@ -483,6 +495,9 @@
   ],
   "forceTraceRendInstSecondLayer": true,
   "traceRendInstSecondLayerMinHeight": 0.5,
+  "maxDistDrawUnderwaterAtSubmarine": 750.0,
+  "shouldShowMinimapWhenSubmarineUnderwater": true,
+  "shouldShowSubmarineEchoVision": true,
   "useTargetingWithAimForShips": true,
   "showProjectileInterceptionMessage": true,
   "sendShellIntersectionEvent": true,
@@ -490,6 +505,7 @@
   "shipsDeadCoversDelayedSinkingEnable": true,
   "isVisibleShipHitCounters": true,
   "shipFireControlIndicationOn": true,
+  "submarineDrownedPartKillsCrew": true,
   "rocketSightWaterConeEnabled": false,
   "volumetricAfterBurnerDistanceOcclusion": 1000.0,
   "deadTankDecalLengthMult": 1.4,
@@ -539,6 +555,21 @@
     "tailFadeInDistance": 10.0,
     "tailNoisePeriodMeters": 20.0,
     "tailDirectionalScale": 0.4,
+    "smokeTails": true,
+    "smokeTailTexture": "perlin_noise_wind_ati1n",
+    "smokeTexTile": 0.05,
+    "smokeTurbulenceRadius": 0.4,
+    "smokeTurbulenceScale": 4.0,
+    "smokeNoiseFreq": 0.15,
+    "smokeWindScale": 2.0,
+    "smokePhaseG": 0.15,
+    "smokePhaseSoftness": 0.8,
+    "smokeTurbulenceSpeed": 1.9,
+    "smokeSpread": 10.0,
+    "smokeNearFadeSight": [
+      2.0,
+      20.0
+    ],
     "numHeadMeshes": 3,
     "hdrMultiplier": 3.0,
     "headMinimumOpacity": 0.7,
@@ -10567,7 +10598,7 @@
     }
   },
   "tracerTrails": {
-    "thin": {
+    "thick": {
       "particleHalfSizeFrom": 0.03,
       "particleHalfSizeTo": 0.6,
       "color": [
@@ -10576,18 +10607,19 @@
         128,
         128
       ],
-      "deviation": 15.0
-    },
-    "curved": {
-      "particleHalfSizeFrom": 0.03,
-      "particleHalfSizeTo": 0.3,
-      "color": [
-        158,
-        158,
-        158,
-        158
+      "deviation": 15.0,
+      "smokeRadius": 0.06,
+      "smokeColor": [
+        30,
+        30,
+        30,
+        230
       ],
-      "deviation": 10.0
+      "smokeDensity": 3.0,
+      "smokeTimeSec": [
+        0.4,
+        1.1
+      ]
     },
     "noTrail": {
       "particleHalfSizeFrom": 0.0,
@@ -10598,7 +10630,15 @@
         0,
         0
       ],
-      "deviation": 2.0
+      "deviation": 2.0,
+      "smokeRadius": 0.0,
+      "smokeColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "smokeTimeSec": 0.0
     },
     "black": {
       "particleHalfSizeFrom": 0.03,
@@ -10609,7 +10649,42 @@
         80,
         186
       ],
-      "deviation": 3.0
+      "deviation": 3.0,
+      "smokeRadius": 0.02,
+      "smokeColor": [
+        3,
+        3,
+        3,
+        220
+      ],
+      "smokeDensity": 4.0,
+      "smokeTimeSec": [
+        0.3,
+        0.9
+      ]
+    },
+    "white": {
+      "particleHalfSizeFrom": 0.03,
+      "particleHalfSizeTo": 0.15,
+      "color": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "deviation": 3.0,
+      "smokeRadius": 0.02,
+      "smokeColor": [
+        120,
+        120,
+        120,
+        220
+      ],
+      "smokeDensity": 2.5,
+      "smokeTimeSec": [
+        0.3,
+        0.9
+      ]
     },
     "black_rpg": {
       "particleHalfSizeFrom": 0.1,
@@ -10620,7 +10695,19 @@
         80,
         255
       ],
-      "deviation": 0.00001
+      "deviation": 0.00001,
+      "smokeRadius": 0.06,
+      "smokeColor": [
+        10,
+        10,
+        10,
+        220
+      ],
+      "smokeDensity": 3.5,
+      "smokeTimeSec": [
+        0.2,
+        0.6
+      ]
     },
     "smallTrail": {
       "particleHalfSizeFrom": 0.02,
@@ -10631,7 +10718,19 @@
         228,
         228
       ],
-      "deviation": 5.0
+      "deviation": 5.0,
+      "smokeRadius": 0.009,
+      "smokeColor": [
+        70,
+        70,
+        70,
+        240
+      ],
+      "smokeDensity": 4.3,
+      "smokeTimeSec": [
+        0.25,
+        0.8
+      ]
     },
     "tinyTrail": {
       "particleHalfSizeFrom": 0.004,
@@ -10642,7 +10741,19 @@
         228,
         228
       ],
-      "deviation": 5.0
+      "deviation": 5.0,
+      "smokeRadius": 0.005,
+      "smokeColor": [
+        50,
+        50,
+        50,
+        240
+      ],
+      "smokeDensity": 3.7,
+      "smokeTimeSec": [
+        0.2,
+        0.6
+      ]
     }
   },
   "turbulence": {
@@ -10807,7 +10918,8 @@
       "checkActivityByPlayerDamage": false,
       "shipGunsRearm": false,
       "proximityFuseCheckAllies": false,
-      "independentRestock": false
+      "independentRestock": false,
+      "submarineNoise": true
     },
     "hardcore": {
       "baseDifficulty": 2,
@@ -11042,6 +11154,7 @@
       "shipGunsRearm": false,
       "proximityFuseCheckAllies": false,
       "independentRestock": false,
+      "submarineNoise": true,
       "setDifficulty": 1
     },
     "tank_hardcore": {
@@ -11276,6 +11389,7 @@
       "shipGunsRearm": false,
       "proximityFuseCheckAllies": false,
       "independentRestock": false,
+      "submarineNoise": true,
       "setDifficulty": 1
     }
   },
@@ -11457,7 +11571,7 @@
         "blockCooldownAfterEarlyAttemptToAirstreak": 10.0,
         "multTorpedoDistanceIndicator": 0.125,
         "multRocketDistanceIndicator": 1.0,
-        "repairWithoutToolkitAutomatically": true,
+        "repairWithoutToolkitAutomatically": false,
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": true,
         "autoSightDistanceCorrection": true,
@@ -11544,7 +11658,6 @@
         "shipBrokenRangefinderErrorMult": 2.0,
         "blockCooldownAfterEarlyAttemptToAirstreak": 10.0,
         "multRocketDistanceIndicator": 1.0,
-        "repairWithoutToolkitAutomatically": true,
         "HeliFlutter_Effect": true,
         "UseGunDirForATMG": true,
         "autoSightDistanceCorrection": true,
@@ -11860,7 +11973,8 @@
         "shipThrustMultDestroyer": 1.05,
         "shipThrustMultFerryBarge": 1.3,
         "shipFireDirectingCalcTimeMul": 0.75,
-        "shipFireDirectingLockTimeMult": 0.15
+        "shipFireDirectingLockTimeMult": 0.15,
+        "submarineMaxSpeedMult": 1.45
       },
       "on": {
         "arcadeBoost": false,
@@ -11878,7 +11992,8 @@
         "arcadeTurnPowerMult": 1.35,
         "tankTurretPitchInc": 0.0,
         "shipArcadeTurretBoostHorz": 1.0,
-        "shipArcadeTurretBoostVert": 1.0
+        "shipArcadeTurretBoostVert": 1.0,
+        "submarineMaxSpeedMult": 1.0
       },
       "worldwar": {
         "arcadeBoost": false,
@@ -13076,6 +13191,20 @@
       "on": {
         "independentRestock": true
       }
+    },
+    "submarineNoise": {
+      "off": {
+        "submarineCollisionNoiseMult": 2.5,
+        "submarineDepthChangeNoiseMult": 1.25
+      },
+      "on": {
+        "submarineCollisionNoiseMult": 1.5,
+        "submarineDepthChangeNoiseMult": 1.5
+      }
+    },
+    "showCompartmentHpIndicator": {
+      "off": {},
+      "on": {}
     }
   },
   "ambientWindParams": {
@@ -13204,26 +13333,62 @@
         "dust": {
           "name": "dust",
           "color": [
-            0.62,
-            0.58,
-            0.52
+            0.46,
+            0.39,
+            0.29
           ],
           "metalness": 0.0,
-          "texScale": 3.7,
+          "texScale": 4.7,
           "maxLevel": 1.0,
-          "topProjScale": 0.3
+          "topProjScale": 0.28,
+          "noiseAmplitude": 2.5,
+          "smoothness": 0.11,
+          "maskCrispness": 0.45,
+          "emitterReach": 2.0,
+          "detail": {
+            "texName": "tank_sand_mask_detail",
+            "color": [
+              0.48,
+              0.38,
+              0.25
+            ],
+            "smoothness": 0.1,
+            "metalness": 0.0,
+            "relScale": 1.75,
+            "weight": 1.2,
+            "normalStrength": 0.0,
+            "maskInfluence": 0.75,
+            "normalReplace": 0.0,
+            "maskBlend": "multiply"
+          }
         },
         "mud": {
           "name": "mud",
           "color": [
-            0.22,
-            0.21,
-            0.198
+            0.25,
+            0.2,
+            0.17
           ],
           "metalness": 0.0,
-          "texScale": 12.7,
+          "texScale": 8.7,
           "maxLevel": 1.0,
-          "topProjScale": -0.7
+          "topProjScale": -0.7,
+          "smoothness": 0.45,
+          "detail": {
+            "texName": "tank_dirt_detail",
+            "color": [
+              0.4,
+              0.34,
+              0.27
+            ],
+            "smoothness": 0.4,
+            "metalness": 0.0,
+            "relScale": 0.5,
+            "weight": 0.2,
+            "normalStrength": 5.0,
+            "maskInfluence": 35.0,
+            "normalReplace": 1.0
+          }
         }
       },
       "materialTextures": {
@@ -13234,31 +13399,67 @@
       }
     },
     "sand": {
-      "explosionEmitterMaterial": "sand",
+      "explosionEmitterMaterial": "mud",
       "materialParams": {
         "dust": {
           "name": "dust",
           "color": [
-            0.62,
-            0.58,
-            0.52
+            0.46,
+            0.39,
+            0.29
           ],
           "metalness": 0.0,
-          "texScale": 3.7,
+          "texScale": 4.7,
           "maxLevel": 1.0,
-          "topProjScale": 0.3
+          "topProjScale": 0.28,
+          "noiseAmplitude": 2.5,
+          "smoothness": 0.11,
+          "maskCrispness": 0.45,
+          "emitterReach": 2.0,
+          "detail": {
+            "texName": "tank_sand_mask_detail",
+            "color": [
+              0.48,
+              0.38,
+              0.25
+            ],
+            "smoothness": 0.1,
+            "metalness": 0.0,
+            "relScale": 1.85,
+            "weight": 1.2,
+            "normalStrength": 0.0,
+            "maskInfluence": 0.77,
+            "normalReplace": 0.0,
+            "maskBlend": "multiply"
+          }
         },
         "mud": {
           "name": "mud",
           "color": [
-            0.22,
-            0.21,
-            0.198
+            0.25,
+            0.2,
+            0.17
           ],
           "metalness": 0.0,
-          "texScale": 12.7,
+          "texScale": 8.7,
           "maxLevel": 1.0,
-          "topProjScale": -0.7
+          "topProjScale": -0.7,
+          "smoothness": 0.45,
+          "detail": {
+            "texName": "tank_dirt_detail",
+            "color": [
+              0.4,
+              0.34,
+              0.27
+            ],
+            "smoothness": 0.4,
+            "metalness": 0.0,
+            "relScale": 0.5,
+            "weight": 0.2,
+            "normalStrength": 5.0,
+            "maskInfluence": 35.0,
+            "normalReplace": 1.0
+          }
         }
       },
       "materialTextures": {
@@ -13274,15 +13475,34 @@
         "snow": {
           "name": "snow",
           "color": [
-            1.0,
-            1.0,
-            1.0
+            0.69,
+            0.76,
+            0.76
           ],
           "metalness": 0.1,
-          "texScale": 3.4,
+          "texScale": 2.5,
           "maxLevel": 1.0,
-          "topProjScale": 4.00997,
-          "useRemoval": true
+          "topProjScale": 1.85,
+          "maskCrispness": 1.0,
+          "smoothness": 0.75,
+          "useRemoval": true,
+          "noiseAmplitude": 0.8,
+          "detail": {
+            "texName": "tank_snow_mask_det",
+            "color": [
+              0.81,
+              0.85,
+              0.86
+            ],
+            "smoothness": 0.25,
+            "metalness": 0.0,
+            "relScale": 0.8,
+            "weight": 0.7,
+            "normalStrength": 0.5,
+            "maskBlend": "multiply",
+            "maskInfluence": 0.78,
+            "normalReplace": 0.95
+          }
         },
         "mud": {
           "name": "mud",
@@ -13299,7 +13519,7 @@
       },
       "materialTextures": {
         "texName": [
-          "tank_snow_mask",
+          "tank_dirt_mask",
           "tank_dirt_mask"
         ]
       }
@@ -13356,14 +13576,14 @@
     "fuelLeakEmmiterPosNoiseAmplitude": 10.0
   },
   "commonScenes": {
-    "scene": [
-      "gameData/scenes/common/common_scene.blk",
-      "gameData/scenes/common/loose_grid_scene.blk"
-    ]
+    "scene": "gamedata/scenes/common/common_scene.blk"
+  },
+  "localScenes": {
+    "scene": "gamedata/scenes/common/loose_grid_scene.blk"
   },
   "commonClientScenes": {
     "scene": [
-      "gameData/scenes/common/common_client_scene.blk",
+      "gamedata/scenes/common/common_client_scene.blk",
       "gamedata/scenes/common/common_client_scene_inf.blk"
     ]
   },
@@ -14405,7 +14625,11 @@
     "sightLineDistHumanDroneMax": 160.0,
     "applyViewDistKInSight": false,
     "maxDistTraceableFromHero": 10000.0,
-    "limitTraces": 256
+    "limitTraces": 96,
+    "maxPotentialTraces": 4096,
+    "submergedSubmarineCanDetect": false,
+    "submergedSubmarineCanBeDetected": false,
+    "maxPeriscopeVisualDetectDistance": 3000.0
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -18965,6 +19189,134 @@
     "armor_belt_r_50": {
       "my": "ship_armor_belt_r",
       "enemy": "ship_armor_belt_r"
+    },
+    "air_tank_01_dm": {
+      "my": "air_tank",
+      "enemy": "air_tank"
+    },
+    "air_tank_02_dm": {
+      "my": "air_tank",
+      "enemy": "air_tank"
+    },
+    "air_tank_03_dm": {
+      "my": "air_tank",
+      "enemy": "air_tank"
+    },
+    "air_tank_04_dm": {
+      "my": "air_tank",
+      "enemy": "air_tank"
+    },
+    "ballast_tank_01_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_02_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_03_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_04_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_05_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_06_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_07_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_08_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_09_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_10_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_11_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_12_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_13_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_14_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "ballast_tank_15_dm": {
+      "my": "ballast_tank",
+      "enemy": "ballast_tank"
+    },
+    "battery_01_dm": {
+      "my": "battery",
+      "enemy": "battery"
+    },
+    "battery_02_dm": {
+      "my": "battery",
+      "enemy": "battery"
+    },
+    "battery_03_dm": {
+      "my": "battery",
+      "enemy": "battery"
+    },
+    "battery_04_dm": {
+      "my": "battery",
+      "enemy": "battery"
+    },
+    "periscope_dm": {
+      "my": "periscope",
+      "enemy": "periscope"
+    },
+    "hydroplane_gear_01_dm": {
+      "my": "hydroplane_gear",
+      "enemy": "hydroplane_gear"
+    },
+    "hydroplane_gear_02_dm": {
+      "my": "hydroplane_gear",
+      "enemy": "hydroplane_gear"
+    },
+    "electric_engine_01_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
+    },
+    "electric_engine_02_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
+    },
+    "electric_engine_03_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
+    },
+    "electric_engine_04_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
+    },
+    "electric_engine_05_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
+    },
+    "electric_engine_06_dm": {
+      "my": "electric_engine",
+      "enemy": "electric_engine"
     }
   },
   "wodParams": {
@@ -19130,7 +19482,6 @@
     "sonarOutlinePower": 4.0,
     "sonarOutlineSpeed": 2.0,
     "sonarOutlineRenderDelay": 1.0,
-    "sonarOutlinePeriod": 3.0,
     "sonarOutlineColor": [
       128,
       255,
@@ -20214,6 +20565,66 @@
             160,
             255
           ]
+        },
+        {
+          "name": "air_tank_",
+          "unit": "ship",
+          "xrayColor": [
+            204,
+            204,
+            204,
+            255
+          ]
+        },
+        {
+          "name": "ballast_tank_",
+          "unit": "ship",
+          "xrayColor": [
+            190,
+            115,
+            0,
+            255
+          ]
+        },
+        {
+          "name": "battery_",
+          "unit": "ship",
+          "xrayColor": [
+            189,
+            206,
+            222,
+            255
+          ]
+        },
+        {
+          "name": "periscope",
+          "unit": "ship",
+          "xrayColor": [
+            189,
+            206,
+            222,
+            255
+          ]
+        },
+        {
+          "name": "hydroplane_gear_",
+          "unit": "ship",
+          "xrayColor": [
+            192,
+            152,
+            162,
+            255
+          ]
+        },
+        {
+          "name": "electric_engine_",
+          "unit": "ship",
+          "xrayColor": [
+            150,
+            150,
+            75,
+            255
+          ]
         }
       ]
     },
@@ -20286,11 +20697,11 @@
         },
         {
           "name": "wheel_r_01_",
-          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3"
+          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3,btr_90_2004,pv_m39"
         },
         {
           "name": "wheel_l_01_",
-          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3"
+          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3,btr_90_2004,pv_m39"
         },
         {
           "name": "wheel_r_06_",
@@ -20302,27 +20713,27 @@
         },
         {
           "name": "wheel_r_02_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3,btr_90_2004,pv_m39"
         },
         {
           "name": "wheel_l_02_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000,patria_bmp_3,btr_90_2004,pv_m39"
         },
         {
           "name": "wheel_r_03_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3,btr_90_2004"
         },
         {
           "name": "wheel_l_03_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3,btr_90_2004"
         },
         {
           "name": "wheel_r_04_",
-          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3"
+          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3,btr_90_2004"
         },
         {
           "name": "wheel_l_04_",
-          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3"
+          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000,patria_bmp_3,btr_90_2004"
         },
         {
           "name": "wheel_r_05_",
@@ -20400,6 +20811,12 @@
         "rangefinder_",
         "rangefinder_mount_",
         "handling_room_",
+        "ballast_tank_",
+        "air_tank_",
+        "battery_",
+        "periscope",
+        "hydroplane_gear_",
+        "electric_engine_",
         {
           "name": "optic_gun_"
         },
@@ -21610,6 +22027,7 @@
       "desert_dry_tree_c",
       "desert_dry_tree_d",
       "desert_dry_tree_e",
+      "tree_christmas_b",
       "alaska_town_bridge_bump_stop_a",
       "alaska_town_bridge_bump_stop_b",
       "alaska_town_bridge_bump_stop_b_stick",
@@ -21692,6 +22110,80 @@
         "american_roof_signboard",
         "american_wall_banner",
         "american_wall_signboard",
+        "american_streetlight_",
+        "american_curb_rounded_a",
+        "american_sidewalk_curb_",
+        "american_tree_grate_a",
+        "american_suburb_building_2_floors_a_drain_a",
+        "american_town_building_2_floors_c_drain_a",
+        "american_town_building_3_floor_a_drain_a",
+        "american_clothline_",
+        "playground_swing_",
+        "minivan_damaged_",
+        "wood_planks_pack_",
+        "bush_parkinsonia_praecox_",
+        "american_town_building_1_floor_a_ventilation_tube_",
+        "american_town_building_1_floor_b_ventilation_tube_",
+        "american_town_building_1_floor_c_ventilation_tube_",
+        "american_town_building_1_floor_d_ventilation_tube_",
+        "american_town_building_1_floor_e_ventilation_tube_",
+        "american_town_building_1_floor_f_ventilation_tube_",
+        "american_town_building_1_floor_g_ventilation_tube_",
+        "american_town_building_2_floors_a_ventilation_tube_",
+        "american_town_building_2_floors_b_ventilation_tube_",
+        "american_town_building_2_floors_d_ventilation_tube_",
+        "american_town_building_2_floors_e_ventilation_tube_",
+        "american_town_building_2_floors_f_ventilation_tube_",
+        "american_town_building_3_floors_a_ventilation_tube_",
+        "american_town_building_ventilation_tube_",
+        "american_town_building_1_floor_e_dp_01_decal_a",
+        "american_town_building_1_floor_e_dp_02_decal_a",
+        "american_train_depot_drain_",
+        "american_town_building_1_floor_b_dp_01_wires_a",
+        "american_town_building_1_floor_b_dp_02_wires_a",
+        "american_town_building_1_floor_b_wires_a",
+        "american_town_building_1_floor_c_dp_01_wires_a",
+        "american_town_building_1_floor_c_dp_02_wires_a",
+        "american_town_building_1_floor_e_dp_01_wires_a",
+        "american_town_building_1_floor_e_dp_02_wires_a",
+        "american_town_building_1_floor_e_wires_a",
+        "american_town_building_2_floors_e_dp_01_wires_a",
+        "american_town_building_2_floors_e_dp_02_wires_a",
+        "american_town_building_2_floors_e_dp_03_wires_a",
+        "american_town_building_2_floors_e_wires_a",
+        "sassaul_bush_",
+        "sewer_pipe_",
+        "winch_lift_metal_a",
+        "tree_phoenix_dactylifera_e",
+        "bush_salsola_tragus_",
+        "american_town_building_1_floor_a_roof_decor",
+        "american_town_building_1_floor_b_roof_decor",
+        "american_town_building_1_floor_c_roof_decor",
+        "american_town_building_1_floor_d_roof_decor",
+        "american_town_building_1_floor_e_roof_decor",
+        "american_town_building_1_floor_f_roof_decor",
+        "american_town_building_1_floor_g_roof_decor",
+        "american_town_building_2_floors_d_roof_decor",
+        "american_mall_roof_decor",
+        "american_town_building_awning_",
+        "american_town_building_1_floor_a_awning",
+        "american_town_building_1_floor_b_awning",
+        "american_town_building_1_floor_c_awning",
+        "american_town_building_1_floor_e_awning_",
+        "american_town_building_1_floor_f_awning",
+        "american_town_building_1_floor_g_awning_",
+        "american_town_building_2_floors_a_awning_",
+        "american_town_building_2_floors_b_awning",
+        "american_town_building_2_floors_d_awning",
+        "american_town_building_2_floors_f_awning",
+        "american_town_building_3_floors_a_awning_",
+        "american_town_building_1_floor_a_stairs",
+        "american_town_building_2_floors_c_back_stairs",
+        "american_town_building_2_floors_c_stairs",
+        "american_town_building_2_floors_d_back_stairs",
+        "american_town_building_2_floors_e_back_stairs",
+        "american_town_building_3_floors_a_back_stairs",
+        "american_town_building_2_floors_d_outdoor_fence_1_floor",
         "alaska_signboard",
         "alaska_town_bridge_bump_stop_a",
         "alaska_town_bridge_bump_stop_b",
@@ -22009,7 +22501,8 @@
         "fortress_stronghold_tower_b_debris_patch_",
         "fortress_stronghold_tower_c_debris_patch_",
         "fortress_wall_a_debris_patch_",
-        "m_east_palace_f_hall_building_dome_l_inside"
+        "m_east_palace_f_hall_building_dome_l_inside",
+        "modern_skyscraper_b_balcony_a"
       ],
       "excRE": [
         "m_east_palace_f_dome_scaffolding_a",
@@ -22479,7 +22972,14 @@
         "universal_airfield_table_a",
         "air_box_pile_b",
         "air_pallet_cardboard_a_pile_a",
-        "universal_airfield_fuel_tank_a"
+        "universal_airfield_fuel_tank_a",
+        "constructor_roof_decor_[^v]",
+        "modern_roof_decor_",
+        "modern_roof_ventilation_duct_",
+        "modern_hotel_a_windows_",
+        "sicily_cafe_sunshade_a",
+        "modern_business_building_bottom_a_b",
+        "modern_business_building_bottom_a_e"
       ]
     },
     "hideForMode0re": {
@@ -22539,6 +23039,80 @@
         "american_roof_signboard",
         "american_wall_banner",
         "american_wall_signboard",
+        "american_streetlight_",
+        "american_curb_rounded_a",
+        "american_sidewalk_curb_",
+        "american_tree_grate_a",
+        "american_suburb_building_2_floors_a_drain_a",
+        "american_town_building_2_floors_c_drain_a",
+        "american_town_building_3_floor_a_drain_a",
+        "american_clothline_",
+        "playground_swing_",
+        "minivan_damaged_",
+        "wood_planks_pack_",
+        "bush_parkinsonia_praecox_",
+        "american_town_building_1_floor_a_ventilation_tube_",
+        "american_town_building_1_floor_b_ventilation_tube_",
+        "american_town_building_1_floor_c_ventilation_tube_",
+        "american_town_building_1_floor_d_ventilation_tube_",
+        "american_town_building_1_floor_e_ventilation_tube_",
+        "american_town_building_1_floor_f_ventilation_tube_",
+        "american_town_building_1_floor_g_ventilation_tube_",
+        "american_town_building_2_floors_a_ventilation_tube_",
+        "american_town_building_2_floors_b_ventilation_tube_",
+        "american_town_building_2_floors_d_ventilation_tube_",
+        "american_town_building_2_floors_e_ventilation_tube_",
+        "american_town_building_2_floors_f_ventilation_tube_",
+        "american_town_building_3_floors_a_ventilation_tube_",
+        "american_town_building_ventilation_tube_",
+        "american_town_building_1_floor_e_dp_01_decal_a",
+        "american_town_building_1_floor_e_dp_02_decal_a",
+        "american_train_depot_drain_",
+        "american_town_building_1_floor_b_dp_01_wires_a",
+        "american_town_building_1_floor_b_dp_02_wires_a",
+        "american_town_building_1_floor_b_wires_a",
+        "american_town_building_1_floor_c_dp_01_wires_a",
+        "american_town_building_1_floor_c_dp_02_wires_a",
+        "american_town_building_1_floor_e_dp_01_wires_a",
+        "american_town_building_1_floor_e_dp_02_wires_a",
+        "american_town_building_1_floor_e_wires_a",
+        "american_town_building_2_floors_e_dp_01_wires_a",
+        "american_town_building_2_floors_e_dp_02_wires_a",
+        "american_town_building_2_floors_e_dp_03_wires_a",
+        "american_town_building_2_floors_e_wires_a",
+        "sassaul_bush_",
+        "sewer_pipe_",
+        "winch_lift_metal_a",
+        "tree_phoenix_dactylifera_e",
+        "bush_salsola_tragus_",
+        "american_town_building_1_floor_a_roof_decor",
+        "american_town_building_1_floor_b_roof_decor",
+        "american_town_building_1_floor_c_roof_decor",
+        "american_town_building_1_floor_d_roof_decor",
+        "american_town_building_1_floor_e_roof_decor",
+        "american_town_building_1_floor_f_roof_decor",
+        "american_town_building_1_floor_g_roof_decor",
+        "american_town_building_2_floors_d_roof_decor",
+        "american_mall_roof_decor",
+        "american_town_building_awning_",
+        "american_town_building_1_floor_a_awning",
+        "american_town_building_1_floor_b_awning",
+        "american_town_building_1_floor_c_awning",
+        "american_town_building_1_floor_e_awning_",
+        "american_town_building_1_floor_f_awning",
+        "american_town_building_1_floor_g_awning_",
+        "american_town_building_2_floors_a_awning_",
+        "american_town_building_2_floors_b_awning",
+        "american_town_building_2_floors_d_awning",
+        "american_town_building_2_floors_f_awning",
+        "american_town_building_3_floors_a_awning_",
+        "american_town_building_1_floor_a_stairs",
+        "american_town_building_2_floors_c_back_stairs",
+        "american_town_building_2_floors_c_stairs",
+        "american_town_building_2_floors_d_back_stairs",
+        "american_town_building_2_floors_e_back_stairs",
+        "american_town_building_3_floors_a_back_stairs",
+        "american_town_building_2_floors_d_outdoor_fence_1_floor",
         "alaska_signboard",
         "alaska_town_bridge_bump_stop_a",
         "alaska_town_bridge_bump_stop_b",
@@ -22857,6 +23431,7 @@
         "fortress_stronghold_tower_c_debris_patch_",
         "fortress_wall_a_debris_patch_",
         "m_east_palace_f_hall_building_dome_l_inside",
+        "modern_skyscraper_b_balcony_a",
         "berlin_reichstag_back_center",
         "berlin_reichstag_back_left",
         "berlin_reichstag_back_right",
@@ -22866,17 +23441,6 @@
         "berlin_reichstag_front_right",
         "berlin_reichstag_side_right_center",
         "_dp_",
-        "american_town_building_1_floor_a_",
-        "american_town_building_1_floor_b_",
-        "american_town_building_1_floor_c_",
-        "american_town_building_1_floor_d_",
-        "american_town_building_1_floor_e_",
-        "american_town_building_2_floors_a_",
-        "american_town_building_2_floors_b_",
-        "american_town_building_2_floors_c_",
-        "american_town_building_2_floors_d_",
-        "american_town_building_2_floors_e_",
-        "american_town_building_3_floors_a_",
         "tyres_set_",
         "tyre_a",
         "tyre_a_torn",
@@ -23392,6 +23956,42 @@
         "air_box_pile_b",
         "air_pallet_cardboard_a_pile_a",
         "universal_airfield_fuel_tank_a",
+        "constructor_roof_decor_[^v]",
+        "modern_roof_decor_",
+        "modern_roof_ventilation_duct_",
+        "modern_hotel_a_windows_",
+        "sicily_cafe_sunshade_a",
+        "modern_business_building_bottom_a_b",
+        "modern_business_building_bottom_a_e",
+        "american_suburb_building_1_floor_a_dp_",
+        "american_suburb_building_1_floor_b_dp_",
+        "american_suburb_building_1_floor_c_dp_",
+        "american_suburb_building_1_floor_d_dp_",
+        "american_suburb_building_1_floor_e_dp_",
+        "american_suburb_building_1_floor_f_dp_",
+        "american_suburb_building_2_floors_a_dp_",
+        "american_suburb_building_2_floors_b_dp_",
+        "american_suburb_building_2_floors_c_dp_",
+        "american_suburb_building_3_floors_a_dp_",
+        "american_town_building_1_floor_a_dp_",
+        "american_town_building_1_floor_b_dp_",
+        "american_town_building_1_floor_c_dp_",
+        "american_town_building_1_floor_d_dp_",
+        "american_town_building_1_floor_e_dp_",
+        "american_town_building_1_floor_f_dp_",
+        "american_town_building_1_floor_g_dp_",
+        "american_town_building_2_floors_a_dp_",
+        "american_town_building_2_floors_b_dp_",
+        "american_town_building_2_floors_c_dp_",
+        "american_town_building_2_floors_d_dp_",
+        "american_town_building_2_floors_e_dp_",
+        "american_town_building_2_floors_f_dp_",
+        "american_town_building_3_floors_a_dp_",
+        "american_county_courthouse_a_dp_",
+        "american_garage_a_dp_",
+        "american_mall_dp_",
+        "american_motel_dp_",
+        "american_train_depot_dp_",
         "japan_i_400_dmg_dp_01",
         "japan_i_400_dmg_dp_02",
         "japan_i_400_dmg_dp_03",
@@ -23679,6 +24279,7 @@
         "karelia_stone_small_c",
         "karelia_stone_small_d",
         "karelia_stone_small_e",
+        "tabletop_mountain_bridge_ri_1a",
         "tabletop_mountain_siderock_ri_1a",
         "tabletop_mountain_siderock_ri_1b",
         "tabletop_mountain_siderock_ri_1c",
@@ -23910,6 +24511,7 @@
         "ice_floe_underwater_j",
         "aerofinisher_long",
         "aerofinisher_marking_b",
+        "modern_hotel_c_postament",
         "air_port_building_service_i",
         "air_port_building_service_h",
         "air_port_building_service_b",
@@ -24467,7 +25069,9 @@
         "storage_tank_c",
         "storage_tank_d",
         "fuel_tank_a",
-        "fuel_warehouse_a"
+        "fuel_warehouse_a",
+        "bauhaus_building_a",
+        "bauhaus_building_b"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -25308,6 +25912,41 @@
       }
     }
   },
+  "tankBackfireFx": {
+    "movingSpeedOn": 0.5,
+    "movingSpeedOff": 0.3,
+    "movingChargeDecayTime": 20.0,
+    "stuckSpeedOn": 0.5,
+    "stuckSpeedOff": 0.7,
+    "stuckThrottleOn": 0.9,
+    "stuckThrottleOff": 0.7,
+    "stuckChargeTime": [
+      3.0,
+      5.0
+    ],
+    "stateDebounceTime": 0.3,
+    "fxMaxLifetime": 1.5,
+    "idleChargeTime": [
+      30.0,
+      90.0
+    ],
+    "justMovedChargePulse": [
+      0.1,
+      0.3
+    ],
+    "damagedStationaryChargeTime": [
+      20.0,
+      30.0
+    ],
+    "damagedMovingChargeTime": [
+      3.0,
+      5.0
+    ],
+    "damagedJustMovedChargePulse": [
+      0.15,
+      0.3
+    ]
+  },
   "effectLodsPresets": {
     "tank_track_dirt_fx_default": [
       100.0,
@@ -25561,7 +26200,10 @@
     "scale": 0.7,
     "fade": 0.2,
     "heightAboveWater": 1.5,
-    "scrollSpeed": 2.5
+    "scrollSpeed": 2.5,
+    "worldScale": 1.0,
+    "underWaterScrollSpeed": 0.75,
+    "underWaterWorldScale": 0.25
   },
   "heroFoam": {
     "enabled": true
@@ -27279,16 +27921,25 @@
   },
   "tankAimNodesNames": {
     "node": [
-      "turret",
-      "gun",
       "cannon_breech",
       "drive_turret_h",
+      "drive_turret_v",
       "engine",
       "gunner",
       "driver",
       "loader",
       "machine_gunner",
-      "commander"
+      "commander",
+      "fire_control_system",
+      "electronic_equipment",
+      "autoloader",
+      "power_system",
+      "auxiliary_power_unit",
+      "turret_hydraulics",
+      "ammo",
+      "fuel_tank",
+      "transmission",
+      "gun_trunnion"
     ]
   },
   "shipAimNodesNames": {
@@ -27309,7 +27960,7 @@
   },
   "tankEnviCover": {
     "enabled": true,
-    "snowEmitterIntensity": 0.0,
+    "snowEmitterIntensity": 0.012,
     "velocitySheddingMult": 0.0005,
     "impulseEmitterLifetime": 0.3,
     "impulseEmitterCaliberMult": 40.0,
@@ -27319,7 +27970,8 @@
     "sootEmitterIntensity": 0.3,
     "explosionEmitterMinMass": 10.0,
     "explosionEmitterMassMult": 0.05,
-    "explosionEmitterDuration": 1.0
+    "explosionEmitterDuration": 1.0,
+    "barrelHeatEmitterIntensityMult": 0.05
   },
   "BuildObjectsParams": {
     "AmmoBox": {
@@ -27502,5 +28154,10 @@
   },
   "hangarGlobal": {
     "doNotRotateCamInEditMode": true
+  },
+  "submarineNoise": {
+    "actionFadeInTime": 0.5,
+    "actionFadeOutStart": 2.0,
+    "actionFadeOutEnd": 5.0
   }
 }

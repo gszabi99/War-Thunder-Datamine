@@ -1,16 +1,16 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/utils/genericTooltipTypes.nut" import addTooltipTypes
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/bulletsInfo.nut" import getFakeBulletsModByName, getModificationName, isModificationIsShell
+from "%scripts/weaponry/bulletsVisual.nut" import getSingleBulletParamToDesc
+from "%scripts/weaponry/weaponryTooltipPkg.nut" import updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip, validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
+  , getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc
+from "%scripts/weaponry/penetrationGraphWidgetState.nut" import getPenetrationGraphPanelId, setPendingPenetrationGraph, clearPenetrationGraphWidget
+from "%scripts/weaponry/penetrationGraphDataRequest.nut" import requestTooltipPenetrationGraphData
 from "string" import format
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getFakeBulletsModByName, getModificationName, isModificationIsShell } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip, validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip, getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
-let { getPenetrationGraphPanelId, setPendingPenetrationGraph, clearPenetrationGraphWidget } = require("%scripts/weaponry/penetrationGraphWidgetState.nut")
-let { requestTooltipPenetrationGraphData } = require("%scripts/weaponry/penetrationGraphDataRequest.nut")
 
 const INFO_DELAY = 2.0
 local infoUnit = null
@@ -59,7 +59,7 @@ let tooltipTypes = {
         getModificationName(unit, modName), loc($"{bulletName}/name/short"))
 
       let data = handyman.renderCached("%gui/weaponry/shellTooltip.tpl",
-        getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
+        getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams, modName))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
     }
@@ -221,6 +221,7 @@ let tooltipTypes = {
       updateWeaponTooltip(obj, unit, weapon, handler, {
         hasPlayerInfo
         curEdiff
+        mrankDelta = params?.mrankDelta
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, _blk) path == params.weaponBlkPath) : null
         needDescInArrayForm = true 
         markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"

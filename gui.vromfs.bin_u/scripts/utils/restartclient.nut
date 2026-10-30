@@ -1,10 +1,9 @@
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom
 from "chard" import save_profile
 from "%sqstd/platform.nut" import is_pc
 from "%scripts/dagui_natives.nut" import save_short_token, restart_game
 from "%scripts/dagui_library.nut" import *
-
-let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let canRestartClientByPlatform = is_pc
 
@@ -24,7 +23,7 @@ function applyRestartClient() {
   restart_game(false)
 }
 
-return {
+return freeze({
   applyRestartClient
   canRestartClient
-}
+})

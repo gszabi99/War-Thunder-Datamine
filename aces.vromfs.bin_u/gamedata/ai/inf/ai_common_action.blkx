@@ -510,6 +510,7 @@
                       ],
                       "distToLean": 0.3,
                       "distCutLean": 0.2,
+                      "avoidTeamGroupingZones": true,
                       "stepLocalDir": [
                         1.0,
                         0.0,
@@ -940,6 +941,9 @@
                                       ]
                                     }
                                   },
+                                  "updateGroupMask": {
+                                    "customNavUsageMaskParam": "groupMask"
+                                  },
                                   "success": {
                                     "parallel": {
                                       "moveToPos": {
@@ -970,7 +974,8 @@
                                         "navLookAhead": 10.0,
                                         "strafeNearDist": 2.5,
                                         "maxAroundCoef": 1.33,
-                                        "useTeamCustomNav": true
+                                        "useTeamCustomNav": true,
+                                        "customNavUsageMaskParam": "groupMask"
                                       },
                                       "wait": {
                                         "range": [
@@ -1011,6 +1016,9 @@
                               },
                               {
                                 "sequencer": {
+                                  "updateGroupMask": {
+                                    "customNavUsageMaskParam": "groupMask"
+                                  },
                                   "success": {
                                     "parallel": {
                                       "moveToPos": {
@@ -1041,7 +1049,8 @@
                                         "navLookAhead": 10.0,
                                         "strafeNearDist": 2.5,
                                         "maxAroundCoef": 1.33,
-                                        "useTeamCustomNav": true
+                                        "useTeamCustomNav": true,
+                                        "customNavUsageMaskParam": "groupMask"
                                       },
                                       "sequencer": {
                                         "considerCornersAlongMovementPath": {
@@ -1084,6 +1093,9 @@
                               },
                               {
                                 "sequencer": {
+                                  "updateGroupMask": {
+                                    "customNavUsageMaskParam": "groupMask"
+                                  },
                                   "success": {
                                     "parallel": {
                                       "moveToPos": {
@@ -1114,7 +1126,8 @@
                                         "navLookAhead": 10.0,
                                         "strafeNearDist": 2.5,
                                         "maxAroundCoef": 1.33,
-                                        "useTeamCustomNav": true
+                                        "useTeamCustomNav": true,
+                                        "customNavUsageMaskParam": "groupMask"
                                       },
                                       "sequencer": {
                                         "considerCornersAlongMovementPath": {
@@ -1246,6 +1259,9 @@
                                       ]
                                     }
                                   },
+                                  "updateGroupMask": {
+                                    "customNavUsageMaskParam": "groupMask"
+                                  },
                                   "success": {
                                     "parallel": {
                                       "moveToPos": {
@@ -1276,7 +1292,8 @@
                                         "navLookAhead": 10.0,
                                         "strafeNearDist": 2.5,
                                         "maxAroundCoef": 1.33,
-                                        "useTeamCustomNav": true
+                                        "useTeamCustomNav": true,
+                                        "customNavUsageMaskParam": "groupMask"
                                       },
                                       "wait": {
                                         "range": [
@@ -1574,6 +1591,9 @@
                               },
                               "continue": {}
                             },
+                            "updateGroupMask": {
+                              "customNavUsageMaskParam": "groupMask"
+                            },
                             "parallel": {
                               "moveToPos": {
                                 "startRestTimerRange": [
@@ -1615,7 +1635,8 @@
                                   0.4,
                                   1.0,
                                   0.15
-                                ]
+                                ],
+                                "customNavUsageMaskParam": "groupMask"
                               },
                               "sequencer": {
                                 "considerCornersAlongMovementPath": {
@@ -1842,6 +1863,9 @@
                                 },
                                 "continue": {}
                               },
+                              "updateGroupMask": {
+                                "customNavUsageMaskParam": "groupMask"
+                              },
                               "parallel": {
                                 "moveToPos": {
                                   "startRestTimerRange": [
@@ -1894,7 +1918,8 @@
                                     0.3
                                   ],
                                   "finalLookPosParam": "squadActionPosLook",
-                                  "doNotStopParam": "keepMoving"
+                                  "doNotStopParam": "keepMoving",
+                                  "customNavUsageMaskParam": "groupMask"
                                 },
                                 "sequencer": {
                                   "considerCornersAlongMovementPath": {
@@ -1962,7 +1987,8 @@
                                   0.3
                                 ],
                                 "finalLookPosParam": "squadActionPosLook",
-                                "useTeamCustomNav": true
+                                "useTeamCustomNav": true,
+                                "customNavUsageMaskParam": "groupMask"
                               },
                               "sequencer": {
                                 "considerCornersAlongMovementPath": {
@@ -1975,7 +2001,10 @@
                               }
                             }
                           }
-                        ]
+                        ],
+                        "updateGroupMask": {
+                          "customNavUsageMaskParam": "groupMask"
+                        }
                       }
                     },
                     {
@@ -2308,6 +2337,9 @@
                 "minSimSpeedCoef": 0.33
               }
             },
+            "updateGroupMask": {
+              "customNavUsageMaskParam": "groupMask"
+            },
             "parallel": {
               "moveToPos": {
                 "incBlocked": true,
@@ -2352,7 +2384,8 @@
                   0.4,
                   1.0,
                   0.15
-                ]
+                ],
+                "customNavUsageMaskParam": "groupMask"
               }
             },
             "waitBeforePlantWallMine": {
@@ -3962,6 +3995,9 @@
                   "to": "defReact",
                   "value": 502
                 },
+                "updateGroupMask": {
+                  "customNavUsageMaskParam": "groupMask"
+                },
                 "success": {
                   "parallel": {
                     "moveToPos": {
@@ -4018,7 +4054,8 @@
                         1.0,
                         0.15
                       ],
-                      "useTeamCustomNav": true
+                      "useTeamCustomNav": true,
+                      "customNavUsageMaskParam": "groupMask"
                     },
                     "sequencer": {
                       "considerCornersAlongMovementPath": {
@@ -4096,7 +4133,8 @@
                     1.0,
                     0.15
                   ],
-                  "useTeamCustomNav": true
+                  "useTeamCustomNav": true,
+                  "customNavUsageMaskParam": "groupMask"
                 },
                 "sequencer": {
                   "considerCornersAlongMovementPath": {
@@ -4129,7 +4167,10 @@
             {
               "to": "lastMoveContinueTime"
             }
-          ]
+          ],
+          "updateGroupMask": {
+            "customNavUsageMaskParam": "groupMask"
+          }
         },
         "setIntVar": {
           "to": "defReact",

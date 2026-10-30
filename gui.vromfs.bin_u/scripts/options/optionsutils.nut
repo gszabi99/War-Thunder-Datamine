@@ -1,4 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/options/optionsStorage.nut" import get_thermovision_colors
+from "%scripts/slotbar/playerCurUnit.nut" import showedUnit
+from "%scripts/missions/missionsUtils.nut" import getDynamicLayouts
+from "%scripts/missions/missionsStates.nut" import get_mission_settings
 from "gameOptions" import get_option_bool
 from "%sqstd/datablock.nut" import blkFromPath
 from "guiOptions" import get_gui_option
@@ -10,13 +14,9 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import findNearest
 
-let { get_thermovision_colors } = require("%scripts/options/optionsStorage.nut")
-let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
-let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
-let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
+let changedOptionReqRestart = mkHardPersistWatched("options.optionsUtils")("changedOptionReqRestart", {})
 
 let createDefaultOption = function() {
   return {
@@ -248,7 +248,7 @@ function isOptionReqRestartChanged(option, newValue) {
   return baseValue != null && baseValue != newValue
 }
 
-return {
+return freeze({
   createDefaultOption
   fillBoolOption
   fillHueSaturationBrightnessOption
@@ -259,4 +259,4 @@ return {
   fillHSVOption_ThermovisionColor
   isOptionReqRestartChanged
   setOptionReqRestartValue
-}
+})

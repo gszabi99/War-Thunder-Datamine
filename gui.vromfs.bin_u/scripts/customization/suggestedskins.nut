@@ -1,11 +1,11 @@
 import "DataBlock" as DataBlock
+from "%scripts/customization/downloadableDecorators.nut" import getSuggestedSkins
+from "%scripts/customization/decoratorGetters.nut" import getDecorator
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
-let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
@@ -82,8 +82,8 @@ function saveSeenSuggestedSkin(unitName, skinId) {
   saveLocalAccountSettings(getSaveId(unitName), seenSuggestedSkins)
 }
 
-return {
+return freeze({
   getSuggestedSkin
   needSuggestSkin
   saveSeenSuggestedSkin
-}
+})

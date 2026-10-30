@@ -1,11 +1,10 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import addTask
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/onlineShop/entitlementsUpdate.nut" import updateEntitlementsLimited
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
-
-let { addTask } = require("%scripts/tasker.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 class ConfigBase {
   

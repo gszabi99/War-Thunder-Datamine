@@ -3,7 +3,7 @@
   "fmFile": "fm/yah_64.blk",
   "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -60,16 +60,16 @@
   "advancedMouseAim": true,
   "enableAutopilot": true,
   "canTakeoffWithoutGear": true,
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "300kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
@@ -2160,15 +2160,15 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gamedata/sensors/ir_tracker.blk",
         "node": "optic1_gun",
         "powerButtonIdx": -1
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39a_v1.blk"
+        "blk": "gamedata/sensors/us_an_apr_39a_v1.blk"
       },
       {
-        "blk": "gameData/sensors/us_flir.blk",
+        "blk": "gamedata/sensors/us_flir.blk",
         "node": "optic1_gun"
       }
     ]
@@ -2183,23 +2183,23 @@
     "preset": [
       {
         "name": "yah_64_default",
-        "blk": "gameData/flightModels/weaponPresets/yah_64_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/yah_64_default.blk"
       },
       {
         "name": "yah_64_hydra_70_m247",
-        "blk": "gameData/flightModels/weaponPresets/yah_64_hydra_70_m247.blk"
+        "blk": "gamedata/flightModels/weaponPresets/yah_64_hydra_70_m247.blk"
       },
       {
         "name": "yah_64d_4_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/yah_64_4_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/yah_64_4_hellfire.blk"
       },
       {
         "name": "yah_64d_8_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/yah_64_8_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/yah_64_8_hellfire.blk"
       },
       {
         "name": "yah_64_16_hellfire",
-        "blk": "gameData/flightModels/weaponPresets/yah_64_16_hellfire.blk"
+        "blk": "gamedata/flightModels/weaponPresets/yah_64_16_hellfire.blk"
       }
     ]
   },
@@ -2245,7 +2245,7 @@
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "optic1_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -2271,7 +2271,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/cannonM230E1.blk",
+              "blk": "gamedata/weapons/cannonM230E1.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "gunner1_dm",
@@ -2372,7 +2372,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b001",
               "external": true
             }
@@ -2382,7 +2382,7 @@
             "name": "114b_x2_default",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_b_x2_default.blk",
               "emitter": "pylon_m279_001",
               "external": true,
               "separate": true,
@@ -2395,7 +2395,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_b_x4.blk",
               "emitter": "pylon_m272_001",
               "external": true,
               "separate": true,
@@ -2420,7 +2420,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b002",
               "external": true
             }
@@ -2431,7 +2431,7 @@
             "reqModification": "ah_1_AGM_114_8",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_b_x2.blk",
               "emitter": "pylon_m279_002",
               "external": true,
               "separate": true,
@@ -2444,7 +2444,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_b_x4.blk",
               "emitter": "pylon_m272_002",
               "external": true,
               "separate": true,
@@ -2469,7 +2469,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b003",
               "external": true
             }
@@ -2480,7 +2480,7 @@
             "reqModification": "ah_1_AGM_114_8",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_b_x2.blk",
               "emitter": "pylon_m279_003",
               "external": true,
               "separate": true,
@@ -2493,7 +2493,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_b_x4.blk",
               "emitter": "pylon_m272_003",
               "external": true,
               "separate": true,
@@ -2518,7 +2518,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "blk": "gamedata/weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "m261_lwl_b004",
               "external": true
             }
@@ -2528,7 +2528,7 @@
             "name": "114b_x2_default",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m279_hellfire_b_x2_default.blk",
+              "blk": "gamedata/weapons/containers/m279_hellfire_b_x2_default.blk",
               "emitter": "pylon_m279_004",
               "external": true,
               "separate": true,
@@ -2541,7 +2541,7 @@
             "reqModification": "ah_1_AGM_114_16",
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "blk": "gamedata/weapons/containers/m272_hellfire_b_x4.blk",
               "emitter": "pylon_m272_004",
               "external": true,
               "separate": true,

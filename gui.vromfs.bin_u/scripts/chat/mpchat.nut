@@ -1,3 +1,20 @@
+import "%scripts/time.nut" as time
+import "%scripts/user/playerContextMenu.nut" as playerContextMenu
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/sqDagui/daguiUtil.nut" import enableObjsByTable, select_editbox
+from "%scripts/chat/mpChatModel.nut" import onInternalMessage, getLogForBanhammer, chatSystemMessage
+from "%scripts/chat/mpChatState.nut" import unblockMessageInLog, getMpChatLog, getCurrentModeId, validateCurMode, hasEnableChatMode, setModeId
+  , isActiveMpChat, setActiveMpChat, getScenes, appendScene, sceneIdxPID, cleanScenesList, findSceneDataByScene
+  , findSceneDataByObj, doForAllScenes, canEnableChatInput
+from "%scripts/penitentiary/penaltyMessages.nut" import getDevoiceMessage
+from "%scripts/chat/chatStates.nut" import isChatEnabled
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
+from "%scripts/squads/squadState.nut" import isEqualSquadId
+from "%scripts/chat/chatUtils.nut" import filterMessageText, getPlayerTag, addTextToEditbox
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
+from "%scripts/user/usersReputation.nut" import hasChatReputationFilter, getReputationBlockMessage
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%globalScripts/chatState.nut" import ReputationType
 from "%sqstd/platform.nut" import isPC
@@ -10,7 +27,7 @@ from "mission" import get_mplayer_by_userid
 from "scriptRespondent" import registerRespondent
 from "dagor.workcycle" import defer, deferOnce
 from "%globalScripts/externalPlayerListConsts.nut" import *
-from "%scripts/dagui_natives.nut" import is_menu_state, is_cursor_visible_in_gui
+from "%scripts/dagui_natives.nut" import is_menu_state
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "hudState" import is_hud_visible
@@ -18,35 +35,14 @@ from "gameplayBinding" import getIsInFlightMenu, isInFlight
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { enableObjsByTable, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let time = require("%scripts/time.nut")
-let { onInternalMessage, getLogForBanhammer, chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
-let { unblockMessageInLog, getMpChatLog, getCurrentModeId, getMaxLogSize, validateCurMode, hasEnableChatMode, setModeId, isActiveMpChat, setActiveMpChat, getScenes, appendScene, sceneIdxPID, cleanScenesList, findSceneDataByScene, findSceneDataByObj, doForAllScenes, canEnableChatInput } = require("%scripts/chat/mpChatState.nut")
-let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
-let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
-let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { filterMessageText, getPlayerTag, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
-let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
 
 enum mpChatView {
   CHAT
   BATTLE
 }
-
-const CHAT_WINDOW_APPEAR_TIME = 0.125
-const CHAT_WINDOW_VISIBLE_TIME = 10.0
-const CHAT_WINDOW_DISAPPEAR_TIME = 3.0
 
 const senderColor = "@chatSenderFriendColor"
 const senderEnemyColor = "@chatSenderEnemyColor"
@@ -58,21 +54,17 @@ const voiceTeamColor = "@chatTextTeamVoiceColor"
 const voiceSquadColor = "@chatTextSquadVoiceColor"
 const voiceEnemyColor = "@chatTextEnemyVoiceColor"
 
-let mpChatHandlerState = persist("mpChatHandlerState", @() {
+let mpChatHandlerState = mkHardPersist("chat.mpChat")("mpChatHandlerState", {
   log_text = ""
   chatInputText = ""
 })
 
 local last_scene_idx = 0
-local isMouseCursorVisible = is_cursor_visible_in_gui()
-local visibleTime = 0
 
 local MP_CHAT_PARAMS = {
   selfHideInput = false     
   hiddenInput = false       
-  selfHideLog = false       
   isInSpectateMode = false  
-  selectInputIfFocusLost = false
 }
 
 function isSenderMe(message) {
@@ -161,68 +153,25 @@ function getTextFromMessage(message, isReputationFilterEnabled) {
   return formatMessageText(message, filterMessageText(message.text, message.isMyself))
 }
 
-function isVisibleWithCursor(sceneData) {
-  if (!isMouseCursorVisible)
-    return false
-  let parentObj = sceneData.handler?.scene
-  return (parentObj?.isValid() ?? false) && parentObj.isVisible()
-}
-
-function updateChatScene(sceneData, dt) {
-  if (!sceneData.selfHideLog)
-    return
-
-  let isHudVisible = is_hud_visible()
-  local transparency = sceneData.transparency
-  if (!isHudVisible)
-    transparency = 0
-  else if (!isActiveMpChat()) {
-    if (visibleTime > 0)
-      visibleTime -= dt
-    else
-      transparency -= dt / CHAT_WINDOW_DISAPPEAR_TIME
-  }
-  else
-    transparency += dt / CHAT_WINDOW_APPEAR_TIME
-  transparency = clamp(transparency, 0.0, 1.0)
-
-  let transValue = (isHudVisible && isVisibleWithCursor(sceneData)) ? 100 :
-    (100.0 * (3.0 - 2.0 * transparency) * transparency * transparency).tointeger()
-
-  let obj = sceneData.scene.findObject("chat_log_tdiv")
-  if (checkObj(obj)) {
-    obj.transparent = transValue
-    sceneData.scene.findObject("chat_log").transparent = transValue
-  }
-
-  sceneData.transparency = transparency
-}
-
 function updateTabs(sceneData) {
-  let visible = !sceneData.selfHideLog || isVisibleWithCursor(sceneData)
-
   local obj = sceneData.scene.findObject("chat_tabs")
   if (checkObj(obj)) {
     if (obj.getValue() == -1)
       obj.setValue(sceneData.curTab)
-    obj.show(visible)
+    obj.show(true)
   }
   obj = sceneData.scene.findObject("chat_log_tdiv")
   if (checkObj(obj)) {
-    obj.height = visible ? obj?["max-height"] : null
-    obj.scrollType = visible ? "" : "hidden"
+    obj.height = obj?["max-height"]
+    obj.scrollType = ""
   }
-}
-
-function getCurView(sceneData) {
-  return (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? sceneData.curTab : mpChatView.CHAT
 }
 
 let isVisibleChatInput = @(sceneData)
   (isActiveMpChat() || !sceneData.selfHideInput)
     && !sceneData.hiddenInput
     && isChatEnabled()
-    && getCurView(sceneData) == mpChatView.CHAT
+    && sceneData.curTab == mpChatView.CHAT
     && hasEnableChatMode()
 
 function selectChatEditbox(obj) {
@@ -247,16 +196,8 @@ function delayedSelectChatEditbox(sceneData) {
   })
 }
 
-function selectChatInputWhenFocusLost(sceneData) {
-  if (!sceneData.selectInputIfFocusLost || !sceneData.scene.isVisible()
-      || !isVisibleChatInput(sceneData))
-    return
-
-  delayedSelectChatEditbox(sceneData)
-}
-
 function updateChatLog(sceneData) {
-  if (getCurView(sceneData) != mpChatView.CHAT)
+  if (sceneData.curTab != mpChatView.CHAT)
     return
   let chat_log = sceneData.scene.findObject("chat_log")
   if (chat_log)
@@ -283,7 +224,7 @@ function updateChatInput(sceneData) {
       chat_input              = show
       btn_send                = show
       chat_prompt             = show && g_mp_chat_mode.getNextMode(getCurrentModeId()) != null
-      chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !is_hud_visible)
+      chat_mod_accesskey      = show && sceneData.isInSpectateMode
   })
   if (show && sceneData.scene.isVisible())
     delayedSelectChatEditbox(sceneData)
@@ -324,9 +265,6 @@ function enableChatInput(active) {
     return
 
   setActiveMpChat(active)
-  if (active)
-    visibleTime = CHAT_WINDOW_VISIBLE_TIME
-
   doForAllScenes(updateChatInput)
   broadcastEvent("MpChatInputToggled", { active })
   handlersManager.updateControlsAllowMask()
@@ -392,12 +330,11 @@ function checkAndPrintDevoiceMsg() {
 }
 
 function updateBattleLog(sceneData) {
-  if (getCurView(sceneData) != mpChatView.BATTLE || !sceneData.scene.isVisible())
+  if (sceneData.curTab != mpChatView.BATTLE || !sceneData.scene.isVisible())
     return
-  let limit = (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? 0 : getMaxLogSize()
   let chat_log = sceneData.scene.findObject("chat_log")
   if (checkObj(chat_log))
-    chat_log.setValue(HudBattleLog.getText(0, limit))
+    chat_log.setValue(HudBattleLog.getText(0))
 }
 
 function updateContent(sceneData) {
@@ -414,19 +351,6 @@ function clearInputChat() {
   chat_on_text_update(mpChatHandlerState.chatInputText)
 }
 
-function afterLogFormat() {
-  updateAllLogs()
-  let autoShowOpt = get_option(USEROPT_AUTO_SHOW_CHAT)
-  if (autoShowOpt.value) {
-    doForAllScenes(function(sceneData) {
-      if (!sceneData.scene.isVisible())
-        return
-      sceneData.transparency = 1.0
-      updateChatScene(sceneData, 0.0)
-    })
-  }
-}
-
 function makeChatTextFromLog() {
   let logObj = getMpChatLog()
   let formattedLogs = []
@@ -437,16 +361,10 @@ function makeChatTextFromLog() {
       formattedLogs.append(text)
   }
   mpChatHandlerState.log_text = "\n".join(formattedLogs)
-  afterLogFormat()
+  updateAllLogs()
 }
 
 let chatHandler = { 
-  function onUpdate(obj, dt) {
-    let sceneData = findSceneDataByObj(obj)
-    if (sceneData)
-      updateChatScene(sceneData, dt)
-  }
-
   function onChatEntered(obj) {
     let sceneData = findSceneDataByObj(obj)
     if (!sceneData)
@@ -469,10 +387,6 @@ let chatHandler = {
       sceneData.handler.onChatCancel()
     enableChatInput(false)
     eventbus_send("setInputEnable", { value = false })
-  }
-
-  function onChatEndEdit() {
-    doForAllScenes(selectChatInputWhenFocusLost)
   }
 
   function onChatSend() {
@@ -523,7 +437,6 @@ function addScene(newScene, handler, params) {
     idx = ++last_scene_idx
     scene = newScene
     handler = handler
-    transparency = 0.0
     curTab = mpChatView.CHAT
   })
 
@@ -534,13 +447,8 @@ function addScene(newScene, handler, params) {
       obj.setIntProp(sceneIdxPID, sceneData.idx)
   }
 
-  let timerObj = scene.findObject("chat_update")
-  if (timerObj && (sceneData?.selfHideInput || sceneData?.selfHideLog)) {
-    timerObj.setIntProp(sceneIdxPID, sceneData.idx)
-    timerObj.setUserData(chatHandler)
-    updateChatScene(sceneData, 0.0)
+  if (sceneData.selfHideInput)
     updateChatInput(sceneData)
-  }
 
   updateTabs(sceneData)
   updateContent(sceneData)
@@ -593,13 +501,10 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 
 addListenersWithoutEnv({
   function ChangedCursorVisibility(_) {
-    isMouseCursorVisible = is_cursor_visible_in_gui()
-
     doForAllScenes(function(sceneData) {
       updateTabs(sceneData)
       updateContent(sceneData)
       updateChatInput(sceneData)
-      updateChatScene(sceneData, 0.0)
     })
   }
 
@@ -613,7 +518,7 @@ addListenersWithoutEnv({
       return
 
     foreach (sceneData in getScenes())
-      if (getCurView(sceneData) != mpChatView.CHAT)
+      if (sceneData.curTab != mpChatView.CHAT)
         if (!sceneData.hiddenInput && checkObj(sceneData.scene) && sceneData.scene.isVisible()) {
           let obj = sceneData.scene.findObject("chat_tabs")
           if (checkObj(obj)) {
@@ -636,9 +541,9 @@ registerRespondent("is_chat_screen_allowed", function is_chat_screen_allowed() {
   return is_hud_visible() && !is_menu_state()
 })
 
-return {
+return freeze({
   loadGameChatToObj
   detachGameChatSceneData
   hideGameChatSceneInput = hideChatInput
   getGameChatLogText = @() mpChatHandlerState.log_text
-}
+})

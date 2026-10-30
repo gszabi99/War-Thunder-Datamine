@@ -3,226 +3,150 @@
     "type": "big",
     "blur": {},
     "blur_foreground": {},
-    "optionlist_container": {
+    "tdiv": {
+      "pos": "50%pw-50%w, 1@minYposWindow + 0.01@scrn_tgt",
+      "position": "absolute",
+      "size": "1@slotbarWidthFull, sh - 1@minYposWindow - 1@bottomBarHeight - 0.03@scrn_tgt",
       "flow": "vertical",
-      "tdiv": [
-        {
-          "size": "pw, fh",
-          "overflow": "hidden",
-          "tdiv": [
-            {
-              "size": "33%pw,ph",
-              "pos": "0, 50%ph-50%h",
-              "position": "relative",
-              "flow": "vertical",
-              "optionlist_line_left": {
-                "size": "pw, 1@baseTrHeight",
-                "activeText": {
-                  "pos": "pw-w, 50%ph-50%h",
-                  "text": "#multiplayer/sessionSettings",
-                  "caption": "yes",
-                  "text-align": "right"
-                }
-              },
-              "tdiv": {
-                "size": "pw, fh",
-                "margin": "0, 1@blockInterval",
-                "overflow-y": "auto",
-                "flow": "vertical",
-                "tdiv": [
-                  {
-                    "pos": "pw-w, 0",
-                    "position": "relative",
-                    "tdiv": [
-                      {
-                        "id": "countries1",
-                        "pos": "0, 50%ph-50%h",
-                        "position": "relative"
-                      },
-                      {
-                        "id": "countries2",
-                        "pos": "0.01@sf, 50%ph-50%h",
-                        "position": "relative"
-                      }
-                    ],
-                    "activeText": {
-                      "id": "vsText",
-                      "text": "#country/VS",
-                      "pos": "0.01@sf, 50%ph-50%h",
-                      "position": "relative",
-                      "style": "font:@fontMedium;"
-                    }
-                  },
-                  {
-                    "id": "vehicles_info_button_block",
-                    "pos": "pw-w, 0",
-                    "position": "relative",
-                    "Button_text": {
-                      "text": "#lobby/vehicles",
-                      "on_click": "onVehiclesInfo",
-                      "btnName": "L3",
-                      "ButtonImg": {}
-                    }
-                  }
-                ],
-                "sessionInfoText": [
-                  {
-                    "id": "session_mapName"
-                  },
-                  {
-                    "id": "session_difficulty"
-                  },
-                  {
-                    "id": "session_creator"
-                  },
-                  {
-                    "id": "session_hasPassword"
-                  },
-                  {
-                    "id": "session_teamLimit"
-                  },
-                  {
-                    "id": "session_battleRating"
-                  },
-                  {
-                    "id": "session_environment"
-                  },
-                  {
-                    "id": "session_laps"
-                  },
-                  {
-                    "id": "session_winners"
-                  },
-                  {
-                    "id": "session_can_shoot"
-                  },
-                  {
-                    "id": "session_timeLimit"
-                  },
-                  {
-                    "id": "limited_fuel"
-                  },
-                  {
-                    "id": "limited_ammo"
-                  },
-                  {
-                    "id": "session_respawn"
-                  },
-                  {
-                    "id": "session_takeoff"
-                  },
-                  {
-                    "id": "session_allowbots"
-                  },
-                  {
-                    "id": "session_allow_empty_teams"
-                  },
-                  {
-                    "id": "session_jip"
-                  },
-                  {
-                    "id": "session_cluster"
-                  },
-                  {
-                    "id": "disable_airfields"
-                  },
-                  {
-                    "id": "spawn_ai_tank_on_tank_maps"
-                  },
-                  {
-                    "id": "slotbar_override"
-                  },
-                  {
-                    "id": "content_allowed_preset"
-                  }
-                ]
+      "tdiv": {
+        "size": "pw, fh",
+        "sessionPanel": [
+          {
+            "size": "480@sf/@pf, ph",
+            "sessionPanelHeader": {
+              "activeText": {
+                "text": "#multiplayer/sessionSettings",
+                "caption": "yes"
               }
             },
-            {
-              "size": "65%pw, ph",
-              "pos": "0, 50%ph-50%h",
-              "position": "relative",
-              "padding-left": "2%pw",
+            "sessionInfoList": {
+              "id": "session_info_list",
+              "size": "pw, fh",
+              "padding": "1@frameHeaderPadding, 1@blockInterval",
+              "overflow-y": "auto",
+              "scrollbarShortcuts": "yes",
               "flow": "vertical",
-              "table": [
+              "tdiv": [
                 {
-                  "id": "sessions-header",
-                  "width": "pw",
-                  "text-valign": "center",
-                  "tr": {
-                    "size": "pw, @baseTrHeight",
-                    "pos": "0, 0",
+                  "margin-y": "1@blockInterval",
+                  "tdiv": [
+                    {
+                      "id": "countries1",
+                      "sessionFlags": "yes",
+                      "pos": "0, 50%ph-50%h",
+                      "position": "relative"
+                    },
+                    {
+                      "id": "countries2",
+                      "sessionFlags": "yes",
+                      "pos": "0.01@sf, 50%ph-50%h",
+                      "position": "relative"
+                    }
+                  ],
+                  "activeText": {
+                    "id": "vsText",
+                    "text": "#country/VS",
+                    "pos": "0.01@sf, 50%ph-50%h",
                     "position": "relative",
-                    "td": [
-                      {
-                        "width": "@nameWidth + @tablePad",
-                        "padding-left": "@tablePad",
-                        "activeText": {
-                          "text": "#multiplayer/name",
-                          "pare-text": "yes",
-                          "width": "fw"
-                        }
-                      },
-                      {
-                        "width": "0.5*(pw - 1@nameWidth - 2@tablePad)",
-                        "activeText": {
-                          "text": "#multiplayer/numPlayers",
-                          "pare-text": "yes",
-                          "width": "fw",
-                          "halign": "center"
-                        }
-                      },
-                      {
-                        "width": "(pw - 1@nameWidth - 2@tablePad)/2",
-                        "activeText": {
-                          "id": "sessions_diff_header",
-                          "text": "#multiplayer/difficultyShort",
-                          "pare-text": "yes",
-                          "width": "fw",
-                          "halign": "center"
-                        }
-                      }
-                    ]
+                    "style": "font:@fontMedium;"
                   }
                 },
                 {
-                  "id": "sessions_table",
-                  "size": "pw, fh",
-                  "pos": "0, 0.02@scrn_tgt",
-                  "position": "relative",
-                  "class": "mpTable",
-                  "selfFocusBorder": "yes",
-                  "canSelectNone": "yes",
-                  "behavior": "posNavigator",
-                  "navigatorShortcuts": "yes",
-                  "on_dbl_click": "onStart",
-                  "on_click": "onSessionSelect",
-                  "on_select": "onSessionSelect"
+                  "id": "session_info_rows",
+                  "width": "pw",
+                  "flow": "vertical"
                 }
-              ]
+              ],
+              "sessionInfoText": {
+                "id": "slotbar_override",
+                "margin-top": "1@blockInterval",
+                "talign": "left"
+              }
+            },
+            "tdiv": {
+              "id": "session_vehicles",
+              "width": "pw",
+              "flow": "vertical",
+              "display": "hide",
+              "sessionPanelHeader": {
+                "activeText": {
+                  "text": "#multiplayer/allowedVehiclesByTeams",
+                  "caption": "yes"
+                }
+              },
+              "tdiv": {
+                "width": "pw",
+                "sessionTeamVehicles": [
+                  {
+                    "id": "session_vehicles_A"
+                  },
+                  {
+                    "id": "session_vehicles_B"
+                  }
+                ]
+              }
             }
-          ]
-        },
-        {
-          "id": "session-options",
-          "width": "pw"
-        }
-      ],
-      "textarea": {
-        "text": "#mainmenu/skirmish/noProgress",
-        "pos": "50%pw-50%w, 0.01@scrn_tgt",
-        "position": "relative",
-        "max-width": "pw",
-        "removeParagraphIndent": "yes",
-        "overlayTextColor": "warning"
+          },
+          {
+            "size": "fw, ph",
+            "margin-left": "20@sf/@pf",
+            "sessionPanelHeader": {
+              "noPadding": "yes",
+              "table": {
+                "id": "sessions-header",
+                "width": "pw",
+                "pos": "0, 50%ph-50%h",
+                "position": "relative",
+                "text-valign": "center"
+              }
+            },
+            "tdiv": {
+              "size": "pw, fh",
+              "padding": "0, 1@blockInterval",
+              "table": {
+                "id": "sessions_table",
+                "size": "pw, ph",
+                "class": "mpTable",
+                "overflow-y": "auto",
+                "selfFocusBorder": "yes",
+                "canSelectNone": "yes",
+                "scrollbarShortcuts": "yes",
+                "behavior": "posNavigator",
+                "navigatorShortcuts": "yes",
+                "on_dbl_click": "onStart",
+                "on_click": "onSessionSelect",
+                "on_select": "onSessionSelect"
+              },
+              "textAreaCentered": {
+                "id": "info-text",
+                "max-width": "pw - 0.02@scrn_tgt",
+                "pos": "50%pw-50%w, 50%ph-50%h",
+                "position": "absolute",
+                "display": "hide"
+              }
+            },
+            "rowSeparator": {},
+            "sessionPanelFooter": {
+              "tdiv": {
+                "id": "session-options",
+                "width": "pw"
+              },
+              "textareaNoTab": {
+                "id": "skirmish_no_progress",
+                "width": "pw",
+                "margin-top": "1@blockInterval",
+                "text-align": "center",
+                "text": "#mainmenu/skirmish/noProgress",
+                "overlayTextColor": "warning"
+              }
+            }
+          }
+        ]
+      },
+      "navBar": {
+        "class": "relative",
+        "isTransparent": "yes"
       }
-    },
-    "framedMessage": {
-      "id": "info-text",
-      "pos": "50%pw-50%w, 50%ph-50%h",
-      "position": "absolute",
-      "max-width": "pw-2@bw-0.02@scrn_tgt",
-      "display": "hide"
     },
     "gamercard_div": {
       "gamercard": [
@@ -965,9 +889,6 @@
         }
       ]
     }
-  },
-  "navBar": {
-    "class": "singleLine"
   },
   "tdiv": {
     "id": "sessions_update",

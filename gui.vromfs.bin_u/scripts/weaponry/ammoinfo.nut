@@ -1,3 +1,5 @@
+from "%scripts/money.nut" import zero_money, Cost
+from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
 from "gameparams" import get_game_params
 from "chardResearch" import shopIsModificationPurchased, shopIsModificationEnabled
 from "%scripts/dagui_natives.nut" import wp_get_cost2, wp_get_cost_gold2, wp_get_modification_cost, wp_get_weapon_max_count, shop_is_weapon_purchased, shop_get_weapon_baseval, wp_get_modification_max_count
@@ -7,10 +9,8 @@ from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPO
 from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
-let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
-let AMMO = {
+const AMMO = {
   PRIMARY      = 0, 
   MODIFICATION = 0,
   SECONDARY    = 1,  
@@ -126,7 +126,7 @@ function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WA
   return res
 }
 
-return {
+return freeze({
   AMMO
   bulletsAmountState
   getUnitNotReadyAmmoList
@@ -138,4 +138,4 @@ return {
   getAmmoWarningMinimum
   getAmmoAmountData
   checkAmmoAmount
-}
+})

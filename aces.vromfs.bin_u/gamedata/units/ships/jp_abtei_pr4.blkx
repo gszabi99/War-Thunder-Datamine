@@ -858,6 +858,7 @@
     "engines": {
       "maxSpeed": 6.17,
       "maxReverseSpeed": 3.5,
+      "horsePowers": 350.0,
       "waterResistanceAtStopK": 0.3,
       "speedToTime": {
         "row": [
@@ -945,29 +946,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -2200.0,
-    "waterMassMult": 70.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 60000.0,
+    "waterMassVel": -6264.0,
+    "waterMassMult": 78.0,
+    "additionalWaterDeathThreshold": 66094.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 35.0,
+    "maxHeelingAngle": 27.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 8.8,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.2
+    "sideCenterOfMassOffsetPercent": 0.078
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.8,
+        "weight": 0.72,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -983,13 +988,13 @@
         "innerParts": {
           "part": {
             "partNo": "engine_01_dm",
-            "critWaterLevel": 0.7
+            "critWaterLevel": 0.4
           }
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.8,
+        "weight": 0.87,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -999,7 +1004,7 @@
             },
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.1
             }
           ]
         }
@@ -2667,6 +2672,64 @@
       "crew": 1
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0
+      ],
+      [
+        4.0,
+        100.0
+      ],
+      [
+        6.0,
+        200.0
+      ],
+      [
+        8.0,
+        400.0
+      ],
+      [
+        10.0,
+        600.0
+      ],
+      [
+        12.0,
+        800.0
+      ],
+      [
+        14.0,
+        1000.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        700.0
+      ],
+      [
+        -2.0,
+        300.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
@@ -2686,7 +2749,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/57mm_type_97_1937_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/57mm_type_97_1937_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2732,7 +2795,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2797,7 +2860,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2862,7 +2925,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2927,7 +2990,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/7_7mm_type_89_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -2994,7 +3057,7 @@
   "weapon_presets": {
     "preset": {
       "name": "jp_abtei_pr4_default",
-      "blk": "gameData/units/ships/weaponPresets/jp_abtei_pr4_default.blk"
+      "blk": "gamedata/units/ships/weaponPresets/jp_abtei_pr4_default.blk"
     }
   },
   "modifications": {

@@ -1,10 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 300,
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "us_2000lb_gbu_15v1",
   "bombCart": "bomb_cart_mid",
   "offsetForDemonstration": [
@@ -152,12 +151,10 @@
       "breakLockMaxTime": 1500.0,
       "opticalSeeker": {
         "targetSignatureType": "infraRed",
-        "rangeBand0": 20000.0,
         "rangeMax": 40000.0,
         "rangeSurface": 40000.0,
         "fov": 0.1,
         "gateWidth": 0.1,
-        "minAngleToSun": 1.0,
         "lockAngleMax": 30.0,
         "angleMax": 54.0,
         "rateMax": 2.5,
@@ -172,8 +169,10 @@
         "surfaceAsTarget": true,
         "boundaryTrack": true,
         "targetRadiusMin": 1.5,
+        "rangeBand0": 20000.0,
         "rangeBand1": 20000.0,
-        "rangeBand8": 200.0
+        "rangeBand8": 1000.0,
+        "minAngleToSun": 1.0
       },
       "guidanceAutopilot": {
         "timeToGain0": [

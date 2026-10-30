@@ -33,7 +33,7 @@ root {
           text { text:t=' | ' }
           textareaNoTab {
             id:t='breadcrumb_title'
-            text:t='#mainmenu/btnProfile'
+            text:t='#<<profileLocId>>'
           }
         }
       }
@@ -208,14 +208,14 @@ root {
         }
         Button_text {
           id:t = 'btn_friendAdd'
-          text:t = '#contacts/friendlist/add'
+          text:t = '#<<friendAddLocId>>'
           on_click:t = 'onFriendAdd'
           btnName:t='X';
           ButtonImg{}
         }
         Button_text {
           id:t = 'btn_friendRemove'
-          text:t = '#contacts/friendlist/remove'
+          text:t = '#<<friendRemoveLocId>>'
           on_click:t = 'onFriendRemove'
           btnName:t='X';
           ButtonImg{}

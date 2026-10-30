@@ -1,4 +1,6 @@
 import "DataBlock" as DataBlock
+from "%scripts/g_listener_priority.nut" import LOGIN_PROCESS
+from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "blkGetters" import get_game_settings_blk
@@ -6,8 +8,6 @@ from "%scripts/dagui_natives.nut" import has_entitlement, get_shop_prices
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
 
@@ -206,7 +206,7 @@ addListenersWithoutEnv({
   SignOut = @(_) invalidateShopPriceBlk()
 }, LOGIN_PROCESS)
 
-return {
+return freeze({
   searchEntitlementsByUnit
   getShopPriceBlk
   getGoodsChapter
@@ -214,4 +214,4 @@ return {
   getFeaturePurchaseData
   getAllFeaturePurchases
   getUnitsSharedEntitlements
-}
+})

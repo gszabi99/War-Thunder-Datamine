@@ -2220,6 +2220,7 @@
     "engines": {
       "maxSpeed": 13.37,
       "maxReverseSpeed": 7.5,
+      "horsePowers": 12000.0,
       "speedToTime": {
         "row": [
           [
@@ -2314,6 +2315,64 @@
       }
     }
   },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        3.7,
+        200.0
+      ],
+      [
+        7.4,
+        400.0
+      ],
+      [
+        11.2,
+        700.0
+      ],
+      [
+        14.9,
+        1100.0
+      ],
+      [
+        18.6,
+        1800.0
+      ],
+      [
+        22.3,
+        2700.0
+      ],
+      [
+        26.0,
+        3900.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        2300.0
+      ],
+      [
+        -2.0,
+        1000.0
+      ],
+      [
+        -1.0,
+        400.0
+      ],
+      [
+        0.0,
+        100.0
+      ],
+      [
+        5.0,
+        100.0
+      ]
+    ]
+  },
   "cockpit": {
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
@@ -2344,12 +2403,12 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/naval/jp_ops_2_radar.blk",
+        "blk": "gamedata/sensors/naval/jp_ops_2_radar.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gameData/sensors/naval/us_mk25_radar.blk",
+        "blk": "gamedata/sensors/naval/us_mk25_radar.blk",
         "designationFromBody": true,
         "dmPart": "antenna_target_tagging_01_dm"
       }
@@ -2383,7 +2442,8 @@
     ]
   },
   "shipDamageControl": {
-    "shipDamageControlEnabled": true
+    "shipDamageControlEnabled": true,
+    "shipDamageControlCoeff": 0.408
   },
   "commonWeapons": {
     "animatedBones": {
@@ -2397,7 +2457,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2708,7 +2768,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/76mm_50cal_mk33_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -3031,7 +3091,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -3141,7 +3201,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -3266,26 +3326,26 @@
     "preset": [
       {
         "name": "jp_escort_ikazuchi_class_default",
-        "blk": "gameData/units/ships/weaponPresets/jp_escort_ikazuchi_class_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/jp_escort_ikazuchi_class_default.blk"
       },
       {
         "name": "hedgehog_mortar",
-        "blk": "gameData/units/ships/weaponPresets/jp_escort_ikazuchi_class_hedgehog_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_escort_ikazuchi_class_hedgehog_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "k_gun_board_mortars",
-        "blk": "gameData/units/ships/weaponPresets/jp_escort_ikazuchi_class_board_bomb_mortar.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_escort_ikazuchi_class_board_bomb_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_escort_ikazuchi_class_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_escort_ikazuchi_class_depth_charges.blk",
         "reqModification": "ship_depth_charge"
       },
       {
         "name": "depth_charges_bomb_mortars",
-        "blk": "gameData/units/ships/weaponPresets/jp_escort_ikazuchi_class_bomb_mortar_depth_charges.blk",
+        "blk": "gamedata/units/ships/weaponPresets/jp_escort_ikazuchi_class_bomb_mortar_depth_charges.blk",
         "reqModification": "ship_bomb_mortar"
       }
     ]
@@ -5483,23 +5543,27 @@
   },
   "breaches": {
     "repairSpeed": 30.0,
-    "waterMassVel": -45000.0,
-    "waterMassMult": 50.0,
     "sizeToRepair": [
       0.01,
-      3.0,
-      120.0,
-      500.0
+      7.5,
+      150.0,
+      1401.0
     ],
-    "additionalWaterDeathThreshold": 3000000.0,
+    "waterMassVel": -19730.0,
+    "waterMassMult": 82.0,
+    "additionalWaterDeathThreshold": 4398995.0,
     "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 42.0,
+    "maxHeelingAngle": 31.0,
     "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.65,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 4.3,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.5,
+    "sideCenterOfMassOffsetPercent": 0.229,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.2,
     "deadCoverCounterfloodingRel": 0.5,
@@ -5509,12 +5573,12 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.1,
+        "weight": 0.09,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.8,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -5531,29 +5595,45 @@
       },
       {
         "part": "cover_03_dm",
-        "weight": 1.0,
+        "weight": 0.94,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "engine_room_01_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.58
+            },
+            {
+              "partNo": "fire_control_room_01_dm",
+              "critWaterLevel": 0.78
+            }
+          ]
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 0.7,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "engine_room_02_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "engine_room_02_dm",
+              "critWaterLevel": 0.6
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.55
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.45
+            }
+          ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.6,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -5587,7 +5667,7 @@
             },
             {
               "partNo": "ammunition_storage_10_dm",
-              "critWaterLevel": 0.95
+              "critWaterLevel": 0.9
             },
             {
               "partNo": "ammunition_storage_11_dm",
@@ -5602,7 +5682,7 @@
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.1,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]

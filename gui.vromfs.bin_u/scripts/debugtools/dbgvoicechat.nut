@@ -1,4 +1,6 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/clans/clanState.nut" import myClanInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "dagor.workcycle" import setTimeout
 from "dagor.time" import get_time_msec
@@ -6,9 +8,6 @@ from "dagor.random" import frnd
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gchatEventConsts.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 local isChatOn = false
 local avgEventPerSec = 10

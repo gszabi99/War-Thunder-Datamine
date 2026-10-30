@@ -1,7 +1,6 @@
+from "%scripts/userstat/userstat.nut" import userstatUnlocks, userstatDescList, userstatStats
 from "%scripts/dagui_library.nut" import *
 
-let { userstatUnlocks, userstatDescList, userstatStats
-} = require("%scripts/userstat/userstat.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 

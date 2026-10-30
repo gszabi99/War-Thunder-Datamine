@@ -1,16 +1,39 @@
+import "%scripts/time.nut" as time
+import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "%sqStdLibs/helpers/u.nut" as u
 import "controllerState" as controllerState
 import "DataBlock" as DataBlock
 import "vehicleModel" as vehicleModel
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%sqstd/platform.nut" import isPC, isSony, isXbox, is_steam_deck
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_BULLET_COUNT0
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box
+from "%scripts/controls/startControls.nut" import gui_start_controls_type_choice
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/controls/aircraftHelpers.nut" import getAircraftHelpersOptionValue, getCurrentHelpersMode
+from "%scripts/controls/controlsPresets.nut" import parseControlsPresetName, getHighestVersionControlsPreset
+from "%scripts/options/optionsExt.nut" import get_option, get_option_in_mode
+from "%scripts/unit/unitParams.nut" import getFullUnitBlk, getFmFile
+from "%scripts/weaponry/weaponryInfo.nut" import TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon
+from "%scripts/weaponry/weaponryPresets.nut" import getPresetWeapons
+from "%scripts/controls/shortcutsUtils.nut" import hasMappedSecondaryWeaponSelector, isShortcutMapped, isAxisMappedOnMouse
+from "%scripts/weaponry/bulletsInfo.nut" import isBulletGroupActive
+from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
+from "%scripts/controls/controlsCompatibility.nut" import joystickGetCurSettings, getShortcuts
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/controls/controlsState.nut" import getCurControlsPreset
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "string" import format
 from "%sqstd/string.nut" import startsWith
 from "controls" import isXInputDevice, hasXInputDevice
 from "guiOptions" import get_gui_option, get_unit_option
 from "eventbus" import eventbus_subscribe
-from "%sqstd/platform.nut" import is_xbox, isPC
 from "gameplayBinding" import isInFlight
 from "%sqstd/datablock.nut" import blkOptFromPath, blkFromPath
 from "guiMission" import get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty
@@ -25,34 +48,10 @@ from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 from "unit" import get_cur_unit_weapon_preset
 
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let time = require("%scripts/time.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
-let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { getAircraftHelpersOptionValue, getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let { parseControlsPresetName, getHighestVersionControlsPreset } = require("%scripts/controls/controlsPresets.nut")
-let { get_option, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
-let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { hasMappedSecondaryWeaponSelector, isShortcutMapped, isAxisMappedOnMouse } = require("%scripts/controls/shortcutsUtils.nut")
-let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -62,20 +61,20 @@ let recommendedControlPresets = [
   CLASSIC_PRESET
   SHOOTER_PRESET
 ]
-if (isPlatformXbox)
+if (isXbox)
   recommendedControlPresets.append(THRUSTMASTER_HOTAS_ONE_PERESET)
 
 let presetsNamesByTypes =
-  isPlatformSony ? {
+  isSony ? {
     [CLASSIC_PRESET] = "default",
     [SHOOTER_PRESET] = "dualshock4"
   }
-  : is_xbox ? {
+  : isXbox ? {
     [CLASSIC_PRESET] = "xboxone_simulator",
     [SHOOTER_PRESET] = "xboxone_ma",
     [THRUSTMASTER_HOTAS_ONE_PERESET] = "xboxone_thrustmaster_hotas_one"
   }
-  : isPlatformSteamDeck ? {
+  : is_steam_deck ? {
     [CLASSIC_PRESET] = "steamdeck_simulator",
     [SHOOTER_PRESET] = "steamdeck_ma"
   }
@@ -133,7 +132,7 @@ function getControlsList(unitType, unitTags = []) {
 
 function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
-  if (!isInMenu.get() || !hasFeature("ControlsDeviceChoice") || !isLoggedIn.get())
+  if (!isInMenu.get() || !hasFeature("ControlsDeviceChoice") || !hasFullLoginState.get())
     return
   let action = function() { gui_start_controls_type_choice() }
   let buttons = [{
@@ -764,7 +763,7 @@ updateExtWatched({ haveXinputDevice = hasXInputDevice() })
 
 on_module_unload(@(_) controllerState.remove_event_handler(onControllerEvent))
 
-if (isLoggedIn.get())
+if (hasFullLoginState.get())
   controllerState.add_event_handler(onControllerEvent)
 
 addListenersWithoutEnv({

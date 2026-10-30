@@ -1,15 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.55,
-  "shotFreq": 70.0,
-  "alternativeShotFreq": 35.0,
-  "traceFreq": 4,
-  "bullets": 50,
-  "shootingCharge": 5.5,
-  "dragCx": 0.15,
-  "mass": 866.0,
-  "recoilMultiplier": 0.35,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -25,6 +14,17 @@
   "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_30mm_rapid",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.55,
+  "shotFreq": 70.0,
+  "alternativeShotFreq": 35.0,
+  "bullets": 50,
+  "shootingCharge": 5.5,
+  "dragCx": 0.15,
+  "mass": 866.0,
+  "recoilMultiplier": 0.35,
   "bullet": [
     {
       "mass": 0.43,
@@ -413,7 +413,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -1244,7 +1244,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmRed",
-        "trail": "noTrail"
+        "trail": "black"
       }
     },
     {
@@ -2078,7 +2078,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -3687,7 +3687,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmRed",
-          "trail": "noTrail"
+          "trail": "black"
         }
       },
       {
@@ -6675,15 +6675,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "gau_8a_gun_outside",
-    "cockpit": "gau_8a_gun_inside",
-    "charge": "gau_8a_gun_rotor",
-    "charge_inside": "gau_8a_gun_rotor_interior",
-    "ai": "gau_8a_gun_ai"
-  },
   "GAU_8A_new_gun": {
     "maxDeltaAngle": 0.65,
     "overheat": {
@@ -6698,5 +6689,14 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "gau_8a_gun_outside",
+    "cockpit": "gau_8a_gun_inside",
+    "charge": "gau_8a_gun_rotor",
+    "charge_inside": "gau_8a_gun_rotor_interior",
+    "ai": "gau_8a_gun_ai"
   }
 }

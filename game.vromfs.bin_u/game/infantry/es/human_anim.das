@@ -22,6 +22,7 @@ require DagorMathUtils
 require %appGame.wt_events
 require %game.events
 require %appGame.infantry.es.human_common
+require %appGame.infantry.es.animchar.anim_phys_update_common
 
 
 [es(on_appear)]
@@ -226,7 +227,7 @@ def updateState(eid : EntityId;
 
     let isInAirAfterSegphys = SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
     if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u || isInAirAfterSegphys
-      if get_seg_phys_state(human_net_phys.phys).currSeg >= 0 || isInAirAfterSegphys
+      if human_net_phys.phys.currentState.segPhysState.currSeg >= 0 || isInAirAfterSegphys
         res.upper = human_anim__comboStateClimbTrajectory
         res.lower = human_anim__comboStateClimbTrajectory
       else
@@ -537,6 +538,8 @@ def human_head_anim_es(info : ParallelUpdateFrameDelayed;
                        human_anim__headYawVarId : int;
                        human_anim__headRollVarId : int;
                        human_anim__headPitchVarId : int;
+                       human_head_dir__idleYaw : float = 0.0;
+                       human_head_dir__idlePitch : float = 0.0;
                        var phys_vars : PhysVars;
                        var human_head_dir__prevAdditionalRoll : float&;
                        var human_head_dir__prevAdditionalPitch : float&;
@@ -567,6 +570,9 @@ def human_head_anim_es(info : ParallelUpdateFrameDelayed;
     human_head_dir__prevAdditionalRoll = additionalHeadRoll
     human_head_dir__prevAdditionalPitch = additionalHeadPitch
     human_head_dir__prevAdditionalYaw = additionalHeadYaw
+
+  additionalHeadYaw += human_head_dir__idleYaw
+  additionalHeadPitch += human_head_dir__idlePitch
 
   var headRoll : float
   var headPitch : float
@@ -832,6 +838,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_anim__localWalkDirDeltaThresholdAngle : float = 180.0;
                   human_anim__isIdling : bool = false;
                   beh_tree__enabled : bool = false;
+                  phys__tickRate : int = 1;
                   var human_anim__previousHeight : float&;
                   human_anim__upperStateThrowGrenade : int;
                   human_anim__upperStateFastThrow : int;
@@ -1096,7 +1103,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if human_weap__mortarMode
     stateUpperBody = HumanStateUpperBody.E_USE_MORTAR
 
-  if get_seg_phys_state(phys).currSeg < 0 && isClimbing
+  if phys.currentState.segPhysState.currSeg < 0 && isClimbing
     let posHt = human_net_phys__climbToPos.y - unitTm[3].y
     var startPt = float2(0.0, 1.0)
     var endPt = float2(0.0, 1.0)
@@ -1184,7 +1191,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     state = HumanAnimStateResult(human_death_anim__selectedDeathAnimStateId, human_death_anim__selectedDeathAnimStateId)
   else
     state = updateState(eid, human_anim__isFpv, statePos, stateMove, stateJump, stateUpperBody, state_flags)
-    if (human_anim__idleUpperStateId >= 0 && beh_tree__enabled && human_anim__isIdling
+    if (human_anim__idleUpperStateId >= 0 && (beh_tree__enabled && human_anim__isIdling || phys__tickRate == 0)
         && stateUpperBody == HumanStateUpperBody.E_READY
         && stateMove == HumanStateMove.E_STILL
         && (statePos == HumanStatePos.E_STAND || statePos == HumanStatePos.E_CROUCH))
@@ -1425,7 +1432,14 @@ def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
                                       human_anim__leanSpineRotateAnglesCrouch : float3;
                                       human_net_phys : HumanActor;
                                       human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
+                                      animchar__updatable : bool = true;
+                                      animchar__visible : bool = false;
+                                      animchar__accumDt = -1.f;
+                                      animchar__dtThreshold = 0.f;
+                                      phys_vars__skipVisibilityCheck : Tag const?;
                                       var phys_vars : PhysVars)
+  if !is_anim_phys_update_frame(info.dt, animchar__updatable, animchar__visible, animchar__accumDt, animchar__dtThreshold, phys_vars__skipVisibilityCheck)
+    return
   assume phys = human_net_phys.phys
 
   var leanSpineRotate = 0.f
@@ -1461,7 +1475,7 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
 
 def private human_anim_segphys_get_flags(phys; flagList) : SegphysAnimFlags
-  let currAnimId = human_phys_get_segphys_anim_id(phys, get_seg_phys_state(phys).currSeg)
+  let currAnimId = human_phys_get_segphys_anim_id(phys, phys.currentState.segPhysState.currSeg)
   let flags = SegphysAnimFlags(flagList?[currAnimId] ?? 0)
   return flags
 
@@ -1501,7 +1515,7 @@ def human_anim_update_climb_animation_es(info : Event;
                                          human_anim__segphysHumanFlags : int;
                                          var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
-  assume segPhysState = get_seg_phys_state(phys)
+  assume segPhysState = phys.currentState.segPhysState
   if segPhysState.currSeg >= 0 && human_net_phys__isClimbing
     let interpK = get_phys_interpk_clamped(phys, get_sync_time())
 
@@ -1538,7 +1552,7 @@ def human_anim_update_climb_animation_es(info : Event;
         let interpolatedProgress = lerp(0.f, currProgress, interpParam)
         phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
         phys_vars |> setVar(human_anim__climbStageVarId, float(currAnimVarValue))
-  if get_seg_phys_state(phys).currSeg < 0 && SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
+  if phys.currentState.segPhysState.currSeg < 0 && SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
     phys_vars |> setVar(human_anim__climbStageVarId, float(human_anim__segphysFlyDownAnimVarValue))
 
 [es(after=keep_human_net_phys_cur_state_es)]
@@ -1553,7 +1567,7 @@ def human_anim_update_segphys_flags_es(info : ParallelUpdateFrameDelayed;
   let currAnimFlags = human_anim_segphys_get_flags(phys, human_anim__segphysAnimIdToFlags)
   if currAnimFlags.flyDownAfter
     flags.inAirAfter = true
-  if get_seg_phys_state(phys).currSeg < 0 && human_net_phys__isOnGround
+  if phys.currentState.segPhysState.currSeg < 0 && human_net_phys__isOnGround
     flags.inAirAfter = false
   flags.isWeaponDown = currAnimFlags.weaponDown || flags.inAirAfter
   if flags.isWeaponDown && weapState == HUWeaponEquipState.EES_DOWN
@@ -1576,7 +1590,14 @@ def update_elbow_rotation_es(info : ParallelUpdateFrameDelayed;
                              human_anim__rightElbowRotateCrouch : float3;
                              bipod__enabled : bool;
                              human_net_phys : HumanActor;
+                             animchar__updatable : bool = true;
+                             animchar__visible : bool = false;
+                             animchar__accumDt = -1.f;
+                             animchar__dtThreshold = 0.f;
+                             phys_vars__skipVisibilityCheck : Tag const?;
                              var phys_vars : PhysVars)
+  if !is_anim_phys_update_frame(info.dt, animchar__updatable, animchar__visible, animchar__accumDt, animchar__dtThreshold, phys_vars__skipVisibilityCheck)
+    return
   assume phys = human_net_phys.phys
   assume previousState = phys.previousState
   assume currentState = phys.currentState

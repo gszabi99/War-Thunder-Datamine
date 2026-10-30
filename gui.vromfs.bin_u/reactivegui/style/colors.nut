@@ -1,9 +1,15 @@
+import "%rGui/style/cssColor.nut" as cssColor
 from "%rGui/globals/ui_library.nut" import *
 
-let colors = {
-  transparent = 0x00000000
-  white = 0xFFFFFFFF
-  green = Color(0, 255, 0)
+const inactiveDMColor = Color(45, 55, 63, 80)
+const alertDMColor = Color(221, 17, 17)
+
+const colors = {
+  transparent = cssColor("transparent")
+  white = cssColor("white")
+  green = cssColor("green")
+  red = cssColor("red")
+  orange = cssColor("orange")
 
   commonIconColor = 0xFFDCDCDC
   deadIconColor = 0x70707070
@@ -17,93 +23,88 @@ let colors = {
   bleedingColor = 0xFFFB6A60
   staminaColor = 0xFF89A9D3
 
-  actionBarHotkeyColor = 0xFFBEA54B
+  actionBarHotkeyColor = cssColor("hotkeyColor")
   attackWarningColor = 0xFFD90000
   attackWarningColor2 = 0x00AA0000
   attackWarningColor3 = 0x00440000
+
+  menu = {
+    chatTextBlockedColor = cssColor("chatTextBlockedColor")
+    commonTextColor = cssColor("commonTextColor")
+    unlockActiveColor = cssColor("unlockActiveColor")
+    userlogColoredText = cssColor("userlogColoredText")
+    streakTextColor = cssColor("streakTextColor")
+    activeTextColor = cssColor("activeTextColor")
+    linkTextColor = cssColor("linkTextColor")
+    linkTextHoverColorLight = cssColor("linkTextHoverColorLight")
+
+    tabBackgroundColor = cssColor("listboxBgColor")
+    listboxSelOptionColor = cssColor("listboxSelOptionColor")
+    headerOptionHoverColor = cssColor("headerOptionHoverColor")
+    headerOptionSelectedColor = cssColor("headerOptionSelectedColor")
+    headerOptionTextColor = cssColor("headerOptionTextColor")
+    headerOptionSelectedTextColor = cssColor("headerOptionSelectedTextColor")
+
+    scrollbarBgColor = cssColor("scrollbarBgColor")
+    scrollbarSliderColor = cssColor("scrollbarSliderColor")
+    scrollbarSliderColorHover = cssColor("scrollbarSliderColorHover")
+
+    silver = cssColor("silver")
+
+    textInputBorderColor = cssColor("editboxBorderColorFocus")
+    textInputBgColor = cssColor("editboxColor")
+
+    voiceChatIconActiveColor = cssColor("voiceChatIconActiveColor")
+
+    blurBgrColor = cssColor("blurBgrColor")
+    frameDarkTransparentBgColor = cssColor("frameDarkTransparentBgColor")
+    frameBorderColor = cssColor("frameBorderColor")
+    frameHeaderBackgroundColor = cssColor("frameHeaderBackgroundColor")
+    higlightFrameBgColor = cssColor("evenTrColor")
+
+    buttonCloseColorHover = cssColor("buttonCloseColorHover")
+    buttonCloseColorPushed = cssColor("buttonCloseColorPushed")
+    menuButtonColorHover = cssColor("menuButtonColorHover")
+    menuButtonTextColorHover = cssColor("menuButtonTextColorHover")
+    separatorBlockColor = cssColor("separatorBlockColor")
+  }
+
+  hud = {
+    spectatorColor = cssColor("spectatorColor")
+    chatActiveInfoColor = cssColor("chatActiveInfoColor")
+    componentFill = Color(0, 0, 0, 192)
+    componentBorder = Color(255, 255, 255)
+    chatTextAllColor = cssColor("chatTextAllColor")
+    hudLogBgColor = cssColor("hudTextBgShade")
+    chatTextPrivateColor = cssColor("chatTextPrivateColor")
+    infantryShortcutCommonColor = cssColor("infantryShortcutColor")
+    infantryShortcutDisableColor = cssColor("infantryShortcutDisabledColor")
+    infantryShortcutCommonTextColor = cssColor("infantryShortcutTextColor")
+    infantryShortcutDisableTextColor = cssColor("infantryShortcutDisabledTextColor")
+    infantryHudCommonColor = 0xFFD2D2D1
+    infantryHudActiveColor = 0xFFFFFFFF
+    infantryHudInactiveColor = 0xB3B3B3B3
+    infantryHudDisabledColor = 0x77777777
+
+    damageModule = {
+      active = Color(255, 255, 255)
+      alert = alertDMColor
+      alertHighlight = Color(255, 255, 255) 
+      inactive = inactiveDMColor
+      aiSwitchHighlight = cssColor("green")
+      fire = Color(255, 115, 20)
+
+      dmModuleDamaged = Color(255, 176, 37)
+      dmModuleNormal = inactiveDMColor
+      dmModuleDestroyed = alertDMColor
+    }
+
+    shipSteeringGauge = {
+      mark = Color(235, 235, 60, 200)
+      serif = Color(135, 163, 160, 100)
+      background = Color(0, 0, 0, 50)
+    }
+  }
 }
-
-colors.menu <- {
-  chatTextBlockedColor =  Color(128, 128, 128)
-  commonTextColor = Color(192, 192, 192)
-  unlockActiveColor = Color(255, 255, 255)
-  userlogColoredText = Color(249, 219, 120)
-  streakTextColor = Color(255, 229, 82)
-  activeTextColor = Color(255, 255, 255)
-  linkTextColor           = Color(23, 192, 252)
-  linkTextHoverColorLight = Color(132, 224, 250)
-
-  tabBackgroundColor = Color(3, 7, 12, 204)
-  listboxSelOptionColor = Color(40, 51, 60)
-  headerOptionHoverColor = Color(106, 34, 17, 153) 
-  headerOptionSelectedColor = Color(178, 57, 29) 
-  headerOptionTextColor = Color(144, 143, 143) 
-  headerOptionSelectedTextColor = Color(224, 224, 224) 
-
-  scrollbarBgColor = Color(44, 44, 44, 51)
-  scrollbarSliderColor = Color(144, 143, 143)
-  scrollbarSliderColorHover = Color(224, 224, 224)
-
-  silver = Color(170, 170, 170)
-
-  textInputBorderColor = Color(62, 75, 82)
-  textInputBgColor = Color(2, 5, 9, 145)
-
-  voiceChatIconActiveColor = Color(134, 216, 8)
-
-  blurBgrColor = Color(8, 10, 13, 102)
-  frameBackgroundColor = Color(17, 24, 33, 204)
-  frameBorderColor = Color(32, 38, 44, 178)
-  frameHeaderColor = Color(45, 52, 60)
-  higlightFrameBgColor = Color(8, 8, 8, 17) 
-
-  buttonCloseColorHover = Color(178, 57, 29)
-  buttonCloseColorPushed = Color(106, 34, 17, 153)
-  menuButtonColorHover = Color(45, 56, 65)
-  menuButtonTextColorHover = Color(224, 224, 224)
-  separatorBlockColor = Color(34, 34, 34, 34)
-}
-
-colors.hud <- {
-  spectatorColor = Color(128, 128, 128)
-  chatActiveInfoColor = Color(255, 255, 5)
-  mainPlayerColor = Color(221, 163, 57)
-  componentFill = Color(0, 0, 0, 192)
-  componentBorder = Color(255, 255, 255)
-  chatTextAllColor = colors.menu.commonTextColor
-  hudLogBgColor = Color(0, 0, 0, 102)
-  chatTextPrivateColor = Color(222, 187, 255)
-  infantryShortcutCommonColor = 0xB399999B
-  infantryShortcutDisableColor = 0x47575759
-  infantryShortcutCommonTextColor = 0xFF27323F
-  infantryShortcutDisableTextColor = 0x990F0C19
-  infantryHudCommonColor = 0xFFD2D2D1
-  infantryHudActiveColor = 0xFFFFFFFF
-  infantryHudInactiveColor = 0xB3B3B3B3
-  infantryHudDisabledColor = 0x77777777
-}
-
-const inactiveDMColor = Color(45, 55, 63, 80)
-const alertDMColor = Color(221, 17, 17)
-colors.hud.damageModule <- {
-  active = Color(255, 255, 255)
-  alert = alertDMColor
-  alertHighlight = Color(255, 255, 255) 
-  inactive = inactiveDMColor
-  aiSwitchHighlight = colors.green
-  fire = Color(255, 115, 20)
-
-  dmModuleDamaged = Color(255, 176, 37)
-  dmModuleNormal = inactiveDMColor
-  dmModuleDestroyed = alertDMColor
-}
-
-
-colors.hud.shipSteeringGauge <- {
-  mark = Color(235, 235, 60, 200)
-  serif = Color(135, 163, 160, 100)
-  background = Color(0, 0, 0, 50)
-}
-
 
 return colors

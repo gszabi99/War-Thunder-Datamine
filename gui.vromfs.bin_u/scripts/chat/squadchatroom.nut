@@ -1,9 +1,8 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/crossModuleEvents.nut" import CHAT_JOIN_ROOM, CHAT_LEAVE_SQUAD_ROOM
+from "%scripts/chat/localizedMessages.nut" import sendLocalizedMessage
+from "%scripts/chat/chatStorage.nut" import isRoomJoined
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-
-let { CHAT_JOIN_ROOM, CHAT_LEAVE_SQUAD_ROOM } = require("%scripts/crossModuleEvents.nut")
-let { sendLocalizedMessage } = require("%scripts/chat/localizedMessages.nut")
-let { isRoomJoined } = require("%scripts/chat/chatStorage.nut")
 
 
 
@@ -32,11 +31,11 @@ function sendLocalizedMessageToSquadRoom(squadRoomName, langConfig) {
     sendLocalizedMessage(id, langConfig)
 }
 
-return {
+return freeze({
   SQUAD_ROOM_PREFIX
   mkSquadRoomId
   isSquadRoomJoined
   joinSquadRoom
   leaveSquadRoom
   sendLocalizedMessageToSquadRoom
-}
+})

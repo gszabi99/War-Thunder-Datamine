@@ -1,17 +1,17 @@
+import "%scripts/events/eSportTournamentModal.nut" as eSportTournamentModal
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/mainmenu/mainMenuHandler.nut" import MainMenu
+from "%scripts/events/eventsHandler.nut" import EventsHandler, guiStartModalEvents
+from "%scripts/events/eSport.nut" import getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent
+from "%scripts/events/eventJoinProcess.nut" import hasAlredyActiveJoinProcess
+from "%scripts/events/eventInfo.nut" import getEventDisplayType
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
 from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
-let { EventsHandler, guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
-let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 
 function openLastTournamentWnd(eventParams) {
   gui_start_mainmenu()
@@ -69,7 +69,7 @@ function goToBattleAction(eventParams) {
   })
 }
 
-return {
+return freeze({
   openLastTournamentWnd
   goToBattleAction
-}
+})

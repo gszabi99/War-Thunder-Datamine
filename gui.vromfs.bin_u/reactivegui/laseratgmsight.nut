@@ -88,20 +88,18 @@ let status = @() {
 
 let hints = @() {
   size = FLEX
-  children = [
-    @() {
-      watch = [GuidanceLockState, IsOnGround]
-      size = FLEX
-      pos = const [pw(42), ph(70)]
-      rendObj = ROBJ_TEXT
-      font = Fonts.hud
-      fontSize = hudFontHgt
-      color = LaserAtgmSightColor.get()
-      text = IsOnGround.get() ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
-        : GuidanceLockState.get() == 2 ? loc("hints/need_lock_laser_spot")
-        : (GuidanceLockState.get() == 3 ? loc("hints/click_for_launch_laser_shell") : "")
-    }
-  ]
+  children = @() {
+    watch = [GuidanceLockState, IsOnGround]
+    size = FLEX
+    pos = const [pw(42), ph(70)]
+    rendObj = ROBJ_TEXT
+    font = Fonts.hud
+    fontSize = hudFontHgt
+    color = LaserAtgmSightColor.get()
+    text = IsOnGround.get() ? loc("HUD/TXT_ROCKETS_LAUNCH_IMPOSSIBLE")
+      : GuidanceLockState.get() == 2 ? loc("hints/need_lock_laser_spot")
+      : (GuidanceLockState.get() == 3 ? loc("hints/click_for_launch_laser_shell") : "")
+  }
 }
 
 function Root(width, height) {

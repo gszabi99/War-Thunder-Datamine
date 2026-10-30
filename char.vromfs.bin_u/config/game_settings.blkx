@@ -5,7 +5,7 @@
   "resetViralAcquisitionDaysCounter": 1,
   "moderatorPresenceCheckMaxCode": 65536,
   "moderatorPresenceCheckPeriodSec": 1200,
-  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr;sead;strbomb;infdom",
+  "mapTypes": "AfDto;AfD;BC;BfDn;BfD;ADto;AD;GS;GSA;GSB;DF;BfD_norespawn;GS_norespawn;BfDn_arcade;GSn;BfD_noresp;Dom;Dom_no_respawn;dblDom;Conq;Conq_no_respawn;Bttl;Bttl_no_respawn;bfd_norespawn;day_norespawn;bfd_norespawn;duel;AfDn;tm;race;race_straight;race_inverted;Bto;Conq1;Conq2;Conq3;Conq4;Conq5;Conq6;DBttlA;DBttlB;PvE;PvE_1;PvE_2;PvE_3;PvE_4;PvE_5;PvE_6;I2M;H2M;Tdm;Capt;NTDM;NDom;NTdm;NBttl;NConq;nctf;NCnv;NCnvA;NCnvB;NS;NA;NAleft;NAright;N2M;4x4_norespawn;2x2_norespawn;2x2_jet_norespawn;1x1_norespawn;mission;FFA;BDB;BDA;MDB;GSA;GSB;CnvA;CnvB;ACsD;BR;ctf;HS;HfD;HA;UDom;tft;tfs;stdm;pvet;deepdefa;deepdefb;aadefa;aadefb;aconq;extr;sead;strbomb;infdom;infctr",
   "ordersPerSession": 3,
   "randomBattle": {
     "classiness": {
@@ -201,7 +201,8 @@
       "_extr": 3,
       "_sead": 0,
       "_strbomb": 0,
-      "_infdom": 3
+      "_infdom": 3,
+      "_infctr": 3
     }
   },
   "mapIntDiffToName": {
@@ -1958,38 +1959,14 @@
     "SpendGold": {
       "condition": ""
     },
-    "SpendFreeRP": {
-      "condition": ""
-    },
-    "Profile": {
-      "condition": ""
-    },
-    "UserCards": {
-      "condition": ""
-    },
-    "CrewInfo": {
-      "condition": ""
-    },
-    "CrewSkills": {
-      "condition": ""
-    },
     "CrewBuyAllSkills": {
       "condition": [
         "role_DEVELOPER",
         "perm_feature.dev_debug"
       ]
     },
-    "UserLog": {
-      "condition": ""
-    },
     "Voice": {
       "condition": "!restrict_chat_access"
-    },
-    "Friends": {
-      "condition": ""
-    },
-    "Squad": {
-      "condition": ""
     },
     "Battalions": {
       "condition": ""
@@ -2008,9 +1985,6 @@
     },
     "FacebookWallPost": {},
     "FacebookScreenshots": {},
-    "Events": {
-      "condition": ""
-    },
     "CreateEventRoom": {
       "condition": ""
     },
@@ -2367,27 +2341,6 @@
     "Tribunal": {
       "condition": ""
     },
-    "ModeSkirmish": {
-      "condition": ""
-    },
-    "ModeBuilder": {
-      "condition": ""
-    },
-    "ModeDynamic": {
-      "condition": ""
-    },
-    "Leaderboards": {
-      "condition": ""
-    },
-    "HangarWndHelp": {
-      "condition": ""
-    },
-    "EulaInMenu": {
-      "condition": ""
-    },
-    "WarpointsInMenu": {
-      "condition": ""
-    },
     "WorldWar": {
       "condition": "",
       "platform_lock": "android"
@@ -2442,12 +2395,6 @@
         "perm_feature.debug"
       ]
     },
-    "GraphicsOptions": {
-      "condition": ""
-    },
-    "Spectator": {
-      "condition": ""
-    },
     "TouchScreen": {
       "condition": ""
     },
@@ -2455,15 +2402,6 @@
       "condition": ""
     },
     "Packages": {
-      "condition": ""
-    },
-    "DecalsUse": {
-      "condition": ""
-    },
-    "AttachablesUse": {
-      "condition": ""
-    },
-    "DecoratorPreview": {
       "condition": ""
     },
     "ShowDamageReport": {
@@ -2545,41 +2483,11 @@
     "VideoPreview": {
       "condition": ""
     },
-    "Clans": {
+    "ClanVehicles": {
       "condition": ""
     },
-    "ClanRegions": {
-      "condition": "Clans"
-    },
-    "ClanAnnouncements": {
-      "condition": "Clans"
-    },
-    "ClanActivity": {
-      "condition": "Clans"
-    },
-    "ClansMembershipEditor": {
-      "condition": "Clans"
-    },
-    "ClanUpgradeMembers": {
-      "condition": "Clans"
-    },
-    "ClanLog": {
-      "condition": "Clans"
-    },
-    "ClanBattleSeasonAvailable": {
-      "condition": "Clans"
-    },
-    "ClanSquads": {
-      "condition": "Clans"
-    },
-    "ClanVehicles": {
-      "condition": [
-        "Clans",
-        "XBOXAccount"
-      ]
-    },
     "ClansXBOXOnPC": {
-      "condition": "Clans; XBOXAccount"
+      "condition": "XBOXAccount"
     },
     "ShowNextUnlockInfo": {},
     "extendedReplayInfo": {
@@ -2610,9 +2518,6 @@
         "role_DEVELOPER",
         "perm_feature.dev_debug"
       ]
-    },
-    "ActivityFeedPs4": {
-      "condition": ""
     },
     "UnlockAllCountries": {
       "condition": ""
@@ -3125,16 +3030,10 @@
       "condition": "",
       "platform_lock": "ps4;android;xboxOne;xboxScarlett;ps5"
     },
-    "SquadWidget": {
-      "condition": ""
-    },
     "SquadTransferLeadership": {
       "condition": ""
     },
     "SquadSizeChange": {
-      "condition": ""
-    },
-    "SquadInviteIngame": {
       "condition": ""
     },
     "ClanSeasonRewardsLog": {
@@ -3532,6 +3431,14 @@
     "ProtectionAnalysisShowTorpedoes": {
       "condition": ""
     },
+    "loginGuard": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "perm_feature.debug"
+      ]
+    },
     "DamageControl": {
       "condition": ""
     },
@@ -3640,6 +3547,14 @@
         "perm_feature.debug"
       ]
     },
+    "optionDlssNr": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "wt_open_dev_promo_access"
+      ]
+    },
     "optionConsolePreset": {
       "condition": [
         "role_GAIJIN",
@@ -3674,10 +3589,10 @@
     "AssistantMap": {
       "condition": ""
     },
-    "HangarSceneOption": {
+    "HasTabsInGraphicsOption": {
       "condition": ""
     },
-    "HasTabsInGraphicsOption": {
+    "DynamicResolution": {
       "condition": ""
     },
     "DevFeatures": {
@@ -3690,6 +3605,9 @@
     },
     "Chat": {
       "condition": "!restrict_chat_access"
+    },
+    "SelectableBattleRating": {
+      "condition": ""
     }
   }
 }

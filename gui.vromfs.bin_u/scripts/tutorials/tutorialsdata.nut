@@ -1,3 +1,15 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/money.nut" import Cost
+from "%scripts/missions/missionsUtilsModule.nut" import getMissionRewardsMarkup
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockRewardCostByName, isUnlockOpened
+from "%scripts/customization/decoratorGetters.nut" import getDecoratorByResource
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
+from "%scripts/missions/startMissionsList.nut" import guiStartFlight
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
+from "%scripts/tutorials/tutorialsState.nut" import isDiffUnlocked, getReqTutorial
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
+from "%scripts/options/optionsExt.nut" import get_option
+from "%scripts/clientState/contentPacks.nut" import checkDiffPkg
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "string" import format
 from "guiMission" import get_meta_missions_info_by_chapters, select_mission
@@ -8,19 +20,7 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { Cost } = require("%scripts/money.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getUnlockRewardCostByName, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
-let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 
 let checkTutorialsList = [ 
   {
@@ -116,10 +116,21 @@ let checkTutorialsList = [
   }
 ]
 
-let tutorialRewardData = mkWatched(persist, "tutorialRewardData", null)
+let hardPersistWatched = mkHardPersistWatched("tutorials.tutorialsData")
+let tutorialRewardDataPlain = hardPersistWatched("tutorialRewardData", null)
+function withRewardMoney(data, mkMoney) {
+  let rewardData = data?.firstCompletRewardData
+  if (rewardData?.rewardMoney == null)
+    return data
+  return data.__merge({ firstCompletRewardData = rewardData.__merge({ rewardMoney = mkMoney(rewardData.rewardMoney) }) })
+}
+
+let tutorialRewardData = Watched(withRewardMoney(tutorialRewardDataPlain.get(), @(m) Cost().setFromTbl(m)))
+tutorialRewardData.subscribe(@(v) tutorialRewardDataPlain.set(
+  withRewardMoney(v, @(m) { wp = m.wp, gold = m.gold, frp = m.frp, rp = m.rp, sap = m.sap })))
 let clearTutorialRewardData = @() tutorialRewardData.set(null)
 
-let launchedTutorialQuestionsPeerSession = mkWatched(persist, "launchedTutorialQuestionsPeerSession", 0)
+let launchedTutorialQuestionsPeerSession = hardPersistWatched("launchedTutorialQuestionsPeerSession", 0)
 let setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession.set(newValue)
 
 function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {

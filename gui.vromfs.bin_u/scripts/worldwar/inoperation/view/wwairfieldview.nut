@@ -1,13 +1,11 @@
+import "%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut" as wwActionsWithUnitsList
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/worldWar/worldWarState.nut" import getArmyGroupsBySide
 from "worldwar" import wwGetZoneName, wwGetPlayerSide
 from "math" import ceil
 from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
-
 
 let WwAirfieldView = class {
   redrawData = null

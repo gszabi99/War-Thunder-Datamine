@@ -1,11 +1,10 @@
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/dagui_library.nut" import *
-
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let ItemsListWndBase = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -89,6 +88,6 @@ let ItemsListWndBase = class (BaseGuiHandlerWT) {
 
 register_gui_handler("ItemsListWndBase", ItemsListWndBase)
 
-return {
+return freeze({
   ItemsListWndBase
-}
+})

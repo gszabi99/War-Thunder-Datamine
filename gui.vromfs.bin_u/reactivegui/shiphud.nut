@@ -1,3 +1,4 @@
+import "%rGui/shipHudComponents.nut" as shipHudComponents
 import "%rGui/shipStateModule.nut" as shipMainPanel
 import "%rGui/hudLogs.nut" as hudLogs
 import "%rGui/chat/voiceChat.nut" as voiceChat
@@ -11,9 +12,7 @@ from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
 from "%rGui/shipHitNotification.nut" import hitNotifications
 from "%rGui/globals/ui_library.nut" import *
 
-let shipHudComponents = require("%rGui/shipHudComponents.nut")
-let { radarComponent } = shipHudComponents
-
+let { radarComponent, sonarComponent } = shipHudComponents
 
 
 
@@ -54,7 +53,7 @@ return @(){
     actionBarTopPanel
     fireControl
     radarComponent
-
+    sonarComponent
 
 
 

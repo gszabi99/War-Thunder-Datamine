@@ -1,8 +1,32 @@
+import "%scripts/mainmenu/onMainMenuReturnActions.nut" as onMainMenuReturnActions
+from "%scripts/mainmenu/autoStartBattleHandler.nut" import AutoStartBattleHandler
+from "%scripts/login/waitForLoginWnd.nut" import WaitForLoginWnd
+from "%scripts/controls/gamepadCursorControlsSplash.nut" import GampadCursorControlsSplash
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/penitentiary/bannedStatusMsgBox.nut" import showBannedStatusMsgBox
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%sqstd/platform.nut" import is_android, platformId, is_gdk, is_steam_deck, is_console
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%scripts/firstChoice/firstChoice.nut" import isFirstChoiceShown
+from "%scripts/bigQuery/bigQueryClient.nut" import bqSendNoAuthStart
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/langUtils/language.nut" import getCurLangShortName
+from "%scripts/myStats.nut" import isMeNewbie, isNewbieInited
+from "%scripts/mainmenu/guiStartMainmenu.nut" import gui_start_mainmenu
+from "%scripts/controls/startControls.nut" import gui_start_controls_type_choice
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import sessionLobbyHostCb
+from "%scripts/login/loginProcess.nut" import startLoginProcess
+from "%scripts/login/loginManager.nut" import setLoginState
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
+from "%scripts/clientState/contentPacks.nut" import updateContentPacks
+from "%scripts/controls/controlsTypeUtils.nut" import setControlTypeByID
+from "%scripts/clientState/clientStates.nut" import getFromSettingsBlk
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%appGlobals/login/loginState.nut" import isProfileReceived, isAuthorized, isLoggedIn
+from "%appGlobals/login/loginState.nut" import isProfileReceived, isAuthorized, isLoggedIn, hasFullLoginState
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
-from "%sqstd/platform.nut" import is_android, platformId, is_gdk
 from "eventbus" import eventbus_subscribe
 from "dagor.workcycle" import deferOnce
 from "chard" import get_charserver_time_sec
@@ -12,31 +36,8 @@ from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 from "%scripts/user/profileStates.nut" import havePlayerTag, haveAnyPlayerTag
 
-let { AutoStartBattleHandler } = require("%scripts/mainmenu/autoStartBattleHandler.nut")
-let { WaitForLoginWnd } = require("%scripts/login/waitForLoginWnd.nut")
-let { GampadCursorControlsSplash } = require("%scripts/controls/gamepadCursorControlsSplash.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showBannedStatusMsgBox } = require("%scripts/penitentiary/bannedStatusMsgBox.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let { isPlatformSteamDeck, is_console, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
-let { bqSendNoAuthStart } = require("%scripts/bigQuery/bigQueryClient.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { isMeNewbie, isNewbieInited } = require("%scripts/myStats.nut")
-let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { sessionLobbyHostCb } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { startLoginProcess } = require("%scripts/login/loginProcess.nut")
-let { setLoginState } = require("%scripts/login/loginManager.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateContentPacks } = require("%scripts/clientState/contentPacks.nut")
-let { setControlTypeByID } = require("%scripts/controls/controlsTypeUtils.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 const EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -54,7 +55,7 @@ function gui_start_startscreen(_) {
 
 eventbus_subscribe("gui_start_startscreen", gui_start_startscreen)
 eventbus_subscribe("gui_start_after_scripts_reload", function(_) {
-  if (!disableNetwork && isAuthorized.get() && !isLoggedIn.get())
+  if (!disableNetwork && isAuthorized.get() && !hasFullLoginState.get())
     loadHandler(WaitForLoginWnd)
 })
 
@@ -77,6 +78,8 @@ function needAutoStartBattle() {
   return true
 }
 
+let setHostCb = @() set_host_cb(null, sessionLobbyHostCb)
+
 function firstMainMenuLoad() {
   let isAutoStart = needAutoStartBattle()
   local handler = isAutoStart
@@ -96,10 +99,10 @@ function firstMainMenuLoad() {
       setControlTypeByID("ct_mouse")
     else if (isPlatformShieldTv())
       setControlTypeByID("ct_xinput")
-    else if (!isPlatformSteamDeck)
+    else if (!is_steam_deck)
       handler.doWhenActive(function() { gui_start_controls_type_choice() })
   }
-  else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
+  else if (!fetch_devices_inited_once() && !is_steam_deck)
     handler.doWhenActive(function() { gui_start_controls_type_choice() })
 
   if (showConsoleButtons.get()) {
@@ -144,7 +147,7 @@ function firstMainMenuLoad() {
       )
     })
 
-  set_host_cb(null, function(p) { sessionLobbyHostCb(p) })
+  setHostCb()
 
   updateGamercards()
   showBannedStatusMsgBox()
@@ -164,3 +167,7 @@ function loadMainMenuDefer() {
 addListenersWithoutEnv({
   LoginComplete = @(_) deferOnce(loadMainMenuDefer)
 })
+
+
+if (isLoggedIn.get())
+  setHostCb()

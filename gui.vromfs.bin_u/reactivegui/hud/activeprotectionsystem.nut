@@ -1,9 +1,9 @@
+import "%rGui/style/colors.nut" as colors
 from "%rGui/hud/tankState.nut" import activeProtectionSystemModulesCount
 from "%sqstd/math.nut" import PI, cos, sin, fabs
 from "%rGui/globals/ui_library.nut" import *
 
 let { activeProtectionSystemModules } = require("%rGui/hud/tankState.nut")
-let colors = require("%rGui/style/colors.nut")
 
 const greenColor = Color(10, 202, 10, 250)
 
@@ -26,7 +26,7 @@ function createModule(module) {
       commands = [
         fabs(horAnglesY.get() - horAnglesX.get() - 360) % 360 > 0.1
           ? [ VECTOR_SECTOR, 50, 50, 50, 50, horAnglesX.get() - 90, horAnglesY.get() - 90]
-          : [ VECTOR_ELLIPSE, 50, 50, 50, 50 ]
+          : const [ VECTOR_ELLIPSE, 50, 50, 50, 50 ]
       ]
       padding = [shHud(1), shHud(1)]
       children = shotCount.get() > 0
@@ -46,7 +46,7 @@ function createModule(module) {
 
 let activeProtection = @() {
   size = const [pw(70), ph(70)]
-  watch = [activeProtectionSystemModulesCount]
+  watch = activeProtectionSystemModulesCount
   children = activeProtectionSystemModulesCount.get() == 0 ? null
     : activeProtectionSystemModules.map(@(module) createModule(module))
 }

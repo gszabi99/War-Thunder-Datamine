@@ -1,14 +1,14 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+import "%scripts/user/bhvAvatar.nut" as bhvAvatar
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisible, isUnlockOpened
+from "%scripts/unlocks/unlocksCache.nut" import getUnlocksByTypeInBlkOrder
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 local icons = null
 local allowedIcons = null
@@ -53,7 +53,7 @@ function getAvatarIconIdByUserInfo(userInfo) {
   return getIcons()?[pilotId] ?? "cardicon_default"
 }
 
-return {
+return freeze({
   getIcons = getIcons
   getAvatarIconIdByUserInfo
-}
+})

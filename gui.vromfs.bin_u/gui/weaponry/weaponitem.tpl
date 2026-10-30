@@ -68,6 +68,24 @@ weaponry_item {
       pattern {}
     }
 
+    <<#isTooltipOnIcon>>
+    <<^isTooltipByHold>>
+    tdiv {
+      size:t='1@modItemHeight, 1@modItemHeight'
+      position:t='absolute'
+      input-transparent:t='yes'
+      title:t='$tooltipObj'
+      tooltip-float:t='horizontal'
+      tooltipObj {
+        id:t='tooltip_<<id>>'
+        tooltipId:t='<<tooltipId>>'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+    }
+    <</isTooltipByHold>>
+    <</isTooltipOnIcon>>
     include "%gui/weaponry/weaponIcon.tpl"
     itemWinkBlock { buttonWink { _transp-timer:t='0' } }
     hoverHighlight {}
@@ -357,6 +375,7 @@ weaponry_item {
   }
 
   <<^isTooltipByHold>>
+  <<^isTooltipOnIcon>>
   title:t='$tooltipObj'
   tooltip-float:t='horizontal'
   tooltipObj {
@@ -366,6 +385,7 @@ weaponry_item {
     on_tooltip_close:t='onTooltipObjClose'
     display:t='hide'
   }
+  <</isTooltipOnIcon>>
   <</isTooltipByHold>>
 
   modSlotButtonsNest {

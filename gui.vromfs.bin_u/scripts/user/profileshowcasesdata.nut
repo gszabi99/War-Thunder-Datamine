@@ -1,12 +1,11 @@
 import "DataBlock" as DataBlock
+from "%scripts/tasker.nut" import charRequestBlk
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/datablock.nut" import isDataBlock, convertBlk
 from "dagor.time" import get_time_msec
 from "eventbus" import eventbus_subscribe
 from "%sqstd/underscore.nut" import isArray
 from "%scripts/dagui_library.nut" import *
-
-let { charRequestBlk } = require("%scripts/tasker.nut")
 
 enum allShowcasesEventName {
   UPDATED = "AllShowcasesDataUpdated"
@@ -83,9 +82,9 @@ function onSignOut(_) {
 
 eventbus_subscribe("on_sign_out", onSignOut)
 
-return {
+return freeze({
   allShowcasesEventName
   generateShowcaseInfo
   setCurrentShowcase
   updateShowcaseDataInCache
-}
+})

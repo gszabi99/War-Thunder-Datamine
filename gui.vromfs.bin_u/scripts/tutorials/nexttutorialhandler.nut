@@ -1,29 +1,30 @@
 from "dagor.workcycle" import defer
+import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqstd/math.nut" as stdMath
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/tutorials/tutorialsData.nut" import saveTutorialToCheckReward, launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue, getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
+from "%scripts/tutorials/tutorialsState.nut" import skipTutorialBitmaskId
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/promo/promoButtonsConfig.nut" import addPromoButtonConfig
+from "%scripts/slotbar/playerCurUnit.nut" import getShowedUnit
+from "%scripts/mainmenu/topMenuStates.nut" import topMenuHandler
+from "%scripts/bqQueue/bqQueue.nut" import sendBqEvent
+from "%scripts/promo/promo.nut" import setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData, getPromoVisibilityById
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/options/countryFlagsPreset.nut" import getCountryFlagImg
+from "%scripts/missions/startMissionsList.nut" import guiStartTutorial, guiStartFlight
+from "%scripts/missions/missionsStates.nut" import currentCampaignMission
 from "chard" import save_profile
 from "mission" import set_game_mode
 from "guiMission" import select_mission
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkTutorialsList, saveTutorialToCheckReward, launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue, getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData } = require("%scripts/tutorials/tutorialsData.nut")
-let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsState.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { guiStartTutorial, guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -252,6 +253,6 @@ addPromoButtonConfig({
   updateByEvents = ["HangarModelLoaded"]
 })
 
-return {
+return freeze({
   tryOpenNextTutorialHandler
-}
+})

@@ -1,6 +1,7 @@
 {
   "bombGun": true,
   "preset_cost": 200,
+  "external": true,
   "shotFreq": 10.0,
   "sound": "weapon.bombgun",
   "mesh": "ch_lgb_ls_6_500_na",
@@ -12,10 +13,7 @@
     0.12,
     0.0
   ],
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "tags": {},
   "bomb": {
     "mass": 630.0,
     "caliber": 0.377,
@@ -144,7 +142,6 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
@@ -152,6 +149,7 @@
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
       "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": -2.5,
@@ -182,10 +180,6 @@
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0005
       }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.35,
-      "finsAoaVer": 0.35
     },
     "collisions": {
       "default": {

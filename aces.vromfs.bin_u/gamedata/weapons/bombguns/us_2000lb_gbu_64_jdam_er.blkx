@@ -1,9 +1,8 @@
 {
   "bombGun": true,
-  "preset_cost": 300,
-  "bullets": 1,
-  "shotFreq": 10.0,
+  "preset_cost": 200,
   "external": true,
+  "shotFreq": 10.0,
   "sound": "weapon.bombgun",
   "mesh": "us_2000lb_gbu_64_jdam_er_na",
   "bombCart": "missile_cart_mid",
@@ -15,10 +14,7 @@
   "mesh_deployed": "us_2000lb_gbu_64_jdam_er",
   "shellAnimChar": "us_2000lb_gbu_64_jdam_er_char",
   "rollForDemonstration": 180.0,
-  "tags": {
-    "antiTankBomb": true,
-    "antiShipBomb": true
-  },
+  "tags": {},
   "bomb": {
     "mass": 987.0,
     "mass_lbs": 1970.0,
@@ -149,14 +145,14 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
       "workTime": 3600.0,
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
-      "positionError": 5.0,
+      "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "timeToGain0": [
           2.5,

@@ -2,7 +2,7 @@
   "model": "f8u_2",
   "fmFile": "fm/f8u-2.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.283,
   "gearSinkRangeC": 0.404,
   "jetEnginePowerFullScale": true,
@@ -12,16 +12,16 @@
   "disableExhaustFxIfContrailIsActive": true,
   "gyroSight": true,
   "type": "typeFighter",
-  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "2100kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
@@ -146,6 +146,18 @@
     "dural5": {
       "radar_dm": {
         "hp": 35.0
+      },
+      "cockpit_control1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block1_dm": {
+        "hp": 60.0
+      },
+      "electronic_block2_dm": {
+        "hp": 60.0
+      },
+      "electronic_block3_dm": {
+        "hp": 60.0
       }
     },
     "glass25": {
@@ -176,6 +188,11 @@
       },
       "gear_r_dm": {
         "hp": 57.7
+      }
+    },
+    "steel_cooling_sys": {
+      "oil1_dm": {
+        "hp": 16.6
       }
     },
     "steel_pilot": {
@@ -644,15 +661,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -665,36 +686,46 @@
           {
             "damage": 7.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 5.0
+            "nothing": 8.0
           },
           {
             "damage": 10.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 4.0
+            "nothing": 7.0
           },
           {
             "damage": 20.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 3.0
+            "nothing": 6.0
           },
           {
             "damage": 30.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true,
-            "nothing": 2.0
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -727,15 +758,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -778,7 +813,9 @@
             "damage": 100.0,
             "fire": 5.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           },
           {
@@ -862,10 +899,119 @@
         }
       },
       {
+        "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      },
+      {
         "name": "pilot_dm"
       },
       {
         "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "cockpit_control1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block2_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "electronic_block3_dm",
         "onHit": [
           {
             "damage": 200.0,
@@ -2321,11 +2467,11 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_an_aps_67.blk",
+        "blk": "gamedata/sensors/us_an_aps_67.blk",
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_27.blk"
+        "blk": "gamedata/sensors/us_an_apr_27.blk"
       }
     ]
   },
@@ -2339,43 +2485,43 @@
     "preset": [
       {
         "name": "f8u-2_default",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_default.blk"
       },
       {
         "name": "f8u-2_2x_aim9b",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9b.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_2x_aim9b.blk"
       },
       {
         "name": "f8u-2_4x_aim9b",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_4x_aim9b.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_4x_aim9b.blk"
       },
       {
         "name": "f8u-2_2x_aim9d",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9d.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_2x_aim9d.blk"
       },
       {
         "name": "f8u-2_4x_aim9d",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_4x_aim9d.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_4x_aim9d.blk"
       },
       {
         "name": "f8u-2_4x_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_4x_zuni.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_4x_zuni.blk"
       },
       {
         "name": "f8u-2_8x_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_8x_zuni.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_8x_zuni.blk"
       },
       {
         "name": "f8u-2_2x_aim9b_2x_zuni",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9b_2x_zuni.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_2x_aim9b_2x_zuni.blk"
       },
       {
         "name": "f8u-2_2x_aim9d_2x_zuni_ffar",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_2x_aim9d_2x_zuni_ffar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_2x_aim9d_2x_zuni_ffar.blk"
       },
       {
         "name": "f8u-2_ffar",
-        "blk": "gameData/FlightModels/weaponPresets/f8u-2_ffar.blk"
+        "blk": "gamedata/flightModels/weaponPresets/f8u-2_ffar.blk"
       }
     ]
   },
@@ -2407,7 +2553,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "blk": "gamedata/weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2417,7 +2563,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "blk": "gamedata/weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -2427,7 +2573,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "blk": "gamedata/weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "cannon3_dm",
@@ -2437,7 +2583,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "blk": "gamedata/weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "cannon4_dm",
@@ -2447,7 +2593,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 60,
               "bulletsCartridge": 1,
@@ -2476,7 +2622,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
               "emitter": "aim_9_001",
               "bullets": 1
             }
@@ -2495,7 +2641,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
               "emitter": "aim_9_001",
               "bullets": 1
             }
@@ -2517,7 +2663,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
                 "emitter": "aim_9_003",
                 "bullets": 1
               },
@@ -2525,7 +2671,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
                 "emitter": "aim_9_005",
                 "bullets": 1
               }
@@ -2548,7 +2694,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_003",
                 "bullets": 1
               },
@@ -2556,7 +2702,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_005",
                 "bullets": 1
               }
@@ -2573,7 +2719,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+              "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
               "emitter": "us_lau_35a_l",
               "external": true
             }
@@ -2593,14 +2739,14 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni_cwp.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni_cwp.blk",
                 "emitter": "us_lau_35a_l1",
                 "external": true,
                 "bullets": 2
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni_cwp.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni_cwp.blk",
                 "emitter": "us_lau_35a_l2",
                 "external": true,
                 "bullets": 2
@@ -2623,13 +2769,13 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
                 "emitter": "aim_9_003",
                 "bullets": 1
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
                 "emitter": "us_lau_35a_l2",
                 "external": true
               }
@@ -2653,13 +2799,13 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_003",
                 "bullets": 1
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
                 "emitter": "us_lau_35a_l2",
                 "external": true
               }
@@ -2681,7 +2827,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket1",
               "launcher": true,
               "bullets": 1,
@@ -2696,7 +2842,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket2",
               "launcher": true,
               "bullets": 1,
@@ -2710,7 +2856,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket3",
               "launcher": true,
               "bullets": 1,
@@ -2724,7 +2870,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket4",
               "launcher": true,
               "bullets": 1,
@@ -2738,7 +2884,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket5",
               "launcher": true,
               "bullets": 1,
@@ -2752,7 +2898,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket6",
               "launcher": true,
               "bullets": 1,
@@ -2766,7 +2912,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket7",
               "launcher": true,
               "bullets": 1,
@@ -2780,7 +2926,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket8",
               "launcher": true,
               "bullets": 1,
@@ -2794,7 +2940,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket9",
               "launcher": true,
               "bullets": 1,
@@ -2808,7 +2954,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket10",
               "launcher": true,
               "bullets": 1,
@@ -2822,7 +2968,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket11",
               "launcher": true,
               "bullets": 1,
@@ -2836,7 +2982,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket12",
               "launcher": true,
               "bullets": 1,
@@ -2850,7 +2996,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket13",
               "launcher": true,
               "bullets": 1,
@@ -2864,7 +3010,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket14",
               "launcher": true,
               "bullets": 1,
@@ -2878,7 +3024,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket15",
               "launcher": true,
               "bullets": 1,
@@ -2892,7 +3038,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket16",
               "launcher": true,
               "bullets": 1,
@@ -2906,7 +3052,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket17",
               "launcher": true,
               "bullets": 1,
@@ -2921,7 +3067,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket18",
               "launcher": true,
               "bullets": 1,
@@ -2935,7 +3081,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket19",
               "launcher": true,
               "bullets": 1,
@@ -2949,7 +3095,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket20",
               "launcher": true,
               "bullets": 1,
@@ -2963,7 +3109,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket21",
               "launcher": true,
               "bullets": 1,
@@ -2977,7 +3123,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket22",
               "launcher": true,
               "bullets": 1,
@@ -2991,7 +3137,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket23",
               "launcher": true,
               "bullets": 1,
@@ -3005,7 +3151,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket24",
               "launcher": true,
               "bullets": 1,
@@ -3019,7 +3165,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket25",
               "launcher": true,
               "bullets": 1,
@@ -3033,7 +3179,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket26",
               "launcher": true,
               "bullets": 1,
@@ -3047,7 +3193,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket27",
               "launcher": true,
               "bullets": 1,
@@ -3061,7 +3207,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket28",
               "launcher": true,
               "bullets": 1,
@@ -3075,7 +3221,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket29",
               "launcher": true,
               "bullets": 1,
@@ -3089,7 +3235,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket30",
               "launcher": true,
               "bullets": 1,
@@ -3103,7 +3249,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket31",
               "launcher": true,
               "bullets": 1,
@@ -3117,7 +3263,7 @@
               "trigger": "rockets",
               "external": false,
               "separate": false,
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "rocket32",
               "launcher": true,
               "bullets": 1,
@@ -3149,7 +3295,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
               "emitter": "aim_9_002",
               "bullets": 1
             }
@@ -3168,7 +3314,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+              "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
               "emitter": "aim_9_002",
               "bullets": 1
             }
@@ -3190,7 +3336,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
                 "emitter": "aim_9_004",
                 "bullets": 1
               },
@@ -3198,7 +3344,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder.blk",
                 "emitter": "aim_9_006",
                 "bullets": 1
               }
@@ -3221,7 +3367,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_004",
                 "bullets": 1
               },
@@ -3229,7 +3375,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_006",
                 "bullets": 1
               }
@@ -3246,7 +3392,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+              "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
               "emitter": "us_lau_35a_r",
               "external": true
             }
@@ -3266,14 +3412,14 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni_cwp.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni_cwp.blk",
                 "emitter": "us_lau_35a_r1",
                 "external": true,
                 "bullets": 2
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni_cwp.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni_cwp.blk",
                 "emitter": "us_lau_35a_r2",
                 "external": true,
                 "bullets": 2
@@ -3296,13 +3442,13 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9b_sidewinder_default.blk",
                 "emitter": "aim_9_004",
                 "bullets": 1
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
                 "emitter": "us_lau_35a_r2",
                 "external": true
               }
@@ -3325,13 +3471,13 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9d_sidewinder.blk",
+                "blk": "gamedata/weapons/rocketGuns/us_aim9d_sidewinder.blk",
                 "emitter": "aim_9_004",
                 "bullets": 1
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/lau_35a_zuni.blk",
+                "blk": "gamedata/weapons/containers/lau_35a_zuni.blk",
                 "emitter": "us_lau_35a_r2",
                 "external": true
               }
@@ -3363,288 +3509,611 @@
   "damagePartsToAvionicsPartsMap": {
     "avionics": [
       {
-        "avionics": "indicators",
+        "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
+        }
+      },
+      {
+        "avionics": "weaponControls",
+        "health": {
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "avionics": "indicators",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "cockpit_control1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "cockpit_control1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
+          ]
         }
       },
       {
-        "avionics": "optics",
+        "avionics": "indicators",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block3_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "dm": "electronic_block3_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
-        }
-      },
-      {
-        "avionics": "optics",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
+          ]
         }
       },
       {
         "avionics": "guidance",
         "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
+          "dm": "electronic_block2_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
+          "dm": "electronic_block2_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
-        "avionics": "guidance",
+        "avionics": "sensors",
         "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
         },
         "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "rwr",
+        "health": {
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "avionics": "radar",
         "health": {
           "dm": "radar_dm",
-          "killHp": 0.0
+          "killHp": 0.01
         },
         "damage": {
           "dm": "radar_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "sensors",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "sensors",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": [
-              {
-                "damage": 250.0,
-                "prob": 0.6
-              },
-              {
-                "damage": 300.0,
-                "prob": 1.0
-              }
-            ]
-          }
-        }
-      },
-      {
-        "avionics": "counterMeasures",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
             }
-          }
-        }
-      },
-      {
-        "avionics": "counterMeasures",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
-        }
-      },
-      {
-        "avionics": "rwr",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
-        }
-      },
-      {
-        "avionics": "rwr",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
-        }
-      },
-      {
-        "avionics": "nightVision",
-        "health": {
-          "dm": "fuse_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
-        }
-      },
-      {
-        "avionics": "nightVision",
-        "health": {
-          "dm": "fuse1_dm",
-          "killHp": 0.0
-        },
-        "damage": {
-          "dm": "fuse1_dm",
-          "damageTypeHitEffect": {
-            "damageType": "explosion",
-            "hitEffect": {
-              "damage": 250.0,
-              "prob": 0.3
-            }
-          }
+          ]
         }
       }
     ]

@@ -1,5 +1,23 @@
+import "%scripts/time.nut" as time
+import "%scripts/items/workshop/startCraftWnd.nut" as startCraftWnd
+import "%scripts/wndLib/chooseAmountWnd.nut" as chooseAmountWnd
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/items/workshop/workshop.nut" import getCustomLocalizationPresets, getRandomEffect, getEffectOnStartCraftPresetById
+from "%scripts/userstat/userstatItemsRewards.nut" import userstatItemsListLocId
+from "%scripts/userstat/userstat.nut" import getUserstatItemRewardData
+from "%scripts/items/autoConsumeItems.nut" import autoConsumeItems
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/showExternalTrophyRewardWnd.nut" import showExternalTrophyRewardWnd
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
+from "%scripts/items/buyAndOpenChestWndStyles.nut" import hasBuyAndOpenChestWndStyle
+from "%scripts/items/itemsManager.nut" import markInventoryUpdate
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getInventoryList
+from "%scripts/items/trophyReward.nut" import isShowItemInTrophyReward
+from "%scripts/items/prizesView.nut" import getPrizesListText, getPrizesListView
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "string" import format
@@ -7,26 +25,8 @@ from "math" import floor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let time = require("%scripts/time.nut")
-let { getCustomLocalizationPresets, getRandomEffect, getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
-let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
-let { userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
-let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
-let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
-let { markInventoryUpdate } = require("%scripts/items/itemsManager.nut")
-let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
-let { isShowItemInTrophyReward } = require("%scripts/items/trophyReward.nut")
-let { getPrizesListText, getPrizesListView } = require("%scripts/items/prizesView.nut")
 
 const markRecipeSaveId = "markRecipe/"
 
@@ -73,7 +73,7 @@ function getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes) {
   let isFullRecipesList = recipes.len() <= maxRecipes
   local recipesToShow = recipes
   if (!hasFakeRecipes)
-    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
+    recipesToShow.sortby(@(a) a.sortReqQuantityComponents)
   if (isFullRecipesList)
     return recipesToShow
 
@@ -890,7 +890,7 @@ ExchangeRecipes = class {
 
 }
 
-return {
+return freeze({
   ExchangeRecipes
   hasFakeRecipesInList
   getRequirementsMarkup
@@ -900,4 +900,4 @@ return {
   tryUseRecipeSeveralTime
   getRecipesComponents
   exchangeSeveralRecipes
-}
+})

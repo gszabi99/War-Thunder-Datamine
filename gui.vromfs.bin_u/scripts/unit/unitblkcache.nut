@@ -14,7 +14,7 @@ function getBlkCached(path, unitName, fn) {
   return blkCache.blks[path]
 }
 
-return {
+return freeze({
   blkFromPathCachedByUnit = @(path, unitName) getBlkCached(path, unitName, blkFromPath)
   blkOptFromPathCachedByUnit = @(path, unitName) getBlkCached(path, unitName, blkOptFromPath)
-}
+})

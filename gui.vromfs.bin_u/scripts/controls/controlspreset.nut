@@ -1,5 +1,6 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/controls/controlsPresets.nut" import getControlsPresetFilename, parseControlsPresetFileName
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%sqstd/datablock.nut" import copyParamsToTable, eachBlock, eachParam, blkFromPath
 from "%sqstd/string.nut" import startsWith
@@ -7,8 +8,6 @@ from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
-
-let { getControlsPresetFilename, parseControlsPresetFileName } = require("%scripts/controls/controlsPresets.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const FALLBACKS_ACTUAL_VERSION = 3

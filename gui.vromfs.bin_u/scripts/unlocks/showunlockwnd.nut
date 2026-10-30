@@ -1,11 +1,12 @@
+from "%scripts/debriefing/checkRankUpWindow.nut" import checkRankUpWindow
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import isHandlerInScene
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/userLog/userlogUtils.nut" import disableSeenUserlogs
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 
 let delayedUnlockWnd = []
 function guiStartUnlockWnd(config) {
@@ -42,8 +43,8 @@ function checkDelayedUnlockWnd(prevUnlockData = null) {
     checkDelayedUnlockWnd(unlockData)
 }
 
-return {
+return freeze({
   guiStartUnlockWnd
   checkDelayedUnlockWnd
   showUnlockWnd
-}
+})

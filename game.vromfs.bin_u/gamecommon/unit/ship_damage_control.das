@@ -131,7 +131,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
     if (ship != null && !unit.isDelayed && repair_system_remaining_repair_time <= 0.0f &&
         !ship.isVeryFewCrew && !ship.isCoverDestroyed && is_repair_needed(unit,
           repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
-          repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp, true, true, false))
+          repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp, true, true, false, false))
       sendEvent(eid, EventRepairSystemRequestRepair(repair = true))
       repair_system_auto_check_delay = 5.0f
     else
@@ -150,12 +150,12 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
                                 var ship_damage_control__extinguishSpeedMult : float&;
                                 var ship_damage_control__unwateringSpeedMult : float&;
 
-                                repair_system_remaining_repair_time : float;
                                 fire_damage__isBurn : bool;
-                                extinguish_system_is_assisting : bool;
-                                extinguish_system_extinguish_time_end : float;
                                 ship__repairBreachesRemainingTime : float;
-                                ship__unwateringRemainingTime : float)
+                                ship__unwateringRemainingTime : float;
+                                repair_system_remaining_repair_time : float = -1.0f;
+                                extinguish_system_is_assisting : bool = false;
+                                extinguish_system_extinguish_time_end : float = -1.0f)
   let unit = unit__ref.unit
   if unit.isDelayed
     return

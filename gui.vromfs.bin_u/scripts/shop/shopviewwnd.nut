@@ -1,17 +1,16 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/shop/shop.nut" import ShopMenuHandler
+from "%scripts/promo/promoActions.nut" import addPromoAction
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value
+from "%appGlobals/clientState/touchScreen.nut" import isSmallScreen
+from "%scripts/user/playerCountry.nut" import switchProfileCountry, profileCountrySq
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
 from "%scripts/dagui_library.nut" import *
 
-
-let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
-let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
-let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let ShopViewWnd = class (ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -86,4 +85,4 @@ function openShopViewWndFromPromo(params) {
 
 addPromoAction("show_unit", @(_handler, params, _obj) openShopViewWndFromPromo(params))
 
-return { ShopViewWnd }
+return freeze({ ShopViewWnd })

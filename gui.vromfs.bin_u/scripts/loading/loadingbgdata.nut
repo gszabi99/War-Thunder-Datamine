@@ -1,11 +1,14 @@
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%sqStdLibs/helpers/u.nut" as u
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%scripts/crossModuleEvents.nut" import GAME_LOCALIZATION_CHANGED
+from "%scripts/langUtils/language.nut" import getLanguageName
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/unlocks/unlocksModule.nut" import canDoUnlock, isUnlockOpened
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "%sqstd/platform.nut" import platformId
 from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
-let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
-let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 
 
@@ -53,11 +56,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 
 
 
-
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { canDoUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 let createBgData = @() {
   list = {}
@@ -195,7 +194,7 @@ function filterLoadingBgData(bgData) {
 
 function getFilterBgList() {
   initOnce()
-  let curBgData = isLoggedIn.get() ? bgDataAfterLogin : bgDataBeforeLogin
+  let curBgData = hasFullLoginState.get() ? bgDataAfterLogin : bgDataBeforeLogin
   return isProfileReceived.get()
     ? curBgData.list.keys().filter(@(id) isBgUnlocked(id) || isBgUnlockableByUser(id))
     : curBgData.list.keys().filter(@(id) !isBgUnlockable(id))
@@ -203,7 +202,7 @@ function getFilterBgList() {
 
 function getCurLoadingBgData() {
   initOnce()
-  return filterLoadingBgData(isLoggedIn.get() ? bgDataAfterLogin : bgDataBeforeLogin)
+  return filterLoadingBgData(hasFullLoginState.get() ? bgDataAfterLogin : bgDataBeforeLogin)
 }
 
 function getLoadingBgIdByUnlockId(unlockId) {
@@ -227,7 +226,7 @@ subscriptions.addListenersWithoutEnv({
   [GAME_LOCALIZATION_CHANGED] = @(_p) reset()
 })
 
-return {
+return freeze({
   getCurLoadingBgData
   getLoadingBgIdByUnlockId
   getLoadingBgName
@@ -239,4 +238,4 @@ return {
   getFilterBgList
   isBgUnlocked
   getUnlockIdByLoadingBg
-}
+})

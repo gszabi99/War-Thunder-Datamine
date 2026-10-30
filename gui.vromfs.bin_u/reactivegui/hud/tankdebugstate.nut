@@ -15,6 +15,7 @@ let tankDebugState = {
   GearMaxSpeed = Watched([])
   GearRatio = Watched([])
   DDGearRatio = Watched(0.0)
+  SteerType = Watched("")
   LTrackSpeed = Watched(0.0)
   RTrackSpeed = Watched(0.0)
   HillClimbKx = Watched(0.0)
@@ -50,4 +51,4 @@ interopGen({
   postfix = "Update"
 })
 
-return tankDebugState
+return freeze(tankDebugState)

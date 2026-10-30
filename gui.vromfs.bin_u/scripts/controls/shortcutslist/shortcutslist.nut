@@ -1,11 +1,9 @@
+import "%scripts/controls/shortcutsList/shortcutTemplate.nut" as shortcutTemplate
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
 from "controls" import getShortcutGroupMask
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 from "types" import String
-
-let shortcutTemplate = require("%scripts/controls/shortcutsList/shortcutTemplate.nut")
-let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let shortcutsListTypes = {
   types = []
@@ -36,16 +34,13 @@ function addShortcuts(shArray) {
   }
 }
 
-function updateShortcutsList(value) {
-  foreach (list in value)
+function addShortcutModules(modules) {
+  foreach (list in modules)
     addShortcuts(list)
 }
-
-updateShortcutsList(shortcutsModulesList.get())
-
-shortcutsModulesList.subscribe(@(v) updateShortcutsList(v))
 
 return {
   shortcutsList = shortcutsListTypes.types
   getShortcutById = @(shortcutId) shortcutsListTypes?[shortcutId]
+  addShortcutModules
 }

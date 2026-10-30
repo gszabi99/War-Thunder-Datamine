@@ -1,4 +1,5 @@
 require ecs
+require math
 require %appGame.wt_events
 require GeomNodeTree
 require AnimV20
@@ -40,9 +41,18 @@ def human_hitmark_position_update_es(evt : UpdateStageInfoAct;
     
     let isScopeFound = find_query() <| $ [es(REQUIRE=gunScope)] (eid aka scope_eid : EntityId; animchar_attach__attachedTo : EntityId)
       if animchar_attach__attachedTo == human_weap__currentGunEid
-        query(scope_eid) <| $ [es] (gun_scope_hitmark__nodeId : int; animchar : AnimcharBaseComponent)
+        query(scope_eid) <| $ [es] (gun_scope_hitmark__nodeId : int;
+                                    gun_scope_hitmark__NodeName : string;
+                                    animchar : AnimcharBaseComponent;
+                                    gunmod__crosshairNode : string = "";
+                                    gunmod__crosshairParallaxDistance : float = 50.0)
           if gun_scope_hitmark__nodeId >= 0
-            let pos = *animchar.nodeTree |> geomtree_getNodeWpos(gun_scope_hitmark__nodeId)
+            var nodeTm : float3x4
+            *animchar.nodeTree |> geomtree_getNodeWtmScalar(gun_scope_hitmark__nodeId, nodeTm)
+            var pos = nodeTm[3]
+            if gun_scope_hitmark__NodeName == gunmod__crosshairNode
+              let axisY = normalize(nodeTm[1])
+              pos += (dot(axisY, transform[0]) < 0.0 ? -axisY : axisY) * gunmod__crosshairParallaxDistance
             set_hitmark_position(pos + moveTiltOffs)
         return true
       return false

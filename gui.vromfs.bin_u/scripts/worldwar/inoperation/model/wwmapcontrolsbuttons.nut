@@ -1,14 +1,13 @@
+import "%scripts/worldWar/inOperation/wwTransportManager.nut" as transportManager
+import "%scripts/worldWar/inOperation/wwActionModesManager.nut" as actionModesManager
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName, getSelectedArmies
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-
-let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
-let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getArmyByName, getSelectedArmies } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 enum ORDER {
   ENTRENCH
@@ -204,7 +203,7 @@ enumsAddTypes(g_ww_map_controls_buttons, {
   }
 }, null, "name")
 
-g_ww_map_controls_buttons.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
+g_ww_map_controls_buttons.types.sortby(@(a) a.sortOrder)
 
 g_ww_map_controls_buttons.setSelectedObjectCode <- function setSelectedObjectCode(code) {
   this.selectedObjectCode = code

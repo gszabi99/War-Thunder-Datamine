@@ -257,7 +257,7 @@ def init_drone_speed_es(evt : Event;
     plane_net_phys.phys |> flight_model_setVelocityRough(startDir * drone__start_velocity_speed)
 
 
-[es(tag=server, after=drone_launcher_on_start_launch_request)]
+[es(tag=server, no_order)]
 def drone_launcher_launching_server(info : UpdateStageInfoAct;
                                     drone_launcher__drone : EntityId;
                                     drone_launcher__nextUseAtTime : float;

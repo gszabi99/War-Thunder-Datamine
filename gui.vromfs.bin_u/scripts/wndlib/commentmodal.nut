@@ -1,9 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let commentModalHandler = class (BaseGuiHandlerWT) {
   function initScreen() {
@@ -59,6 +59,6 @@ function openCommentModal(owner = null, titleText = null, buttonText = null, cal
   })
 }
 
-return {
+return freeze({
   openCommentModal
-}
+})

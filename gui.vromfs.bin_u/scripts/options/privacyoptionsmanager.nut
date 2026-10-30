@@ -1,12 +1,10 @@
+from "%scripts/user/premium.nut" import havePremium
+from "%scripts/options/optionsExt.nut" import set_option, get_option, registerOption
+from "%scripts/options/optionsExtNames.nut" import USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_CLAN
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/gamercard/gamercard.nut" import updateGamercards
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
-
-let { havePremium } = require("%scripts/user/premium.nut")
-let { set_option, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_CLAN
-} = require("%scripts/options/optionsExtNames.nut")
-let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 local privacyOptionsList = [
   USEROPT_DISPLAY_MY_REAL_NICK

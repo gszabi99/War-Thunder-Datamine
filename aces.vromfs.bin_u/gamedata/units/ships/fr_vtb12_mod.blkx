@@ -1022,6 +1022,7 @@
     "engines": {
       "maxSpeed": 23.15,
       "maxReverseSpeed": 7.2,
+      "horsePowers": 2120.0,
       "waterResistanceAtStopK": 0.3,
       "speedToTime": {
         "row": [
@@ -1159,6 +1160,64 @@
         ]
       }
     }
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeedKts": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        6.4,
+        0.0
+      ],
+      [
+        12.9,
+        100.0
+      ],
+      [
+        19.3,
+        200.0
+      ],
+      [
+        25.7,
+        400.0
+      ],
+      [
+        32.2,
+        700.0
+      ],
+      [
+        38.6,
+        1100.0
+      ],
+      [
+        45.0,
+        1400.0
+      ]
+    ],
+    "passiveDetectionRangeByThrottle": [
+      [
+        -3.0,
+        200.0
+      ],
+      [
+        -2.0,
+        100.0
+      ],
+      [
+        -1.0,
+        100.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        0.0
+      ]
+    ]
   },
   "shipDamageControl": {
     "shipDamageControlEnabled": true
@@ -2160,29 +2219,33 @@
   },
   "breaches": {
     "repairSpeed": 15.0,
-    "waterMassVel": -5500.0,
-    "waterMassMult": 55.0,
     "sizeToRepair": [
       0.01,
-      2.0,
-      10.0,
-      300.0
+      7.5,
+      30.0,
+      537.0
     ],
-    "additionalWaterDeathThreshold": 140000.0,
+    "waterMassVel": -4980.0,
+    "waterMassMult": 62.0,
+    "additionalWaterDeathThreshold": 220600.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 43.0,
+    "maxHeelingAngle": 35.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
+    "maxTrimmingAngle": 10.5,
+    "maxTrimmingTime": 20.0,
+    "criticalTrimmingAnglePercent": 0.75,
+    "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.526
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.6,
+        "weight": 0.35,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -2199,19 +2262,31 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.5
+              "critWaterLevel": 0.47
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.7
+              "critWaterLevel": 0.47
             }
           ]
         }
       },
       {
         "part": "compartment_03_dm",
-        "weight": 0.8,
-        "maxWaterAlive": 1.0
+        "weight": 0.54,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
+        }
       }
     ]
   },
@@ -4158,7 +4233,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -4232,7 +4307,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -4309,12 +4384,12 @@
     "preset": [
       {
         "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/fr_vtb12_mod_torpedoes.blk",
+        "blk": "gamedata/units/ships/weaponPresets/fr_vtb12_mod_torpedoes.blk",
         "reqModification": "ship_torpedoes"
       },
       {
         "name": "fr_vtb12_default",
-        "blk": "gameData/units/ships/weaponPresets/fr_vtb12_mod_default.blk"
+        "blk": "gamedata/units/ships/weaponPresets/fr_vtb12_mod_default.blk"
       }
     ]
   },

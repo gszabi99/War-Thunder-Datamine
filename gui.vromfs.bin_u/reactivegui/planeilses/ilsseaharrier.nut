@@ -29,13 +29,13 @@ let HarrierAoa = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, 0, 0, 0, 0],
-    [VECTOR_LINE, 0, 20, 0, 20],
-    [VECTOR_LINE, 0, 40, 0, 40],
-    [VECTOR_LINE, 0, 60, 0, 60],
-    [VECTOR_LINE, 100, 60, 100, 60],
+    const [VECTOR_LINE, 0, 0, 0, 0],
+    const [VECTOR_LINE, 0, 20, 0, 20],
+    const [VECTOR_LINE, 0, 40, 0, 40],
+    const [VECTOR_LINE, 0, 60, 0, 60],
+    const [VECTOR_LINE, 100, 60, 100, 60],
     [VECTOR_WIDTH, baseLineWidth * IlsLineScale.get()],
-    [VECTOR_LINE, -20, 100, 100, 100],
+    const [VECTOR_LINE, -20, 100, 100, 100],
     [VECTOR_LINE, 50, HarrierAoaMarkH.get(), -50, HarrierAoaMarkH.get() - 5],
     [VECTOR_LINE, 50, HarrierAoaMarkH.get(), -50, HarrierAoaMarkH.get() + 5],
     [VECTOR_LINE, -20, 100, -20, HarrierAoaMarkH.get()]
@@ -63,17 +63,17 @@ let HarrierVerticalSpeed = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * 1 * IlsLineScale.get()
   commands = [
-    [VECTOR_LINE, -50, 0, 50, 0],
-    [VECTOR_LINE, -50, 12, 50, 12],
-    [VECTOR_LINE, -50, 25, 50, 25],
-    [VECTOR_LINE, -25, 37, 50, 37],
+    const [VECTOR_LINE, -50, 0, 50, 0],
+    const [VECTOR_LINE, -50, 12, 50, 12],
+    const [VECTOR_LINE, -50, 25, 50, 25],
+    const [VECTOR_LINE, -25, 37, 50, 37],
 
-    [VECTOR_LINE, -150, 50, 100, 50],
+    const [VECTOR_LINE, -150, 50, 100, 50],
 
-    [VECTOR_LINE, -25, 62, 50, 62],
-    [VECTOR_LINE, -50, 75, 50, 75],
-    [VECTOR_LINE, -50, 87, 50, 87],
-    [VECTOR_LINE, -50, 100, 50, 100],
+    const [VECTOR_LINE, -25, 62, 50, 62],
+    const [VECTOR_LINE, -50, 75, 50, 75],
+    const [VECTOR_LINE, -50, 87, 50, 87],
+    const [VECTOR_LINE, -50, 100, 50, 100],
     [VECTOR_LINE, 5, HarrierVSMarkH.get(), 100, HarrierVSMarkH.get() - 5],
     [VECTOR_LINE, 5, HarrierVSMarkH.get(), 100, HarrierVSMarkH.get() + 5],
     [VECTOR_LINE, 100, 50, 100, HarrierVSMarkH.get()]
@@ -88,7 +88,7 @@ let AircraftSymbol = @() {
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_ELLIPSE, 0, 0, 20, 20],
     [VECTOR_LINE, -50, 0, -20, 0],
     [VECTOR_LINE, 20, 0, 50, 0],
@@ -104,7 +104,7 @@ let VSTOLAircraftSymbol = @() {
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_ELLIPSE, 0, 0, 20, 14],
     [VECTOR_LINE, -50, 0, -20, 0],
     [VECTOR_LINE, 20, 0, 50, 0],
@@ -122,11 +122,11 @@ let HarrierClimbAngle = @() {
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = isClimb.get() ? [
+  commands = isClimb.get() ? const [
     [VECTOR_LINE, -20, 0, 0, -35],
     [VECTOR_LINE, 0, -35, 20, 0],
     [VECTOR_LINE, 20, 0, -20, 0]
-  ] : [
+  ] : const [
     [VECTOR_LINE, -20, 0, 0, 35],
     [VECTOR_LINE, 0, 35, 20, 0],
     [VECTOR_LINE, 20, 0, -20, 0]
@@ -219,12 +219,12 @@ function HarrierCompass(w, h) {
   return @() {
     pos = const [pw(0), ph(0)]
     size = const [pw(100), ph(100)]
-    watch = [IlsColor]
+    watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * IlsLineScale.get()
     color = IlsColor.get()
-    children = [compassWrap(w, h, 0.85, generateCompassMarkSUM)]
-    commands = [
+    children = compassWrap(w, h, 0.85, generateCompassMarkSUM)
+    commands = const [
        [VECTOR_LINE, 50, 93, 50, 100],
     ]
   }
@@ -251,56 +251,49 @@ function generatePitchLine(num) {
     size = const [pw(80), ph(50)]
     pos = const [pw(10), 0]
     flow = FLOW_VERTICAL
-    children = num == 0 ? [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, -10, 0, 30, 0],
-          [VECTOR_LINE, 30, 0, 30, 10],
-          [VECTOR_LINE, 70, 0, 70, 10],
-          [VECTOR_LINE, 70, 0, 110, 0]
-        ]
-        children = [angleTxt(-5, true, 1, pw(-15)), angleTxt(-5, false, 1, pw(14))]
-      }
-    ] : (num == 90 || num == -85 ? [
-        @() {
-          size = FLEX
-          watch = IlsColor
-          rendObj = ROBJ_VECTOR_CANVAS
-          lineWidth = baseLineWidth * IlsLineScale.get()
-          color = IlsColor.get()
-          commands = [
-            [VECTOR_LINE, 50, sign > 0 ? 0 : 100, 50, sign > 0 ? 30 : 70],
-            [VECTOR_LINE, 35, sign > 0 ? 10 : 92, 65, sign > 0 ? 10 : 92],
-            (sign < 0 ? [VECTOR_LINE, 40, 85, 60, 85] : [])
-          ]
-        }
-      ] :
-    [
-      @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        commands = [
-          [VECTOR_LINE, -10, 5 * sign, -10, 0],
-          [VECTOR_LINE, -10, 0, num > 0 ? 30 : -2, 0],
-          (num < 0 ? [VECTOR_LINE, 6, 0, 14, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 22, 0, 30, 0] : []),
-          [VECTOR_LINE, 110, 5 * sign, 110, 0],
-          [VECTOR_LINE, 110, 0, num > 0 ? 70 : 102, 0],
-          (num < 0 ? [VECTOR_LINE, 94, 0, 86, 0] : []),
-          (num < 0 ? [VECTOR_LINE, 78, 0, 70, 0] : [])
-        ]
-        children = newNum <= 90 ? [angleTxt(newNum, true, 1, pw(-9)), angleTxt(newNum, false, 1, pw(9))] : null
-      }
-    ])
+    children = num == 0 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, -10, 0, 30, 0],
+        [VECTOR_LINE, 30, 0, 30, 10],
+        [VECTOR_LINE, 70, 0, 70, 10],
+        [VECTOR_LINE, 70, 0, 110, 0]
+      ]
+      children = [angleTxt(-5, true, 1, pw(-15)), angleTxt(-5, false, 1, pw(14))]
+    } : (num == 90 || num == -85 ? @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        [VECTOR_LINE, 50, sign > 0 ? 0 : 100, 50, sign > 0 ? 30 : 70],
+        [VECTOR_LINE, 35, sign > 0 ? 10 : 92, 65, sign > 0 ? 10 : 92],
+        (sign < 0 ? const [VECTOR_LINE, 40, 85, 60, 85] : const [])
+      ]
+    } : @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      commands = [
+        [VECTOR_LINE, -10, 5 * sign, -10, 0],
+        [VECTOR_LINE, -10, 0, num > 0 ? 30 : -2, 0],
+        (num < 0 ? const [VECTOR_LINE, 6, 0, 14, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 22, 0, 30, 0] : const []),
+        [VECTOR_LINE, 110, 5 * sign, 110, 0],
+        [VECTOR_LINE, 110, 0, num > 0 ? 70 : 102, 0],
+        (num < 0 ? const [VECTOR_LINE, 94, 0, 86, 0] : const []),
+        (num < 0 ? const [VECTOR_LINE, 78, 0, 70, 0] : const [])
+      ]
+      children = newNum <= 90 ? [angleTxt(newNum, true, 1, pw(-9)), angleTxt(newNum, false, 1, pw(9))] : null
+    })
   }
 }
 
@@ -309,25 +302,23 @@ function LaunchLine(width, height) {
     size = [width * 0.4, height * 0.5]
     pos = const [pw(30), ph(40)]
     flow = FLOW_VERTICAL
-    children = [
-       @() {
-        size = FLEX
-        watch = IlsColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * IlsLineScale.get()
-        color = IlsColor.get()
-        padding = const [0, 10]
-        commands = [
-          [VECTOR_LINE, 25, 0, 35, 0],
-          [VECTOR_LINE, 25, 0, 18, 4],
-          [VECTOR_LINE, 25, 0, 18, -4],
+    children = @() {
+      size = FLEX
+      watch = IlsColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      color = IlsColor.get()
+      padding = const [0, 10]
+      commands = const [
+        [VECTOR_LINE, 25, 0, 35, 0],
+        [VECTOR_LINE, 25, 0, 18, 4],
+        [VECTOR_LINE, 25, 0, 18, -4],
 
-          [VECTOR_LINE, 65, 0, 75, 0],
-          [VECTOR_LINE, 75, 0, 82, -4],
-          [VECTOR_LINE, 75, 0, 82, 4]
-        ]
-      }
-    ]
+        [VECTOR_LINE, 65, 0, 75, 0],
+        [VECTOR_LINE, 75, 0, 82, -4],
+        [VECTOR_LINE, 75, 0, 82, 4]
+      ]
+    }
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -371,7 +362,7 @@ function HorizonLines(width, height) {
 let HarrierYawIndicator = @() {
   pos = const [pw(0), ph(15)]
   size = FLEX
-  children = [yawIndicator]
+  children = yawIndicator
 }
 
 let AimMark = @() {
@@ -385,7 +376,7 @@ let AimMark = @() {
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = BombingMode.get() ?
-      [
+      const [
         [VECTOR_LINE, -50, 0, 50, 0],
 
         [VECTOR_LINE, 150, 0, 150, -80],
@@ -395,7 +386,7 @@ let AimMark = @() {
         [VECTOR_LINE, -250, 0, -250, -80],
         [VECTOR_LINE, -350, 0, -350, -80],
       ]:
-      [
+      const [
         [VECTOR_LINE, 0, 0, 0, 0],
         [VECTOR_LINE, 0, 50, 50, 0],
         [VECTOR_LINE, 50, 0, 0, -50],
@@ -413,7 +404,7 @@ let AimMark = @() {
 }
 
 let CCIPLine = @(){
-  watch = [TargetPosValid]
+  watch = TargetPosValid
   size = FLEX
   children = TargetPosValid.get() ? {
     size = [baseLineWidth * IlsLineScale.get(), ph(98)]
@@ -429,7 +420,7 @@ let CCIPLine = @(){
 }
 
 let DepressionCarret = @(){
-  watch = [TargetPosValid]
+  watch = TargetPosValid
   size = FLEX
   children = TargetPosValid.get() ? {
     size = const [pw(50), ph(50)]
@@ -438,7 +429,7 @@ let DepressionCarret = @(){
     lineWidth = baseLineWidth * IlsLineScale.get()
     color = IlsColor.get()
     behavior = Behaviors.RtPropUpdate
-    commands = [
+    commands = const [
       [VECTOR_LINE, -15, 0, -20, 5],
       [VECTOR_LINE, -15, 0, -20, -5],
       [VECTOR_LINE, 15, 0, 20, 5],
@@ -544,7 +535,7 @@ let RangeOctagon = @() {
 
 let WeaponHudCode = @() {
   rendObj = ROBJ_TEXT
-  watch = [CurWeaponName]
+  watch = CurWeaponName
   pos = const [pw(83), ph(24)]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_LEFT
@@ -562,7 +553,7 @@ let TargetCross = @() {
   size = const [pw(2.5), ph(2.5)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = const [
     [VECTOR_LINE, 0, 50, 0, 100],
     [VECTOR_LINE, 0, -50, 0, -100],
     [VECTOR_LINE, 50, 0, 100, 0],
@@ -574,7 +565,7 @@ let RadarTargetCross = @()
 {
   watch = RadarTargetPosValid
   size = FLEX
-  children = [(RadarTargetPosValid.get() ? TargetCross : null)]
+  children = (RadarTargetPosValid.get() ? TargetCross : null)
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
@@ -647,10 +638,10 @@ let RadarTargetMarkerCirle = @() {
   color = IlsColor.get()
   fillColor = Color(0,0,0,0)
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = RadarTargetPosValid.get() ? [
+  commands = RadarTargetPosValid.get() ? const [
     [VECTOR_ELLIPSE, 0, 0, 100, 100],
   ] : null
-  children = [RadarTargetVelDirection()]
+  children = RadarTargetVelDirection()
 }
 
 
@@ -658,35 +649,32 @@ let RadarTargetMarkerCirle = @() {
 let RocketLockTargetDiamond = @() {
   watch = IlsTrackerVisible
   size = FLEX
-  children = IlsTrackerVisible.get() ?
-  [
-    @() {
-      watch = [IlsColor, GuidanceLockState]
-      size = const [pw(10), ph(10)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = GuidanceLockState.get() > GuidanceLockResult.RESULT_LOCKING ? [
-        [VECTOR_POLY, -50, 0, 0, 50, 50, 0, 0, -50]
-      ] : [
-        [VECTOR_LINE, 25, 25, 50, 50],
-        [VECTOR_LINE, -25, -25, -50, -50],
-        [VECTOR_LINE, 25, -25, 50, -50],
-        [VECTOR_LINE, -25, 25, -50, 50],
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = [IlsTrackerX.get(), IlsTrackerY.get()]
-        }
+  children = IlsTrackerVisible.get() ? @() {
+    watch = [IlsColor, GuidanceLockState]
+    size = const [pw(10), ph(10)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = GuidanceLockState.get() > GuidanceLockResult.RESULT_LOCKING ? const [
+      [VECTOR_POLY, -50, 0, 0, 50, 50, 0, 0, -50]
+    ] : const [
+      [VECTOR_LINE, 25, 25, 50, 50],
+      [VECTOR_LINE, -25, -25, -50, -50],
+      [VECTOR_LINE, 25, -25, 50, -50],
+      [VECTOR_LINE, -25, 25, -50, 50],
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [IlsTrackerX.get(), IlsTrackerY.get()]
       }
     }
-  ] : null
+  } : null
 }
 
 function RadarRangeDecagon() {
-  let commands = getPolygonByDistance(RadarTargetDist.get() * metrToNavMile, 1, 10, {x = 0, y = 0});
+  let commands = getPolygonByDistance(RadarTargetDist.get() * metrToNavMile, 1, 10, const {x = 0, y = 0});
 
   for (local i = 0; i < 10; i++) {
     let angle = (2 * PI * i) / 10
@@ -747,8 +735,8 @@ let RocketLaunchPrompt = @() {
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
   fillColor = Color(0,0,0,0)
-  commands = [[VECTOR_POLY, -30, -10, -30, 10, 30, 10, 30, -10]]
-  children = [RocketLaunchPromptText]
+  commands = const [[VECTOR_POLY, -30, -10, -30, 10, 30, 10, 30, -10]]
+  children = RocketLaunchPromptText
 }
 
 
@@ -767,7 +755,7 @@ let HarrierRadarData = @() {
 
 function BasicSeaHarrier(width, height) {
   return @() {
-    watch = [CCIPMode]
+    watch = CCIPMode
     size = [width, height]
     children = [
       HarrierAoa,
@@ -798,7 +786,7 @@ function HarrierAAM(width, height) {
 function HarrierAirGuns(width, height) {
   return @() {
     size = [width, height]
-    watch = [AirCannonMode]
+    watch = AirCannonMode
     children = AirCannonMode.get() ? [
       BulletsImpactLine,
       RangingCircle,
@@ -821,7 +809,7 @@ function HarrierGroundGunsAndBombs(width, height) {
 
 function HarrierGeneralFlight(width, height) {
   return @() {
-    watch = [isTakeOffOrLanding]
+    watch = isTakeOffOrLanding
     size = [width, height]
     children = !isTakeOffOrLanding.get() ? [
       !AAMRocketMode.get() ? AircraftSymbol : null,
@@ -832,7 +820,7 @@ function HarrierGeneralFlight(width, height) {
 
 function HarrierLandingAndTakeOff(width, height) {
   return @() {
-    watch = [isTakeOffOrLanding]
+    watch = isTakeOffOrLanding
     size = [width, height]
     children = isTakeOffOrLanding.get() ? [
       HarrierYawIndicator,

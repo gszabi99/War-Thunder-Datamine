@@ -1,18 +1,17 @@
+from "%scripts/social/crossplay.nut" import getSeparateLeaderboardPlatformValue
+from "%scripts/user/features.nut" import getFeaturePack
+from "%scripts/onlineShop/onlineShopState.nut" import getFeaturePurchaseData
+from "%sqstd/platform.nut" import is_gdk, isSony
+from "%scripts/clientState/contentPacks.nut" import checkPackageFull, havePackage
+from "%scripts/user/myStatsState.nut" import isNewbieEventId
+from "%scripts/userstat/userstat.nut" import getUserstatTableData
+from "%scripts/time.nut" import buildDateStrShort, buildTimeStr, TIME_DAY_IN_SECONDS
 from "%sqStdLibs/helpers/u.nut" import isEmpty
-from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, GAME_EVENT_TYPE
 from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 
-let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
-let { getFeaturePack } = require("%scripts/user/features.nut")
-let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { checkPackageFull, havePackage } = require("%scripts/clientState/contentPacks.nut")
-let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
-let { getUserstatTableData } = require("%scripts/userstat/userstat.nut")
-let { buildDateStrShort, buildTimeStr, TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -118,7 +117,8 @@ function getEventReqPack(event, checkFeature = false) {
   let feature = getEventReqFeature(event)
   if (isEmpty(feature) || (checkFeature && !hasFeature(feature)))
     return null
-  return getFeaturePack(feature)
+  let packString = getFeaturePack(feature)
+  return packString ? packString.replace(";", ",").split(",") : null
 }
 
 
@@ -127,7 +127,8 @@ function checkEventFeaturePacks(event, isSilent = false) {
   let pack = getEventReqPack(event)
   if (!pack)
     return true
-  return checkPackageFull(pack, isSilent)
+
+  return pack.findvalue(@(p) !checkPackageFull(p, isSilent)) == null
 }
 
 let getCurGameModeMinMRankForNightBattles = @(event) event?.minMRankForNightBattles
@@ -137,7 +138,7 @@ let hasSmallTeamsGameModes = @(event) event?.minMRankForSmallTeamsBattles != nul
 
 let isEventXboxOnlyAllowed =@(event) (event?.xboxOnlyAllowed ?? false) && is_gdk
 
-let isEventPS4OnlyAllowed =@(event) (event?.ps4OnlyAllowed ?? false) && isPlatformSony
+let isEventPS4OnlyAllowed =@(event) (event?.ps4OnlyAllowed ?? false) && isSony
 
 let isEventPlatformOnlyAllowed =@(event) isEventXboxOnlyAllowed(event) || isEventPS4OnlyAllowed(event)
 

@@ -1,14 +1,13 @@
+import "%sqstd/platform.nut" as platform
 from "%scripts/dagui_library.nut" import *
 
-let platform = require("%scripts/clientState/platform.nut")
-
-if (platform.isPlatformPS4)
+if (platform.isPS4)
   return {
     title = "#controls/help/dualshock4"
     blk = "%gui/help/controllerDualshock.blk"
     btnBackLocId = "controls/help/dualshock4_btn_share"
   }
-else if (platform.isPlatformPS5)
+else if (platform.isPS5)
   return {
     title = "#controls/help/dualsense"
     blk = "%gui/help/controllerDualsense.blk"

@@ -743,6 +743,9 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
+      "driver_controls_dm": {
+        "armorThrough": 15.0
+      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -818,6 +821,14 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -2572,7 +2583,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "recoilOffset": 0.37,
@@ -2584,6 +2595,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "autoLoader": true,
         "speedYaw": 40.0,
         "speedPitch": 30.0,
@@ -2675,7 +2690,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2704,9 +2719,7 @@
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "secondGunnerDm": "commander_dm"
         },
         "limits": {
           "yaw": [
@@ -2722,7 +2735,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
         "emitter": "emtr_mg_flame_02",
         "flash": "emtr_mg_flame_02",
         "useEmitter": true,
@@ -2750,7 +2763,21 @@
           "head": "bone_mg_aa_h",
           "gun": "bone_mg_aa_v",
           "gunnerDm": "commander_dm",
-          "hasNightVision": false
+          "hasNightVision": false,
+          "verDriveDm": [
+            "drive_turret_v_01_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_01_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2766,7 +2793,7 @@
       {
         "trigger": "gunner4",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2821,8 +2848,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "fr_leclerc_azur_default",
-      "blk": "gameData/units/tankModels/weaponPresets/fr_leclerc_azur_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3866,7 +3893,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/120mm_GIAT_CN120_26_F1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "recoilOffset": 0.37,
@@ -3878,6 +3905,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "autoLoader": true,
               "speedYaw": 40.0,
               "speedPitch": 30.0,
@@ -3969,7 +4000,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun_for_leclerc.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3998,9 +4029,7 @@
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "secondGunnerDm": "commander_dm"
               },
               "limits": {
                 "yaw": [
@@ -4016,7 +4045,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
               "emitter": "emtr_mg_flame_02",
               "flash": "emtr_mg_flame_02",
               "useEmitter": true,
@@ -4044,7 +4073,21 @@
                 "head": "bone_mg_aa_h",
                 "gun": "bone_mg_aa_v",
                 "gunnerDm": "commander_dm",
-                "hasNightVision": false
+                "hasNightVision": false,
+                "verDriveDm": [
+                  "drive_turret_v_01_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_01_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4060,7 +4103,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4114,7 +4157,7 @@
             {
               "trigger": "gunner3",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -4279,6 +4322,7 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
+      "backupManualLoading": true,
       "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 13.0,
@@ -4289,7 +4333,10 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "autoLoad": true,
-          "autoloader": "autoloader_dm",
+          "autoloader": [
+            "autoloader_dm",
+            "power_system_dm"
+          ],
           "ammo_turret_05_dm": {
             "count": 1
           },
@@ -4447,10 +4494,6 @@
   "xrayOverride": {
     "gun_trunnion_dm": {
       "overrideTitle": "gun_trunnion",
-      "hideDescription": true
-    },
-    "fire_control_system_dm": {
-      "overrideTitle": "fire_control_system",
       "hideDescription": true
     },
     "turret_hydraulics_dm": {

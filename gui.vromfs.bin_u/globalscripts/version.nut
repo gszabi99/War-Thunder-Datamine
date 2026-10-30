@@ -9,4 +9,4 @@ foreach (l in f.split("\n")) {
     break
   }
 }
-return { script_protocol_version = version }
+return freeze({ script_protocol_version = version })

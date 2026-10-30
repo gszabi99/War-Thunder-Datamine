@@ -176,6 +176,3 @@ class WeaponSlots
 def private empty(self : WeaponsConstSpan&) : bool
   return self.length() <= 0
 
-
-def private empty(self : WeaponsSpan&) : bool
-  return self.length() <= 0

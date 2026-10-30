@@ -1,9 +1,8 @@
+import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
 from "worldwar" import wwGetPlayerSide, wwGetZoneName
 from "%scripts/dagui_natives.nut" import ww_turn_on_sector_sprites, ww_get_zone_idx_world, ww_turn_off_sector_sprites
 from "%scripts/dagui_library.nut" import *
-
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let savedAirfields = {}
 
@@ -43,7 +42,7 @@ function updateMapIcons() {
   savedAirfields.__update(curAirfields)
 }
 
-return {
+return freeze({
   reset
   updateMapIcons
-}
+})

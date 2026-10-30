@@ -1,4 +1,9 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut" import getCustomViewCountryData
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/worldWar/inOperation/model/wwArmyOwner.nut" import WwArmyOwner
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import WwArmyView
+from "%scripts/worldWar/worldWarState.nut" import registerWwArmyGroupClass
 from "string" import format
 from "math" import round
 from "worldwar" import wwGetPlayerSide
@@ -6,12 +11,7 @@ from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
-let { WwArmyView } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { registerWwArmyGroupClass } = require("%scripts/worldWar/worldWarState.nut")
 
 let WwArmyGroup = class {
   clanId               = ""

@@ -1,30 +1,34 @@
+import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
+import "%scripts/seen/seenList.nut" as seenList
+from "%scripts/utils_sa.nut" import getObjIdByPrefix
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/customization/decorView.nut" import getDecorButtonView
+from "%scripts/collections/collections.nut" import isCollectionItem
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, findChild, findChildIndex, getSelectedChild
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/customization/decoratorGetters.nut" import getDecorator, getCachedDataByType, getCachedOrderByType
+from "%scripts/seen/markSeenResources.nut" import needMarkSeenResource, disableMarkSeenResource
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/customization/decoratorViewType.nut" import getViewTypeByUnlockedItemType
+from "%scripts/customization/decoratorFavoritesStorage.nut" import FAVORITE_CATEGORY_ID
+from "%scripts/customization/decoratorUtils.nut" import filterDecorIds
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%sqstd/string.nut" import utf8ToLower
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
-let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { move_mouse_on_child, findChild, getSelectedChild } = require("%scripts/sqDagui/daguiUtil.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getDecorator, getCachedDataByType, getCachedOrderByType } = require("%scripts/customization/decoratorGetters.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let seenList = require("%scripts/seen/seenList.nut")
-let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/markSeenResources.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { FAVORITE_CATEGORY_ID } = require("%scripts/customization/decoratorFavoritesStorage.nut")
-let { filterDecorators } = require("%scripts/customization/decoratorUtils.nut")
 
 const SEARCH_PAGE_ID = "search_result"
 const CATEGORIES_PAGE_ID = "categories"
+
+function canUseDecorId(decorId, decType, unit) {
+  return decType.isPlayerHaveDecorator(decorId) && (getDecorator(decorId, decType)?.canUse(unit) ?? false)
+}
 
 class DecorMenuHandler (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -67,18 +71,6 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     this.hideUnlockInfoList = hideUnlockInfoIds
   }
 
-  function getFavoriteDecorators() {
-    let favoritesIds = this.curDecorType.getFavorites()
-    let list = []
-    foreach (decorId in favoritesIds) {
-      let decorator = getDecorator(decorId, this.curDecorType)
-      if (decorator == null)
-        continue
-      list.append(decorator)
-    }
-    return list
-  }
-
   function prepareDecoratorsCache(decorCache) {
     let needMarkSeen = needMarkSeenResource(this.currentSeenListId)
     this.decoratorsCache.clear()
@@ -93,9 +85,10 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
       }
       foreach (groupId in groups) {
         let listId = $"{categoryId}.{groupId}"
-        let decors = decorCache.catToGroups?[categoryId][groupId] ?? []
+        let decorIds = decorCache.catToGroups?[categoryId][groupId] ?? []
         let unit = this.curUnit
-        let decorsListId = decors.filter(@(dec) dec.canUse(unit)).map(@(dec) dec.id)
+        let decType = this.curDecorType
+        let decorsListId = decorIds.filter(@(id) canUseDecorId(id, decType, unit))
         this.decoratorsCache[listId] <- decorsListId
         if (hasGroups)
           this.decoratorsCache[listSummaryId].extend(decorsListId)
@@ -249,7 +242,7 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     foreach(groupId in groups) {
       let subListId = $"{categoryId}.{groupId}"
       let decalsInGroup = catToGroups[groupId]
-      let isGroupVisible = filterDecorators(decalsInGroup, this.curDecorType, this.filtersOptions).len() > 0
+      let isGroupVisible = filterDecorIds(decalsInGroup, this.curDecorType, this.filtersOptions).len() > 0
 
       this.currentSeenList.setSubListGetter(subListId,
         Callback(@() this.decoratorsCache.filter(@(_val, key) key == subListId).values()[0], this))
@@ -303,11 +296,9 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     this.savePath(categoryId, groupId)
 
     if (!isGroupList) {
-      let decorId = this.preSelectDecorId ?? this.curSlotDecorId
-      let decor = getDecorator(decorId, this.curDecorType, this.curUnit?.unitType.tag)
-      let lastIndex = contentListObj.childrenCount() - 1
-      let index = lastIndex < 0 ? -1
-        : clamp((decor && decor.category == categoryId) ? decor.catIndex : 0, 0, lastIndex)
+      let decorObjId = $"decal_{this.preSelectDecorId ?? this.curSlotDecorId}"
+      let index = contentListObj.childrenCount() == 0 ? -1
+        : max(findChildIndex(contentListObj, @(child) child.id == decorObjId), 0)
       contentListObj.setValue(index)
     }
     else
@@ -349,18 +340,22 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
   }
 
   function generateGroupContent(categoryId, groupId) {
-    let isFavorites = categoryId == FAVORITE_CATEGORY_ID
-    let decors = isFavorites
-      ? this.getFavoriteDecorators()
+    let decorIds = categoryId == FAVORITE_CATEGORY_ID
+      ? this.curDecorType.getFavorites()
       : this.getDecorCache().catToGroups?[categoryId][groupId]
-    if (!decors || decors.len() == 0)
+    if (!decorIds || decorIds.len() == 0)
       return ""
 
-    let filteredDecors = filterDecorators(decors, this.curDecorType, this.filtersOptions)
+    let filteredDecors = this.getDecoratorsByIds(filterDecorIds(decorIds, this.curDecorType, this.filtersOptions))
     let view = this.getDecorButtonsView(filteredDecors)
     let unit = this.curUnit
     this.storeSeenDecors(filteredDecors.filter(@(decor) decor.canUse(unit)).map(@(decor) decor.id))
     return handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+  }
+
+  function getDecoratorsByIds(decorIds) {
+    let decType = this.curDecorType
+    return decorIds.map(@(id) getDecorator(id, decType)).filter(@(d) d != null)
   }
 
   storeSeenDecors = @(decors) this.decorsToMarkSeen.extend(decors)
@@ -431,8 +426,9 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
       return
 
     let listObj = obj.getParent()
-    if (listObj.getValue() != decorator.catIndex)
-      listObj.setValue(decorator.catIndex)
+    let idx = findChildIndex(listObj, @(child) child.isEqual(obj))
+    if (listObj.getValue() != idx)
+      listObj.setValue(idx)
 
     broadcastEvent("DecorMenuItemClick", { decorator })
   }
@@ -493,8 +489,8 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     let decorCache = this.getDecorCache()
     foreach(cat in decorCache.categories) {
       let groups = decorCache.catToGroups[cat]
-      foreach (decors in groups)
-        filteredDecors.extend(filterDecorators(decors, this.curDecorType, this.filtersOptions))
+      foreach (groupId in decorCache.catToGroupNames[cat])
+        filteredDecors.extend(this.getDecoratorsByIds(filterDecorIds(groups[groupId], this.curDecorType, this.filtersOptions)))
     }
     if (filteredDecors.len() == 0)
       return ""
@@ -516,7 +512,7 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     if (hasGroups) {
       local isCategoryVisible = false
       foreach (groupName, groupData in groups) {
-        let isGroupVisible = filterDecorators(groupData, this.curDecorType, this.filtersOptions).len() > 0
+        let isGroupVisible = filterDecorIds(groupData, this.curDecorType, this.filtersOptions).len() > 0
         isCategoryVisible = isCategoryVisible || isGroupVisible
         if (isCategoryVisible && !emptyGroups)
           return true
@@ -526,7 +522,7 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
       return isCategoryVisible
     }
 
-    return filterDecorators(groups["other"], this.curDecorType, this.filtersOptions).len() > 0
+    return filterDecorIds(groups["other"], this.curDecorType, this.filtersOptions).len() > 0
   }
 
   function updateCategoriesVisibility() {

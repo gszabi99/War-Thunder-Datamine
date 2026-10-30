@@ -48,9 +48,7 @@ enumsAddTypes(g_hud_vis_mode, {
   }
 })
 
-g_hud_vis_mode.types.sort(function(a, b) {
-  return a.hudGm > b.hudGm ? 1 : (a.hudGm < b.hudGm ? -1 : 0)
-})
+g_hud_vis_mode.types.sortby(@(a) a.hudGm)
 
 g_hud_vis_mode.getModeByHudGm <- function getModeByHudGm(hudGm, defValue = g_hud_vis_mode.DEFAULT) {
   return enumsGetCachedType("hudGm", hudGm, g_hud_vis_mode.cache.byHudGm,

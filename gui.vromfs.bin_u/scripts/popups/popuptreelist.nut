@@ -1,8 +1,9 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/popups/popupList.nut" import popupList
+from "%scripts/sqDagui/daguiUtil.nut" import setPopupMenuPosAndAlign
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { popupList } = require("%scripts/popups/popupList.nut")
-let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let popupTreeList = class(popupList) {
   branches             = null
@@ -46,6 +47,6 @@ let popupTreeList = class(popupList) {
 
 register_gui_handler("popupTreeList", popupTreeList)
 
-return {
+return freeze({
   openPopupTreeList = @(params = {}) handlersManager.loadHandler(popupTreeList, params)
-}
+})

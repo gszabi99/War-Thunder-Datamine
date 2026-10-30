@@ -1,20 +1,20 @@
+import "%scripts/time.nut" as time
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/wndLib/multiSelectMenu.nut" import MultiSelectMenu
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/langUtils/language.nut" import getLangInfoByChatId, getGameLocalizationInfo
+from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, select_editbox
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/chat/chatLatestThreads.nut" import getChatThreadsList, canChooseThreadsLang
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
 from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { move_mouse_on_child, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getChatThreadsList, canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 register_gui_handler("modifyThreadWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

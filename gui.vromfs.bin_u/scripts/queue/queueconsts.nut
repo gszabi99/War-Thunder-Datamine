@@ -7,4 +7,4 @@ enum queueStates {
   IN_QUEUE
 }
 
-return { queueStates }
+return freeze({ queueStates })

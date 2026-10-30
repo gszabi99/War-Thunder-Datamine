@@ -10,7 +10,7 @@
     body {
       background-color: #333;
       color: #eee;
-      font-family: Tahoma, Verdana, Arial;
+      font-family: GameSymbols, Tahoma, Verdana, Arial;
     }
 
     #mission-objectives {
@@ -25,7 +25,7 @@
 /*      border: 1px solid #666;
       background-color: #444;
       margin: 8px;
-      padding: 4px;        
+      padding: 4px;
 */
     }
 /*
@@ -57,7 +57,7 @@
       /*padding: 5px;*/
       position: absolute;
       left: 650px;
-      width:300px; height: 200px;     
+      width:300px; height: 200px;
     }
 
     #textlines {
@@ -116,7 +116,7 @@
     #indicators0 li, #indicators1 li {
       margin: 0px;
     }
-    
+
     #state-root {
       background-color: rgba(20, 30, 25, 0.5);
       display:table;
@@ -140,11 +140,16 @@
     }
     #state0 li, #state1 li {
       margin: 0px;
-    }    
+    }
 
     @font-face {
-      font-family: 'Icons'; 
-      src: url('icons.ttf'); 
+      font-family: 'Icons';
+      src: url('icons.ttf');
+    }
+
+    @font-face {
+      font-family: 'GameSymbols';
+      src: url('symbols_skyquake.ttf');
     }
   </style>
 
@@ -197,7 +202,7 @@
       drag:true, dragstart:true, dragend:true, dragup:false, dragdown:false, dragleft:false, dragright:false,
       swipe:false, swipeup:false, swipedown:false, swipeleft:false, swiperight:false,
       transform:true, transformstart:true, transformend:true, rotate:false,
-      pinch:false, pinchin:false, pinchout:false, 
+      pinch:false, pinchin:false, pinchout:false,
       /*touch:false, release:false,*/
 
       prevent_default: true,
@@ -240,7 +245,7 @@
         'supercharger', 'supercharger1', 'supercharger2',
       ]
     ]
-    
+
     state_columns = [
       [
         'H, m', 'TAS, km/h', 'IAS, km/h', 'M', 'AoA, deg', 'AoS, deg', 'Ny', 'Vy, m/s', 'Wx, deg/s',
@@ -283,7 +288,7 @@
       updateObjectives = function(root, objectives) {
         for (var i=0; i<objectives.length; ++i) {
           var elem = objectiveElem(root, i)
-          elem.find('#text').text(objectives[i]['text']);
+          elem.find('#text').html(dagui_markup_to_html(objectives[i]['text']));
           elem.find('#holder').attr('class', objectives[i]['status'])
           elem.css('display', 'block');
         }
@@ -320,7 +325,7 @@
       map_pan[0] = clamp(map_pan[0], -(map_scale-1.0)*canvas.width, 0)
       map_pan[1] = clamp(map_pan[1], -(map_scale-1.0)*canvas.height, 0)
     }
-   
+
 
     function mapOnWheel(e) {
       e = e || window.event;
@@ -500,7 +505,7 @@
       var sy = canvas.height*item['sy']*map_scale + map_pan[1]
       var ex = canvas.width *item['ex']*map_scale + map_pan[0]
       var ey = canvas.height*item['ey']*map_scale + map_pan[1]
-      
+
       ctx.lineWidth = 3.0*Math.sqrt(map_scale)
       ctx.strokeStyle = calcMapObjectColor(item)
       ctx.beginPath()
@@ -575,11 +580,11 @@
       if (item['icon'] == 'Airdefence')
         s = '4'
       else if (item['icon'] == 'Structure')
-        s = '5'        
+        s = '5'
       else if (item['icon'] == 'waypoint')
         s = '6'
       else if (item['icon'] == 'capture_zone')
-        s = '7'        
+        s = '7'
       else if (item['icon'] == 'bombing_point')
         s = '8'
       else if (item['icon'] == 'defending_point')
@@ -609,7 +614,7 @@
       else
       {
         ctx.fillText(s, sx, sy)
-        ctx.strokeText(s, sx, sy)      
+        ctx.strokeText(s, sx, sy)
       }
     }
 
@@ -644,7 +649,7 @@
         }
       }
 
-      if (player) {  
+      if (player) {
         lastPlayerPos = draw_player(canvas, ctx, player, dt)
       } else {
         lastPlayerPos = null
@@ -676,14 +681,14 @@
     function update_object_positions(objects) {
       map_objects = objects
       var dt = update_timers()
-      redraw_map(dt) 
+      redraw_map(dt)
     }
 
 
     function update_map_info(info) {
       var prevMapGen = (map_info && ('map_generation' in map_info)) ? map_info['map_generation'] : -1
       var newMapGen = (info && ('map_generation' in info)) ? info['map_generation'] : -1
-      
+
       map_info = info
 
       if (prevMapGen != newMapGen) {
@@ -716,7 +721,7 @@
           s += '['+rec['mode']+'] '
         s += rec.sender + ': ' + rec.msg
         el.append(s)
-        if (rec['enemy'])  
+        if (rec['enemy'])
           el.addClass('msg-type-enemy')
       } else {
         el.append(rec.msg)
@@ -770,7 +775,7 @@
       }
       if (!isValid)
         return
-        
+
       var lists = [$('#indicators0 li'), $('#indicators1 li')]
       for (var iList=0; iList<2; ++iList) {
         var list = lists[iList]
@@ -786,7 +791,7 @@
         }
       }
     }
-    
+
     function update_state(data) {
       var isValid = data && data['valid']
       var roots = [$('#state0'), $('li')]
@@ -795,9 +800,9 @@
       }
       if (!isValid)
         return
-        
+
       //alert('isValid')
-        
+
       var lists = [$('#state0 li'), $('#state1 li')]
       for (var iList=0; iList<2; ++iList) {
         var list = lists[iList]
@@ -861,7 +866,7 @@
       $(document.body).append(el)
     }
 
-    
+
     function local_debug_init() {
       var dbg_chat = [
         'Never gonna give you up', 'Never gonna let you down', 'Never gonna run around and desert you',
@@ -869,7 +874,7 @@
       ]
       var dbg_mode = ['Team', 'All', 'Squad', '', 'Private', '', '']
       var root = $('#game-chat-root #textlines')
-      for (var n=0; n<5; ++n) {  
+      for (var n=0; n<5; ++n) {
         for (var i=0; i<dbg_chat.length; ++i) {
           add_to_chat(root, {'id':i+1, 'msg': dbg_chat[i], 'sender': 'Rick', 'enemy': false, 'mode': dbg_mode[i], 'time': n * 100 + i})
         }
@@ -952,7 +957,7 @@
       var val = order[0].join('|') + ':' + order[1].join('|')
       Cookies.set('indicators', val, {expires:cookieLifeTime})
     }
-    
+
     function save_state_order(event, ui) {
       var lists = [$('#state0 li'), $('#state1 li')]
       var order = [[],[]]
@@ -964,7 +969,7 @@
       var val = order[0].join('|') + ':' + order[1].join('|')
       Cookies.set('state', val, {expires:cookieLifeTime})
     }
-    
+
     function fill_indicators_list() {
       var addElem = function(root, id) {
         var elem = $('<li id="ind-'+id+'" style="display:none;"></li>')
@@ -987,7 +992,7 @@
               addElem(root, id)
             }
           }
-        }          
+        }
       }
 
       var savedIdsListFull = order[0].concat(order[1])
@@ -1002,7 +1007,7 @@
         }
       }
     }
-    
+
     function fill_state_list() {
      var addElem = function(root, id) {
         var elem = $('<li id="stt-'+id+'" style="display:none;"></li>')
@@ -1025,7 +1030,7 @@
               addElem(root, id)
             }
           }
-        }          
+        }
       }
 
       var savedStateListFull = order[0].concat(order[1])
@@ -1045,7 +1050,7 @@
       localize_static()
 
       var canvasEl = document.getElementById('map-canvas')
-      
+
       addWheelHandler(canvasEl, mapOnWheel)
       canvasEl.onselectstart = function() {return false} //== Chrome fix
       //$("#map-canvas").mousedown(mapOnMouseDown)
@@ -1092,10 +1097,10 @@
       $("#indicators0, #indicators1").sortable(
         {connectWith: ".connectedIndicators", stop:save_indicators_order}
       ).disableSelection()
-      
+
       $("#state0, #state1").sortable(
         {connectWith: ".connectedState", stop:save_state_order}
-      ).disableSelection()      
+      ).disableSelection()
 
       if (document.location.protocol != 'file:') {
         setInterval(updateSlow, 500);
@@ -1150,7 +1155,7 @@
       <ul id="indicators1" class="connectedIndicators"></ul>
     </div>
   </div>
-  
+
   <div id="state-root">
     <div class="caption"><div id="draghandle"></div></div>
     <div id="state">
@@ -1158,7 +1163,7 @@
       <ul id="state1" class="connectedState"></ul>
     </div>
   </div>
-  
+
 </body>
 
 </html>

@@ -42,10 +42,6 @@ let private {
     DBL_NAN     = uint64_bits_to_double(0x7FF8000000000000ul)
 }
 
-
-
-
-
 variant private TomlToken {
     _symbol   : int       
     _newline  : void?     
@@ -73,12 +69,7 @@ let private {
     Tok_error    = typeinfo variant_index<_error>(type<TomlToken>)
 }
 
-
-
-
-
 def private is_bare_char(c : int) : bool {
-    
     return is_alpha(c) || is_number(c) || c == '-' || c == '_'
 }
 
@@ -89,20 +80,12 @@ def private hex_value(c : int) : int {
     return -1
 }
 
-
-
-
-
 struct private LexState {
     
     pos  : int       
     n    : int       
     line : int       
     row  : int       
-}
-
-def private at(data : array<uint8>&; st : LexState) : int {
-    return st.pos < st.n ? int(data[st.pos]) : -1
 }
 
 def private peek(data : array<uint8>&; st : LexState; offset : int) : int {
@@ -139,17 +122,6 @@ def private starts_with_at(data : array<uint8>&; pos : int; s : string) : bool {
     return ok
 }
 
-def private skip_inline_ws(data : array<uint8>&; var st : LexState&) : void {
-    while (st.pos < st.n) {
-        let c = int(data[st.pos])
-        if (c == ' ' || c == '\t') {
-            advance(data, st)
-        } else {
-            break
-        }
-    }
-}
-
 def private skip_comment_to_eol(data : array<uint8>&; var st : LexState&) : void {
     while (st.pos < st.n && int(data[st.pos]) != '\n') {
         advance(data, st)
@@ -166,9 +138,8 @@ def private read_bare_key(data : array<uint8>&; var st : LexState&) : string {
 }
 
 def private read_basic_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {
-    
     var buf : array<uint8>
-    buf |> reserve(32)   
+    buf |> reserve(32)
     while (st.pos < st.n) {
         let c = int(data[st.pos])
         if (c == '"') {
@@ -226,7 +197,6 @@ def private read_basic_string(data : array<uint8>&; var st : LexState&; var err 
 }
 
 def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {  
-    
     if (st.pos < st.n && int(data[st.pos]) == '\r' && st.pos + 1 < st.n && int(data[st.pos + 1]) == '\n') {
         advance(data, st); advance(data, st)
     } elif (st.pos < st.n && int(data[st.pos]) == '\n') {
@@ -235,11 +205,9 @@ def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var e
     var buf : array<uint8>
     buf |> reserve(64)
     while (st.pos < st.n) {
-        
         if (int(data[st.pos]) == '"' && st.pos + 2 < st.n
                 && int(data[st.pos + 1]) == '"' && int(data[st.pos + 2]) == '"') {
             advance(data, st); advance(data, st); advance(data, st)
-            
             if (st.pos < st.n && int(data[st.pos]) == '"') {
                 push(buf, uint8('"'))
                 advance(data, st)
@@ -252,17 +220,14 @@ def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var e
         }
         let c = int(data[st.pos])
         if (c == '\\') {
-            
             let nx = peek(data, st, 1)
             if (nx == '\n' || nx == '\r' || nx == ' ' || nx == '\t') {
-                
                 var look = st.pos + 1
                 while (look < st.n && (int(data[look]) == ' ' || int(data[look]) == '\t')) {
                     look++
                 }
                 if (look < st.n && (int(data[look]) == '\n' || int(data[look]) == '\r')) {
-                    
-                    advance(data, st)  
+                    advance(data, st)
                     while (st.pos < st.n) {
                         let cc = int(data[st.pos])
                         if (cc == ' ' || cc == '\t' || cc == '\n' || cc == '\r') {
@@ -274,7 +239,6 @@ def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var e
                     continue
                 }
             }
-            
             advance(data, st)
             if (st.pos >= st.n) {
                 err = "string escape past end of input at {st.line}:{st.row}"
@@ -321,7 +285,6 @@ def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var e
 }
 
 def private read_literal_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {
-    
     var buf : array<uint8>
     buf |> reserve(32)
     while (st.pos < st.n) {
@@ -342,7 +305,6 @@ def private read_literal_string(data : array<uint8>&; var st : LexState&; var er
 }
 
 def private read_ml_literal_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {
-    
     if (st.pos < st.n && int(data[st.pos]) == '\r' && st.pos + 1 < st.n && int(data[st.pos + 1]) == '\n') {
         advance(data, st); advance(data, st)
     } elif (st.pos < st.n && int(data[st.pos]) == '\n') {
@@ -372,7 +334,6 @@ def private read_ml_literal_string(data : array<uint8>&; var st : LexState&; var
 }
 
 def private looks_like_datetime(data : array<uint8>&; pos : int) : bool {
-    
     let n = data |> length
     if (pos + 10 > n) return false
     for (i in range(4)) {
@@ -385,7 +346,6 @@ def private looks_like_datetime(data : array<uint8>&; pos : int) : bool {
 }
 
 def private looks_like_time(data : array<uint8>&; pos : int) : bool {
-    
     let n = data |> length
     if (pos + 8 > n) return false
     return (is_number(int(data[pos])) && is_number(int(data[pos + 1])) &&
@@ -395,45 +355,43 @@ def private looks_like_time(data : array<uint8>&; pos : int) : bool {
             is_number(int(data[pos + 6])) && is_number(int(data[pos + 7])))
 }
 
+def private take_time_of_day(var buf : array<uint8>; data : array<uint8>&; var st : LexState&; n : int) : void {
+    for (_ in range(8)) {
+        push(buf, data[st.pos])   
+        advance(data, st)
+    }
+    if (st.pos < n && int(data[st.pos]) == '.') {
+        push(buf, data[st.pos])
+        advance(data, st)
+        while (st.pos < n && is_number(int(data[st.pos]))) {
+            push(buf, data[st.pos])
+            advance(data, st)
+        }
+    }
+}
+
 def private read_datetime(data : array<uint8>&; var st : LexState&; allow_time : bool) : string {
-    
     var buf : array<uint8>
     buf |> reserve(40)
     let n = st.n
-    
     if (!allow_time) {
         for (_ in range(10)) {
             push(buf, data[st.pos])
             advance(data, st)
         }
-        
         if (st.pos < n) {
             let sep = int(data[st.pos])
             let next_is_time = (sep == 'T' || sep == 't' || sep == ' ') && st.pos + 8 < n
             if (next_is_time && looks_like_time(data, st.pos + 1)) {
                 push(buf, data[st.pos])
                 advance(data, st)
-                for (_ in range(8)) {
-                    push(buf, data[st.pos])
-                    advance(data, st)
-                }
-                
-                if (st.pos < n && int(data[st.pos]) == '.') {
-                    push(buf, data[st.pos])
-                    advance(data, st)
-                    while (st.pos < n && is_number(int(data[st.pos]))) {
-                        push(buf, data[st.pos])
-                        advance(data, st)
-                    }
-                }
-                
+                take_time_of_day(buf, data, st, n)
                 if (st.pos < n) {
                     let oc = int(data[st.pos])
                     if (oc == 'Z' || oc == 'z') {
                         push(buf, data[st.pos])
                         advance(data, st)
                     } elif (oc == '+' || oc == '-') {
-                        
                         if (st.pos + 5 < n
                                 && is_number(int(data[st.pos + 1])) && is_number(int(data[st.pos + 2]))
                                 && int(data[st.pos + 3]) == ':'
@@ -448,19 +406,7 @@ def private read_datetime(data : array<uint8>&; var st : LexState&; allow_time :
             }
         }
     } else {
-        
-        for (_ in range(8)) {
-            push(buf, data[st.pos])
-            advance(data, st)
-        }
-        if (st.pos < n && int(data[st.pos]) == '.') {
-            push(buf, data[st.pos])
-            advance(data, st)
-            while (st.pos < n && is_number(int(data[st.pos]))) {
-                push(buf, data[st.pos])
-                advance(data, st)
-            }
-        }
+        take_time_of_day(buf, data, st, n)
     }
     return string(buf)
 }
@@ -478,7 +424,6 @@ def private strip_underscores(s : string) : string {
 }
 
 def private parse_int_prefixed(rest : string; radix : int; var err : string&) : int64 {
-    
     let cleaned = strip_underscores(rest)
     if (empty(cleaned)) {
         err = "empty {radix == 16 ? "hex" : (radix == 8 ? "octal" : "binary")} literal"
@@ -507,7 +452,6 @@ def private parse_int_prefixed(rest : string; radix : int; var err : string&) : 
 }
 
 def private rewind_to_bare(data : array<uint8>&; var st : LexState&; start_pos, start_line, start_row : int; var out : TomlTokenAt&) : void {
-    
     st.pos = start_pos
     st.line = start_line
     st.row = start_row
@@ -522,21 +466,17 @@ def private rewind_to_bare(data : array<uint8>&; var st : LexState&; start_pos, 
 }
 
 def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {  
-    
     let start_line = st.line
     let start_row = st.row
     let n = st.n
     let start_pos = st.pos
     let c0 = int(data[st.pos])
-    
     if (is_number(c0) && looks_like_datetime(data, start_pos)) {
         let s = read_datetime(data, st, false)
-        
         if (st.pos < n && is_bare_char(int(data[st.pos]))) {
             rewind_to_bare(data, st, start_pos, start_line, start_row, out)
             return true
         }
-        
         if (st.pos < n && int(data[st.pos]) == ':') {
             out = TomlTokenAt(value = TomlToken(_error = "':' after date '{s}' - expected 'T' or space before the time at {start_line}:{start_row}"), line = start_line, row = start_row)
             return true
@@ -544,14 +484,12 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         out = TomlTokenAt(value = TomlToken(_datetime = s), line = start_line, row = start_row)
         return true
     }
-    
     if (is_number(c0) && looks_like_time(data, start_pos)) {
         let s = read_datetime(data, st, true)
         if (st.pos < n && is_bare_char(int(data[st.pos]))) {
             rewind_to_bare(data, st, start_pos, start_line, start_row, out)
             return true
         }
-        
         if (st.pos < n && int(data[st.pos]) == ':') {
             out = TomlTokenAt(value = TomlToken(_error = "trailing ':' after time '{s}' at {start_line}:{start_row}"), line = start_line, row = start_row)
             return true
@@ -559,7 +497,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         out = TomlTokenAt(value = TomlToken(_datetime = s), line = start_line, row = start_row)
         return true
     }
-    
     var buf : array<uint8>
     var sign_int : int64 = 1l
     if (c0 == '+' || c0 == '-') {
@@ -574,17 +511,14 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         return true
     }
     let c1 = int(data[st.pos])
-    
     if (c1 == 'i' && starts_with_at(data, st.pos, "inf")) {
         for (_ in range(3)) {
             advance(data, st)
         }
-        
         if (st.pos < n && is_bare_char(int(data[st.pos]))) {
             rewind_to_bare(data, st, start_pos, start_line, start_row, out)
             return true
         }
-        
         if (empty(buf)) {
             out = TomlTokenAt(value = TomlToken(_bare = "inf"), line = start_line, row = start_row)
             return true
@@ -608,13 +542,11 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         out = TomlTokenAt(value = TomlToken(_float = DBL_NAN), line = start_line, row = start_row)
         return true
     }
-    
     if (empty(buf) && c1 == '0' && st.pos + 1 < n) {
         let prefix = int(data[st.pos + 1])
         if (prefix == 'x' || prefix == 'o' || prefix == 'b') {
             advance(data, st); advance(data, st)
             var tail : array<uint8>
-            
             while (st.pos < n) {
                 let c = int(data[st.pos])
                 if (is_hex(c)) {
@@ -625,7 +557,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
                     let nx = peek(data, st, 1)
                     if (!prev_hex || !is_hex(nx)) {
                         if (is_bare_char(nx)) {
-                            
                             rewind_to_bare(data, st, start_pos, start_line, start_row, out)
                             return true
                         }
@@ -638,7 +569,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
                     break
                 }
             }
-            
             if (st.pos < n && is_bare_char(int(data[st.pos]))) {
                 rewind_to_bare(data, st, start_pos, start_line, start_row, out)
                 return true
@@ -654,7 +584,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             return true
         }
     }
-    
     var saw_digit = false
     while (st.pos < n) {
         let c = int(data[st.pos])
@@ -681,7 +610,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
     }
     var is_float = false
     if (st.pos < n && int(data[st.pos]) == '.') {
-        
         if (st.pos + 1 < n && is_number(int(data[st.pos + 1]))) {
             is_float = true
             push(buf, data[st.pos])
@@ -715,7 +643,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             push(buf, data[st.pos])
             advance(data, st)
         }
-        
         var exp_saw_digit = false
         while (st.pos < n) {
             let c = int(data[st.pos])
@@ -746,7 +673,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         out = TomlTokenAt(value = TomlToken(_error = "invalid number at {start_line}:{start_row}"), line = start_line, row = start_row)
         return true
     }
-    
     if (st.pos < n && is_bare_char(int(data[st.pos]))) {
         rewind_to_bare(data, st, start_pos, start_line, start_row, out)
         return true
@@ -761,7 +687,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
 }
 
 def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {  
-    
     while (st.pos < st.n) {
         let c = int(data[st.pos])
         if (c == ' ' || c == '\t' || c == '\r') {
@@ -787,7 +712,6 @@ def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlT
         return true
     }
     if (c == '"') {
-        
         if (st.pos + 2 < st.n && int(data[st.pos + 1]) == '"' && int(data[st.pos + 2]) == '"') {
             advance(data, st); advance(data, st); advance(data, st)
             var serr : string
@@ -831,11 +755,9 @@ def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlT
         out = TomlTokenAt(value = TomlToken(_string = s), line = start_line, row = start_row)
         return true
     }
-    
     if (is_number(c) || c == '+' || c == '-'
             || (c == 'i' && starts_with_at(data, st.pos, "inf"))
             || (c == 'n' && starts_with_at(data, st.pos, "nan"))) {
-        
         if (c == '+' || c == '-') {
             let nx = peek(data, st, 1)
             let is_value_continuation = (is_number(nx) ||
@@ -854,7 +776,6 @@ def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlT
         }
         return classify_number_or_datetime(data, st, out)
     }
-    
     if (is_bare_char(c)) {
         let s = read_bare_key(data, st)
         out = TomlTokenAt(value = TomlToken(_bare = s), line = start_line, row = start_row)
@@ -864,10 +785,6 @@ def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlT
     out = TomlTokenAt(value = TomlToken(_error = "unexpected character '{to_char(c)}' at {start_line}:{start_row}"), line = start_line, row = start_row)
     return true
 }
-
-
-
-
 
 struct private TomlTokenStream {
     
@@ -912,7 +829,6 @@ def private skip_newlines(var ts : TomlTokenStream&) : void {
 }
 
 def private get_object(var v : JsonValue?) : table<string; JsonValue?>& {
-    
     unsafe {
         return v.value as _object
     }
@@ -925,7 +841,6 @@ def private get_array(var v : JsonValue?) : array<JsonValue?>& {
 }
 
 def private ensure_table(var parent : JsonValue?; key : string; var err : string&; at_line, at_row : int) : JsonValue? {
-    
     var tab & = get_object(parent)
     if (key_exists(tab, key)) {
         var child : JsonValue? = tab[key]
@@ -964,7 +879,6 @@ def private ensure_array_table(var parent : JsonValue?; key : string; var err : 
 }
 
 def private parse_key_path(var ts : TomlTokenStream&; var out : array<string>&; var err : string&; var at_line, at_row : int&) : bool {
-    
     out |> clear
     var tk : TomlTokenAt
     if (!take_tok(ts, tk)) {
@@ -986,7 +900,6 @@ def private parse_key_path(var ts : TomlTokenStream&; var out : array<string>&; 
 }
 
 def private extract_key_segment(tk : TomlTokenAt; var out : array<string>&; var err : string&) : bool {
-    
     if (tk.value is _bare) {
         out |> push(tk.value as _bare)
         return true
@@ -1080,7 +993,6 @@ def private parse_inline_array(var ts : TomlTokenStream&; var err : string&) : J
 }
 
 def private parse_inline_table(var ts : TomlTokenStream&; var err : string&) : JsonValue? {
-    
     var tab : table<string; JsonValue?>
     var root : JsonValue? = JV(tab)
     var inline_closed_local : table<uint64>
@@ -1103,7 +1015,6 @@ def private parse_inline_table(var ts : TomlTokenStream&; var err : string&) : J
         }
         var v : JsonValue? = parse_value(ts, err)
         if (v == null) return null
-        
         var holder : JsonValue? = root
         let n = length(path)
         for (i in range(n - 1)) {
@@ -1148,10 +1059,6 @@ def private parse_inline_table(var ts : TomlTokenStream&; var err : string&) : J
     return root
 }
 
-
-
-
-
 struct private TomlState {
     root : JsonValue?
     current_path : array<string>  
@@ -1166,7 +1073,6 @@ struct private TomlState {
 }
 
 def private jvkey(p : JsonValue?) : uint64 {
-    
     return intptr(unsafe(reinterpret<void?>(p)))
 }
 
@@ -1199,7 +1105,6 @@ def private path_key(path : array<string>) : string {
 }
 
 def private resolve_header(var state : TomlState&; path : array<string>; is_array_of_tables : bool; var err : string&; at_line, at_row : int) : JsonValue? {
-    
     var cur = state.root
     let n = length(path)
     for (i in range(n - 1)) {
@@ -1211,13 +1116,11 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
                 err = "null at '{key}' on path"
                 return null
             }
-            
             if (existing.value is _object && key_exists(state.inline_closed, jvkey(existing))) {
                 err = "cannot open header [{path |> join(".")}] - '{key}' is an inline table (closed) at {at_line}:{at_row}"
                 return null
             }
             if (existing.value is _array) {
-                
                 var arr & = get_array(existing)                    
                 if (empty(arr)) {
                     err = "empty array-of-tables traversal at '{key}'"
@@ -1241,7 +1144,6 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
     if (is_array_of_tables) {
         return ensure_array_table(cur, leaf, err, at_line, at_row)
     }
-    
     var tab & = get_object(cur)
     if (key_exists(tab, leaf)) {
         var existing : JsonValue? = tab[leaf]
@@ -1249,7 +1151,6 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
             err = "key '{leaf}' redefined as table at {at_line}:{at_row}"
             return null
         }
-        
         if (key_exists(state.inline_closed, jvkey(existing))) {
             err = "cannot open header [{path |> join(".")}] - '{leaf}' is an inline table (closed) at {at_line}:{at_row}"
             return null
@@ -1259,7 +1160,6 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
             err = "duplicate table header [{path |> join(".")}] at {at_line}:{at_row}"
             return null
         }
-        
         if (key_exists(state.dotted_keyed, pk)) {
             err = "cannot open header [{path |> join(".")}] - table already implicitly defined by dotted key at {at_line}:{at_row}"
             return null
@@ -1275,7 +1175,6 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
 }
 
 def private apply_keyval(var state : TomlState&; var current : JsonValue?; path : array<string>; var v : JsonValue?; var err : string&; at_line, at_row : int) : bool {
-    
     var holder = current
     let n = length(path)
     for (i in range(n - 1)) {
@@ -1289,7 +1188,6 @@ def private apply_keyval(var state : TomlState&; var current : JsonValue?; path 
         }
         holder = ensure_table(holder, path[i], err, at_line, at_row)
         if (holder == null) return false
-        
         var prefix : array<string>
         prefix |> reserve(length(state.current_path) + i + 1)
         prefix |> push_from(state.current_path)
@@ -1308,7 +1206,6 @@ def private apply_keyval(var state : TomlState&; var current : JsonValue?; path 
         return false
     }
     tab |> insert(leaf, v)
-    
     if (v != null && (v.value is _object)) {
         mark_inline_subtree(state.inline_closed, v)
     }
@@ -1326,17 +1223,14 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
     var ts <- new_stream(text)
     var current = state.root
     while (peek_tok(ts)) {
-        
         if (ts.ahead.value is _newline) {
             ts.has_ahead = false
             continue
         }
-        
         if (ts.ahead.value is _error) {
             error = ts.ahead.value as _error
             return null
         }
-        
         if ((ts.ahead.value is _symbol) && (ts.ahead.value as _symbol) == '[') {
             let head_line = ts.ahead.line
             let head_row  = ts.ahead.row
@@ -1370,12 +1264,8 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
             }
             current = resolve_header(state, path, is_aot, error, head_line, head_row)
             if (current == null) return null
-            
-            
-            
             state.current_path |> clear
             state.current_path |> push_from(path)
-            
             if (peek_tok(ts)) {
                 if (!(ts.ahead.value is _newline)) {
                     if (ts.ahead.value is _error) {
@@ -1389,7 +1279,6 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
             }
             continue
         }
-        
         var path : array<string>
         var pline, prow : int
         if (!parse_key_path(ts, path, error, pline, prow)) return null
@@ -1404,7 +1293,6 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
         }
         var v : JsonValue? = parse_value(ts, error)
         if (v == null || !apply_keyval(state, current, path, v, error, pline, prow)) return null
-        
         if (peek_tok(ts)) {
             if (!(ts.ahead.value is _newline)) {
                 if (ts.ahead.value is _error) {
@@ -1420,12 +1308,7 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
     return state.root
 }
 
-
-
-
-
 def private write_toml_string(var writer : StringBuilderWriter; s : string) {
-    
     write_char(writer, '"')
     peek_data(s) $(bytes) {
         for (b in bytes) {
@@ -1493,7 +1376,6 @@ def private write_toml_float(var writer : StringBuilderWriter; v : double) {
     } elif (v == DBL_NEG_INF) {
         write(writer, "-inf")
     } elif (v != 0.0lf && (abs(v) < 1e-4lf || abs(v) >= 1e17lf)) {
-        
         var m = fmt(":.17e", v)
         let e = find(m, "e")
         if (e > 0) {
@@ -1505,7 +1387,6 @@ def private write_toml_float(var writer : StringBuilderWriter; v : double) {
         }
         write(writer, m)
     } else {
-        
         let base = fmt(":.17f", v) |> rtrim("0")
         write(writer, base)
         if (base |> ends_with(".")) {

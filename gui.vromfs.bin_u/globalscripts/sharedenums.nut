@@ -77,6 +77,7 @@ enum DargWidgets {
   , WORLDWAR_MAP
   , BULLETS_GRAPH
   , BULLETS_PENETRATION
+  , SCREEN
 };
 
 enum AirParamsMain {
@@ -210,7 +211,8 @@ enum HudColorState {
   PASSIV           = 1,
   LOW_ALERT        = 2,
   MEDIUM_ALERT     = 3,
-  HIGH_ALERT       = 4
+  HIGH_ALERT       = 4,
+  CRITICAL_ALERT   = 5
 };
 
 enum FCSShotState {
@@ -243,4 +245,4 @@ enum WeaponMask {
   ALL_ROCKETS_MASK      = 0x0000E0
 };
 
-return({ MouseAxis, CtrlsInGui, AxisInvertOption, DargWidgets, AirParamsMain, AirParamsSecondary, AirParamsTertiary, TemperatureState, AirThrottleMode, RadarViewMode, CountermeasureMode, WeaponMode, IRCMMode, HudColorState, FCSShotState, WeaponMask});
+return(freeze({ MouseAxis, CtrlsInGui, AxisInvertOption, DargWidgets, AirParamsMain, AirParamsSecondary, AirParamsTertiary, TemperatureState, AirThrottleMode, RadarViewMode, CountermeasureMode, WeaponMode, IRCMMode, HudColorState, FCSShotState, WeaponMask}));

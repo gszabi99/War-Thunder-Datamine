@@ -14,4 +14,4 @@ let Timer = class {
 
 replace_script_gui_behaviour("Timer", Timer)
 
-return {Timer}
+return freeze({Timer})

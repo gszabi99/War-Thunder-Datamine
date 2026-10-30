@@ -1,10 +1,11 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/weaponry/editWeaponryPreset.nut" import EditWeaponryPresetsModal
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/weaponry/weaponryPresetsParams.nut" import getTierIcon
 from "%scripts/dagui_library.nut" import *
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { EditWeaponryPresetsModal } = require("%scripts/weaponry/editWeaponryPreset.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getTierIcon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 
 local handlerClass = class (EditWeaponryPresetsModal) {
   afterModalDestroyFunc = null
@@ -83,6 +84,6 @@ register_gui_handler("FixWeaponryPresetsModal", handlerClass)
 
 let openFixWeaponryPresets = @(params) handlersManager.loadHandler(handlerClass, params)
 
-return {
+return freeze({
   openFixWeaponryPresets
-}
+})

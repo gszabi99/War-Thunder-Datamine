@@ -93,7 +93,7 @@ class BhvAvatar {
 
 replace_script_gui_behaviour("bhvAvatar", BhvAvatar)
 
-return {
+return freeze({
   init = function(params) {
     getIconPath       = params?.getIconPath       ?? getIconPath
     getConfig         = params?.getConfig         ?? getConfig
@@ -105,4 +105,4 @@ return {
   }
 
   forceUpdateView = @(obj) BhvAvatar.updateView.call(BhvAvatar, obj)
-}
+})

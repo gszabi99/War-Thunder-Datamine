@@ -1,25 +1,25 @@
 {
   "model": "fokker_g1a",
   "fmFile": "fm/fokker_g1a.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
-  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gamedata/flightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "france_para",
   "isCapableOfAttackTurn": false,
-  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
-  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gamedata/flightModels/dm/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gamedata/flightModels/dm/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gamedata/flightModels/dm/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gamedata/flightModels/dm/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gamedata/flightModels/dm/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gamedata/flightModels/dm/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
   "fireParamsPreset": "400kph",
   "fightAiBehaviour": "assault",
   "hasQualityModels": true,
@@ -692,15 +692,19 @@
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
+            "spar1_r_dm": 0.2,
+            "spar2_r_dm": 0.4,
+            "spar1_l_dm": 0.2,
+            "spar2_l_dm": 0.4,
             "canCut": true
           },
           {
             "damage": 250.0,
             "damageType": "explosion",
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "canCut": true
           }
         ],
@@ -737,7 +741,9 @@
           {
             "damage": 140.0,
             "spar1_r_dm": 1.0,
+            "spar2_r_dm": 1.0,
             "spar1_l_dm": 1.0,
+            "spar2_l_dm": 1.0,
             "canCut": true
           }
         ]
@@ -2430,23 +2436,23 @@
     "preset": [
       {
         "name": "fokker_g1a_default",
-        "blk": "gameData/FlightModels/weaponPresets/fokker_g1a_default.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fokker_g1a_default.blk"
       },
       {
         "name": "fokker_g1a_vliegtuigbom_50kg",
-        "blk": "gameData/FlightModels/weaponPresets/fokker_g1a_vliegtuigbom_50kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fokker_g1a_vliegtuigbom_50kg.blk"
       },
       {
         "name": "fokker_g1a_vliegtuigbom_100kg",
-        "blk": "gameData/FlightModels/weaponPresets/fokker_g1a_vliegtuigbom_100kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fokker_g1a_vliegtuigbom_100kg.blk"
       },
       {
         "name": "fokker_g1a_vliegtuigbom_300kg",
-        "blk": "gameData/FlightModels/weaponPresets/fokker_g1a_vliegtuigbom_300kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fokker_g1a_vliegtuigbom_300kg.blk"
       },
       {
         "name": "fokker_g1a_vliegtuigbom_400kg",
-        "blk": "gameData/FlightModels/weaponPresets/fokker_g1a_vliegtuigbom_400kg.blk"
+        "blk": "gamedata/flightModels/weaponPresets/fokker_g1a_vliegtuigbom_400kg.blk"
       }
     ]
   },
@@ -2477,7 +2483,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "mgun1_dm",
@@ -2487,7 +2493,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",
@@ -2497,7 +2503,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "mgun3_dm",
@@ -2507,7 +2513,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "mgun4_dm",
@@ -2521,7 +2527,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare5",
               "flash": "flare5",
               "dm": "mgun5_dm",
@@ -2535,7 +2541,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare6",
               "flash": "flare6",
               "dm": "mgun6_dm",
@@ -2545,7 +2551,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare7",
               "flash": "flare7",
               "dm": "mgun7_dm",
@@ -2555,7 +2561,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowningM36No3Holand.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No3Holand.blk",
               "emitter": "flare8",
               "flash": "flare8",
               "dm": "mgun8_dm",
@@ -2565,7 +2571,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunBrowningM36No4Holand_turret.blk",
+              "blk": "gamedata/weapons/gunBrowningM36No4Holand_turret.blk",
               "breechInCockpit": true,
               "emitter": "gun1",
               "flash": "flare9",
@@ -2615,7 +2621,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_001",
                 "bullets": 1,
                 "external": false,
@@ -2627,7 +2633,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_002",
                 "bullets": 1,
                 "external": false,
@@ -2639,7 +2645,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_003",
                 "bullets": 1,
                 "external": false,
@@ -2651,7 +2657,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_004",
                 "bullets": 1,
                 "external": false,
@@ -2663,7 +2669,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_005",
                 "bullets": 1,
                 "external": false,
@@ -2675,7 +2681,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_50kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_50kg.blk",
                 "emitter": "50kg_bomb_006",
                 "bullets": 1,
                 "external": false,
@@ -2701,7 +2707,7 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_100kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_100kg.blk",
                 "emitter": "100kg_bomb_001",
                 "bullets": 1,
                 "external": false,
@@ -2713,7 +2719,7 @@
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/nld_100kg.blk",
+                "blk": "gamedata/weapons/bombguns/nld_100kg.blk",
                 "emitter": "100kg_bomb_002",
                 "bullets": 1,
                 "external": false,
@@ -2731,7 +2737,7 @@
             "reqModification": "vliegtuigbom_300kg",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/nld_300kg.blk",
+              "blk": "gamedata/weapons/bombguns/nld_300kg.blk",
               "emitter": "300kg_bomb_001",
               "bullets": 1,
               "external": false,
@@ -2745,7 +2751,7 @@
             "reqModification": "vliegtuigbom_400kg",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/nld_400kg.blk",
+              "blk": "gamedata/weapons/bombguns/nld_400kg.blk",
               "emitter": "300kg_bomb_001",
               "bullets": 1,
               "external": false,

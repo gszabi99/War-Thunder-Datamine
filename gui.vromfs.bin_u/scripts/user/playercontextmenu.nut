@@ -1,56 +1,59 @@
+from "%appGlobals/clientState/platform.nut" import isPlayerFromXboxOne, isPlayerFromPS4
+from "%sqstd/platform.nut" import isSony, isXbox
+import "%scripts/penitentiary/localDevoice.nut" as localDevoice
+from "%scripts/social/crossplay.nut" import isCrossPlayEnabled, needShowCrossPlayInfo, getTextWithCrossplayIcon,
+  canInteractCrossConsole
+import "%scripts/clans/showClanPageModal.nut" as showClanPageModal
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/chat/chatStates.nut" import isChatEnabled, attemptShowOverlayMessage, hasMenuChat, isCrossNetworkMessageAllowed
+from "%scripts/contacts/contactsManager.nut" import verifyContact
+from "%scripts/contacts/contactsState.nut" import addContact, removeContact
+from "%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut" import invite
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/user/matchingFeature.nut" import hasMenuChatPrivate
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, getMemberByName, getExternalSessionId
+from "%scripts/events/eventInfo.nut" import isEnableFriendsJoin
+from "%scripts/clans/clanChangeRoleModal.nut" import guiStartChangeRoleWnd
+from "%scripts/clans/clanActivityModal.nut" import guiStartClanActivityWnd
+from "%scripts/contacts/customNicknames.nut" import openNickEditBox
+from "%scripts/popups/popups.nut" import addPopup
+from "%scripts/wishlist/friendsWishlistManager.nut" import tryOpenFriendWishlist
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled, isWwOperationInviteEnable
+from "%scripts/user/complaints.nut" import checkCanComplainAndProceed
+from "%scripts/chat/chatRooms.nut" import generateInviteMenu, isRoomSquad, isImRoomOwner
+from "%scripts/chat/squadChatRoom.nut" import isSquadRoomJoined
+from "%scripts/chat/openChat.nut" import openChatRoom, openChatPrivate
+from "%scripts/globalWorldwarUtils.nut" import inviteToWwOperation
+from "%scripts/contacts/contactsActions.nut" import find_contact_by_name_and_do
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/clans/clanTextInfo.nut" import getClanMemberRank
+from "%scripts/clans/clanActions.nut" import dismissMember
+from "%scripts/clans/clanInfo.nut" import getMyClanRights, haveRankToChangeRoles
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import invitePlayerToSessionRoom, kickPlayerFromRoom
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import canInvitePlayerToSessionRoom
+from "%scripts/queue/queueManager.nut" import joinFriendsQueue
+from "%scripts/wndLib/rightClickMenu.nut" import openRightClickMenu
+from "%scripts/penitentiary/banhammer.nut" import gui_modal_ban, gui_modal_complain
+from "%scripts/chat/chatStorage.nut" import getRoomById, getThreadInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "gameplayBinding" import isInFlight
 from "%sqstd/platform.nut" import is_console, is_gdk
 from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard
   , clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let platformModule = require("%scripts/clientState/platform.nut")
-let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
-let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
-let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
-let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, getMemberByName, getExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isEnableFriendsJoin } = require("%scripts/events/eventInfo.nut")
-let { guiStartChangeRoleWnd } = require("%scripts/clans/clanChangeRoleModal.nut")
-let { guiStartClanActivityWnd } = require("%scripts/clans/clanActivityModal.nut")
-let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
-let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
-let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
-let { generateInviteMenu, isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
-let { isSquadRoomJoined } = require("%scripts/chat/squadChatRoom.nut")
 
-let { openChatRoom, openChatPrivate } = require("%scripts/chat/openChat.nut")
-let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
-let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getClanMemberRank } = require("%scripts/clans/clanTextInfo.nut")
-let { dismissMember } = require("%scripts/clans/clanActions.nut")
-let { getMyClanRights, haveRankToChangeRoles } = require("%scripts/clans/clanInfo.nut")
-let { invitePlayerToSessionRoom, kickPlayerFromRoom } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { canInvitePlayerToSessionRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { joinFriendsQueue } = require("%scripts/queue/queueManager.nut")
-let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
-let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { getRoomById, getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 
 
 
@@ -78,8 +81,8 @@ let getPlayerCardInfoTable = function(uid, name) {
   return info
 }
 
-let showLiveCommunicationsRestrictionMsgBox = @() showInfoMsgBox(loc("xbox/actionNotAvailableLiveCommunications"))
-let showCrossNetworkCommunicationsRestrictionMsgBox = @() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkCommunications"))
+let showLiveCommunicationsRestrictionMsgBox = @() showInfoMsgBox(locByVendor("xbox/actionNotAvailableLiveCommunications"))
+let showCrossNetworkCommunicationsRestrictionMsgBox = @() showInfoMsgBox(locByVendor("xbox/actionNotAvailableCrossNetworkCommunications"))
 let showNotAvailableActionPopup = @() addPopup(null, loc("xbox/actionNotAvailableDiffPlatform"))
 let showBlockedPlayerPopup = @(playerName) addPopup(null, loc("chat/player_blocked", { playerName = getPlayerName(playerName) }))
 let showNoInviteForDiffPlatformPopup = @() addPopup(null, loc("msg/squad/noPlayersForDiffConsoles"))
@@ -113,15 +116,15 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   let isFriend = contact.isInFriendGroup()
   let isBlock = contact.isInBlockGroup()
 
-  let isXBoxOnePlayer = platformModule.isPlayerFromXboxOne(name)
-  let isPS4Player = platformModule.isPlayerFromPS4(name)
+  let isXBoxOnePlayer = isPlayerFromXboxOne(name)
+  let isPS4Player = isPlayerFromPS4(name)
 
   let canChat = contact.canChat(comms_state)
   let canInvite = contact.canInvite(comms_state)
   let isProfileMuted = contact.isMuted(comms_state)
-  let canInteractCrossConsole = platformModule.canInteractCrossConsole(name)
-  let canInteractCrossPlatform = isPS4Player || isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
-  let showCrossPlayIcon = canInteractCrossConsole && crossplayModule.needShowCrossPlayInfo() && (!isXBoxOnePlayer || !isPS4Player)
+  let canInteractCrossConsoleValue = canInteractCrossConsole(name)
+  let canInteractCrossPlatform = isPS4Player || isXBoxOnePlayer || isCrossPlayEnabled()
+  let showCrossPlayIcon = canInteractCrossConsoleValue && needShowCrossPlayInfo() && (!isXBoxOnePlayer || !isPS4Player)
   let hasChatEnable = isChatEnabled()
 
   let roomId = params?.roomId
@@ -132,7 +135,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   let canInviteToChatRoom = params?.canInviteToChatRoom ?? true
 
   local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer()
-  let isInPsnBlockList = platformModule.isPlatformSony && contact.isInBlockGroup()
+  let isInPsnBlockList = isSony && contact.isInBlockGroup()
   let canInviteToSesson = (isXBoxOnePlayer == is_gdk) && !isInPsnBlockList
 
   local canComplain = !isMe && (params?.canComplain ?? false)
@@ -140,11 +143,11 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   let actions = []
 
   actions.append({
-    text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("multiplayer/invite_to_session"))
+    text = getTextWithCrossplayIcon(showCrossPlayIcon, loc("multiplayer/invite_to_session"))
     show = canInviteToChatRoom && canInvitePlayerToSessionRoom(uid) && canInviteToSesson
-    isVisualDisabled = !canInteractCrossConsole || !canInteractCrossPlatform || !canInvite
+    isVisualDisabled = !canInteractCrossConsoleValue || !canInteractCrossPlatform || !canInvite
     action = function () {
-      if (!canInteractCrossConsole)
+      if (!canInteractCrossConsoleValue)
         return showNotAvailableActionPopup()
       if (!canInteractCrossPlatform)
         return checkAndShowCrossplayWarning()
@@ -166,11 +169,11 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     let event = events.getEvent(eventId)
     if (event && isEnableFriendsJoin(event)) {
       actions.append({
-        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
+        text = getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
         show = canInviteToSesson
-        isVisualDisabled = !canInteractCrossConsole || !canInteractCrossPlatform
+        isVisualDisabled = !canInteractCrossConsoleValue || !canInteractCrossPlatform
         action = function() {
-          if (!canInteractCrossConsole)
+          if (!canInteractCrossConsoleValue)
             showNotAvailableActionPopup()
           else if (!canInteractCrossPlatform)
             checkAndShowCrossplayWarning()
@@ -202,8 +205,8 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     }
     {
-      text = loc("mainmenu/btnProfile")
-      show = hasFeature("UserCards") && getPlayerCardInfoTable(uid, name).len() > 0
+      text = locByVendor("mainmenu/btnProfile")
+      show = getPlayerCardInfoTable(uid, name).len() > 0
       action = @() gui_modal_userCard(getPlayerCardInfoTable(uid, name))
     }
     {
@@ -218,7 +221,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     }
     {
       text = loc("mainmenu/btnClanCard")
-      show = hasFeature("Clans") && !u.isEmpty(clanTag) && clanTag != clan_get_my_clan_tag()
+      show = !u.isEmpty(clanTag) && clanTag != clan_get_my_clan_tag()
       action = @() showClanPageModal("", "", clanTag)
     }
     {
@@ -235,94 +238,91 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
 
 
-  if (hasFeature("Squad")) {
-    let meLeader = g_squad_manager.isSquadLeader()
-    let inMySquad = g_squad_manager.isInMySquadById(uidInt64, false)
-    let squadMemberData = params?.squadMemberData
-    let hasApplicationInMySquad = g_squad_manager.hasApplicationInMySquad(uidInt64, name)
-    let canInviteDiffConsole = g_squad_manager.canInviteMemberByPlatform(name)
+  let meLeader = g_squad_manager.isSquadLeader()
+  let inMySquad = g_squad_manager.isInMySquadById(uidInt64, false)
+  let squadMemberData = params?.squadMemberData
+  let hasApplicationInMySquad = g_squad_manager.hasApplicationInMySquad(uidInt64, name)
+  let canInviteDiffConsole = g_squad_manager.canInviteMemberByPlatform(name)
 
-    actions.append(
-      {
-        text = loc("squadAction/openChat")
-        show = !isMe && isSquadRoomJoined(g_squad_manager.getSquadRoomName()) && inMySquad && hasChatEnable
-        action = @() openChatRoom(g_chat_room_type.getMySquadRoomId())
+  actions.append(
+    {
+      text = loc("squadAction/openChat")
+      show = !isMe && isSquadRoomJoined(g_squad_manager.getSquadRoomName()) && inMySquad && hasChatEnable
+      action = @() openChatRoom(g_chat_room_type.getMySquadRoomId())
+    }
+    {
+      text = getTextWithCrossplayIcon(showCrossPlayIcon, hasApplicationInMySquad
+          ? loc("squad/accept_membership")
+          : loc("squad/invite_player")
+        )
+      isVisualDisabled = !canInvite || !canInteractCrossConsoleValue || !canInteractCrossPlatform || !canInviteDiffConsole
+      show = canInviteToChatRoom
+             && !isMe
+             && !isBlock
+             && g_squad_manager.canInviteMember(uid)
+             && !g_squad_manager.isPlayerInvited(uid, name)
+             && !squadMemberData?.isApplication
+      action = function() {
+        if (!canInteractCrossConsoleValue)
+          showNotAvailableActionPopup()
+        else if (!isMultiplayerPrivilegeAvailable.get())
+          checkAndShowMultiplayerPrivilegeWarning()
+        else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform)
+          checkAndShowCrossplayWarning()
+        else if (!canInvite)
+          notifyPlayerAboutRestriction(contact)
+        else if (!canInviteDiffConsole)
+          showNoInviteForDiffPlatformPopup()
+        else if (hasApplicationInMySquad)
+          g_squad_manager.acceptMembershipAplication(uidInt64)
+        else
+          g_squad_manager.inviteToSquad(uid, name)
       }
-      {
-        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, hasApplicationInMySquad
-            ? loc("squad/accept_membership")
-            : loc("squad/invite_player")
-          )
-        isVisualDisabled = !canInvite || !canInteractCrossConsole || !canInteractCrossPlatform || !canInviteDiffConsole
-        show = hasFeature("SquadInviteIngame")
-               && canInviteToChatRoom
-               && !isMe
-               && !isBlock
-               && g_squad_manager.canInviteMember(uid)
-               && !g_squad_manager.isPlayerInvited(uid, name)
-               && !squadMemberData?.isApplication
-        action = function() {
-          if (!canInteractCrossConsole)
-            showNotAvailableActionPopup()
-          else if (!isMultiplayerPrivilegeAvailable.get())
-            checkAndShowMultiplayerPrivilegeWarning()
-          else if (!isShowGoldBalanceWarning() && !canInteractCrossPlatform)
-            checkAndShowCrossplayWarning()
-          else if (!canInvite)
-            notifyPlayerAboutRestriction(contact)
-          else if (!canInviteDiffConsole)
-            showNoInviteForDiffPlatformPopup()
-          else if (hasApplicationInMySquad)
-            g_squad_manager.acceptMembershipAplication(uidInt64)
-          else
-            g_squad_manager.inviteToSquad(uid, name)
-        }
+    }
+    {
+      text = loc("squad/revoke_invite")
+      show = squadMemberData && meLeader && squadMemberData?.isInvite
+      action = @() g_squad_manager.revokeSquadInvite(uid)
+    }
+    {
+      text = getTextWithCrossplayIcon(showCrossPlayIcon, loc("squad/accept_membership"))
+      isVisualDisabled = !canInvite || !canInteractCrossConsoleValue || !canInteractCrossPlatform || !canInviteDiffConsole
+      show = squadMemberData && meLeader && squadMemberData?.isApplication
+      action = function() {
+        if (!canInteractCrossConsoleValue)
+          showNotAvailableActionPopup()
+        else if (!canInteractCrossPlatform)
+          checkAndShowCrossplayWarning()
+        else if (!canInvite)
+          notifyPlayerAboutRestriction(contact)
+        else if (!canInviteDiffConsole)
+          showNoInviteForDiffPlatformPopup()
+        else
+          g_squad_manager.acceptMembershipAplication(uidInt64)
       }
-      {
-        text = loc("squad/revoke_invite")
-        show = squadMemberData && meLeader && squadMemberData?.isInvite
-        action = @() g_squad_manager.revokeSquadInvite(uid)
-      }
-      {
-        text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("squad/accept_membership"))
-        isVisualDisabled = !canInvite || !canInteractCrossConsole || !canInteractCrossPlatform || !canInviteDiffConsole
-        show = squadMemberData && meLeader && squadMemberData?.isApplication
-        action = function() {
-          if (!canInteractCrossConsole)
-            showNotAvailableActionPopup()
-          else if (!canInteractCrossPlatform)
-            checkAndShowCrossplayWarning()
-          else if (!canInvite)
-            notifyPlayerAboutRestriction(contact)
-          else if (!canInviteDiffConsole)
-            showNoInviteForDiffPlatformPopup()
-          else
-            g_squad_manager.acceptMembershipAplication(uidInt64)
-        }
-      }
-      {
-        text = loc("squad/deny_membership")
-        show = squadMemberData && meLeader && squadMemberData?.isApplication
-        action = @() g_squad_manager.denyMembershipAplication(uidInt64,
-          @(_response) g_squad_manager.removeApplication(uidInt64))
-      }
-      {
-        text = loc("squad/remove_player")
-        show = g_squad_manager.canDismissMember(uid)
-        action = @() g_squad_manager.dismissFromSquad(uid)
-      }
-      {
-        text = loc("squad/tranfer_leadership")
-        show = !isMe && g_squad_manager.canTransferLeadership(uid)
-        action = @() g_squad_manager.transferLeadership(uid)
-      }
-    )
-  }
+    }
+    {
+      text = loc("squad/deny_membership")
+      show = squadMemberData && meLeader && squadMemberData?.isApplication
+      action = @() g_squad_manager.denyMembershipAplication(uidInt64,
+        @(_response) g_squad_manager.removeApplication(uidInt64))
+    }
+    {
+      text = loc("squad/remove_player")
+      show = g_squad_manager.canDismissMember(uid)
+      action = @() g_squad_manager.dismissFromSquad(uid)
+    }
+    {
+      text = loc("squad/tranfer_leadership")
+      show = !isMe && g_squad_manager.canTransferLeadership(uid)
+      action = @() g_squad_manager.transferLeadership(uid)
+    }
+  )
 
 
 
   let clanData = params?.clanData
-  if (hasFeature("Clans") && clanData) {
+  if (clanData) {
     let clanId = clanData?.id ?? "-1"
     let myClanId = clan_get_my_clan_id()
     let isMyClan = myClanId != "-1" && clanId == myClanId
@@ -334,7 +334,6 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     actions.append(
       {
         text = loc("clan/activity")
-        show = hasFeature("ClanActivity")
         action = @() guiStartClanActivityWnd(uid, clanData)
       }
       {
@@ -362,53 +361,51 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
 
 
-  if (hasFeature("Friends")) {
-    let canBlock = !platformModule.isPlatformXbox || !isXBoxOnePlayer
+  let canBlock = !isXbox || !isXBoxOnePlayer
 
-    actions.append(
-      {
-        text = loc("contacts/friendlist/add")
-        show = !isMe && !isFriend && !isBlock
-        isVisualDisabled = !canInteractCrossConsole
-        action = function() {
-          if (!canInteractCrossConsole)
-            showNotAvailableActionPopup()
-          else
-            addContact(contact, EPL_FRIENDLIST)
-        }
+  actions.append(
+    {
+      text = locByVendor("contacts/friendlist/add")
+      show = !isMe && !isFriend && !isBlock
+      isVisualDisabled = !canInteractCrossConsoleValue
+      action = function() {
+        if (!canInteractCrossConsoleValue)
+          showNotAvailableActionPopup()
+        else
+          addContact(contact, EPL_FRIENDLIST)
       }
-      {
-        text = loc("contacts/friendlist/remove")
-        show = isFriend && contact.isInFriendGroup()
-        action = @() removeContact(contact, EPL_FRIENDLIST)
-      }
-      {
-        text = loc("contacts/psn/friends/request")
-        show = !isMe && isPS4Player && !isBlock && !contact.isInPSNFriends()
-        action = @() contact.sendPsnFriendRequest(EPL_FRIENDLIST)
-      }
-      {
-        text = loc("contacts/blacklist/add")
-        show = !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
-        action = @() addContact(contact, EPL_BLOCKLIST)
-      }
-      {
-        text = loc("contacts/blacklist/remove")
-        show = isBlock && canBlock && (!isPS4Player || (isPS4Player && contact.isInPSNFriends()))
-        action = @() removeContact(contact, EPL_BLOCKLIST)
-      }
-      {
-        text = loc("contacts/psn/blacklist/request")
-        show = !isMe && isPS4Player && !isBlock
-        action = @() contact.sendPsnFriendRequest(EPL_BLOCKLIST)
-      }
-      {
-        text = loc("mainmenu/addCustomNick")
-        show = hasFeature("CustomNicks") && !isMe
-        action = @() openNickEditBox(contact)
-      }
-    )
-  }
+    }
+    {
+      text = locByVendor("contacts/friendlist/remove")
+      show = isFriend && contact.isInFriendGroup()
+      action = @() removeContact(contact, EPL_FRIENDLIST)
+    }
+    {
+      text = loc("contacts/psn/friends/request")
+      show = !isMe && isPS4Player && !isBlock && !contact.isInPSNFriends()
+      action = @() contact.sendPsnFriendRequest(EPL_FRIENDLIST)
+    }
+    {
+      text = loc("contacts/blacklist/add")
+      show = !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
+      action = @() addContact(contact, EPL_BLOCKLIST)
+    }
+    {
+      text = loc("contacts/blacklist/remove")
+      show = isBlock && canBlock && (!isPS4Player || (isPS4Player && contact.isInPSNFriends()))
+      action = @() removeContact(contact, EPL_BLOCKLIST)
+    }
+    {
+      text = loc("contacts/psn/blacklist/request")
+      show = !isMe && isPS4Player && !isBlock
+      action = @() contact.sendPsnFriendRequest(EPL_BLOCKLIST)
+    }
+    {
+      text = loc("mainmenu/addCustomNick")
+      show = hasFeature("CustomNicks") && !isMe
+      action = @() openNickEditBox(contact)
+    }
+  )
 
 
 
@@ -439,10 +436,10 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       let inviteMenu = generateInviteMenu(name)
       actions.append({
         text = loc("chat/invite_to_room")
-        isVisualDisabled = !canChat || !canInteractCrossConsole || !canInteractCrossPlatform || isProfileMuted || isBlock
+        isVisualDisabled = !canChat || !canInteractCrossConsoleValue || !canInteractCrossPlatform || isProfileMuted || isBlock
         show = inviteMenu && inviteMenu.len() > 0
         action = function() {
-          if (!canInteractCrossConsole)
+          if (!canInteractCrossConsoleValue)
             showNotAvailableActionPopup()
           else if (!canInteractCrossPlatform)
             showCrossNetworkCommunicationsRestrictionMsgBox()
@@ -611,7 +608,7 @@ function showSessionPlayerRClickMenu(handler, player, chatLog = null, position =
   })
 }
 
-return {
+return freeze({
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
   notifyPlayerAboutRestriction = notifyPlayerAboutRestriction
@@ -619,4 +616,4 @@ return {
   showSquadMemberMenu
   showChatPlayerRClickMenu
   showSessionPlayerRClickMenu
-}
+})

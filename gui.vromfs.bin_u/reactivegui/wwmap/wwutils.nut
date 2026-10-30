@@ -1,7 +1,7 @@
 from "math" import atan, PI
 from "%rGui/globals/ui_library.nut" import *
 
-function calcAngleBetweenVectors(point1, point2 = {}) {
+function [pure, nodiscard] calcAngleBetweenVectors(point1, point2 = {}) {
   let { x = 0, y = 0 } = point2
   let deltaX = point1.x - x
   let deltaY = point1.y - y
@@ -16,7 +16,7 @@ function calcAngleBetweenVectors(point1, point2 = {}) {
   }
 }
 
-return {
+return freeze({
   calcAngleBetweenVectors
   even = @(px) (px / 2.0).tointeger() * 2
-}
+})

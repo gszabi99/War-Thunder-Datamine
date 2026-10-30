@@ -1,17 +1,17 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
+from "%scripts/tutorials/tutorialsState.nut" import skipTutorialBitmaskId
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings
+from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/firstChoice/firstChoice.nut" import getFirstChosenUnitType
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsState.nut")
-let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 
 const TUTORIAL_VERSION_COUNTER = 1
@@ -53,11 +53,11 @@ subscriptions.addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-return {
+return freeze({
   saveVersion
   getVersion
   needShowTutorial
   saveShowedTutorial
   reqFirstCountryChoice
   getFirstCountryChoice
-}
+})

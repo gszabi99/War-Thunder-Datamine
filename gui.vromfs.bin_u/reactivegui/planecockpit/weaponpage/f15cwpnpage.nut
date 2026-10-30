@@ -222,8 +222,10 @@ let pods = @(width, height, less_pods) function() {
     [width * 0.5, height * 0.22],
     [width * 0.5, height * 0.68],
     [width * 0.55, height * 0.5],
-    [width * 0.76 height * 0.01],
-    [width * 0.7, height * 0.5]
+    [width * 0.76, height * 0.01],
+    [width * 0.7, height * 0.5],
+    [width * 0.78, height * 0.5],
+    [width * 0.85, height * 0.5]
   ]
   let positionsJ = [
     [width * 0.7, height * 0.5],
@@ -236,7 +238,7 @@ let pods = @(width, height, less_pods) function() {
     [width * 0.5, height * 0.22],
     [width * 0.5, height * 0.68],
     [width * 0.55, height * 0.5],
-    [width * 0.76 height * 0.01],
+    [width * 0.76, height * 0.01],
     [width * 0.7, height * 0.5]
   ]
 
@@ -246,7 +248,10 @@ let pods = @(width, height, less_pods) function() {
     let weaponSlotTrigger = WeaponSlotsTrigger.get()?[idx]
     let weaponSlotCnt = WeaponSlotsCnt.get()?[idx] ?? 0
     if (weaponSlotTrigger == weaponTriggerName.AAM_TRIGGER && weaponSlotCnt > 0) {
-      childrens.append(aamMark(less_pods ? positionsJ[weaponSlot] : positionsC[weaponSlot], idx))
+      let positions = less_pods ? positionsJ : positionsC
+      if (weaponSlot >= positions.len())
+        continue
+      childrens.append(aamMark(positions[weaponSlot], idx))
       continue
     }
 
@@ -273,6 +278,63 @@ let pods = @(width, height, less_pods) function() {
     watch = [WeaponSlots, WeaponSlotsCnt, WeaponSlotsTotalCnt]
     size = [width, height]
     children = childrens
+  }
+}
+
+let podsEx = @(width, height) function() {
+  let childrens = []
+
+  
+  let positionsEX = [
+    null,                                
+    [width * 0.20, height * 0.50],       
+    [width * 0.33, height * 0.50],       
+    null,                                
+    [width * 0.33, height * 0.50],       
+    [width * 0.33, height * 0.58],       
+    null,                                
+    null,                                
+    null,                                
+    null,                                
+    null,                                
+    [width * 0.50, height * 0.58],       
+    [width * 0.50, height * 0.50],       
+    null,                                
+    [width * 0.50, height * 0.50],       
+    [width * 0.63, height * 0.50],       
+  ]
+
+  foreach (idx, weaponSlot in WeaponSlots.get()) {
+    if (weaponSlot == null)
+      continue
+    let weaponSlotTrigger = WeaponSlotsTrigger.get()?[idx]
+    let weaponSlotCnt = WeaponSlotsCnt.get()?[idx] ?? 0
+    if (weaponSlotTrigger == weaponTriggerName.AAM_TRIGGER && weaponSlotCnt > 0) {
+      if (weaponSlot >= positionsEX.len() || positionsEX[weaponSlot] == null)
+        continue
+      childrens.append(aamMark(positionsEX[weaponSlot], idx))
+    }
+  }
+
+  return {
+    watch = [WeaponSlots, WeaponSlotsTrigger, WeaponSlotsCnt]
+    size = [width, height]
+    children = childrens
+  }
+}
+
+function f15exWpn(pos, size) {
+  return {
+    size
+    pos
+    children = [
+      aircraft
+      chaffs
+      flares
+      cannons
+      labels
+      podsEx(size[0], size[1])
+    ]
   }
 }
 
@@ -306,7 +368,8 @@ function f15jWpn(pos, size) {
   }
 }
 
-return {
+return freeze({
   f15cWpn
   f15jWpn
-}
+  f15exWpn
+})

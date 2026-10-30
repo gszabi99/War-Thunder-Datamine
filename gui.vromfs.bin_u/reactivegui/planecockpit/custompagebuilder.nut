@@ -5,9 +5,10 @@ import "%rGui/planeCockpit/weaponPage/ef2000WpnPage.nut" as ef2000Wpn
 import "%rGui/planeCockpit/instrumentsPage/planeAttitude.nut" as planeAttitude
 import "%rGui/planeCockpit/instrumentsPage/BaeHawkFltPage.nut" as BaeHawkFlt
 import "%rGui/planeCockpit/instrumentsPage/mfdF16cAttitude.nut" as f16cAttitude
+import "%rGui/planeCockpit/instrumentsPage/mfdF15exHsiTews.nut" as f15exHsiTews
 from "%rGui/utils/builders.nut" import createScriptComponentWithPos
 from "%rGui/planeState/planeToolsState.nut" import CustomPages, CustomPagesBlk
-from "%rGui/planeCockpit/weaponPage/f15cWpnPage.nut" import f15cWpn, f15jWpn
+from "%rGui/planeCockpit/weaponPage/f15cWpnPage.nut" import f15cWpn, f15jWpn, f15exWpn
 from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
 from "%sqStdLibs/helpers/u.nut" import copy
 from "dagor.math" import E3DCOLOR
@@ -35,6 +36,9 @@ let mfdYak130Kab = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/m
 let f101Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/F101Radar.das", {
   fontId = Fonts.hud
 })
+let mfdF3h2Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF3h2Radar.das", {
+  fontId = Fonts.hud
+})
 let mfdMig21Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdMig21Radar.das", {
   fontId = Fonts.ussr_ils
 })
@@ -42,9 +46,6 @@ let mfdF104Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mf
   fontId = Fonts.hud
 })
 let mfdF102Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF102Radar.das", {
-  fontId = Fonts.hud
-})
-let mfdSu15Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdSu15Radar.das", {
   fontId = Fonts.hud
 })
 let mfdF1Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF1Radar.das", {
@@ -90,6 +91,7 @@ let mfdMigCompass = createScriptComponentWithPos("%rGui/planeCockpit/instruments
 let mfdKa52Wpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdKa52Wpn.das", {
   fontId = Fonts.ils31
 })
+let f15exTopBar = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdF15exTopBar.das", { fontId = Fonts.ah64, fontSize = 20 })
 function mfdKa52Compass(pos, size) {
   return {
     rendObj = ROBJ_DAS_CANVAS
@@ -246,6 +248,7 @@ let pageByName = {
   f15cWpn,
   su27Pod,
   f15jWpn,
+  f15exWpn,
   ef2000Wpn,
   rafaleWpn,
   fa18cRadarAzEl,
@@ -274,10 +277,10 @@ let pageByName = {
   mfdYak130Compass,
   mfdYak130Kab,
   f101Radar,
+  mfdF3h2Radar,
   mfdMig21Radar,
   mfdF104Radar,
   mfdF102Radar,
-  mfdSu15Radar,
   mfdF1Radar,
   mfdMirageF1Radar,
   hsiPage,
@@ -292,6 +295,8 @@ let pageByName = {
   mfdMigCompass,
   mfdKa52Compass,
   mfdKa52Wpn,
+  f15exTopBar,
+  f15exHsiTews,
 }
 
 function customPageSettingsUpd(page_blk) {
@@ -321,4 +326,4 @@ function mfdCustomPages() {
   }
 }
 
-return { mfdCustomPages, customPageSettingsUpd }
+return freeze({ mfdCustomPages, customPageSettingsUpd })

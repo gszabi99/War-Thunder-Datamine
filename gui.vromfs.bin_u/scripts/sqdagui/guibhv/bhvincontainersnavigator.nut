@@ -130,7 +130,7 @@ let InContainersNavigator = class(posNavigator){
 
 replace_script_gui_behaviour("inContainersNavigator", InContainersNavigator)
 
-return {
+return freeze({
   InContainersNavigator
   getChildInContainers
-}
+})

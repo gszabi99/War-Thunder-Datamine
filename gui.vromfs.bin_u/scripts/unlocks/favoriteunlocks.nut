@@ -1,14 +1,14 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockVisibleOnCurPlatform, isUnlockVisible
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
+from "%scripts/popups/popups.nut" import addPopup
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent, CONFIG_VALIDATION
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%sqstd/datablock.nut" import eachBlock
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
-
-let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const CHECKBOX_BTN_ID = "checkbox_favorites"
@@ -102,7 +102,7 @@ function removeUnlockFromFavorites(unlockId) {
 function tryAddAddToFav(unlockId) {
   if (!canAddFavorite()) {
     const num = FAVORITE_UNLOCKS_LIMIT
-    let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
+    let msg = locByVendor("mainmenu/unlockAchievements/limitReached", { num })
     addPopup("", colorize("warningTextColor", msg))
     return false
   }
@@ -140,8 +140,8 @@ function updateUnlockFavObj(obj) {
   }
 
   obj.tooltip = isUnlockInFavorites
-    ? loc("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
-    : loc("mainmenu/UnlockAchievementsToFavorite/hint")
+    ? locByVendor("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
+    : locByVendor("mainmenu/UnlockAchievementsToFavorite/hint")
 
   this.guiScene.updateTooltip(obj)
 }
@@ -196,7 +196,7 @@ addListenersWithoutEnv({
   RegionalUnlocksChanged = @(_) invalidateCache()
 }, CONFIG_VALIDATION)
 
-return {
+return freeze({
   getFavoriteUnlocks
   getFavoriteUnlocksNum
   canAddFavorite
@@ -207,4 +207,4 @@ return {
   initUnlockFavInContainer
   toggleUnlockFavButton
   toggleUnlockFavCheckBox
-}
+})

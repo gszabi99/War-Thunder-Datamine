@@ -1,11 +1,11 @@
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/customization/decoratorTypeUtils.nut" import getDecorTypeBlk, needCacheDecorTypeByCategories
+from "%scripts/customization/decorator.nut" import Decorator, DecoratorProbe
 from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%scripts/dagui_library.nut" import *
 
 let { waitingItemdefs } = require("%scripts/customization/decoratorCache.nut")
 
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getDecorTypeBlk, needCacheDecorTypeByCategories } = require("%scripts/customization/decoratorTypeUtils.nut")
-let { Decorator } = require("%scripts/customization/decorator.nut")
 
 function getSingleDecor(decorId, decType) {
   let dblk = getDecorTypeBlk(decType.name)?[decorId]
@@ -13,7 +13,6 @@ function getSingleDecor(decorId, decType) {
     return null
 
   let decorator = Decorator(dblk, decType)
-  decorator.category = dblk?.category ?? ""
 
   if (decorator.getCouponItemdefId() != null
     && !findItemById(decorator.getCouponItemdefId()))
@@ -22,38 +21,30 @@ function getSingleDecor(decorId, decType) {
   return decorator
 }
 
-function cacheDecor(decType, unitTypeTag) {
+function cacheDecor(decType, unitTypeTag, singleDecorators, getCanReceiveByBlkIdx) {
   let curCache = {
     categories      = []
-    decoratorsList  = {}
     catToGroupNames = {} 
     catToGroups     = {} 
   }
 
   let blk = getDecorTypeBlk(decType.name)
-  if (isEmpty(blk))
+  if (isEmpty(blk) || !needCacheDecorTypeByCategories(decType.name))
     return curCache
 
-  const prevCategory = ""
+  let canReceiveByBlkIdx = getCanReceiveByBlkIdx(decType)
   let numDecors = blk.blockCount()
   for (local i = 0; i < numDecors; ++i) {
     let dblk = blk.getBlock(i)
 
-    let decorator = Decorator(dblk, decType) 
+    let decorator = singleDecorators?[dblk.getBlockName()]
+      ?? DecoratorProbe(dblk, decType, i, canReceiveByBlkIdx)
     if (unitTypeTag != null && !decorator.isAllowedByUnitTypes(unitTypeTag))
       continue
-
-    let category = dblk?.category ?? prevCategory
-    decorator.category = category
-
-    if (decorator.getCouponItemdefId() != null
-        && !findItemById(decorator.getCouponItemdefId()))
-      waitingItemdefs[decorator.getCouponItemdefId()] <- decorator
-
-    curCache.decoratorsList[decorator.id] <- decorator
-    if (!needCacheDecorTypeByCategories(decType.name) || !decorator.isVisible())
+    if (!decorator.isVisible())
       continue
 
+    let category = dblk?.category ?? ""
     if (category not in curCache.catToGroups) {
       curCache.categories.append(category)
       curCache.catToGroups[category] <- {}
@@ -66,8 +57,7 @@ function cacheDecor(decType, unitTypeTag) {
       curCache.catToGroupNames[category].append(group)
     }
 
-    decorator.catIndex = curCache.catToGroups[category][group].len()
-    curCache.catToGroups[category][group].append(decorator)
+    curCache.catToGroups[category][group].append(decorator.id)
   }
 
   foreach (groupNames in curCache.catToGroupNames) {
@@ -94,14 +84,12 @@ function addDecorToCache(decorator, decCache) {
   }
 
   let groupArr = decCache.catToGroups[category][group]
-  if (groupArr.findindex(@(d) d.id == decorator.id) == null) {
-    decorator.catIndex = groupArr.len()
-    groupArr.append(decorator)
-  }
+  if (!groupArr.contains(decorator.id))
+    groupArr.append(decorator.id)
 }
 
-return {
+return freeze({
   cacheDecor
   addDecorToCache
   getSingleDecor
-}
+})

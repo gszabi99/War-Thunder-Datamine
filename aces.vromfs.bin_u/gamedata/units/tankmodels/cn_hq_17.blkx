@@ -1942,7 +1942,7 @@
         "dummy": true,
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_gun_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1954,13 +1954,23 @@
           "gun": "bone_gun_01",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "gunnerDm": "gunner_dm"
         },
         "limits": {
@@ -2010,7 +2020,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/239mm_HQ_17_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/239mm_HQ_17_user_cannon.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2293,8 +2303,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "cn_hq_17_default",
-      "blk": "gameData/units/tankModels/weaponPresets/cn_hq_17_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -3452,7 +3462,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/cn_hq_17_search.blk",
+        "blk": "gamedata/sensors/cn_hq_17_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -3462,7 +3472,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/cn_hq_17_track.blk",
+        "blk": "gamedata/sensors/cn_hq_17_track.blk",
         "turretIndex": 0,
         "dmPart": [
           "antenna_target_tagging_dm",
@@ -3496,5 +3506,29 @@
     "hasTurretView": true,
     "hasVerticalView": true,
     "verticalViewMaxAltitude": 10.0
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -4.36,
+      1.649,
+      1.46
+    ],
+    "lightInfluenceSize": [
+      0.5,
+      0.3,
+      0.5
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.01
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.4
   }
 }

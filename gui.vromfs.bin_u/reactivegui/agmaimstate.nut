@@ -37,4 +37,4 @@ interopGen({
   postfix = "Update"
 })
 
-return agmAimState
+return freeze(agmAimState)

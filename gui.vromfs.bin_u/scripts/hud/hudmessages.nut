@@ -1,4 +1,17 @@
+import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/hud/hudBattleLog.nut" import isValidKillLogMsg, getKillLogMsgText
+from "%scripts/money.nut" import Cost
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_REWARDS_MSG, USEROPT_SHOW_MESSAGE_MISSILE_EVADE
+from "%scripts/sqDagui/guiBhv/bhvAnim.nut" import create_ObjMoveToOBj
+from "%scripts/missions/missionsUtils.nut" import isMissionExtr
+from "%scripts/options/options.nut" import get_gui_option_in_mode
+from "%scripts/hud/killerCardUtils.nut" import getKillerCardView, isKillerCardData
+from "%scripts/user/usersInfoManager.nut" import getUserInfo
+from "%scripts/hud/hudState.nut" import isPlayerAlive
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "guiMission" import GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE, MISSION_TEAM_LEAD_ZONE
 from "dagor.time" import get_time_msec
@@ -10,24 +23,11 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "hudMessages" import *
 from "%globalScripts/expEventConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
-from "%scripts/viewUtils/hints.nut" import g_hints
+from "%appGlobals/hud/hudMessageStacks.nut" import killFeed, tankNotifications, shipNotifications, playerDamage
 
-let { isValidKillLogMsg, getKillLogMsgText } = require("%scripts/hud/hudBattleLog.nut")
 let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
 let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { Cost } = require("%scripts/money.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let time = require("%scripts/time.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_REWARDS_MSG, USEROPT_SHOW_MESSAGE_MISSILE_EVADE } = require("%scripts/options/optionsExtNames.nut")
-let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
-let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { getKillerCardView, isKillerCardData } = require("%scripts/hud/killerCardUtils.nut")
-let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 
 let heightPID = dagui_propid_add_name_id("height")
@@ -236,9 +236,6 @@ enumsAddTypes(g_hud_messages, {
   }
 
   TANK_HUD_NOTIFICATION = {
-    nestId = "hud_message_tank_notification"
-    showSec = 5
-    messagesMax = 3
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
@@ -246,70 +243,15 @@ enumsAddTypes(g_hud_messages, {
     }
 
     onMessage = function (messageData) {
-      if (!isPlayerAlive.get() || messageData.type != HUD_MSG_EVENT
-        || HUD_UNIT_TYPE.TANK != getHudUnitType())
-        return
-      if (!checkObj(this.nest))
-        return
-
-      let checkField = (messageData.id != -1) ? "id" : "text"
-      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
-      if (oldMessage)
-        this.refreshMessage(messageData, oldMessage)
-      else
-        this.addMessage(messageData)
+      if (isPlayerAlive.get() && messageData.type == HUD_MSG_EVENT
+        && HUD_UNIT_TYPE.TANK == getHudUnitType())
+        tankNotifications.push(messageData.text, messageData.id)
     }
 
-    addMessage = function (messageData) {
-      this.cleanUp()
-      let message = {
-        timer = null
-        messageData = messageData
-        obj = null
-      }
-      this.stack.append(message)
-      let view = {
-        text = messageData.text
-      }
-      let blk = handyman.renderCached("%gui/hud/messageStack/tankNotificationMessage.tpl", view)
-      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
-      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
-
-      if (this.nest.isVisible()) {
-        message.obj["height-end"] = message.obj.getSize()[1]
-        message.obj.setIntProp(heightPID, 0)
-        message.obj.slideDown = "yes"
-        this.guiScene.setUpdatesEnabled(true, true)
-      }
-
-      message.timer = this.timers.addTimer(this.showSec, function () {
-        if (checkObj(message.obj))
-          message.obj.remove = "yes"
-        this.removeMessage(message)
-      }.bindenv(this)).weakref()
-    }
-
-    refreshMessage = function (messageData, message) {
-      let updateText = message.messageData.text != messageData.text
-      message.messageData = messageData
-      if (message.timer)
-        this.timers.setTimerTime(message.timer, this.showSec)
-      if (updateText && checkObj(message.obj))
-        message.obj.findObject("text").setValue(messageData.text)
-    }
-
-    clearStack = function () {
-      this.stack.clear()
-      if (!checkObj(this.nest))
-        return
-      this.nest.deleteChildren()
-    }
+    clearStack = @() tankNotifications.clear()
   }
 
   SHIP_HUD_NOTIFICATION = {
-    nestId = "hud_message_ship_notification"
-    showSec = 5
-    messagesMax = 3
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
@@ -317,71 +259,15 @@ enumsAddTypes(g_hud_messages, {
     }
 
     onMessage = function (messageData) {
-      if (messageData.type != HUD_MSG_EVENT)
-        return
-      if (!this?.nest.isValid())
-        return
-      if (![HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType()))
-        return
-
-      let checkField = (messageData.id != -1) ? "id" : "text"
-      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
-      if (oldMessage)
-        this.refreshMessage(messageData, oldMessage)
-      else
-        this.addMessage(messageData)
+      if (messageData.type == HUD_MSG_EVENT
+        && [HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType()))
+        shipNotifications.push(messageData.text, messageData.id)
     }
 
-    addMessage = function (messageData) {
-      this.cleanUp()
-      let message = {
-        timer = null
-        messageData = messageData
-        obj = null
-      }
-      this.stack.append(message)
-      let view = {
-        text = messageData.text
-      }
-      let blk = handyman.renderCached("%gui/hud/messageStack/shipNotificationMessage.tpl", view)
-      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
-      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
-
-      if (this.nest.isVisible()) {
-        message.obj["height-end"] = message.obj.getSize()[1]
-        message.obj.setIntProp(heightPID, 0)
-        message.obj.slideDown = "yes"
-        this.guiScene.setUpdatesEnabled(true, true)
-      }
-
-      message.timer = this.timers.addTimer(this.showSec, function () {
-        if (message?.obj.isValid())
-          message.obj.remove = "yes"
-        this.removeMessage(message)
-      }.bindenv(this)).weakref()
-    }
-
-    refreshMessage = function (messageData, message) {
-      let updateText = message.messageData.text != messageData.text
-      message.messageData = messageData
-      if (message.timer)
-        this.timers.setTimerTime(message.timer, this.showSec)
-      if (updateText && checkObj(message.obj))
-        message.obj.findObject("text").setValue(messageData.text)
-    }
-
-    clearStack = function () {
-      this.stack.clear()
-      if (!this?.nest.isValid())
-        return
-      this.nest.deleteChildren()
-    }
+    clearStack = @() shipNotifications.clear()
   }
 
   PLAYER_DAMAGE = {
-    nestId = "hud_message_player_damage_notification"
-    showSec = 5
-    messagesMax = 3
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
@@ -391,142 +277,25 @@ enumsAddTypes(g_hud_messages, {
     onMessage = function (messageData) {
       if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
         return
-      if (!checkObj(this.nest))
-        return
       let supportedHudTypes = [
         HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
         HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI
       ]
 
-      if(!supportedHudTypes.contains(getHudUnitType()))
-        return
-
-      let checkField = (messageData.id != -1) ? "id" : "text"
-      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
-      if (oldMessage)
-        this.refreshMessage(messageData, oldMessage)
-      else
-        this.addMessage(messageData)
+      if(supportedHudTypes.contains(getHudUnitType()))
+        playerDamage.push(messageData.text, messageData.id)
     }
 
-    addMessage = function (messageData) {
-      this.cleanUp()
-      let message = {
-        timer = null
-        messageData = messageData
-        obj = null
-      }
-      this.stack.append(message)
-      let view = {
-        contentMarkup = g_hints.buildHintMarkup(messageData.text)
-      }
-      let blk = handyman.renderCached("%gui/hud/messageStack/messageWithHintContent.tpl", view)
-      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
-      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
-
-      if (this.nest.isVisible()) {
-        message.obj["height-end"] = message.obj.getSize()[1]
-        message.obj.setIntProp(heightPID, 0)
-        message.obj.slideDown = "yes"
-        this.guiScene.setUpdatesEnabled(true, true)
-      }
-
-      message.timer = this.timers.addTimer(this.showSec, function () {
-        if (checkObj(message.obj))
-          message.obj.remove = "yes"
-        this.removeMessage(message)
-      }.bindenv(this)).weakref()
-    }
-
-    refreshMessage = function (messageData, message) {
-      let updateText = message.messageData.text != messageData.text
-      message.messageData = messageData
-      if (message.timer)
-        this.timers.setTimerTime(message.timer, this.showSec)
-      if (updateText && checkObj(message.obj)) {
-        let blk = g_hints.buildHintMarkup(messageData.text)
-        this.guiScene.replaceContentFromText(message.obj, blk, blk.len(), this)
-      }
-    }
-
-    clearStack = function () {
-      this.stack.clear()
-      if (!checkObj(this.nest))
-        return
-      this.nest.deleteChildren()
-    }
+    clearStack = @() playerDamage.clear()
   }
 
   KILL_LOG = {
-    nestId = "hud_message_kill_log_notification"
-    messagesMax = 5
-    showSec = 11
     messageEvent = "HudMessage"
-
-    reinit = function (inScene, inTimers) {
-      this.setScene(inScene, inTimers)
-      if (!checkObj(this.nest))
-        return
-      this.nest.deleteChildren()
-
-      let timeDelete = get_time_msec() - this.showSec * 1000
-      let killLogNotificationsOld = this.stack
-      this.stack = []
-
-      foreach (killLogMessage in killLogNotificationsOld)
-        if (killLogMessage.timestamp > timeDelete)
-          this.addMessage(killLogMessage.messageData, killLogMessage.timestamp)
-    }
-
-    clearStack = function () {
-      if (!checkObj(this.nest))
-        return
-      this.nest.deleteChildren()
-    }
+    clearStack = @() killFeed.clear()
 
     onMessage = function (messageData) {
-      if (!checkObj(this.nest))
-        return
-      if (!isValidKillLogMsg(messageData))
-        return
-      this.addMessage(messageData)
-    }
-
-    addMessage = function (messageData, timestamp = null) {
-      this.cleanUp()
-      let message = {
-        timer = null
-        timestamp = timestamp || get_time_msec()
-        messageData = messageData
-        obj = null
-      }
-      this.stack.append(message)
-      let text = getKillLogMsgText(messageData)
-      let view = { text = text }
-
-      let timeToShow = timestamp
-       ? this.showSec - (get_time_msec() - timestamp) / 1000.0
-       : this.showSec
-
-      message.timer = this.timers.addTimer(timeToShow, function () {
-        if (checkObj(message.obj))
-          message.obj.remove = "yes"
-        this.removeMessage(message)
-      }.bindenv(this)).weakref()
-
-      if (!checkObj(this.nest))
-        return
-
-      let blk = handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
-      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
-      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
-
-      if (this.nest.isVisible() && !timestamp && checkObj(message.obj)) {
-        message.obj["height-end"] = message.obj.getSize()[1]
-        message.obj.setIntProp(heightPID, 0)
-        message.obj.appear = "yes"
-        this.guiScene.setUpdatesEnabled(true, true)
-      }
+      if (isValidKillLogMsg(messageData))
+        killFeed.push(getKillLogMsgText(messageData))
     }
   }
 

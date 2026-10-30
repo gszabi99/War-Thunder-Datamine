@@ -1,12 +1,14 @@
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/items/trophyMultiAward.nut" import isPrizeMultiAward
+from "%scripts/customization/decoratorBaseType.nut" import getTypeByResourceType
+from "%scripts/items/itemsManagerModule.nut" import findItemById, getItemsSortComparator
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { TrophyMultiAward, isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
+let { TrophyMultiAward } = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
+let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
 const MAX_REWARDS_SHOW_IN_TROPHY = 5
 
@@ -159,7 +161,7 @@ function getRewardList(config) {
   return prizes
 }
 
-return {
+return freeze({
   MAX_REWARDS_SHOW_IN_TROPHY
   rewardsSortComparator
   getTrophyRewardType
@@ -169,4 +171,4 @@ return {
   isRewardItem
   getRestRewardsNumLayer
   getRewardList
-}
+})

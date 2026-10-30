@@ -38,4 +38,4 @@ let WwArmyOwner = class {
   function getSide() { return this.side }
 }
 
-return { WwArmyOwner }
+return freeze({ WwArmyOwner })

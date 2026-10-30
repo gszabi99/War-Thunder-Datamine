@@ -1,3 +1,7 @@
+from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
+from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
+from "%scripts/slotbar/crewsList.nut" import getCrewsList
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "string" import format
 from "blkGetters" import get_wpcost_blk
@@ -5,10 +9,6 @@ from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import shop_get_premium_account_ent_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 function getAircraftRank(curAir) {
@@ -30,13 +30,6 @@ function isRanksAllowed(handler, tbl) {
     return true
 
   let silent = tbl?.silent ?? false
-
-  if ("silentFeature" in tbl)
-    if (!hasFeature(tbl.silentFeature)) {
-      if (!silent)
-        showInfoMsgBox(loc("msgbox/notAvailbleInDemo"), "in_demo_only_feature")
-      return false
-    }
 
   if ("minLevel" in tbl)
     if (getProfileInfo().rank < tbl.minLevel) {
@@ -98,6 +91,6 @@ function isRanksAllowed(handler, tbl) {
   return true
 }
 
-return {
+return freeze({
   isRanksAllowed
-}
+})

@@ -931,6 +931,9 @@
       ]
     }
   },
+  "forceVisibleVisualNodes": {
+    "node": "rocket_inside_01"
+  },
   "sound": {
     "EngineName": "engine_su100",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1396,7 +1399,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/180mm_2k4_launcher_user_cannon.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/180mm_2k4_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1480,7 +1483,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_SGMT_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_SGMT_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame",
         "barrelDP": "gun_barrel_01_dm",
@@ -1523,7 +1526,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1555,8 +1558,8 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "it_1_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_it_1_default.blk"
+      "name": "tank_weapon_preset_default",
+      "blk": "gamedata/units/tankModels/weaponPresets/tank_weapon_preset_default.blk"
     }
   },
   "VehiclePhys": {
@@ -1618,7 +1621,10 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringToMaxGearRatio": 0.2,
+      "steeringToEnableBrake": 0.8,
+      "steeringSideGearRatio": 1.42,
       "maxBrakeForce": 134000.0,
       "driveGearRadius": 0.28345,
       "mainGearRatio": 0.7,
@@ -1648,7 +1654,18 @@
         120000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     }
   },
   "PhysSys": {

@@ -1,5 +1,19 @@
+import "%scripts/g_listener_priority.nut" as g_listener_priority
+import "%scripts/utils/systemMsg.nut" as systemMsg
 import "%sqStdLibs/helpers/u.nut" as u
 import "regexp2" as regexp2
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/penitentiary/penaltyMessages.nut" import getDevoiceMessage
+from "%scripts/langUtils/language.nut" import getCurLangInfo
+from "%scripts/gamercard/gamercardHelpers.nut" import updateGamercardsChatInfo
+from "%scripts/chat/chatStorage.nut" import canCreateThreads, getThreadInfo, MAX_ROOM_MSGS, MAX_ROOM_MSGS_FOR_MODERATOR, getMaxRoomMsgAmount
+from "%scripts/chat/chatColors.nut" import chatColors, getSenderColor
+from "%scripts/chat/chatHelper.nut" import checkChatConnected
+from "%scripts/chat/chatLatestThreads.nut" import onNewThreadInfoToList
+from "%scripts/chat/chatUtils.nut" import validateThreadTitle, prepareThreadTitleToSend
+from "%scripts/chat/chatThreadInfo.nut" import THREADS_INFO_CLEAN_PERIOD_MSEC, ChatThreadInfo
+from "%scripts/chat/localizedMessages.nut" import MAX_MSG_LEN, LOCALIZED_MESSAGE_PREFIX
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%sqstd/platform.nut" import is_gdk
 from "dagor.time" import get_time_msec
@@ -12,23 +26,12 @@ from "%scripts/dagui_natives.nut" import gchat_raw_command, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
-let systemMsg = require("%scripts/utils/systemMsg.nut")
-let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
-let { updateGamercardsChatInfo } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { canCreateThreads, getThreadInfo, chatRooms, chatThreadsInfo, MAX_ROOM_MSGS, MAX_ROOM_MSGS_FOR_MODERATOR, getMaxRoomMsgAmount } = require("%scripts/chat/chatStorage.nut")
-let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
+let { chatRooms, chatThreadsInfo } = require("%scripts/chat/chatStorage.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
-let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
-let { onNewThreadInfoToList } = require("%scripts/chat/chatLatestThreads.nut")
-let { validateThreadTitle, prepareThreadTitleToSend } = require("%scripts/chat/chatUtils.nut")
-let { THREADS_INFO_CLEAN_PERIOD_MSEC, ChatThreadInfo } = require("%scripts/chat/chatThreadInfo.nut")
-let { MAX_MSG_LEN, LOCALIZED_MESSAGE_PREFIX } = require("%scripts/chat/localizedMessages.nut")
 
-let userCaps = persist("userCaps", @() {
+let hardPersist = mkHardPersist("chat.chat")
+
+let userCaps = hardPersist("userCaps", {
   ALLOWPOST     = 0
   ALLOWPRIVATE  = 0
   ALLOWJOIN     = 0
@@ -50,7 +53,7 @@ const SYSTEM_MESSAGES_USER_ENDING = ".warthunder.com"
 
 const CHAT_ERROR_NO_CHANNEL = "chat/error/403"
 
-let storage = persist("storage", @() {
+let storage = hardPersist("storage", {
   userCapsGen = 1 
   threadTitleLenMin = 8
   threadTitleLenMax = 160

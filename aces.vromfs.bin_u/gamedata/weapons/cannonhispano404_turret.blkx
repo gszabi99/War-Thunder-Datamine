@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.24,
-  "shotFreq": 11.666667,
-  "traceFreq": 4,
-  "bullets": 30,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 11.666667,
+  "bullets": 30,
+  "overheat": {
+    "overheat": [
+      [
+        3.5,
+        0.0
+      ],
+      [
+        6.0,
+        0.05
+      ],
+      [
+        7.2,
+        0.5
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.124,
@@ -5332,29 +5348,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "hs404_gun_outside",
-    "cockpit": "hs404_gun_inside",
-    "ai": "hs404_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        3.5,
-        0.0
-      ],
-      [
-        6.0,
-        0.05
-      ],
-      [
-        7.2,
-        0.5
-      ]
-    ]
-  },
   "hispano_mk5_turret_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -5373,5 +5366,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "hs404_gun_outside",
+    "cockpit": "hs404_gun_inside",
+    "ai": "hs404_gun_ai"
   }
 }

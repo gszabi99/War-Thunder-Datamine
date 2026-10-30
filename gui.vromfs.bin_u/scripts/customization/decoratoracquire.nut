@@ -1,17 +1,17 @@
 import "DataBlock" as DataBlock
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId, getSkinNameBySkinId
+from "%scripts/viewUtils/objectTextUpdate.nut" import warningIfGold
+from "%scripts/user/balanceFeatures.nut" import checkBalanceMsgBox
+from "%scripts/tasker.nut" import addTask
+from "%scripts/unlocks/unlocksAction.nut" import buyUnlockImpl
+from "%scripts/items/itemsManagerModule.nut" import findItemById
+from "%scripts/items/itemsManagerGetters.nut" import getInventoryItemById
+from "%scripts/purchase/purchaseConfirmationHandler.nut" import purchaseConfirmation
 from "unitCustomization" import exit_ship_flags_mode
 from "chard" import charSendBlk
 from "%scripts/dagui_library.nut" import *
 
-let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
-let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
 
 
@@ -119,7 +119,7 @@ function askAcquireDecorator(decorator, onSuccessCb) {
 }
 
 
-return {
+return freeze({
   canAcquireDecorator
   askAcquireDecorator
   askPurchaseDecorator
@@ -127,4 +127,4 @@ return {
   askFindDecoratorCouponOnMarketplace
   findDecoratorCouponOnMarketplace
   getResourceBuyFunc
-}
+})

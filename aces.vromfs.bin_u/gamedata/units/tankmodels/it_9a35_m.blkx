@@ -1773,7 +1773,23 @@
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
-        "ammo_body_04_dm"
+        "ammo_body_04_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm"
       ],
       "effect": [
         {
@@ -1795,7 +1811,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/120mm_9m37m_rocket_launcher.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/120mm_9m37m_rocket_launcher.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -1853,13 +1869,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
           "linkedAnimPart": [
             {
               "verNode": "bone_roll_09",
@@ -1966,7 +1992,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_PKMB_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_PKMB_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "defaultYaw": 0.0,
@@ -2017,12 +2043,12 @@
   "weapon_presets": {
     "preset": {
       "name": "ussr_9a35_m2_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_9a35_m2_default.blk"
+      "blk": "gamedata/units/tankModels/weaponPresets/ussr_9a35_m2_default.blk"
     }
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/su_9s86.blk",
+      "blk": "gamedata/sensors/su_9s86.blk",
       "turretIndex": 0,
       "dmPart": [
         "antenna_target_tagging_dm",
@@ -2209,7 +2235,10 @@
       "model": "238v"
     },
     "mechanics": {
-      "steerType": "clutch_braking",
+      "steerType": "side_final_drive",
+      "steeringSideGearRatio": 1.42,
+      "steeringToMaxGearRatio": 0.4,
+      "steeringToEnableBrake": 0.8,
       "maxBrakeForce": 48000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 1.0437,
@@ -2247,7 +2276,18 @@
         50000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "steeringDeflection": {
+        "steeringTau": 100000000.0,
+        "steeringSpd": 2.5,
+        "steeringNeutralSpd": 3.0,
+        "steeringSensMult": [
+          0.0,
+          10.0,
+          5.0,
+          1.0
+        ]
+      }
     },
     "floats": {
       "volume": [

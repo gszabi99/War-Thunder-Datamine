@@ -1,10 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 20,
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "su_upab_1500b",
   "mesh_deployed": "su_upab_1500b_deployed",
   "bombCart": "missile_cart_mid",
@@ -143,7 +142,6 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
@@ -151,6 +149,7 @@
       "designationSourceType": "camera",
       "constantDesignationSourceType": "camera",
       "positionError": 7.0,
+      "angleMax": 180.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": -0.25,

@@ -1,49 +1,54 @@
+import "%scripts/penitentiary/antiCheat.nut" as antiCheat
+import "%scripts/matchingRooms/fillSessionInfo.nut" as fillSessionInfo
+from "%scripts/chat/chatStorage.nut" import getRoomById
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/teams.nut" import g_team
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/matchingRooms/mRoomPlayersListWidget.nut" import MRoomPlayersListWidget
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/user/playerContextMenu.nut" import showSessionPlayerRClickMenu
+from "%scripts/chat/chatStates.nut" import isChatEnabled
+from "%scripts/viewUtils/objectTextUpdate.nut" import setDoubleTextToButton
+from "%scripts/penitentiary/soundMods.nut" import showMsgboxIfSoundModsNotAllowed
+from "%scripts/viewUtils/interfaceCustomization.nut" import getToBattleLocId
+from "%scripts/viewUtils/hangarDof.nut" import needUseHangarDof
+from "%scripts/options/consoleMode.nut" import showConsoleButtons
+from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyTeam, getSessionLobbyIsSpectator
+  , getSessionLobbyIsReady, getIsInLobbySession, getIsSpectatorSelectLocked, hasSessionInLobby, canJoinSession, isUserCanChangeReadyInLobby, canChangeSessionLobbySettings
+  , canStartLobbySession, getSessionLobbyCurRoomEdiff, getSessionLobbyMaxRespawns, getSessionLobbyPublicParam, getSessionInfo, getSessionLobbyGameMode, getSessionLobbyChatRoomPassword
+  , getSessionLobbyMaxMembersCount, getSessionLobbyRoomId
+from "%scripts/missions/startMissionsList.nut" import guiStartMislist
+from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
+from "%scripts/user/antiAddictSystem.nut" import checkShowMultiplayerAasWarningMsg
+from "%scripts/user/userCard/userCardView.nut" import gui_modal_userCard
+from "%scripts/matchingRooms/sessionLobbyInfo.nut" import getRoomEvent, getSessionLobbyLockedCountryData, getRoomMGameMode, getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator
+  , getLobbyRandomTeam, getRoomActiveTimers, getMembersCountByTeams, isUnitAllowedForRoom, canSetReadyInLobby
+from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import getRoomMembersReadyStatus
+from "%scripts/statistics/mpStatisticsUtil.nut" import updateTeamCssLabel
+from "%scripts/matchingRooms/sessionLobbyManager.nut" import setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator, leaveSessionRoom, tryJoinSession, startSession
+from "%scripts/squads/squadUtils.nut" import checkSquadInRoomAndReady, isAllSquadInRoom, hasSquadNonAcceptedInvites
+from "%scripts/options/options.nut" import getOptionsMode
+from "%scripts/slotbar/slotbarOverride.nut" import isSlotbarOverrided
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "guiOptions" import setGuiOptionsMode
-from "mission" import set_game_mode, get_game_mode, get_mp_local_team
+from "mission" import set_game_mode, get_game_mode
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/unit/brokenAirsInfo.nut" import getBrokenAirsInfo
+from "%scripts/instantAction.nut" import checkBrokenAirsAndDo
+from "%scripts/user/playerCountry.nut" import profileCountrySq
+from "%appGlobals/missions/respawnCountModes.nut" import isRespawnAllowed
+from "%scripts/missions/missionsUtils.nut" import isSquadGamemode
 
-let { getRoomById } = require("%scripts/chat/chatStorage.nut")
-let { events } = require("%scripts/events/eventsManager.nut")
-let { g_team } = require("%scripts/teams.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { VehiclesWindow, updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
-let { MRoomPlayersListWidget } = require("%scripts/matchingRooms/mRoomPlayersListWidget.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
-let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
-let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
-let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyTeam, getSessionLobbyIsSpectator, getSessionLobbyIsReady, getIsInLobbySession, getIsSpectatorSelectLocked, hasSessionInLobby, canJoinSession, isUserCanChangeReadyInLobby, canChangeSessionLobbySettings, canStartLobbySession, getSessionLobbyCurRoomEdiff, getSessionLobbyMissionParam, getSessionLobbyPublicParam, getSessionInfo, getSessionLobbyGameMode, getSessionLobbyChatRoomPassword, getSessionLobbyMaxMembersCount, getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
-let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
-let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getRoomEvent, getRoomSpecialRules, getSessionLobbyLockedCountryData, getRoomMGameMode, getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator, getLobbyRandomTeam, getRoomActiveTimers, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getRoomMembersReadyStatus } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator, leaveSessionRoom, tryJoinSession, startSession } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { getOptionsMode } = require("%scripts/options/options.nut")
-let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 function getLobbyChatRoomId() {
   return g_chat_room_type.MP_LOBBY.getRoomId(getSessionLobbyRoomId())
+}
+
+function hasRespawnsInMission() {
+  return isRespawnAllowed(getSessionLobbyMaxRespawns())
 }
 
 
@@ -69,6 +74,8 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
   viewPlayer = null
   isPlayersListHovered = true
 
+  hasRepairInfoChecked = false
+
   function initScreen() {
     if (!isInSessionRoom.get())
       return
@@ -83,7 +90,8 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     this.playersListWidgetWeak = MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_tables_place")
       teams = this.tableTeams
-      onPlayerSelectCb = Callback(this.refreshPlayerInfo, this)
+      hasPlayerTooltip = true
+      onPlayerSelectCb = Callback(this.onPlayerSelect, this)
       onPlayerDblClickCb = Callback(this.openUserCard, this)
       onPlayerRClickCb = Callback(this.onUserRClick, this)
       onTablesHoverChange = Callback(this.onPlayersListHover, this)
@@ -106,8 +114,6 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     this.updateRoomInSession()
 
     this.initChat()
-    let sessionInfo = getSessionInfo()
-    updateVehicleInfoButton(this.scene, sessionInfo)
   }
 
   function initTeams() {
@@ -197,8 +203,16 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     this.updateWindow()
   }
 
+  function onEventCountryChanged(_p) {
+    this.hasRepairInfoChecked = false
+  }
+
   function onEventLobbyMemberInfoChanged(_p) {
     this.updateWindow()
+  }
+
+  function onEventSquadDataUpdated(_p) {
+    this.updateSessionStatus()
   }
 
   function onEventLobbySettingsChange(_p) {
@@ -217,92 +231,14 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     return this.playersListWidgetWeak && this.playersListWidgetWeak.getSelectedPlayer()
   }
 
-  function refreshPlayerInfo(player) {
+  function onPlayerSelect(player) {
     this.viewPlayer = player
-    this.updatePlayerInfo(player)
-    showObjById("btn_usercard", player != null && !showConsoleButtons.get() && hasFeature("UserCards"), this.scene)
+    showObjById("btn_usercard", player != null && !showConsoleButtons.get(), this.scene)
     this.updateOptionsButton()
   }
 
   updateOptionsButton = @() showObjById("btn_user_options",
     showConsoleButtons.get() && this.viewPlayer != null && this.isPlayersListHovered, this.scene)
-
-  function updatePlayerInfo(player) {
-    let mainObj = this.scene.findObject("player_info")
-    if (!checkObj(mainObj) || !player)
-      return
-
-    let titleObj = mainObj.findObject("player_title")
-    if (checkObj(titleObj))
-      titleObj.setValue((player.title != "") ? loc("ui/colon").concat(loc("title/title"), loc($"title/{player.title}")) : "")
-
-    let spectatorObj = mainObj.findObject("player_spectator")
-    if (checkObj(spectatorObj)) {
-      let desc = g_player_state.getStateByPlayerInfo(player).getText(player)
-      spectatorObj.setValue((desc != "") ? loc("ui/colon").concat(loc("multiplayer/state"), desc) : "")
-    }
-
-    let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? getSessionLobbyTeam() : get_mp_local_team()
-    mainObj.playerTeam = myTeam == Team.A ? "a" : (myTeam == Team.B ? "b" : "")
-
-    let teamObj = mainObj.findObject("player_team")
-    if (checkObj(teamObj)) {
-      local teamTxt = ""
-      local teamStyle = ""
-      let team = player ? player.team : Team.Any
-      if (team == Team.A) {
-        teamStyle = "a"
-        teamTxt = loc("multiplayer/teamA")
-      }
-      else if (team == Team.B) {
-        teamStyle = "b"
-        teamTxt = loc("multiplayer/teamB")
-      }
-
-      teamObj.team = teamStyle
-      let teamIcoObj = teamObj.findObject("player_team_ico")
-      teamIcoObj.show(teamTxt != "")
-      teamIcoObj.tooltip = loc("ui/colon").concat(loc("multiplayer/team"), teamTxt)
-    }
-    let playerIcon = (!player || player.isBot) ? "cardicon_bot" : getAvatarIconIdByUserInfo(player)
-    fillGamercard({
-                      name = player.name
-                      clanTag = player.clanTag
-                      country = player?.country ?? ""
-                      icon = playerIcon
-                      frame = player.frame
-                    },
-                    "player_", mainObj)
-
-    let airObj = mainObj.findObject("curAircraft")
-    if (!checkObj(airObj))
-      return
-
-    let showAirItem = getSessionLobbyMissionParam("maxRespawns", -1) == 1 && player.country && player.selAirs.len() > 0
-    airObj.show(showAirItem)
-
-    if (showAirItem) {
-      let airName = (player.selAirs?[player.country] ?? "")
-      let air = getAircraftByName(airName)
-      if (!air) {
-        airObj.show(false)
-        return
-      }
-
-      let existingAirObj = airObj.findObject("curAircraft_place")
-      if (checkObj(existingAirObj))
-        this.guiScene.destroyElement(existingAirObj)
-
-      let params = {
-        getEdiffFunc = Callback(this.getCurrentEdiff, this)
-        status = getUnitItemStatusText(bit_unit_status.owned)
-      }
-      local data = buildUnitSlot(airName, air, params)
-      data = "rankUpList { id:t='curAircraft_place'; holdTooltipChildren:t='yes'; {0} }".subst(data)
-      this.guiScene.appendWithBlk(airObj, data, this)
-      fillUnitSlotTimers(airObj.findObject(airName), air)
-    }
-  }
 
   function getMyTeamDisbalanceMsg(isFullText = false) {
     let countTbl = getMembersCountByTeams(null, true)
@@ -397,8 +333,12 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
   function updateSessionStatus() {
     let needSessionStatus = !this.isInfoByTeams && !isRoomInSession.get()
     let sessionStatusObj = showObjById("session_status", needSessionStatus, this.scene)
-    if (needSessionStatus)
-      sessionStatusObj.setValue(getRoomMembersReadyStatus().statusText)
+    if (needSessionStatus) {
+      let isSquadInLobby = !isSquadGamemode(getSessionLobbyGameMode()) || isAllSquadInRoom()
+      sessionStatusObj.setValue(isSquadInLobby
+        ? getRoomMembersReadyStatus().statusText
+        : loc("squad/member_not_in_room"))
+    }
 
     let mGameMode = getRoomMGameMode()
     let needTeamStatus = this.isInfoByTeams && !isRoomInSession.get() && !!mGameMode
@@ -449,10 +389,6 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
   function openUserCard(player) {
     if (player && !player.isBot)
       gui_modal_userCard({ name = player.name, uid = player.userId });
-  }
-
-  function onUserCard(_obj) {
-    this.openUserCard(this.getSelectedPlayer())
   }
 
   function onUserRClick(player) {
@@ -530,14 +466,25 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     if (!isMeSessionLobbyRoomOwner.get() || !getSessionLobbyIsReady())
       return setSessionLobbyReady(true)
 
+    let isGMAvailableForSquad = isSquadGamemode(getSessionLobbyGameMode())
+    if (isGMAvailableForSquad && !checkSquadInRoomAndReady())
+      return
+
     let status = getRoomMembersReadyStatus()
-    if (status.readyToStart)
+    let hasNonAcceptedInvites = isGMAvailableForSquad && hasSquadNonAcceptedInvites()
+    if (status.readyToStart && !hasNonAcceptedInvites)
       return startSession()
 
-    local msg = status.statusText
+    let msgLines = []
+    if (!status.readyToStart)
+      msgLines.append(status.statusText)
+    if (hasNonAcceptedInvites)
+      msgLines.append(loc("squad/has_non_accept_invites"))
+
+    local msg = "\n".join(msgLines)
     local buttons = [["ok", function() {}]]
     local defButton = "ok"
-    if (status.ableToStart) {
+    if (status.readyToStart || status.ableToStart) {
       buttons = [["#multiplayer/btnStart", function() { startSession() }], ["cancel", function() {}]]
       defButton = "cancel"
       msg = "\n".concat(msg, loc("ask/startGameAnyway"))
@@ -555,7 +502,17 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
       checkShowMultiplayerAasWarningMsg(Callback(this.onReadyImpl, this))
       return
     }
-    this.onReadyImpl()
+
+    
+    
+    
+    if (this.hasRepairInfoChecked || getSessionLobbyIsSpectator() || !canSetReadyInLobby(true)) {
+      this.onReadyImpl()
+      return
+    }
+
+    let repairInfo = getBrokenAirsInfo([profileCountrySq.get()], hasRespawnsInMission(), isUnitAllowedForRoom)
+    this.hasRepairInfoChecked = checkBrokenAirsAndDo(repairInfo, this, this.onReadyImpl, false)
   }
 
   function onCustomChatCancel() {
@@ -566,25 +523,8 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
     return true
   }
 
-  function onVehiclesInfo(_obj) {
-    loadHandler(VehiclesWindow, {
-      teamDataByTeamName = getSessionInfo()
-      roomSpecialRules = getRoomSpecialRules()
-    })
-  }
-
   function onPlayersListHover(_tblId, isHovered) {
     this.isPlayersListHovered = isHovered
     this.updateOptionsButton()
-  }
-
-  function onEventUserInfoManagerDataUpdated(param) {
-    if (this.viewPlayer == null || this.viewPlayer.userId not in param.usersInfo)
-      return
-    let userInfo = param.usersInfo[this.viewPlayer.userId]
-    this.viewPlayer.pilotIcon = userInfo.pilotIcon
-    this.viewPlayer.pilotId = userInfo.pilotId
-    this.viewPlayer.frame = userInfo.frame
-    this.updatePlayerInfo(this.viewPlayer)
   }
 })

@@ -26,7 +26,6 @@ class UnrollMacro : AstFunctionAnnotation {
     
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         if (is_in_lint_check()) {
-            
             var mblk = unsafe(reinterpret<ExprMakeBlock?>(call.arguments[0]))
             var blk = unsafe(reinterpret<ExprBlock?>(mblk._block))
             if (blk.list |> length == 1 && blk.list[0] is ExprFor) return <- clone_expression(blk.list[0])
@@ -52,11 +51,7 @@ class UnrollMacro : AstFunctionAnnotation {
         var nblk = new ExprBlock(at = call.at)
         for (i in euc.value) {
             {
-                var iblk = clone_expression(efor.body)
-                remove_deref(van, iblk)
-                var rules : Template
-                rules |> replaceVariable(van) <| new ExprConstInt(at = call.at, value = i)
-                rules |> apply_template(call.at, iblk, false)
+                var iblk = bind_block_argument(efor.body as ExprBlock, van, new ExprConstInt(at = call.at, value = i, isConstLiteral = true), call.at)
                 nblk.list |> emplace(iblk)
             }
         }

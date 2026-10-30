@@ -12,6 +12,7 @@
   "lastclip_horizon": true,
   "occlusionFromCollision": true,
   "forcedRiDepthPrepass": true,
+  "useTreeLod0Offset": false,
   "useInfantryCharacterMicrodetails": true,
   "global_paint_details_tex": "infantry_assets_color_global_tex_palette",
   "weatherTypes": "gamedata/environments/hvg_weather_types.blk",
@@ -175,6 +176,9 @@
   "clipmap": {
     "texelSize": 0.00625
   },
+  "treeDamageAccumulation": {
+    "enable": true
+  },
   "shader_vars": {
     "hmap_displacement_up": 0.3,
     "hmap_displacement_down": -0.15,
@@ -313,13 +317,7 @@
     "scn3.tileSize": 128.0
   },
   "stars": {
-    "year": 2000,
-    "month": 8,
-    "day": 11,
-    "latitude": -33.33,
-    "longtitude": 44.45,
-    "weatherSeed": -1,
-    "skyIsUnreachable": false
+    "initialAzimuthAngle": 60.0
   },
   "technicsSkins": {
     "groundSkin": [

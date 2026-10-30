@@ -1,9 +1,8 @@
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%globalScripts/guiGeom/guiBox.nut" import GuiBox as BaseGuiBox
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "types" import String, Function, Array, Table
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let BaseGuiBox = require("%globalScripts/guiGeom/guiBox.nut").GuiBox
 
 let GuiBox = class (BaseGuiBox) {
   function setFromDaguiObj(obj) {
@@ -156,9 +155,9 @@ function createHighlight(scene, objDataArray, handler = null, params = null) {
   return scene.findObject(view.id)
 }
 
-return {
+return freeze({
   GuiBox
   createHighlight
   getBlockFromObjData
   getBoxBlkText
-}
+})

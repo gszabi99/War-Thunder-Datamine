@@ -9,7 +9,14 @@
   "mesh_deployed": "fr_500kg_aasm_500_hammer_laser_deployed",
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
+    "iconType": "guided_bomb_large_laser",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.356,
     "length": 3.65,
     "WdK": [
@@ -29,48 +36,41 @@
     "fireDelay": 2.0,
     "timeLife": 250.0,
     "thrustVectoringAngle": 0.05,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
     "maxSpeed": 340.0,
-    "endSpeed": 0.0,
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 70000.0,
+    "loadFactorMax": 15.0,
     "guidanceType": "laser",
-    "launchZoneDistance": 200.0,
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "comp_h6",
+    "explosiveMass": 201.8,
+    "warheadMass": 446.8,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "bomb_ground",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_bomb",
+    "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "explosiveType": "comp_h6",
-    "explosiveMass": 201.8,
-    "maxDeltaAngle": 0.02,
-    "thrustDeviation": 0.01,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "guided_bomb_large_laser",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -91,17 +91,13 @@
       -0.19,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
+      "constantDesignationSourceType": "camera",
+      "breakLockMaxTime": 250.0,
       "warmUpTime": 1.0,
       "workTime": 3600.0,
       "uncageBeforeLaunch": true,
       "permanentlyActivated": true,
-      "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
       "launchAngleMax": [
         180.0,
         90.0
@@ -110,23 +106,10 @@
         1000.0,
         70000.0
       ],
+      "inertialNavigation": true,
+      "indicateOnHud": false,
+      "inertialNavigationDriftSpeed": 0.0,
       "designationError": 7.0,
-      "breakLockMaxTime": 250.0,
-      "laserSeeker": {
-        "range": 10000.0,
-        "rangeMax": 12000.0,
-        "fov": 30.0,
-        "lockAngleMax": 30.0,
-        "angleMax": 80.0,
-        "rateMax": 10.0,
-        "prolongationTimeMax": 1.0,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2,
-        "designationSourceType": [
-          "camera",
-          "ins"
-        ]
-      },
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": 10.0,
@@ -158,7 +141,25 @@
         "accelControlIntg": 0.096,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0007
+      },
+      "laserSeeker": {
+        "range": 10000.0,
+        "rangeMax": 12000.0,
+        "fov": 30.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 80.0,
+        "rateMax": 10.0,
+        "prolongationTimeMax": 1.0,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2,
+        "designationSourceType": [
+          "camera",
+          "ins"
+        ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "stabilityRicochetModifier": {
       "mod1": [
@@ -166,20 +167,17 @@
         0.5
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.6
       ],
       "mod3": [
         30.0,
-        0.99
+        1.0
       ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.75
       }
     },
     "DamageParts": {

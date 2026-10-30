@@ -1,16 +1,15 @@
+from "%scripts/user/suggestionEmailRegistration.nut" import showGuestEmailRegistration, needShowGuestEmailRegistration
+from "%scripts/onlineShop/onlineShopModel.nut" import doBrowserPurchase
+from "%scripts/paymentHandler.nut" import openPaymentWnd
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementName
+from "%scripts/onlineShop/entitlementsInfo.nut" import bundlesShopInfo
+from "%scripts/utils/errorMsgBox.nut" import get_yu2_error_text
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "string" import format
 from "steam" import steam_is_running
 from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import yuplay2_get_payment_methods, yuplay2_buy_entitlement, update_entitlements
 from "%scripts/dagui_library.nut" import *
-
-let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
-let { getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
 
 let payMethodsCfg = [
   
@@ -90,6 +89,6 @@ function onOnlinePurchase(product) {
   openPaymentWnd({ items = items, cancel_fn = function() {} })
 }
 
-return {
+return freeze({
   onOnlinePurchase
-}
+})

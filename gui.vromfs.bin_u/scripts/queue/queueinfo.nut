@@ -1,11 +1,10 @@
+from "%scripts/events/eventsState.nut" import getEvent
+from "%scripts/events/eventTeamsInfo.nut" import isEventSymmetricTeams
+from "%scripts/slotbar/slotbarRank.nut" import getSlotbarRank
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/events/eventInfo.nut" import isEventForClan, isTeamSizeBalancedEvent, isNoneBalancedEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-
-let { getEvent } = require("%scripts/events/eventsState.nut")
-let { isEventSymmetricTeams } = require("%scripts/events/eventTeamsInfo.nut")
-let { getSlotbarRank } = require("%scripts/slotbar/slotbarRank.nut")
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { isEventForClan, isTeamSizeBalancedEvent, isNoneBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
 function getQueueEvent(queue) {
   return getEvent(queue.name)
@@ -72,7 +71,7 @@ function getQueuePreferredViewClass(queue) {
   return defaultHandler
 }
 
-return {
+return freeze({
   getQueueEvent
   isClanQueue
   getQueueMode
@@ -84,4 +83,4 @@ return {
   getMyRankInQueue
   updateQueueInfoByType
   getQueuePreferredViewClass
-}
+})

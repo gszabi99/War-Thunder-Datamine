@@ -30,6 +30,7 @@ bitfield public SqlProviderCaps {
     client_udfs
     returning
     distinct_on
+    ci_like     
 }
 
 struct public SchemaFromCol {

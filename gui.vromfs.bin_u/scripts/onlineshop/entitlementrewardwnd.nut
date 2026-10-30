@@ -1,13 +1,12 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/onlineShop/entitlements.nut" import getEntitlementConfig, getEntitlementName
+from "%scripts/onlineShop/entitlementView.nut" import getEntitlementView, getEntitlementLayerIconsConfig
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getEntitlementView, getEntitlementLayerIconsConfig } = require("%scripts/onlineShop/entitlementView.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MAX_REWARDS_SHOW_IN_ENTITLEMENT = 9
@@ -127,6 +126,6 @@ register_command(@(entId) showEntitlement(entId, { ignoreAvailability = true }),
   "ui.showEntitlement"
 )
 
-return {
+return freeze({
   showEntitlement
-}
+})

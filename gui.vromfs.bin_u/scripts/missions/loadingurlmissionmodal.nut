@@ -1,16 +1,25 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/missions/missionsUtils.nut" import hasUnitInFullMissionBlk
 from "%appGlobals/ranks_common_shared.nut" import validate_custom_mission
 from "string" import format
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import abort_all_downloads, abort_download, download_blk
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
-let { hasUnitInFullMissionBlk } = require("%scripts/missions/missionsUtils.nut")
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+
+const DOWNLOAD_EVENT = "urlMissionDownload"
+let downloadListeners = {}
+
+eventbus_subscribe(DOWNLOAD_EVENT, function(evt) {
+  let onEvent = evt?.done ? downloadListeners.$rawdelete(evt.reqId) : downloadListeners?[evt.reqId]
+  onEvent?(evt)
+})
 
 function upgradeUrlMission(fullMissionBlk) {
   let misBlk = fullMissionBlk?.mission_settings.mission
@@ -71,17 +80,15 @@ register_gui_handler("LoadingUrlMissionModal", class (BaseGuiHandlerWT) {
   }
 
   function loadUrlMission() {
-    let requestCallback = Callback(function(success, blk) {
-                                          this.onLoadingEnded(success, blk)
-                                        }, this)
+    this.requestId = download_blk(this.urlMission.url, 0, DOWNLOAD_EVENT)
+    downloadListeners[this.requestId] <- Callback(this.onDownloadEvent, this)
+  }
 
-    let progressCallback = Callback(function(dltotal, dlnow) {
-                                          this.onProgress(dltotal, dlnow)
-                                        }, this)
-
-    this.requestId = download_blk(this.urlMission.url, 0,
-      @(success, blk) requestCallback(success, blk),
-      @(dltotal, dlnow) progressCallback(dltotal, dlnow))
+  function onDownloadEvent(evt) {
+    if (evt?.done)
+      this.onLoadingEnded(evt.success, evt?.blk)
+    else
+      this.onProgress(evt.dltotal, evt.dlnow)
   }
 
   function resetTimer() {

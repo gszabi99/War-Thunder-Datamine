@@ -1,28 +1,28 @@
 import "DataBlock" as DataBlock
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/unlocks/unlocksCache.nut" import getUnlockById
+from "%scripts/customization/skinUtils.nut" import getPlaneBySkinId
+from "%scripts/unit/unitInfo.nut" import getUnitName, getUnitCountry
+from "%scripts/customization/decoratorGetters.nut" import getDecoratorById
+from "%scripts/unlocks/favoriteUnlocks.nut" import toggleUnlockFavButton, initUnlockFavInContainer
+from "%scripts/unlocks/unlocksState.nut" import getUnlockCondsDescByCfg, getLocForBitValues, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig
+from "%scripts/customization/contentPreview.nut" import canStartPreviewScene
+from "%scripts/popups/popupFilterWidget.nut" import openPopupFilter
+from "%scripts/user/skins/skinsFilter.nut" import getFiltersView, applyFilterChange, getSelectedFilters
+from "%scripts/user/skins/decoratorGroupsTree.nut" import initTree
+from "%scripts/user/skins/skinsCache.nut" import getSkinsCache, isSkinVisible
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%sqstd/math.nut" import is_bit_set
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
-let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnlockCondsDescByCfg, getLocForBitValues, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/user/skins/skinsFilter.nut")
-let { initTree } = require("%scripts/user/skins/decoratorGroupsTree.nut")
-let { getSkinsCache, isSkinVisible } = require("%scripts/user/skins/skinsCache.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 local skinsLocalization = null
 const SELECTED_SKIN_SAVE_ID = "wnd/selectedSkin"
@@ -200,7 +200,7 @@ local SkinsHandler = class (BaseGuiHandlerWT) {
         hidden = false
       })
 
-      let unitTypes = tree[country].values().sort(@(v1, v2) v1.sortOrder <=> v2.sortOrder)
+      let unitTypes = tree[country].values().sortby(@(v1) v1.sortOrder)
       treeData.extend(unitTypes.map(@(unitType) {
         id = $"{country}/{unitType.unitType}"
         itemText = $"#mainmenu/{unitType.unitType}"
@@ -247,7 +247,7 @@ local SkinsHandler = class (BaseGuiHandlerWT) {
 
     let skins = this.skinsCache
       .filter(@(skin) (id == $"{skin.country}/{skin.unitType}") && filterSkinsListFunc(skin, nameFilter))
-      .sort(@(v1, v2) v1.searchSkinName <=> v2.searchSkinName)
+      .sortby(@(v1) v1.searchSkinName)
 
     let skinsView = []
     let selectedItem = { idx = 0, id = ""}
@@ -414,6 +414,6 @@ local SkinsHandler = class (BaseGuiHandlerWT) {
 
 register_gui_handler("SkinsHandler", SkinsHandler)
 
-return {
+return freeze({
   openSkinsPage = @(params = {}) handlersManager.loadHandler(SkinsHandler, params)
-}
+})

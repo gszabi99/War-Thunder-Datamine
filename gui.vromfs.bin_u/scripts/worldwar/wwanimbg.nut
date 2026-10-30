@@ -1,11 +1,11 @@
+from "%scripts/loading/loadingBgData.nut" import createBgData
+from "%scripts/loading/animBg.nut" import animBgLoad
 from "dagor.random" import rnd
 from "%sqstd/datablock.nut" import convertBlk
 from "%sqstd/underscore.nut" import isDataBlock
 from "%scripts/dagui_library.nut" import *
 
-let { createBgData } = require("%scripts/loading/loadingBgData.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
 const WW_BG_PATH = "worldwar_bg/"
 

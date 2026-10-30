@@ -1,61 +1,61 @@
+import "%scripts/clientState/contentState.nut" as contentStateModule
+import "%scripts/encyclopedia.nut" as encyclopedia
+import "%scripts/wndLib/qrWindow.nut" as openQrWindow
+import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
+from "%scripts/help/helpInfoHandlerModal.nut" import HelpInfoHandlerModal
+from "%scripts/clans/clansModalHandler.nut" import ClansModalHandler
+from "%scripts/onlineShop/entitlementsShopData.nut" import canUseIngameShop, getShopItemsTable, needEntStoreDiscountIcon
+from "%scripts/onlineShop/entitlementsShop.nut" import getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden, getEntStoreUnseenIcon, openEntStoreTopMenuFunc
+from "%sqstd/platform.nut" import is_gdk, isSony, isPC, consoleRevision, platformId
+from "%scripts/changelog/changeLogState.nut" import openChangelog
+from "%scripts/onlineShop/url.nut" import openUrlByObj
+from "%scripts/social/crossplay.nut" import getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
+from "%scripts/mainmenu/topMenuButtons.nut" import addButtonConfig
+from "%scripts/user/viralAcquisition.nut" import showViralAcquisitionWnd
+from "%scripts/items/itemsMarketplaceStatus.nut" import isMarketplaceEnabled
+from "%scripts/items/itemsMarketplace.nut" import goToMarketplace
+from "%scripts/events/eSportModal.nut" import openESportListWnd
+from "%scripts/unlocks/specEventsHandler.nut" import openSpecEventsWnd
+from "%scripts/user/xboxFeatures.nut" import checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable
+from "%scripts/debugTools/dbgUtils.nut" import debug_open_url
+from "%scripts/unit/initUnits.nut" import gui_do_debug_unlock
+from "%scripts/user/balanceFeatures.nut" import isShowGoldBalanceWarning
+from "%scripts/user/balance.nut" import hasMultiplayerRestritionByBalance
+from "%scripts/user/profileStates.nut" import isGuestLogin
+from "%scripts/unlocks/battleTasks.nut" import isBattleTasksAvailable
+from "%scripts/debugTools/dbgShop.nut" import setShopDevMode, getShopDevMode, ShopDevModeOption
+from "%scripts/sqDagui/framework/msgBox.nut" import add_msg_box
+from "%scripts/eulaWnd.nut" import openEulaWnd
+from "%scripts/clientState/clientStates.nut" import isInMenu
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%scripts/myStats.nut" import isMeNewbie
+from "%scripts/items/startItemsShop.nut" import gui_start_itemsShop, gui_start_inventory, gui_start_items_list
+from "%scripts/missions/startMissionsList.nut" import guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBenchmark, guiStartTutorial
+from "%scripts/replays/replayScreen.nut" import guiStartReplays
+from "%scripts/wishlist/wishlistHandler.nut" import openWishlist
+from "%scripts/user/wtAssistantDeeplink.nut" import openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink
+from "%scripts/globalWorldWarScripts.nut" import isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
+from "%scripts/leaderboard/leaderboard.nut" import openLeaderboardWindow
+from "%scripts/globalWorldwarUtils.nut" import checkPlayWorldwarAccess, openOperationsOrQueues
+from "%scripts/warbonds/warbondsManager.nut" import isWarbondsShopAvailable, openWarbondsShop
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/items/itemsManager.nut" import isItemsManagerEnabled
+from "%scripts/missions/missionsUtils.nut" import isAnyCampaignAvailable
+from "%scripts/clientState/contentPacks.nut" import checkGamemodePkg
+from "%scripts/gameModes/gameModeMesasge.nut" import showNotAvailableMsgBox
+from "%scripts/licenseHandler.nut" import openLicenseWindow
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "app" import get_game_version_str, is_dev_version
 from "eventbus" import eventbus_send
 from "%scripts/dagui_natives.nut" import script_net_assert
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/seen/seenIds.nut" import SEEN
-from "%sqstd/platform.nut" import is_gdk
 from "%scripts/debugTools/dbgXrayMode.nut" import setDebugXrayMode, isDebugXrayModeActive
 
-let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { ClansModalHandler } = require("%scripts/clans/clansModalHandler.nut")
-let { canUseIngameShop, getShopItemsTable, needEntStoreDiscountIcon } = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden, getEntStoreUnseenIcon, openEntStoreTopMenuFunc } = require("%scripts/onlineShop/entitlementsShop.nut")
-let contentStateModule = require("%scripts/clientState/contentState.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform } = require("%scripts/clientState/platform.nut")
-let encyclopedia = require("%scripts/encyclopedia.nut")
-let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
-let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
-let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
-let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
-let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
-let { openSpecEventsWnd } = require("%scripts/unlocks/specEventsHandler.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
-let { gui_do_debug_unlock } = require("%scripts/unit/initUnits.nut")
-let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
-let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
-let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
-let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isMeNewbie } = require("%scripts/myStats.nut")
-let { gui_start_itemsShop, gui_start_inventory, gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBenchmark, guiStartTutorial } = require("%scripts/missions/startMissionsList.nut")
-let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
-let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
-let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText } = require("%scripts/globalWorldWarScripts.nut")
-let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
-let { checkPlayWorldwarAccess, openOperationsOrQueues } = require("%scripts/globalWorldwarUtils.nut")
-let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
-let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
-let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
-let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
-let { openLicenseWindow } = require("%scripts/licenseHandler.nut")
 
 
 let list = {
@@ -111,13 +111,11 @@ let list = {
   SINGLE_MISSION = {
     text = @() "#mainmenu/btnSingleMission"
     onClickFunc = @(_obj, handler) checkAndCreateGamemodeWnd(handler, GM_SINGLE_MISSION)
-    isHidden = @(...) !hasFeature("ModeSingleMissions")
     isInactiveInQueue = true
   }
   DYNAMIC = {
     text = @() "#mainmenu/btnDynamic"
     onClickFunc = @(_obj, handler) checkAndCreateGamemodeWnd(handler, GM_DYNAMIC)
-    isHidden = @(...) !hasFeature("ModeDynamic")
     isInactiveInQueue = true
   }
   CAMPAIGN = {
@@ -129,7 +127,7 @@ let list = {
       if (isAnyCampaignAvailable())
         return handler.checkedNewFlight(@() guiStartCampaign())
     }
-    isHidden = @(...) !hasFeature("HistoricalCampaign") || !isAnyCampaignAvailable()
+    isHidden = @(...) !isAnyCampaignAvailable()
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
     isInactiveInQueue = true
   }
@@ -166,17 +164,14 @@ let list = {
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"
     onClickFunc = @(_obj, handler) handler.goForwardIfOnline(openLeaderboardWindow, false, true)
-    isHidden = @(...) !hasFeature("Leaderboards")
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans") ? loadHandler(ClansModalHandler)
-      : showNotAvailableMsgBox()
-    isHidden = @(...) !hasFeature("Clans")
+    onClickFunc = @(...) loadHandler(ClansModalHandler)
   }
   REPLAY = {
     text = @() "#mainmenu/btnReplays"
-    onClickFunc = @(_obj, handler) isPlatformSony ? showNotAvailableMsgBox() : handler.checkedNewFlight(guiStartReplays)
+    onClickFunc = @(_obj, handler) isSony ? showNotAvailableMsgBox() : handler.checkedNewFlight(guiStartReplays)
     isHidden = @(...) !hasFeature("ClientReplay")
   }
   VIRAL_AQUISITION = {
@@ -198,7 +193,7 @@ let list = {
           ["no", @() null ]
         ], "no", { cancel_fn = @() null })
     }
-    isHidden = @(...) !isPlatformPC && !(isPlatformSony && is_dev_version())
+    isHidden = @(...) !isPC && !(isSony && is_dev_version())
   }
   DEBUG_UNLOCK = {
     text = @() "#mainmenu/btnDebugUnlock"
@@ -241,7 +236,7 @@ let list = {
       else if (!isMultiplayerPrivilegeAvailable.get())
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
-        checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
+        checkAndShowCrossplayWarning(@() showInfoMsgBox(locByVendor("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isDelayed = false
     link = @() getCurCircuitOverride("tssMainURL", loc("url/tss"))
@@ -251,27 +246,27 @@ let list = {
   }
   REPORT_AN_ISSUE = {
     text = @() loc("topmenu/reportAnIssue")
-    onClickFunc = @(obj, _handler) !isPlatformPC
+    onClickFunc = @(obj, _handler) !isPC
       ? openQrWindow({
           headerText = loc("topmenu/reportAnIssue")
           additionalInfoText = loc("qrWindow/info/reportAnIssue")
           qrCodesData = [
             { url = getCurCircuitOverride("reportAnIssueURL", loc("url/reportAnIssue")).subst(
-              { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() }) }
+              { platform = consoleRevision.len() > 0 ? $"{platformId}_{consoleRevision}" : platformId, version = get_game_version_str() }) }
           ]
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
     isDelayed = false
     link = @() getCurCircuitOverride("reportAnIssueURL", loc("url/reportAnIssue")).subst({
-      platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}"
+      platform = consoleRevision.len() > 0 ? $"{platformId}_{consoleRevision}"
         : is_gdk ? "pc_ms_live"
-        : targetPlatform
+        : platformId
       version = get_game_version_str()
     })
-    isLink = @() isPlatformPC
+    isLink = @() isPC
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !isInMenu.get()
+    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPC) || !isInMenu.get()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
@@ -401,7 +396,7 @@ let list = {
 
       HelpInfoHandlerModal.openHelp(handler)
     }
-    isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
+    isHidden = @(handler = null) !("getWndHelpConfig" in handler)
   }
   FAQ = {
     text = @() "#mainmenu/faq"
@@ -447,7 +442,7 @@ let list = {
     link = @() getCurCircuitOverride("eulaURL", loc("url/eula"))
     isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
-    isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu.get()
+    isHidden = @(...) !isInMenu.get()
   }
 
   LICENSE = {

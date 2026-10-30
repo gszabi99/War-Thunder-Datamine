@@ -1,9 +1,10 @@
-let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
-let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
+from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
+from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
+from "%scripts/onlineShop/url.nut" import openUrl
+from "%scripts/langUtils/language.nut" import getCurLangShortName
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 let supportedComLanguages = ["en", "ru", "pl", "de", "cz", "fr", "es", "pt", "ko", "zh"]
 

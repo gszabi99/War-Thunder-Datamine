@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.17,
-  "shotFreq": 11.666667,
-  "traceFreq": 4,
-  "bullets": 500,
   "bUseHookAsRel": false,
   "emitColor": [
     1.0,
@@ -20,6 +14,24 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_15mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.17,
+  "shotFreq": 11.666667,
+  "bullets": 500,
+  "overheat": {
+    "overheat": [
+      [
+        8.3,
+        0.0
+      ],
+      [
+        12.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.03607,
@@ -421,7 +433,7 @@
         ],
         "traceFreq": 1,
         "tracer": "12mmWhite",
-        "trail": "thin"
+        "trail": "smallTrail"
       }
     },
     {
@@ -3637,7 +3649,7 @@
           ],
           "traceFreq": 1,
           "tracer": "12mmWhite",
-          "trail": "thin"
+          "trail": "smallTrail"
         }
       }
     ]
@@ -5255,7 +5267,7 @@
           ],
           "traceFreq": 1,
           "tracer": "12mmWhite",
-          "trail": "thin"
+          "trail": "smallTrail"
         }
       }
     ]
@@ -5661,7 +5673,7 @@
         ],
         "traceFreq": 1,
         "tracer": "12mmWhite",
-        "trail": "thin"
+        "trail": "smallTrail"
       }
     }
   },
@@ -6849,25 +6861,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bereda-safat_127_gun_outside",
-    "cockpit": "bereda-safat_127_gun_inside",
-    "ai": "bereda-safat_127_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        8.3,
-        0.0
-      ],
-      [
-        12.0,
-        0.05
-      ]
-    ]
-  },
   "akan_m40_new_gun": {
     "maxDeltaAngle": 0.37,
     "overheat": {
@@ -6882,5 +6875,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bereda-safat_127_gun_outside",
+    "cockpit": "bereda-safat_127_gun_inside",
+    "ai": "bereda-safat_127_gun_ai"
   }
 }

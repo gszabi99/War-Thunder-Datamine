@@ -75,6 +75,19 @@ modIcon{
     include "%gui/weaponry/bullets.tpl"
     <</bulletImg>>
   }
+  <<#hasMrankLockIcon>>
+  mrankLockIcon {
+    id:t='mrank_lock_icon'
+    size:t='0.6@modItemHeight, 0.6@modItemHeight'
+    pos:t='50%pw-50%w, 50%ph-50%h'
+    position:t='absolute'
+    background-image:t='#ui/gameuiskin#locked_no_borders.svg'
+    background-svg-size:t='0.6@modItemHeight, 0.6@modItemHeight'
+    background-repeat:t='aspect-ratio'
+    background-color:t='#A6828589'
+    tooltip:t='#modification/mrankLockedModTooltip'
+  }
+  <</hasMrankLockIcon>>
   warningIcon {
     id:t='warning_icon'
     <<#hideWarningIcon>>display:t='hide'<</hideWarningIcon>>

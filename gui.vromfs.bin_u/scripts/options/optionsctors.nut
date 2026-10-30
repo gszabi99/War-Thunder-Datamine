@@ -1,11 +1,10 @@
 import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "colorCorrector" import getRgbStrFromHsv
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 from "types" import String
-
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
@@ -32,7 +31,6 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
     id = id
     optionTag = optionTag ?? "option"
     options = []
-    onOptHoverFnName = params?.onOptHoverFnName
   }
   if (params)
     view.__update(params)
@@ -58,9 +56,6 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
       opt.$rawdelete("image")
     }
 
-    if (params?.onOptHoverFnName != null)
-      opt.idx <- idx
-
     opt.enabled <- opt?.enabled ?? true
     if (!opt.enabled)
       spinnerType = "ComboBox" 
@@ -78,21 +73,6 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
   }
 
   return handyman.renderCached(("%gui/options/spinnerOptions.tpl"), view)
-}
-
-function create_options_bar(id, value, text, items, cb, isFull = true, params = null) {
-  let view = { id, value, text, cb, isFull,
-    hasTooltip = items.len() > 1
-    onOptHoverFnName = params?.onOptHoverFnName
-    options = items.map(function (item, idx) {
-      let option = item instanceof String ? { text = item } : clone item
-      if (params?.onOptHoverFnName)
-        option.__update({ idx })
-      return { option }
-    })
-    optionsCount = items.len()
-  }
-  return handyman.renderCached(("%gui/options/optionsBar.tpl"), view)
 }
 
 function create_option_dropright(id, items, value, cb, isFull) {
@@ -223,7 +203,6 @@ function create_option_slider(id, value, cb, _isFull, _sliderType, params = {}) 
     value
     isShowSliderValue
     text_value = isShowSliderValue ? params.sliderPrintFormat(value) : ""
-    classProp = params?.cssClass ? $"class:t='{params.cssClass}';" : ""
     clickByPoints = params?.clickByPoints ? "yes" : "no"
     fullWidth = !params?.needShowValueText ? "yes" : "no"
     cb
@@ -231,16 +210,15 @@ function create_option_slider(id, value, cb, _isFull, _sliderType, params = {}) 
   return handyman.renderCached("%gui/options/optionsSlider.tpl", view)
 }
 
-return {
+return freeze({
   create_option_list
   create_option_combobox
   create_empty_combobox
   create_option_dropright
   create_option_editbox
   create_option_row_listbox
-  create_options_bar
   create_option_switchbox
   create_option_slider
   create_option_vlistbox
   createOptionRowMultiselect
-}
+})

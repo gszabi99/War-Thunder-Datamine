@@ -1,24 +1,24 @@
+from "%scripts/unit/unitsData.nut" import getAllUnits
+from "%sqStdLibs/helpers/handyman.nut" import handyman
+from "%scripts/user/remapNick.nut" import getPlayerName
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/tutorials/tutorialsState.nut" import isDiffUnlocked
+from "%scripts/unit/unitStatus.nut" import isUnitDefault, isUnitUsable
+from "%scripts/user/userInfoStats.nut" import getProfileInfo
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%appGlobals/login/loginState.nut" import hasFullLoginState, isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns, is_country_available
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
-let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
+let isFirstChoiceShown = Watched(false)
 
-let unlockedCountries = persist("unlockedCountries", @() [])
+let unlockedCountries = mkHardPersist("firstChoice.firstChoice")("unlockedCountries", [])
 
 let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
   foreach (unitType in unitTypes.types)
@@ -81,7 +81,7 @@ function checkUnlockedCountries() {
       }
     }
     else if (unlockAll) {
-      unlockCountry(country, !isLoggedIn.get())
+      unlockCountry(country, !hasFullLoginState.get())
       curUnlocked.append(country)
     }
   if (wasInList != unlockedCountries.len())
@@ -103,7 +103,7 @@ function checkUnlockedCountriesByAirs() {
   return haveUnlocked
 }
 
-return {
+return freeze({
   fillUserNick
   getFirstChosenUnitType
   reqFirstUnitTypeChoice
@@ -115,4 +115,4 @@ return {
   unlockCountry
   checkUnlockedCountries
   checkUnlockedCountriesByAirs
-}
+})

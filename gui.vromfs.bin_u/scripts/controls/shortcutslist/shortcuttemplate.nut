@@ -1,6 +1,6 @@
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
 
-return {
+return freeze({
   type = CONTROL_TYPE.SHORTCUT
 
   checkAssign = true
@@ -9,4 +9,4 @@ return {
 
   isHidden = false
   shortcutId = -1
-}
+})

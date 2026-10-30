@@ -1,3 +1,4 @@
+import "%scripts/charClientEvent.nut" as charClientEvent
 import "contacts" as contacts
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
@@ -10,7 +11,6 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
 
 let logC = log_with_prefix("[CONTACTS] ")
-let charClientEvent = require("%scripts/charClientEvent.nut")
 
 const CONTACTS_GAME_ID = "wt"
 

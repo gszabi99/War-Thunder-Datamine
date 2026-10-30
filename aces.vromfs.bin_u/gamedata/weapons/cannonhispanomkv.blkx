@@ -1,11 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": 3,
-  "maxDeltaAngle": 0.24,
-  "shotFreq": 12.5,
-  "shotFreqRndK": 0.1,
-  "traceFreq": 4,
-  "bullets": 250,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -21,6 +14,29 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": 3,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 12.5,
+  "shotFreqRndK": 0.1,
+  "bullets": 250,
+  "overheat": {
+    "overheat": [
+      [
+        9.0,
+        0.0
+      ],
+      [
+        11.0,
+        0.02
+      ],
+      [
+        13.0,
+        0.05
+      ]
+    ]
+  },
   "bullet": [
     {
       "mass": 0.13,
@@ -8163,29 +8179,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "hs_mk5_gun_outside",
-    "cockpit": "hs_mk5_gun_inside",
-    "ai": "hs_mk5_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        9.0,
-        0.0
-      ],
-      [
-        11.0,
-        0.02
-      ],
-      [
-        13.0,
-        0.05
-      ]
-    ]
-  },
   "hispano_mk5_new_gun": {
     "maxDeltaAngle": 0.42,
     "overheat": {
@@ -8200,5 +8193,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "hs_mk5_gun_outside",
+    "cockpit": "hs_mk5_gun_inside",
+    "ai": "hs_mk5_gun_ai"
   }
 }

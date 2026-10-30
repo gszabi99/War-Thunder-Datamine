@@ -1,10 +1,10 @@
+from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
+from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
+from "%sqstd/platform.nut" import isSony, isXbox
+from "%appGlobals/clientState/platform.nut" import isPlatformShieldTv
+from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-
-let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -26,7 +26,7 @@ function gui_start_controls_console(_ = null) {
 }
 
 function gui_start_controls() {
-  if (isPlatformSony || isPlatformXbox || isPlatformShieldTv()) {
+  if (isSony || isXbox || isPlatformShieldTv()) {
     if (loadLocalAccountSettings(PS4_CONTROLS_MODE_ACTIVATE, true)) {
       gui_start_controls_console()
       return
@@ -46,8 +46,8 @@ function gui_start_controls_type_choice() {
 eventbus_subscribe("gui_start_advanced_controls", gui_start_advanced_controls)
 eventbus_subscribe("gui_start_controls_console", gui_start_controls_console)
 
-return {
+return freeze({
   switchControlsMode
   gui_start_controls
   gui_start_controls_type_choice
-}
+})

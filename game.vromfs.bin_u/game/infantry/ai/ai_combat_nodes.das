@@ -49,6 +49,7 @@ require CollRes
 require %appGame.infantry.es.level_common
 require %appGame.infantry.ai.walker_nodes_common
 require %appGame.infantry.ai.ai_weapons_common
+require %appGame.infantry.ai.ai_team_nav_zones_common
 require %appGame.infantry.ai.walker_vehicles_danger_common
 require %appGame.infantry.es.ai_dangers_attack_debug_common
 require %appGame.infantry.es.human_attached_gun_common
@@ -3610,6 +3611,8 @@ class TraceMoveToSeeTarget : BehNodeAdapter
   outMoveToPosParam : int = -1
   outLeanParam : int = -1
 
+  avoidTeamGroupingZones : bool = false
+
   def override loadFromBlk(data : DataBlock) : void
     if datablock_find_param(data, "targetPosParam") >= 0
       targetEidParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "targetPosParam", ""), float3())
@@ -3637,6 +3640,8 @@ class TraceMoveToSeeTarget : BehNodeAdapter
       outMoveToPosParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outMoveToPosParam", ""), float3())
     if datablock_find_param(data, "outLeanParam") >= 0
       outLeanParam = owner.blackBoard |> get_or_create(datablock_getStr(data, "outLeanParam", ""), 0.0)
+
+    avoidTeamGroupingZones = datablock_getBool(data, "avoidTeamGroupingZones", avoidTeamGroupingZones)
 
   def trace_aim(from_pos : float3; dir : float3; dist : float; hmap_trace_offset : float3; shoot_ray_mat : int; target_eid : EntityId; agent_eid : EntityId)
     let toPos = from_pos + dir * dist
@@ -3670,11 +3675,15 @@ class TraceMoveToSeeTarget : BehNodeAdapter
     var shootRayMat = -1
     var hasShootInfo = false
     var agentTeam = -1
+    var agentGroupTeam = -1
+    var agentGroupZone = -1
     query(agentEid) <| $ [es] (agent_dangers__standShootPos : float3 const?; transform : float3x4;
                                agent_dangers__hmapTraceOffset : float3 = float3();
                                human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
                                human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
-                               team aka agent_team : int = TEAM_UNASSIGNED)
+                               team aka agent_team : int = TEAM_UNASSIGNED;
+                               human_grouping__team : int = -1;
+                               human_grouping__zone : int = -1)
       stepDir = transform[0] * stepLocalDir.z
       stepDir += transform[1] * stepLocalDir.y
       stepDir += transform[2] * -stepLocalDir.x
@@ -3684,9 +3693,16 @@ class TraceMoveToSeeTarget : BehNodeAdapter
       hmapTraceOffset = agent_dangers__hmapTraceOffset
       shootRayMat = get_shoot_ray_mat(human_attached_gun__attachedGunEid, human_weap__currentGunEid)
       agentTeam = agent_team
+      agentGroupTeam = human_grouping__team
+      agentGroupZone = human_grouping__zone
       hasShootInfo = true
     if !hasShootInfo
       return EBehResult.ER_FAILED
+
+    var agentTeamEid = INVALID_ENTITY_ID
+    query() <| $ [es] (eid aka team_eid : EntityId; team__id : int)
+      if team__id == agentTeam
+        agentTeamEid = team_eid
 
     var targetPos = float3()
     var targetEid = INVALID_ENTITY_ID
@@ -3836,6 +3852,10 @@ class TraceMoveToSeeTarget : BehNodeAdapter
             
             
             
+
+    if avoidTeamGroupingZones && is_point_in_nav_grouping_zone(resultPos, agentTeam, agentTeamEid, agentGroupTeam, agentGroupZone)
+      return EBehResult.ER_FAILED
+
     if outMoveToPosParam >= 0
       owner.blackBoard |> set(outMoveToPosParam, resultPos)
     if outLeanParam >= 0

@@ -1,10 +1,9 @@
 {
   "bombGun": true,
-  "preset_cost": 20,
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "preset_cost": 200,
+  "external": true,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
   "mesh": "uk_500lb_enhanced_paveway_4_bomb",
   "mesh_deployed": "uk_500lb_enhanced_paveway_4_bomb_deployed",
   "offsetForDemonstration": [
@@ -139,14 +138,15 @@
       "damageType": "pressure"
     },
     "guidance": {
+      "allowCCRP": true,
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
       "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 0.0,
       "launchAngleMax": [
         180.0,
         90.0
       ],
+      "inertialNavigationDriftSpeed": 0.0,
       "designationError": 5.0,
       "laserSeeker": {
         "range": 4876.8,

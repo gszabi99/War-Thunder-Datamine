@@ -76,4 +76,4 @@ let ActivateSelect = class (posNavigator) {
 
 replace_script_gui_behaviour("ActivateSelect", ActivateSelect)
 
-return {ActivateSelect}
+return freeze({ActivateSelect})

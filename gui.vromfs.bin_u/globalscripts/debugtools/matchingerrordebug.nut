@@ -1,10 +1,9 @@
 import "matching.errors" as mErrors
+from "%globalScripts/logs.nut" import console_print
+from "%sqstd/string.nut" import hexStringToInt
 from "string" import format
 from "console" import register_command
 from "types" import Integer, String
-
-let { console_print } = require("%globalScripts/logs.nut")
-let { hexStringToInt } = require("%sqstd/string.nut")
 
 register_command(function() {
   let res = []
@@ -12,7 +11,7 @@ register_command(function() {
     if (v instanceof Integer)
       res.append({ id, v = v & 0xFFFFFFFF })
   return console_print("\n".join(
-    res.sort(@(a, b) a.v <=> b.v)
+    res.sortby(@(a) a.v)
       .map(@(i) $"{format("0x%X", i.v)} = {i.id}")))
 }, "matching.errorsList")
 

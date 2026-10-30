@@ -102,7 +102,7 @@ class SampleStackWalker : DapiStackWalker {
         }
     }
     def override onAfterCall(pp : Prologue) : bool {
-        return false    
+        return false
     }
 }
 

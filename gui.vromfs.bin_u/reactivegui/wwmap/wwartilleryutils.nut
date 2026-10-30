@@ -52,8 +52,8 @@ armiesData.subscribe(function(_p) {
   })
 })
 
-return {
+return freeze({
   artilleryReadyState
   getArtilleryParams
   isSAM = @(armyData) armyData?.iconOverride == "sam_site"
-}
+})

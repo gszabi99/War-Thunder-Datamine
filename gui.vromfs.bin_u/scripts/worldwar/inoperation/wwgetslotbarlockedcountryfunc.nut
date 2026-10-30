@@ -1,7 +1,6 @@
+from "%scripts/squads/squadManager.nut" import g_squad_manager
+from "%scripts/worldWar/inOperation/wwOperationStates.nut" import curOperationCountry
 from "%scripts/dagui_library.nut" import *
-
-let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
-let { curOperationCountry } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 function getLockedCountryDataBySquad() {
   let operationcountry = g_squad_manager.getWwOperationCountry()

@@ -1,5 +1,11 @@
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
+from "%scripts/events/eventsManager.nut" import events
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/events/eventRewards.nut" import haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText, getConditionText
+from "%scripts/unlocks/unlocksConditions.nut" import addToText
+from "%scripts/events/eventInfo.nut" import isRaceEvent
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%sqstd/datablock.nut" import getBlkValueByPath
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
@@ -7,14 +13,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { events } = require("%scripts/events/eventsManager.nut")
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
-let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Ticket = class (BaseItem) {
   static iType = itemType.TICKET

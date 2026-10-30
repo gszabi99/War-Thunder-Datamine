@@ -1,4 +1,12 @@
+import "%scripts/worldWar/inOperation/wwUnitClassParams.nut" as wwUnitClassParams
 import "DataBlock" as DataBlock
+from "%scripts/worldWar/inOperation/model/wwAirfieldFormation.nut" import WwAirfieldFormation
+from "%scripts/worldWar/inOperation/model/wwCustomFormation.nut" import WwCustomFormation
+from "%scripts/worldWar/inOperation/model/wwAirfieldCooldownFormation.nut" import WwAirfieldCooldownFormation
+from "%scripts/worldWar/inOperation/model/wwArmyOwner.nut" import WwArmyOwner
+from "%scripts/worldWar/worldWarCfgState.nut" import getWWConfigurableValue
+from "%scripts/worldWar/inOperation/model/wwArmy.nut" import getArmyByName
+from "%scripts/worldWar/inOperation/wwOperations.nut" import getCurrentOperation
 from "%sqStdLibs/helpers/u.nut" import search
 from "dagor.math" import Point2
 from "worldwar" import wwGetAirfieldInfo
@@ -7,16 +15,8 @@ from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
-let { WwAirfieldFormation } = require("%scripts/worldWar/inOperation/model/wwAirfieldFormation.nut")
-let { WwCustomFormation } = require("%scripts/worldWar/inOperation/model/wwCustomFormation.nut")
-let { WwAirfieldCooldownFormation } = require("%scripts/worldWar/inOperation/model/wwAirfieldCooldownFormation.nut")
-let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
-let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { getCurrentOperation } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 let WwAirfield = class {
   index  = -1
@@ -241,4 +241,4 @@ let WwAirfield = class {
   }
 }
 
-return { WwAirfield }
+return freeze({ WwAirfield })

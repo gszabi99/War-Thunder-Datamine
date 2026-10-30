@@ -1,29 +1,30 @@
 import "DataBlock" as DataBlock
+from "%scripts/viewUtils/layeredIcon.nut" import LayersIcon
+from "%scripts/money.nut" import Cost
+from "%scripts/customization/contentPreviewState.nut" import getBestUnitForPreview
+from "%scripts/unlocks/unlockSmoke.nut" import aeroSmokesList
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/unlocks/unlocksModule.nut" import getUnlockCost, isUnlockOpened
+from "%scripts/unlocks/unlocksAction.nut" import buyUnlock
+from "%scripts/options/optionsExt.nut" import set_option, get_option
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS, USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN
+  , USEROPT_DIFFICULTY, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
+from "%scripts/unit/unitInfo.nut" import getUnitName
+from "%scripts/unit/unitStatus.nut" import isTestFlightAvailable
+from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
+from "%scripts/missionBuilder/testFlightState.nut" import set_last_called_gui_testflight
+from "%scripts/missions/startMissionsList.nut" import guiStartFlight
+from "%scripts/weaponry/unitForWeapons.nut" import unitNameForWeapons
+from "%scripts/options/options.nut" import set_gui_option_in_mode
+from "%scripts/queue/queueManager.nut" import checkQueueAndStart
+from "%scripts/items/itemsTypeClasses.nut" import registerItemClass
 from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "guiMission" import select_training_mission, get_meta_mission_info_by_name
 from "unlocks" import getUnlockTypeById
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
-let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
-let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
-let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS, USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)

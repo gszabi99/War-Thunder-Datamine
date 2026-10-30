@@ -1,10 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.12,
-  "shotFreq": 2.6666,
-  "traceFreq": 2,
-  "bullets": 30,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -20,6 +14,28 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 2,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.12,
+  "shotFreq": 2.6666,
+  "bullets": 30,
+  "overheat": {
+    "overheat": [
+      [
+        2.0,
+        0.0
+      ],
+      [
+        5.5,
+        0.5
+      ],
+      [
+        9.0,
+        0.9
+      ]
+    ]
+  },
   "bullet": [
     {
       "bulletCount": 40,
@@ -158,7 +174,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -1572,7 +1588,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmBrightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   ],
@@ -1714,7 +1730,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmWhite",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -2138,7 +2154,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmPink",
-        "trail": "black"
+        "trail": "thick"
       },
       "collisions": {
         "default": {
@@ -2992,7 +3008,7 @@
         ],
         "traceFreq": 1,
         "tracer": "50mmBrightRed",
-        "trail": "black"
+        "trail": "thick"
       }
     }
   },
@@ -3560,29 +3576,6 @@
       }
     }
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "bk37_gun_outside",
-    "cockpit": "bk37_gun_inside",
-    "ai": "bk37_gun_ai"
-  },
-  "overheat": {
-    "overheat": [
-      [
-        2.0,
-        0.0
-      ],
-      [
-        5.5,
-        0.5
-      ],
-      [
-        9.0,
-        0.9
-      ]
-    ]
-  },
   "mk214_new_gun": {
     "maxDeltaAngle": 0.14,
     "overheat": {
@@ -3597,5 +3590,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "bk37_gun_outside",
+    "cockpit": "bk37_gun_inside",
+    "ai": "bk37_gun_ai"
   }
 }

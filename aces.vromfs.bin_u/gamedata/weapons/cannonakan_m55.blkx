@@ -1,12 +1,4 @@
 {
-  "cannon": true,
-  "weaponType": -1,
-  "maxDeltaAngle": 0.35,
-  "shotFreq": 23.33,
-  "traceFreq": 4,
-  "bullets": 90,
-  "dragCx": 0.025,
-  "mass": 87.09,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -22,6 +14,14 @@
   "aimMaxDist": 1000.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
+  "traceFreq": 4,
+  "cannon": true,
+  "weaponType": -1,
+  "maxDeltaAngle": 0.35,
+  "shotFreq": 23.33,
+  "bullets": 90,
+  "dragCx": 0.025,
+  "mass": 87.09,
   "bullet": [
     {
       "mass": 0.274,
@@ -127,7 +127,7 @@
         ],
         "traceFreq": 1,
         "tracer": "30mmGreen",
-        "trail": "smallTrail"
+        "trail": "black"
       },
       "collisions": {
         "default": {
@@ -2223,7 +2223,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmGreen",
-          "trail": "smallTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -4206,7 +4206,7 @@
           ],
           "traceFreq": 1,
           "tracer": "30mmGreen",
-          "trail": "smallTrail"
+          "trail": "black"
         },
         "collisions": {
           "default": {
@@ -7162,13 +7162,6 @@
       }
     ]
   },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "cannon_aden_outside",
-    "cockpit": "cannon_aden_inside",
-    "ai": "cannon_aden_ai"
-  },
   "aden_new_gun": {
     "maxDeltaAngle": 0.65,
     "overheat": {
@@ -7183,5 +7176,12 @@
         ]
       ]
     }
+  },
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "cannon_aden_outside",
+    "cockpit": "cannon_aden_inside",
+    "ai": "cannon_aden_ai"
   }
 }

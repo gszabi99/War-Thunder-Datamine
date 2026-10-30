@@ -1,9 +1,9 @@
+from "%scripts/langUtils/language.nut" import getCurLangShortName
 from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "string" import regexp
 from "%scripts/dagui_library.nut" import *
 
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
-let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 enum URL_CHECK_ORDER {
   BY_URL_REGEXP
@@ -108,11 +108,7 @@ enumsAddTypes(g_url_type, {
   }
 }, null, "typeName")
 
-g_url_type.types.sort(function(a, b) {
-  if (a.sortOrder != b.sortOrder)
-    return a.sortOrder > b.sortOrder ? 1 : -1
-  return 0
-})
+g_url_type.types.sortby(@(a) a.sortOrder)
 
 g_url_type.getByUrl <- function getByUrl(url) {
   foreach (urlType in this.types)

@@ -35,6 +35,6 @@ function make(log_state) {
 }
 
 
-return {
+return freeze({
   make
-}
+})

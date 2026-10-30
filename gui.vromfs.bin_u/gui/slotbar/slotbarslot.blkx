@@ -1,0 +1,550 @@
+{
+  "id": "slotId",
+  "slotType": "",
+  "inactive": "yes",
+  "chosen": "no",
+  "selected": "no",
+  "tooltipId": "",
+  "crewId": "",
+  "hasSelectedState": "yes",
+  "isCrewRecruit": "no",
+  "on_mouse_enter": "",
+  "on_end_edit": "",
+  "on_drag_drop": "",
+  "on_move": "",
+  "unhoverDiv": {
+    "size": "pw, ph",
+    "display": "hide",
+    "position": "absolute",
+    "not-input-transparent": "yes"
+  },
+  "shopItem": {
+    "id": "shopItemId",
+    "interactive": "yes",
+    "behavior": "Timer",
+    "timer_interval_msec": "1000",
+    "unit_name": "",
+    "proxyEventsParentTag": "slotbarTable",
+    "crew_id": "",
+    "crewInfoTranslucent": "",
+    "refuseOpenHoverMenu": "",
+    "cursor": "normal",
+    "shopStat": "",
+    "unitRarity": "",
+    "isBroken": "no",
+    "isPkgDev": "no",
+    "isElite": "no",
+    "isEmptySlot": "no",
+    "dragParent": "yes",
+    "on_drag_start": "",
+    "on_drag_drop": "",
+    "on_move": "",
+    "on_hover": "onUnitHover",
+    "on_unhover": "gcb.delayedTooltipHover",
+    "tooltip-float": "horizontal",
+    "title": "$tooltipObj",
+    "extraInfoBlock": {
+      "id": "extraInfoBlock",
+      "interactive": "yes",
+      "content": {
+        "id": "extra_info_content",
+        "behavior": "button",
+        "on_r_click": "onCrewSlotClick",
+        "on_click": "onCrewSlotClick",
+        "interactive": "no",
+        "hasActions": "no",
+        "on_drag_start": "",
+        "on_hover": "",
+        "crewIdInCountry": "",
+        "crewId": "",
+        "forcedUnit": "",
+        "isEmptySlot": "",
+        "crewInfoNumBlock": {
+          "icon": {
+            "margin-right": "@sf/@pf"
+          },
+          "crewNumText": {
+            "id": "crewNumText",
+            "text": ""
+          }
+        },
+        "crewNumText": {
+          "id": "crewNumWithTitle",
+          "text": ""
+        },
+        "crewInfoExpBlock": {
+          "id": "crewInfoExpBlock",
+          "expAvailableIcon": {
+            "id": "expAvailableIcon",
+            "hasUnseenIcon": "",
+            "margin-right": "2@sf/@pf"
+          },
+          "shopItemText": {
+            "id": "crew_level",
+            "text": ""
+          },
+          "icon": {
+            "id": "crew_spec",
+            "background-image": "",
+            "margin-left": "4@sf/@pf"
+          }
+        },
+        "slotHoverHighlight": {},
+        "slotBottomGradientLine": {},
+        "focus_border": {}
+      }
+    },
+    "extraInfoBlockTop": {
+      "id": "extraInfoBlockTop",
+      "hasInfo": "no",
+      "cursor": "normal",
+      "tdiv": {
+        "size": "pw, ph",
+        "textareaNoTab": [
+          {
+            "id": "extraInfoPriceText",
+            "width": "0",
+            "smallFont": "yes",
+            "text": "",
+            "text-align": "center",
+            "position": "relative",
+            "pos": "0, ph/2-(h-@sf/@pf)/2",
+            "display": "hide",
+            "hasInfo": "no"
+          },
+          {
+            "id": "additionalRespawns",
+            "width": "0",
+            "smallFont": "yes",
+            "text": "",
+            "text-align": "center",
+            "position": "relative",
+            "pos": "0, ph/2-(h-@sf/@pf)/2",
+            "display": "hide",
+            "hasInfo": "no"
+          },
+          {
+            "id": "spareCount",
+            "width": "fw",
+            "smallFont": "yes",
+            "text": "",
+            "text-align": "center",
+            "position": "relative",
+            "pos": "0, ph/2-(h-@sf/@pf)/2",
+            "display": "hide",
+            "hasInfo": "no"
+          }
+        ],
+        "extraInfoVertSeparator": [
+          {
+            "id": "priceSeparator",
+            "display": "hide"
+          },
+          {
+            "id": "additionalRespawnsSeparator",
+            "display": "hide"
+          },
+          {
+            "id": "spareSeparator",
+            "display": "hide"
+          },
+          {
+            "id": "diceSeparator",
+            "display": "hide"
+          }
+        ],
+        "tdiv": [
+          {
+            "id": "additionalHistoricalRespawnsNest",
+            "width": "0",
+            "position": "relative",
+            "pos": "0, ph/2-(h-@sf/@pf)/2",
+            "css-hier-invalidate": "yes",
+            "display": "hide",
+            "hasInfo": "no",
+            "tdiv": {
+              "position": "relative",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "css-hier-invalidate": "yes",
+              "tdiv": {
+                "id": "unitClassIco",
+                "size": "@cIco, @sIco",
+                "pos": "0, ph/2-h/2",
+                "position": "relative",
+                "background-svg-size": "@cIco, @sIco",
+                "background-repeat": "aspect-ratio",
+                "background-image": "",
+                "background-color": "",
+                "margin-right": "2@sf/@pf"
+              },
+              "textareaNoTab": {
+                "id": "additionalHistoricalRespawns",
+                "smallFont": "yes",
+                "text": "",
+                "text-align": "center",
+                "position": "relative",
+                "pos": "0, ph/2-h/2"
+              }
+            }
+          },
+          {
+            "id": "dice",
+            "width": "fw",
+            "height": "ph",
+            "position": "relative",
+            "padding": "3@sf/@pf",
+            "display": "hide",
+            "hasInfo": "no",
+            "img": {
+              "size": "ph, ph",
+              "halign": "center",
+              "position": "relative",
+              "background-svg-size": "ph, ph",
+              "background-repeat": "aspect-ratio",
+              "background-image": "#ui/gameuiskin#dice_outline_white.svg"
+            }
+          }
+        ],
+        "text": {
+          "id": "emptyExtraInfoText",
+          "width": "fw",
+          "position": "relative",
+          "pos": "0, ph/2-(h-@sf/@pf)/2",
+          "text": "#ui/minus",
+          "overlayTextColor": "common",
+          "display": "hide"
+        }
+      },
+      "slotMissionHintContainer": {
+        "id": "slotMissionHintContainer",
+        "hasInfo": "no",
+        "slotMissionHint": {
+          "id": "slotMissionHint",
+          "textareaNoTab": [
+            {
+              "id": "extraInfoPriceTextHint",
+              "width": "pw",
+              "smallFont": "yes",
+              "text": "",
+              "position": "relative",
+              "margin-bottom": "3@sf/@pf",
+              "display": "hide"
+            },
+            {
+              "id": "additionalRespawnsHintText",
+              "margin-bottom": "3@sf/@pf",
+              "width": "pw",
+              "smallFont": "yes",
+              "text": "",
+              "position": "relative",
+              "display": "hide"
+            },
+            {
+              "id": "spareHintText",
+              "margin-bottom": "3@sf/@pf",
+              "display": "hide",
+              "width": "pw",
+              "smallFont": "yes",
+              "text": "",
+              "position": "relative"
+            },
+            {
+              "id": "randomUnitsListText",
+              "margin-bottom": "3@sf/@pf",
+              "width": "pw",
+              "smallFont": "yes",
+              "text": "#respawn/randomUnitsList",
+              "position": "relative"
+            }
+          ],
+          "tdiv": [
+            {
+              "id": "additionalHistoricalRespawnsHint",
+              "width": "pw",
+              "position": "relative",
+              "margin-bottom": "3@sf/@pf",
+              "display": "hide",
+              "tdiv": {
+                "position": "relative",
+                "pos": "0, ph/2-h/2",
+                "width": "pw",
+                "tdiv": {
+                  "id": "unitClassIco",
+                  "size": "@cIco, @sIco",
+                  "position": "relative",
+                  "background-svg-size": "@cIco, @sIco",
+                  "background-repeat": "aspect-ratio",
+                  "background-image": "",
+                  "background-color": "@commonTextColor",
+                  "margin-right": "2@sf/@pf"
+                },
+                "textareaNoTab": {
+                  "id": "hintText",
+                  "width": "pw",
+                  "smallFont": "yes",
+                  "text": "",
+                  "position": "relative",
+                  "pos": "-@cIco, ph/2-h/2",
+                  "paragraph-indent": "7@blockInterval"
+                }
+              }
+            },
+            {
+              "id": "hasDice",
+              "margin-bottom": "1@blockInterval",
+              "width": "pw",
+              "tdiv": {
+                "size": "@weaponStatusIconSize, @weaponStatusIconSize",
+                "margin-right": "1@blockInterval",
+                "background-svg-size": "@weaponStatusIconSize, @weaponStatusIconSize",
+                "background-repeat": "aspect-ratio",
+                "background-image": "#ui/gameuiskin#dice_outline_white.svg",
+                "bgcolor": "@commonTextColor",
+                "margin-top": "3@sf/@pf"
+              },
+              "textareaNoTab": {
+                "width": "fw",
+                "smallFont": "yes",
+                "text": "#respawn/randomUnitHint",
+                "position": "relative"
+              }
+            },
+            {
+              "id": "randomUnitsList",
+              "flow": "vertical"
+            }
+          ]
+        },
+        "slotHoverHighlight": {},
+        "slotBottomGradientLine": {}
+      }
+    },
+    "shopInServiceImg": {
+      "id": "shopInServiceImg",
+      "mounted": "no",
+      "shopInServiceImgBg": {},
+      "icon": {}
+    },
+    "slotPlate": {
+      "middleBg": {
+        "pattern": {}
+      },
+      "topLine": {},
+      "bottomShade": {}
+    },
+    "itemWinkBlock": {
+      "buttonWink": {
+        "_transp-timer": "0"
+      }
+    },
+    "slotHoverHighlight": {},
+    "shopAirImg": {
+      "id": "shopAirImg",
+      "foreground-image": ""
+    },
+    "crewImage": {
+      "id": "crewImage",
+      "background-image": ""
+    },
+    "eliteIcon": {
+      "id": "eliteIcon"
+    },
+    "slotTopGradientLine": {
+      "id": "slotTopGradientLine"
+    },
+    "slotBottomGradientLine": {
+      "id": "slotBottomGradientLine"
+    },
+    "recentlyReleasedIcon": {
+      "id": "recentlyReleasedIcon"
+    },
+    "slotSelectionRectangle": {},
+    "focus_border": {},
+    "talismanIcon": {
+      "id": "talismanIcon"
+    },
+    "discount_notification": {
+      "id": "discountId",
+      "type": "box_down",
+      "text": "",
+      "showDiscount": ""
+    },
+    "topline": {
+      "id": "shopItemTopLine",
+      "shopItemDiv": {
+        "id": "shopItemDiv",
+        "position": "relative",
+        "width": "pw",
+        "tdiv": [
+          {
+            "width": "fw"
+          },
+          {
+            "id": "shopItemDice",
+            "size": "@weaponStatusIconSize, @weaponStatusIconSize",
+            "valign": "center",
+            "margin-right": "1@blockInterval",
+            "background-svg-size": "@weaponStatusIconSize, @weaponStatusIconSize",
+            "background-repeat": "aspect-ratio",
+            "background-image": "#ui/gameuiskin#dice_outline_white.svg",
+            "background-color": "@activeTextColor",
+            "display": "hide"
+          }
+        ],
+        "shopItemText": {
+          "id": "shopItemTextId",
+          "noPadding": "yes",
+          "header": "yes",
+          "translucent": "no"
+        }
+      }
+    },
+    "bottomline": {
+      "id": "shopItemBottomLine",
+      "tdiv": [
+        {
+          "id": "progressDiv",
+          "width": "fw",
+          "pos": "0, ph-h",
+          "flow": "vertical",
+          "shopItemText": {
+            "id": "progressText",
+            "text": "",
+            "progressStatus": "",
+            "position": "relative",
+            "pos": "pw-w, 0",
+            "smallFont": "yes",
+            "talign": "right",
+            "shadeStyle": "textOnIcon"
+          },
+          "tdiv": {
+            "id": "airProgress",
+            "width": "pw",
+            "position": "relative",
+            "pos": "0, -3@sf/@pf"
+          }
+        },
+        {
+          "id": "bottomLineTextDiv",
+          "width": "pw-1@tableIcoSize-0.003@sf",
+          "overflow": "hidden",
+          "shopItemText": {
+            "id": "bottomLineText",
+            "min-width": "pw",
+            "autoScrollText": "hoverOrSelect",
+            "text": "",
+            "text-align": "right"
+          }
+        }
+      ],
+      "shopItemPrice": {
+        "id": "priceText",
+        "tinyFont": "no",
+        "text": ""
+      },
+      "shopItemText": {
+        "id": "rank_text",
+        "text": "",
+        "tinyFont": "no",
+        "locked": "no",
+        "translucent": "no",
+        "text-align": "right"
+      },
+      "classIconPlace": {
+        "id": "classIconPlace",
+        "margin-top": "0",
+        "classIcon": {
+          "id": "classIcon",
+          "text": "",
+          "shopItemType": ""
+        }
+      },
+      "crewNumText": {
+        "id": "crewNumWithTitle",
+        "text": "",
+        "display": "hide"
+      }
+    },
+    "Button_text": {
+      "id": "slotBtn_battle",
+      "class": "battle",
+      "noMargin": "yes",
+      "showAboveInfoBlock": "no",
+      "text": "",
+      "css-hier-invalidate": "yes",
+      "on_click": "",
+      "navButtonFont": "yes",
+      "showConsoleImage": "no",
+      "display": "hide",
+      "buttonWink": {
+        "_transp-timer": "0"
+      },
+      "buttonGlance": {},
+      "pattern": {
+        "type": "bright_texture"
+      },
+      "textarea": {
+        "id": "slotBtn_battle_text",
+        "font-bold": "@fontTiny",
+        "text": ""
+      }
+    },
+    "tdiv": {
+      "id": "specIconsDiv",
+      "height": "@dIco",
+      "pos": "0.002@scrn_tgt, ph-h-0.005@scrn_tgt",
+      "position": "absolute",
+      "input-transparent": "yes",
+      "specIconBlock": {
+        "id": "specIconBlock",
+        "tooltip": "",
+        "shopTrainedImg": {
+          "id": "shopTrainedImg",
+          "background-image": ""
+        },
+        "warningIcon": {
+          "id": "warningIcon",
+          "tooltip": "#mainmenu/selectCrew/haveMoreQualified/tooltip"
+        }
+      },
+      "repairIcon": {
+        "id": "repair_icon",
+        "_transp-timer": "0"
+      },
+      "weaponsIcon": {
+        "id": "weapons_icon",
+        "_transp-timer": "0",
+        "weaponsStatus": ""
+      }
+    },
+    "rentIcon": {
+      "id": "rent_icon",
+      "progress": {
+        "id": "rent_progress",
+        "sector-angle-1": ""
+      },
+      "icon": {}
+    },
+    "bonus": {
+      "id": "bonusId",
+      "text": ""
+    },
+    "img": {
+      "id": "lockedIcon",
+      "background-image": "#ui/gameuiskin#locked_no_borders.svg",
+      "position": "absolute",
+      "size": "@sIco, @cIco",
+      "background-svg-size": "@sIco, @cIco",
+      "halign": "center",
+      "valign": "center",
+      "display": "hide"
+    },
+    "tooltipObj": {
+      "id": "tooltipObj",
+      "tooltipId": "",
+      "on_tooltip_open": "onGenericTooltipOpen",
+      "on_tooltip_close": "onTooltipObjClose",
+      "display": "hide"
+    }
+  }
+}

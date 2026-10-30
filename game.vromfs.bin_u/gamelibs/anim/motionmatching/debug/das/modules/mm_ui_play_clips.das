@@ -55,13 +55,13 @@ def history_slider(imgui_state_eid : EntityId; data_base : AnimationDataBase con
       let currentIndex = (mm_clips_historyIndex.x + historyLen + mm_clips_historyIndex.y) % historyLen
       let clipId = mm_clips_history[currentIndex].x
       let frameId = mm_clips_history[currentIndex].y
-      var v = mm_clips_historyIndex.x + 1
+      var v = (mm_clips_historyIndex.x + historyLen) % historyLen + 1
       var playAnim = false
       if imgui::Button("+##history") && v < historyLen
         v++
         playAnim = true
       imgui::SameLine()
-      if imgui::Button("-##history") && v > 0
+      if imgui::Button("-##history") && v > 1
         v--
         playAnim = true
       imgui::SameLine()

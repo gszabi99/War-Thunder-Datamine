@@ -24,17 +24,19 @@
             "margin-bottom": "2.5@blockInterval"
           },
           {
-            "position": "relative",
+            "id": "main_content",
+            "flow": "horizontal",
             "css-hier-invalidate": "yes",
             "tdiv": [
               {
-                "width": "3@unitChoiceImageWidth + 3@countryChoiceInterval",
                 "flow": "vertical",
+                "valign": "center",
+                "width": "1@firstChoiceCountriesColmns*(1@countryChoiceImageWidth + 1@countryChoiceInterval)",
+                "css-hier-invalidate": "yes",
                 "tdiv": [
                   {
                     "id": "countries",
                     "behaviour": "posNavigator",
-                    "position": "relative",
                     "width": "pw",
                     "flow": "h-flow",
                     "flow-align": "center",
@@ -44,7 +46,8 @@
                     "on_select": "onClickCountry"
                   },
                   {
-                    "size": "pw - 1@countryChoiceInterval, 1@unitChoiceImageHeight",
+                    "size": "pw - 1@countryChoiceInterval, fh",
+                    "min-height": "0.5@countryChoiceImageHeight",
                     "bgcolor": "#CC12161C",
                     "tdiv": {
                       "flow": "vertical",
@@ -73,9 +76,10 @@
               {
                 "id": "country_info_div",
                 "position": "relative",
-                "width": "442@sf/@pf",
+                "width": "1@countryChoiceInfoWidth",
                 "css-hier-invalidate": "yes",
                 "background-color": "#CC12161C",
+                "min-height": "ph",
                 "textAreaCentered": {
                   "id": "choose_country_info",
                   "position": "absolute",
@@ -87,94 +91,105 @@
                 },
                 "tdiv": {
                   "id": "country_info",
-                  "position": "absolute",
-                  "size": "pw, ph",
+                  "position": "relative",
+                  "width": "pw",
+                  "min-height": "ph",
                   "flow": "vertical",
                   "display": "hide",
-                  "padding": "1@blockInterval",
-                  "textareaNoTab": [
-                    {
-                      "id": "country_info_title",
-                      "margin-bottom": "1@blockInterval",
-                      "overlayTextColor": "active",
-                      "normalBoldFont": "yes"
-                    },
-                    {
-                      "id": "country_info_description",
-                      "width": "pw",
-                      "margin-bottom": "2@blockInterval",
-                      "overlayTextColor": "active",
-                      "smallFont": "yes"
-                    }
-                  ],
-                  "tdiv": {
-                    "id": "slots",
-                    "flow": "vertical",
-                    "textareaNoTab": [
-                      {
-                        "id": "starting_vehicles",
-                        "margin-bottom": "1@blockInterval",
-                        "smallFont": "yes"
-                      },
-                      {
-                        "margin-bottom": "1@blockInterval",
-                        "smallFont": "yes",
-                        "text": "#firstChoiceCountry/late_unlock"
-                      }
-                    ],
-                    "tdiv": [
-                      {
-                        "id": "starting_slots",
-                        "margin-bottom": "2@blockInterval",
-                        "tooltipLink": [
-                          {
-                            "id": "starting_unit1",
-                            "margin-right": "3@blockInterval",
-                            "isTooltipForChildren": "yes"
-                          },
-                          {
-                            "id": "starting_unit2",
-                            "isTooltipForChildren": "yes"
-                          }
-                        ]
-                      },
-                      {
-                        "id": "late_unlock_slots",
-                        "tooltipLink": [
-                          {
-                            "id": "lateUnlock_unit1",
-                            "margin-right": "3@blockInterval",
-                            "isTooltipForChildren": "yes"
-                          },
-                          {
-                            "id": "lateUnlock_unit2",
-                            "isTooltipForChildren": "yes"
-                          }
-                        ]
-                      }
-                    ]
+                  "padding": "@startingUnitSlotsInterval",
+                  "textareaNoTab": {
+                    "id": "country_info_title",
+                    "margin-bottom": "@startingUnitSlotsInterval",
+                    "overlayTextColor": "active",
+                    "normalBoldFont": "yes"
                   },
-                  "Button_text": {
-                    "id": "btn_battle",
-                    "position": "absolute",
-                    "pos": "pw/2-w/2, ph-h-2@blockInterval",
-                    "class": "battle",
-                    "navButtonFont": "yes",
-                    "_on_click": "onToBattleClick",
-                    "css-hier-invalidate": "yes",
-                    "isCancel": "no",
-                    "btnName": "X",
-                    "pattern": {},
-                    "buttonWink": {
-                      "_transp-timer": "0"
+                  "tdiv": [
+                    {
+                      "height": "fh",
+                      "width": "pw",
+                      "textareaNoTab": {
+                        "id": "country_info_description",
+                        "width": "pw",
+                        "max-height": "ph",
+                        "margin-bottom": "2@startingUnitSlotsInterval",
+                        "overlayTextColor": "active",
+                        "smallFont": "yes",
+                        "overflow-y": "auto"
+                      }
                     },
-                    "buttonGlance": {},
-                    "ButtonImg": {},
-                    "textarea": {
-                      "class": "buttonText",
-                      "text": "#mainmenu/toBattle"
+                    {
+                      "id": "slots",
+                      "flow": "vertical",
+                      "position": "relative",
+                      "width": "pw",
+                      "textareaNoTab": [
+                        {
+                          "id": "starting_vehicles",
+                          "margin-bottom": "@startingUnitSlotsInterval",
+                          "smallFont": "yes"
+                        },
+                        {
+                          "margin-bottom": "1@blockInterval",
+                          "smallFont": "yes",
+                          "text": "#firstChoiceCountry/late_unlock"
+                        }
+                      ],
+                      "tdiv": [
+                        {
+                          "id": "starting_slots",
+                          "margin-bottom": "@startingUnitSlotsInterval",
+                          "tooltipLink": [
+                            {
+                              "id": "starting_unit1",
+                              "margin-right": "@startingUnitSlotsInterval",
+                              "isTooltipForChildren": "yes"
+                            },
+                            {
+                              "id": "starting_unit2",
+                              "isTooltipForChildren": "yes"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "late_unlock_slots",
+                          "tooltipLink": [
+                            {
+                              "id": "lateUnlock_unit1",
+                              "margin-right": "@startingUnitSlotsInterval",
+                              "isTooltipForChildren": "yes"
+                            },
+                            {
+                              "id": "lateUnlock_unit2",
+                              "isTooltipForChildren": "yes"
+                            }
+                          ]
+                        }
+                      ],
+                      "Button_text": {
+                        "id": "btn_battle",
+                        "position": "relative",
+                        "margin-top": "20@sf/@pf",
+                        "margin-bottom": "20@sf/@pf - 1@startingUnitSlotsInterval",
+                        "left": "pw/2-w/2",
+                        "class": "battle",
+                        "navButtonFont": "yes",
+                        "_on_click": "onToBattleClick",
+                        "css-hier-invalidate": "yes",
+                        "isCancel": "no",
+                        "btnName": "X",
+                        "pattern": {},
+                        "buttonWink": {
+                          "_transp-timer": "0"
+                        },
+                        "buttonGlance": {},
+                        "ButtonImg": {},
+                        "textarea": {
+                          "class": "buttonText",
+                          "text": "#mainmenu/toBattle"
+                        }
+                      }
                     }
-                  }
+                  ]
                 }
               }
             ]

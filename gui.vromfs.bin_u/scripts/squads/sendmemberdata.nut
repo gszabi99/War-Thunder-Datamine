@@ -1,8 +1,7 @@
+from "%scripts/user/profileStates.nut" import userIdInt64
+from "%scripts/matching/api.nut" import request_matching
 from "dagor.workcycle" import setTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
-
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { request_matching } = require("%scripts/matching/api.nut")
 
 let cache = {}
 local timer = null
@@ -37,6 +36,6 @@ function sendMemberDataToMatching(data, needSendFullData) {
   collectDataForSending(data)
 }
 
-return {
+return freeze({
   sendMemberDataToMatching
-}
+})
