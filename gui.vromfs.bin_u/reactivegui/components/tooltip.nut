@@ -164,6 +164,7 @@ function tooltipComp() {
 
 return freeze({
   tooltipComp
+  mkTooltipText
   withTooltip
   withHint
   tooltipDetach

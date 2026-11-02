@@ -52,7 +52,12 @@ function button(p, onClick = null) {
   let hint = hotkey == null ? null : mkImageCompByDargKey(hotkey, null, { height = hintSize, vplace = ALIGN_CENTER })
   let btnHotkeys = hotkey == null ? null : [[$"^{hotkey}"]]
   let onElemState = tooltip == null ? @(s) sf.set(s) : withHint(sf, id, tooltip)
-  let onDetach = tooltip == null ? null : tooltipDetach(sf, id)
+  let hideTooltip = tooltip == null ? null : tooltipDetach(sf, id)
+  
+  function onDetach() {
+    hideTooltip?()
+    sf.set(0)
+  }
   let watch = [sf, isEnabled, alpha, textW, hint == null ? null : showConsoleButtons]
   return function() {
     let a = alpha?.get() ?? 255

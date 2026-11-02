@@ -1,11 +1,12 @@
 import "DataBlock" as DataBlock
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%scripts/respawn/respawnBase.nut" as RespawnBase
+import "%sqstd/ecs.nut" as ecs
 
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "mission" import get_current_mission_name, get_mp_local_team
 from "eventbus" import eventbus_subscribe
-from "guiRespawn" import getFullRespawnBasesList, is_respawnbase_selectable, getSavedRespawnBaseForSlot
+from "guiRespawn" import getFullRespawnBasesList, is_respawnbase_selectable, getSavedRespawnBaseForSlot, getRespawnBaseZoneId
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
@@ -22,6 +23,27 @@ local savedRespawnBases = null
 
 let isPerBaseDelayRow = @(spawn) !spawn.isSquadRespawnBase && !spawn.isZoneRespawnBase
   && spawn.isAvailable && spawn.canSelect
+
+let supplyNodesQuery = ecs.SqQuery("respawnBasesSupplyNodesQuery", {
+  comps_ro = [["capture_zone__zoneId", ecs.TYPE_INT], ["supply_node__points", ecs.TYPE_INT],
+    ["supply_node__spawnCost", ecs.TYPE_INT], ["sectored_capzone__strongpointsHeld", ecs.TYPE_BOOL, true]]
+})
+
+function getSupplySpawnCost(unit) {
+  let costs = get_current_mission_info_cached()?.supplySpawnCost
+  return costs?[unit.name] ?? costs?[unit.expClass.getExpClass()] ?? costs?.default
+}
+
+function getZoneSpawnStates(spawnCost) {
+  let res = {}
+  supplyNodesQuery(function(_, comp) {
+    res[comp.capture_zone__zoneId] <- {
+      hasEnoughSupplies = comp.supply_node__points >= (spawnCost ?? comp.supply_node__spawnCost)
+      strongpointsHeld = comp.sectored_capzone__strongpointsHeld
+    }
+  })
+  return res
+}
 
 
 let isBaseForTeam = @(baseTeam, localTeam) baseTeam == localTeam || baseTeam == MP_TEAM_NEUTRAL
@@ -77,6 +99,7 @@ local respawnBases = {
       hasSavedBase = hasSavedBase || id == savedBaseForSlot
     }
 
+    let zoneSpawnStates = getZoneSpawnStates(getSupplySpawnCost(unit))
     local defaultBase = null
     local airfiled = null
     foreach (rbConfig in availableBases) {
@@ -84,11 +107,13 @@ local respawnBases = {
       let rb = RespawnBase(id)
       let isSavedForSlot = id == savedBaseForSlot
       let canSelect = !hasSavedBase || isSavedForSlot
-      rb.fillRespawnBaseData({ isSavedForSlot, canSelect })
+      let { hasEnoughSupplies = true, strongpointsHeld = true } = zoneSpawnStates?[getRespawnBaseZoneId(id)] ?? {}
+      rb.fillRespawnBaseData({ isSavedForSlot, canSelect, hasEnoughSupplies, strongpointsHeld,
+        isAvailable = hasEnoughSupplies && strongpointsHeld })
       res.basesList.append(rb)
       if (!canSelect)
         continue
-      if (rb.isEqual(lastSelectedBase))
+      if (lastSelectedBase?.isAutoSelected == false && rb.id == lastSelectedBase.id)
         res.selBase = rb
       if (!defaultBase || (rb.isDefault <=> defaultBase.isDefault) > 0)
         defaultBase = rb
@@ -105,6 +130,11 @@ local respawnBases = {
     if (needToSelectAirfield && airfiled)
       defaultBase = airfiled
     let autoSelectedBase = RespawnBase(defaultBase.id, true)
+    autoSelectedBase.fillRespawnBaseData({
+      hasEnoughSupplies = defaultBase.hasEnoughSupplies
+      strongpointsHeld = defaultBase.strongpointsHeld
+      isAvailable = defaultBase.isAvailable
+    })
     res.basesList.insert(0, autoSelectedBase)
     if (!res.selBase)
       res.selBase = autoSelectedBase

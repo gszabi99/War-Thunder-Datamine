@@ -11,6 +11,7 @@ from "%rGui/globals/ui_library.nut" import *
 const teamColorNames = [
   "teamScoreBlueColor", "teamBlueColor", "teamBlueLightColor", "teamBlueInactiveColor", "teamBlueDarkColor", "chatTextTeamColor",
   "teamScoreRedColor", "teamRedColor", "teamRedLightColor", "teamRedInactiveColor", "teamRedDarkColor", "squadColor",
+  "mySquadLightColor",
   "chatTextSquadColor", "hudColorRed", "hudColorBlue", "hudColorSquad", "hudColorDarkRed", "hudColorDarkBlue",
   "hudColorDeathAlly", "hudColorDeathEnemy", "hudColorHero"
 ]

@@ -5,126 +5,70 @@
       "size": "sw - 2@bwHud, sh - 2@bhHud",
       "pos": "pw/2-w/2, ph/2-h/2",
       "position": "absolute",
-      "tdiv": [
+      "spectatorFrame": [
         {
-          "behaviour": "darg",
-          "position": "root",
-          "pos": "0, 0",
-          "size": "sw, sh"
-        },
-        {
-          "id": "stats_left",
+          "id": "map_div",
           "css-hier-invalidate": "yes",
-          "re-type": "9rect",
-          "width": "1@spectatorTableWidth + 1@spectatorBw",
           "position": "absolute",
-          "pos": "-1@spectatorBw -4@dp, 1@spectatorTopOffset",
+          "top": "ph-h",
+          "stickTo": "right",
           "min-height": "2@sIco",
-          "background-image": "#ui/gameuiskin#expandable_item_ww_transp_reflect",
-          "background-position": "2, 2, 0, 2",
-          "background-repeat": "expand",
-          "background-color": "#99999999",
-          "padding": "1@spectatorBw, 1@dp, 1@framePadding, 1@dp",
-          "flow": "vertical",
+          "padding": "1@framePadding",
           "tdiv": {
             "id": "content",
-            "overflow-y": "auto",
-            "scroll-align": "left",
-            "width": "1@spectatorRowWidth",
-            "pos": "0, 0",
-            "position": "relative",
-            "min-height": "1@spectatorRowHeight",
-            "max-height": "p.p.h -1@spectatorTopOffset -1@mIco -1@spectatorTableWidth -24@sf/@pf",
-            "invisibleSelection": "yes",
-            "table": {
-              "id": "table_team1",
-              "class": "spectatorTeamTable",
-              "side": "left",
-              "team": "",
-              "behavior": "posNavigator",
-              "clearOnFocusLost": "yes",
-              "navigatorShortcuts": "yes",
-              "selfFocusBorder": "yes",
-              "on_click": "onPlayerClick",
-              "on_r_click": "onPlayerRClick",
-              "on_activate": "onSelectPlayer"
+            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
+            "tdiv": {
+              "id": "map_div_bg",
+              "size": "pw, ph",
+              "tacticalMap": {
+                "size": "pw, ph",
+                "behaviour": "button",
+                "on_click": "onMapClick"
+              }
             }
-          },
-          "dyncampresult": {
-            "id": "header",
-            "pos": "1.5@mIco, -0.5@mIco -h/2",
-            "position": "absolute",
-            "textShade": "yes"
           }
         },
         {
-          "id": "stats_right",
-          "css-hier-invalidate": "yes",
-          "re-type": "9rect",
-          "width": "1@spectatorTableWidth + 1@spectatorBw",
-          "position": "absolute",
-          "pos": "pw - w + 4@dp +1@spectatorBw, 1@spectatorTopOffset",
-          "min-height": "2@sIco",
-          "background-image": "#ui/gameuiskin#expandable_item_ww_transp",
-          "background-position": "0, 2, 2, 2",
-          "background-repeat": "expand",
-          "background-color": "#99999999",
-          "padding": "1@framePadding, 1@dp, 1@spectatorBw, 1@dp",
-          "flow": "vertical",
-          "tdiv": {
-            "id": "content",
-            "overflow-y": "auto",
-            "scroll-align": "right",
-            "width": "1@spectatorRowWidth",
-            "pos": "pw-w, 0",
-            "position": "relative",
-            "min-height": "1@spectatorRowHeight",
-            "max-height": "p.p.h -1@spectatorTopOffset -1@mIco -1@spectatorTableWidth -24@sf/@pf",
-            "invisibleSelection": "yes",
-            "table": {
-              "id": "table_team2",
-              "class": "spectatorTeamTable",
-              "side": "right",
-              "team": "",
-              "behavior": "posNavigator",
-              "clearOnFocusLost": "yes",
-              "navigatorShortcuts": "yes",
-              "selfFocusBorder": "yes",
-              "on_click": "onPlayerClick",
-              "on_r_click": "onPlayerRClick",
-              "on_activate": "onSelectPlayer"
-            }
-          },
-          "dyncampresult": {
-            "id": "header",
-            "pos": "pw - w - 1.5@mIco, -0.5@mIco -h/2",
-            "position": "absolute",
-            "textShade": "yes"
-          }
-        },
-        {
-          "id": "sensorFilters",
+          "id": "map_large_div",
           "display": "hide",
-          "css-hier-invalidate": "yes",
-          "re-type": "9rect",
+          "width": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
+          "height": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
+          "pos": "pw/2-w/2, ph/2-h/2",
           "position": "absolute",
-          "pos": "pw - w - 4@titleLogoPlateHeight, 1@spectatorTopOffset",
-          "min-height": "4@sIco",
-          "blur_foreground": {
-            "position": "absolute",
-            "size": "pw, ph",
-            "bgcolor": "#66080A0D",
-            "input-transparent": "yes"
+          "css-hier-invalidate": "yes",
+          "padding": "1@framePadding",
+          "behaviour": "button",
+          "on_click": "onMapClick",
+          "div": {
+            "id": "tactical_map_large_bg",
+            "size": "pw,ph",
+            "tacticalMap": {
+              "id": "tactical_map",
+              "enable": "no",
+              "size": "pw,ph",
+              "behaviour": "button",
+              "on_click": "onMapClick"
+            }
           },
-          "tdiv": {
-            "id": "sensorsFiltersNest",
-            "behaviour": "moveObj",
-            "position": "relative",
-            "width": "pw",
-            "flow": "horizontal",
-            "margin-top": "@mIco"
+          "Button_close": {
+            "id": "btnCloseMap",
+            "on_click": "onMapClick",
+            "pos": "pw-w-1@framePadding, 1@framePadding",
+            "position": "absolute",
+            "have_shortcut": "no"
           }
-        },
+        }
+      ],
+      "hudActionBar": {
+        "id": "spectator_hud_action_bar",
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph-h",
+        "height": "@hudActionBarItemSize",
+        "actionBarNest": {
+          "id": "actions_nest"
+        }
+      },
+      "tdiv": [
         {
           "pos": "pw/2-w/2, ph-h - 0.06@shHud - 1@sIco",
           "position": "absolute",
@@ -282,401 +226,23 @@
           }
         },
         {
-          "id": "replay_paused_block",
-          "position": "absolute",
-          "pos": "pw/2-w/2, ph/2 - h/2",
-          "display": "hide",
-          "flow": "vertical",
-          "textareaNoTab": {
-            "overlayTextColor": "active",
-            "text": "#hints/replay_paused"
-          },
-          "tdiv": {
-            "margin-top": "1@blockInterval",
-            "halign": "center",
-            "textareaNoTab": {
-              "id": "replay_download_status",
-              "valign": "center",
-              "margin-right": "2@blockInterval",
-              "overlayTextColor": "active"
-            },
-            "animated_wait_icon": {
-              "background-rotation": "0"
-            }
-          },
-          "Button_text": {
-            "margin-top": "2@blockInterval",
-            "halign": "center",
-            "text": "#mainmenu/btnCancel",
-            "on_click": "onBtnCancelReplayDownload"
-          }
+          "behaviour": "darg",
+          "position": "root",
+          "pos": "0, 0",
+          "size": "sw, sh"
         }
       ],
-      "spectatorFrame": [
-        {
-          "id": "map_div",
-          "css-hier-invalidate": "yes",
-          "position": "absolute",
-          "top": "ph-h",
-          "stickTo": "right",
-          "min-height": "2@sIco",
-          "padding": "1@framePadding",
-          "tdiv": {
-            "id": "content",
-            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
-            "tdiv": {
-              "id": "map_div_bg",
-              "size": "pw, ph",
-              "tacticalMap": {
-                "size": "pw, ph",
-                "behaviour": "button",
-                "on_click": "onMapClick"
-              }
-            }
-          }
-        },
-        {
-          "id": "controls_div",
-          "pos": "50%pw-50%w, -1@spectatorToolbarPadding",
-          "position": "absolute",
-          "padding": "1@spectatorToolbarPadding",
-          "input-transparent": "yes",
-          "hoverButton": [
-            {
-              "id": "ID_FLIGHTMENU",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "icon": {
-                "background-image": "#ui/gameuiskin#btn_modifications.svg"
-              }
-            },
-            {
-              "id": "ID_MPSTATSCREEN",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "icon": {
-                "background-image": "#ui/gameuiskin#leaderboard.svg"
-              }
-            },
-            {
-              "id": "controls_mpstats_replays",
-              "tooltip": "#hotkeys/ID_MPSTATSCREEN",
-              "_on_click": "onBtnMpStatScreen",
-              "icon": {
-                "background-image": "#ui/gameuiskin#leaderboard.svg"
-              }
-            },
-            {
-              "id": "ID_PREV_PLANE",
-              "on_click": "onBtnShortcut",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
-                "rotation": "270"
-              }
-            },
-            {
-              "id": "ID_NEXT_PLANE",
-              "on_click": "onBtnShortcut",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
-                "rotation": "90"
-              }
-            },
-            {
-              "id": "ID_CAMERA_DEFAULT",
-              "text": "1",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_TOGGLE_FOLLOWING_CAMERA",
-              "text": "2",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_OPERATOR",
-              "text": "3",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_FLYBY",
-              "text": "4",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_WING",
-              "text": "5",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_GUN",
-              "text": "6",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_RANDOMIZE",
-              "text": "#mainmenu/btnReplayCameraRandom",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_FREE",
-              "text": "#mainmenu/btnReplayCameraFree",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_FREE_PARENTED",
-              "text": "#mainmenu/btnReplayCameraFreeParented",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_FREE_ATTACHED",
-              "text": "#mainmenu/btnReplayCameraFreeAttached",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_REPLAY_CAMERA_HOVER",
-              "text": "#mainmenu/btnReplayCameraHover",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "enable": "no"
-            },
-            {
-              "id": "ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "icon": {
-                "background-image": "#ui/gameuiskin#cursor.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_SHOW_MARKERS",
-              "text": "#icon/mpstats/raceLastCheckpoint",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut"
-            },
-            {
-              "id": "ID_REPLAY_TOGGLE_SENSOR_VIEW",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_nightvision.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_SYSTEM_WINDOW",
-              "is_shortcut": "yes",
-              "on_click": "onBtnShortcut",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_camera_control.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_SLOWER",
-              "on_click": "onBtnShortcut",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_forward.svg",
-                "rotation": "180",
-                "background-position": "0, h"
-              }
-            },
-            {
-              "id": "ID_REPLAY_FASTER",
-              "on_click": "onBtnShortcut",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_forward.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_BACKWARD",
-              "on_click": "onBtnBackward",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_restart.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_PAUSE",
-              "on_click": "onBtnShortcut",
-              "is_shortcut": "yes",
-              "icon": {
-                "id": "icon",
-                "background-image": "#ui/gameuiskin#replay_pause.svg"
-              }
-            },
-            {
-              "id": "ID_REPLAY_FORWARD",
-              "on_click": "onBtnForward",
-              "is_shortcut": "yes",
-              "icon": {
-                "background-image": "#ui/gameuiskin#replay_restart.svg",
-                "rotation": "180"
-              }
-            }
-          ],
-          "tdiv": [
-            {
-              "id": "controls_cameras_icon",
-              "top": "ph/2-h/2",
-              "position": "relative",
-              "size": "@spectatorToolbarBtnSize, @spectatorToolbarBtnSize",
-              "inactive": "yes",
-              "img": {
-                "pos": "pw-1.2w, ph/2-h/2",
-                "position": "relative",
-                "size": "@sIco, @sIco",
-                "style": "background-color:#4c4c4c4c",
-                "input-transparent": "yes",
-                "background-image": "#ui/gameuiskin#player_spectator.svg",
-                "background-svg-size": "@sIco, @sIco"
-              }
-            },
-            {
-              "id": "controls_timeline",
-              "top": "ph/2-h/2",
-              "position": "relative",
-              "text": [
-                {
-                  "id": "txt_replay_time_current",
-                  "width": "0.10@sf",
-                  "top": "ph/2-h/2",
-                  "position": "relative",
-                  "text": "#ui/not_applicable"
-                },
-                {
-                  "id": "txt_replay_time_total",
-                  "width": "0.10@sf",
-                  "top": "ph/2-h/2",
-                  "position": "relative",
-                  "text": "#ui/not_applicable"
-                }
-              ],
-              "expProgress": {
-                "id": "timeline_progress",
-                "top": "ph/2-h/2",
-                "position": "relative",
-                "width": "1@spectatorTimerProgressWidth",
-                "max": "1000",
-                "value": "0"
-              }
-            }
-          ],
-          "text": {
-            "id": "txt_replay_time_speed",
-            "top": "ph/2-h/2",
-            "position": "relative",
-            "width": "0.07@sf;",
-            "text": "#ui/not_applicable",
-            "enable": "no"
-          },
-          "buttons_block": {
-            "id": "controls_timer",
-            "height": "@spectatorToolbarBtnSize",
-            "enable": "no",
-            "text": {
-              "id": "txt_mission_timer",
-              "top": "ph/2-h/2",
-              "position": "relative",
-              "width": "0.07@sf;",
-              "text": "#ui/not_applicable"
-            }
-          }
-        },
-        {
-          "id": "map_large_div",
-          "display": "hide",
-          "width": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
-          "height": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
-          "pos": "pw/2-w/2, ph/2-h/2",
-          "position": "absolute",
-          "css-hier-invalidate": "yes",
-          "padding": "1@framePadding",
-          "behaviour": "button",
-          "on_click": "onMapClick",
-          "div": {
-            "id": "tactical_map_large_bg",
-            "size": "pw,ph",
-            "tacticalMap": {
-              "id": "tactical_map",
-              "enable": "no",
-              "size": "pw,ph",
-              "behaviour": "button",
-              "on_click": "onMapClick"
-            }
-          },
-          "Button_close": {
-            "id": "btnCloseMap",
-            "on_click": "onMapClick",
-            "pos": "pw-w-1@framePadding, 1@framePadding",
-            "position": "absolute",
-            "have_shortcut": "no"
-          }
-        }
-      ],
-      "hudActionBar": {
-        "id": "spectator_hud_action_bar",
+      "toggleButton": {
+        "id": "btnToggleMap",
+        "on_click": "onToggleButtonClick",
+        "attachSide": "right",
+        "stickTo": "right",
+        "toggled": "yes",
+        "toggleObj": "map_div",
+        "top": "ph-h - 1@spectatorTableWidth -16@sf/@pf",
         "position": "absolute",
-        "pos": "pw/2-w/2, ph-h",
-        "height": "@hudActionBarItemSize",
-        "actionBarNest": {
-          "id": "actions_nest"
-        }
+        "icon": {}
       },
-      "toggleButton": [
-        {
-          "id": "btnToggleStats1",
-          "on_click": "onToggleButtonClick",
-          "attachSide": "left",
-          "toggled": "yes",
-          "toggleObj": "stats_left",
-          "pos": "-4@dp, 1@spectatorTopOffset - h",
-          "position": "absolute",
-          "icon": {}
-        },
-        {
-          "id": "btnToggleStats2",
-          "on_click": "onToggleButtonClick",
-          "attachSide": "right",
-          "toggled": "yes",
-          "toggleObj": "stats_right",
-          "pos": "pw-w +4@dp, 1@spectatorTopOffset - h",
-          "position": "absolute",
-          "icon": {}
-        },
-        {
-          "id": "btnToggleMap",
-          "on_click": "onToggleButtonClick",
-          "attachSide": "right",
-          "stickTo": "right",
-          "toggled": "yes",
-          "toggleObj": "map_div",
-          "top": "ph-h - 1@spectatorTableWidth -16@sf/@pf",
-          "position": "absolute",
-          "icon": {}
-        }
-      ],
       "hitCamera": {
         "id": "hud_hitcamera",
         "position": "absolute",
@@ -723,14 +289,6 @@
             "flow": "horizontal"
           }
         }
-      },
-      "textareaNoTab": {
-        "id": "txt_replay_session_id",
-        "pos": "0.085@sf, sh-0.015@sf",
-        "position": "root",
-        "tinyFont": "yes",
-        "textHide": "yes",
-        "text": ""
       },
       "timer": {
         "id": "update_timer",

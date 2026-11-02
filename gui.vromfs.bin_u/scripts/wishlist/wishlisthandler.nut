@@ -30,7 +30,7 @@ from "%scripts/viewUtils/objectTextUpdate.nut" import placePriceTextToButton
 from "%scripts/onlineShop/onlineShopState.nut" import searchEntitlementsByUnit
 from "%scripts/onlineShop/onlineBundles.nut" import getBundleId
 from "%scripts/onlineShop/url.nut" import openUrl
-from "%sqstd/platform.nut" import is_console
+from "%sqstd/platform.nut" import is_console, is_gdk
 from "%appGlobals/clientState/platform.nut" import isXBoxPlayerName, isPS4PlayerName
 from "%scripts/user/playerCountry.nut" import switchProfileCountry
 from "%scripts/user/suggestionEmailRegistration.nut" import canEmailRegistration
@@ -97,7 +97,7 @@ function getUnitButtonType(unit, friendUid) {
     
     
 
-    let hasGiftButton = isShopVehicle && !isHideGiftButton && !is_console
+    let hasGiftButton = isShopVehicle && !isHideGiftButton && !is_console && !is_gdk
 
     return unitButtonTypes.__merge({
       hasGiftButton

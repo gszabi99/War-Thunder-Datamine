@@ -31,8 +31,8 @@ def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
   query(infantry_spawn__capzoneEid) <| $ [es] (capzone__capTeam : int;
                                                capzone__owningTeam : int;
                                                teamPresence : Object;
-                                               supply_node__points : float const?;
-                                               supply_node__spawnCost : float = 0.0)
+                                               supply_node__points : int const?;
+                                               supply_node__spawnCost : int = 0)
     let ownerCount = team_presence_count(teamPresence, capzone__capTeam)
     var totalCount = 0
     for presence in teamPresence
@@ -81,8 +81,8 @@ def squadmates_spawn_calculation_and_verify_zone(evt : EventCalcAndVerifySpawnTm
     if !evt.verified
       print("[SPSQUAD] spawn unit {eid} on zone {proxyEid} REJECTED: requestPos=({evt.requestPos}) does not match any known position")
     if evt.verified
-      query(infantry_spawn__capzoneEid) <| $ [es] (var supply_node__points : float&;
-                                                   supply_node__spawnCost : float)
+      query(infantry_spawn__capzoneEid) <| $ [es] (var supply_node__points : int&;
+                                                   supply_node__spawnCost : int)
         if supply_node__points < supply_node__spawnCost
           evt.verified = false
           print("[SPSQUAD] spawn unit {eid} on zone {proxyEid} REJECTED: supplies {supply_node__points} < {supply_node__spawnCost}")
@@ -90,6 +90,21 @@ def squadmates_spawn_calculation_and_verify_zone(evt : EventCalcAndVerifySpawnTm
           supply_node__points -= supply_node__spawnCost
   if dynamic_respawn__spawnOnUnitEid != null
     *dynamic_respawn__spawnOnUnitEid = evt.verified ? proxyEid : INVALID_ENTITY_ID
+
+
+[es(tag=server)]
+def verify_spawn_on_supply_node_es(evt : EventVerifySpawnOnSupplyNode;
+                                   capture_zone__zoneId : int;
+                                   var supply_node__points : int&;
+                                   supply_node__spawnCost : int;
+                                   sectored_capzone__strongpointsHeld : bool = true)
+  if capture_zone__zoneId != evt.zoneId
+    return
+  let cost = evt.cost >= 0 ? evt.cost : supply_node__spawnCost
+  if supply_node__points < cost || !sectored_capzone__strongpointsHeld
+    evt.verified = false
+  elif evt.spend
+    supply_node__points -= cost
 
 
 def private gather_enemy_points(bot_team : int; var points : array<float3>)

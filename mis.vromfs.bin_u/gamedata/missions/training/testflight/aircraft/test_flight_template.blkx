@@ -279,6 +279,7 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "isImmortal": true,
+          "startFullSpeed": true,
           "speed": 50.0,
           "lockSpeed": true
         },
@@ -783,6 +784,10 @@
           }
         ],
         "waitUnits": {},
+        "spawnOnAirfield": {
+          "runwayName": "@airfield_spawn",
+          "objects": "@player"
+        },
         "missionSetFade": {
           "mode": "fadeIn",
           "color": [
@@ -790,11 +795,7 @@
             0.0,
             0.0
           ],
-          "time": 0.1
-        },
-        "spawnOnAirfield": {
-          "runwayName": "@airfield_spawn",
-          "objects": "@player"
+          "time": 0.2
         }
       },
       "else_actions": {
@@ -826,7 +827,7 @@
             0.0,
             0.0
           ],
-          "time": 0.1
+          "time": 0.2
         },
         "wait": {
           "time": 2.0

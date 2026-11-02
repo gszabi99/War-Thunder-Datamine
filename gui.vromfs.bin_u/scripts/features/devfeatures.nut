@@ -22,6 +22,9 @@ let devFeatures = {
   DmViewerXrayLoadedAmmo = {
     title = "Enable the hangar x-ray option to show ammo by the current loadout"
   }
+  DamageDecals = {
+    title = "Enable damage decals in the customization window"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures

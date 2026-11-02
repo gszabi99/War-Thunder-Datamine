@@ -1204,6 +1204,12 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
   },
+  [USEROPT_APU_AUTO_DEFAULT_TANK] = function(_optionId, descr, _context) {
+    descr.id = "apuAutoDefaultTank"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.defaultValue = true
+  },
   [USEROPT_WHEEL_CONTROL_SHIP] = function(_optionId, descr, _context) {
     descr.id = "selectWheelShipEnable"
     descr.controlType = optionControlType.CHECKBOX
@@ -4821,6 +4827,7 @@ let optionsSetMap = {
   [USEROPT_RACE_CAN_SHOOT] = set_useropt_landing_mode,
   [USEROPT_USE_KILLSTREAKS] = set_useropt_landing_mode,
   [USEROPT_AUTOMATIC_TRANSMISSION_TANK] = set_useropt_landing_mode,
+  [USEROPT_APU_AUTO_DEFAULT_TANK] = set_useropt_landing_mode,
   [USEROPT_WHEEL_CONTROL_SHIP] = set_useropt_landing_mode,
   [USEROPT_JOYFX] = set_useropt_landing_mode,
   [USEROPT_BULLET_FALL_INDICATOR_SHIP] = set_useropt_landing_mode,

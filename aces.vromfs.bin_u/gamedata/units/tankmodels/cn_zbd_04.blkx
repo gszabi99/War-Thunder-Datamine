@@ -2284,14 +2284,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "rotatedTurret": "bone_turret",
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2403,16 +2401,7 @@
           "gun": "bone_mg_gun_twin",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret",
-          "verDriveDm": [
-            "drive_turret_v_dm",
-            "fire_control_system_dm"
-          ],
-          "horDriveDm": [
-            "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -3651,7 +3640,10 @@
       "shells": [
         {
           "autoLoad": true,
-          "autoloader": "autoloader_dm",
+          "autoloader": [
+            "autoloader_dm",
+            "power_system_dm"
+          ],
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
@@ -4117,14 +4109,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "rotatedTurret": "bone_turret",
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4236,16 +4226,7 @@
                 "gun": "bone_mg_gun_twin",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret",
-                "verDriveDm": [
-                  "drive_turret_v_dm",
-                  "fire_control_system_dm"
-                ],
-                "horDriveDm": [
-                  "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                "rotatedTurret": "bone_turret"
               },
               "limits": {
                 "yaw": [

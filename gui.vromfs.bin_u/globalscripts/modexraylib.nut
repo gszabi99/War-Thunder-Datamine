@@ -1402,8 +1402,12 @@ function mkWeaponDesc(partType, params, commonData) {
       }
       desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
       if (status?.isPrimary || status?.isSecondary) {
-        if (weaponInfoBlk?.autoLoader)
-          desc.append(loc("xray/ammo/auto_load"))
+        if (weaponInfoBlk?.autoLoader) {
+          let ammoStowage = getAmmoStowageBlockByTrigger(unitBlk, weaponInfoBlk?.trigger)
+          let key = hasBackupManualLoading(ammoStowage) ? "xray/ammo/auto_load_with_manual"
+            : "xray/ammo/auto_load"
+          desc.append(loc(key))
+        }
         let { isFirstStage, stageCount } = getAmmoStowageInfo(unitBlk, weaponInfoBlk?.trigger)
         if (isFirstStage && stageCount > 0)
           desc.append("".concat(loc([S_SHIP, S_BOAT].contains(simUnitType) ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage"),

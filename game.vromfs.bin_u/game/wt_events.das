@@ -67,6 +67,10 @@ struct CmdHumanBackblastTinnitus
   power : float
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct EventApuAutoSet
+  enabled : bool
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct EventApuAutoToggle
 {}
 
@@ -837,6 +841,13 @@ struct EventSelectBotSpawnZone
   otherZonesShare : float
   zoneId : int
   pos : float3
+
+[cpp_event(broadcast)]
+struct EventVerifySpawnOnSupplyNode
+  zoneId : int
+  spend : bool
+  verified : bool
+  cost : int
 
 [event(unicast)]
 struct EventResetSpawnOnUnitEid {}

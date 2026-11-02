@@ -10,6 +10,7 @@ from "%scripts/gamercard/gamercard.nut" import updateGamercards
 from "%scripts/discounts/discounts.nut" import updateOnlineShopDiscounts
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
+from "%scripts/onlineShop/xboxShopData.nut" import xboxProceedItems, xboxShopSheetsArray
 
 register_gui_handler("XboxShop", class (IngameConsoleStore) {
   function loadCurSheetItemsList() {
@@ -25,15 +26,15 @@ register_gui_handler("XboxShop", class (IngameConsoleStore) {
       return
 
     let wasItemBought = this.curItem.isBought
-    this.curItem.updateIsBoughtStatus(Callback(function(success) {
-
-      let wasPurchasePerformed = success && (wasItemBought != this.curItem.isBought)
+    let requestItem = this.curItem
+    requestItem.updateIsBoughtStatus(Callback(function(success) {
+      let wasPurchasePerformed = success && (wasItemBought != requestItem.isBought)
 
       if (wasPurchasePerformed) {
-        broadcastEvent("EntitlementStoreItemPurchased", { id = this.curItem.id })
+        broadcastEvent("EntitlementStoreItemPurchased", { id = requestItem.id })
         statsd.send_counter("sq.close_product.purchased", 1)
         sendBqEvent("CLIENT_POPUP_1", "close_product", {
-          itemId = this.curItem.id,
+          itemId = requestItem.id,
           action = "purchased"
         })
         addTask(updateEntitlementsLimited(),
@@ -46,13 +47,25 @@ register_gui_handler("XboxShop", class (IngameConsoleStore) {
             this.fillItemsList()
             updateOnlineShopDiscounts()
 
-            if (this.curItem.isMultiConsumable || wasPurchasePerformed)
+            if (requestItem.isMultiConsumable || wasPurchasePerformed)
               updateGamercards()
           }, this)
         )
       }
 
     }, this))
+  }
+
+  function onEventXboxShopDataUpdated(_) {
+    this.itemsCatalog = xboxProceedItems.get()
+    this.sheetsArray = xboxShopSheetsArray.get()
+    this.itemsListValid = false
+    this.curSheet = null
+
+    this.fillItemsList()
+    this.updateSorting()
+    this.fillPage()
+    this.updateItemInfo()
   }
 
   function goBack() {

@@ -3,6 +3,7 @@
 
 
 
+
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst, px
 from "%sqstd/platform.nut" import is_windows
@@ -15,7 +16,7 @@ let wheelStep = px("12*@scrn_tgt/100.0") / (is_windows ? 120.0 : 100.0)
 
 function scrollBox(p, content) {
   let [w, h] = p.size
-  let { contentHeight } = p
+  let { contentHeight, isBarLeft = false } = p
   let offset = p?.scrollOffsY ?? Watched(0)
   let maxOffset = @() max(0, contentHeight.get() - h)
   let shownOffset = @() clamp(offset.get(), 0, maxOffset())
@@ -36,7 +37,7 @@ function scrollBox(p, content) {
     let thumbH = contentH > 0 ? h * h / contentH : h
     return {
       watch = [offset, contentHeight]
-      pos = [w - barW, 0]
+      pos = [isBarLeft ? 0 : w - barW, 0]
       size = [barW, h]
       rendObj = ROBJ_SOLID
       color = cssColors.scrollbarBgColor
@@ -62,6 +63,7 @@ function scrollBox(p, content) {
         {
           key = viewKey
           size = [innerW, h]
+          pos = [isBarLeft && hasBar ? barPlaceW : 0, 0]
           clipChildren = true
           behavior = const [Behaviors.WheelScroll, Behaviors.JoystickScroll]
           wheelStep

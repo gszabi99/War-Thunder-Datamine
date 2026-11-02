@@ -1,7 +1,7 @@
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 from "%scripts/onlineShop/onlineBundles.nut" import getBundlesBlockName
 from "%scripts/onlineShop/shopItemInfo.nut" import requestMultipleItems
-from "%sqstd/platform.nut" import isPC
+from "%sqstd/platform.nut" import isPC, is_gdk
 from "%scripts/onlineShop/onlineShopState.nut" import getShopPriceBlk
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/login/loginState.nut" import isLoggedIn
@@ -56,7 +56,7 @@ function requestBundlesShopInfo() {
 }
 
 function updateBundlesShopInfo() {
-  if (!isLoggedIn.get() || !isPC)
+  if (!isLoggedIn.get() || !isPC || is_gdk)
     return
 
   let bundlesList = GUI.get()?.bundles[getBundlesBlockName()]

@@ -444,6 +444,37 @@
                       "on_unhover": "onSlotsHoverChange"
                     }
                   }
+                },
+                {
+                  "id": "damage_decals_div",
+                  "pos": "pw-w, -1@dp",
+                  "position": "relative",
+                  "display": "hide",
+                  "frame": {
+                    "min-width": "1@customizationBlockWidth",
+                    "flow": "vertical",
+                    "text": {
+                      "left": "1@framePadding",
+                      "position": "relative",
+                      "text": "#decals/damageDecals",
+                      "smallFont": "yes",
+                      "overlayTextColor": "silver"
+                    },
+                    "tdiv": [
+                      {
+                        "id": "damage_decal_type_nest",
+                        "width": "pw"
+                      },
+                      {
+                        "id": "damage_decal_caliber_nest",
+                        "width": "pw"
+                      }
+                    ],
+                    "Button_text": {
+                      "text": "#options/clearAll",
+                      "on_click": "onClearDamageDecals"
+                    }
+                  }
                 }
               ],
               "frame": {

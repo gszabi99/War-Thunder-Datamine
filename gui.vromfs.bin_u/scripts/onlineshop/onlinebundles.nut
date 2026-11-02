@@ -1,6 +1,6 @@
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
-from "%sqstd/platform.nut" import isSony, isXbox
+from "%sqstd/platform.nut" import isSony, is_gdk
 from "%appGlobals/clientState/platform.nut" import ps4RegionName
 from "%sqstd/underscore.nut" import getSubTable
 from "%sqstd/datablock.nut" import convertBlk
@@ -50,7 +50,7 @@ subscriptions.addListenersWithoutEnv({
 }, g_listener_priority.CONFIG_VALIDATION)
 
 let getBundlesBlockName = @() isSony ? ps4RegionName()
-  : isXbox ? "xbox"
+  : is_gdk ? "xbox"
   : epic_is_running() ? "epic"
   : "guid"
 

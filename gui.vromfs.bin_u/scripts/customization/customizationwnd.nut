@@ -76,7 +76,9 @@ from "hangar" import hangar_is_model_loaded, hangar_get_loaded_unit_name, hangar
 from "unitCustomization" import get_last_skin, mirror_current_decal, get_mirror_current_decal, apply_skin, apply_skin_preview, notify_decal_menu_visibility, save_current_attachables
   , hangar_toggle_abs, get_hangar_abs, set_hangar_opposite_mirrored, get_hangar_opposite_mirrored, set_tank_camo_scale, get_tank_camo_scale_result_value, set_tank_skin_condition
   , set_tank_camo_rotation, show_model_damaged, get_loaded_model_damage_state, can_save_current_skin_template, save_current_skin_template, MDS_UNDAMAGED, MDS_DAMAGED
-  , MDS_ORIGINAL, get_ship_flag_in_slot, apply_ship_flag, get_default_ship_flag
+  , MDS_ORIGINAL, get_ship_flag_in_slot, apply_ship_flag, get_default_ship_flag, add_damage_decal, clear_damage_decals
+  , enter_damage_decal_mode, exit_damage_decal_mode, DAMAGE_DECAL_RICOCHET, DAMAGE_DECAL_STOP, remove_damage_decal
+  , is_damage_decal_click_blocked
 from "blkGetters" import get_user_skins_profile_blk
 from "eventbus" import eventbus_subscribe
 from "hangarEventCommand" import hangar_play_presentation_anim, hangar_stop_presentation_anim, is_presentation_animation_playing
@@ -150,6 +152,19 @@ eventbus_subscribe("delayed_download_enabled_msg", @(_) delayedDownloadEnabledMs
 
 let getShowDemonstratedShellOptionValue = @(optionId) get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY, true)
 
+let damageDecalTypes = freeze([
+  { patchType = null, locId = "options/off" }
+  { patchType = DAMAGE_DECAL_RICOCHET, locId = "decals/damageDecals/ricochet" }
+  { patchType = DAMAGE_DECAL_STOP, locId = "decals/damageDecals/nonPenetration" }
+])
+let damageDecalCalibersMm = freeze([30, 45, 50, 57, 76, 85, 100, 120, 130, 150])
+
+function getDamageDecalLabel(damageDecal) {
+  let locId = damageDecalTypes.findvalue(@(t) t.patchType == damageDecal.patchType)?.locId
+  let typeText = locId != null ? loc(locId) : ""
+  return $"{typeText} {damageDecal.caliberMm.tointeger()} {loc("measureUnits/mm")}"
+}
+
 register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customization.blk"
   unit = null
@@ -158,6 +173,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   access_Decals = false
   access_Attachables = false
   access_Flags = false
+  access_DamageDecals = false
   access_UserSkins = false
   access_Skins = false
   access_SkinsUnrestrictedPreview = false
@@ -178,6 +194,9 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   skinListBlocked = false
 
   currentType = decoratorTypes.UNKNOWN
+
+  damageDecalTypeIdx = 0
+  damageDecalCaliberIdx = 4
 
   isLoadingRot = false
   isDecoratorItemUsed = false
@@ -309,6 +328,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     this.access_Decals      = !this.previewMode && this.isUnitOwn && decoratorTypes.DECALS.isAvailable(this.unit, false)
     this.access_Attachables = !this.previewMode && this.isUnitOwn && decoratorTypes.ATTACHABLES.isAvailable(this.unit, false)
     this.access_Flags = !this.previewMode && this.isUnitOwn && decoratorTypes.FLAGS.isAvailable(this.unit) && this.isUnitShipOrBoat
+    this.access_DamageDecals = this.access_Decals && this.isUnitTank && hasFeature("DamageDecals")
     this.access_Skins = (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)) ? true
       : (this.previewMode & PREVIEW_MODE.DECORATOR) ? false
       : this.isUnitOwn || this.access_SkinsUnrestrictedPreview || this.access_SkinsUnrestrictedExport
@@ -324,8 +344,54 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     }
 
     this.createSkinSliders()
+    this.updateDamageDecalsPanel()
     this.updateMainGuiElements()
     this.updateModifications()
+  }
+
+  function updateDamageDecalsPanel() {
+    if (!this.access_DamageDecals) {
+      if (this.isDamageDecalModeActive())
+        exit_damage_decal_mode()
+      this.damageDecalTypeIdx = 0
+      return
+    }
+    this.renewDropright("damage_decal_type_nest", "damage_decal_type",
+      damageDecalTypes.map(@(t) loc(t.locId)), this.damageDecalTypeIdx, "onDamageDecalTypeChanged")
+    this.renewDropright("damage_decal_caliber_nest", "damage_decal_caliber",
+      damageDecalCalibersMm.map(@(c) $"{c} {loc("measureUnits/mm")}"), this.damageDecalCaliberIdx, "onDamageDecalCaliberChanged")
+  }
+
+  function onDamageDecalTypeChanged(obj) {
+    let wasActive = this.isDamageDecalModeActive()
+    this.damageDecalTypeIdx = obj.getValue()
+    let isActive = this.isDamageDecalModeActive()
+    if (isActive && !wasActive)
+      enter_damage_decal_mode()
+    else if (!isActive && wasActive)
+      exit_damage_decal_mode()
+  }
+
+  function isDamageDecalModeActive() {
+    return damageDecalTypes[this.damageDecalTypeIdx].patchType != null
+  }
+
+  function onDamageDecalCaliberChanged(obj) {
+    this.damageDecalCaliberIdx = obj.getValue()
+  }
+
+  function onClearDamageDecals() {
+    this.msgBox("clear_damage_decals", loc("decals/requestClearDamageDecals"),
+      [["ok", function() {
+          clear_damage_decals()
+          this.onDamageDecalsChanged()
+        }],
+      ["cancel", function() {} ]], "cancel")
+  }
+
+  function onDamageDecalsChanged() {
+    this.updateSlotsBlockByType(decoratorTypes.DECALS)
+    this.updateButtons(decoratorTypes.DECALS, false)
   }
 
   function updateMainGuiElements() {
@@ -836,7 +902,10 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     let decalId = slot.decalId
     let decorator = getDecorator(decalId, decoratorType)
     let slotRatio = clamp(viewDecoratorType.getRatio(decorator), 0.5, 2)
-    local buttonTooltip = slot.isEmpty ? loc(decoratorType.emptySlotLocId) : ""
+    let damageDecalLabel = slot.damageDecal != null ? getDamageDecalLabel(slot.damageDecal) : null
+    let unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
+    let emptySlot = damageDecalLabel == null && (slot.isEmpty || !decorator)
+    local buttonTooltip = damageDecalLabel ?? (slot.isEmpty ? loc(decoratorType.emptySlotLocId) : "")
     if (!this.isUnitOwn)
       buttonTooltip = "#mainmenu/decalUnitLocked"
     else if (!canEditDecals)
@@ -857,9 +926,10 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
       statusLock = slot.unlocked ? getDecorLockStatusText(decorator, this.unit)
         : hasFeature("EnablePremiumPurchase") ? $"noPremium_{slotRatio}"
         : "achievement"
-      unlocked = slot.unlocked && (!decorator || decorator.isUnlocked())
-      emptySlot = slot.isEmpty || !decorator
+      unlocked
+      emptySlot
       image = viewDecoratorType.getImage(decorator)
+      slotText = damageDecalLabel ?? (unlocked && emptySlot ? "#ui/empty" : null)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
       tooltipId = slot.isEmpty ? null : getTooltipType("DECORATION").getTooltipId(decalId, decoratorType.unlockedItemType,
@@ -970,7 +1040,8 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
             needSecondaryWeaponsWnd(this.unit) && isUnitHaveSecondaryWeapons(this.unit)
 
           btn_decal_edit   = showConsoleButtons.get() && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
-          btn_decal_delete = showConsoleButtons.get() && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
+          btn_decal_delete = showConsoleButtons.get() && !isInEditMode && !this.decorMenu?.isOpened &&
+            (!focusedSlot.isEmpty || focusedSlot.damageDecal != null) && focusedSlot.unlocked
 
           btn_marketplace_consume_coupon_skin = !this.previewMode && canConsumeSkinCoupon
           btn_marketplace_find_skin = !this.previewMode && canFindSkinOnMarketplace
@@ -1113,6 +1184,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
       decalslots_div = showDecalsSlotDiv
       attachable_div = showAttachableSlotsDiv
       flagslots_div = showFlagsSlotDiv
+      damage_decals_div = this.access_DamageDecals && inBasicMode
     })
   }
 
@@ -1354,6 +1426,11 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   function onDecalSlotClick(obj) {
     let slotName = getObjIdByPrefix(obj, "slot_")
     let slotId = slotName ? slotName.tointeger() : -1
+    if (decoratorTypes.DECALS.getDamageDecalInSlot(slotId, this.unit.name, this.getSelectedBuiltinSkinId()) != null) {
+      if (this.currentState & decoratorEditState.SELECT)
+        this.onBtnCloseDecalsMenu()
+      return
+    }
     this.openDecorationsListForSlot(slotId, obj, decoratorTypes.DECALS)
   }
 
@@ -1962,12 +2039,15 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
         decalId = decal.id
     }
 
+    local damageDecal = null
     if (decalId == "" && isValid && decoratorType != null) {
       let liveryName = this.getSelectedBuiltinSkinId()
       decalId = decoratorType.getDecoratorNameInSlot(slotId, this.unit.name, liveryName, false) ?? ""
       if(this.access_Flags && decalId == "default" && decoratorType == decoratorTypes.FLAGS)
         decalId = this.defaultFlag
       isValid = isValid && slotId < decoratorType.getMaxSlots()
+      if (isValid && decalId == "")
+        damageDecal = decoratorType.getDamageDecalInSlot(slotId, this.unit.name, liveryName)
     }
 
     return {
@@ -1975,6 +2055,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
       unlocked = isValid && decoratorType != null && slotId < decoratorType.getAvailableSlots(this.unit)
       decalId = decalId
       isEmpty = !decalId.len()
+      damageDecal = damageDecal
     }
   }
 
@@ -2070,6 +2151,15 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
 
   function deleteDecorator(decoratorType, slotId) {
     let slotInfo = this.getSlotInfo(slotId, false, decoratorType)
+    if (slotInfo.damageDecal != null) {
+      this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = getDamageDecalLabel(slotInfo.damageDecal) }),
+        [["ok", function() {
+            remove_damage_decal(slotInfo.id)
+            this.onDamageDecalsChanged()
+          }],
+        ["cancel", function() {} ]], "cancel")
+      return
+    }
     let viewDecoratorType = getViewTypeByUnlockedItemType(decoratorType.unlockedItemType)
     this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = viewDecoratorType.getLocName(slotInfo.decalId) }),
     [
@@ -2195,6 +2285,25 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   }
 
   function onScreenClick() {
+    if (this.access_DamageDecals && this.currentState == decoratorEditState.NONE && this.isDamageDecalModeActive()) {
+      if (is_damage_decal_click_blocked())
+        return
+      if (!this.checkCurrentSkin())
+        return
+      let freeSlotIdx = decoratorTypes.DECALS.getFreeSlotIdx(this.unit, this.getSelectedBuiltinSkinId(), true)
+      if (freeSlotIdx < 0) {
+        this.msgBox("no_free_decal_slot", loc("decals/noFreeSlot"), [["ok"]], "ok")
+        return
+      }
+      if (!this.checkSlotIndex(freeSlotIdx, decoratorTypes.DECALS))
+        return
+      let [x, y] = get_dagui_mouse_cursor_pos()
+      if (add_damage_decal(x, y, damageDecalTypes[this.damageDecalTypeIdx].patchType,
+          damageDecalCalibersMm[this.damageDecalCaliberIdx]))
+        this.onDamageDecalsChanged()
+      return
+    }
+
     if(this.currentType.unlockedItemType == UNLOCKABLE_SHIP_FLAG)
       return
 
@@ -2232,6 +2341,8 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
+    if (this.isDamageDecalModeActive())
+      exit_damage_decal_mode()
     if (this.isValid())
       this.setDmgSkinMode(false)
     show_model_damaged(MDS_ORIGINAL)

@@ -285,10 +285,10 @@ class F1Radar : Canvas
 
 
 [export]
-def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const;
-           rstate : RenderState& const; props : PropStorage&)
+def draw_radar_hud(var guiCtx : GuiContext&; rdata : ElemRenderData& const;
+                   rstate : RenderState& const; props : PropStorage&)
   new F1Radar(guiCtx, rdata, rstate, props).draw()
 
 [export]
-def setup(props : Properties&; var propStorage : PropStorage&)
-  propStorage.fontId = props |> getInt("fontId", 0)
+def setup_radar_data(props : Properties&; var propStorage : PropStorage&)
+  propStorage.fontId = props |> getFontId()

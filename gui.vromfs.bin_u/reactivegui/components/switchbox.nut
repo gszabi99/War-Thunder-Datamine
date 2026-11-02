@@ -9,7 +9,7 @@ import "%appGlobals/style/cssColors.nut" as cssColors
 
 let soundWt = require_optional("sound_wt")
 
-let font = fontsState.get("normal")
+let defFont = fontsState.get("normal")
 let boxW = cssConst("switchBoxWidth")
 let boxH = cssConst("switchBoxHeight")
 let border = cssConst("switchBoxBorderSize")
@@ -47,7 +47,7 @@ function switchBox(p, state = null, onChange = null) {
   let sf = Watched(0)
   let textChecked = p?.textChecked ?? loc("options/yes")
   let textUnchecked = p?.textUnchecked ?? loc("options/no")
-  let { alpha = null, isEnabled = null } = p
+  let { alpha = null, isEnabled = null, font = defFont } = p
   function toggle() {
     if (!(isEnabled?.get() ?? true))
       return

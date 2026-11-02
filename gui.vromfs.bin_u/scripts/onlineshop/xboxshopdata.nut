@@ -6,6 +6,8 @@ from "%sqstd/platform.nut" import is_gdk
 from "%gdkLib/impl/store.nut" import gather_products_list
 from "%scripts/dagui_library.nut" import *
 from "%scripts/seen/seenIds.nut" import SEEN
+from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
@@ -19,6 +21,77 @@ let itemsList = {}
 
 let visibleSeenIds = []
 let xboxProceedItems = mkWatchedClearedOnReload({})
+
+let xboxShopSheetsArray = Computed(function() {
+  let val = xboxProceedItems.get()
+  let res = []
+  if (xboxMediaItemType.GameConsumable in val)
+    res.append({
+      id = "xbox_game_consumation"
+      locId = "itemTypes/xboxGameConsumation"
+      getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameConsumable}"
+      categoryId = xboxMediaItemType.GameConsumable
+      sortParams = [
+        { param = "price", asc = false }
+        { param = "price", asc = true }
+      ]
+      sortSubParam = "consumableQuantity"
+      contentTypes = ["eagles"]
+    })
+
+  if (xboxMediaItemType.GameContent in val)
+    res.append({
+      id = "xbox_game_content"
+      locId = "itemTypes/xboxGameContent"
+      getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameContent}"
+      categoryId = xboxMediaItemType.GameContent
+      sortParams = [
+        { param = "releaseDate", asc = false }
+        { param = "releaseDate", asc = true }
+        { param = "price", asc = false }
+        { param = "price", asc = true }
+        { param = "isBought", asc = false }
+        { param = "isBought", asc = true }
+      ]
+      sortSubParam = "name"
+      contentTypes = [null, ""]
+    })
+
+  unitTypes.types.each(function(unitType) {
+    if (!(unitType.typeName in val))
+      return
+
+    res.append({
+      id = $"xbox_game_content_{unitType.typeName}"
+      locId = unitType.getArmyLocId()
+      getSeenId = @() $"##xbox_item_sheet_{unitType.typeName}"
+      categoryId = unitType.typeName
+      sortParams = [
+        { param = "releaseDate", asc = false }
+        { param = "releaseDate", asc = true }
+        { param = "price", asc = false }
+        { param = "price", asc = true }
+        { param = "isBought", asc = false }
+        { param = "isBought", asc = true }
+      ]
+      sortSubParam = "name"
+      contentTypes = [null, ""]
+    })
+  })
+  return res
+})
+
+xboxShopSheetsArray.subscribe(function(sheetsArrayValue) {
+  let proceedItems = xboxProceedItems.get()
+  foreach (_idx, sh in sheetsArrayValue) {
+    let sheet = sh
+    seenList.setSubListGetter(sheet.getSeenId(), @()
+      (proceedItems?[sheet.categoryId] ?? [])
+      .filter(@(it) !it.canBeUnseen())
+      .map(@(it) it.getSeenId())
+    )
+  }
+})
 
 local onReceiveCatalogCb = null
 local reqProgressMsg = false
@@ -142,6 +215,7 @@ return freeze({
   canUseIngameShop
   requestData
   xboxProceedItems
+  xboxShopSheetsArray
   getShopItemsTable = @() itemsList
   haveDiscount
   getShopItem = @(id) itemsList?[id]

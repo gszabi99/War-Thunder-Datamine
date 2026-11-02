@@ -76,12 +76,16 @@ def private add_supplies(base_eid : EntityId; team : int; dt : float)
     query(nodeEid) <| $ [es] (active : bool;
                               capzone__owningTeam : int;
                               supply_graph__linkedEids : EidList;
-                              supply_node__maxPoints : float;
-                              supply_node__pointsPerMinute : float;
-                              var supply_node__points : float&)
+                              supply_node__maxPoints : int;
+                              supply_node__pointsPerMinute : int;
+                              var supply_node__pointsCarry : float&;
+                              var supply_node__points : int&)
       if !active || capzone__owningTeam != team
         return
-      supply_node__points = min(supply_node__points + supply_node__pointsPerMinute * dt / 60.0, supply_node__maxPoints)
+      supply_node__pointsCarry += float(supply_node__pointsPerMinute) * dt / 60.0
+      let gain = int(supply_node__pointsCarry)
+      supply_node__pointsCarry -= float(gain)
+      supply_node__points = min(supply_node__points + gain, supply_node__maxPoints)
       for linkedEid in supply_graph__linkedEids
         if !(visited?[linkedEid] ?? false)
           push(stack, linkedEid)

@@ -27,6 +27,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_med",
+  "sensorTargetTurretTrack": false,
   "explosionFx": "explosion_ship_medium",
   "decorCutProps": "destroyer",
   "propSplashEffects": "propSplashEffects_underwater",
@@ -1156,21 +1157,27 @@
       "fireProtectionHp": 120.0,
       "armorThickness": 15.0,
       "turret_01_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_02_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_03_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_04_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_05_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       },
       "turret_06_front_dm": {
+        "armorThickness": 12.7,
         "hp": 10000.0
       }
     },
@@ -1273,8 +1280,8 @@
       }
     },
     "gun_masks": {
-      "armorClass": "ship_RGA",
-      "armorThickness": 0.0,
+      "armorClass": "ship_RHA",
+      "armorThickness": 15.0,
       "gun_mask_01_dm": {
         "hp": 200.0
       }
@@ -1669,12 +1676,24 @@
         "hp": 150.0
       },
       "antenna_target_location_01_dm": {
-        "hp": 153.0
+        "hp": 500.0
       },
       "antenna_target_location_02_dm": {
-        "hp": 153.0
+        "hp": 500.0
       },
       "antenna_target_location_03_dm": {
+        "hp": 500.0
+      },
+      "antenna_target_location_04_dm": {
+        "hp": 500.0
+      },
+      "antenna_target_tagging_01_dm": {
+        "hp": 153.0
+      },
+      "antenna_target_tagging_02_dm": {
+        "hp": 153.0
+      },
+      "antenna_target_tagging_03_dm": {
         "hp": 153.0
       }
     },
@@ -1695,7 +1714,7 @@
   },
   "tank_crew": {
     "minCrewMemberRepairCount": 105,
-    "minCrewMemberAliveCount": 100,
+    "minCrewMemberAliveCount": 90,
     "sailor1": {
       "dmPart": "bridge_dm",
       "role": "sailor",
@@ -2540,15 +2559,26 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
-    "sensor": {
-      "blk": "gamedata/sensors/naval/us_an_sps_52.blk",
-      "designationFromBody": true,
-      "dmPart": [
-        "antenna_target_location_01_dm",
-        "antenna_target_location_02_dm",
-        "antenna_target_location_03_dm"
-      ]
-    },
+    "sensor": [
+      {
+        "blk": "gamedata/sensors/naval/us_an_spy_1_ai.blk",
+        "designationFromBody": true,
+        "dmPart": [
+          "antenna_target_location_01_dm",
+          "antenna_target_location_02_dm",
+          "antenna_target_location_03_dm",
+          "antenna_target_location_04_dm"
+        ]
+      },
+      {
+        "blk": "gamedata/sensors/naval/us_an_spg_51_ec.blk",
+        "dmPart": [
+          "antenna_target_tagging_01_dm",
+          "antenna_target_tagging_02_dm",
+          "antenna_target_tagging_03_dm"
+        ]
+      }
+    ],
     "fireDirecting": {
       "dmPartMain": "fire_control_room_01_dm",
       "dmPart": [
@@ -2719,7 +2749,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/groundModels_weapons/250mm_FM_3000_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_mk41_vls_naval_rocket_launcher.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2737,10 +2767,9 @@
         "defaultPitch": 0.0,
         "bullets": 32,
         "recoilMultiplier": 0.1,
-        "speedYaw": 0.0,
+        "speedYaw": 80.0,
         "speedPitch": 0.0,
         "allowableDelta": 180.0,
-        "forceUseAllowableDelta": true,
         "fireConeAngle": [
           180.0,
           1.0,
@@ -3048,7 +3077,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/groundModels_weapons/250mm_FM_3000_user_cannon.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_mk41_vls_naval_rocket_launcher.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_33",
         "emitterGenRange": [
@@ -3066,10 +3095,9 @@
         "defaultPitch": 0.0,
         "bullets": 64,
         "recoilMultiplier": 0.1,
-        "speedYaw": 0.0,
+        "speedYaw": 80.0,
         "speedPitch": 0.0,
         "allowableDelta": 180.0,
-        "forceUseAllowableDelta": true,
         "fireConeAngle": [
           180.0,
           1.0,
@@ -5772,6 +5800,77 @@
     "damage": 10.0,
     "probability": 1.0,
     "fxEvent": "cosmetic_fire"
+  },
+  "modifications": {
+    "new_ship_hull": {},
+    "new_ship_rudder": {
+      "prevModification": "new_ship_hull"
+    },
+    "new_ship_screw": {},
+    "new_ship_engine": {
+      "prevModification": "new_ship_screw"
+    },
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {
+      "prevModification": "ship_tool_kit",
+      "disableModEffects": {}
+    },
+    "ship_smoke_screen_system_mod": {},
+    "ship_anti_fragmentation_protection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "shatterDamageMult": 0.7,
+            "secondaryShatterDamageMult": 0.8,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {}
+          }
+        }
+      }
+    },
+    "ship_venting": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.75,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {}
+          }
+        }
+      }
+    },
+    "new_ship_pumps": {},
+    "ship_ammo_wetting": {
+      "effects": {
+        "damagePartsOverride": {
+          "ammo": {
+            "fireDamageMult": 0.75,
+            "ammunition_storage_shells_01_dm": {},
+            "ammunition_storage_shells_02_dm": {},
+            "ammunition_storage_charges_01_dm": {},
+            "ammunition_storage_charges_02_dm": {}
+          }
+        }
+      }
+    },
+    "127mm_usa_mk41_mod0_common_he": {},
+    "127mm_usa_mk42_mod0_common_sap": {},
+    "127mm_usa_mk42_mod0_common_sap_ammo_pack": {},
+    "127mm_usa_mk41_mod0_he_vt": {},
+    "127mm_usa_mk41_mod0_he_vt_ammo_pack": {
+      "prevModification": "127mm_usa_mk42_mod0_common_sap_ammo_pack"
+    },
+    "343mm_usa_rim66c_rocket_naval": {},
+    "ship_torpedoes": {},
+    "ship_rangefinder": {},
+    "new_aux_caliber_turrets": {},
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    }
   },
   "ammo": {
     "explodeTreshold": 0.0001,

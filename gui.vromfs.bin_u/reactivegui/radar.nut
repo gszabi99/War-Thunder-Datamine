@@ -138,6 +138,11 @@ let customPages = {
   lightningRadar = "%rGui/planeCockpit/radarPage/mfdLightningRadar.das"
   mfdF15exRadar = "%rGui/planeCockpit/radarPage/mfdF15exRadar.das"
   mfdSu15Radar = "%rGui/planeCockpit/radarPage/mfdSu15Radar.das"
+  mfdF3h2Radar = "%rGui/planeCockpit/radarPage/mfdF3h2Radar.das"
+  f101Radar = "%rGui/planeCockpit/radarPage/F101Radar.das"
+  mfdMirageF1Radar = "%rGui/planeCockpit/radarPage/mfdMirageF1Radar.das"
+  mfdF1Radar = "%rGui/planeCockpit/radarPage/mfdF1Radar.das"
+  mfdF104Radar = "%rGui/planeCockpit/radarPage/mfdF104Radar.das"
 }
 
 let radarSettings = Watched({

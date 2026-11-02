@@ -111,6 +111,7 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
                                sectored_capzone__canCaptureByVehicles : bool;
                                var sectored_capzone__nextUpdateAt : float&;
                                var sectored_capzone__lastUpdateAt : float&;
+                               var sectored_capzone__strongpointsHeld : bool&;
                                sectored_capzone__sectorEids : EidList)
   if info.curTime < sectored_capzone__nextUpdateAt
     return
@@ -141,6 +142,7 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
   resize(presence1, sectorCount)
   resize(presence2, sectorCount)
   resize(strongpointOwners, sectorCount)
+  var strongpointsHeld = capzone__owningTeam != TEAM_UNASSIGNED
   for i in range(sectorCount)
     let sectorEid = sectored_capzone__sectorEids[i]
     var strongpointEid = INVALID_ENTITY_ID
@@ -157,6 +159,9 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
       presence2[i] = team_presence_count(teamPresence, 2)
     ownerByEid[sectorEid] = owners[i]
     strongpointOwners[i] = strongpoint_owner(strongpointEid)
+    if strongpointEid != INVALID_ENTITY_ID && strongpointOwners[i] != capzone__owningTeam
+      strongpointsHeld = false
+  sectored_capzone__strongpointsHeld = strongpointsHeld
   if sectored_capzone__canCaptureByVehicles
     add_vehicle_presence(zoneId, sectored_capzone__sectorEids, presence1, presence2)
 

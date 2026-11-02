@@ -896,25 +896,8 @@ function countWidthForMpTable(objTbl, markup) {
 const TEAMMATE_STATS_FIELDS = ["humanKills", "navalKills", "groundKills", "kills", "deaths"]
 const MAX_TEAMMATE_STATS_ROWS = 3
 
-let teammateStatIconMarkup = @(iconLocId, isLeftSide)
-@"textareaNoTab {
-  size:t='ph, ph'
-  text:t='#icon/mpstats/{0}'
-  margin:t='{1}'
-  tinyFont:t='yes'
-  text-align:t='center'
-}".subst(iconLocId, isLeftSide ? "0,0,3@sf/@pf,0" : "3@sf/@pf,0,0,0")
-
-let teammateStatValueMarkup = @(iconLocId, isLeftSide)
-@"textareaNoTab {
-  id:t='{0}'
-  text:t='0'
-  tinyFont:t='yes'
-  text-align:t='{1}'
-}".subst(iconLocId, isLeftSide ? "left" : "right")
-
-function getSpectatorTeammateStatsMarkup(isLeftSide) {
-  let statsRows = []
+function getSpectatorTeammateStatIds() {
+  let statIds = []
   let misObjectives = g_mission_type.getCurrentObjectives()
   let gt = get_game_type()
   let gm = get_game_mode()
@@ -925,18 +908,12 @@ function getSpectatorTeammateStatsMarkup(isLeftSide) {
     )
       continue
 
-    let iconMarkup = teammateStatIconMarkup(statId, isLeftSide)
-    let valueMarkup = teammateStatValueMarkup(statId, isLeftSide)
-    statsRows.append({
-      col1 = isLeftSide ? iconMarkup : valueMarkup
-      col2 = isLeftSide ? valueMarkup : iconMarkup
-    })
-
+    statIds.append(statId)
     emptyRowsLeft -= 1
     if (emptyRowsLeft == 0)
       break
   }
-  return statsRows
+  return statIds
 }
 
 function getSpectatorTeammateStats(player) {
@@ -967,7 +944,6 @@ return freeze({
   updateTeamCssLabel
   countWidthForMpTable
   getMpKickCountdown
-  getSpectatorTeammateStatsMarkup
+  getSpectatorTeammateStatIds
   getSpectatorTeammateStats
-  TEAMMATE_STATS_FIELDS
 })

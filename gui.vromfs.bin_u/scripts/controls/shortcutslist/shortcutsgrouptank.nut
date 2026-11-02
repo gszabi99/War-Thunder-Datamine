@@ -1,7 +1,7 @@
 from "%sqstd/platform.nut" import isSony, isXbox
 from "%scripts/controls/controlsUtils.nut" import checkOptionValue
 from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE, AxisDirection, ConflictGroups
-from "%scripts/options/optionsExtNames.nut" import USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK
+from "%scripts/options/optionsExtNames.nut" import USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK, USEROPT_APU_AUTO_DEFAULT_TANK
 from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_TANK, OPTION_AIM_ACCELERATION_DELAY_TANK, OPTION_MOUSE_Z_TANK_MULT
 from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
 from "crosshair" import can_add_tank_alt_crosshair
@@ -107,6 +107,11 @@ return [
   {
     id = "ID_TOGGLE_GM_ENGINE"
     checkAssign = false
+  }
+  {
+    id = "gm_apu_auto_default"
+    type = CONTROL_TYPE.SWITCH_BOX
+    optionType = USEROPT_APU_AUTO_DEFAULT_TANK
   }
   {
     id = "ID_TOGGLE_APU_AUTO"

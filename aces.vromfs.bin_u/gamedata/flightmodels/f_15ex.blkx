@@ -4991,6 +4991,37 @@
         "order": 1,
         "WeaponPreset": [
           {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9m_slot1",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_14",
+                "pylon_14_adaper",
+                "us_lau_129aa_005",
+                "us_lau_129aa_006"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gamedata/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_120a_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gamedata/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_120a_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
             "iconType": "missile_air_to_air_midrange_special_group",
             "name": "aim_120b_slot1",
             "reqModification": "us_aim_120b_c",
@@ -5018,6 +5049,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "aim_120c_x2_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_120d_x2_slot3"
               }
             ]
           },
@@ -5050,6 +5091,16 @@
                 "external": true,
                 "separate": true
               }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "aim_120c_x2_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_120d_x2_slot3"
+              }
             ]
           },
           {
@@ -5080,6 +5131,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "aim_120c_x2_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_120d_x2_slot3"
               }
             ]
           },
@@ -5112,7 +5173,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001",
+                "us_lau_129aa_001",
                 "pylon_1_aim_9_l"
               ]
             },
@@ -5192,6 +5253,72 @@
         "tier": 12,
         "order": 5,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "name": "aim_120c_x2_slot3",
+            "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gamedata/weapons/containers/us_f_15_aim_120_adapter_x2_aim_120c.blk",
+              "emitter": "bomb_2000lb_001",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "aim_9m_default_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "aim_120b_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_9m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_default_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_group",
+            "name": "aim_120d_x2_slot3",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gamedata/weapons/containers/us_f_15_aim_120_adapter_x2_aim_120d.blk",
+              "emitter": "bomb_2000lb_001",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "aim_9m_default_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "aim_120b_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_9m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_default_slot4"
+              }
+            ]
+          },
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6_slot3",
@@ -5830,7 +5957,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002",
+                "us_lau_129aa_002",
                 "pylon_1_aim_9_r"
               ]
             },
@@ -13060,7 +13187,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003",
+                "us_lau_129aa_003",
                 "pylon_2_aim_9_l"
               ]
             },
@@ -13138,6 +13265,72 @@
         "tier": 2,
         "order": 6,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_group",
+            "name": "aim_120c_x2_slot13",
+            "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gamedata/weapons/containers/us_f_15_aim_120_adapter_x2_aim_120c.blk",
+              "emitter": "bomb_2000lb_003",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 14,
+                "preset": "aim_9m_default_slot14"
+              },
+              {
+                "slot": 14,
+                "preset": "aim_120b_slot14"
+              },
+              {
+                "slot": 12,
+                "preset": "aim_9m_slot12"
+              },
+              {
+                "slot": 12,
+                "preset": "aim_120b_default_slot12"
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange_group",
+            "name": "aim_120d_x2_slot13",
+            "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gamedata/weapons/containers/us_f_15_aim_120_adapter_x2_aim_120d.blk",
+              "emitter": "bomb_2000lb_003",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 14,
+                "preset": "aim_9m_default_slot14"
+              },
+              {
+                "slot": 14,
+                "preset": "aim_120b_slot14"
+              },
+              {
+                "slot": 12,
+                "preset": "aim_9m_slot12"
+              },
+              {
+                "slot": 12,
+                "preset": "aim_120b_default_slot12"
+              }
+            ]
+          },
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6_slot13",
@@ -13771,7 +13964,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004",
+                "us_lau_129aa_004",
                 "pylon_2_aim_9_r"
               ]
             },
@@ -13852,6 +14045,37 @@
         "order": 2,
         "WeaponPreset": [
           {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9m_slot15",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_15",
+                "pylon_15_adaper",
+                "us_lau_129aa_007",
+                "us_lau_129aa_008"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gamedata/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_120a_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gamedata/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+                "emitter": "aim_120a_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
             "iconType": "missile_air_to_air_midrange_special_group",
             "name": "aim_120b_slot15",
             "reqModification": "us_aim_120b_c",
@@ -13879,6 +14103,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 13,
+                "preset": "aim_120c_x2_slot13"
+              },
+              {
+                "slot": 13,
+                "preset": "aim_120d_x2_slot13"
               }
             ]
           },
@@ -13911,6 +14145,16 @@
                 "external": true,
                 "separate": true
               }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 13,
+                "preset": "aim_120c_x2_slot13"
+              },
+              {
+                "slot": 13,
+                "preset": "aim_120d_x2_slot13"
+              }
             ]
           },
           {
@@ -13941,6 +14185,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 13,
+                "preset": "aim_120c_x2_slot13"
+              },
+              {
+                "slot": 13,
+                "preset": "aim_120d_x2_slot13"
               }
             ]
           },

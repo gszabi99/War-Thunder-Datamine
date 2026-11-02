@@ -188,12 +188,18 @@ def managed_sound_group_processing_update(info : ParallelUpdateFrameDelayed;
     let idx = friendly ? friendlyStepsIdx : enemyStepsIdx
     managedSoundsEids[idx] |> push(eid)
 
+  query() <| $ [es(REQUIRE=(humanSteps, watchedHero))] (var managed_sound__isStealed : bool&)
+    managed_sound__isStealed = false
+
   query() <| $ [es(REQUIRE=humanGun, REQUIRE_NOT=(deadEntity, shootingRangeDummy))] (eid : EntityId;
                                                                                      gun__owner : EntityId;
                                                                                      var managed_sound__isStealed : bool&;
                                                                                      var managed_sound__pos : float3&;
                                                                                      managed_sound_human_gun__team : int;
                                                                                      managed_sound_human_gun__isOneshot : bool)
+    if has(gun__owner, "watchedHero")
+      managed_sound__isStealed = false
+      return
     var isAimingAtListener = false
     var isVisibleToListener = false
     if !filter_human_gun(eid, gun__owner, heroPos, managed_sound__pos, isAimingAtListener, isVisibleToListener)

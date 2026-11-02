@@ -15,6 +15,7 @@ from "sony.user" import hasPremium
 from "unitCustomization" import get_last_skin, get_decal_in_slot, set_current_decal_slot, set_decal_in_slot, enter_decal_mode, add_attachable, remove_attachable
   , select_attachable_slot, exit_attachables_mode, get_attachable_name, get_attachable_group, focus_on_current_decal, get_num_decal_slots, get_max_num_decal_slots
   , exit_decal_mode, save_decals, enter_ship_flags_mode, exit_ship_flags_mode, get_default_ship_flag, apply_ship_flag, get_ship_flag_in_slot
+  , get_damage_decal_in_slot
 from "dagor.debug" import debug_dump_stack
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "%globalScripts/unlockConsts.nut" import *
@@ -55,13 +56,15 @@ let decoratorTypes = {
     getCost = function(_decorator) { return Cost() }
     getDecoratorNameInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
     getDecoratorGroupInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
+    getDamageDecalInSlot = @(_slotIdx, _unitName, _skinId) null
 
     hasFreeSlots = @(unit, skinId = null, checkPremium = false) this.getFreeSlotIdx(unit, skinId, checkPremium) != -1
     getFreeSlotIdx = function(unit, skinId = null, checkPremium = false) {
       skinId = skinId || get_last_skin(unit.masterUnit ?? unit.name)
       let slotsCount = checkPremium ? this.getMaxSlots() : this.getAvailableSlots(unit)
       for (local i = 0; i < slotsCount; i++)
-        if (this.getDecoratorNameInSlot(i, unit.name, skinId, checkPremium) == "")
+        if (this.getDecoratorNameInSlot(i, unit.name, skinId, checkPremium) == ""
+            && this.getDamageDecalInSlot(i, unit.name, skinId) == null)
           return i
       return -1
     }
@@ -192,6 +195,7 @@ addEnumDecoratorTypes({
     getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false) {
       return get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) 
     }
+    getDamageDecalInSlot = @(slotIdx, unitName, skinId) get_damage_decal_in_slot(unitName, skinId, slotIdx)
 
     isAllowed = function(decoratorName) { return is_decal_allowed(decoratorName, "") }
     isAvailable = @(unit, checkUnitUsable = true) !!unit

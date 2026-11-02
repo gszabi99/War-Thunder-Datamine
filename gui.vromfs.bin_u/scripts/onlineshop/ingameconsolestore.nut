@@ -163,6 +163,7 @@ let IngameConsoleStore = class (BaseGuiHandlerWT) {
       return
 
     this.curSheet = newSheet
+    this.curSheetId = newSheet?.categoryId
     this.itemsListValid = false
 
     if (obj?.subsetId) {

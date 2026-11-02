@@ -28,6 +28,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_med",
+  "sensorTargetTurretTrack": false,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 55.0,
@@ -913,7 +914,7 @@
         "hp": 1173.0
       },
       "ammo_turret_20_dm": {
-        "hp": 1209.0
+        "hp": 1210.0
       },
       "ammo_turret_21_dm": {
         "hp": 1141.0
@@ -949,7 +950,7 @@
         "hp": 1196.0
       },
       "ammo_turret_32_dm": {
-        "hp": 1209.0
+        "hp": 1210.0
       },
       "ammo_turret_33_dm": {
         "hp": 1141.0
@@ -1063,21 +1064,9 @@
       "armorThickness": 5.0,
       "dmgState": 0.0,
       "radar_01_dm": {
-        "hp": 150.0
-      },
-      "radar_02_dm": {
-        "hp": 150.0
-      },
-      "radar_03_dm": {
-        "hp": 150.0
-      },
-      "antenna_target_location_01_dm": {
         "hp": 500.0
       },
-      "antenna_target_tagging_01_dm": {
-        "hp": 150.0
-      },
-      "antenna_target_tagging_mount_01_dm": {
+      "radar_02_dm": {
         "hp": 150.0
       }
     },
@@ -1086,12 +1075,15 @@
       "armorThickness": 3.0,
       "dmgState": 0.0,
       "pressureDamageMult": 1.0,
-      "napalmDamageMult": 1.0
+      "napalmDamageMult": 1.0,
+      "fire_director_01_dm": {
+        "hp": 200.0
+      }
     }
   },
   "tank_crew": {
-    "minCrewMemberRepairCount": 105,
-    "minCrewMemberAliveCount": 100,
+    "minCrewMemberRepairCount": 61,
+    "minCrewMemberAliveCount": 52,
     "sailor1": {
       "dmPart": "bridge_dm",
       "role": "sailor",
@@ -1100,22 +1092,22 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 21
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 52
+      "crew": 23
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 39
+      "crew": 17
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 39
+      "crew": 17
     },
     "sailor6": {
       "dmPart": "radio_station_dm",
@@ -1125,17 +1117,17 @@
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 5
+      "crew": 4
     },
     "sailor8": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 2
     },
     "sailor9": {
       "dmPart": "ammunition_storage_aux_01_dm",
       "role": "sailor",
-      "crew": 17
+      "crew": 7
     },
     "sailor10": {
       "dmPart": "ammunition_storage_shells_01_dm",
@@ -1145,12 +1137,12 @@
     "sailor11": {
       "dmPart": "elevator_01_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 4
     },
     "sailor12": {
       "dmPart": "elevator_02_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 4
     },
     "sailor13": {
       "dmPart": "engine_room_01_dm",
@@ -1165,12 +1157,12 @@
     "sailor15": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 15
+      "crew": 14
     },
     "sailor16": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 5
     },
     "sailor17": {
       "dmPart": "tt_01_dm",
@@ -1876,7 +1868,7 @@
         "dmPart": "antenna_target_location_01_dm"
       },
       {
-        "blk": "gamedata/sensors/naval/de_wm_27_track.blk",
+        "blk": "gamedata/sensors/naval/us_an_spg_51_ec.blk",
         "dmPart": [
           "antenna_target_tagging_01_dm",
           "antenna_target_tagging_mount_01_dm"
@@ -1885,7 +1877,6 @@
     ],
     "fireDirecting": {
       "dmPartMain": "fire_control_room_01_dm",
-      "dmPart": "antenna_target_tagging_01_dm",
       "measureAccuracy": 1.0,
       "targetLockTime": 6.0,
       "calcTime": 3.0,
@@ -1911,10 +1902,6 @@
         "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }
     ]
-  },
-  "shipDamageControl": {
-    "shipDamageControlEnabled": true,
-    "shipDamageControlCoeff": 0.357
   },
   "commonWeapons": {
     "animatedBones": {
@@ -2055,8 +2042,6 @@
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "ammoDP": "ammo_turret_01_dm",
-        "reloadAnimVar": "frigate_oliver_hazard_perry_standart_reload",
-        "parkForReload": true,
         "staticElevation": 3.4,
         "startFx": "smoke_rocket_start",
         "startFxOffset": [
@@ -2068,21 +2053,24 @@
         "breechDP": "auxiliary_caliber_gun_01_dm",
         "speedYaw": 90.0,
         "speedPitch": 45.0,
-        "bullets": 43,
+        "bullets": 41,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "autoLoader": true,
-        "useGunnerTargetingQuality": false,
+        "allowableDelta": 90.0,
+        "forceUseAllowableDelta": true,
         "fireConeAngle": [
+          180.0,
           1.0,
           1.0
         ],
+        "useGunnerTargetingQuality": false,
         "salvoAmount": 1.0,
         "ChainfireTime": 1.0,
         "DelayAfterShoot": 6.0,
         "targetAngularRateMax": 15.0,
-        "AttackMaxRadius": 30000.0,
-        "accuracyAir": 0.0,
+        "AttackMaxRadius": 56300.0,
+        "accuracyAir": 1.5,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
@@ -2092,7 +2080,7 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "targetMsl": true,
-        "shellGroundRangeMax": 20000.0,
+        "shellGroundRangeMax": 56300.0,
         "shellMassRange": [
           30.0,
           7000.0
@@ -2101,7 +2089,7 @@
           120.0,
           1150.0
         ],
-        "AttackShellMaxRadius": 40000.0,
+        "AttackShellMaxRadius": 56300.0,
         "targetPriorityDefault": 0,
         "targetPriorityMin": 1,
         "turret": {
@@ -2111,12 +2099,32 @@
         },
         "limits": {
           "yaw": [
-            -145.0,
-            145.0
+            -180.0,
+            180.0
           ],
           "pitch": [
-            -15.0,
-            95.0
+            0.0,
+            85.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -150.0,
+            30.0,
+            85.0
+          ],
+          "lim2": [
+            -150.0,
+            150.0,
+            -10.0,
+            85.0
+          ],
+          "lim3": [
+            150.0,
+            180.0,
+            30.0,
+            85.0
           ]
         },
         "gunStabilizer": {

@@ -98,16 +98,14 @@ imgButton {
     }
   <</unitLocked>>
 
-  <<#unlocked>>
-  <<#emptySlot>>
+  <<#slotText>>
     textAreaCentered {
       valign:t='center'
       width:t='pw';
       smallFont:t='yes'
-      text:t='#ui/empty'
+      text:t='<<slotText>>'
     }
-  <</emptySlot>>
-  <</unlocked>>
+  <</slotText>>
 
   <<#cost>>
     contentCorner {

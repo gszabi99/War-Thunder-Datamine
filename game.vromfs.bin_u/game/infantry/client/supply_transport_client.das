@@ -87,7 +87,7 @@ def human_supply_laptop_hint_hide_es(evt : Event)
 
 [es(tag=gameClient, REQUIRE=heroVehicle, REQUIRE_NOT=isReplayObserved)]
 def supply_transport_hint_es(evt : EventSupplyTransportHint;
-                             supply_transport__points : float)
+                             supply_transport__points : int)
   using() <| $(var eventData : DataBlock)
     if evt.hint == int(SupplyTransportHint.LOADED)
       hud_notify_script("hint:supply/loaded", eventData)
@@ -96,7 +96,7 @@ def supply_transport_hint_es(evt : EventSupplyTransportHint;
     elif evt.hint == int(SupplyTransportHint.UNDER_FIGHT)
       hud_notify_script("hint:supply/under_fight", eventData)
     elif evt.hint == int(SupplyTransportHint.NODE_FULL)
-      set(eventData, "points", int(supply_transport__points))
+      set(eventData, "points", supply_transport__points)
       hud_notify_script("hint:supply/node_full", eventData)
 
 [es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)]
@@ -117,8 +117,8 @@ def supply_transport_zone_track_es(info : ParallelUpdateFrameDelayed;
                                    unit__ref : UnitRef;
                                    supply_transport__standStillSpeed : float;
                                    supply_transport__clientZoneCheckPeriod : float;
-                                   supply_transport__points : float;
-                                   supply_transport__pointsCapacity : float;
+                                   supply_transport__points : int;
+                                   supply_transport__pointsCapacity : int;
                                    var supply_transport__nextZoneCheckAt : float&;
                                    var supply_transport__canLoad : bool&;
                                    var supply_transport__canUnload : bool&)
@@ -137,10 +137,10 @@ def supply_transport_zone_track_es(info : ParallelUpdateFrameDelayed;
   let pos = unit.pos.xz
   find_query() <| $ [es] (capzone__owningTeam : int;
                           supply_node__supplyTransportArea : string;
-                          supply_node__points : float;
-                          supply_node__maxPoints : float)
+                          supply_node__points : int;
+                          supply_node__maxPoints : int)
     if capzone__owningTeam != team || !in_area(supply_node__supplyTransportArea, pos)
       return false
-    supply_transport__canLoad = supply_transport__points < supply_transport__pointsCapacity && supply_node__points > 0.0
-    supply_transport__canUnload = supply_transport__points > 0.0 && supply_node__points < supply_node__maxPoints
+    supply_transport__canLoad = supply_transport__points < supply_transport__pointsCapacity && supply_node__points > 0
+    supply_transport__canUnload = supply_transport__points > 0 && supply_node__points < supply_node__maxPoints
     return true

@@ -15,6 +15,8 @@ local RespawnBase = class {
   isSavedForSlot = false
   canSelect = true
   isAvailable = true
+  hasEnoughSupplies = true
+  strongpointsHeld = true
 
   constructor(v_id, v_isAutoSelected = false, v_isSquadRespawnBase = false, v_isZoneRespawnBase = false) {
     this.id = v_id
@@ -60,6 +62,8 @@ RespawnBase.isEqual <- function(other) {
     && this.isZoneRespawnBase == other.isZoneRespawnBase
     && this.id == other.id
     && this.isAvailable == other.isAvailable
+    && this.hasEnoughSupplies == other.hasEnoughSupplies
+    && this.strongpointsHeld == other.strongpointsHeld
 }
 
 return RespawnBase

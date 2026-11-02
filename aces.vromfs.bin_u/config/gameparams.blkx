@@ -131,6 +131,7 @@
   "separateIndicationCCIP": false,
   "guidedBombsCCRP": false,
   "minBombReleaseTime": 15.0,
+  "maxBombDirectionDeltaDegrees": 3.0,
   "ccrpIndicationBottom": 0.89,
   "cannonDirMaxShootRange": 1500.0,
   "rocketDirMaxShootRange": 2000.0,
@@ -13344,7 +13345,7 @@
           "noiseAmplitude": 2.5,
           "smoothness": 0.11,
           "maskCrispness": 0.45,
-          "emitterReach": 2.0,
+          "emitterReach": 2.5,
           "detail": {
             "texName": "tank_sand_mask_detail",
             "color": [
@@ -13359,7 +13360,8 @@
             "normalStrength": 0.0,
             "maskInfluence": 0.75,
             "normalReplace": 0.0,
-            "maskBlend": "multiply"
+            "maskBlend": "multiply",
+            "aoCut": 2.0
           }
         },
         "mud": {
@@ -13415,7 +13417,7 @@
           "noiseAmplitude": 2.5,
           "smoothness": 0.11,
           "maskCrispness": 0.45,
-          "emitterReach": 2.0,
+          "emitterReach": 2.5,
           "detail": {
             "texName": "tank_sand_mask_detail",
             "color": [
@@ -13430,7 +13432,8 @@
             "normalStrength": 0.0,
             "maskInfluence": 0.77,
             "normalReplace": 0.0,
-            "maskBlend": "multiply"
+            "maskBlend": "multiply",
+            "aoCut": 2.0
           }
         },
         "mud": {
@@ -13479,7 +13482,7 @@
             0.76,
             0.76
           ],
-          "metalness": 0.1,
+          "metalness": 0.0,
           "texScale": 2.5,
           "maxLevel": 1.0,
           "topProjScale": 1.85,
@@ -13487,6 +13490,7 @@
           "smoothness": 0.75,
           "useRemoval": true,
           "noiseAmplitude": 0.8,
+          "translucency": 0.15,
           "detail": {
             "texName": "tank_snow_mask_det",
             "color": [
@@ -14636,13 +14640,6 @@
     "fxaaQualitySubpix": 0.5,
     "fxaaQualityEdgeThreshold": 0.166,
     "fxaaQualityEdgeThresholdMin": 0.0833
-  },
-  "rendinstShadows": {
-    "clipmapTexSize": 128,
-    "blurRadiusTm": 3.0,
-    "blurRadiusPos": 0.5,
-    "intensity": 1.0,
-    "globalTexSize": 256
   },
   "bombReflection": {
     "timeLimit": 0.5,
@@ -26204,6 +26201,20 @@
     "worldScale": 1.0,
     "underWaterScrollSpeed": 0.75,
     "underWaterWorldScale": 0.25
+  },
+  "FoamTrails": {
+    "torpedoTrailWidth": 1.0,
+    "torpedoTrailLifetime": 10.0,
+    "torpedoTrailNodeCount": 24,
+    "torpedoTrailAlphaMul": 1.0,
+    "torpedoTrailFoamMul": 0.0,
+    "torpedoTrailInscatMul": 1.0,
+    "torpedoTrailTurbulenceMul": 0.2,
+    "minShipMass": 50000.0,
+    "maxShipMass": 10000000.0,
+    "minShipTrailLifetime": 30.0,
+    "maxShipTrailLifetime": 120.0,
+    "shipTrailNodeCount": 32
   },
   "heroFoam": {
     "enabled": true

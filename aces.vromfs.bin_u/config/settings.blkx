@@ -38,6 +38,7 @@
   "game_sq_script": "%toolScripts/on_asset_viewer_load.nut",
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "regional-lang.vromfs.bin",
+  "addAllAddonsToBasePath": false,
   "__allowedConfigOverrides": {
     "graphicsQuality": "",
     "renderer": "",
@@ -673,9 +674,6 @@
       "universal": {
         "shadowDist": 100.0,
         "powWeight": 0.99
-      },
-      "aircraft": {
-        "snapAnchorToHero": true
       },
       "underwater": {},
       "tank": {},
@@ -2012,6 +2010,13 @@
       }
     ]
   },
+  "addonsWithBasePath": {
+    "folder": [
+      "content/hc_pacific",
+      "content/pkg_user",
+      "content/pkg_local"
+    ]
+  },
   "addons": {
     "folder": [
       "content.hq/hq_tex",
@@ -2140,6 +2145,13 @@
     "cellsVBcfg": {
       "max_size_at_dist_mul": 1.8,
       "raised_max_size": 402653184
+    },
+    "rendinstShadows": {
+      "clipmapTexSize": 128,
+      "blurRadiusTm": 3.0,
+      "blurRadiusPos": 0.5,
+      "intensity": 1.0,
+      "globalTexSize": 256
     }
   },
   "cfdWind": {

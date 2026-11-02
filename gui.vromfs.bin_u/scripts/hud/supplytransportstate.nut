@@ -30,7 +30,7 @@ ecs.register_es("supply_transport_track_ui",
       supplyTransportInfo.set({
         isActive = comp.supply_transport__state != SUPPLY_TRANSPORT_STATE_IDLE
         isLoading = comp.supply_transport__state == SUPPLY_TRANSPORT_STATE_LOADING
-        progress = comp.supply_transport__pointsCapacity > 0 ? comp.supply_transport__points / comp.supply_transport__pointsCapacity : 0.0
+        progress = comp.supply_transport__pointsCapacity > 0 ? comp.supply_transport__points.tofloat() / comp.supply_transport__pointsCapacity : 0.0
       })
     }
     onDestroy = function() {
@@ -40,8 +40,8 @@ ecs.register_es("supply_transport_track_ui",
   {
     comps_rq=["heroVehicle"]
     comps_no=["isReplayObserved"]
-    comps_track=[["supply_transport__state", ecs.TYPE_INT], ["supply_transport__points", ecs.TYPE_FLOAT]]
-    comps_ro=[["supply_transport__pointsCapacity", ecs.TYPE_FLOAT]]
+    comps_track=[["supply_transport__state", ecs.TYPE_INT], ["supply_transport__points", ecs.TYPE_INT]]
+    comps_ro=[["supply_transport__pointsCapacity", ecs.TYPE_INT]]
   }
 )
 

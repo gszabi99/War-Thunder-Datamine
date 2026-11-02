@@ -1,17 +1,13 @@
-import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
-from "%scripts/utils_sa.nut" import getObjIdByPrefix
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
-from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child_by_value, getObjValidIndex, enableObjsByTable
-from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/replays/replayMetadata.nut" import restoreReplayScriptCommentsBlk
-from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
+from "%scripts/unit/unitInfoRoles.nut" import getUnitClassColor
 from "%scripts/user/remapNick.nut" import getPlayerName
 from "%appGlobals/clientState/touchScreen.nut" import useTouchscreen
-from "%scripts/statistics/mpStatisticsUtil.nut" import guiStartMPStatScreen, getSpectatorTeammateStatsMarkup, getSpectatorTeammateStats, TEAMMATE_STATS_FIELDS
+from "%scripts/statistics/mpStatisticsUtil.nut" import guiStartMPStatScreen, getSpectatorTeammateStatIds, getSpectatorTeammateStats
 from "%scripts/statistics/mpStatisticsInfo.nut" import getWeaponTypeIcoByWeapon
 from "%appGlobals/debugTools/dbgEnum.nut" import getEnumValName
 from "%scripts/hud/hudUnitType.nut" import HUD_UNIT_TYPE
@@ -37,33 +33,26 @@ from "%scripts/matchingRooms/sessionLobbyState.nut" import resetSessionLobbyPlay
 from "%scripts/replays/backFromReplaysFn.nut" import getBackFromReplaysFn, setBackFromReplaysFn, isBackToReplays
 from "%scripts/missions/missionsUtils.nut" import getLevelMapBackgroundColors
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
-from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
-from "camera_control" import isSensorViewMode, setSensorViewFilter, getSensorViewFilter, SVF_HERO, SVF_SQUAD, SVF_ALLY, SVF_ENEMY
-  , SVF_GROUND, SVF_AIR, SVF_WEAPON_OTHER, SVF_WEAPON_HERO, SVF_WEAPON_ATTACK_HERO, SVF_ONLY_SELECTED, SVF_RKT_SPEED
-  , SVF_RKT_LIFETIME, SVF_RKT_TRAVELED, SVF_RKT_OVERLOAD, SVF_RKT_AOA, SVF_DEAD, SVF_RKT_STATE, SVF_SENSOR_HERO
-  , SVF_SENSOR_SQUAD, SVF_SENSOR_ALLY, SVF_SENSOR_ENEMY, SVF_SENSOR_TRACK, SVF_SENSOR_INTEREST 
 from "matching.errors" import INVALID_SQUAD_ID
-from "string" import format
-from "hudState" import getHudUnitType, is_replay_markers_enabled
+from "hudState" import getHudUnitType
 from "guiSpectator" import onSpectatorMode, switchSpectatorTargetById, isArbiterMode, getSpectatorTargetId, getSpectatorTargetName
-from "replays" import get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchors, get_replay_info, get_replay_props, move_to_anchor, cancel_loading
+from "replays" import get_time_speeds_list, is_replay_playing, get_replay_info, get_replay_props
 from "eventbus" import eventbus_subscribe
-from "mission" import get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST, get_local_mplayer, get_mp_local_team
-from "%sqstd/math.nut" import round_by_value
+from "mission" import get_game_type, get_mplayers_list, GET_MPLAYERS_LIST, get_local_mplayer, get_mp_local_team
 from "gameplayBinding" import isInFlight
 from "console" import register_command
 from "scriptRespondent" import registerRespondent
 from "guiMission" import get_current_mission_desc, get_player_army_for_hud
 from "%globalScripts/gameTypeConsts.nut" import *
-from "%scripts/dagui_natives.nut" import mpstat_get_sort_func, is_spectator_rotation_forced
-from "app" import isGamePaused
+from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/battleMetaConsts.nut" import *
 from "%globalScripts/playerStateConsts.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
-from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "%appGlobals/hud/spectatorState.nut" import spectatorSession, spectatorCameraTarget, isReplaySystemWindowOpened,
+  spectatorToolbarShortcuts, spectatorTeams, spectatorAirHudOffsetX
 
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
@@ -94,7 +83,6 @@ let weaponIconsReloadBits = {
   torpedo = BMS_OUT_OF_TORPEDOES
 }
 
-local spectator_air_hud_offset_x = 0
 let playerStateToStringMap = {
   [PLAYER_NOT_EXISTS] = "PLAYER_NOT_EXISTS",
   [PLAYER_HAS_LEAVED_GAME] = "PLAYER_HAS_LEAVED_GAME",
@@ -107,107 +95,15 @@ let playerStateToStringMap = {
   [PLAYER_IN_RESPAWN] = "PLAYER_IN_RESPAWN"
 }
 
-let sensorFiltersTable = {
-  items = [
-    {iconText = "#icon/mpstats/raceLastCheckpoint", tooltip = "#sensorsFilters/unitMarkers", selected = "yes"}
-    {imgBg = "#ui/gameuiskin#btn_autodetect_on.svg", tooltip = "#sensorsFilters/sensorMapping"}
-    
-    
-    {imgBg = "#ui/gameuiskin#icon_rocket_in_progress.svg", tooltip = "#sensorsFilters/rktFlyMarkers"}
-  ]
-  pages = [
-    {
-      id = "unitMarkers"
-      label = "sensorsFilters/unitMarkers"
-      options = [
-        {optName = "#options/player", switchBox = { fid = SVF_HERO, makeValue = @()getSensorViewFilter(SVF_HERO) ? "yes" : "no" } }
-        {optName = "#sensorsFilters/squad", switchBox = { fid = SVF_SQUAD, makeValue = @()getSensorViewFilter(SVF_SQUAD) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/allyes", switchBox = { fid = SVF_ALLY, makeValue = @()getSensorViewFilter(SVF_ALLY) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/enemyes", switchBox = { fid = SVF_ENEMY, makeValue = @()getSensorViewFilter(SVF_ENEMY) ? "yes" : "no"  } }
-        {optName = "#ground_targets/name/short", switchBox = { fid = SVF_GROUND, makeValue = @()getSensorViewFilter(SVF_GROUND) ? "yes" : "no"  } }
-        {optName = "#air_targets/name/short", switchBox = { fid = SVF_AIR, makeValue = @()getSensorViewFilter(SVF_AIR) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/dead", switchBox = { fid = SVF_DEAD, makeValue = @()getSensorViewFilter(SVF_DEAD) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/onlySelected", switchBox = { fid = SVF_ONLY_SELECTED, makeValue = @()getSensorViewFilter(SVF_ONLY_SELECTED) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/allWeapons", switchBox = { fid = SVF_WEAPON_OTHER, makeValue = @()getSensorViewFilter(SVF_WEAPON_OTHER) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/playerWeapons", switchBox = { fid = SVF_WEAPON_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_HERO) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/enemyWeapons", switchBox = { fid = SVF_WEAPON_ATTACK_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_ATTACK_HERO) ? "yes" : "no"  } }
-      ]
-    },
-    {
-      id = "sensorsWork"
-      label = "sensorsFilters/sensorMapping"
-      options = [
-        {optName = "#options/player", switchBox = {fid = SVF_SENSOR_HERO, makeValue = @()getSensorViewFilter(SVF_SENSOR_HERO) ? "yes" : "no"  }}
-        {optName = "#sensorsFilters/squad", switchBox = {fid = SVF_SENSOR_SQUAD, makeValue = @()getSensorViewFilter(SVF_SENSOR_SQUAD) ? "yes" : "no"  }}
-        {optName = "#sensorsFilters/allyes", switchBox = {fid = SVF_SENSOR_ALLY, makeValue = @()getSensorViewFilter(SVF_SENSOR_ALLY) ? "yes" : "no"  }}
-        {optName = "#sensorsFilters/enemyes", switchBox = {fid = SVF_SENSOR_ENEMY, makeValue = @()getSensorViewFilter(SVF_SENSOR_ENEMY) ? "yes" : "no"  }}
-        {optName = "#sensorsFilters/track_sensor", switchBox = {fid = SVF_SENSOR_TRACK, makeValue = @()getSensorViewFilter(SVF_SENSOR_TRACK) ? "yes" : "no"  }}
-        {optName = "#sensorsFilters/sensor_interest", switchBox = {fid = SVF_SENSOR_INTEREST, makeValue = @()getSensorViewFilter(SVF_SENSOR_INTEREST) ? "yes" : "no"  }}
-      ]
-    },
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    {
-      id = "rocketMarkers"
-      label = "sensorsFilters/rktFlyMarkers"
-      options = [
-        {optName = "#options/measure_units_speed", switchBox = { fid = SVF_RKT_SPEED, makeValue = @()getSensorViewFilter(SVF_RKT_SPEED) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/rktLifetime", switchBox = { fid = SVF_RKT_LIFETIME, makeValue = @()getSensorViewFilter(SVF_RKT_LIFETIME) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/rktTraveled", switchBox = { fid = SVF_RKT_TRAVELED, makeValue = @()getSensorViewFilter(SVF_RKT_TRAVELED) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/rktOverload", switchBox = { fid = SVF_RKT_OVERLOAD, makeValue = @()getSensorViewFilter(SVF_RKT_OVERLOAD) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/rktAttackAngle", switchBox = { fid = SVF_RKT_AOA, makeValue = @()getSensorViewFilter(SVF_RKT_AOA) ? "yes" : "no"  } }
-        {optName = "#sensorsFilters/rktStateOfSeeker", switchBox = { fid = SVF_RKT_STATE, makeValue = @()getSensorViewFilter(SVF_RKT_STATE) ? "yes" : "no"  } }
-      ]
-    }
-  ]
-}
-
 local debugMode = false
 
 class Spectator (BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM
-  getWidgetsList = @() getDargLayerWidgets(this)
-    .append(mkMpScoreWidget("1@bhHud + 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt"))
 
   spectatorModeInited = false
   catchingFirstTarget = false
-  ignoreUiInput = false
 
   mode = SPECTATOR_MODE.SKIRMISH
   gameType            = 0
@@ -219,31 +115,18 @@ class Spectator (BaseGuiHandlerWT) {
   canSeeOppositeTeam  = false
   isServerReplay      = false
 
-  cameraRotationByMouse = null
-
   replayAuthorUserId = AUTHOR_USER_ID_UNKNOWN
-  replayTimeSpeedMin = 1.0
-  replayTimeSpeedMax = 1.0
-  replayPaused = null
-  replayTimeSpeed = 0.0
   replayTimeTotal = REPLAY_TIME_TOTAL_ZERO
-  replayTimeProgress = 0
-  replayMarkersEnabled = null
-
-  isSensorViewModeEnabled = false
-  isReplaySystemWindowOpened = false
 
   updateCooldown = 0.0
-  statNumRows = 0
   teams = [ { players = [] }, { players = [] } ]
+  teammateStatIds = null
   lastTargetNick = ""
   lastTargetData = {
     id   = -1
-    team = -1
   }
   lastHudUnitType = ""
   lastFriendlyTeam = 0
-  statSelPlayerId = [ null, null ]
 
   funcSortPlayersSpectator = null
   funcSortPlayersDefault   = null
@@ -265,6 +148,15 @@ class Spectator (BaseGuiHandlerWT) {
   ]
 
   actionBarWeak = null
+
+  function getWidgetsList() {
+    let res = getDargLayerWidgets(this)
+      .append(mkMpScoreWidget("1@bhHud + 2@spectatorToolbarPadding + 1@spectatorToolbarBtnSize + 0.02@scrn_tgt"))
+    let transform = this.getWidgetParams("spectator_root")
+    if (transform != null)
+      res.append({ widgetId = DargWidgets.SCREEN, screen = "hud.spectator", transform })
+    return res
+  }
 
   function initScreen() {
     this.gameType = get_game_type()
@@ -295,9 +187,6 @@ class Spectator (BaseGuiHandlerWT) {
     this.canControlCameras   = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
     this.canSeeMissionTimer  = !this.canControlTimeline && this.mode == SPECTATOR_MODE.SKIRMISH
     this.canSeeOppositeTeam  = this.mode != SPECTATOR_MODE.RESPAWN
-    let canRewind = this.canControlTimeline && hasFeature("replayRewind")
-    let anchors = get_replay_anchors()
-    let curAnchorIdx = this.getCurAnchorIdx(anchors)
 
     if (!this.isMultiplayer)
       showObjectsByTable(this.scene, {
@@ -305,117 +194,55 @@ class Spectator (BaseGuiHandlerWT) {
           target_stats  = false
       })
 
-    let objReplayControls = this.scene.findObject("controls_div")
-    showObjectsByTable(objReplayControls, {
-        ID_FLIGHTMENU               = useTouchscreen
-        ID_MPSTATSCREEN             = this.mode != SPECTATOR_MODE.REPLAY
-        controls_mpstats_replays    = this.mode == SPECTATOR_MODE.REPLAY
-        ID_PREV_PLANE               = true
-        ID_NEXT_PLANE               = true
-        controls_cameras_icon       = this.canControlCameras
-        ID_CAMERA_DEFAULT           = this.canControlCameras
-        ID_TOGGLE_FOLLOWING_CAMERA  = this.canControlCameras
-        ID_REPLAY_CAMERA_OPERATOR   = this.canControlCameras
-        ID_REPLAY_CAMERA_FLYBY      = this.canControlCameras
-        ID_REPLAY_CAMERA_WING       = this.canControlCameras
-        ID_REPLAY_CAMERA_GUN        = this.canControlCameras
-        ID_REPLAY_CAMERA_RANDOMIZE  = this.canControlCameras
-        ID_REPLAY_CAMERA_FREE       = this.canControlCameras
-        ID_REPLAY_CAMERA_FREE_PARENTED = this.canControlCameras
-        ID_REPLAY_CAMERA_FREE_ATTACHED = this.canControlCameras
-        ID_REPLAY_CAMERA_HOVER      = this.canControlCameras
-        ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT = true
-        ID_REPLAY_SHOW_MARKERS      = this.mode == SPECTATOR_MODE.REPLAY
-        ID_REPLAY_TOGGLE_SENSOR_VIEW  = this.mode == SPECTATOR_MODE.REPLAY
-        ID_REPLAY_SYSTEM_WINDOW    = this.mode == SPECTATOR_MODE.REPLAY && hasFeature("ReplaySystemWindow")
-        ID_REPLAY_SLOWER            = this.canControlTimeline
-        ID_REPLAY_FASTER            = this.canControlTimeline
-        ID_REPLAY_PAUSE             = this.canControlTimeline
-        ID_REPLAY_BACKWARD          = canRewind
-        ID_REPLAY_FORWARD           = canRewind
-    })
-    enableObjsByTable(objReplayControls, {
-        ID_PREV_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
-        ID_NEXT_PLANE               = this.mode != SPECTATOR_MODE.REPLAY || this.isMultiplayer
-        ID_REPLAY_BACKWARD          = curAnchorIdx >= 0
-        ID_REPLAY_FORWARD           = anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len()
-    })
-    foreach (id, show in {
-          txt_replay_time_speed       = this.canControlTimeline
-          controls_timeline           = this.canControlTimeline
-          controls_timer              = this.canSeeMissionTimer
-        })
-      this.scene.findObject(id).show(show)
-
-    for (local i = 0; i < objReplayControls.childrenCount(); i++) {
-      let obj = objReplayControls.getChild(i)
-      if (obj?.is_shortcut && obj?.id) {
-        local hotkeys = getShortcutText({
-          shortcuts = getShortcuts([ obj.id ])
-          shortcutId = 0
-          cantBeEmpty = false
-          strip_tags = true
-        })
-        if (hotkeys.len())
-          hotkeys = "".concat("<color=@hotkeyColor>", loc("ui/parentheses/space", { text = hotkeys }), "</color>")
-        obj.tooltip = "".concat(loc($"hotkeys/{obj.id}"), hotkeys)
-      }
-    }
-
-    if (this.canControlCameras) {
-      showObjectsByTable(this.scene, {
-          ID_CAMERA_DEFAULT           = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
-          ID_TOGGLE_FOLLOWING_CAMERA  = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
-          ID_REPLAY_CAMERA_OPERATOR   = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_FLYBY      = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_WING       = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_GUN        = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_RANDOMIZE  = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_FREE       = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
-          ID_REPLAY_CAMERA_FREE_PARENTED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-          ID_REPLAY_CAMERA_FREE_ATTACHED = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
-      })
-    }
-
     if (this.mode == SPECTATOR_MODE.REPLAY) {
-      let timeSpeeds = get_time_speeds_list()
-      this.replayTimeSpeedMin = timeSpeeds[0]
-      this.replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
-
       let info = currentReplay.path.len() && get_replay_info(currentReplay.path)
       this.replayAuthorUserId = info?.comments.authorUserId ?? AUTHOR_USER_ID_UNKNOWN
       this.replayTimeTotal = info?.comments.timePlayed ?? REPLAY_TIME_TOTAL_ZERO
-      this.scene.findObject("txt_replay_time_total").setValue(time.preciseSecondsToString(this.replayTimeTotal))
-
-      let replaySessionId = replayProps?.sessionId ?? ""
-      this.scene.findObject("txt_replay_session_id").setValue(replaySessionId)
     }
+    this.publishSession(replayProps?.sessionId ?? "")
+    spectatorCameraTarget.set(null)
+    isReplaySystemWindowOpened.set(false)
 
     this.funcSortPlayersSpectator = this.mpstatSortSpectator.bindenv(this)
     this.funcSortPlayersDefault   = mpstat_get_sort_func(this.gameType)
+    this.teammateStatIds = getSpectatorTeammateStatIds()
+    spectatorTeams.set(null)
 
     g_hud_live_stats.init(this.scene, "spectator_live_stats_nest", false)
 
     this.onUpdate()
     this.scene.findObject("update_timer").setUserData(this)
 
-    this.updateClientHudOffset()
-    this.fillAnchorsMarkers()
-
-    let data = handyman.renderCached("%gui/replays/sensorFilterOptions.tpl", sensorFiltersTable)
-
-    this.guiScene.replaceContentFromText(this.scene.findObject("sensorsFiltersNest"), data, data.len(), this)
-    this.scene.findObject("filtersButtons")?.setValue(0)
-
-    foreach (page in sensorFiltersTable.pages) {
-      if (!page?.options)
-        continue
-      foreach ( option in page.options ) {
-        if (option?.comboBox.makeValue)
-          this.scene.findObject(option.comboBox.id)?.setValue(option.comboBox.makeValue())
-      }
-    }
     this.setTacticalMapBackgroundColors()
+  }
+
+  function publishSession(replaySessionId) {
+    let isReplay = this.mode == SPECTATOR_MODE.REPLAY
+    let timeSpeeds = isReplay ? get_time_speeds_list() : [1.0]
+    let hotkeys = {}
+    foreach (id in spectatorToolbarShortcuts)
+      hotkeys[id] <- getShortcutText({
+        shortcuts = getShortcuts([ id ])
+        shortcutId = 0
+        cantBeEmpty = false
+        strip_tags = true
+      })
+    spectatorSession.set({
+      isReplay
+      isReplayCamera = isReplay && !this.gotRefereeRights
+      canSwitchPlane = !isReplay || this.isMultiplayer
+      isTouch = useTouchscreen
+      canControlTimeline = this.canControlTimeline
+      canControlCameras = this.canControlCameras
+      canSeeMissionTimer = this.canSeeMissionTimer
+      canRewind = this.canControlTimeline && hasFeature("replayRewind")
+      hasSystemWindow = isReplay && hasFeature("ReplaySystemWindow")
+      timeSpeedMin = timeSpeeds[0]
+      timeSpeedMax = timeSpeeds.top()
+      timeTotal = this.replayTimeTotal
+      sessionId = isReplay ? replaySessionId : ""
+      hotkeys
+    })
   }
 
   function setTacticalMapPosition(hudUnitType = null) {
@@ -445,32 +272,8 @@ class Spectator (BaseGuiHandlerWT) {
   function onDestroy() {
     this.funcSortPlayersSpectator = null
     this.teams = [ { players = [] }, { players = [] } ]
+    spectatorTeams.set(null)
   }
-
-  function onSensorFilterPageSelect(obj) {
-    this.selectSensorFilterPageByIndex(obj.getValue())
-  }
-
-  function selectSensorFilterPageByIndex(selectIndex) {
-    let pages = sensorFiltersTable.pages
-
-    foreach (pageIndex, page in pages) {
-       showObjById(page.id, selectIndex == pageIndex, this.scene)
-       if (selectIndex == pageIndex)
-         this.scene.findObject("sensorsFiltersLabel")?.setValue(loc(page.label))
-    }
-  }
-
-  function doFilterChange(obj) {
-    setSensorViewFilter( obj.filterId.tointeger(), obj.getValue())
-  }
-
-  
-  
-
-
-
-
 
   function reinitScreen() {
     g_hud_live_stats.update()
@@ -550,12 +353,12 @@ class Spectator (BaseGuiHandlerWT) {
     return player != null && player.team == get_player_army_for_hud()
   }
 
-  function getPlayerNick(player, needColored = false, needClanTag = true) {
+  function getPlayerNick(player, needColored = false, needClanTag = true, needPsnIconTags = true) {
     if (player == null)
       return  ""
     let { name, realName = "", isBot, clanTag } = player
-    local fullName = getPlayerFullName(
-      colorizeWhitePsnIcon(getPlayerName(name)), 
+    let nick = getPlayerName(name) 
+    local fullName = getPlayerFullName(needPsnIconTags ? colorizeWhitePsnIcon(nick) : nick,
       needClanTag && !isBot ? clanTag : "")
     if (this.mode == SPECTATOR_MODE.REPLAY && realName != "" && name != realName)
       fullName = $"{fullName} ({realName})"
@@ -690,7 +493,7 @@ class Spectator (BaseGuiHandlerWT) {
     return (this.actionBarWeak == null) || (nowIsAircraftHud != prevIsAircraftHud)
   }
 
-  function updateTarget(targetSwitched = false, needFocusTargetTable = false) {
+  function updateTarget(targetSwitched = false) {
     let player = this.getTargetPlayer()
     this.lastHudUnitType = getHudUnitType()
     if (targetSwitched) {
@@ -700,66 +503,13 @@ class Spectator (BaseGuiHandlerWT) {
     }
     this.setTacticalMapPosition(this.lastHudUnitType)
 
-    local isFocused = false
-    if (needFocusTargetTable)
-      isFocused = this.selectTargetTeamBlock()
-
     g_hud_live_stats.show(this.isMultiplayer, null, spectatorWatchedHero.id)
     updateActionBar()
 
     this.setTargetInfo(player)
-    return isFocused
   }
 
   function updateControls(targetSwitched = false) {
-    if (this.canControlTimeline) {
-      if (isGamePaused() != this.replayPaused) {
-        this.replayPaused = isGamePaused()
-        this.scene.findObject("ID_REPLAY_PAUSE").findObject("icon")["background-image"] = this.replayPaused ? "#ui/gameuiskin#replay_play.svg" : "#ui/gameuiskin#replay_pause.svg"
-      }
-      if (get_time_speed() != this.replayTimeSpeed) {
-        this.replayTimeSpeed = get_time_speed()
-        this.scene.findObject("txt_replay_time_speed").setValue(format("%.3fx", this.replayTimeSpeed))
-        this.scene.findObject("ID_REPLAY_SLOWER").enable(this.replayTimeSpeed > this.replayTimeSpeedMin)
-        this.scene.findObject("ID_REPLAY_FASTER").enable(this.replayTimeSpeed < this.replayTimeSpeedMax)
-      }
-      if (is_replay_markers_enabled() != this.replayMarkersEnabled) {
-        this.replayMarkersEnabled = is_replay_markers_enabled()
-        this.scene.findObject("ID_REPLAY_SHOW_MARKERS").highlighted = this.replayMarkersEnabled ? "yes" : "no"
-      }
-      let replayTimeCurrent = get_mission_time()
-      this.scene.findObject("txt_replay_time_current").setValue(time.preciseSecondsToString(replayTimeCurrent))
-      let progress = (this.replayTimeTotal > 0) ? (1000 * replayTimeCurrent / this.replayTimeTotal).tointeger() : 0
-      if (progress != this.replayTimeProgress) {
-        this.replayTimeProgress = progress
-        this.scene.findObject("timeline_progress").setValue(this.replayTimeProgress)
-      }
-
-      if (hasFeature("replayRewind")) {
-        let anchors = get_replay_anchors()
-        let curAnchorIdx = this.getCurAnchorIdx(anchors)
-        this.scene.findObject("ID_REPLAY_BACKWARD").enable(curAnchorIdx >= 0)
-        this.scene.findObject("ID_REPLAY_FORWARD").enable(anchors.len() > 0 && (curAnchorIdx + 1) < anchors.len())
-      }
-    }
-
-    if (isSensorViewMode() != this.isSensorViewModeEnabled) {
-      this.isSensorViewModeEnabled = isSensorViewMode()
-      this.scene.findObject("ID_REPLAY_TOGGLE_SENSOR_VIEW").highlighted = this.isSensorViewModeEnabled ? "yes" : "no"
-      showObjById("sensorFilters", this.isSensorViewModeEnabled, this.scene)
-    }
-
-    this.scene.findObject("ID_REPLAY_SYSTEM_WINDOW").highlighted = this.isReplaySystemWindowOpened ? "yes" : "no"
-
-    if (this.canSeeMissionTimer) {
-      this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(get_mission_time(), false))
-    }
-
-    if (is_spectator_rotation_forced() != this.cameraRotationByMouse) {
-      this.cameraRotationByMouse = is_spectator_rotation_forced()
-      this.scene.findObject("ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT").highlighted = this.cameraRotationByMouse ? "yes" : "no"
-    }
-
     if (this.canControlCameras && targetSwitched) {
       let player = this.getTargetPlayer()
       let isValid = player != null
@@ -771,60 +521,16 @@ class Spectator (BaseGuiHandlerWT) {
         [HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER,
           HUD_UNIT_TYPE.HUMAN_DRONE, HUD_UNIT_TYPE.HUMAN_DRONE_HELI
         ])
-      let isFollowCameraBtnActive = isValid && isPlayer &&
+      let isFollowActive = isValid && isPlayer &&
         (this.gotRefereeRights || this.isServerReplay || isAuthor || isAuthorUnknown)
-      enableObjsByTable(this.scene, {
-          ID_CAMERA_DEFAULT           = isValid
-          ID_TOGGLE_FOLLOWING_CAMERA  = isFollowCameraBtnActive
-          ID_REPLAY_CAMERA_OPERATOR   = isValid
-          ID_REPLAY_CAMERA_FLYBY      = isValid
-          ID_REPLAY_CAMERA_WING       = isValid
-          ID_REPLAY_CAMERA_GUN        = isValid
-          ID_REPLAY_CAMERA_RANDOMIZE  = isValid
-          ID_REPLAY_CAMERA_FREE       = isValid
-          ID_REPLAY_CAMERA_FREE_PARENTED = isValid
-          ID_REPLAY_CAMERA_FREE_ATTACHED = isValid
-          ID_REPLAY_CAMERA_HOVER      = isValid && !isAircraft
-      })
+      spectatorCameraTarget.set({ isValid, isFollowActive, isAircraft })
     }
   }
 
-  function statTblGetSelectedPlayer(obj) {
-    let teamNum = getObjIdByPrefix(obj, "table_team")
-    if (!teamNum || (teamNum != "1" && teamNum != "2"))
-      return null
-    let teamIndex = teamNum.tointeger() - 1
-    let players =  this.teams[teamIndex].players
-    let value = obj.getValue()
-    if (value < 0 || value >= players.len())
-      return null
-
-    return players[value]
-  }
-
-  function onPlayerClick(obj) {
-    if (this.ignoreUiInput)
-      return
-
-    this.selectPlayer(this.statTblGetSelectedPlayer(obj), obj)
-  }
-
-  function selectPlayer(player, _tableObj) {
-    if (!player)
-      return
-
-    this.statSelPlayerId[this.teamIdToIndex(player.team)] = player.id
-    this.switchTargetPlayer(player.id)
-  }
-
-  function onPlayerRClick(obj) {
-    let player = this.statTblGetSelectedPlayer(obj)
+  function openPlayerMenu(id, menuPos = null) {
+    let player = this.getPlayer(id)
     if (player)
-      showSessionPlayerRClickMenu(
-        this,
-        player,
-        getLogForBanhammer()
-      )
+      showSessionPlayerRClickMenu(this, player, getLogForBanhammer(), menuPos)
   }
 
   function switchTargetPlayer(id) {
@@ -836,75 +542,22 @@ class Spectator (BaseGuiHandlerWT) {
     this.updateTarget(true)
   }
 
-  function saveLastTargetPlayerData(player) {
-    this.lastTargetData.team = this.teamIdToIndex(player.team)
-    this.lastTargetData.id = player.id
-  }
-
-  function selectTargetTeamBlock() {
-    let player = this.getTargetPlayer()
-    if (!player)
-      return false
-
-    this.saveLastTargetPlayerData(player)
-    this.statSelPlayerId[this.lastTargetData.team] = player.id
-
-    let tblObj = this.getTeamTableObj(player.team)
-    if (!tblObj)
-      return false
-    move_mouse_on_child_by_value(tblObj)
-    return true
-  }
-
-  function selectControlsBlock(_obj) {
-    if (getIsConsoleModeEnabled())
-      this.selectTargetTeamBlock()
-  }
-
-  function onSelectPlayer(obj) {
-    if (this.ignoreUiInput)
-      return
-
-    let player = this.statTblGetSelectedPlayer(obj)
+  function onPlayerActivate(id, menuPos) {
+    let player = this.getPlayer(id)
     if (!player)
       return
-
-    let curPlayer = this.getTargetPlayer()
-    if (getIsConsoleModeEnabled() && u.isEqual(curPlayer, player)) {
-      let selIndex = getObjValidIndex(obj)
-      let selectedPlayerBlock = obj.getChild(selIndex >= 0 ? selIndex : 0)
-      showSessionPlayerRClickMenu(
-        this,
-        player,
-        getLogForBanhammer(),
-        [
-          selectedPlayerBlock.getPosRC()[0] + selectedPlayerBlock.getSize()[0] / 2,
-          selectedPlayerBlock.getPosRC()[1]
-        ]
-      )
+    if (getIsConsoleModeEnabled() && u.isEqual(this.getTargetPlayer(), player)) {
+      this.openPlayerMenu(id, menuPos)
       return
     }
-
-    this.saveLastTargetPlayerData(player)
-    this.selectPlayer(player, obj)
+    this.switchTargetPlayer(player.id)
   }
 
-  function onBtnMpStatScreen(_obj) {
+  function openMpStatScreen() {
     if (this.isMultiplayer)
       guiStartMPStatScreen()
     else
       gui_start_tactical_map()
-  }
-
-  function onBtnShortcut(obj) {
-    let id = checkObj(obj) ? (obj?.id ?? "") : ""
-    if (id.len() > 3 && id.slice(0, 3) == "ID_")
-      toggleShortcut(id)
-  }
-
-  function onBtnCancelReplayDownload() {
-    cancel_loading()
-    this.scene.findObject("replay_paused_block").show(false)
   }
 
   function onMapClick(_obj = null) {
@@ -928,25 +581,6 @@ class Spectator (BaseGuiHandlerWT) {
     let toggle = !toggleObj.isVisible()
     toggleObj.show(toggle)
     obj.toggled = toggle ? "yes" : "no"
-
-
-    this.updateClientHudOffset()
-  }
-
-  function teamIdToIndex(teamId) {
-    foreach (info in this.teams)
-      if (info.teamId == teamId)
-        return info.index
-    return 0
-  }
-
-  function getTableObj(index) {
-    let obj = this.scene.findObject($"table_team{index + 1}")
-    return checkObj(obj) ? obj : null
-  }
-
-  function getTeamTableObj(teamId) {
-    return this.getTableObj(this.teamIdToIndex(teamId))
   }
 
   function getTeamPlayers(teamId) {
@@ -1018,8 +652,6 @@ class Spectator (BaseGuiHandlerWT) {
 
         _teams[i] = {
           active = true
-          index = i
-          teamId = teamId
           players = players
           color = color
           clanTag = this.getTeamClanTag(players)
@@ -1033,83 +665,62 @@ class Spectator (BaseGuiHandlerWT) {
 
       _teams[0] = {
         active = true
-        index = 0
-        teamId = teamId
         players = players
         color = color
         clanTag = isTeamplay ? this.getTeamClanTag(players) : ""
       }
       _teams[1] = {
         active = false
-        index = 1
-        teamId = 0
         players = []
         color = ""
         clanTag = ""
       }
     }
     else {
-      let teamId = 0
       let color = "blue"
-      let players = this.getTeamPlayers(teamId)
+      let players = this.getTeamPlayers(0)
 
       _teams[0] = {
         active = false
-        index = 0
-        teamId = teamId
         players = players
         color = color
         clanTag = ""
       }
       _teams[1] = {
         active = false
-        index = 1
-        teamId = 0
         players = []
         color = ""
         clanTag = ""
       }
     }
-
-    local length = 0
-    foreach (info in _teams)
-      length = max(length, info.players.len())
-    let maxNoScroll = MAX_PLAYERS_VERSUS / 2
-    this.statNumRows = min(maxNoScroll, length)
     return _teams
   }
 
   function updateStats() {
     let _teams = this.getPlayersData()
-    foreach (idx, info in _teams) {
-      let tblObj = this.getTableObj(info.index)
-      if (tblObj) {
-        let infoPrev = this.teams?[idx]
-        if (info.active)
-          this.statTblUpdateInfo(tblObj, info, infoPrev)
-        if (info.active != (infoPrev?.active ?? true)) {
-          tblObj.getParent().getParent().show(info.active)
-          this.scene.findObject($"btnToggleStats{idx + 1}").show(info.active)
-        }
-      }
-    }
+    let prevViews = spectatorTeams.get()
+    let views = []
+    foreach (idx, info in _teams)
+      views.append(this.mkTeamView(info, this.teams?[idx], prevViews?[idx]))
+    if (!u.isEqual(views, prevViews))
+      spectatorTeams.set(views)
     this.teams = _teams
   }
 
-  function addPlayerRows(objTbl, teamInfo) {
-    let totalRows = objTbl.childrenCount()
-    let newRows = teamInfo.players.len() - totalRows
-    if (newRows <= 0)
-      return totalRows
-
-    let iconLeft = teamInfo.index == 0
-    let view = {
-      rows = array(newRows, { statsRows = getSpectatorTeammateStatsMarkup(iconLeft) })
-      iconLeft
-    }
-    let data = handyman.renderCached(("%gui/hud/spectatorTeamRow.tpl"), view)
-    this.guiScene.appendWithBlk(objTbl, data, this)
-    return totalRows
+  function mkTeamView(teamInfo, infoPrev, viewPrev) {
+    let { active, players, color, clanTag } = teamInfo
+    if (!active)
+      return { isActive = false }
+    let prevPlayers = infoPrev?.players
+    let prevRows = viewPrev?.rows
+    let needClanTags = clanTag == ""
+    let rows = []
+    foreach (i, player in players)
+      rows.append(prevRows?[i] != null && !this.isPlayerChanged(player, prevPlayers?[i])
+        ? prevRows[i]
+        : this.mkPlayerRow(player, needClanTags))
+    let view = { isActive = true, color, clanTag, statIds = this.teammateStatIds, rows }
+    return u.isEqual(view, viewPrev) ? viewPrev : view
   }
 
   function isPlayerChanged(p1, p2) {
@@ -1125,121 +736,56 @@ class Spectator (BaseGuiHandlerWT) {
     return false
   }
 
-  function statTblUpdateInfo(objTbl, teamInfo, infoPrev = null) {
-    let players = teamInfo?.players
-    if (!(objTbl?.isValid() ?? false) || !players)
-      return
+  function mkPlayerRow(player, needClanTags) {
+    
+    let playerName = this.getPlayerNick(player, false, true, false)
+    let unitId = player.aircraftName != "" ? player.aircraftName : null
+    let stateDesc = this.getPlayerStateDesc(player)
+    let malfunctionDesc = this.getUnitMalfunctionDesc(player)
+    local tooltip = "".concat(playerName, unitId ? loc("ui/parentheses/space", { text = getUnitName(unitId, false) }) : "",
+      stateDesc != "" ? $"\n{stateDesc}" : "", malfunctionDesc != "" ? $"\n{malfunctionDesc}" : "")
+    if (debugMode)
+      tooltip = "\n\n".concat(tooltip, this.getPlayerDebugTooltipText(player))
 
-    this.guiScene.setUpdatesEnabled(false, false)
+    let briefMalfunctionState = player?.briefMalfunctionState ?? 0
+    let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
+      : getWeaponTypeIcoByWeapon("", "")
+    let weapons = {}
+    foreach (iconId, w in weaponIcons)
+      if (w.icon != "")
+        weapons[iconId] <- {
+          icon = w.icon
+          ratio = w.ratio
+          isReloading = (iconId in weaponIconsReloadBits) && (briefMalfunctionState & weaponIconsReloadBits[iconId]) != 0
+        }
 
-    let prevPlayers = infoPrev?.players
-    let wasRows = this.addPlayerRows(objTbl, teamInfo)
-    let totalRows = objTbl.childrenCount()
+    let battleState =
+      (!player.ingame || player.isDead)                   ? "" :
+      (player?.isExtinguisherActive ?? false)             ? "ExtinguisherActive" :
+      (player?.isBurning ?? false)                        ? "IsBurning" :
+      (briefMalfunctionState & BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
+      (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
+      (briefMalfunctionState & BMS_TRACK_BROKEN)          ? "BrokenTrack" :
+      (briefMalfunctionState & BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
+                                                              ""
 
-    let selPlayerId = this.statSelPlayerId?[teamInfo.index]
-    local selIndex = null
-
-    let needClanTags = (teamInfo?.clanTag ?? "") == ""
-
-    for (local i = 0; i < totalRows; i++) {
-      let player = players?[i]
-      if (i < wasRows && !this.isPlayerChanged(player, prevPlayers?[i]))
-        continue
-
-      let obj = objTbl.getChild(i)
-      obj.show(player != null)
-      if (!player)
-        continue
-
-      let nameObj = obj.findObject("name")
-      if (!checkObj(nameObj)) 
-        continue
-
-      let playerName = this.getPlayerNick(player)
-      let playerNameShort = needClanTags ? playerName : this.getPlayerNick(player, false, false)
-      nameObj.setValue(playerNameShort)
-
-      let unitId = player.aircraftName != "" ? player.aircraftName : null
-      let iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
+    return {
+      id = player.id
+      name = needClanTags ? playerName : this.getPlayerNick(player, false, false, false)
+      unitName = getUnitName(unitId ?? "dummy_plane")
+      tooltip
+      unitIcon = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
         : unitId ? getUnitClassIco(unitId)
         : "#ui/gameuiskin#dead.svg"
-      let iconType = unitId ? getUnitRole(unitId) : ""
-      let stateDesc = this.getPlayerStateDesc(player)
-      let malfunctionDesc = this.getUnitMalfunctionDesc(player)
-
-      obj.hero = player.isLocal ? "yes" : "no"
-      obj.squad = player.isInHeroSquad ? "yes" : "no"
-      obj.dead = player.canBeSwitchedTo ? "no" : "yes"
-      obj.isBot = player.isBot ? "yes" : "no"
-      obj.findObject("unit").setValue(getUnitName(unitId ?? "dummy_plane"))
-      obj.tooltip = "".concat(playerName, unitId ? loc("ui/parentheses/space", { text = getUnitName(unitId, false) }) : "",
-        stateDesc != "" ? $"\n{stateDesc}" : "", malfunctionDesc != "" ? $"\n{malfunctionDesc}" : "")
-
-      if (debugMode)
-        obj.tooltip = "\n\n".concat(obj.tooltip, this.getPlayerDebugTooltipText(player))
-
-      let unitIcoObj = obj.findObject("unit-ico")
-      unitIcoObj["background-image"] = iconImg
-      unitIcoObj.shopItemType = iconType
-
-      let briefMalfunctionState = player?.briefMalfunctionState ?? 0
-      let weaponIcons = (unitId && ("weapon" in player)) ? getWeaponTypeIcoByWeapon(unitId, player.weapon)
-        : getWeaponTypeIcoByWeapon("", "")
-
-      foreach (iconId, w in weaponIcons) {
-        let weaponIcoObj = obj.findObject($"{iconId}-ico")
-        if (!(weaponIcoObj?.isValid() ?? false))
-          continue
-
-        let isVisible = w.icon != ""
-        weaponIcoObj.show(isVisible)
-        if (!isVisible)
-          continue
-
-        let iconSize = $"{w.ratio}@tableIcoSize, @tableIcoSize"
-        weaponIcoObj.size = iconSize
-        weaponIcoObj["background-image"] = w.icon
-        weaponIcoObj["background-svg-size"] = iconSize
-        weaponIcoObj["reloading"] = (iconId in weaponIconsReloadBits)
-          && (briefMalfunctionState & weaponIconsReloadBits[iconId]) != 0 ? "yes" : "no"
-      }
-
-      let battleStateIconClass =
-        (!player.ingame || player.isDead)                   ? "" :
-        (player?.isExtinguisherActive ?? false)             ? "ExtinguisherActive" :
-        (player?.isBurning ?? false)                        ? "IsBurning" :
-        (briefMalfunctionState & BMS_ENGINE_BROKEN)         ? "BrokenEngine" :
-        (briefMalfunctionState & BMS_MAIN_GUN_BROKEN)       ? "BrokenGun" :
-        (briefMalfunctionState & BMS_TRACK_BROKEN)          ? "BrokenTrack" :
-        (briefMalfunctionState & BMS_OUT_OF_AMMO)           ? "OutOfAmmo" :
-                                                                ""
-      obj.findObject("battle-state-ico")["class"] = battleStateIconClass
-
-      let teammateStats = getSpectatorTeammateStats(player)
-      foreach (statId in TEAMMATE_STATS_FIELDS) {
-        let statObj = obj.findObject(statId)
-        if (statObj?.isValid() && teammateStats?[statId] != null)
-          statObj.setValue(teammateStats[statId])
-      }
-
-      if (player.id == selPlayerId)
-        selIndex = i
+      unitColor = unitId ? getUnitClassColor(unitId) : "white"
+      weapons
+      battleState
+      isHero = player.isLocal
+      isBot = player.isBot
+      isSquad = player.isInHeroSquad
+      isDead = !player.canBeSwitchedTo
+      stats = getSpectatorTeammateStats(player)
     }
-
-    if (selIndex != null && objTbl.getValue() != selIndex && objTbl.isFocused()) {
-      this.ignoreUiInput = true
-      objTbl.setValue(selIndex)
-      this.ignoreUiInput = false
-    }
-
-    if (objTbl.team != teamInfo.color)
-      objTbl.team = teamInfo.color
-
-    let headerObj = objTbl.getParent().getParent().findObject("header")
-    if (checkObj(headerObj))
-      headerObj.setValue(teamInfo.clanTag)
-
-    this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function getPlayerDebugTooltipText(player) {
@@ -1258,34 +804,6 @@ class Spectator (BaseGuiHandlerWT) {
 
   function playerStateToString(state) {
     return playerStateToStringMap?[state] ?? $"{state}"
-  }
-
-  function updateClientHudOffset() {
-    this.guiScene.setUpdatesEnabled(true, true)
-    let obj = this.scene.findObject("stats_left")
-    spectator_air_hud_offset_x = (checkObj(obj) && obj.isVisible()) ? obj.getPos()[0] + obj.getSize()[0] : 0
-  }
-
-  function onEventReplayWait(event) {
-    let replayPausedBlockObj = this.scene.findObject("replay_paused_block")
-    if (!replayPausedBlockObj?.isValid())
-      return
-
-    replayPausedBlockObj.show(event.isShow)
-
-    let hasDownloadStatus = "dlCur" in event && "dlTotal" in event && "dlPercent" in event
-    let downloadStatusString = event.isShow && hasDownloadStatus
-      ? loc(
-          "hints/replay_download_status",
-          {
-            downloadedMB = round_by_value(event.dlCur, 0.1),
-            totalMB = round_by_value(event.dlTotal, 0.1),
-            downloadedPercent = round_by_value(event.dlPercent, 0.1)
-          }
-        )
-      : ""
-
-    this.scene.findObject("replay_download_status").setValue(downloadStatusString)
   }
 
   function onPlayerRequestedArtillery(userId) {
@@ -1335,50 +853,6 @@ class Spectator (BaseGuiHandlerWT) {
         }
       }
   }
-
-  function getCurAnchorIdx(anchors) {
-    let count = anchors.len()
-    if (count == 0)
-      return -1
-
-    let replayCurTime = get_mission_time() * 1000
-    return (anchors.findindex(@(v) v > replayCurTime) ?? count) - 1
-  }
-
-  function moveToNextAnchor(directionIdx) {
-    let anchors = get_replay_anchors()
-    let nextIdx = this.getCurAnchorIdx(anchors) + directionIdx
-    if (nextIdx < 0 || nextIdx >= anchors.len())
-      return
-    move_to_anchor(nextIdx)
-  }
-
-  onBtnBackward = @() this.moveToNextAnchor(-1)
-  onBtnForward  = @() this.moveToNextAnchor(1)
-  onAnchorMarkerClick = @(obj) move_to_anchor(obj.id.tointeger())
-
-  function fillAnchorsMarkers() {
-    if (!this.canControlTimeline || !hasFeature("replayRewind"))
-      return
-    let anchors = get_replay_anchors()
-    if (anchors.len() == 0 || this.replayTimeTotal <= 0)
-      return
-
-    let timeTotal = this.replayTimeTotal
-    let data = handyman.renderCached("%gui/replays/replayAnchorMark.tpl", {
-      anchors = anchors.map(function(v, idx) {
-        let anchorTimeS = v / 1000.0
-        return {
-          idx
-          posX = $"{anchorTimeS/timeTotal}pw - 2@dp"
-          tooltip = loc("replay/move_to_time", {
-            time = time.preciseSecondsToString(anchorTimeS) })
-        }
-      })
-    })
-    this.guiScene.replaceContentFromText(this.scene.findObject("timeline_progress"),
-      data, data.len(), this)
-  }
 }
 
 register_gui_handler("Spectator", Spectator)
@@ -1407,25 +881,25 @@ function on_open_replay_system_window() {
   if (!hasFeature("ReplaySystemWindow"))
     return
 
-  let handler = handlersManager.findHandlerClassInScene(Spectator)
-  if (handler) {
-    handler.isReplaySystemWindowOpened = !handler.isReplaySystemWindowOpened
-    if(handler.isReplaySystemWindowOpened)
-      replaySystemWindowOpen()
-    else
-      replaySystemWindowClose()
-  }
+  if (handlersManager.findHandlerClassInScene(Spectator) == null)
+    return
+  isReplaySystemWindowOpened.set(!isReplaySystemWindowOpened.get())
+  if (isReplaySystemWindowOpened.get())
+    replaySystemWindowOpen()
+  else
+    replaySystemWindowClose()
 }
 
 eventbus_subscribe("on_player_requested_artillery", @(p) on_player_requested_artillery(p))
 eventbus_subscribe("on_spectator_tactical_map_request", @(_p) on_spectator_tactical_map_request())
 eventbus_subscribe("on_open_replay_system_window", @(_p) on_open_replay_system_window())
+eventbus_subscribe("spectatorOpenMpStats", @(_) handlersManager.findHandlerClassInScene(Spectator)?.openMpStatScreen())
+eventbus_subscribe("spectatorActivatePlayer",
+  @(p) handlersManager.findHandlerClassInScene(Spectator)?.onPlayerActivate(p.id, p?.menuPos))
+eventbus_subscribe("spectatorPlayerMenu", @(p) handlersManager.findHandlerClassInScene(Spectator)?.openPlayerMenu(p.id))
 
-eventbus_subscribe("replayWait", function (event) {
-  broadcastEvent("ReplayWait", event)
-})
 eventbus_subscribe("replayCommentsReady", @(_) restoreReplayScriptCommentsBlk("", true))
 
-registerRespondent("onGetSpectatorAirHudOffsetX", @() spectator_air_hud_offset_x)
+registerRespondent("onGetSpectatorAirHudOffsetX", @() spectatorAirHudOffsetX.get())
 
 return freeze({ Spectator })

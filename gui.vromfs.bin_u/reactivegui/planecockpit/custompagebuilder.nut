@@ -33,26 +33,11 @@ let europeanAviaHorizont = createScriptComponentWithPos("%rGui/planeCockpit/inst
 let mfdYak130Horizont = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/MfdYak130Horizont.das", { fontId = Fonts.ils31, fontSize = 16, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask_2.avif") })
 let mfdYak130Compass = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdYak130Compass.das", { fontId = Fonts.ils31, fontSize = 16 })
 let mfdYak130Kab = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdYak130Kab.das", { fontId = Fonts.ils31, fontSize = 16 })
-let f101Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/F101Radar.das", {
-  fontId = Fonts.hud
-})
-let mfdF3h2Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF3h2Radar.das", {
-  fontId = Fonts.hud
-})
 let mfdMig21Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdMig21Radar.das", {
   fontId = Fonts.ussr_ils
 })
-let mfdF104Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF104Radar.das", {
-  fontId = Fonts.hud
-})
 let mfdF102Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF102Radar.das", {
   fontId = Fonts.hud
-})
-let mfdF1Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF1Radar.das", {
-  fontId = Fonts.ils31
-})
-let mfdMirageF1Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdMirageF1Radar.das", {
-  fontId = Fonts.ils31
 })
 let mfdMig29additionalAH = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMig29additionalAH.das", { fontId = Fonts.hud, fontSize = 14, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
 let m346FaWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdM346FaWpn.das", { fontId = Fonts.hud })
@@ -276,13 +261,8 @@ let pageByName = {
   mfdYak130Horizont,
   mfdYak130Compass,
   mfdYak130Kab,
-  f101Radar,
-  mfdF3h2Radar,
   mfdMig21Radar,
-  mfdF104Radar,
   mfdF102Radar,
-  mfdF1Radar,
-  mfdMirageF1Radar,
   hsiPage,
   f16cAttitude,
   mfdOraoInstruments,

@@ -2073,6 +2073,13 @@ let RespawnHandler = class (MPStatistics) {
     if (! this.haveRespawnBases)
       return { text = loc("multiplayer/noRespawnBasesLeft"), id = "no_respawn_bases" }
 
+    let selectedSpawn = this.curSquadRespawnBase ?? this.curZoneRespawnBase ?? this.curRespawnBase
+    if (!(selectedSpawn?.strongpointsHeld ?? true))
+      return { text = loc("multiplayer/strongpointsNotHeldForSpawn"), id = "strongpoints_not_held_for_spawn" }
+
+    if (!(selectedSpawn?.hasEnoughSupplies ?? true))
+      return { text = loc("multiplayer/notEnoughSuppliesForSpawn"), id = "not_enough_supplies_for_spawn" }
+
     if (!(this.curSquadRespawnBase?.isAvailable ?? true))
       return { text = loc("multiplayer/squadRespawnUnavailable"), id = "squad_respawn_unavaliable" }
 
@@ -2386,6 +2393,17 @@ let RespawnHandler = class (MPStatistics) {
         if (reqUnitSpawnRageTokens > 0) {
           isAvailResp = isAvailResp && reqUnitSpawnRageTokens <= this.curSpawnRageTokens
           costTextArr.append(loc("shop/spawnScore", { cost = reqUnitSpawnRageTokens }))
+        }
+
+        let selectedSpawn = this.curSquadRespawnBase ?? this.curZoneRespawnBase ?? this.curRespawnBase
+        if (!(selectedSpawn?.strongpointsHeld ?? true)) {
+          isAvailResp = false
+          costTextArr.append(loc("respawn/strongpointsNotHeld"))
+        }
+
+        if (!(selectedSpawn?.hasEnoughSupplies ?? true)) {
+          isAvailResp = false
+          costTextArr.append(loc("respawn/notEnoughSupplies"))
         }
 
         if (!(this.curSquadRespawnBase?.isAvailable ?? true)) {
@@ -3617,6 +3635,18 @@ ecs.register_es("zone_spawner_block_", {
 }, {
   comps_ro = [["infantry_spawn__zoneName", ecs.TYPE_STRING]],
   comps_track = [["infantry_spawn__owningTeam", ecs.TYPE_INT], ["capzone__hasEnemyInside", ecs.TYPE_BOOL], ["infantry_spawn__hasEnoughSuppliesForSpawn", ecs.TYPE_BOOL]]
+})
+
+ecs.register_es("supply_node_spawn_block_", {
+  [["onChange"]] = function(_eid, _comp) {
+    broadcastEvent("ZoneSpawnsChanged")
+  }
+}, {
+  comps_ro = [["capture_zone__zoneId", ecs.TYPE_INT]],
+  comps_track = [
+    ["supply_node__points", ecs.TYPE_INT],
+    ["sectored_capzone__strongpointsHeld", ecs.TYPE_BOOL, true]
+  ]
 })
 
 ecs.register_es("selected_human_weight_es", {

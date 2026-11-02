@@ -98,15 +98,16 @@ function mkListPart(unlocks) {
 }
 
 let emptyPart = mkListPart([])
-local charPart = emptyPart
-local charAddedRows = []
-local charAddedPart = emptyPart
-local personalPart = emptyPart
-local regionalPart = emptyPart
-let getParts = @() [charPart, charAddedPart, personalPart, regionalPart]
-
-local isCacheValid = false
-local isClearPending = false
+let cacheState = persist("cacheState", @() {
+  charPart = emptyPart
+  charAddedRows = []
+  charAddedPart = emptyPart
+  personalPart = emptyPart
+  regionalPart = emptyPart
+  isCacheValid = false
+  isClearPending = false
+})
+let getParts = @() [cacheState.charPart, cacheState.charAddedPart, cacheState.personalPart, cacheState.regionalPart]
 
 function cacheCharUnlocks() {
   let blk = get_unlocks_blk()
@@ -128,16 +129,16 @@ function cacheCharUnlocks() {
     ids[row.id] <- true
     rows.append(row)
   }
-  charPart = mkCharPart(rows, hasDupIds, hasAllUnlockables)
-  charAddedRows = []
-  charAddedPart = emptyPart
+  cacheState.charPart = mkCharPart(rows, hasDupIds, hasAllUnlockables)
+  cacheState.charAddedRows = []
+  cacheState.charAddedPart = emptyPart
 }
 
 
 function addUpdatedCharUnlocks(updatedIds) {
   let newIds = {}
   foreach (id in updatedIds)
-    if (charPart.findById(id) == null && charAddedPart.findById(id) == null)
+    if (cacheState.charPart.findById(id) == null && cacheState.charAddedPart.findById(id) == null)
       newIds[id] <- true
   if (newIds.len() == 0)
     return
@@ -153,15 +154,15 @@ function addUpdatedCharUnlocks(updatedIds) {
       addedRowById[row.id].__update(row)
     else {
       addedRowById[row.id] <- row
-      charAddedRows.append(row)
+      cacheState.charAddedRows.append(row)
     }
   }
   if (addedRowById.len() > 0)
-    charAddedPart = mkCharPart(charAddedRows, false, false)
+    cacheState.charAddedPart = mkCharPart(cacheState.charAddedRows, false, false)
 }
 
 function updateCacheCharUnlocks() {
-  if (charPart.len == 0) {
+  if (cacheState.charPart.len == 0) {
     cacheCharUnlocks()
     return
   }
@@ -174,13 +175,13 @@ function updateCacheCharUnlocks() {
 }
 
 function applyPendingClear() {
-  if (!isClearPending)
+  if (!cacheState.isClearPending)
     return
-  isClearPending = false
-  charPart = emptyPart
-  charAddedRows = []
-  charAddedPart = emptyPart
-  personalPart = emptyPart
+  cacheState.isClearPending = false
+  cacheState.charPart = emptyPart
+  cacheState.charAddedRows = []
+  cacheState.charAddedPart = emptyPart
+  cacheState.personalPart = emptyPart
 }
 
 local frameMemo = null
@@ -198,27 +199,27 @@ function getFrameMemo() {
 }
 
 function cache() {
-  if (isCacheValid)
+  if (cacheState.isCacheValid)
     return
 
-  isCacheValid = true
+  cacheState.isCacheValid = true
   frameMemo = null
   applyPendingClear()
   updateCacheCharUnlocks()
   if (!isProfileReceived.get())
     return
 
-  personalPart = mkListPart(get_personal_unlocks_blk() % "unlockable")
+  cacheState.personalPart = mkListPart(get_personal_unlocks_blk() % "unlockable")
 }
 
 function invalidateCache() {
-  isCacheValid = false
+  cacheState.isCacheValid = false
   broadcastEvent("UnlocksCacheInvalidate")
 }
 
 
 function clearProfileCachesSilent() {
-  isClearPending = true
+  cacheState.isClearPending = true
 }
 
 function clearProfileCaches() {
@@ -252,7 +253,7 @@ function getUnlocksByTypeInBlkOrder(typeName) {
     let unlocks = part.unlocksWhere(qByType, params)
     if (part.isChar && !part.hasDupIds)
       foreach (i, id in qIdsByType.all(part.index, params))
-        if (id not in byId && regionalPart.findById(id) == null && personalPart.findById(id) == null)
+        if (id not in byId && cacheState.regionalPart.findById(id) == null && cacheState.personalPart.findById(id) == null)
           byId[id] <- unlocks[i]
     res.extend(unlocks)
   }
@@ -290,18 +291,18 @@ function getUnlockById(unlockId) {
     return null
   let { byId } = getFrameMemo()
   if (unlockId not in byId)
-    byId[unlockId] <- regionalPart.findById(unlockId) ?? personalPart.findById(unlockId)
-      ?? charAddedPart.findById(unlockId) ?? charPart.findById(unlockId)
+    byId[unlockId] <- cacheState.regionalPart.findById(unlockId) ?? cacheState.personalPart.findById(unlockId)
+      ?? cacheState.charAddedPart.findById(unlockId) ?? cacheState.charPart.findById(unlockId)
   return byId[unlockId]
 }
 
 regionalUnlocks.subscribe(function(_) {
   let actualUnlocks = regionalUnlocks.get()
   
-  let unlocks = regionalPart.list.filter(@(unlock) unlock.id in actualUnlocks)
+  let unlocks = cacheState.regionalPart.list.filter(@(unlock) unlock.id in actualUnlocks)
   let cachedIds = {}
   unlocks.each(@(unlock) cachedIds[unlock.id] <- true)
-  local isChanged = unlocks.len() != regionalPart.len
+  local isChanged = unlocks.len() != cacheState.regionalPart.len
   foreach (unlock in actualUnlocks)
     if (unlock.id not in cachedIds) {
       isChanged = true
@@ -313,7 +314,7 @@ regionalUnlocks.subscribe(function(_) {
     return
 
   frameMemo = null
-  regionalPart = mkListPart(unlocks)
+  cacheState.regionalPart = mkListPart(unlocks)
   broadcastEvent("RegionalUnlocksChanged")
 })
 
