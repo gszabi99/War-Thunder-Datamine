@@ -5392,6 +5392,50 @@
       "distSmooth": 0.9
     }
   },
+  "engine07_corsair_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_ai_start",
+      "eventStop": "engine_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine07_corsair_ai",
+      "eventSurround": "",
+      "eventLod1": "engine07_corsair_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine07_cockpit_l",
+      "event_cockpit_r": "engine07_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
   "engine_xf5u1_ai": {
     "effects": {
       "path": "aircraft/engines",
@@ -12527,6 +12571,57 @@
       "eventBack": "engine07",
       "eventSurround": "",
       "eventLod1": "engine07",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine07_cockpit_l",
+      "event_cockpit_r": "engine07_cockpit_r",
+      "event_start_cockpit_l": "engine07_start_cockpit_l",
+      "event_start_cockpit_r": "engine07_start_cockpit_r",
+      "event_stop_cockpit_l": "engine07_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine07_stop_cockpit_r",
+      "event_prop_cockpit_l": "engine07_prop_cockpit_l",
+      "event_prop_cockpit_r": "engine07_prop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine07_corsair": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine07_start",
+      "eventStop": "engine07_stop",
+      "eventProp": "engine07_prop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine07_corsair",
+      "eventSurround": "",
+      "eventLod1": "engine07_corsair",
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
       "loadSmooth": 0.05,

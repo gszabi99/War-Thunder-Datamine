@@ -3445,6 +3445,10 @@
         "blk": "gamedata/flightModels/weaponPresets/mig_27m_bomb_fab500sh.blk"
       },
       {
+        "name": "mig_27m_bomb_rbk_500_ao_2_5rtm",
+        "blk": "gamedata/flightModels/weaponPresets/mig_27m_bomb_rbk_500_ao_2_5rtm.blk"
+      },
+      {
         "name": "mig_27m_kab500kr",
         "blk": "gamedata/flightModels/weaponPresets/mig_27m_kab500kr.blk"
       },
@@ -3941,6 +3945,43 @@
               "blk": "gamedata/weapons/bombguns/su_fab500sh.blk",
               "emitter": "fab_500m_62_001",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_ub32",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "rbk_500_ao_2_5rtm_x2",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_mbd3_u2t_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/mbd3_u2t_rbk_500_ao_2_5rtm_x2.blk",
+              "emitter": "mbd3_u2t_l",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4450,6 +4491,26 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_5",
+                "pylon_5_holder_500"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "fab_500m_62_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4604,6 +4665,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/bombguns/su_fab500sh.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bomb_ub32",
+                "pylon_1_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
@@ -4778,6 +4860,26 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_fueltank",
+                "pylon_fueltank_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "fab_500m_62_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb",
             "showInWeaponMenu": true,
@@ -4829,6 +4931,10 @@
               },
               {
                 "slot": 3,
+                "preset": "rbk_500_ao_2_5rtm"
+              },
+              {
+                "slot": 3,
                 "preset": "zb_500"
               },
               {
@@ -4870,6 +4976,10 @@
               {
                 "slot": 5,
                 "preset": "fab_500sh"
+              },
+              {
+                "slot": 5,
+                "preset": "rbk_500_ao_2_5rtm"
               },
               {
                 "slot": 5,
@@ -5117,6 +5227,27 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_bomb_ub32",
+                "pylon_2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "fab_500m_62_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "zb_500",
             "reqModification": "zb_500",
@@ -5262,6 +5393,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/bombguns/su_ofab250sh.blk",
+              "emitter": "fab_500m_62_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_6",
+                "pylon_6_bomb_ub32",
+                "pylon_6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
@@ -5493,6 +5645,43 @@
               "blk": "gamedata/weapons/bombguns/su_fab500sh.blk",
               "emitter": "fab_500m_62_005",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ao_2_5rtm",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_ub32",
+                "pylon_4_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "fab_500m_62_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "rbk_500_ao_2_5rtm_x2",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_mbd3_u2t_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/mbd3_u2t_rbk_500_ao_2_5rtm_x2.blk",
+              "emitter": "mbd3_u2t_r",
               "external": true,
               "separate": true,
               "machLimit": 1.01

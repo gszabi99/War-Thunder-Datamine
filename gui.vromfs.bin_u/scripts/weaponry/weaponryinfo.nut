@@ -430,6 +430,10 @@ function getWpcostWeaponNameFromBlkPath(weaponBlkPath) {
     : pathParts[0]
 }
 
+function isGameModeRestrictionMatched(economicName, tag, modeKey) {
+  return economicName.indexof(modeKey) != null || tag.indexof(modeKey) != null
+}
+
 function getGameModeRestrictionsMinRank(restrictionsBlk) {
   if (restrictionsBlk == null)
     return 0
@@ -439,8 +443,7 @@ function getGameModeRestrictionsMinRank(restrictionsBlk) {
   local minRank = 0
   for (local i = 0; i < restrictionsBlk.blockCount(); i++) {
     let modeBlk = restrictionsBlk.getBlock(i)
-    let restrictionModeName = modeBlk.getBlockName()
-    if (economicName.indexof(restrictionModeName) != null || tag.indexof(restrictionModeName) != null)
+    if (isGameModeRestrictionMatched(economicName, tag, modeBlk.getBlockName()))
       minRank = max(minRank, modeBlk?.minRank ?? 0)
   }
   return minRank
@@ -489,45 +492,95 @@ function getWeaponGameModeRestrictionsBlk(unit, weapon) {
   return res
 }
 
-function getWeaponBlockedByGameModeMinRank(unit, weapon) {
-  if (!isInFlight() || unit == null || weapon == null)
-    return 0
-  let minRank = getGameModeRestrictionsMinRank(getWeaponGameModeRestrictionsBlk(unit, weapon))
+function getGameModeRestrictionsBlockedMinRank(restrictionsBlk) {
+  let minRank = getGameModeRestrictionsMinRank(restrictionsBlk)
   let sessionMaxRank = get_current_mission_info_cached()?.ranks.max ?? 0
   return (sessionMaxRank > 0 && sessionMaxRank < minRank) ? minRank : 0
 }
 
-function isWeaponAllowedByGameModeRestrictions(unit, weapon) {
-  return getWeaponBlockedByGameModeMinRank(unit, weapon) == 0
+function isBlockedByAllowedModes(restrictionsBlk) {
+  if (restrictionsBlk == null)
+    return false
+  let missionState = get_mission_custom_state(false)
+  let economicName = missionState?.matchingEconomicName ?? ""
+  let tag = missionState?.matchingTag ?? ""
+  if (economicName == "" && tag == "")
+    return false
+  local hasAllowed = false
+  local matchedAllowed = false
+  for (local i = 0; i < restrictionsBlk.blockCount(); i++) {
+    let modeBlk = restrictionsBlk.getBlock(i)
+    let modeKey = modeBlk.getBlockName()
+    if (modeBlk?.allowed ?? false)
+      hasAllowed = true
+    if (!isGameModeRestrictionMatched(economicName, tag, modeKey))
+      continue
+    if (modeBlk?.allowed ?? false)
+      matchedAllowed = true
+  }
+  return hasAllowed && !matchedAllowed
 }
 
-function getWeaponGameModeRestrictionsRows(unit, weapon) {
+function isWeaponAllowedByGameModeRestrictions(unit, weapon) {
+  if (!isInFlight() || unit == null || weapon == null)
+    return true
+  let restrictionsBlk = getWeaponGameModeRestrictionsBlk(unit, weapon)
+  if (getGameModeRestrictionsBlockedMinRank(restrictionsBlk) > 0)
+    return false
+  return !isBlockedByAllowedModes(restrictionsBlk)
+}
+
+let gameModeRestrictionsModeLoc = {
+  air_arcade = "missions/air_event_arcade"
+  air_realistic = "missions/air_event_historical"
+  air_simulation = "missions/air_event_simulator"
+}
+
+function getWeaponGameModeRestrictionsInfo(unit, weapon) {
   let restrictions = getWeaponGameModeRestrictionsBlk(unit, weapon)
   if (restrictions == null)
     return null
-  let res = []
+  let rows = []
+  let allowedModeNames = []
   for (local i = 0; i < restrictions.blockCount(); i++) {
     let modeBlk = restrictions.getBlock(i)
+    let modeLocId = gameModeRestrictionsModeLoc?[modeBlk.getBlockName()] ?? $"mode/{modeBlk.getBlockName()}"
+    let modeName = loc(modeLocId)
+    if (modeBlk?.allowed ?? false) {
+      allowedModeNames.append(modeName)
+      continue
+    }
     let minRank = modeBlk?.minRank ?? 0
     if (minRank <= 0)
       continue
-    res.append({
-      modeName = loc($"mode/{modeBlk.getBlockName()}")
+    rows.append({
+      modeName
       brText = loc("weaponry/gameModeRestrictions/br", { br = format("%.1f", calcBattleRatingFromRank(minRank)) })
     })
   }
-  return res.len() > 0 ? res : null
+  if (rows.len() == 0 && allowedModeNames.len() == 0)
+    return null
+  return {
+    rows = rows.len() > 0 ? rows : null
+    allowedModesText = allowedModeNames.len() > 0 ? loc("ui/comma").join(allowedModeNames) : null
+  }
 }
 
 function getWeaponBlockedByGameModeText(unit, weapon) {
-  let blockedMinRank = getWeaponBlockedByGameModeMinRank(unit, weapon)
-  if (blockedMinRank <= 0)
+  if (!isInFlight() || unit == null || weapon == null)
     return ""
-  let sessionMaxRank = get_current_mission_info_cached()?.ranks.max ?? 0
-  return loc("multiplayer/weaponUnavailableInMode", {
-    minSessionRank = format("%.1f", calcBattleRatingFromRank(blockedMinRank))
-    sessionRank = format("%.1f", calcBattleRatingFromRank(sessionMaxRank))
-  })
+  let restrictionsBlk = getWeaponGameModeRestrictionsBlk(unit, weapon)
+  let blockedMinRank = getGameModeRestrictionsBlockedMinRank(restrictionsBlk)
+  if (blockedMinRank > 0) {
+    let sessionMaxRank = get_current_mission_info_cached()?.ranks.max ?? 0
+    return loc("multiplayer/weaponUnavailableInMode", {
+      minSessionRank = format("%.1f", calcBattleRatingFromRank(blockedMinRank))
+      sessionRank = format("%.1f", calcBattleRatingFromRank(sessionMaxRank))
+    })
+  }
+  if (isBlockedByAllowedModes(restrictionsBlk))
+    return loc("multiplayer/weaponUnavailableByGameMode")
+  return ""
 }
 
 let mrankReqModCache = {}
@@ -1628,8 +1681,7 @@ return freeze({
   isMissileBullet
   isGuidedBomb
   isWeaponUnavailableInMission
-  getWeaponGameModeRestrictionsRows
-  getWeaponBlockedByGameModeMinRank
+  getWeaponGameModeRestrictionsInfo
   isWeaponAllowedByGameModeRestrictions
   getWeaponBlockedByGameModeText
   isItemMrankLocked

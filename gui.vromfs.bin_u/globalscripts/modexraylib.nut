@@ -536,6 +536,10 @@ function mkTransmissionDesc(_partType, _params, commonData) {
     desc.append("".concat(model,
       props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
+    let steerTypeName = info?.steerType ? loc($"transmission_steer_type/{info.steerType}", "") : ""
+    if (steerTypeName != "")
+      desc.append("".concat(loc("xray/transmission/steerType"), colon, steerTypeName))
+
     let maxSpeed = getProp_maxSpeed(commonData)
     if (maxSpeed != 0 && info?.gearRatios) {
       let devMode = !!getXrayDevMode()

@@ -355,7 +355,7 @@ def team_grouping_zones_update_zones(info : ParallelUpdateFrameDelayed;
         zonePos.x += pos.x
         zonePos.y += pos.z
       if !gotMember
-        error("MEMBER {memberIdx} eid={memberEid} EXCLUDED FROM GROUP {zoneIdx} OF TEAM {team__id} ~ gotMember FALSE")
+        
         free_grouping_zone_member_iter(zoneData, memberIdx, prevMemberIdx, nextMemberIdx, team_grouping_members__next, team_grouping_members__free)
       prevMemberIdx = memberIdx
       memberIdx = nextMemberIdx

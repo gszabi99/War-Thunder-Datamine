@@ -8,7 +8,7 @@ from "%scripts/weaponry/bulletsInfo.nut" import isBullets, isWeaponTierAvailable
   , getBulletsSetData, isPairBulletsGroup
 from "%scripts/weaponry/bulletsVisual.nut" import addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets, checkBulletParamsBeforeRender
 from "%scripts/weaponry/weaponryInfo.nut" import WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk
-  , getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes, getWeaponGameModeRestrictionsRows, isItemMrankLocked, isWeaponBlkPathMrankLocked, getMrankLockText
+  , getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes, getWeaponGameModeRestrictionsInfo, isItemMrankLocked, isWeaponBlkPathMrankLocked, getMrankLockText
 from "%scripts/weaponry/weaponryDescription.nut" import getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData
 from "%scripts/weaponry/infantryWeapons.nut" import getPresetCompositionViewParams
 from "%scripts/weaponry/infantryArmor.nut" import getUnitArmorData, getArmorIconViewData
@@ -208,11 +208,12 @@ function getTierTooltipParams(weaponry, presetName, tierId) {
 }
 
 function addGameModeRestrictionsToDescTbl(descTbl, unit, weaponOrBlkPath) {
-  let gameModeRestrictionsRows = getWeaponGameModeRestrictionsRows(unit, weaponOrBlkPath)
-  if (gameModeRestrictionsRows != null)
+  let gameModeRestrictions = getWeaponGameModeRestrictionsInfo(unit, weaponOrBlkPath)
+  if (gameModeRestrictions != null)
     descTbl.gameModeRestrictions <- {
       gameModeRestrictionsTitle = loc("weaponry/gameModeRestrictions/header")
-      gameModeRestrictionsParams = gameModeRestrictionsRows
+      gameModeRestrictionsParams = gameModeRestrictions.rows
+      gameModeRestrictionsAllowedModesText = gameModeRestrictions.allowedModesText
     }
 }
 

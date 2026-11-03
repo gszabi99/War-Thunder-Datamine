@@ -20,7 +20,7 @@ from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%scripts/sqDagui/daguiUtil.nut" import toPixels, getObjValidIndex
 from "%scripts/weaponry/weaponryDescription.nut" import getWeaponNameText
-from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets, getWeaponByName, getWeaponBlockedByGameModeMinRank, getWeaponBlockedByGameModeText, getItemMrankReqAddMrank, isMrankAddLocked
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets, getWeaponByName, isWeaponAllowedByGameModeRestrictions, getWeaponBlockedByGameModeText, getItemMrankReqAddMrank, isMrankAddLocked
 from "%scripts/unit/unitMrankSelectionState.nut" import getUnitSelectedBattleRating
 from "%scripts/weaponry/bulletsInfo.nut" import getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames
 from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
@@ -185,10 +185,8 @@ function getUnitWeightKey(unitName, weaponName) {
   return $"{unitName}#{weaponName}"
 }
 
-function getSelectedWeaponBlockedByGameModeMinRank(unit) {
-  if (unit == null)
-    return 0
-  return getWeaponBlockedByGameModeMinRank(unit, getWeaponByName(unit, getLastWeapon(unit.name)))
+function isSelectedWeaponAllowedByGameModeRestrictions(unit) {
+  return isWeaponAllowedByGameModeRestrictions(unit, getWeaponByName(unit, getLastWeapon(unit.name)))
 }
 
 function getHumanSpeed(weight) {
@@ -2422,7 +2420,7 @@ let RespawnHandler = class (MPStatistics) {
         infoTextsArr.append(this.missionRules.getRespawnInfoTextForUnit(unit))
         let isRulesRespAvailable = this.missionRules.isRespawnAvailable(unit)
         isAvailResp = isAvailResp && isRulesRespAvailable && !this.isLowNuclearEscalationStage()
-          && getSelectedWeaponBlockedByGameModeMinRank(unit) == 0
+          && isSelectedWeaponAllowedByGameModeRestrictions(unit)
       }
     }
 

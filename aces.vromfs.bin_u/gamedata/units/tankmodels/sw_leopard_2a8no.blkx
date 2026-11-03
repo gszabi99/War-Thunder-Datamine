@@ -1308,6 +1308,14 @@
         }
       },
       {
+        "xrayDmPart": "composite_armor_turret_12_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_12_dm"
+          }
+        }
+      },
+      {
         "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
@@ -1546,20 +1554,20 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 63800.0,
+      "Empty": 65100.0,
       "Fuel": 1500.0,
-      "TakeOff": 65300.0,
+      "TakeOff": 66600.0,
       "momentOfInertia": [
         1.39,
         4.89,
         4.31
       ],
       "CenterOfGravity": [
-        -0.15,
+        -0.55,
         0.5,
         0.0
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 2700.0,
       "CenterOfGravityClampY": [
         0.0,
@@ -1604,7 +1612,7 @@
       "driveGearRadius": 0.312,
       "neutralGearRatio": 17.0,
       "steerType": "double_differential",
-      "mainGearRatio": 4.99,
+      "mainGearRatio": 5.082,
       "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
@@ -2487,16 +2495,16 @@
   },
   "commanderView": {
     "aimModeAvailable": true,
-    "optics": "commander_optics_square",
+    "optics": "commander_optics_round",
     "zoomOutFov": 37.5,
-    "zoomInFov": 9.21,
+    "zoomInFov": 5.03,
     "sightSize": [
-      0.74,
-      0.52
+      0.8,
+      0.8
     ]
   },
   "cockpit": {
-    "zoomOutFov": 18.5,
+    "zoomOutFov": 24.67,
     "zoomInFov": 6.14,
     "sightFov": 8.5,
     "sightName": "emes15",
@@ -3267,6 +3275,10 @@
       "composite_armor_hull_01_dm": {},
       "composite_armor_turret_10_dm": {},
       "composite_armor_turret_11_dm": {},
+      "composite_armor_turret_12_dm": {
+        "armorThickness": 140.0,
+        "cumulativeArmorQuality": 1.0
+      },
       "composite_armor_hull_05_dm": {
         "armorThickness": 100.0
       }
@@ -4147,6 +4159,16 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
+      }
     }
   },
   "commonWeapons": {
@@ -4166,6 +4188,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 40.0,
         "speedPitch": 40.0,
         "fireConeAngle": 1.0,
@@ -4314,7 +4340,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_flame_04",
         "useEmitter": true,
@@ -4445,9 +4471,14 @@
     "120mm_DM_HE_FS_ammo_pack": {},
     "120mm_DM_APDS_FS_ammo_pack": {},
     "laser_rangefinder_lws": {
+      "tier": 4,
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
+        "rangefinderDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
         "distanceError": [
           1.0,
           1.0,
@@ -4489,10 +4520,6 @@
           0.5
         ],
         "rcostAddParam": 0.98,
-        "rangefinderDmPart": [
-          "fire_control_system_dm",
-          "fire_control_system_01_dm"
-        ],
         "sensors": {
           "sensor": [
             {
@@ -4525,6 +4552,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 40.0,
               "speedPitch": 40.0,
               "fireConeAngle": 1.0,
@@ -4673,7 +4704,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gamedata/weapons/groundModels_weapons/7_92mm_MG3_user_machinegun.blk",
+              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_flame_04",
               "useEmitter": true,
@@ -4878,5 +4909,17 @@
         }
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   }
 }

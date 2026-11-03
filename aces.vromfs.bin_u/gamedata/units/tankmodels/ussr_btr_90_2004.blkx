@@ -1731,7 +1731,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
@@ -2273,9 +2276,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 20220.0,
+      "Empty": 21800.0,
       "Fuel": 700.0,
-      "TakeOff": 20920.0,
+      "TakeOff": 22500.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -4025,6 +4028,10 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
+        "rangefinderDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
         "distanceError": [
           1.0,
           1.0,
@@ -4066,7 +4073,6 @@
           0.5
         ],
         "rcostAddParam": 0.98,
-        "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": [
             {

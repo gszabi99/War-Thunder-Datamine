@@ -317,11 +317,15 @@ let InstantDomination = class (BaseGuiHandlerWT) {
             : "")
 
       if (g_squad_manager.isSquadMember()) {
-        let leaderBR = g_squad_manager.getLeaderBattleRating()
-        if (currentEvent)
-          name = events.getEventNameText(currentEvent)
-        if (leaderBR > 0)
-          name = "".concat(name, loc("mainmenu/BR", { br = format("%.1f", leaderBR) }))
+        if (g_squad_manager.isSquadLeaderInLobby())
+          name = loc("squad/leader_in_lobby")
+        else {
+          let leaderBR = g_squad_manager.getLeaderBattleRating()
+          if (currentEvent)
+            name = events.getEventNameText(currentEvent)
+          if (leaderBR > 0)
+            name = "".concat(name, loc("mainmenu/BR", { br = format("%.1f", leaderBR) }))
+        }
       }
     }
     else
@@ -579,6 +583,10 @@ let InstantDomination = class (BaseGuiHandlerWT) {
 
   function setSquadReadyFlag() {
     if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT) {
+      if (g_squad_manager.isSquadLeaderInLobby()) {
+        g_squad_manager.setReadyFlag(true)
+        return
+      }
       
       if (!g_squad_manager.isMeReady()) {
         let leaderEvent = events.getEvent(g_squad_manager.getLeaderGameModeId())
@@ -884,8 +892,13 @@ let InstantDomination = class (BaseGuiHandlerWT) {
           isCancel = false
         }
         else {
-          txt = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
-          isCancel = isReady
+          if (g_squad_manager.isSquadLeaderInLobby()) {
+            txt = loc("squad/enter_lobby")
+            isCancel = false
+          } else {
+            txt = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
+            isCancel = isReady
+          }
         }
       }
       else {

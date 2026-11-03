@@ -518,10 +518,10 @@
       "armorThickness": 10.0,
       "armorClass": "car_wheels",
       "wheel_support_dm": {},
-      "wheel_l_drive_dm": {},
-      "wheel_l_front_dm": {},
-      "wheel_r_drive_dm": {},
-      "wheel_r_front_dm": {},
+      "wheel_l_01_dm": {},
+      "wheel_l_02_dm": {},
+      "wheel_r_01_dm": {},
+      "wheel_r_02_dm": {},
       "ex_decor_08_dm": {}
     },
     "gun": {
@@ -2223,11 +2223,13 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
+        "yawSpdLowBattery": 60.0,
+        "pitchSpdLowBattery": 20.0,
         "fireConeAngle": [
           1.0,
           5.0
         ],
-        "bullets": 400,
+        "bullets": 660,
         "ChainfireTime": 1.0,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -2244,7 +2246,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_01",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm",
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm",
           "linkedAnimPart": [
             {
               "verNode": "bone_gun_piston_01",
@@ -2315,11 +2318,13 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
+        "yawSpdLowBattery": 60.0,
+        "pitchSpdLowBattery": 20.0,
         "fireConeAngle": [
           1.0,
           5.0
         ],
-        "bullets": 400,
+        "bullets": 660,
         "ChainfireTime": 1.0,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -2336,7 +2341,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
           "yaw": [
@@ -2383,11 +2389,13 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
+        "yawSpdLowBattery": 60.0,
+        "pitchSpdLowBattery": 20.0,
         "fireConeAngle": [
           1.0,
           5.0
         ],
-        "bullets": 400,
+        "bullets": 660,
         "ChainfireTime": 1.0,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -2404,7 +2412,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_03",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
           "yaw": [
@@ -2451,11 +2460,13 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
+        "yawSpdLowBattery": 60.0,
+        "pitchSpdLowBattery": 20.0,
         "fireConeAngle": [
           1.0,
           5.0
         ],
-        "bullets": 400,
+        "bullets": 660,
         "ChainfireTime": 1.0,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -2472,7 +2483,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_04",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
           "yaw": [
@@ -3904,9 +3916,9 @@
       -9.1
     ],
     "headPosOnShooting": [
-      -0.4,
-      3.4,
-      -0.65
+      -2.3,
+      3.5,
+      -0.5
     ],
     "zoomOutFov": 40.0,
     "zoomInFov": 21.0,
@@ -3916,6 +3928,100 @@
   },
   "optics": {
     "driverReticule": "car_driver_optics"
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 100
+        },
+        "ammo_body_02_dm": {
+          "count": 100
+        },
+        "ammo_body_03_dm": {
+          "count": 100
+        },
+        "ammo_body_04_dm": {
+          "count": 100
+        },
+        "ammo_body_05_dm": {
+          "count": 100
+        },
+        "ammo_body_06_dm": {
+          "count": 100
+        },
+        "ammo_body_07_dm": {
+          "count": 100
+        },
+        "ammo_body_08_dm": {
+          "count": 100
+        },
+        "ammo_body_09_dm": {
+          "count": 100
+        },
+        "ammo_body_10_dm": {
+          "count": 100
+        },
+        "ammo_body_11_dm": {
+          "count": 100
+        },
+        "ammo_body_12_dm": {
+          "count": 100
+        },
+        "ammo_body_13_dm": {
+          "count": 100
+        },
+        "ammo_body_14_dm": {
+          "count": 100
+        },
+        "ammo_body_15_dm": {
+          "count": 100
+        },
+        "ammo_body_16_dm": {
+          "count": 100
+        },
+        "ammo_body_17_dm": {
+          "count": 100
+        },
+        "ammo_body_19_dm": {
+          "count": 100
+        },
+        "ammo_body_20_dm": {
+          "count": 100
+        },
+        "ammo_body_21_dm": {
+          "count": 100
+        },
+        "ammo_body_22_dm": {
+          "count": 100
+        },
+        "ammo_body_23_dm": {
+          "count": 100
+        },
+        "ammo_body_24_dm": {
+          "count": 100
+        },
+        "ammo_body_18_dm": {
+          "count": 100
+        },
+        "ammo_turret_03_dm": {
+          "count": 80
+        },
+        "ammo_turret_02_dm": {
+          "count": 80
+        },
+        "ammo_turret_01_dm": {
+          "count": 80
+        }
+      }
+    }
   },
   "modifications": {
     "new_wheels": {},

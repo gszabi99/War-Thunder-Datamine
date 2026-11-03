@@ -171,6 +171,15 @@ tdiv {
         <</presetsNames>>
       }
 
+      <<#gameModeRestrictionsAllowedModesText>>
+      textareaNoTab {
+        text:t='<<gameModeRestrictionsAllowedModesText>>'
+        max-width:t='pw'
+        smallFont:t='yes'
+        padding:t='1@bulletTooltipPadding, 1@bulletTooltipPadding'
+      }
+      <</gameModeRestrictionsAllowedModesText>>
+
       <<#gameModeRestrictionsParams>>
       tdiv {
         <<#presetsNames>>

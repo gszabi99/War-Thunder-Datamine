@@ -1325,6 +1325,16 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
+      }
     }
   },
   "dmgAngles": {
@@ -2743,8 +2753,8 @@
             180.0
           ],
           "pitch": [
-            -9.0,
-            20.0
+            -7.4,
+            17.4
           ]
         },
         "limitsTable": {
@@ -2752,19 +2762,19 @@
             -180.0,
             -105.0,
             3.0,
-            20.0
+            17.4
           ],
           "lim2": [
             -105.0,
             105.0,
-            -9.0,
-            20.0
+            -7.4,
+            17.4
           ],
           "lim3": [
             105.0,
             180.0,
             3.0,
-            20.0
+            17.4
           ]
         },
         "gunStabilizer": {
@@ -3101,7 +3111,7 @@
       "driveGearRadius": 0.312,
       "neutralGearRatio": 17.0,
       "steerType": "clutch_braking",
-      "mainGearRatio": 4.99,
+      "mainGearRatio": 4.84,
       "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
@@ -3164,6 +3174,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -4106,8 +4128,8 @@
                   180.0
                 ],
                 "pitch": [
-                  -9.0,
-                  20.0
+                  -7.4,
+                  17.4
                 ]
               },
               "limitsTable": {
@@ -4115,19 +4137,19 @@
                   -180.0,
                   -105.0,
                   3.0,
-                  20.0
+                  17.4
                 ],
                 "lim2": [
                   -105.0,
                   105.0,
-                  -9.0,
-                  20.0
+                  -7.4,
+                  17.4
                 ],
                 "lim3": [
                   105.0,
                   180.0,
                   3.0,
-                  20.0
+                  17.4
                 ]
               },
               "gunStabilizer": {

@@ -212,6 +212,7 @@ g_squad_manager = {
   getSquadMemberNameByUid = @(uid) (g_squad_manager.isInSquad() && uid in getSquadData().members) ?
     getSquadData().members[uid].name : ""
   getSquadRoomId = @() g_squad_manager.getSquadLeaderData()?.sessionRoomId ?? ""
+  isSquadLeaderInLobby = @() g_squad_manager.getSquadRoomId() != ""
   getPresence = @() getByPresenceParams(getSquadData()?.presence ?? {})
 
   function getMembersNotAllowedInWorldWar() {
@@ -1042,6 +1043,9 @@ g_squad_manager = {
     let { isChanged } = memberData.update(receivedMemberData)
     let isMemberVehicleDataChanged = isChanged
       && g_squad_manager.isMemberDataVehicleChanged(currentMemberData, memberData)
+    let isLeaderLeftLobby = memberData.uid == g_squad_manager.getLeaderUid()
+      && (currentMemberData?.sessionRoomId ?? "") != ""
+      && memberData.sessionRoomId == ""
     let contact = getContact(memberData.uid, memberData.name)
     contact.online = online
     memberData.online = online
@@ -1057,6 +1061,8 @@ g_squad_manager = {
       if (canInviteIntoSession() && memberData.canJoinSessionRoom())
         invitePlayerToSessionRoom(memberData.uid)
     }
+    else if (isLeaderLeftLobby && !isInSessionRoom.get() && !isAnyQueuesActive())
+      g_squad_manager.setReadyFlag(false)
 
     g_squad_manager.joinSquadChatRoom()
 

@@ -87,29 +87,14 @@
       "turret_01_back_dm": {
         "armorThickness": 30.0
       },
-      "turret_02_back_dm": {
-        "armorThickness": 10.0,
-        "hidableInViewer": true
-      },
-      "turret_03_back_dm": {
-        "armorThickness": 10.0,
-        "hidableInViewer": true
-      },
       "turret_03_top_dm": {
         "armorThickness": 12.0
       },
       "turret_06_front_dm": {
         "armorThickness": 17.0
       },
-      "turret_05_back_dm": {
-        "armorThickness": 10.0,
-        "hidableInViewer": true
-      },
       "turret_01_front_dm": {
         "armorThickness": 29.0
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 50.0
       },
       "turret_04_front_dm": {
         "armorThickness": 10.0,
@@ -142,13 +127,14 @@
         "armorThickness": 29.0
       },
       "turret_02_front_dm": {
-        "armorThickness": 25.4,
+        "armorThickness": 35.0,
         "ignoreSolidDimension": true,
         "hidableInViewer": true
       },
       "composite_armor_hull_01_dm": {
         "armorThickness": 100.0,
         "armorClass": "leopard_2a5_turret_nera",
+        "armorQuality": 1.322,
         "genericArmorQuality": 0.35,
         "cumulativeArmorQuality": 0.825,
         "hidableInXrayViewer": true
@@ -185,7 +171,8 @@
         "armorClass": "CHA_tank_modern"
       },
       "turret_03_front_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 30.0,
+        "ignoreSolidDimension": true
       },
       "gun_barrel_armor_dm": {
         "armorThickness": 30.0
@@ -206,9 +193,15 @@
         "armorThickness": 20.0
       },
       "turret_06_top_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 15.0
       },
       "turret_04_back_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_03_back_dm": {
+        "armorThickness": 35.0
+      },
+      "turret_02_back_dm": {
         "armorThickness": 20.0
       },
       "turret_02_bottom_dm": {
@@ -220,6 +213,16 @@
       "turret_09_top_dm": {
         "armorThickness": 20.0
       },
+      "turret_back_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_05_back_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 25.0,
+        "hidableInViewer": true
+      },
       "gun_mask_01_dm": {
         "armorThickness": 10.0,
         "hidableInViewer": true
@@ -228,13 +231,28 @@
         "armorThickness": 50.0,
         "armorClass": "CHA_tank"
       },
+      "firewall_armor_01_dm": {
+        "armorThickness": 35.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "armorEffectiveThicknessMax": 50.0,
+        "hidableInXrayViewer": true
+      },
       "ex_armor_turret_r_01_dm": {
+        "armorClass": "hull_side_special_armor",
         "armorThickness": 30.0,
-        "hidableInViewer": true
+        "hidableInViewer": true,
+        "createSecondaryShatters": false,
+        "genericArmorQuality": 1.125,
+        "cumulativeArmorQuality": 1.75
       },
       "ex_armor_turret_l_01_dm": {
+        "armorClass": "hull_side_special_armor",
         "armorThickness": 30.0,
-        "hidableInViewer": true
+        "hidableInViewer": true,
+        "createSecondaryShatters": false,
+        "genericArmorQuality": 1.125,
+        "cumulativeArmorQuality": 1.75
       },
       "ex_armor_turret_l_02_dm": {
         "armorThickness": 10.0,
@@ -247,12 +265,27 @@
     },
     "xray_parts": {
       "armorClass": "leopard_2a5_turret_nera",
-      "armorThickness": 0.1,
       "createSecondaryShatters": false,
-      "composite_armor_turret_03_dm": {},
-      "composite_armor_turret_04_dm": {},
-      "composite_armor_turret_05_dm": {},
-      "composite_armor_turret_06_dm": {}
+      "composite_armor_turret_03_dm": {
+        "armorThickness": 610.0,
+        "genericArmorQuality": 0.45,
+        "cumulativeArmorQuality": 1.05
+      },
+      "composite_armor_turret_04_dm": {
+        "armorThickness": 610.0,
+        "genericArmorQuality": 0.45,
+        "cumulativeArmorQuality": 1.05
+      },
+      "composite_armor_turret_05_dm": {
+        "armorThickness": 250.0,
+        "genericArmorQuality": 0.43,
+        "cumulativeArmorQuality": 1.05
+      },
+      "composite_armor_turret_06_dm": {
+        "armorThickness": 250.0,
+        "genericArmorQuality": 0.43,
+        "cumulativeArmorQuality": 1.05
+      }
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -281,7 +314,15 @@
       "ex_decor_l_01_dm": {},
       "ex_decor_r_01_dm": {},
       "ex_decor_l_03_dm": {},
-      "ex_decor_r_03_dm": {}
+      "ex_decor_r_03_dm": {},
+      "ex_armor_r_01_dm": {},
+      "ex_armor_l_01_dm": {},
+      "ex_armor_r_02_dm": {},
+      "ex_armor_r_03_dm": {},
+      "ex_armor_r_04_dm": {},
+      "ex_armor_l_02_dm": {},
+      "ex_armor_l_03_dm": {},
+      "ex_armor_l_04_dm": {}
     },
     "body_shields": {
       "armorClass": "tank_structural_steel",
@@ -290,14 +331,6 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "ex_armor_02_dm": {},
-      "ex_armor_r_01_dm": {},
-      "ex_armor_l_01_dm": {},
-      "ex_armor_r_02_dm": {},
-      "ex_armor_r_03_dm": {},
-      "ex_armor_r_04_dm": {},
-      "ex_armor_l_02_dm": {},
-      "ex_armor_l_03_dm": {},
-      "ex_armor_l_04_dm": {},
       "ex_decor_r_05_dm": {},
       "ex_decor_r_12_dm": {},
       "ex_decor_l_07_dm": {},
@@ -307,14 +340,6 @@
         "armorThickness": 5.0
       },
       "turret_02_side_dm": {}
-    },
-    "body_shields_armor": {
-      "armorClass": "RHA_tank",
-      "hp": 500.0,
-      "armorThickness": 6.0,
-      "stopChanceOnDeadPart": 0.0,
-      "createSecondaryShatters": false,
-      "hidableInViewer": true
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -975,6 +1000,15 @@
               "dmPart": "turret_07_bottom_dm"
             }
           ]
+        }
+      },
+      {
+        "xrayDmPart": "firewall_armor_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_01_dm"
+          }
         }
       }
     ]
@@ -2170,7 +2204,15 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3361,15 +3403,6 @@
           "ammo_turret_23_dm": {
             "count": 1
           },
-          "ammo_turret_25_dm": {
-            "count": 1
-          },
-          "ammo_turret_27_dm": {
-            "count": 1
-          },
-          "ammo_turret_26_dm": {
-            "count": 1
-          },
           "ammo_turret_24_dm": {
             "count": 1
           }
@@ -3545,7 +3578,15 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3784,24 +3825,26 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              800,
-              600
+              500,
+              300
             ],
-            "noiseFactor": 0.04
+            "noiseFactor": 0.05
           },
-          "commanderViewThermal": {
+          "commanderViewIr": {
             "resolution": [
               800,
               600
             ],
-            "noiseFactor": 0.04
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
           },
           "driverIr": {
             "resolution": [
-              1200,
-              800
+              800,
+              600
             ],
-            "lightMult": 7.0,
+            "lightMult": 5.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
           }

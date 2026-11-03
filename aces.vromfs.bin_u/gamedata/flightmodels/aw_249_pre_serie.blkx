@@ -1792,17 +1792,17 @@
         "powerButtonIdx": -1
       },
       {
-        "blk": "gamedata/sensors/it_elt_156.blk"
+        "blk": "gamedata/sensors/it_elt_162.blk"
       },
       {
-        "blk": "gamedata/sensors/us_an_aar_60.blk"
+        "blk": "gamedata/sensors/it_mair.blk"
       },
       {
         "blk": "gamedata/sensors/us_flir.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gamedata/sensors/it_ralm-101.blk"
+        "blk": "gamedata/sensors/it_aw_249_lws.blk"
       }
     ]
   },
@@ -1861,104 +1861,235 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
-          "ShowNodes": {
-            "node": "fuse2"
-          },
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gamedata/weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -114.0,
-                  114.0
-                ],
-                "pitch": [
-                  -49.0,
-                  24.0
-                ]
-              }
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "ShowNodes": {
+              "node": "fuse2"
             },
-            {
-              "trigger": "gunner0",
-              "blk": "gamedata/weapons/cannonTM197B.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "turret": [
-                "turret1",
-                {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "barrel": "gun_barrel1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -114.0,
+                    114.0
+                  ],
+                  "pitch": [
+                    -49.0,
+                    24.0
+                  ]
                 }
-              ],
-              "shell": "emtr_shellrejection1",
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "cannon1_dm",
-              "partsDP": "cannon1_dm",
-              "bullets": 500,
-              "recoilOffset": 0.0,
-              "rotationAnimScale": "gun_rotate_01:CRS",
-              "parkInDeadzone": false,
-              "limits": {
-                "yaw": [
-                  -120.0,
-                  120.0
+              },
+              {
+                "trigger": "gunner0",
+                "blk": "gamedata/weapons/cannonTM197B.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "turret": [
+                  "turret1",
+                  {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "barrel": "gun_barrel1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
                 ],
-                "pitch": [
-                  -45.0,
-                  20.0
-                ]
+                "shell": "emtr_shellrejection1",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "cannon1_dm",
+                "partsDP": "cannon1_dm",
+                "bullets": 500,
+                "recoilOffset": 0.0,
+                "rotationAnimScale": "gun_rotate_01:CRS",
+                "parkInDeadzone": false,
+                "limits": {
+                  "yaw": [
+                    -120.0,
+                    120.0
+                  ],
+                  "pitch": [
+                    -45.0,
+                    20.0
+                  ]
+                }
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": true
               }
+            ]
+          },
+          {
+            "name": "default_dircm_common",
+            "ShowNodes": {
+              "node": "fuse2"
             },
-            {
-              "trigger": "countermeasures",
-              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-              "emitter": "emtr_flare3",
-              "bullets": 30,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": true
-            }
-          ]
-        }
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -114.0,
+                    114.0
+                  ],
+                  "pitch": [
+                    -49.0,
+                    24.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner0",
+                "blk": "gamedata/weapons/cannonTM197B.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "turret": [
+                  "turret1",
+                  {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "barrel": "gun_barrel1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                ],
+                "shell": "emtr_shellrejection1",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "cannon1_dm",
+                "partsDP": "cannon1_dm",
+                "bullets": 500,
+                "recoilOffset": 0.0,
+                "rotationAnimScale": "gun_rotate_01:CRS",
+                "parkInDeadzone": false,
+                "limits": {
+                  "yaw": [
+                    -120.0,
+                    120.0
+                  ],
+                  "pitch": [
+                    -45.0,
+                    20.0
+                  ]
+                }
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 30,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "dummy": true,
+                "trigger": "gunner1",
+                "triggerGroup": "machinegun",
+                "blk": "gamedata/weapons/dummy_weapon.blk",
+                "emitter": "emtr_ircm1",
+                "parkInDeadzone": false,
+                "defaultYaw": 0.0,
+                "defaultPitch": -90.0,
+                "speedYaw": 1000.0,
+                "speedPitch": 1000.0,
+                "accelYaw": 4000.0,
+                "accelPitch": 4000.0,
+                "bullets": 1,
+                "showBulletsInHud": false,
+                "turret": {
+                  "head": "emtr_ircm1",
+                  "gun": "emtr_ircm1",
+                  "playerControllable": false
+                },
+                "limits": {
+                  "yaw": [
+                    -180.0,
+                    180.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    50.0
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "index": 1,
@@ -3152,8 +3283,10 @@
       "modClass": "armor",
       "tier": 1
     },
-    "maw_countermeasures_launcher_chaff": {},
-    "MAW_system_heli_false_thermal_targets_large": {
+    "maw_countermeasures_launcher_chaff": {
+      "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm"
+    },
+    "MAW_system_heli_false_thermal_targets_large_dircm": {
       "prevModification": "heli_flak_jacket",
       "deactivationIsAllowed": true,
       "modClass": "armor",
@@ -3162,6 +3295,12 @@
       "invertEnableLogic": false,
       "group": "countermeasures",
       "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "default_dircm_common"
+          }
+        },
         "sensors": {
           "sensor": [
             {
@@ -3170,25 +3309,84 @@
               "powerButtonIdx": -1
             },
             {
-              "blk": "gamedata/sensors/it_elt_156.blk"
+              "blk": "gamedata/sensors/it_elt_162.blk"
             },
             {
-              "blk": "gamedata/sensors/us_an_aar_60.blk"
+              "blk": "gamedata/sensors/it_mair.blk",
+              "ai": true
             },
             {
               "blk": "gamedata/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gamedata/sensors/it_ralm-101.blk"
+              "blk": "gamedata/sensors/it_aw_249_lws.blk"
             }
           ]
+        },
+        "counterMeasures": {
+          "counterMeasure": {
+            "blk": "gamedata/counterMeasures/elt_577.blk",
+            "dmPart": "ircm1_dm",
+            "node": "emtr_ircm1",
+            "turretIndex": 2
+          }
+        },
+        "ActiveProtectionSystem": {
+          "targetHoldTime": 1.5,
+          "selectClosestModule": true,
+          "Module": {
+            "turretNodeName": "emtr_ircm1",
+            "emitter": "emtr_ircm1",
+            "horAngles": [
+              -180.0,
+              180.0
+            ],
+            "verAngles": [
+              -90.0,
+              50.0
+            ],
+            "standbyAngles": [
+              0.0,
+              -90.0
+            ],
+            "parkWhenDisabled": true,
+            "requireSensorDetection": "handoff",
+            "sensorDistance": 8000.0,
+            "maxTargets": 1,
+            "reactionTime": 0.3,
+            "angularRateMax": 4.0,
+            "selfOccludingNodes": {
+              "node": [
+                "fuse_dm",
+                "wing_r_dm",
+                "wing_l_dm",
+                "tail_dm",
+                "cannon1_dm",
+                "gear_r_dm",
+                "gear_l_dm",
+                "gear_c_dm"
+              ]
+            },
+            "targets": {
+              "missile": {
+                "speed": [
+                  50.0,
+                  1000.0
+                ],
+                "size": [
+                  0.05,
+                  0.5
+                ]
+              }
+            }
+          }
         }
       }
     },
     "air_extinguisher": {
       "modClass": "armor",
-      "prevModification": "MAW_system_heli_false_thermal_targets_large",
+      "prevModification": "MAW_system_heli_false_thermal_targets_large_dircm",
       "tier": 4,
       "invertEnableLogic": false
     },
