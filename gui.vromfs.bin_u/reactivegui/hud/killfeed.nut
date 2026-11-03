@@ -1,6 +1,7 @@
 import "%rGui/style/teamColors.nut" as teamColors
 import "%rGui/hud/hudMessageStack.nut" as mkHudMessageStack
 from "%appGlobals/hud/hudMessageStacks.nut" import killFeed
+from "%rGui/components/psnIconEmbed.nut" import psnIconToEmbed, mkPsnIconEmbed
 from "%rGui/globals/ui_library.nut" import *
 
 let feedFontSize = getFontDefHt("tiny_text_hud")
@@ -11,7 +12,8 @@ let mkKillText = @(entry) @() {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_RIGHT
-  text = entry.text
+  text = psnIconToEmbed(entry.text)
+  embed = mkPsnIconEmbed(Fonts.tiny_text_hud, feedFontSize)
   font = Fonts.tiny_text_hud
   fontSize = feedFontSize
   lineSpacing = 2

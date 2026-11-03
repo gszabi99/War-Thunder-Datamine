@@ -3097,4 +3097,5 @@ return freeze({
   getOptionDiffTags
   getOptionSectionTitle
   getOptionIdByObjId
+  isNeuralRenderingSupported
 })

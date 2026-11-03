@@ -359,7 +359,7 @@ function msgEscapeCodesToCssColors(sequence) {
   return ret
 }
 
-function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
+function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0, cb = null) {
   filter = filter == 0 ? BATTLE_LOG_FILTER.ALL : filter
   let lines = []
   for (local i = battleLog.len() - 1; i >= 0 ; i--)
@@ -368,7 +368,8 @@ function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
       if (limit && lines.len() == limit)
         break
     }
-  return "\n".join(lines.reverse(), true)
+  let text = "\n".join(lines.reverse(), true)
+  return cb == null ? text : cb(text)
 }
 
 function getUnitTypeEx(msg, isVictim = false) {

@@ -1,6 +1,6 @@
 from "%scripts/weaponry/weaponryDescription.nut" import getBulletsListHeader
 from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
-from "%scripts/weaponry/bulletsInfo.nut" import setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit, setBulletsOptForRandomUnit, calcBulletLimits
+from "%scripts/weaponry/bulletsInfo.nut" import setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit, setBulletsOptForRandomUnit, calcBulletLimits, getBulletsPerStep
 from "%scripts/weaponry/ammoInfo.nut" import AMMO, getAmmoAmount, isAmmoFree
 from "%scripts/weaponry/savedWeaponry.nut" import getSavedBullets
 from "%scripts/options/optionsExtNames.nut" import USEROPT_BULLETS0, USEROPT_BULLET_COUNT0
@@ -22,6 +22,7 @@ class BulletGroup {
   gunInfo = null
   guns = 1
   cartridgesPerStep = 1
+  bulletsPerStep = 1
   active = false
   canChangeActivity = false
   isForcedAvailable = false
@@ -54,6 +55,7 @@ class BulletGroup {
     if (bulletIdx == null)
       bulletIdx = this.bullets.value
     this.selectedName = this.bullets.values?[bulletIdx] ?? ""
+    this.bulletsPerStep = getBulletsPerStep(this.gunInfo, this.selectedName)
     this.maxCntPerPilon = this.bullets?.maxCntPerPilon[this.selectedName] ?? 1
     let saveValue = this.bullets.saveValues?[this.bullets.value] ?? ""
 
@@ -95,6 +97,7 @@ class BulletGroup {
 
     this.selectedName = bulletName
     this.selectedBullet = null
+    this.bulletsPerStep = getBulletsPerStep(this.gunInfo, this.selectedName)
     if (this.isBulletForRandomUnit)
       setBulletsOptForRandomUnit("USEROPT_BULLETS", this.unit.name, this.groupIndex, this.selectedName)
     else

@@ -57,10 +57,11 @@
       "nvVbBugWorkaround": false,
       "displayName": "",
       "flushOnPresent": false,
-      "refocusOnSwapchainTimeout": false,
       "useGpuDt": false,
       "flipPresent": false,
-      "no_more_d3d9ex_reset_error": false
+      "no_more_d3d9ex_reset_error": false,
+      "flipStallNudge": false,
+      "flipStallNudgeHeartbeat": false
     },
     "dx12": {
       "dumpNewCacheBlk": false
@@ -159,7 +160,8 @@
       "fxDistortionStrength": 1.0,
       "hitCameraFilteringQuality": 1,
       "crashDeformEnabled": false,
-      "cockpitRainDroplets": false
+      "cockpitRainDroplets": false,
+      "volfogQuality": ""
     },
     "sound": {
       "speakerMode": "",
@@ -1576,6 +1578,9 @@
       "distantFogQuality": 1,
       "infantry": {
         "distantFogQuality": 2
+      },
+      "hangar": {
+        "distantFogQuality": 0
       }
     },
     "ultrahigh": {
@@ -1615,6 +1620,9 @@
     "dafx_dynamic_lights": false,
     "bvh_reduced_render": 0.5,
     "water_reflections_reduced_render": 0.75,
+    "vapor_mach_step": 0.2,
+    "vapor_lerx_step": 0.2,
+    "vapor_wings_step": 0.2,
     "screen_area_discard_highres": 4.0,
     "screen_area_discard_thermal": 4.0,
     "screen_area_discard_lowres": 16.0,
@@ -1654,13 +1662,15 @@
       "resolution_quality": 0,
       "dafx_prefab_quality": 0,
       "dafx_shading_quality": 0,
-      "screen_area_discard_scale": 2.0
+      "screen_area_discard_scale": 2.0,
+      "vapor_wings_step": 0.4
     },
     "low": {
       "fx_density_mul": 0.4,
       "dafx_prefab_quality": 1,
       "resolution_quality": 1,
       "screen_area_discard_scale": 1.75,
+      "vapor_wings_step": 0.4,
       "tank": {
         "resolution_quality": 0
       },
@@ -1712,13 +1722,15 @@
       "haze": true,
       "fx_density_mul": 0.8,
       "dafx_prefab_quality": 1,
-      "screen_area_discard_scale": 1.16
+      "screen_area_discard_scale": 1.16,
+      "vapor_wings_step": 0.4
     },
     "ps5_quality": {
       "haze": true,
       "fx_density_mul": 1.0,
       "dafx_prefab_quality": 2,
       "screen_area_discard_scale": 1.0,
+      "vapor_wings_step": 0.4,
       "tank": {
         "dafx_shading_quality": 2
       },
@@ -1738,13 +1750,15 @@
       "haze": true,
       "fx_density_mul": 0.8,
       "dafx_prefab_quality": 1,
-      "screen_area_discard_scale": 1.16
+      "screen_area_discard_scale": 1.16,
+      "vapor_wings_step": 0.4
     },
     "xbs_quality": {
       "haze": true,
       "fx_density_mul": 1.0,
       "dafx_prefab_quality": 2,
       "screen_area_discard_scale": 1.0,
+      "vapor_wings_step": 0.4,
       "tank": {
         "dafx_shading_quality": 2
       },

@@ -402,8 +402,8 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.hideBulletsChoiceBlock = hideBullets
   local pairModName = null
   if (!hideBullets) {
-    let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
-    let { cartridge, bulletsPerStep = 1 } = gunInfo
+    let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon, bulletsPerStep = 1 } = bulGroup
+    let { cartridge } = gunInfo
     let maxVal = maxBulletsCount * maxCntPerPilon
     let curVal = bulletsCount * maxCntPerPilon
     
@@ -817,8 +817,8 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   if (!show || !holderObj)
     return
 
-  let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon } = bulGroup
-  let { cartridge = 1, bulletsPerStep = 1 } = gunInfo
+  let { groupIndex, guns, gunInfo, maxBulletsCount, bulletsCount, maxCntPerPilon, bulletsPerStep = 1 } = bulGroup
+  let { cartridge = 1 } = gunInfo
   let maxVal = maxBulletsCount * maxCntPerPilon
   let curVal = bulletsCount * maxCntPerPilon
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)

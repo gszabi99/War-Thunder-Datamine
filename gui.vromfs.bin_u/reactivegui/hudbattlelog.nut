@@ -3,6 +3,7 @@ import "%rGui/style/fontsState.nut" as fontsState
 import "%rGui/battleLogState.nut" as battleLogState
 import "%rGui/components/hudLog.nut" as hudLog
 import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/components/psnIconEmbed.nut" import psnIconToEmbed, mkPsnIconEmbed
 from "%rGui/globals/ui_library.nut" import *
 
 let logEntryComponent = function (log_entry) {
@@ -12,7 +13,8 @@ let logEntryComponent = function (log_entry) {
       size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      text = log_entry.message
+      text = psnIconToEmbed(log_entry.message)
+      embed = mkPsnIconEmbed(fontsState.get("small"))
       font = fontsState.get("small")
       key = log_entry
       colorTable = teamColors.get()

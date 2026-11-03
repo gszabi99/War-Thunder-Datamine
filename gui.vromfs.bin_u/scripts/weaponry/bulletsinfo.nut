@@ -27,7 +27,7 @@ from "unitCustomization" import set_last_bullets
 from "%sqstd/string.nut" import startsWith, slice
 from "chardResearch" import shopIsModificationPurchased
 from "blkGetters" import get_ranks_blk, get_modifications_blk
-from "weaponUtils" import get_guns_bullets_count_multiplier
+from "weaponUtils" import get_guns_bullets_count_multiplier, get_bullet_set_cartridge
 from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_natives.nut" import is_tier_available
 from "%scripts/unit/unitCalcRequests.nut" import calculateModOrWeaponEffect
@@ -73,6 +73,9 @@ let DEFAULT_PRIMARY_BULLETS_INFO = {
   bulletSetCount            = -1
   cartridgesPerStep         = 1
   bulletsPerStep            = 1
+  weaponBlk                 = null
+  presetWeapon              = null
+  stepGuns                  = null
 }
 
 let BULLETS_LIST_PARAMS = {
@@ -557,6 +560,9 @@ function hasSharedBulletsCount(groupGuns, gunsBulletsCountMultiplier) {
     && groupGuns.findvalue(@(info) gunsBulletsCountMultiplier?[info.blk].groupKey != groupKey) == null
 }
 
+let mkStepGun = @(info, cartridgesPerStep) info.weaponBlk == null ? null
+  : { weaponBlk = info.weaponBlk, presetWeapon = info.presetWeapon, cartridgesPerStep }
+
 function mergeGroupGunsInfo(groupGuns, gunsBulletsCountMultiplier) {
   let { steps } = gunsBulletsCountMultiplier[groupGuns[0].blk]
   return groupGuns[0].__merge({
@@ -566,7 +572,17 @@ function mergeGroupGunsInfo(groupGuns, gunsBulletsCountMultiplier) {
       res + gunsBulletsCountMultiplier[info.blk].cartridgesPerStep, 0)
     bulletsPerStep = groupGuns.reduce(@(res, info)
       res + gunsBulletsCountMultiplier[info.blk].cartridgesPerStep * info.cartridge, 0)
+    stepGuns = groupGuns.map(@(info) mkStepGun(info, gunsBulletsCountMultiplier[info.blk].cartridgesPerStep))
   })
+}
+
+function getBulletsPerStep(gunInfo, bulletName) {
+  let stepGuns = gunInfo?.stepGuns
+  if (stepGuns == null || stepGuns.contains(null))
+    return gunInfo?.bulletsPerStep ?? 1
+  let bulletSetName = getModificationBulletsEffect(bulletName)
+  return stepGuns.reduce(@(res, gun)
+    res + gun.cartridgesPerStep * get_bullet_set_cartridge(gun.weaponBlk, bulletSetName, gun.presetWeapon), 0)
 }
 
 function getBulletsInfoForPrimaryGuns(air) {
@@ -642,6 +658,8 @@ function getBulletsInfoForPrimaryGuns(air) {
         wpList[weapIdx].isBulletBelt = wBlk?.isBulletBelt ?? true
         wpList[weapIdx].bulletSetCount = wBlk?.bulletSetCount ?? -1
         wpList[weapIdx].cartridge = max((weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1), 1)
+        wpList[weapIdx].weaponBlk = wBlk
+        wpList[weapIdx].presetWeapon = weapon
         wpList[weapIdx].total = ceil(bullets * 1.0 / wpList[weapIdx].cartridge).tointeger()
 
         local groupIndex = getWeaponModIdx(wBlk, modsList)
@@ -662,6 +680,7 @@ function getBulletsInfoForPrimaryGuns(air) {
   foreach (info in wpList) {
     info.cartridgesPerStep = info.guns
     info.bulletsPerStep = info.guns * info.cartridge
+    info.stepGuns = [mkStepGun(info, info.guns)]
   }
 
   let gunsBulletsCountMultiplier = air.isShipOrBoat() || air.isTank()
@@ -695,6 +714,7 @@ function getBulletsInfoForPrimaryGuns(air) {
       total = gunBulletsCount.steps
       cartridgesPerStep = gunBulletsCount.cartridgesPerStep
       bulletsPerStep = gunBulletsCount.cartridgesPerStep * gun.cartridge
+      stepGuns = [mkStepGun(gun, gunBulletsCount.cartridgesPerStep)]
     }))
   }
   return res
@@ -1624,6 +1644,7 @@ return {
   hasNestedRocket
   getBulletsGroupCount
   getBulletsInfoForPrimaryGuns
+  getBulletsPerStep
   getBeltlessGunsWeapNames
   getLastFakeBulletsIndex
   getBulletsList

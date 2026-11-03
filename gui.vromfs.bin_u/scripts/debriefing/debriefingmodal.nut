@@ -58,6 +58,7 @@ from "%scripts/sqDagui/guiBhv/guiBhvUtils.nut" import blendProp
 from "%scripts/sqDagui/guiBhv/bhvAnim.nut" import create_ObjMoveToOBj
 from "%scripts/unit/unitInfo.nut" import getUnitName, image_for_air
 from "%scripts/unit/unitStatus.nut" import isUnitInResearch
+from "%scripts/contacts/contactsInfo.nut" import colorizeWhitePsnIcon
 from "%scripts/matchingRooms/sessionLobbyState.nut" import isInSessionRoom, sessionLobbyStatus, hasSessionInLobby, getSessionLobbyMissionData
 from "%scripts/user/profileStates.nut" import userIdInt64
 from "%scripts/user/userInfoStats.nut" import getPlayerRankByCountry, getPlayerExpByCountry
@@ -2399,7 +2400,7 @@ let DebriefingModal = class (MPStatistics) {
 
     let obj = this.scene.findObject("battle_log_div")
     if (checkObj(obj)) {
-      let logText = HudBattleLog.getText(filters[filterIdx].id, 0)
+      let logText = HudBattleLog.getText(filters[filterIdx].id, 0, colorizeWhitePsnIcon)
       obj.findObject("battle_log").setValue(logText)
     }
   }

@@ -10,7 +10,7 @@ from "%scripts/penitentiary/penaltyMessages.nut" import getDevoiceMessage
 from "%scripts/chat/chatStates.nut" import isChatEnabled
 from "%scripts/user/remapNick.nut" import getPlayerName
 from "%scripts/contacts/contactsChecks.nut" import isPlayerNickInContacts
-from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName
+from "%scripts/contacts/contactsInfo.nut" import getPlayerFullName, colorizeWhitePsnIcon
 from "%scripts/squads/squadState.nut" import isEqualSquadId
 from "%scripts/chat/chatUtils.nut" import filterMessageText, getPlayerTag, addTextToEditbox
 from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import isPlayerDedicatedSpectator
@@ -334,7 +334,7 @@ function updateBattleLog(sceneData) {
     return
   let chat_log = sceneData.scene.findObject("chat_log")
   if (checkObj(chat_log))
-    chat_log.setValue(HudBattleLog.getText(0))
+    chat_log.setValue(HudBattleLog.getText(0, 0, colorizeWhitePsnIcon))
 }
 
 function updateContent(sceneData) {

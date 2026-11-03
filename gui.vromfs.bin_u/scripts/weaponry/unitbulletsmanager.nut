@@ -188,7 +188,9 @@ let UnitBulletsManager = class {
 
       if (status == bulletsAmountState.LOW_AMOUNT) {
         let allocated = totalBullets - unallocated
-        let missing = (min(minBullets, totalBullets) - allocated) * gInfo.bulletsPerStep
+        let bulletsPerStep = this.bulGroups.findvalue(@(g) g.active && g.gunInfo == gInfo)?.bulletsPerStep
+          ?? gInfo.bulletsPerStep
+        let missing = (min(minBullets, totalBullets) - allocated) * bulletsPerStep
         res.lowAmountWeapons.append({ weapName = gInfo.weapName, missing = missing })
       }
     }

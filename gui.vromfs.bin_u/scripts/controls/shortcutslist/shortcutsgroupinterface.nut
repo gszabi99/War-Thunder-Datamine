@@ -1,5 +1,6 @@
 from "%sqstd/platform.nut" import isPC, isSony, isXbox
 from "%scripts/controls/controlsConsts.nut" import CONTROL_TYPE
+from "%scripts/options/systemOptions.nut" import isNeuralRenderingSupported
 from "%scripts/dagui_library.nut" import *
 
 return [
@@ -52,6 +53,12 @@ return [
     checkAssign = false
     condition = @() isPC 
     needShowInHelp = true
+  }
+  {
+    id = "ID_TOGGLE_NEURAL_RENDERING"
+    checkAssign = false
+    showFunc = @() isNeuralRenderingSupported()
+    condition = @() isPC
   }
   {
     id = "decal_move_x"
