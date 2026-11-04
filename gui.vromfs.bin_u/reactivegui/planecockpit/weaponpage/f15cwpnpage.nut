@@ -284,24 +284,23 @@ let pods = @(width, height, less_pods) function() {
 let podsEx = @(width, height) function() {
   let childrens = []
 
-  
   let positionsEX = [
     null,                                
-    [width * 0.20, height * 0.50],       
-    [width * 0.33, height * 0.50],       
+    [width * 0.15, height * 0.50],       
+    [width * 0.26, height * 0.50],       
     null,                                
-    [width * 0.33, height * 0.50],       
-    [width * 0.33, height * 0.58],       
-    null,                                
-    null,                                
+    [width * 0.37, height * 0.50],       
+    [width * 0.315, height * 0.58],      
     null,                                
     null,                                
     null,                                
-    [width * 0.50, height * 0.58],       
-    [width * 0.50, height * 0.50],       
     null,                                
-    [width * 0.50, height * 0.50],       
-    [width * 0.63, height * 0.50],       
+    null,                                
+    [width * 0.535, height * 0.58],      
+    [width * 0.48, height * 0.50],       
+    null,                                
+    [width * 0.59, height * 0.50],       
+    [width * 0.70, height * 0.50],       
   ]
 
   foreach (idx, weaponSlot in WeaponSlots.get()) {

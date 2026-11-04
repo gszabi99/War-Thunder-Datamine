@@ -14,7 +14,8 @@ let BombReleaseBlockedStates =
 {
   notBlocked = 0,
   highSpeed = 1,
-  bombBay = 2
+  bombBay = 2,
+  lowAltitude = 3
 }
 
 let IndicatorsVisible = Watched(false)
@@ -138,6 +139,7 @@ let StaminaState = Watched(0)
 let BombReleaseVisible = Watched(false)
 let BombReleaseBlockedState = Watched(0)
 let BombReleaseMachLimit = Watched(0.0)
+let BombReleaseMinAltitudeText = Watched("")
 let BombReleaseBlockedTextPosX = Watched(0)
 let BombReleaseBlockedTextPosY = Watched(0)
 let BombReleaseDirX = Watched(0)
@@ -586,6 +588,7 @@ let helicopterState = {
   BombReleaseBlockedStates,
   BombReleaseBlockedState,
   BombReleaseMachLimit,
+  BombReleaseMinAltitudeText,
   BombReleaseBlockedTextPosX,
   BombReleaseBlockedTextPosY,
   BombReleaseDirX,

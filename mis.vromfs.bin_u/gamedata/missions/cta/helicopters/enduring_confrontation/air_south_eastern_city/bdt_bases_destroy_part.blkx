@@ -36,27 +36,9 @@
         "excludes": {}
       },
       {
-        "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t1_rank_04.blk",
-        "rankRange": [
-          0,
-          23
-        ],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": {}
-      },
-      {
         "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t1_rank_05.blk",
         "rankRange": [
-          24,
+          0,
           26
         ],
         "importAreas": true,
@@ -75,7 +57,7 @@
         "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t1_rank_06.blk",
         "rankRange": [
           27,
-          50
+          32
         ],
         "importAreas": true,
         "importUnits": true,
@@ -90,10 +72,10 @@
         "excludes": {}
       },
       {
-        "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t2_rank_04.blk",
+        "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t1_rank_07.blk",
         "rankRange": [
-          0,
-          23
+          33,
+          50
         ],
         "importAreas": true,
         "importUnits": true,
@@ -110,7 +92,7 @@
       {
         "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t2_rank_05.blk",
         "rankRange": [
-          24,
+          0,
           26
         ],
         "importAreas": true,
@@ -129,6 +111,24 @@
         "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t2_rank_06.blk",
         "rankRange": [
           27,
+          32
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/heli_land_sets_aaa_bases/bdt_t2_rank_07.blk",
+        "rankRange": [
+          33,
           50
         ],
         "importAreas": true,
@@ -190,10 +190,16 @@
             "var": "bdt_t2_active_bases_max_count"
           }
         ],
-        "varSetBool": {
-          "value": true,
-          "var": "bdt_self_restart"
-        }
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "bdt_self_restart"
+          },
+          {
+            "value": true,
+            "var": "bdt_aaa_spawn_enabled"
+          }
+        ]
       },
       "else_actions": {}
     }

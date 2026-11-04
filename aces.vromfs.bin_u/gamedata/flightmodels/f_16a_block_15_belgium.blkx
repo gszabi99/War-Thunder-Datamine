@@ -3031,6 +3031,14 @@
         "blk": "gamedata/flightModels/weaponPresets/f_16a_block_15_belgium_mk82_snakeye_pids.blk"
       },
       {
+        "name": "f_16a_block_15_belgium_cbu_58b",
+        "blk": "gamedata/flightModels/weaponPresets/f_16a_block_15_belgium_cbu_58b.blk"
+      },
+      {
+        "name": "f_16a_block_15_belgium_cbu_58b_pids",
+        "blk": "gamedata/flightModels/weaponPresets/f_16a_block_15_belgium_cbu_58b_pids.blk"
+      },
+      {
         "name": "f_16a_block_15_belgium_mk84_air",
         "blk": "gamedata/flightModels/weaponPresets/f_16a_block_15_belgium_mk84_air.blk"
       },
@@ -3412,6 +3420,22 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_left",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_left_wing.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
@@ -3557,6 +3581,34 @@
               {
                 "trigger": "bombs",
                 "blk": "gamedata/weapons/containers/us_500lb_mk_82_snakeye_x3_ter9a_1.blk",
+                "emitter": "ter_001",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_left_pids",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_left_wing.blk",
                 "emitter": "ter_001",
                 "external": true,
                 "separate": true,
@@ -3863,6 +3915,22 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_left",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_left_wing.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
@@ -3872,6 +3940,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/containers/mer_us_500lb_mk_82_snakeye_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x4",
+            "name": "mer_cbu_58b_x4_left",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/mer_us_cbu_58b_x4_left_wing.blk",
               "emitter": "mer_001",
               "external": true,
               "separate": true,
@@ -3998,6 +4082,23 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_cbu_58b",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon_gpu_5a"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/us_cbu_58b.blk",
+              "emitter": "us_500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4097,6 +4198,22 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_right",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_right_wing.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
@@ -4106,6 +4223,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/containers/mer_us_500lb_mk_82_snakeye_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x4",
+            "name": "mer_cbu_58b_x4_right",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/mer_us_cbu_58b_x4_right_wing.blk",
               "emitter": "mer_002",
               "external": true,
               "separate": true,
@@ -4320,6 +4453,22 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_right",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_right_wing.blk",
+              "emitter": "ter_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
@@ -4462,6 +4611,34 @@
               {
                 "trigger": "bombs",
                 "blk": "gamedata/weapons/containers/us_500lb_mk_82_snakeye_x3_ter9a_1.blk",
+                "emitter": "ter_004",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gamedata/weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "ter_cbu_58b_x2_right_pids",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_r"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/containers/ter_us_cbu_58b_x2_right_wing.blk",
                 "emitter": "ter_004",
                 "external": true,
                 "separate": true,

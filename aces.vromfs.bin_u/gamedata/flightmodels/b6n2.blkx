@@ -4420,22 +4420,32 @@
         "limitsDeadzone": [
           {
             "yaw": [
-              -4.0,
-              4.0
+              -1.0,
+              1.0
             ],
             "pitch": [
               -10.0,
-              5.0
+              14.0
             ]
           },
           {
             "yaw": [
-              -15.0,
-              15.0
+              -37.0,
+              -2.0
             ],
             "pitch": [
-              -2.0,
-              5.0
+              -12.0,
+              -6.0
+            ]
+          },
+          {
+            "yaw": [
+              2.0,
+              37.0
+            ],
+            "pitch": [
+              -12.0,
+              -6.0
             ]
           }
         ],
@@ -4504,6 +4514,19 @@
         "name": "b6n2_250kg_mod25mark2",
         "blk": "gamedata/flightModels/weaponPresets/b6n2_250kg_mod25mark2.blk",
         "reqModification": "b5n2_12in_mod30"
+      },
+      {
+        "name": "b6n2_500kg_mod50mk1",
+        "blk": "gamedata/flightModels/weaponPresets/b6n2_500kg_mod50mk1.blk",
+        "reqModification": "13in_mod35",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "b6n2_500kg_mod50mk2",
+        "blk": "gamedata/flightModels/weaponPresets/b6n2_500kg_mod50mk2.blk",
+        "reqModification": "13in_mod35"
       },
       {
         "name": "b6n2_800kg_mod80mk1",
@@ -5543,13 +5566,17 @@
     },
     "b5n2_12in_mod30": {
       "modClass": "weapon",
+      "tier": 2
+    },
+    "13in_mod35": {
+      "modClass": "weapon",
       "tier": 3,
-      "reqModification": "improved_torpedo_mod"
+      "reqModification": "b5n2_12in_mod30"
     },
     "b5n2_14in_mod35": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "b5n2_12in_mod30"
+      "reqModification": "13in_mod35"
     }
   },
   "user_skin": {

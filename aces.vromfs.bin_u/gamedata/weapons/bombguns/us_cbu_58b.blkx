@@ -63,18 +63,16 @@
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_bomb",
-    "slopeEffectPreset": "ap",
+    "explodeOnRendinst": true,
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "useEffectiveArmorThicknessForShatter": true,
-    "explodeOnRendinst": true,
     "explosiveType": "cyclotol_70_30",
-    "explosiveMass": 0.55,
-    "damageMass": 2.5,
-    "damageCaliber": 0.09,
+    "explosiveMass": 0.113,
+    "damageMass": 0.43,
+    "damageCaliber": 0.0635,
     "hasProximityFuse": true,
     "fuseDelayDist": 1.0,
     "explodeTreshold": 0.3,
@@ -89,6 +87,8 @@
     "sound": "weapon.bomb_big",
     "shellCollision": true,
     "iconType": "bombs_heavy",
+    "slopeEffectPreset": "ap",
+    "useEffectiveArmorThicknessForShatter": true,
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -107,19 +107,19 @@
       "damageType": "pressure"
     },
     "proximityFuse": {
-      "timeOut": 5.0,
-      "radius": 60.0,
+      "timeOut": 1.5,
+      "radius": 90.0,
       "detectAirUnits": false,
       "detectGroundUnits": false,
       "detectGround": true
     },
     "clusterMunition": {
-      "radius": 80.0,
-      "count": 2020,
-      "fxCount": 50,
-      "releaseHeight": 90.0,
+      "radius": 25.0,
+      "count": 650,
+      "fxCount": 80,
       "collisionFxDelayMax": 0.5,
-      "releaseFx": "explosion_cluster_deploy"
+      "releaseFx": "explosion_cluster_deploy",
+      "maxElongation": 4.0
     },
     "armorpower": {
       "ArmorPower0m": [

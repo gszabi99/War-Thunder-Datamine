@@ -232,9 +232,6 @@
       },
       "electronic_block2_dm": {
         "hp": 60.0
-      },
-      "electronic_block3_dm": {
-        "hp": 60.0
       }
     },
     "protected_controls": {
@@ -1375,31 +1372,6 @@
       },
       {
         "name": "electronic_block2_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block3_dm",
         "onHit": [
           {
             "damage": 200.0,
@@ -5303,11 +5275,11 @@
       {
         "avionics": "nightVision",
         "health": {
-          "dm": "electronic_block3_dm",
+          "dm": "electronic_block2_dm",
           "killHp": 0.01
         },
         "damage": {
-          "dm": "electronic_block3_dm",
+          "dm": "electronic_block2_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
@@ -5536,11 +5508,11 @@
       {
         "avionics": "indicators",
         "health": {
-          "dm": "electronic_block3_dm",
+          "dm": "electronic_block2_dm",
           "killHp": 0.01
         },
         "damage": {
-          "dm": "electronic_block3_dm",
+          "dm": "electronic_block2_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",

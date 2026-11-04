@@ -8935,6 +8935,16 @@
         "breach": true,
         "stretchAircraft": true
       },
+      "heat_bomblet_penetration": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": true
+      },
+      "heat_bomblet_non_penetration": {
+        "stretch": false,
+        "breach": true,
+        "stretchAircraft": true
+      },
       "kinetic_sabot_penetration": {
         "stretch": true,
         "breach": true,
@@ -9037,6 +9047,14 @@
       "stop": "explosive_non_penetration_bombs",
       "ricochet": "kinetic_ricochet",
       "breach": "explosive_penetration_bombs"
+    },
+    "heat_cluster_bomb": {
+      "bullets": "heat_cluster_bomb",
+      "pierce": "heat_bomblet_penetration",
+      "stop": "heat_bomblet_non_penetration",
+      "ricochet": "kinetic_ricochet",
+      "pierceAngled": "heat_bomblet_penetration",
+      "stopAngled": "heat_bomblet_non_penetration"
     },
     "hesh": {
       "bullets": "hesh_tank",
@@ -10030,6 +10048,7 @@
       "gbufferModelName": "tank_shell_apds"
     },
     "he_bomb": {},
+    "heat_cluster_bomb": {},
     "rocket_aircraft": {},
     "ke_bomb": {}
   },

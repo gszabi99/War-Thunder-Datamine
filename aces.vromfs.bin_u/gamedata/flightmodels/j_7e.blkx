@@ -2728,6 +2728,10 @@
         "blk": "gamedata/flightModels/weaponPresets/j_7e_4x250_4_bombs.blk"
       },
       {
+        "name": "j_7e_4x250_3_cluster_bombs",
+        "blk": "gamedata/flightModels/weaponPresets/j_7e_4x250_3_cluster_bombs.blk"
+      },
+      {
         "name": "j_7e_2x500_4_bombs",
         "blk": "gamedata/flightModels/weaponPresets/j_7e_2x500_4_bombs.blk"
       }
@@ -3083,6 +3087,25 @@
               "external": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "250_3_cluster",
+            "reqModification": "cn_q5_type_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "holder_250kg_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/cn_250_3_cluster.blk",
+              "emitter": "china_gp_250_1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -3265,6 +3288,25 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/bombguns/cn_gp_500_4.blk",
+              "emitter": "china_gp_250_2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "250_3_cluster",
+            "reqModification": "cn_q5_type_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "holder_250kg_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/cn_250_3_cluster.blk",
               "emitter": "china_gp_250_2",
               "bullets": 1,
               "external": true,

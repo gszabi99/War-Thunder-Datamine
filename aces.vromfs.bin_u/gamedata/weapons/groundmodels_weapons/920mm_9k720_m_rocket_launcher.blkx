@@ -114,26 +114,26 @@
       "guidanceType": "sns",
       "timeLife": 170.0,
       "maxDeltaAngle": 0.03,
-      "explosiveType": "a_ix_2",
-      "explosiveMass": 1.45,
-      "damageMass": 6.0,
+      "explosiveType": "tg_40",
+      "explosiveMass": 0.62,
+      "damageMass": 2.5,
+      "damageCaliber": 0.068,
       "normalizationPreset": "heat",
-      "ricochetPreset": "he",
-      "groundRicochetPreset": "he_ground",
-      "secondaryShattersPreset": "ap_rocket",
+      "ricochetPreset": "heat_fs",
+      "groundRicochetPreset": "bomb_ground",
+      "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "sam_tank",
-      "slopeEffectPreset": "ap",
+      "bulletType": "heat_cluster_bomb",
+      "cumulativeSecondaryShattersPreset": "heat_fs",
+      "explodeOnRendinst": true,
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/sam.ivf",
       "shellCollision": true,
       "dragCx": 0.01,
       "hasProximityFuse": true,
@@ -210,6 +210,12 @@
           "baseIndSpeed": 1800.0,
           "accelControlIntgLim": 1.0
         }
+      },
+      "cumulativeDamage": {
+        "armorPower": 80.0,
+        "distance": 1.5,
+        "damage": 100.0,
+        "onHitChanceMultFire": 25.0
       },
       "stabilityRicochetModifier": {
         "mod1": [
@@ -321,16 +327,16 @@
       },
       "proximityFuse": {
         "timeOut": 10.0,
-        "radius": 100.0,
+        "radius": 1150.0,
         "detectAirUnits": false,
         "detectGroundUnits": false,
         "detectGround": true
       },
       "clusterMunition": {
-        "radius": 100.0,
-        "count": 500,
-        "fxCount": 50,
-        "releaseHeight": 500.0,
+        "radius": 150.0,
+        "maxElongation": 1.0,
+        "count": 54,
+        "fxCount": 54,
         "collisionFxDelayMax": 0.5,
         "releaseFx": "explosion_cluster_deploy"
       },
@@ -700,26 +706,26 @@
         "guidanceType": "sns",
         "timeLife": 170.0,
         "maxDeltaAngle": 0.03,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 1.45,
-        "damageMass": 6.0,
+        "explosiveType": "tg_40",
+        "explosiveMass": 0.62,
+        "damageMass": 2.5,
+        "damageCaliber": 0.068,
         "normalizationPreset": "heat",
-        "ricochetPreset": "he",
-        "groundRicochetPreset": "he_ground",
-        "secondaryShattersPreset": "ap_rocket",
+        "ricochetPreset": "heat_fs",
+        "groundRicochetPreset": "bomb_ground",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "sam_tank",
-        "slopeEffectPreset": "ap",
+        "bulletType": "heat_cluster_bomb",
+        "cumulativeSecondaryShattersPreset": "heat_fs",
+        "explodeOnRendinst": true,
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/sam.ivf",
         "shellCollision": true,
         "dragCx": 0.01,
         "hasProximityFuse": true,
@@ -796,6 +802,12 @@
             "baseIndSpeed": 1800.0,
             "accelControlIntgLim": 1.0
           }
+        },
+        "cumulativeDamage": {
+          "armorPower": 80.0,
+          "distance": 1.5,
+          "damage": 100.0,
+          "onHitChanceMultFire": 25.0
         },
         "stabilityRicochetModifier": {
           "mod1": [
@@ -907,16 +919,16 @@
         },
         "proximityFuse": {
           "timeOut": 10.0,
-          "radius": 100.0,
+          "radius": 1150.0,
           "detectAirUnits": false,
           "detectGroundUnits": false,
           "detectGround": true
         },
         "clusterMunition": {
-          "radius": 100.0,
-          "count": 500,
-          "fxCount": 50,
-          "releaseHeight": 500.0,
+          "radius": 150.0,
+          "maxElongation": 1.0,
+          "count": 54,
+          "fxCount": 54,
           "collisionFxDelayMax": 0.5,
           "releaseFx": "explosion_cluster_deploy"
         },

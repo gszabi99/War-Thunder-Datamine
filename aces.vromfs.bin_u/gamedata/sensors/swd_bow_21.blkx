@@ -692,6 +692,25 @@
           "FK-2000 TA",
           "FK-2000 TT"
         ]
+      },
+      {
+        "name": "ARH",
+        "detectTracking": true,
+        "detectLaunch": true,
+        "type": "weapon",
+        "threatFlag": "RWR ARH LAUNCH"
+      },
+      {
+        "name": "S-300 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "5N63S",
+          "5N64S"
+        ],
+        "threatFlag": "RWR SARH LAUNCH"
       }
     ]
   },
@@ -1011,7 +1030,16 @@
       {
         "text": "FK2",
         "group": "FK 2000"
+      },
+      {
+        "text": "S300",
+        "group": "S-300 LAUNCH"
       }
     ]
+  },
+  "modeThreatFlags": {
+    "track": {
+      "threatFlag": "RWR TRACK"
+    }
   }
 }

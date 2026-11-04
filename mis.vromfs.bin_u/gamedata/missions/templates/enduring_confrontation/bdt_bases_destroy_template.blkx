@@ -927,9 +927,6 @@
             },
             {
               "value": "zapuskaem spavny zenitok"
-            },
-            {
-              "value": "continue to rotation within aaa spawn"
             }
           ],
           "unitWakeUp": {
@@ -988,11 +985,8 @@
             "value": 1.0,
             "var": "bdt_t1_cur_bases_count"
           },
-          "__triggerEnable": {
-            "target": "bdt_t1_aaa_spawn_start"
-          },
           "triggerEnable": {
-            "target": "bdt_t1_spawn_rotator"
+            "target": "bdt_t1_aaa_spawn_start"
           }
         },
         "else_actions": {
@@ -1740,9 +1734,6 @@
             },
             {
               "value": "spavnim zenitki"
-            },
-            {
-              "value": "continue to rotation within aaa spawn"
             }
           ],
           "unitWakeUp": {
@@ -1801,11 +1792,8 @@
             "value": 1.0,
             "var": "bdt_t2_cur_bases_count"
           },
-          "__triggerEnable": {
-            "target": "bdt_t2_aaa_spawn_start"
-          },
           "triggerEnable": {
-            "target": "bdt_t2_spawn_rotator"
+            "target": "bdt_t2_aaa_spawn_start"
           }
         },
         "else_actions": {
@@ -1839,6 +1827,11 @@
             }
           },
           "conditions": {
+            "varCompareBool": {
+              "var_value": "bdt_aaa_spawn_enabled",
+              "value": true,
+              "comparasion_func": "equal"
+            },
             "objectExists": {
               "target": "bdt_t1_aaa_squad",
               "type": "squad"
@@ -1964,6 +1957,11 @@
             }
           },
           "conditions": {
+            "varCompareBool": {
+              "var_value": "bdt_aaa_spawn_enabled",
+              "value": true,
+              "comparasion_func": "equal"
+            },
             "objectExists": {
               "target": "bdt_t2_aaa_squad",
               "type": "squad"
@@ -4925,6 +4923,7 @@
     }
   },
   "variables": {
+    "bdt_aaa_spawn_enabled": false,
     "bdt_t1_total_bases_max_count": 3,
     "bdt_t2_total_bases_max_count": 3,
     "bdt_t1_cur_spawn_zone_name": "",

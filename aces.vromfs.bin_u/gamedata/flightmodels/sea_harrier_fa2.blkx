@@ -2802,6 +2802,10 @@
         "blk": "gamedata/flightModels/weaponPresets/sea_harrier_fa2_bomb_1000lbs.blk"
       },
       {
+        "name": "sea_harrier_fa2_bomb_bl755",
+        "blk": "gamedata/flightModels/weaponPresets/sea_harrier_fa2_bomb_bl755.blk"
+      },
+      {
         "name": "sea_harrier_fa2_bomb_1000lbs_n117",
         "blk": "gamedata/flightModels/weaponPresets/sea_harrier_fa2_bomb_1000lbs_n117.blk"
       },
@@ -2812,6 +2816,10 @@
       {
         "name": "sea_harrier_fa2_bomb_1000lbs_dlt",
         "blk": "gamedata/flightModels/weaponPresets/sea_harrier_fa2_bomb_1000lbs_dlt.blk"
+      },
+      {
+        "name": "sea_harrier_fa2_bomb_bl755_dlt",
+        "blk": "gamedata/flightModels/weaponPresets/sea_harrier_fa2_bomb_bl755_dlt.blk"
       },
       {
         "name": "sea_harrier_fa2_bomb_1000lbs_n117_dlt",
@@ -2977,6 +2985,10 @@
               },
               {
                 "slot": 2,
+                "preset": "bl755_x2_left_wing_slot2"
+              },
+              {
+                "slot": 2,
                 "preset": "1000lbs_x2_left_wing_n117_slot2"
               }
             ]
@@ -3011,6 +3023,10 @@
               {
                 "slot": 2,
                 "preset": "1000lbs_x2_left_wing_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "bl755_x2_left_wing_slot2"
               },
               {
                 "slot": 2,
@@ -3243,6 +3259,26 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "bl755_slot1",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_l",
+                "pylon_e_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/bombguns/uk_600lb_bl755.blk",
+              "emitter": "1000lbs_gp_004",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large_high_drag",
             "name": "1000lbs_n117_slot1",
             "reqModification": "uk_mk_10_1000lb",
@@ -3392,6 +3428,25 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "bl755_slot2",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/bombguns/uk_600lb_bl755.blk",
+              "emitter": "1000lbs_gp_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_left_wing_slot2",
             "reqModification": "uk_mk_10_1000lb",
@@ -3406,6 +3461,24 @@
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
+              "emitter": "1000lbs_gp_001"
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "bl755_x2_left_wing_slot2",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/uk_dlt_bl755_x2_left_wing.blk",
               "emitter": "1000lbs_gp_001"
             }
           },
@@ -3545,6 +3618,26 @@
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_002",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "bl755_slot4",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/bombguns/uk_600lb_bl755.blk",
               "emitter": "1000lbs_gp_002",
               "bullets": 1,
               "machLimit": 1.01
@@ -3756,6 +3849,25 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "bl755_slot6",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/bombguns/uk_600lb_bl755.blk",
+              "emitter": "1000lbs_gp_003",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_large_group_x2",
             "name": "1000lbs_x2_right_wing_slot6",
             "reqModification": "uk_mk_10_1000lb",
@@ -3770,6 +3882,24 @@
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/uk_dlt_1000_gp_x2_right_wing.blk",
+              "emitter": "1000lbs_gp_003"
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "bl755_x2_right_wing_slot6",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/uk_dlt_bl755_x2_right_wing.blk",
               "emitter": "1000lbs_gp_003"
             }
           },
@@ -3891,6 +4021,10 @@
               },
               {
                 "slot": 6,
+                "preset": "bl755_x2_right_wing_slot6"
+              },
+              {
+                "slot": 6,
                 "preset": "1000lbs_x2_right_wing_n117_slot6"
               }
             ]
@@ -3925,6 +4059,10 @@
               {
                 "slot": 6,
                 "preset": "1000lbs_x2_right_wing_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "bl755_x2_right_wing_slot6"
               },
               {
                 "slot": 6,
@@ -4153,6 +4291,26 @@
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/bombguns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_005",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "bl755_slot7",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_r",
+                "pylon_e_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/bombguns/uk_600lb_bl755.blk",
               "emitter": "1000lbs_gp_005",
               "bullets": 1,
               "machLimit": 1.01

@@ -438,19 +438,41 @@ def draw_compass_arc(var ctx : GuiContext&; data : CanvasParams&; origin : float
   let arcMax = max(get_radar_hud_azimuth_max(), scanAzimuthMax)
   ctx |> render_sector_aa(origin, float2(radius), float2(arcMin - PI * 0.5, arcMax - PI * 0.5), data.lineWidth, f15Green, transparentColor)
 
+  let arcFontSize = data.radarFontSize + 12
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(arcFontSize)
+  var fctxArc : StdGuiFontContext
+  get_font_context(fctxArc, data.fontId, 0, 0, arcFontSize)
+
   for i in range(-18, 19)
     let markVal = (int(compass) / 10) * 10 + i * 10
     let azimuth = floori(norm_ang_deg(float(markVal)))
     let is60 = azimuth % 60 == 0
-    if !is60
+    if !is60 && azimuth % 90 != 0
       continue
     let diff = (compass - float(markVal)) * PI / 180.
     let markDir = float2(-sin(diff), -cos(diff))
-    let markLen = radius * 0.25  // from outer arc to midpoint between outer and inner dashed ring
-    let markPos1 = origin + markDir * radius
-    let markPos2 = origin + markDir * (radius - markLen)
-    let markCoord <- to_array_move(fixed_array<float2>(markPos1, markPos2))
-    ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), f15Green)
+    if is60
+      let markLen = radius * 0.25
+      let markPos1 = origin + markDir * radius
+      let markPos2 = origin + markDir * (radius - markLen)
+      let markCoord <- to_array_move(fixed_array<float2>(markPos1, markPos2))
+      ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), f15Green)
+    if azimuth % 90 == 0
+      var lbl = ""
+      if azimuth == 0
+        lbl = "N"
+      elif azimuth == 90
+        lbl = "E"
+      elif azimuth == 180
+        lbl = "S"
+      elif azimuth == 270
+        lbl = "W"
+      let lblBox = get_str_bbox(lbl, lbl |> length(), fctxArc)
+      let lblPos = origin + markDir * radius
+      ctx |> set_color(f15Green)
+      ctx |> goto_xy(lblPos.x - lblBox.width.x * 0.5, lblPos.y + lblBox.width.y * 0.5)
+      ctx |> draw_str_scaled(1.0, lbl, lbl |> length())
 
 
 def draw_sector_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; compass : float; barY : float; frameT : float; frameB : float)
@@ -524,23 +546,25 @@ def draw_sector_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2;
   draw_launch_zone(ctx, origin, size)
   ctx |> restore_viewport()
 
-  // Cue gate
-  if get_radar_hud_cue_visible()
+  var hasLockedTarget = false
+  Radar`foreach_visible_target() <| $(var cueTarget)
+    if !hasLockedTarget && cueTarget.targetType == int(RadarTargetType.TYPE_TARGET) && cueTarget.isSelected && cueTarget.isSelectedTargetOfInterest
+      hasLockedTarget = true
+
+  if get_radar_hud_cue_visible() && !hasLockedTarget
     let cueAzHalfRel = get_radar_hud_cue_azimuth_half_width_rel()
     let designWidth = get_radar_hud_target_azimuth_width() * (1.0 - 2.0 * cueAzHalfRel)
     let cueAzRel = get_radar_hud_cue_azimuth()
-    let cueAzL = (cueAzRel - cueAzHalfRel) * designWidth
-    let cueAzR = (cueAzRel + cueAzHalfRel) * designWidth
+    let cueAzCenter = cueAzRel * designWidth
     let cueDistRel = get_radar_hud_cue_distance()
-    let cueDistHalf = 0.5 * get_radar_hud_cue_dist_width_rel()
-    let cueRNear = (cueDistRel - cueDistHalf) * radius
-    let cueRFar  = (cueDistRel + cueDistHalf) * radius
-    let cueLDir = float2(cos(cueAzL + PI * 0.5), sin(cueAzL + PI * 0.5))
-    let cueLLine <- to_array_move(fixed_array<float2>(origin - cueLDir * cueRNear, origin - cueLDir * cueRFar))
-    ctx |> render_line_aa(cueLLine, false, data.lineWidth, float2(0., 0.), f15Green)
-    let cueRDir = float2(cos(cueAzR + PI * 0.5), sin(cueAzR + PI * 0.5))
-    let cueRLine <- to_array_move(fixed_array<float2>(origin - cueRDir * cueRNear, origin - cueRDir * cueRFar))
-    ctx |> render_line_aa(cueRLine, false, data.lineWidth, float2(0., 0.), f15Green)
+    let cueCenterDir = float2(cos(cueAzCenter + PI * 0.5), sin(cueAzCenter + PI * 0.5))
+    let cueCenterMid = origin - cueCenterDir * cueDistRel * radius
+    let cueOffX = radius * 0.036
+    let cueHalfH = radius * 0.024
+    let cueLLine <- to_array_move(fixed_array<float2>(float2(cueCenterMid.x - cueOffX, cueCenterMid.y - cueHalfH), float2(cueCenterMid.x - cueOffX, cueCenterMid.y + cueHalfH)))
+    ctx |> render_line_aa(cueLLine, false, data.lineWidth, float2(0., 0.), f15White)
+    let cueRLine <- to_array_move(fixed_array<float2>(float2(cueCenterMid.x + cueOffX, cueCenterMid.y - cueHalfH), float2(cueCenterMid.x + cueOffX, cueCenterMid.y + cueHalfH)))
+    ctx |> render_line_aa(cueRLine, false, data.lineWidth, float2(0., 0.), f15White)
 
   // Closure rate scale (knots): -600 to 2000
   let vcMin = -600.0

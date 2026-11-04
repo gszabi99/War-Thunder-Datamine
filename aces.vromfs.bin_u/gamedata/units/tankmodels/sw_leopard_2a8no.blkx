@@ -2657,68 +2657,6 @@
       ]
     }
   },
-  "user_skin": {
-    "name": "leopard_2a6",
-    "replace_tex": {
-      "from": "ger_camo_bronzegruen*"
-    }
-  },
-  "skin": [
-    {
-      "name": "lederbraun",
-      "nameLocId": "skin/ger_camo_lederbraun",
-      "descLocId": "skin/ger_camo_lederbraun/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_lederbraun*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "ger_camo_carc",
-      "nameLocId": "skin/ger_camo_carc",
-      "descLocId": "skin/ger_camo_carc/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_carc*"
-      }
-    },
-    {
-      "name": "ger_camo_modern_threecolor",
-      "nameLocId": "skin/ger_camo_modern_threecolor",
-      "descLocId": "skin/ger_camo_modern_threecolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_modern_threecolor*"
-      }
-    },
-    {
-      "name": "ger_camo_carc_winter",
-      "nameLocId": "skin/ger_camo_carc_winter",
-      "descLocId": "skin/ger_camo_carc_winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_carc_winter*"
-      }
-    },
-    {
-      "name": "ger_camo_modern_desert_threecolor",
-      "nameLocId": "skin/ger_camo_modern_desert_threecolor",
-      "descLocId": "skin/ger_camo_modern_desert_threecolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_bronzegruen*",
-        "to": "ger_camo_modern_desert_threecolor*"
-      }
-    }
-  ],
   "compartments": {
     "ammo_fire": {
       "type": "closed",
@@ -3198,6 +3136,22 @@
       },
       "turret_09_front_dm": {
         "armorThickness": 20.0
+      },
+      "turret_10_bottom_dm": {
+        "armorThickness": 10.0,
+        "hidableInViewer": true
+      },
+      "turret_09_side_dm": {
+        "armorThickness": 10.0,
+        "hidableInViewer": true
+      },
+      "ex_armor_04_dm": {
+        "armorThickness": 10.0,
+        "hidableInViewer": true
+      },
+      "turret_12_front_dm": {
+        "armorThickness": 14.0,
+        "hidableInViewer": true
       }
     },
     "inner_armor": {
@@ -3444,12 +3398,6 @@
       "turret_11_back_dm": {
         "armorThickness": 20.0
       },
-      "turret_10_bottom_dm": {
-        "armorThickness": 20.0
-      },
-      "turret_09_side_dm": {
-        "armorThickness": 20.0
-      },
       "turret_12_back_dm": {
         "armorThickness": 20.0
       },
@@ -3484,9 +3432,6 @@
         "armorThickness": 20.0
       },
       "ex_armor_turret_l_05_dm": {
-        "armorThickness": 20.0
-      },
-      "ex_armor_04_dm": {
         "armorThickness": 20.0
       },
       "turret_11_side_dm": {
@@ -4471,66 +4416,7 @@
     "120mm_DM_HE_FS_ammo_pack": {},
     "120mm_DM_APDS_FS_ammo_pack": {},
     "laser_rangefinder_lws": {
-      "tier": 4,
-      "effects": {
-        "rangefinderMounted": true,
-        "isLaser": true,
-        "rangefinderDmPart": [
-          "fire_control_system_dm",
-          "fire_control_system_01_dm"
-        ],
-        "distanceError": [
-          1.0,
-          1.0,
-          5.0,
-          10.0
-        ],
-        "distanceThresholdMin": [
-          1000.0,
-          3000.0,
-          5000.0,
-          9999.0
-        ],
-        "distanceThresholdMax": [
-          1000.0,
-          3000.0,
-          5000.0,
-          9999.0
-        ],
-        "distanceErrorRealistic": [
-          1.0,
-          1.0,
-          5.0,
-          10.0
-        ],
-        "distanceThresholdMinRealistic": [
-          1000.0,
-          3000.0,
-          5000.0,
-          9999.0
-        ],
-        "distanceThresholdMaxRealistic": [
-          1000.0,
-          3000.0,
-          5000.0,
-          9999.0
-        ],
-        "timeMeasurementRange": [
-          0.5,
-          0.5
-        ],
-        "rcostAddParam": 0.98,
-        "sensors": {
-          "sensor": [
-            {
-              "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
-            },
-            {
-              "blk": "gamedata/sensors/it_ralm-101.blk"
-            }
-          ]
-        }
-      }
+      "tier": 4
     },
     "tank_smoke_screen_system_mod": {
       "tier": 3,
@@ -4921,5 +4807,50 @@
     "sfxStart": "apu_diesel_start",
     "sfxRun": "apu_diesel",
     "sfxStop": "apu_diesel_stop"
-  }
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "se_camo_green*"
+    }
+  },
+  "skin": [
+    {
+      "name": "us_camo_modern_desert_tan",
+      "nameLocId": "skin/us_camo_modern_desert_tan",
+      "descLocId": "skin/us_camo_modern_desert_tan/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "us_camo_modern_desert_tan*"
+      }
+    },
+    {
+      "name": "se_camo_modern_winter_m90",
+      "nameLocId": "skin/se_camo_modern_winter_m90",
+      "descLocId": "skin/se_camo_modern_winter_m90/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "se_camo_modern_winter_m90*"
+      }
+    },
+    {
+      "name": "sw_camo_winter_green_white",
+      "nameLocId": "skin/fr_camo_winter_green_white",
+      "descLocId": "skin/fr_camo_winter_green_white/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "fr_camo_winter_green_white*"
+      }
+    },
+    {
+      "name": "se_camo_modern_deform",
+      "nameLocId": "skin/se_camo_modern_deform",
+      "descLocId": "skin/se_camo_modern_deform/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "se_camo_modern_deform*"
+      }
+    }
+  ]
 }

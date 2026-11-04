@@ -4864,7 +4864,11 @@
               "blk": "gamedata/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gamedata/sensors/su_tshu_1_11.blk"
+              "blk": "gamedata/sensors/su_tshu_1_11.blk",
+              "dmPart": [
+                "fire_control_system_dm",
+                "fire_control_system_01_dm"
+              ]
             }
           ]
         }
@@ -5124,6 +5128,7 @@
       "fatalExplosion": false,
       "shells": {
         "fireParamsPreset": "hull_bustle",
+        "splashPenetrationConstraint": 10.0,
         "ammo_turret_01_dm": {
           "count": 1
         },

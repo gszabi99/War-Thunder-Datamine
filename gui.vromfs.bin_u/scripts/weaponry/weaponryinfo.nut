@@ -911,6 +911,13 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       item.explosiveMass = itemBlk?.explosiveMass ?? item.explosiveMass
       item.cumulativeDamage = itemBlk?.cumulativeDamage.armorPower ?? item.cumulativeDamage
       item.cumulativeByNormal = itemBlk?.cumulativeByNormal ?? item.cumulativeByNormal
+      if (itemBlk?.clusterMunition != null)
+        item.clusterMunition <- {
+          count = itemBlk.clusterMunition?.count ?? 0
+          radius = itemBlk.clusterMunition?.radius ?? 0.0
+          maxElongation = itemBlk.clusterMunition?.maxElongation ?? 3.0
+          releaseHeight = itemBlk?.proximityFuse.radius ?? 0.0
+        }
       item.hasAdditionalExplosiveInfo = itemBlk?.fireDamage == null
       item.iconType = isGun ? weaponBlk?.iconType : item.iconType ?? itemBlk?.iconType
       item.amountPerTier = isGun ? weaponBlk?.amountPerTier
@@ -1137,6 +1144,38 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
 }
 
 
+function addClusterMunitionParams(weapon, cluster, addParamsToRes) {
+  let { explosiveType, explosiveMass, cumulativeDamage } = weapon
+  addParamsToRes(loc("rocket/warhead/cluster"), loc("rocket/warhead"))
+  addParamsToRes(cluster.count.tostring(), loc("bombProperties/submunitionCount"))
+  let submunitionType = cumulativeDamage <= 0 ? "frag"
+    : explosiveMass > 0 ? "heat_frag"
+    : "heat"
+  addParamsToRes(loc($"bombProperties/submunitionType/{submunitionType}"), loc("bombProperties/submunitionType"))
+  if (cumulativeDamage > 0)
+    addParamsToRes(getMeasureTypeByName("mm", true).getMeasureUnitsText(cumulativeDamage),
+      loc("bombProperties/submunitionArmorPenetration"))
+  if (explosiveType)
+    addParamsToRes(loc($"explosiveType/{explosiveType}"), loc("bullet_properties/explosiveType"))
+  if (explosiveMass > 0) {
+    addParamsToRes(getMeasureTypeByName("kg", true).getMeasureUnitsText(explosiveMass),
+      loc("bombProperties/submunitionExplosiveMass"))
+    let tntEqText = explosiveType ? getTntEquivalentText(explosiveType, explosiveMass) : ""
+    if (tntEqText.len())
+      addParamsToRes(tntEqText, loc("bombProperties/submunitionExplosiveMassInTNTEquivalent"))
+  }
+  let dist = getMeasureTypeByName("dist_short", true)
+  if (cluster.releaseHeight > 0)
+    addParamsToRes(dist.getMeasureUnitsText(cluster.releaseHeight), loc("bombProperties/releaseHeight"))
+  if (cluster.radius > 0) {
+    let width = 2.0 * cluster.radius
+    let maxLength = width * max(cluster.maxElongation, 1.0)
+    addParamsToRes(dist.getMeasureUnitsText(width), loc("bombProperties/coverageWidth"))
+    addParamsToRes("".concat(dist.getMeasureUnitsText(width, false), loc("ui/mdash"), dist.getMeasureUnitsText(maxLength)),
+      loc("bombProperties/coverageLength"))
+  }
+}
+
 function getWeaponExtendedInfo(weapon, unit, par) {
   let { weaponType, ediff, newLine = null, optionalMarkupTypes = null,
     canAddNestedTooltips = false } = par
@@ -1293,7 +1332,9 @@ function getWeaponExtendedInfo(weapon, unit, par) {
   if (weapon?.machLimitRockets)
     addParamsToRes(format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber")), loc("rocketProperties/machLimit"))
 
-  if (weapon.explosiveType && !weapon.nukePower) {
+  if (weapon?.clusterMunition != null)
+    addClusterMunitionParams(weapon, weapon.clusterMunition, addParamsToRes)
+  else if (weapon.explosiveType && !weapon.nukePower) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
     addParamsToRes(loc($"explosiveType/{explosiveType}"), loc("bullet_properties/explosiveType"))
     if (explosiveMass) {

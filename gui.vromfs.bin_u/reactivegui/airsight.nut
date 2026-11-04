@@ -2,7 +2,7 @@ from "%rGui/airState.nut" import isAllMachineGunsEmpty, GunOverheatState, GunDir
   , GunSightMode, FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat, IsAgmEmpty
   , IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning, GuidedBombsTimeToHit, GuidedBombsTimeToWarning
   , RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor, NoLosToATGM, AlertColorHigh
-  , HudColor, CurrentTime, BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseMachLimit, BombReleaseDirY
+  , HudColor, CurrentTime, BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseMachLimit, BombReleaseMinAltitudeText, BombReleaseDirY
   , BombReleaseOpacity, BombReleasePoints, BombReleaseRelativToTarget, BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, RocketSightOpacity, RocketSightShadowOpacity
   , CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor, CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor, BombSightShadowOpacity
   , TurretSightOpacity, TurretSightLineWidthFactor
@@ -528,12 +528,12 @@ function getTooFastText(machLimit, locId) {
   return $"{loc(locId)} > {limit}"
 }
 
-function getBombBlockedStateText(state, machLimit) {
+function getBombBlockedStateText(state, machLimit, minAltitudeText) {
   if (state == BombReleaseBlockedStates.notBlocked)
     return ""
 
-  return state == BombReleaseBlockedStates.highSpeed
-    ? getTooFastText(machLimit, "HUD/BOMB_SIGHT_HIGH_SPEED")
+  return state == BombReleaseBlockedStates.highSpeed ? getTooFastText(machLimit, "HUD/BOMB_SIGHT_HIGH_SPEED")
+    : state == BombReleaseBlockedStates.lowAltitude ? $"{loc("HUD/BOMB_SIGHT_LOW_ALTITUDE")} < {minAltitudeText}"
     : loc("HUD/BOMB_SIGHT_BOMB_BAY")
 }
 
@@ -580,9 +580,9 @@ let bombSightComponent = @(width, height, crosshairColorWatch) function() {
 
   let sightWarningText = @() styleText.__merge({
     rendObj = ROBJ_TEXT
-    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, BombReleaseBlockedState, BombReleaseMachLimit]
+    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, BombReleaseBlockedState, BombReleaseMachLimit, BombReleaseMinAltitudeText]
     pos = [BombReleaseBlockedTextPosX.get(), BombReleaseBlockedTextPosY.get()]
-    text = getBombBlockedStateText(BombReleaseBlockedState.get(), BombReleaseMachLimit.get())
+    text = getBombBlockedStateText(BombReleaseBlockedState.get(), BombReleaseMachLimit.get(), BombReleaseMinAltitudeText.get())
   })
 
   return res.__update({

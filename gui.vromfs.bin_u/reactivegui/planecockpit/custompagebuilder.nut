@@ -76,7 +76,7 @@ let mfdMigCompass = createScriptComponentWithPos("%rGui/planeCockpit/instruments
 let mfdKa52Wpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdKa52Wpn.das", {
   fontId = Fonts.ils31
 })
-let f15exTopBar = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdF15exTopBar.das", { fontId = Fonts.ah64, fontSize = 20 })
+let f15exTopBar = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdF15exTopBar.das", { fontId = Fonts.ah64, fontSize = 21 })
 function mfdKa52Compass(pos, size) {
   return {
     rendObj = ROBJ_DAS_CANVAS
