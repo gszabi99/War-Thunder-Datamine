@@ -85,10 +85,15 @@ def private add_vehicle_presence(zone_id : int;
                                  sector_eids : EidList;
                                  var presence1 : array<int>&;
                                  var presence2 : array<int>&)
-  query() <| $ [es(REQUIRE=unit_tag__tank, REQUIRE_NOT=human_controlled_vehicle)] (unit__ref : UnitRef; team : int)
+  query() <| $ [es(REQUIRE=unit_tag__tank, REQUIRE_NOT=human_controlled_vehicle)] (unit__ref : UnitRef;
+                                                                                   team : int;
+                                                                                   var capturer__sectorEid : EntityId?)
     let vehicle = unit__ref.unit
     if vehicle == null || vehicle.capture_.cz == null || vehicle.capture_.cz.id != zone_id
+      if capturer__sectorEid != null && has_value(sector_eids, *capturer__sectorEid)
+        *capturer__sectorEid = INVALID_ENTITY_ID
       return
+    var sectorEid = INVALID_ENTITY_ID
     let pos = vehicle.pos.xz
     for i in range(length(sector_eids))
       var inside = false
@@ -99,7 +104,10 @@ def private add_vehicle_presence(zone_id : int;
           presence1[i]++
         elif team == 2
           presence2[i]++
+        sectorEid = sector_eids[i]
         break
+    if capturer__sectorEid != null
+      *capturer__sectorEid = sectorEid
 
 [es(tag=server, no_order, REQUIRE=sectoredCapzone)]
 def sectored_capzone_update_es(info : UpdateStageInfoAct;

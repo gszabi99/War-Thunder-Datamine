@@ -88,9 +88,6 @@
     0.09
   ],
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2801,7 +2798,7 @@
     },
     "rwr": {
       "type": "rwr",
-      "name": "AN/ALR-56C",
+      "name": "UEWS",
       "power": 250.0,
       "txAngle": [
         5.0,
@@ -2837,20 +2834,23 @@
       "targetHoldTime": 5.0,
       "newTargetHoldTime": 3.0,
       "mandatoryRecognition": false,
+      "band2": true,
+      "band3": true,
+      "band10": true,
       "receivers": {
         "receiver": [
           {
             "azimuth": 0.0,
             "elevation": 0.0,
             "azimuthWidth": 180.0,
-            "elevationWidth": 90.0,
+            "elevationWidth": 180.0,
             "angleFinder": true
           },
           {
             "azimuth": -180.0,
             "elevation": 0.0,
             "azimuthWidth": 180.0,
-            "elevationWidth": 90.0,
+            "elevationWidth": 180.0,
             "angleFinder": true
           }
         ]
@@ -3508,6 +3508,44 @@
             "detectTracking": true,
             "detectLaunch": true,
             "type": "weapon"
+          },
+          {
+            "name": "Roland",
+            "type": "Roland TA"
+          },
+          {
+            "name": "AAA",
+            "type": "EDR 110"
+          },
+          {
+            "name": "AAA",
+            "type": "SMA VPS-A06"
+          },
+          {
+            "name": "S1",
+            "detectLaunch": true,
+            "type": "1RS2"
+          },
+          {
+            "name": "SM",
+            "detectLaunch": true,
+            "type": "1RS2-3"
+          },
+          {
+            "name": "625",
+            "type": "PGZ-625 TT"
+          },
+          {
+            "name": "AH-64",
+            "type": "AN/APG-78"
+          },
+          {
+            "name": "Ka-52",
+            "type": "RN-01 Arbalet"
+          },
+          {
+            "name": "Mi-28",
+            "type": "N-025"
           }
         ]
       },
@@ -3765,6 +3803,18 @@
           {
             "text": "MSL",
             "group": "ARH"
+          },
+          {
+            "text": "A64",
+            "group": "AH-64"
+          },
+          {
+            "text": "K52",
+            "group": "Ka-52"
+          },
+          {
+            "text": "M28",
+            "group": "Mi-28"
           }
         ]
       },
@@ -3796,7 +3846,10 @@
               "Mirage 2000",
               "J-39",
               "JF-17",
-              "ARH"
+              "ARH",
+              "AH-64",
+              "Ka-52",
+              "Mi-28"
             ]
           },
           {
@@ -3813,7 +3866,10 @@
               "2S6",
               "Roland",
               "Rapier",
-              "Crotal"
+              "Crotal",
+              "S1",
+              "SM",
+              "625"
             ]
           }
         ]
@@ -4416,7 +4472,7 @@
         "external": true
       },
       {
-        "blk": "gamedata/sensors/us_an_alr_56c.blk"
+        "blk": "gamedata/sensors/il_uews.blk"
       },
       {
         "blk": "gamedata/sensors/LaserDesignatorSensor.blk",
@@ -20954,8 +21010,8 @@
           0.5
         ],
         "wingsVaporMinMaxNoiseSpeed": [
-          4.0,
-          4.0
+          5.0,
+          5.0
         ],
         "vorticesVaporMinMaxNoiseSpeed": [
           5.0,
@@ -21435,8 +21491,8 @@
           0.5
         ],
         "wingsVaporMinMaxNoiseSpeed": [
-          4.0,
-          4.0
+          5.0,
+          5.0
         ],
         "vorticesVaporMinMaxNoiseSpeed": [
           6.0,

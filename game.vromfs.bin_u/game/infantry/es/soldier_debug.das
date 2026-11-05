@@ -3,6 +3,7 @@ require ecs
 require ecs.safe
 require ecs.ecs_template
 require %appGame.infantry.es.net_console_macro
+require %appGame.infantry.es.inventory_common
 require %game.events
 
 
@@ -27,6 +28,7 @@ def soldier_rearm_cmd(ammo_count : int = 10; @net_hero hero_eid : EntityId)
         for gunModEid in *gunMods
           query(gunModEid) <| $ [es] (gun__ammoItemTemplates : Array)
             soldier_rearm_create_ammo_items(gun__ammoItemTemplates, ammo_count, hero_eid)
+    push_item_in_cont(hero_eid, "medkit_item")
 
 def soldier_unarm_remove_ammo_by_holder_id(var itemContainer : EidList&; ammo_holder_id : int)
   var index = length(itemContainer) - 1

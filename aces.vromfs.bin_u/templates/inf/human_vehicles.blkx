@@ -644,6 +644,145 @@
       ]
     }
   },
+  "ural_4320": {
+    "_use": [
+      "tank",
+      "base_vehicle_seats",
+      "vehicle_seats_owner_components",
+      "vehicle_acceleration",
+      "human_vehicle_components",
+      "transport_self_destruct",
+      "vehicle_autodetect_team"
+    ],
+    "isAlive": true,
+    "_replicated": "isAlive",
+    "_tracked": "isAlive",
+    "vehicle_seats__seatTemplates:shared:object": {
+      "default": "vehicle_seat_fire_ready",
+      "driver": "vehicle_seat_driver",
+      "passenger1": "vehicle_seat_fire_ready",
+      "passenger2": "vehicle_seat_fire_ready"
+    },
+    "_group": {
+      "_tags": "server",
+      "dependent_templates_list_shared:shared:list<t>": {
+        "template_name": [
+          "vehicle_seat_fire_ready",
+          "vehicle_seat_default",
+          "vehicle_seat_driver"
+        ]
+      }
+    },
+    "vehicle_seats__effectors:array": {},
+    "vehicle_seats__seats:shared:array": {
+      "seats:object": [
+        {
+          "name": "driver",
+          "locName": "vehicle_seats/driver",
+          "seatOwnsEntityControl": true,
+          "attachNode": "char_driver_pivot",
+          "attachTm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "seatComponent": "isDriver",
+          "seatEnum": "left_seat",
+          "shouldHideOwner": false,
+          "seatAnimUpper": "drive_passenger",
+          "seatAnimLower": "drive_passenger",
+          "cameraType": "commander",
+          "cameraOffset": [
+            -0.6,
+            0.1,
+            0.0
+          ],
+          "isHoldGunModeAllowed": false
+        },
+        {
+          "name": "passenger1",
+          "locName": "vehicle_seats/shooter",
+          "attachNode": "char_passenger_01_pivot",
+          "attachTm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "canPlaceManually": true,
+          "seatEnum": "right_seat",
+          "isHoldGunModeAllowed": true,
+          "shouldHideOwner": false
+        },
+        {
+          "name": "passenger2",
+          "locName": "vehicle_seats/shooter",
+          "attachNode": "char_passenger_02_pivot",
+          "attachTm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "seatComponent": "isPassenger",
+          "canPlaceManually": true,
+          "seatEnum": "right_backseat",
+          "isHoldGunModeAllowed": true,
+          "shouldHideOwner": false
+        }
+      ]
+    }
+  },
   "base_vehicle_seats": {
     "vehicle_seats__enumVarId": -1,
     "vehicle_seats__enumVarName": "gaz_67",
