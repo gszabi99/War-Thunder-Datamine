@@ -275,6 +275,13 @@ enumsAddTypes(g_hud_reward_message, {
     priority = REWARD_PRIORITY.kill
   }
 
+  SECTOR_CAPTURE = {
+    code = EXP_EVENT_SECTOR_CAPTURE
+    locId = "exp_reasons/sector_capture"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.hit
+  }
+
 })
 
 return {

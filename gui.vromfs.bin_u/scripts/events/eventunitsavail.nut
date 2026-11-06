@@ -75,21 +75,23 @@ function getSquadMembersFlyoutData(teamData, event) {
           if (unitName == "")
             continue
 
-          haveAvailable = isUnitAllowedByTeamData(teamData, unitName, ediff)
+          let mrankDelta = memberData.mrankDeltaByUnit?[unitName] ?? 0
+          haveAvailable = isUnitAllowedByTeamData(teamData, unitName, ediff, mrankDelta)
           let isBroken = isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
           haveNotBroken = haveAvailable && !isBroken
           if (haveNotBroken)
             availableUnitsCount++
-          haveRequired  = haveRequired || isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+          haveRequired  = haveRequired || isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff, mrankDelta)
         }
         else {
           if ((memberData.crewAirs?[country] ?? []).len() == 0)
             continue
 
           foreach (unitName in memberData.crewAirs[country]) {
-            let isAvailable = isUnitAllowedByTeamData(teamData, unitName, ediff)
+            let mrankDelta = memberData.mrankDeltaByUnit?[unitName] ?? 0
+            let isAvailable = isUnitAllowedByTeamData(teamData, unitName, ediff, mrankDelta)
             haveAvailable = haveAvailable || isAvailable
             let isBroken = isInArray(unitName, memberData.brokenAirs)
             if (isBroken)
@@ -98,7 +100,7 @@ function getSquadMembersFlyoutData(teamData, event) {
             haveNotBroken = haveNotBroken || isNotBroken
             if (isNotBroken)
               availableUnitsCount++
-            haveRequired  = haveRequired  || isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+            haveRequired  = haveRequired  || isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff, mrankDelta)
           }
         }
       }

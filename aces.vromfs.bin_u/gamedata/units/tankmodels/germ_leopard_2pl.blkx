@@ -2436,7 +2436,9 @@
         "breechDP": "cannon_breech_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "speedYaw": 40.0,
         "speedPitch": 40.0,
@@ -2558,8 +2560,14 @@
           "gun": "bone_mg_gun_twin",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3741,7 +3749,9 @@
               "breechDP": "cannon_breech_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "speedYaw": 40.0,
               "speedPitch": 40.0,
@@ -3863,8 +3873,14 @@
                 "gun": "bone_mg_gun_twin",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4362,7 +4378,7 @@
     "color": [
       0.8,
       0.0,
-      0.01
+      0.0
     ],
     "maxColorBrightness": 35000.0,
     "lightPatternSize": 0.4

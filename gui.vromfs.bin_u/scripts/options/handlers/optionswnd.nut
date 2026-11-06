@@ -44,10 +44,10 @@ from "%scripts/dagui_natives.nut" import is_internet_radio_station_removable, re
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "%scripts/controls/controlsVisual.nut" import getShortcutText as getShortcutTextImpl, hackTextAssignmentForR2buttonOnPS4
 
 let webui = require_optional("webui")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -491,7 +491,7 @@ let Options = class (GenericOptionsModal) {
 
   function getShortcutText(shortcut_id_name) {
     let shortcut = getShortcuts([shortcut_id_name])
-    let data = getShortcutText({ shortcuts = shortcut, shortcutId = 0, colored = false })
+    let data = getShortcutTextImpl({ shortcuts = shortcut, shortcutId = 0, colored = false })
     return data == "" ? "---" : data
 }
 
@@ -507,7 +507,7 @@ let Options = class (GenericOptionsModal) {
     setShortcutsAndSaveControls(shortcut, [shortcut_id_name]);
     this.save(false);
 
-    let data = getShortcutText({ shortcuts = shortcut, shortcutId = 0, colored = false })
+    let data = getShortcutTextImpl({ shortcuts = shortcut, shortcutId = 0, colored = false })
     this.setSceneItemValue(shortcut_object_name, data)
   }
 
@@ -584,7 +584,7 @@ let Options = class (GenericOptionsModal) {
 
   function getPttShortcutText() {
     let ptt_shortcut = getShortcuts(["ID_PTT"]);
-    let pttShortcutText = getShortcutText({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false, colored = false });
+    let pttShortcutText = getShortcutTextImpl({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false, colored = false });
     return pttShortcutText == ""
       ? "---"
       : hackTextAssignmentForR2buttonOnPS4(pttShortcutText)

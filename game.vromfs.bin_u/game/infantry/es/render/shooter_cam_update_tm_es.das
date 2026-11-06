@@ -137,7 +137,6 @@ def shooter_cam_update_tm_es(info : UpdateStageInfoAct;
                                    isAlive = true;
                                    isDowned = false;
                                    dead_camera__enabled : bool = false;
-                                   camera__moveTilt_currDispl = float2();
                                    camera__fallenGroundDistance = 0.04f)
     assert(camera__magnification > 0.0f)
     let baseOffset = camera__offset + shooter_cam__offset + shooter_cam__additionalOffset
@@ -227,7 +226,3 @@ def shooter_cam_update_tm_es(info : UpdateStageInfoAct;
         camera__accuratePos.y = double(minHeight)
 
     camera_transform[3] = float3(camera__accuratePos)
-
-    if camera__moveTilt_currDispl != float2()
-      camera_transform[3] += transform[0] * camera__moveTilt_currDispl.y * 0.01
-      camera_transform[3] += transform[2] * camera__moveTilt_currDispl.x * 0.01

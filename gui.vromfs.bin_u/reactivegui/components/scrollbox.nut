@@ -66,6 +66,7 @@ function scrollBox(p, content) {
           pos = [isBarLeft && hasBar ? barPlaceW : 0, 0]
           clipChildren = true
           behavior = const [Behaviors.WheelScroll, Behaviors.JoystickScroll]
+          skipDirPadNav = true
           wheelStep
           onWheelScroll
           onElemState

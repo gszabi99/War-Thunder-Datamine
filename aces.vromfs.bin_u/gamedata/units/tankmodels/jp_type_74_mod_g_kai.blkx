@@ -1244,7 +1244,33 @@
       "horsePowers": 870.0,
       "maxRPM": 2200.0,
       "minRPM": 800.0,
-      "model": "mitsubishi_10zf_22wt"
+      "model": "mitsubishi_10zf_22wt",
+      "torqFormula": {
+        "a": -0.8838812,
+        "b": 1.4695334,
+        "c": 0.4143478
+      }
+    },
+    "mechanics": {
+      "maxBrakeForce": 160000.0,
+      "driveGearRadius": 0.33,
+      "mainGearRatio": 3.82,
+      "sideGearRatio": 1.0,
+      "neutralGearRatio": 10.0,
+      "steerType": "clutch_braking",
+      "gearRatios": {
+        "ratio": [
+          -4.28,
+          -9.64,
+          0.0,
+          12.88,
+          6.94,
+          4.55,
+          3.03,
+          2.02,
+          1.35
+        ]
+      }
     },
     "suspension": {
       "trackHeightAboveWheel": 0.1,
@@ -1299,27 +1325,6 @@
         "wheel_r_01": {},
         "wheel_l_05": {},
         "wheel_r_05": {}
-      }
-    },
-    "mechanics": {
-      "steerType": "clutch_braking",
-      "maxBrakeForce": 160000.0,
-      "driveGearRadius": 0.33,
-      "mainGearRatio": 3.82,
-      "sideGearRatio": 1.0,
-      "neutralGearRatio": 10.0,
-      "gearRatios": {
-        "ratio": [
-          -4.28,
-          -9.64,
-          0.0,
-          12.88,
-          6.94,
-          4.55,
-          3.03,
-          2.02,
-          1.35
-        ]
       }
     }
   },
@@ -2462,6 +2467,30 @@
         }
       ]
     }
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.08,
+      1.39,
+      1.36
+    ],
+    "lightInfluenceSize": [
+      0.3,
+      0.2,
+      0.3
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.0
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.25
   },
   "DamageParts": {
     "formatVersion": 2,

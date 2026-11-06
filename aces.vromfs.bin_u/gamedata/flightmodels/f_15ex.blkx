@@ -97,45 +97,35 @@
     },
     "armor_jet_engine": {
       "apu1_dm": {
-        "genericDamageMult": 1.6,
         "hp": 30.5
       },
       "engine1_dm": {
-        "genericDamageMult": 1.6,
         "hp": 50.5
       },
       "engine2_dm": {
-        "genericDamageMult": 1.6,
         "hp": 50.5
       }
     },
     "c_dural10": {
       "tail_dm": {
-        "genericDamageMult": 0.6,
         "hp": 160.5
       },
       "wing1_l_dm": {
-        "genericDamageMult": 0.35,
         "hp": 75.5
       },
       "wing1_r_dm": {
-        "genericDamageMult": 0.35,
         "hp": 75.5
       },
       "wing2_l_dm": {
-        "genericDamageMult": 0.35,
         "hp": 75.5
       },
       "wing2_r_dm": {
-        "genericDamageMult": 0.35,
         "hp": 75.5
       },
       "wing_l_dm": {
-        "genericDamageMult": 0.35,
         "hp": 99.1
       },
       "wing_r_dm": {
-        "genericDamageMult": 0.35,
         "hp": 99.1
       }
     },
@@ -151,19 +141,15 @@
     },
     "c_dural3": {
       "aileron_l_dm": {
-        "genericDamageMult": 0.3,
         "hp": 39.8
       },
       "aileron_r_dm": {
-        "genericDamageMult": 0.3,
         "hp": 39.7
       },
       "elevator0_dm": {
-        "genericDamageMult": 0.3,
         "hp": 50.5
       },
       "elevator1_dm": {
-        "genericDamageMult": 0.3,
         "hp": 50.5
       },
       "fin1_dm": {
@@ -179,11 +165,9 @@
         "hp": 41.6
       },
       "rudder0_dm": {
-        "genericDamageMult": 0.3,
         "hp": 29.5
       },
       "rudder1_dm": {
-        "genericDamageMult": 0.3,
         "hp": 29.5
       }
     },
@@ -198,6 +182,9 @@
         "hp": 19.5
       },
       "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
         "hp": 19.5
       },
       "electronic_block1_dm": {
@@ -303,7 +290,7 @@
         "hp": 110.1
       },
       "tank3_dm": {
-        "hp": 73.6
+        "hp": 72.6
       },
       "tank4_dm": {
         "hp": 39.5
@@ -468,6 +455,9 @@
       },
       {
         "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
       },
       {
         "name": "electronic_block1_dm"
@@ -1130,15 +1120,15 @@
       {
         "name": "spar_l_dm",
         "onKill": {
-          "nothing": 100.0,
-          "cut": 0.001
+          "nothing": 2.0,
+          "cut": 3.0
         }
       },
       {
         "name": "spar_r_dm",
         "onKill": {
-          "nothing": 100.0,
-          "cut": 0.001
+          "nothing": 2.0,
+          "cut": 3.0
         }
       },
       {
@@ -2986,7 +2976,10 @@
             "search": true,
             "track": true,
             "launch": false,
-            "type": "4R-90-Yatagan"
+            "type": [
+              "4R-90-Yatagan",
+              "Mk-95"
+            ]
           },
           {
             "name": "S-125 LAUNCH",
@@ -2994,7 +2987,10 @@
             "search": false,
             "track": false,
             "launch": true,
-            "type": "4R-90-Yatagan",
+            "type": [
+              "4R-90-Yatagan",
+              "Mk-95"
+            ],
             "threatFlag": "RWR SACLOS LAUNCH"
           },
           {
@@ -4906,7 +4902,7 @@
         "us_lantirn_pod_anaaq14",
         "optic2_turret",
         "optic2_gun",
-        "pylon_sniper_atp",
+        "pylon_sniper",
         "an_aaq_33_sniper_atp",
         "optic3_turret",
         "optic3_gun",
@@ -6240,6 +6236,9 @@
             "iconType": "missile_air_to_air_midrange_special_group",
             "name": "aim_120b_slot5",
             "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",
@@ -6308,6 +6307,9 @@
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120c_slot5",
             "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",
@@ -6376,6 +6378,9 @@
             "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120d_slot5",
             "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",
@@ -15130,6 +15135,9 @@
             "iconType": "missile_air_to_air_midrange_special_group",
             "name": "aim_120b_slot11",
             "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",
@@ -15198,6 +15206,9 @@
             "iconType": "missile_type_f_air_to_air_midrange_group",
             "name": "aim_120c_slot11",
             "reqModification": "us_aim_120b_c",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",
@@ -15266,6 +15277,9 @@
             "iconType": "missile_type_s_air_to_air_midrange_group",
             "name": "aim_120d_slot11",
             "reqModification": "us_aim_120d",
+            "ShowNodes": {
+              "node": "pylon_aim7_fuse"
+            },
             "Weapon": [
               {
                 "trigger": "aam",

@@ -70,6 +70,7 @@ from "%globalScripts/gchatEventConsts.nut" import *
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/utils_sa.nut" import save_to_json, is_myself_anyof_moderators
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
+from "%scripts/chat/chatRooms.nut" import joinThread, addRoom as addRoomImpl, isRoomSquad, isRoomClan, isNotUsersClanRoom
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
@@ -79,7 +80,6 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
 let { chatPrevScenes } = require("%scripts/chat/chatHandler.nut")
 let { openChatRoom } = require("%scripts/chat/openChat.nut")
-let { joinThread, addRoom, isRoomSquad, isRoomClan, isNotUsersClanRoom } = require("%scripts/chat/chatRooms.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1718,7 +1718,7 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
 
     if (r.type != g_chat_room_type.PRIVATE)
       this.guiScene.playSound("chat_join")
-    addRoom(r)
+    addRoomImpl(r)
 
     local thisCapture = this
     this.countUnhiddenRooms(function(unhiddenRoomsCount) {

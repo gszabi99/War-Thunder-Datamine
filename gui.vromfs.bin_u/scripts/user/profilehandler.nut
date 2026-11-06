@@ -69,11 +69,11 @@ from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "app" import APP_ID, isAppActive
+from "%scripts/user/profileAppearance.nut" import saveProfileAppearance as saveProfileAppearanceImpl, getProfileHeaderBackgrounds
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/user/profileAppearance.nut")
 let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
 let gfn = require_optional("gfn")
 
@@ -1398,7 +1398,7 @@ let Profile = class (UserCardHandler) {
       this.setCurrentAvatar()
     }, this)
 
-    saveProfileAppearance(params, null, cbError)
+    saveProfileAppearanceImpl(params, null, cbError)
   }
 
   function updateHeaderBackgroundsListSelection() {

@@ -11,6 +11,7 @@ from "auth_wt" import setLoginHangarDelayed
 from "console" import register_command
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "blkGetters" import get_settings_blk
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 
 const MAX_HANGAR_DELAY_TIME = 60
 
@@ -24,8 +25,8 @@ let debugHangar = hardPersistWatched("debugHangar")
 let selectedHangar = hardPersistWatched("selectedHangar")
 let lastAppliedHangar = hardPersistWatched("lastAppliedHangar", "")
 
-let needDelayHangarRaw = keepref(Computed(@() isLoginRequired.get() && isAuthorized.get()
-  && isOnlineBinariesInited.get() && (!isProfileReceived.get() || selectedHangar.get() == null)))
+let needDelayHangarRaw = keepref(Computed(@() !isLoginRequired.get() ? !shouldDisableMenu && selectedHangar.get() == null
+  : isAuthorized.get() && isOnlineBinariesInited.get() && (!isProfileReceived.get() || selectedHangar.get() == null)))
 let needDelayHangar = keepref(WatchedImmediate(needDelayHangarRaw.get())) 
 
 let undelayHangar = @() needDelayHangar.set(false)

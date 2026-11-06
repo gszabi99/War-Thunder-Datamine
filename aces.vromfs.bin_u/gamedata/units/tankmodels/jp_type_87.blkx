@@ -101,15 +101,20 @@
       "horsePowers": 870.0,
       "maxRPM": 2200.0,
       "minRPM": 800.0,
-      "model": "mitsubishi_10zf_22wt"
+      "model": "mitsubishi_10zf_22wt",
+      "torqFormula": {
+        "a": -0.8838812,
+        "b": 1.4695334,
+        "c": 0.4143478
+      }
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 235000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 3.82,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 10.0,
+      "steerType": "clutch_braking",
       "gearRatios": {
         "ratio": [
           -9.64,
@@ -2928,7 +2933,9 @@
         "breechDP": "cannon_breech_01_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -3213,7 +3220,9 @@
         "breechDP": "cannon_breech_02_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -3837,7 +3846,9 @@
               "breechDP": "cannon_breech_01_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -4122,7 +4133,9 @@
               "breechDP": "cannon_breech_02_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,

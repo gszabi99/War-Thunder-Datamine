@@ -533,7 +533,10 @@ function getBombBlockedStateText(state, machLimit, minAltitudeText) {
     return ""
 
   return state == BombReleaseBlockedStates.highSpeed ? getTooFastText(machLimit, "HUD/BOMB_SIGHT_HIGH_SPEED")
-    : state == BombReleaseBlockedStates.lowAltitude ? $"{loc("HUD/BOMB_SIGHT_LOW_ALTITUDE")} < {minAltitudeText}"
+    : state == BombReleaseBlockedStates.lowAltitudeCluster ? loc("HUD/BOMB_SIGHT_LOW_ALTITUDE_CLUSTER", { altitude = minAltitudeText })
+    : state == BombReleaseBlockedStates.lowAltitudeImpact ? loc("HUD/BOMB_SIGHT_LOW_ALTITUDE_IMPACT", { altitude = minAltitudeText })
+    : state == BombReleaseBlockedStates.diveCluster ? loc("HUD/BOMB_SIGHT_DIVE_CLUSTER")
+    : state == BombReleaseBlockedStates.diveImpact ? loc("HUD/BOMB_SIGHT_DIVE_IMPACT")
     : loc("HUD/BOMB_SIGHT_BOMB_BAY")
 }
 

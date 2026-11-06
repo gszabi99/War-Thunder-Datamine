@@ -14,10 +14,15 @@ def unit_update_tm_component_es(evt : Event;
 def human_save_tm(evt : Event;
                   human_net_phys : HumanActor;
                   human_net_phys__locationOffset : float3 const?;
+                  camera__moveTilt_currDispl = float2();
                   var transform : float3x4)
   location_toTM(human_net_phys.phys.visualLocation, transform)
   if human_net_phys__locationOffset != null
     transform[3] += *human_net_phys__locationOffset
+
+  if camera__moveTilt_currDispl != float2()
+    transform[3] += transform[0] * camera__moveTilt_currDispl.y * 0.01
+    transform[3] += transform[2] * camera__moveTilt_currDispl.x * 0.01
 
 [es(tag=server, on_appear, REQUIRE=whitelistedDetector)]
 def whilelisted_detector_init(evt : Event;

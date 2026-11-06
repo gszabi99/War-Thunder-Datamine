@@ -90,6 +90,7 @@ from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 from "types" import Function, Table, String
 from "%appGlobals/missions/respawnCountModes.nut" import RESPAWN_COUNT_MODE
+from "%scripts/leaderboard/leaderboardHelpers.nut" import checkLbRowVisibility as checkLbRowVisibilityImpl
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
@@ -98,7 +99,6 @@ let { gameEvents } = require("%scripts/events/eventsState.nut")
 let { eventIdsForMainGameModeList } = require("%scripts/events/eventInfo.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { eventChaptersManager } = require("%scripts/events/eventsChapter.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
@@ -1398,7 +1398,7 @@ let Events = class {
   }
 
   function checkLbRowVisibility(row, params = {}) {
-    if (!checkLbRowVisibility(row, params))
+    if (!checkLbRowVisibilityImpl(row, params))
       return false
 
     local event = events.getEvent(params?.eventId)

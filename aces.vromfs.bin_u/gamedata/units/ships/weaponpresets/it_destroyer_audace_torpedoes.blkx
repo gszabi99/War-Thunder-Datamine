@@ -125,16 +125,22 @@
       "ammoDpGenFmt": "torpedo_%02d_dm",
       "barrelDP": "tt_03_dm",
       "brokenBarrelAllowShoot": false,
-      "enableCourseCorrection": false,
+      "enableCourseCorrection": true,
       "startFx": "start_torpedo",
       "startFxOffset": [
         4.0,
         0.0,
         0.0
       ],
+      "gyroAngle": 180.0,
+      "allowableDelta": [
+        180.0,
+        40.0
+      ],
+      "courseSmoothness": 300.0,
+      "maxAngularSpeed": 0.8,
       "startSpeed": 20.0,
       "useStartSpeed": true,
-      "allowableDelta": 40.0,
       "turret": {
         "head": "tt_head_03",
         "gun": "tt_03",
@@ -142,7 +148,7 @@
       },
       "limits": {
         "yaw": [
-          0.0,
+          -0.0,
           0.0
         ],
         "pitch": [

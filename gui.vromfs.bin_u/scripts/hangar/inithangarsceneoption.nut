@@ -3,11 +3,12 @@ from "%scripts/hangar/initHangar.nut" import selectedHangar, getCustomHangar, ge
 from "%scripts/options/optionsExt.nut" import registerOption
 from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
 from "%scripts/time.nut" import getTimestampFromStringUtc, calculateCorrectTimePeriodYears
-from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%appGlobals/login/loginState.nut" import isProfileReceived, isLoginRequired
 from "dagor.workcycle" import setTimeout, clearTimer
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_HANGAR_SCENE
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 
 const DEFAULT_VALUE = "hangar_default"
 
@@ -71,7 +72,7 @@ function updateSelectedHangar() {
 }
 
 isProfileReceived.subscribe(@(v) v ? updateSelectedHangar() : null)
-if (isProfileReceived.get())
+if (isProfileReceived.get() || (!shouldDisableMenu && !isLoginRequired.get()))
   updateSelectedHangar()
 
 function fillHangarSceneOptionDescr(_optionId, descr, _context) {

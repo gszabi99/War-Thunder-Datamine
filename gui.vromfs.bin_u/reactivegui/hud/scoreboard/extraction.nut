@@ -267,7 +267,7 @@ let mkFireIcon = @(isLeft = false) @() {
 let furyGlowAnimGrad =  mkBitmapPictureLazy(gradTexSize, gradTexSize,
   mkGradientCtorRadial(0XFFd17841, 0, gradTexSize / 3.5, gradTexSize / 4, gradTexSize / 2, gradTexSize / 2))
 
-let furySkullGlowAnim = {
+let mkFurySkullGlowAnim = @() {
   key = {}
   size = hdpx(54)
   rendObj = ROBJ_IMAGE
@@ -285,7 +285,7 @@ let skullFuryIndicatorComp = @() {
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
-    isFuryProgressCompleted.get() ? furySkullGlowAnim : null
+    isFuryProgressCompleted.get() ? mkFurySkullGlowAnim() : null
     {
       size = SKULL_CIRCLE_SIZE
       rendObj = ROBJ_IMAGE

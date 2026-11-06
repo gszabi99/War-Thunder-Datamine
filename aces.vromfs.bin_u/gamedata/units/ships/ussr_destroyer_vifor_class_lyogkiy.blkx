@@ -59,9 +59,6 @@
     4.4,
     -1.2
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -3865,6 +3862,7 @@
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 65.0,
         "speedPitch": 55.0,
         "bullets": 2000,
@@ -3968,6 +3966,7 @@
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 65.0,
         "speedPitch": 55.0,
         "bullets": 2000,
@@ -4065,6 +4064,7 @@
         "breechDP": "aa_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 65.0,
         "speedPitch": 55.0,
         "bullets": 2000,
@@ -4186,6 +4186,7 @@
         "breechDP": "aa_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 65.0,
         "speedPitch": 55.0,
         "bullets": 2000,
@@ -5927,7 +5928,12 @@
     "ammo3": {
       "weaponTrigger": [
         "gunner2",
-        "gunner3"
+        "gunner3",
+        "gunner4",
+        "gunner5",
+        "gunner6",
+        "gunner7",
+        "gunner8"
       ],
       "entityMunition": "aux",
       "fatalFire": false,
@@ -5939,34 +5945,23 @@
       "shareTime": 6,
       "shareCount": 1,
       "shareDuration": 120,
-      "shells": {
-        "explosionEvent": "ammo_aux_explosion_1",
-        "fireEvent": "ammo_aux_fire_1",
-        "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_01_dm": {}
-      }
+      "shells": [
+        {
+          "explosionEvent": "ammo_aux_explosion_1",
+          "fireEvent": "ammo_aux_fire_1",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_01_dm": {}
+        },
+        {
+          "explosionEvent": "ammo_explosion_2",
+          "fireEvent": "ammo_fire_2",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_02_dm": {}
+        }
+      ]
     },
     "ammo4": {
-      "weaponTrigger": "gunner4",
-      "entityMunition": "aux",
-      "fatalFire": false,
-      "fatalExplosion": false,
-      "fireParamsPreset": "ship_ammo_fire_aux",
-      "splashDamageConstraint": 2000.0,
-      "shatterRadiusConstraint": 0.1,
-      "shareDelay": 10,
-      "shareTime": 6,
-      "shareCount": 1,
-      "shareDuration": 120,
-      "shells": {
-        "explosionEvent": "ammo_explosion_2",
-        "fireEvent": "ammo_fire_2",
-        "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {}
-      }
-    },
-    "ammo5": {
-      "weaponTrigger": "gunner5",
+      "weaponTrigger": "gunner9",
       "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,
@@ -5991,8 +5986,8 @@
         }
       ]
     },
-    "ammo6": {
-      "weaponTrigger": "gunner6",
+    "ammo5": {
+      "weaponTrigger": "gunner10",
       "entityMunition": "torpedo",
       "removeLoadedAmmo": false,
       "fatalFire": false,

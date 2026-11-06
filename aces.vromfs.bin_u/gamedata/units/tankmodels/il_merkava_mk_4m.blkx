@@ -1124,6 +1124,16 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
+      }
     }
   },
   "attachables": {
@@ -2443,8 +2453,14 @@
           "gun": "bone_mg_twin_01",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2490,8 +2506,14 @@
           "gun": "bone_mg_twin_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2848,6 +2870,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -4419,8 +4453,14 @@
                 "gun": "bone_mg_twin_01",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4466,8 +4506,14 @@
                 "gun": "bone_mg_twin_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [

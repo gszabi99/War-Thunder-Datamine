@@ -15,7 +15,10 @@ let BombReleaseBlockedStates =
   notBlocked = 0,
   highSpeed = 1,
   bombBay = 2,
-  lowAltitude = 3
+  lowAltitudeCluster = 3,
+  lowAltitudeImpact = 4,
+  diveCluster = 5,
+  diveImpact = 6
 }
 
 let IndicatorsVisible = Watched(false)

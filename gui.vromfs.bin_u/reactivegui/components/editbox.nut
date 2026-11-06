@@ -21,7 +21,7 @@ let focusLine = freeze({
   color = cssColors.editboxFgColorFocus
 })
 
-function editBox(p, state = null, onChange = null, size = null) {
+function editBox(p, state = null, onChangeCb = null, size = null) {
   let id = p?.id
   let text = state ?? Watched(p?.value ?? "")
   let elemSf = Watched(0)
@@ -64,7 +64,7 @@ function editBox(p, state = null, onChange = null, size = null) {
     function onChange(v) {
       if (state == null)
         text.set(v)
-      onChange?(id, v)
+      onChangeCb?(id, v)
     }
     onEscape = onCancel == null ? null : @() onCancel(id)
     onReturn = @() onReturn?(id)

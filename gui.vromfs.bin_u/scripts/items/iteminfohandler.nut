@@ -5,9 +5,9 @@ from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
 from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/prizeChance.nut" import getChestChancesData, fillChestChances as fillChestChancesImpl
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getChestChancesData, fillChestChances } = require("%scripts/items/prizeChance.nut")
 
 local class ItemInfoHandler (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -51,7 +51,7 @@ local class ItemInfoHandler (BaseGuiHandlerWT) {
       ?? this.scene.findObject("item_desc_div")
     if (!itemsNest?.isValid())
       return
-    fillChestChances(itemsNest, chancesData)
+    fillChestChancesImpl(itemsNest, chancesData)
   }
 
   function setHandlerVisible(value) {

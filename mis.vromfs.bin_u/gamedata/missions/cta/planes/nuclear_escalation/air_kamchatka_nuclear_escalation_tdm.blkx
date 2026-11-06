@@ -225,93 +225,76 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gamedata/missions/templates/player_unit_template.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "importDialogs": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "showDialogs": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/player_unit_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/air_templates/nuclear_escalation_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/nuclear_escalation_ground_sets/nuclear_escalation_tbm.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/nuclear_escalation_ground_sets/nuclear_escalation_mlrs.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "debug_in_single": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "unitWakeUp": {
-          "target": "t1_player01"
-        },
-        "__changeUnit": {
-          "unit_class": "nt_su_24m",
-          "weaponPreset": "nt_su_24m_rn_40",
-          "isIndividual": false,
-          "hangarMission": false,
-          "object": "t1_player01",
-          "type": "plane"
-        },
-        "changeUnit": {
-          "unit_class": "nt_su_24m",
-          "weaponPreset": "nt_su_24m_bomb_fab500m_62",
-          "isIndividual": false,
-          "hangarMission": false,
-          "object": "t1_player01",
-          "type": "plane"
-        },
-        "unitSetProperties": {
-          "object": "t1_player01",
-          "targetableByAi": false,
-          "isImmortal": true,
-          "speed": 900.0
-        },
-        "missionSetProperties": {
-          "allowEmptyTeams": true
-        }
-      },
-      "else_actions": {}
-    },
-    "debug_in_multiplayer": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "unitSetProperties": {
-          "object": "all_players_squad",
-          "targetableByAi": false,
-          "isImmortal": true
-        }
-      },
-      "else_actions": {}
-    },
     "init": {
       "is_enabled": true,
       "comments": "",
@@ -325,9 +308,6 @@
       },
       "conditions": {},
       "actions": {
-        "missionGetBalanceLevel": {
-          "input_var": "mission_rank"
-        },
         "missionForceMusic": {
           "evName": "event/april_fools_2026/music_action"
         },
@@ -350,45 +330,6 @@
         }
       },
       "else_actions": {}
-    },
-    "add_objectives": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "has_strategic_bombers",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "moAddMissionObjective": [
-          {
-            "target": "nuclear_escalation_objective_t1"
-          },
-          {
-            "target": "nuclear_escalation_objective_t2"
-          }
-        ]
-      },
-      "else_actions": {
-        "moAddMissionObjective": [
-          {
-            "target": "destroy_vehicles_and_airfields_t1"
-          },
-          {
-            "target": "destroy_vehicles_and_airfields_t2"
-          }
-        ]
-      }
     },
     "create_spawns": {
       "is_enabled": true,
@@ -906,514 +847,6 @@
         ]
       },
       "else_actions": {}
-    },
-    "spawn_tactical_missile_launchers": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "unitRespawn": [
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_tactical_missile_launcher_01",
-            "target": "t1_tactical_missile_spawn_area_01",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_tactical_missile_launcher_02",
-            "target": "t1_tactical_missile_spawn_area_02",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_tactical_missile_launcher_03",
-            "target": "t1_tactical_missile_spawn_area_03",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_tactical_missile_launcher_01",
-            "target": "t2_tactical_missile_spawn_area_01",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_tactical_missile_launcher_02",
-            "target": "t2_tactical_missile_spawn_area_02",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_tactical_missile_launcher_03",
-            "target": "t2_tactical_missile_spawn_area_03",
-            "randomSpawn": true
-          }
-        ],
-        "wait": {
-          "time": 30.0
-        },
-        "unitRespawnAfterTime": [
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_tactical_missile_launcher_01",
-            "place_to_respawn": "t1_tactical_missile_spawn_area_01",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_tactical_missile_launcher_02",
-            "place_to_respawn": "t1_tactical_missile_spawn_area_02",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_tactical_missile_launcher_03",
-            "place_to_respawn": "t1_tactical_missile_spawn_area_03",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_tactical_missile_launcher_01",
-            "place_to_respawn": "t2_tactical_missile_spawn_area_01",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_tactical_missile_launcher_02",
-            "place_to_respawn": "t2_tactical_missile_spawn_area_02",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_tactical_missile_launcher_03",
-            "place_to_respawn": "t2_tactical_missile_spawn_area_03",
-            "cycle_respawn": true
-          }
-        ],
-        "unitSetProperties": {
-          "object": [
-            "t1_tactical_missile_launcher_squad",
-            "t2_tactical_missile_launcher_squad"
-          ],
-          "movementTraceRI": true
-        }
-      },
-      "else_actions": {}
-    },
-    "spawn_longrange_radars": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "unitSpawnOnObjectGroup": [
-          {
-            "type": "unit",
-            "object": "t1_longrange_radar_squad",
-            "object_type": "isDelayed",
-            "target": [
-              "t1_longrange_radar_place_01",
-              "t1_longrange_radar_place_02",
-              "t1_longrange_radar_place_03"
-            ]
-          },
-          {
-            "type": "unit",
-            "object": "t2_longrange_radar_squad",
-            "object_type": "isDelayed",
-            "target": [
-              "t2_longrange_radar_place_01",
-              "t2_longrange_radar_place_02",
-              "t2_longrange_radar_place_03"
-            ]
-          }
-        ],
-        "unitRespawnAfterTime": [
-          {
-            "time_to_respawn": 900.0,
-            "object_name": "t1_longrange_radar_squad",
-            "just_restore": true,
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 900.0,
-            "object_name": "t2_longrange_radar_squad",
-            "just_restore": true,
-            "cycle_respawn": true
-          }
-        ]
-      },
-      "else_actions": {}
-    },
-    "spawn_mlrs": {
-      "is_enabled": true,
-      "comments": "MLRS are disabled in the 1970 era (mission rank <= 30): no historical MLRS existed in that time period",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "mission_rank",
-          "value": 30,
-          "comparasion_func": "more"
-        }
-      },
-      "actions": {
-        "unitRespawn": [
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_mlrs_01",
-            "target": "t1_mlrs_spawn_area_01",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_mlrs_02",
-            "target": "t1_mlrs_spawn_area_02",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_mlrs_03",
-            "target": "t1_mlrs_spawn_area_03",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_mlrs_04",
-            "target": "t1_mlrs_spawn_area_04",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t1_mlrs_05",
-            "target": "t1_mlrs_spawn_area_05",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_mlrs_01",
-            "target": "t2_mlrs_spawn_area_01",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_mlrs_02",
-            "target": "t2_mlrs_spawn_area_02",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_mlrs_03",
-            "target": "t2_mlrs_spawn_area_03",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_mlrs_04",
-            "target": "t2_mlrs_spawn_area_04",
-            "randomSpawn": true
-          },
-          {
-            "delay": 0.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "t2_mlrs_05",
-            "target": "t2_mlrs_spawn_area_05",
-            "randomSpawn": true
-          }
-        ],
-        "wait": {
-          "time": 30.0
-        },
-        "unitRespawnAfterTime": [
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_mlrs_01",
-            "place_to_respawn": "t1_mlrs_spawn_area_01",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_mlrs_02",
-            "place_to_respawn": "t1_mlrs_spawn_area_02",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_mlrs_03",
-            "place_to_respawn": "t1_mlrs_spawn_area_03",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_mlrs_04",
-            "place_to_respawn": "t1_mlrs_spawn_area_04",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t1_mlrs_05",
-            "place_to_respawn": "t1_mlrs_spawn_area_05",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_mlrs_01",
-            "place_to_respawn": "t2_mlrs_spawn_area_01",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_mlrs_02",
-            "place_to_respawn": "t2_mlrs_spawn_area_02",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_mlrs_03",
-            "place_to_respawn": "t2_mlrs_spawn_area_03",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_mlrs_04",
-            "place_to_respawn": "t2_mlrs_spawn_area_04",
-            "cycle_respawn": true
-          },
-          {
-            "time_to_respawn": 600.0,
-            "object_name": "t2_mlrs_05",
-            "place_to_respawn": "t2_mlrs_spawn_area_05",
-            "cycle_respawn": true
-          }
-        ],
-        "unitSetProperties": {
-          "object": [
-            "t1_mlrs_squad",
-            "t2_mlrs_squad"
-          ],
-          "movementTraceRI": true,
-          "targetChangeInterval": 5.0,
-          "targetChangeProb": 1.0
-        }
-      },
-      "else_actions": {}
-    },
-    "check_win": {
-      "isCategory": true,
-      "is_enabled": true,
-      "t1_check_win": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.5
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_main"
-          }
-        },
-        "actions": {
-          "moSetObjectiveStatus": {
-            "target": "nuclear_escalation_objective_t1",
-            "status": 2,
-            "object_marking": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          },
-          "triggerEnable": {
-            "target": "t1_smooth_win"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_smooth_win": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 2.0
-          }
-        },
-        "conditions": {},
-        "actions": {
-          "gameMPChangeScore": {
-            "value": -1,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_check_win": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.5
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_main"
-          }
-        },
-        "actions": {
-          "moSetObjectiveStatus": {
-            "target": "nuclear_escalation_objective_t2",
-            "status": 2,
-            "object_marking": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          },
-          "triggerEnable": {
-            "target": "t2_smooth_win"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_smooth_win": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": true
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 2.0
-          }
-        },
-        "conditions": {},
-        "actions": {
-          "gameMPChangeScore": {
-            "value": -1,
-            "valueSystem": "percentage",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      }
     }
   },
   "mission_objectives": {
@@ -1468,12 +901,7 @@
       "onFailed": {}
     }
   },
-  "variables": {
-    "main_airfield_hp": 0.0,
-    "front_airfield_hp": 0.0,
-    "has_strategic_bombers": false,
-    "mission_rank": 0
-  },
+  "variables": {},
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -1499,7 +927,7 @@
           ],
           [
             -40420.0,
-            532.639,
+            532.6,
             -58975.8
           ]
         ],
@@ -1609,7 +1037,7 @@
           ],
           [
             -14855.6,
-            677.281,
+            6.0752,
             -34409.0
           ]
         ],
@@ -1663,9 +1091,9 @@
             0.490467
           ],
           [
-            49797.4,
-            316.842,
-            -1126.17
+            43099.6,
+            212.514,
+            -1710.31
           ]
         ],
         "unit_class": "dynaf_pg_1line_2000_universal",
@@ -1719,7 +1147,7 @@
           ],
           [
             -18855.0,
-            223.068,
+            17.3193,
             -14012.7
           ]
         ],
@@ -1774,7 +1202,7 @@
           ],
           [
             1430.68,
-            783.742,
+            1.39551,
             35979.9
           ]
         ],
@@ -1828,9 +1256,9 @@
             -0.791748
           ],
           [
-            5027.6,
-            803.883,
-            -37127.4
+            5330.42,
+            211.287,
+            -36407.1
           ]
         ],
         "unit_class": "dynaf_pg_1line_2000_universal",
@@ -1923,9 +1351,9 @@
         "name": "t1_fuel_storage_large_01",
         "tm": [
           [
-            0.998593,
+            -0.857594,
             0.0,
-            0.0530331
+            0.514327
           ],
           [
             0.0,
@@ -1933,14 +1361,14 @@
             0.0
           ],
           [
-            -0.0530331,
+            -0.514327,
             0.0,
-            0.998593
+            -0.857594
           ],
           [
-            -20522.9,
-            591.52,
-            -25123.9
+            -17872.9,
+            0.892639,
+            11415.2
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -1992,9 +1420,9 @@
         "name": "t1_fuel_storage_large_02",
         "tm": [
           [
-            0.883689,
+            -0.743994,
             0.0,
-            -0.468074
+            0.668185
           ],
           [
             0.0,
@@ -2002,14 +1430,14 @@
             0.0
           ],
           [
-            0.468074,
+            -0.668185,
             0.0,
-            0.883689
+            -0.743994
           ],
           [
-            -39469.7,
-            667.581,
-            -29090.8
+            -12907.1,
+            6.37305,
+            -5665.32
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -2061,9 +1489,9 @@
         "name": "t1_fuel_storage_large_03",
         "tm": [
           [
-            0.942809,
+            0.295072,
             0.0,
-            0.333333
+            0.955475
           ],
           [
             0.0,
@@ -2071,14 +1499,14 @@
             0.0
           ],
           [
-            -0.333333,
+            -0.955475,
             0.0,
-            0.942809
+            0.295072
           ],
           [
-            -6487.24,
-            69.8783,
-            -45290.8
+            2834.69,
+            69.8788,
+            -31128.4
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -2130,9 +1558,9 @@
         "name": "t2_fuel_storage_large_01",
         "tm": [
           [
-            -0.566205,
+            -0.150356,
             0.0,
-            -0.824265
+            -0.988632
           ],
           [
             0.0,
@@ -2140,14 +1568,14 @@
             0.0
           ],
           [
-            0.824265,
+            0.988632,
             0.0,
-            -0.566205
+            -0.150356
           ],
           [
-            46976.8,
-            64.1719,
-            6230.77
+            -2851.41,
+            7.78027,
+            36625.1
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -2199,9 +1627,9 @@
         "name": "t2_fuel_storage_large_02",
         "tm": [
           [
-            -0.977244,
+            -0.776363,
             0.0,
-            -0.21212
+            -0.630287
           ],
           [
             0.0,
@@ -2209,14 +1637,14 @@
             0.0
           ],
           [
-            0.21212,
+            0.630287,
             0.0,
-            -0.977244
+            -0.776363
           ],
           [
-            44817.8,
-            50.4078,
-            29628.3
+            4389.01,
+            210.666,
+            14321.5
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -2283,9 +1711,9 @@
             0.996178
           ],
           [
-            16747.7,
-            27.7481,
-            42941.7
+            33792.6,
+            839.161,
+            -12636.6
           ]
         ],
         "unit_class": "nt_fuel_factory_foundation",
@@ -2337,9 +1765,9 @@
         "name": "t1_ammo_storage_large_01",
         "tm": [
           [
-            -0.503175,
+            -0.386745,
             0.0,
-            -0.864185
+            -0.922187
           ],
           [
             0.0,
@@ -2347,14 +1775,14 @@
             0.0
           ],
           [
-            0.864185,
+            0.922187,
             0.0,
-            -0.503175
+            -0.386745
           ],
           [
-            -5653.65,
-            825.273,
-            -41150.1
+            -14709.4,
+            0.892578,
+            9787.96
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2406,9 +1834,9 @@
         "name": "t1_ammo_storage_large_02",
         "tm": [
           [
-            -0.849924,
+            0.998104,
             0.0,
-            -0.526905
+            -0.06155
           ],
           [
             0.0,
@@ -2416,14 +1844,14 @@
             0.0
           ],
           [
-            0.526905,
+            0.06155,
             0.0,
-            -0.849924
+            0.998104
           ],
           [
-            -27631.7,
-            72.396,
-            -30801.9
+            -9510.24,
+            52.8594,
+            -10352.5
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2475,9 +1903,9 @@
         "name": "t1_ammo_storage_large_03",
         "tm": [
           [
-            0.993308,
+            0.82903,
             0.0,
-            0.115499
+            -0.559205
           ],
           [
             0.0,
@@ -2485,14 +1913,14 @@
             0.0
           ],
           [
-            -0.115499,
+            0.559205,
             0.0,
-            0.993308
+            0.82903
           ],
           [
-            7587.53,
-            128.458,
-            -44922.9
+            11173.6,
+            128.459,
+            -31300.8
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2559,9 +1987,9 @@
             -0.873715
           ],
           [
-            55526.0,
-            50.5757,
-            26481.0
+            12962.0,
+            1297.94,
+            6012.01
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2613,9 +2041,9 @@
         "name": "t2_ammo_storage_large_02",
         "tm": [
           [
-            -0.798372,
+            0.78734,
             0.0,
-            0.602164
+            0.616518
           ],
           [
             0.0,
@@ -2623,14 +2051,14 @@
             0.0
           ],
           [
-            -0.602164,
+            -0.616518,
             0.0,
-            -0.798372
+            0.78734
           ],
           [
-            4767.44,
-            305.707,
-            38138.2
+            1773.34,
+            26.6592,
+            33048.8
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2682,9 +2110,9 @@
         "name": "t2_ammo_storage_large_03",
         "tm": [
           [
-            -0.448221,
+            -0.622484,
             0.0,
-            -0.893923
+            -0.782633
           ],
           [
             0.0,
@@ -2692,14 +2120,14 @@
             0.0
           ],
           [
-            0.893923,
+            0.782633,
             0.0,
-            -0.448221
+            -0.622484
           ],
           [
-            -4496.32,
-            3.7457,
-            50069.3
+            38934.1,
+            699.533,
+            -12603.9
           ]
         ],
         "unit_class": "nt_ammo_factory_foundation",
@@ -2751,9 +2179,9 @@
         "name": "t1_base_01",
         "tm": [
           [
-            -0.456356,
+            0.470549,
             0.0,
-            -0.889797
+            0.882374
           ],
           [
             0.0,
@@ -2761,14 +2189,14 @@
             0.0
           ],
           [
-            0.889797,
+            -0.882374,
             0.0,
-            -0.456356
+            0.470549
           ],
           [
-            -14869.6,
-            1.34369,
-            15767.5
+            -16468.4,
+            1.34375,
+            16894.4
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -2827,9 +2255,9 @@
             -0.79546
           ],
           [
-            -8021.92,
-            -21.8236,
-            -1280.37
+            -13066.3,
+            -21.8242,
+            14074.6
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -2873,9 +2301,9 @@
         "name": "t1_base_03",
         "tm": [
           [
-            -0.924553,
+            0.843044,
             0.0,
-            0.381054
+            -0.537845
           ],
           [
             0.0,
@@ -2883,14 +2311,14 @@
             0.0
           ],
           [
-            -0.381054,
+            0.537845,
             0.0,
-            -0.924553
+            0.843044
           ],
           [
-            -7542.03,
-            71.5547,
-            -10645.0
+            -8737.25,
+            37.7754,
+            -1028.42
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -2934,9 +2362,9 @@
         "name": "t1_base_04",
         "tm": [
           [
-            0.0889365,
+            0.461014,
             0.0,
-            -0.996038
+            0.887394
           ],
           [
             0.0,
@@ -2944,14 +2372,14 @@
             0.0
           ],
           [
-            0.996038,
+            -0.887394,
             0.0,
-            0.0889365
+            0.461014
           ],
           [
-            -13365.7,
-            55.1079,
-            -5080.14
+            -4778.07,
+            186.456,
+            -4724.57
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -2995,9 +2423,9 @@
         "name": "t1_base_05",
         "tm": [
           [
-            0.103636,
+            -0.527,
             0.0,
-            -0.994615
+            0.849865
           ],
           [
             0.0,
@@ -3005,14 +2433,14 @@
             0.0
           ],
           [
-            0.994615,
+            -0.849865,
             0.0,
-            0.103636
+            -0.527
           ],
           [
-            -1723.49,
-            55.1094,
-            -17366.0
+            7655.42,
+            505.014,
+            -27150.2
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3071,9 +2499,9 @@
             -0.999659
           ],
           [
-            1984.41,
-            54.4379,
-            -30445.3
+            19425.7,
+            312.738,
+            -27848.7
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3178,9 +2606,9 @@
         "name": "t2_base_01",
         "tm": [
           [
-            -0.345711,
+            -0.329331,
             0.0,
-            -0.938341
+            -0.944215
           ],
           [
             0.0,
@@ -3188,14 +2616,14 @@
             0.0
           ],
           [
-            0.938341,
+            0.944215,
             0.0,
-            -0.345711
+            -0.329331
           ],
           [
-            -4059.59,
-            11.3008,
-            27841.3
+            -8683.55,
+            86.6572,
+            32143.8
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3239,9 +2667,9 @@
         "name": "t2_base_02",
         "tm": [
           [
-            0.777579,
+            -0.615206,
             0.0,
-            -0.628785
+            -0.788366
           ],
           [
             0.0,
@@ -3249,14 +2677,14 @@
             0.0
           ],
           [
-            0.628785,
+            0.788366,
             0.0,
-            0.777579
+            -0.615206
           ],
           [
-            -773.521,
+            -2492.06,
             13.6533,
-            19717.4
+            26455.8
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3300,9 +2728,9 @@
         "name": "t2_base_03",
         "tm": [
           [
-            -0.736792,
+            0.80278,
             0.0,
-            0.676119
+            -0.596274
           ],
           [
             0.0,
@@ -3310,14 +2738,14 @@
             0.0
           ],
           [
-            -0.676119,
+            0.596274,
             0.0,
-            -0.736792
+            0.80278
           ],
           [
-            10046.8,
-            1184.19,
-            5513.36
+            1339.97,
+            76.4102,
+            11438.6
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3361,9 +2789,9 @@
         "name": "t2_base_04",
         "tm": [
           [
-            0.637794,
+            -0.486892,
             0.0,
-            -0.770206
+            -0.873462
           ],
           [
             0.0,
@@ -3371,14 +2799,14 @@
             0.0
           ],
           [
-            0.770206,
+            0.873462,
             0.0,
-            0.637794
+            -0.486892
           ],
           [
-            19613.5,
-            1120.75,
-            -6003.37
+            15363.2,
+            1010.78,
+            -11878.5
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3422,9 +2850,9 @@
         "name": "t2_base_05",
         "tm": [
           [
-            -0.576684,
+            0.0599885,
             0.0,
-            0.816968
+            -0.9982
           ],
           [
             0.0,
@@ -3432,14 +2860,14 @@
             0.0
           ],
           [
-            -0.816968,
+            0.9982,
             0.0,
-            -0.576684
+            0.0599885
           ],
           [
-            20410.0,
-            610.336,
-            2798.8
+            5241.01,
+            122.963,
+            7159.92
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3544,9 +2972,9 @@
         "name": "t2_base_07",
         "tm": [
           [
-            0.326144,
+            0.980179,
             0.0,
-            -0.94532
+            0.198115
           ],
           [
             0.0,
@@ -3554,14 +2982,14 @@
             0.0
           ],
           [
-            0.94532,
+            -0.198115,
             0.0,
-            0.326144
+            0.980179
           ],
           [
-            36752.3,
-            47.75,
-            -17314.9
+            34281.7,
+            618.298,
+            -19095.3
           ]
         ],
         "unit_class": "nt_assembly_area_foundation",
@@ -3620,9 +3048,9 @@
             0.995622
           ],
           [
-            -17141.1,
-            231.885,
-            -30266.5
+            -10826.6,
+            21.0527,
+            -21105.8
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -3815,9 +3243,9 @@
             0.970085
           ],
           [
-            -1183.44,
-            187.138,
-            -35237.2
+            2530.14,
+            240.738,
+            -33214.0
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -3880,9 +3308,9 @@
             0.935328
           ],
           [
-            -38930.0,
-            1010.07,
-            -20076.6
+            -35265.9,
+            947.892,
+            -17946.1
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -3945,9 +3373,9 @@
             0.995441
           ],
           [
-            45519.9,
-            196.523,
-            2090.49
+            34605.0,
+            825.039,
+            -8969.83
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -4010,9 +3438,9 @@
             0.997277
           ],
           [
-            20553.6,
-            2440.82,
-            17269.6
+            13946.1,
+            1435.36,
+            9572.45
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -4060,9 +3488,9 @@
         "name": "t2_short_sam_site_03",
         "tm": [
           [
-            0.950811,
+            -0.503359,
             0.0,
-            0.309773
+            -0.864078
           ],
           [
             0.0,
@@ -4070,14 +3498,14 @@
             0.0
           ],
           [
-            -0.309773,
+            0.864078,
             0.0,
-            0.950811
+            -0.503359
           ],
           [
-            8663.27,
+            8298.99,
             1002.2,
-            29357.5
+            29336.8
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -4140,9 +3568,9 @@
             0.984259
           ],
           [
-            41482.2,
-            490.767,
-            -8085.21
+            41086.6,
+            695.857,
+            -13720.4
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -4278,9 +3706,9 @@
             -0.512981
           ],
           [
-            -15050.0,
+            -15169.7,
             115.91,
-            21570.1
+            21421.8
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -4431,9 +3859,9 @@
             -0.580002
           ],
           [
-            -5345.21,
-            255.074,
-            -9471.92
+            19659.6,
+            444.446,
+            -22094.5
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -4482,9 +3910,9 @@
             -0.996322
           ],
           [
-            24211.1,
+            24813.7,
             517.823,
-            -26469.1
+            -25939.1
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -4584,9 +4012,9 @@
             0.72425
           ],
           [
-            1012.13,
+            603.911,
             3.73242,
-            16917.5
+            7543.34
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -4788,9 +4216,9 @@
             0.999184
           ],
           [
-            -566.565,
-            389.998,
-            -2875.04
+            26101.1,
+            726.042,
+            -17320.4
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -4891,7 +4319,7 @@
           ],
           [
             -30743.5,
-            419.117,
+            119.67,
             -37110.3
           ]
         ],
@@ -5095,9 +4523,9 @@
         "name": "t2_long_sam_site_02",
         "tm": [
           [
-            0.980095,
+            -0.861924,
             0.0,
-            0.19853
+            -0.507038
           ],
           [
             0.0,
@@ -5105,14 +4533,14 @@
             0.0
           ],
           [
-            -0.19853,
+            0.507038,
             0.0,
-            0.980095
+            -0.861924
           ],
           [
-            28288.0,
-            65.5142,
-            59008.0
+            34911.0,
+            297.419,
+            34553.8
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -5256,9 +4684,9 @@
             0.955019
           ],
           [
-            -9979.85,
-            740.249,
-            -53434.1
+            4602.31,
+            978.354,
+            -56362.4
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -5386,9 +4814,9 @@
             0.999798
           ],
           [
-            -45890.2,
-            1234.22,
-            -30187.7
+            -29515.3,
+            663.989,
+            -21611.9
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5417,9 +4845,9 @@
             0.993183
           ],
           [
-            -37760.0,
-            75.7531,
-            -16256.0
+            -13771.1,
+            75.7695,
+            -30530.6
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5448,9 +4876,9 @@
             0.964526
           ],
           [
-            -896.0,
-            186.331,
-            -42368.0
+            -2854.75,
+            186.332,
+            -39786.1
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5479,9 +4907,9 @@
             0.982627
           ],
           [
-            640.0,
-            90.8595,
-            45184.0
+            -5031.77,
+            739.9,
+            46401.6
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5510,9 +4938,9 @@
             0.999305
           ],
           [
-            20760.5,
-            2438.1,
-            17935.0
+            40935.7,
+            5.06836,
+            38072.3
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5541,9 +4969,9 @@
             0.93012
           ],
           [
-            -777.189,
-            445.359,
-            59507.9
+            49622.1,
+            1190.83,
+            9991.56
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5572,9 +5000,9 @@
             0.995622
           ],
           [
-            -16742.9,
-            230.769,
-            -30228.3
+            -10428.4,
+            24.0205,
+            -21067.6
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5743,9 +5171,9 @@
             0.970085
           ],
           [
-            -792.259,
-            186.04,
-            -35141.4
+            2921.32,
+            254.494,
+            -33118.2
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5857,9 +5285,9 @@
             0.955019
           ],
           [
-            -10104.3,
-            784.884,
-            -53058.1
+            4477.86,
+            940.172,
+            -55986.4
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5914,9 +5342,9 @@
             0.935328
           ],
           [
-            -38561.4,
-            966.082,
-            -19932.7
+            -34897.3,
+            933.862,
+            -17802.2
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -5971,9 +5399,9 @@
             0.995622
           ],
           [
-            -17181.1,
-            231.997,
-            -29871.9
+            -10866.6,
+            21.6084,
+            -20711.2
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6160,9 +5588,9 @@
             0.970085
           ],
           [
-            -1280.26,
-            187.409,
-            -34857.3
+            2433.32,
+            262.765,
+            -32834.1
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6286,9 +5714,9 @@
             0.955019
           ],
           [
-            -9603.45,
-            735.056,
-            -53313.7
+            4978.71,
+            995.039,
+            -56242.0
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6349,9 +5777,9 @@
             0.935328
           ],
           [
-            -39077.8,
-            1031.17,
-            -19700.9
+            -35413.7,
+            952.03,
+            -17570.4
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6412,9 +5840,9 @@
             -0.783826
           ],
           [
-            45555.4,
-            191.322,
-            1688.29
+            34640.5,
+            852.788,
+            -9372.03
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6469,9 +5897,9 @@
             -0.797122
           ],
           [
-            20576.1,
-            2428.34,
-            16874.4
+            13968.6,
+            1432.8,
+            9177.25
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6511,9 +5939,9 @@
         "name": "t2_sam_cover_foundation_03",
         "tm": [
           [
-            -0.629863,
+            -0.0469663,
             0.0,
-            -0.776706
+            0.998896
           ],
           [
             0.0,
@@ -6521,14 +5949,14 @@
             0.0
           ],
           [
-            0.776706,
+            -0.998896,
             0.0,
-            -0.629863
+            -0.0469663
           ],
           [
-            8884.77,
+            8382.11,
             960.251,
-            29730.7
+            28910.9
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6583,9 +6011,9 @@
             -0.922303
           ],
           [
-            41416.1,
-            524.266,
-            -8475.16
+            41020.6,
+            706.6,
+            -14110.4
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6682,9 +6110,9 @@
         "name": "t2_sam_cover_foundation_06",
         "tm": [
           [
-            -0.714895,
+            0.448054,
             0.0,
-            -0.699232
+            0.894007
           ],
           [
             0.0,
@@ -6692,14 +6120,14 @@
             0.0
           ],
           [
-            0.699232,
+            -0.894007,
             0.0,
-            -0.714895
+            0.448054
           ],
           [
-            27894.1,
-            65.4962,
-            58929.3
+            35257.8,
+            332.636,
+            34756.5
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6811,9 +6239,9 @@
             -0.783826
           ],
           [
-            45119.3,
-            206.032,
-            2046.49
+            34204.4,
+            829.674,
+            -9013.83
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6862,9 +6290,9 @@
             -0.797122
           ],
           [
-            20152.9,
-            2419.6,
-            17243.0
+            13545.4,
+            1436.09,
+            9545.85
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6913,9 +6341,9 @@
             -0.922303
           ],
           [
-            41094.5,
-            509.871,
-            -8014.47
+            40699.0,
+            707.652,
+            -13649.7
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -6949,9 +6377,9 @@
         "name": "t2_spaa_cover_foundation_04",
         "tm": [
           [
-            -0.629863,
+            -0.0469663,
             0.0,
-            -0.776706
+            0.998896
           ],
           [
             0.0,
@@ -6959,14 +6387,14 @@
             0.0
           ],
           [
-            0.776706,
+            -0.998896,
             0.0,
-            -0.629863
+            -0.0469663
           ],
           [
-            8782.57,
+            7959.48,
             936.033,
-            28981.2
+            29538.2
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7051,9 +6479,9 @@
         "name": "t2_spaa_cover_foundation_06",
         "tm": [
           [
-            -0.714895,
+            0.448054,
             0.0,
-            -0.699232
+            0.894007
           ],
           [
             0.0,
@@ -7061,14 +6489,14 @@
             0.0
           ],
           [
-            0.699232,
+            -0.894007,
             0.0,
-            -0.714895
+            0.448054
           ],
           [
-            28367.1,
-            64.0962,
-            58612.7
+            34707.4,
+            303.248,
+            34901.7
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7168,9 +6596,9 @@
             -0.842803
           ],
           [
-            -13109.0,
-            520.219,
-            19281.0
+            -2152.99,
+            108.091,
+            -1482.68
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -7219,9 +6647,9 @@
             -0.986015
           ],
           [
-            -9816.0,
+            -10060.7,
             77.9375,
-            16483.3
+            16923.1
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -7270,9 +6698,9 @@
             0.565912
           ],
           [
-            -10804.7,
+            -10264.6,
             765.961,
-            27978.2
+            28614.6
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -7321,9 +6749,9 @@
             0.987221
           ],
           [
-            -4150.94,
+            -3476.01,
             11.6191,
-            21758.7
+            22046.8
           ]
         ],
         "unit_class": "nt_stronghold",
@@ -7372,9 +6800,9 @@
             0.881072
           ],
           [
-            -24738.5,
-            404.215,
-            -13556.9
+            -22462.8,
+            233.11,
+            -11013.4
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -7437,9 +6865,9 @@
             0.228924
           ],
           [
-            -24351.8,
-            361.301,
-            -13399.1
+            -22076.1,
+            171.285,
+            -10855.6
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7494,9 +6922,9 @@
             0.132765
           ],
           [
-            -24892.8,
-            405.02,
-            -13239.6
+            -22617.1,
+            232.566,
+            -10696.1
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7557,9 +6985,9 @@
             0.859043
           ],
           [
-            -2277.81,
-            24.8947,
-            41787.9
+            -3960.26,
+            31.3672,
+            38742.0
           ]
         ],
         "unit_class": "dyn_sam_site_wide_arragement",
@@ -7622,9 +7050,9 @@
             0.0118253
           ],
           [
-            -2089.74,
-            24.1917,
-            41210.6
+            -3772.19,
+            1.66211,
+            38164.7
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7679,9 +7107,9 @@
             -0.999313
           ],
           [
-            -2853.12,
-            48.9587,
-            41681.4
+            -4535.57,
+            75.0928,
+            38635.5
           ]
         ],
         "unit_class": "dyn_foundation_7m",
@@ -7713,1078 +7141,6 @@
       }
     ],
     "tankModels": [
-      {
-        "name": "t1_tactical_missile_launcher_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112919.0,
-            93.1191,
-            -105587.0
-          ]
-        ],
-        "unit_class": "ussr_ai_tbm_9k79_tochka",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_tactical_missile_launcher_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112919.0,
-            93.1191,
-            -105592.0
-          ]
-        ],
-        "unit_class": "ussr_ai_tbm_9k79_tochka",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_tactical_missile_launcher_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112919.0,
-            93.1191,
-            -105597.0
-          ]
-        ],
-        "unit_class": "ussr_ai_tbm_9k79_tochka",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_tactical_missile_launcher_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112916.0,
-            90.4365,
-            -105739.0
-          ]
-        ],
-        "unit_class": "us_ai_tbm_m752_lance",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_tactical_missile_launcher_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112916.0,
-            90.4365,
-            -105743.0
-          ]
-        ],
-        "unit_class": "us_ai_tbm_m752_lance",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_tactical_missile_launcher_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112916.0,
-            90.4365,
-            -105747.0
-          ]
-        ],
-        "unit_class": "us_ai_tbm_m752_lance",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_mlrs_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105587.0
-          ]
-        ],
-        "unit_class": "ussr_ai_mlrs_9a52_2_smerch",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_mlrs_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105592.0
-          ]
-        ],
-        "unit_class": "ussr_ai_mlrs_9a52_2_smerch",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_mlrs_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105597.0
-          ]
-        ],
-        "unit_class": "ussr_ai_mlrs_9a52_2_smerch",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_mlrs_04",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105602.0
-          ]
-        ],
-        "unit_class": "ussr_ai_mlrs_9a52_2_smerch",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t1_mlrs_05",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105607.0
-          ]
-        ],
-        "unit_class": "ussr_ai_mlrs_9a52_2_smerch",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_mlrs_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105737.0
-          ]
-        ],
-        "unit_class": "us_ai_mlrs_m270",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_mlrs_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105742.0
-          ]
-        ],
-        "unit_class": "us_ai_mlrs_m270",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_mlrs_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105746.0
-          ]
-        ],
-        "unit_class": "us_ai_mlrs_m270",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_mlrs_04",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105750.0
-          ]
-        ],
-        "unit_class": "us_ai_mlrs_m270",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
-      {
-        "name": "t2_mlrs_05",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112951.0,
-            93.1191,
-            -105754.0
-          ]
-        ],
-        "unit_class": "us_ai_mlrs_m270",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 12,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "dontCreateChar": true,
-          "isDelayed": true
-        },
-        "way": {},
-        "additionalEcsTemplates": {
-          "unit_fire_and_change_pos": {},
-          "unit_death_substract_team_tickets": {
-            "on_death_substract_team_tickets_num": 30
-          },
-          "nuclear_escalation_target_hunter": {
-            "nuclear_escalation_target_hunter__target_tag": "mlrs_tbm_target"
-          }
-        }
-      },
       {
         "name": "t1_longrange_radar_01",
         "tm": [
@@ -9166,138 +7522,6 @@
     ],
     "squad": [
       {
-        "name": "t1_tactical_missile_launcher_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112911.0,
-            93.1191,
-            -105587.0
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_tactical_missile_launcher_01",
-            "t1_tactical_missile_launcher_02",
-            "t1_tactical_missile_launcher_03"
-          ]
-        }
-      },
-      {
-        "name": "t2_tactical_missile_launcher_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112912.0,
-            90.4365,
-            -105738.0
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_tactical_missile_launcher_01",
-            "t2_tactical_missile_launcher_02",
-            "t2_tactical_missile_launcher_03"
-          ]
-        }
-      },
-      {
-        "name": "t1_mlrs_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112943.0,
-            93.1191,
-            -105587.0
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_mlrs_01",
-            "t1_mlrs_02",
-            "t1_mlrs_03",
-            "t1_mlrs_04",
-            "t1_mlrs_05"
-          ]
-        }
-      },
-      {
-        "name": "t2_mlrs_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -112943.0,
-            93.1191,
-            -105737.0
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_mlrs_01",
-            "t2_mlrs_02",
-            "t2_mlrs_03",
-            "t2_mlrs_04",
-            "t2_mlrs_05"
-          ]
-        }
-      },
-      {
         "name": "t1_longrange_radar_squad",
         "tm": [
           [
@@ -9374,7 +7598,7 @@
         ],
         [
           0.0,
-          10000.0,
+          10827.6,
           0.0
         ],
         [
@@ -9383,9 +7607,9 @@
           121000.0
         ],
         [
-          30.8472,
-          0.00294495,
-          219.559
+          31.2379,
+          0.00390625,
+          186.91
         ]
       ],
       "objLayer": 3,
@@ -9410,9 +7634,9 @@
           2940.12
         ],
         [
-          -17141.1,
-          231.885,
-          -30266.5
+          -10826.6,
+          21.0527,
+          -21105.8
         ]
       ],
       "objLayer": 0,
@@ -9491,9 +7715,9 @@
           2940.12
         ],
         [
-          -1183.44,
-          187.138,
-          -35237.2
+          2530.14,
+          240.738,
+          -33214.0
         ]
       ],
       "objLayer": 0,
@@ -9518,9 +7742,9 @@
           2792.36
         ],
         [
-          -38930.0,
-          1010.07,
-          -20076.6
+          -35265.9,
+          947.892,
+          -17946.1
         ]
       ],
       "objLayer": 0,
@@ -9545,9 +7769,9 @@
           2940.12
         ],
         [
-          45513.3,
-          197.989,
-          2161.59
+          34598.4,
+          818.222,
+          -8898.73
         ]
       ],
       "objLayer": 0,
@@ -9572,9 +7796,9 @@
           2940.12
         ],
         [
-          20553.6,
-          2440.82,
-          17269.6
+          13946.1,
+          1435.36,
+          9572.45
         ]
       ],
       "objLayer": 0,
@@ -9584,9 +7808,9 @@
       "type": "Sphere",
       "tm": [
         [
-          2940.12,
+          -1797.14,
           0.0,
-          596.379
+          -2402.14
         ],
         [
           0.0,
@@ -9594,14 +7818,14 @@
           0.0
         ],
         [
-          -596.379,
+          2402.14,
           0.0,
-          2940.12
+          -1797.14
         ],
         [
-          8663.27,
+          8298.99,
           1002.2,
-          29357.5
+          29336.8
         ]
       ],
       "objLayer": 0,
@@ -9626,9 +7850,9 @@
           2940.12
         ],
         [
-          27870.9,
-          52.422,
-          1499.35
+          41086.6,
+          695.857,
+          -13720.4
         ]
       ],
       "objLayer": 0,
@@ -9671,7 +7895,7 @@
         ],
         [
           0.0,
-          10000.0,
+          10827.6,
           0.0
         ],
         [
@@ -9680,9 +7904,9 @@
           121000.0
         ],
         [
-          30.8472,
-          0.00294495,
-          219.559
+          31.2379,
+          0.00390625,
+          186.91
         ]
       ],
       "objLayer": 3,
@@ -9698,7 +7922,7 @@
         ],
         [
           0.0,
-          1500.0,
+          1533.26,
           0.0
         ],
         [
@@ -9707,9 +7931,9 @@
           -51392.4
         ],
         [
-          -4651.93,
-          69.9297,
-          7379.22
+          -4651.54,
+          69.9307,
+          7346.57
         ]
       ],
       "objLayer": 3,
@@ -9725,7 +7949,7 @@
         ],
         [
           0.0,
-          1500.0,
+          1624.15,
           0.0
         ],
         [
@@ -9806,18 +8030,18 @@
         ],
         [
           0.0,
-          1500.0,
+          5802.91,
           0.0
         ],
         [
-          61907.7,
+          50560.6,
           0.0,
-          -58244.7
+          -47569.0
         ],
         [
-          -4763.3,
-          69.9297,
-          7489.78
+          -10234.2,
+          -255.534,
+          22649.6
         ]
       ],
       "objLayer": 3,
@@ -9827,9 +8051,9 @@
       "type": "Sphere",
       "tm": [
         [
-          2940.12,
+          -2585.36,
           0.0,
-          596.379
+          -1521.81
         ],
         [
           0.0,
@@ -9837,14 +8061,14 @@
           0.0
         ],
         [
-          -596.379,
+          1521.81,
           0.0,
-          2940.12
+          -2585.36
         ],
         [
-          28288.0,
-          65.5142,
-          59008.0
+          34911.0,
+          297.419,
+          34553.8
         ]
       ],
       "objLayer": 0,
@@ -9896,9 +8120,9 @@
           2940.12
         ],
         [
-          -9979.85,
-          740.249,
-          -53434.1
+          4602.31,
+          978.354,
+          -56362.4
         ]
       ],
       "objLayer": 0,
@@ -9923,9 +8147,9 @@
           2940.12
         ],
         [
-          2176.0,
-          55.1076,
-          -34688.0
+          -12946.7,
+          55.1016,
+          -37315.6
         ]
       ],
       "objLayer": 0,
@@ -9950,9 +8174,9 @@
           -575.389
         ],
         [
-          37738.1,
-          437.3,
-          9955.06
+          42198.5,
+          437.301,
+          -2185.95
         ]
       ],
       "objLayer": 0,
@@ -9977,9 +8201,9 @@
           -542.32
         ],
         [
-          35409.2,
-          804.219,
-          17503.0
+          47778.9,
+          123.826,
+          -4118.46
         ]
       ],
       "objLayer": 0,
@@ -9989,9 +8213,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -369.29,
+          -163.974,
           0.0,
-          -472.889
+          -577.158
         ],
         [
           0.0,
@@ -9999,14 +8223,14 @@
           0.0
         ],
         [
-          472.889,
+          577.158,
           0.0,
-          -369.29
+          -163.974
         ],
         [
-          2559.17,
-          24.8947,
-          43478.3
+          16180.8,
+          24.894,
+          44800.2
         ]
       ],
       "objLayer": 0,
@@ -10031,9 +8255,9 @@
           373.284
         ],
         [
-          14089.9,
-          569.566,
-          -46454.3
+          317.452,
+          151.828,
+          -35981.2
         ]
       ],
       "objLayer": 0,
@@ -10058,9 +8282,9 @@
           313.605
         ],
         [
-          -9153.72,
-          54.1005,
-          -34459.4
+          5751.89,
+          171.09,
+          -37528.8
         ]
       ],
       "objLayer": 0,
@@ -10112,9 +8336,9 @@
           -394.117
         ],
         [
-          58420.3,
-          69.2069,
-          27518.8
+          1346.33,
+          69.2188,
+          32668.2
         ]
       ],
       "objLayer": 0,
@@ -10124,9 +8348,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -402.387,
+          -599.877,
           0.0,
-          -445.068
+          -12.1674
         ],
         [
           0.0,
@@ -10134,14 +8358,14 @@
           0.0
         ],
         [
-          445.068,
+          12.1674,
           0.0,
-          -402.387
+          -599.877
         ],
         [
-          52123.0,
-          23.2162,
-          23533.6
+          -3228.29,
+          56.7573,
+          36540.2
         ]
       ],
       "objLayer": 0,
@@ -10166,9 +8390,9 @@
           -165.631
         ],
         [
-          44934.5,
-          109.994,
-          26239.2
+          36852.0,
+          749.327,
+          -14108.5
         ]
       ],
       "objLayer": 0,
@@ -10193,9 +8417,9 @@
           44.8854
         ],
         [
-          34331.7,
-          653.994,
-          28288.4
+          31153.6,
+          969.821,
+          -9952.65
         ]
       ],
       "objLayer": 0,
@@ -10220,9 +8444,9 @@
           -97.3433
         ],
         [
-          13537.1,
-          555.802,
-          34834.5
+          18451.4,
+          1264.79,
+          3091.73
         ]
       ],
       "objLayer": 0,
@@ -10232,9 +8456,9 @@
       "type": "Sphere",
       "tm": [
         [
-          545.593,
+          571.488,
           0.0,
-          249.657
+          -182.762
         ],
         [
           0.0,
@@ -10242,14 +8466,14 @@
           0.0
         ],
         [
-          -249.657,
+          182.762,
           0.0,
-          545.593
+          571.488
         ],
         [
-          5068.38,
-          119.562,
-          -45984.5
+          10873.8,
+          325.11,
+          -31261.6
         ]
       ],
       "objLayer": 0,
@@ -10274,9 +8498,9 @@
           529.65
         ],
         [
-          -11576.0,
-          53.5969,
-          -33638.6
+          67.369,
+          301.505,
+          -29547.2
         ]
       ],
       "objLayer": 0,
@@ -10301,9 +8525,9 @@
           599.433
         ],
         [
-          -23363.3,
-          58.8003,
-          -24615.1
+          -13855.6,
+          58.8203,
+          -8007.11
         ]
       ],
       "objLayer": 0,
@@ -10328,9 +8552,9 @@
           483.531
         ],
         [
-          -33670.8,
-          80.6206,
-          -21627.9
+          -15360.1,
+          0.892578,
+          8451.97
         ]
       ],
       "objLayer": 0,
@@ -10355,9 +8579,9 @@
           371.794
         ],
         [
-          -44390.0,
-          92.538,
-          -20019.4
+          -20586.5,
+          92.5371,
+          10196.0
         ]
       ],
       "objLayer": 0,
@@ -10382,9 +8606,9 @@
           -59947.5
         ],
         [
-          47547.8,
-          9999.99,
-          58845.3
+          52282.2,
+          10000.0,
+          52625.8
         ]
       ],
       "objLayer": 0,
@@ -10409,9 +8633,9 @@
           -662.526
         ],
         [
-          74090.3,
+          13435.7,
           9999.98,
-          28836.0
+          60511.1
         ]
       ],
       "objLayer": 0,
@@ -10436,9 +8660,9 @@
           947.772
         ],
         [
-          17886.6,
-          10000.0,
-          63490.9
+          38478.8,
+          9999.88,
+          15379.7
         ]
       ],
       "objLayer": 0,
@@ -10463,9 +8687,9 @@
           662.606
         ],
         [
-          -63840.9,
+          -50420.5,
           9999.98,
-          -36589.6
+          -20557.0
         ]
       ],
       "objLayer": 0,
@@ -10490,9 +8714,9 @@
           -949.755
         ],
         [
-          8778.36,
-          10000.0,
-          -87310.2
+          -1152.88,
+          9999.99,
+          -50763.0
         ]
       ],
       "objLayer": 0,
@@ -10517,9 +8741,9 @@
           -25428.9
         ],
         [
-          -37179.4,
-          9789.93,
-          -66279.8
+          -40240.9,
+          10000.0,
+          -58975.8
         ]
       ],
       "objLayer": 0,
@@ -10598,9 +8822,9 @@
           0.980042
         ],
         [
-          -22814.2,
-          299.968,
-          -21279.0
+          -12746.3,
+          299.969,
+          5697.88
         ]
       ],
       "objLayer": 0,
@@ -10625,9 +8849,9 @@
           0.980042
         ],
         [
-          14819.4,
-          299.968,
-          -44389.6
+          15117.4,
+          299.992,
+          -27830.5
         ]
       ],
       "objLayer": 0,
@@ -10652,9 +8876,9 @@
           2795.28
         ],
         [
-          -24738.5,
-          404.215,
-          -13556.9
+          -22462.8,
+          233.11,
+          -11013.4
         ]
       ],
       "objLayer": 0,
@@ -10679,9 +8903,9 @@
           2088.52
         ],
         [
-          -2277.81,
-          24.8947,
-          41787.9
+          -3960.26,
+          31.3672,
+          38742.0
         ]
       ],
       "objLayer": 0,
@@ -10697,7 +8921,7 @@
         ],
         [
           0.0,
-          1500.0,
+          1533.26,
           0.0
         ],
         [
@@ -10718,9 +8942,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          343.383,
           0.0,
-          79.5172
+          -205.154
         ],
         [
           0.0,
@@ -10728,14 +8952,14 @@
           0.0
         ],
         [
-          -79.5172,
+          205.154,
           0.0,
-          392.017
+          343.383
         ],
         [
-          4719.76,
-          56.9539,
-          -41999.8
+          13298.9,
+          384.247,
+          -28080.7
         ]
       ],
       "objLayer": 0,
@@ -10745,9 +8969,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          343.383,
           0.0,
-          79.5172
+          -205.154
         ],
         [
           0.0,
@@ -10755,14 +8979,14 @@
           0.0
         ],
         [
-          -79.5172,
+          205.154,
           0.0,
-          392.017
+          343.383
         ],
         [
-          4850.49,
-          74.5781,
-          -43494.1
+          12389.4,
+          331.252,
+          -29273.6
         ]
       ],
       "objLayer": 0,
@@ -10772,9 +8996,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          343.383,
           0.0,
-          79.5172
+          -205.154
         ],
         [
           0.0,
@@ -10782,14 +9006,14 @@
           0.0
         ],
         [
-          -79.5172,
+          205.154,
           0.0,
-          392.017
+          343.383
         ],
         [
-          6966.78,
-          73.0674,
-          -42463.7
+          14647.9,
+          293.271,
+          -29936.6
         ]
       ],
       "objLayer": 0,
@@ -10814,9 +9038,9 @@
           392.017
         ],
         [
-          -8055.16,
-          47.2187,
-          -31740.2
+          3529.91,
+          382.286,
+          -30291.3
         ]
       ],
       "objLayer": 0,
@@ -10841,9 +9065,9 @@
           392.017
         ],
         [
-          -10152.2,
-          45.2045,
-          -30998.0
+          1993.76,
+          479.364,
+          -29953.3
         ]
       ],
       "objLayer": 0,
@@ -10868,9 +9092,9 @@
           392.017
         ],
         [
-          -10081.7,
-          53.4291,
-          -33769.4
+          2061.67,
+          364.319,
+          -30783.2
         ]
       ],
       "objLayer": 0,
@@ -10895,9 +9119,9 @@
           392.017
         ],
         [
-          -20534.9,
-          54.604,
-          -21786.7
+          -13516.0,
+          54.624,
+          -4684.05
         ]
       ],
       "objLayer": 0,
@@ -10922,9 +9146,9 @@
           392.017
         ],
         [
-          -21595.6,
-          52.2542,
-          -22847.4
+          -13068.9,
+          52.2744,
+          -5992.57
         ]
       ],
       "objLayer": 0,
@@ -10949,9 +9173,9 @@
           392.017
         ],
         [
-          -22554.5,
-          53.4291,
-          -20697.8
+          -14781.2,
+          53.4492,
+          -5141.57
         ]
       ],
       "objLayer": 0,
@@ -10976,9 +9200,9 @@
           392.017
         ],
         [
-          -33888.7,
-          70.5497,
-          -19137.4
+          -15181.5,
+          0.892578,
+          10701.5
         ]
       ],
       "objLayer": 0,
@@ -11003,9 +9227,9 @@
           392.017
         ],
         [
-          -11957.2,
-          937.8,
-          -52694.6
+          -13264.7,
+          1.62305,
+          9881.54
         ]
       ],
       "objLayer": 0,
@@ -11030,9 +9254,9 @@
           392.017
         ],
         [
-          -32958.9,
-          71.7246,
-          -20307.6
+          -14798.7,
+          0.893555,
+          9282.5
         ]
       ],
       "objLayer": 0,
@@ -11057,9 +9281,9 @@
           392.017
         ],
         [
-          -42491.6,
-          75.4173,
-          -16498.6
+          -18350.2,
+          75.4165,
+          13200.2
         ]
       ],
       "objLayer": 0,
@@ -11084,9 +9308,9 @@
           392.017
         ],
         [
-          -42895.7,
-          91.6987,
-          -20150.1
+          -18582.1,
+          91.6978,
+          10435.8
         ]
       ],
       "objLayer": 0,
@@ -11111,9 +9335,9 @@
           392.017
         ],
         [
-          -44738.7,
-          82.1313,
-          -16034.6
+          -20417.1,
+          196.818,
+          13061.1
         ]
       ],
       "objLayer": 0,
@@ -11138,9 +9362,9 @@
           392.017
         ],
         [
-          17610.7,
-          526.26,
-          -44555.9
+          1734.64,
+          195.364,
+          -35048.7
         ]
       ],
       "objLayer": 0,
@@ -11165,9 +9389,9 @@
           392.017
         ],
         [
-          13872.0,
-          648.119,
-          -43963.9
+          -521.64,
+          157.063,
+          -32884.6
         ]
       ],
       "objLayer": 0,
@@ -11192,9 +9416,9 @@
           392.017
         ],
         [
-          17078.5,
-          474.227,
-          -46715.8
+          2178.77,
+          181.339,
+          -37084.4
         ]
       ],
       "objLayer": 0,
@@ -11219,9 +9443,9 @@
           392.017
         ],
         [
-          -7729.92,
-          47.5544,
-          -31818.7
+          7403.89,
+          47.5576,
+          -37668.3
         ]
       ],
       "objLayer": 0,
@@ -11246,9 +9470,9 @@
           392.017
         ],
         [
-          -5168.94,
-          53.2612,
-          -34808.0
+          7416.41,
+          53.2549,
+          -40089.6
         ]
       ],
       "objLayer": 0,
@@ -11273,9 +9497,9 @@
           392.017
         ],
         [
-          -6663.23,
-          53.2612,
-          -34677.2
+          8795.44,
+          53.2656,
+          -38961.1
         ]
       ],
       "objLayer": 0,
@@ -11381,9 +9605,9 @@
           392.017
         ],
         [
-          56926.1,
-          64.8428,
-          27649.6
+          -1331.19,
+          64.8545,
+          33843.8
         ]
       ],
       "objLayer": 0,
@@ -11408,9 +9632,9 @@
           392.017
         ],
         [
-          55591.9,
-          18.3486,
-          24690.4
+          -219.406,
+          18.3604,
+          29950.9
         ]
       ],
       "objLayer": 0,
@@ -11435,9 +9659,9 @@
           392.017
         ],
         [
-          56652.6,
-          35.1335,
-          25751.1
+          -383.126,
+          35.1455,
+          32763.7
         ]
       ],
       "objLayer": 0,
@@ -11447,9 +9671,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          326.637,
           0.0,
-          79.5172
+          -230.886
         ],
         [
           0.0,
@@ -11457,14 +9681,14 @@
           0.0
         ],
         [
-          -79.5172,
+          230.886,
           0.0,
-          392.017
+          326.637
         ],
         [
-          52253.8,
-          29.4266,
-          22039.3
+          -4615.04,
+          -24.6216,
+          33871.0
         ]
       ],
       "objLayer": 0,
@@ -11474,9 +9698,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          326.637,
           0.0,
-          79.5172
+          -230.886
         ],
         [
           0.0,
@@ -11484,14 +9708,14 @@
           0.0
         ],
         [
-          -79.5172,
+          230.886,
           0.0,
-          392.017
+          326.637
         ],
         [
-          50936.5,
-          45.8759,
-          21333.1
+          -6007.58,
+          26.5024,
+          35048.0
         ]
       ],
       "objLayer": 0,
@@ -11501,9 +9725,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          326.637,
           0.0,
-          79.5172
+          -230.886
         ],
         [
           0.0,
@@ -11511,14 +9735,14 @@
           0.0
         ],
         [
-          -79.5172,
+          230.886,
           0.0,
-          392.017
+          326.637
         ],
         [
-          52471.7,
-          38.3227,
-          19548.8
+          -6096.66,
+          0.89209,
+          33981.6
         ]
       ],
       "objLayer": 0,
@@ -11543,9 +9767,9 @@
           392.017
         ],
         [
-          45108.8,
-          130.64,
-          24246.8
+          37016.9,
+          769.973,
+          -15132.5
         ]
       ],
       "objLayer": 0,
@@ -11570,9 +9794,9 @@
           392.017
         ],
         [
-          45239.6,
-          150.782,
-          22752.5
+          36190.1,
+          790.115,
+          -16711.1
         ]
       ],
       "objLayer": 0,
@@ -11597,9 +9821,9 @@
           392.017
         ],
         [
-          43614.2,
-          145.41,
-          25527.3
+          35456.2,
+          784.743,
+          -15045.2
         ]
       ],
       "objLayer": 0,
@@ -11624,9 +9848,9 @@
           392.017
         ],
         [
-          34593.2,
-          745.807,
-          25299.9
+          30755.2,
+          826.279,
+          -12941.2
         ]
       ],
       "objLayer": 0,
@@ -11651,9 +9875,9 @@
           392.017
         ],
         [
-          32837.4,
-          695.62,
-          28419.2
+          28876.4,
+          992.644,
+          -9300.83
         ]
       ],
       "objLayer": 0,
@@ -11678,9 +9902,9 @@
           392.017
         ],
         [
-          32210.4,
-          913.489,
-          26167.1
+          27992.8,
+          895.345,
+          -11843.9
         ]
       ],
       "objLayer": 0,
@@ -11705,9 +9929,9 @@
           392.017
         ],
         [
-          11046.6,
-          379.56,
-          35052.4
+          14941.2,
+          1088.54,
+          3718.05
         ]
       ],
       "objLayer": 0,
@@ -11732,9 +9956,9 @@
           392.017
         ],
         [
-          11776.6,
-          463.988,
-          33885.3
+          15500.2,
+          1172.98,
+          1899.33
         ]
       ],
       "objLayer": 0,
@@ -11759,9 +9983,9 @@
           392.017
         ],
         [
-          13667.8,
-          656.176,
-          33340.2
+          16416.7,
+          1365.16,
+          1031.17
         ]
       ],
       "objLayer": 0,
@@ -11786,9 +10010,9 @@
           392.017
         ],
         [
-          39126.6,
+          42392.6,
           482.6,
-          8576.34
+          -3599.34
         ]
       ],
       "objLayer": 0,
@@ -11813,9 +10037,9 @@
           392.017
         ],
         [
-          34799.6,
-          196.438,
-          7416.93
+          38692.7,
+          355.96,
+          -3975.45
         ]
       ],
       "objLayer": 0,
@@ -11840,9 +10064,9 @@
           392.017
         ],
         [
-          43143.6,
+          40912.8,
           362.328,
-          1340.76
+          -4835.61
         ]
       ],
       "objLayer": 0,
@@ -11867,9 +10091,9 @@
           392.017
         ],
         [
-          35627.1,
-          774.342,
-          15012.5
+          47996.8,
+          234.512,
+          -6608.96
         ]
       ],
       "objLayer": 0,
@@ -11894,9 +10118,9 @@
           392.017
         ],
         [
-          26890.5,
-          334.292,
-          12562.8
+          46436.3,
+          234.225,
+          -7445.01
         ]
       ],
       "objLayer": 0,
@@ -11921,9 +10145,9 @@
           392.017
         ],
         [
-          24976.8,
-          375.977,
-          17014.9
+          45429.7,
+          254.675,
+          -5162.58
         ]
       ],
       "objLayer": 0,
@@ -11933,9 +10157,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          333.195,
           0.0,
-          79.5172
+          221.318
         ],
         [
           0.0,
@@ -11943,14 +10167,14 @@
           0.0
         ],
         [
-          -79.5172,
+          -221.318,
           0.0,
-          392.017
+          333.195
         ],
         [
-          68.6878,
-          70.7176,
-          43696.2
+          14578.2,
+          70.717,
+          44647.8
         ]
       ],
       "objLayer": 0,
@@ -11960,9 +10184,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          333.195,
           0.0,
-          79.5172
+          221.318
         ],
         [
           0.0,
@@ -11970,14 +10194,14 @@
           0.0
         ],
         [
-          -79.5172,
+          -221.318,
           0.0,
-          392.017
+          333.195
         ],
         [
-          -961.631,
-          35.3014,
-          41579.9
+          14977.1,
+          35.3008,
+          42392.6
         ]
       ],
       "objLayer": 0,
@@ -11987,9 +10211,9 @@
       "type": "Sphere",
       "tm": [
         [
-          392.017,
+          333.195,
           0.0,
-          79.5172
+          221.318
         ],
         [
           0.0,
@@ -11997,14 +10221,14 @@
           0.0
         ],
         [
-          -79.5172,
+          -221.318,
           0.0,
-          392.017
+          333.195
         ],
         [
-          -1425.6,
-          42.5189,
-          43826.9
+          12930.8,
+          42.5181,
+          45637.0
         ]
       ],
       "objLayer": 0,
@@ -12101,7 +10325,7 @@
         ],
         [
           0.0,
-          1500.0,
+          1533.26,
           0.0
         ],
         [
@@ -12140,6 +10364,60 @@
           -10234.6,
           69.9219,
           22682.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area_artillery01": {
+      "type": "Box",
+      "tm": [
+        [
+          -21927.4,
+          0.0,
+          -23306.4
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          68818.5,
+          0.0,
+          -64746.6
+        ],
+        [
+          6933.24,
+          69.9297,
+          -4490.12
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area_artillery02": {
+      "type": "Box",
+      "tm": [
+        [
+          -21927.4,
+          0.0,
+          -23306.4
+        ],
+        [
+          0.0,
+          1920.25,
+          0.0
+        ],
+        [
+          32403.8,
+          0.0,
+          -30486.5
+        ],
+        [
+          6350.1,
+          69.9297,
+          -14777.5
         ]
       ],
       "objLayer": 3,

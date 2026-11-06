@@ -46,12 +46,12 @@ from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 from "app" import is_dev_version
 from "hudState" import is_hud_visible
 from "types" import Table
+from "%scripts/gamercard/fillGamercard.nut" import fillGamercard as fillGamercardImpl
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
-let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 
 local stickedDropDown = null
@@ -133,7 +133,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function getNavbarTplView() { return null }
 
   function fillGamercard() {
-    fillGamercard(null, "gc_", this.scene)
+    fillGamercardImpl(null, "gc_", this.scene)
     this.initGcBackButton()
     this.initSquadWidget()
     this.initVoiceChatWidget()

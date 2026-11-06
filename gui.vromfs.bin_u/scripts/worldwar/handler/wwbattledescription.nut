@@ -43,12 +43,13 @@ from "worldwar" import wwGetOperationId, wwGetPlayerSide
 from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/worldWar/inOperation/model/wwBattlesState.nut" import tryToJoin as tryToJoinImpl, getCantJoinReasonData,
+  getBattleStatusWithCanJoinText, isAutoBattle, isStillInOperation
 
 let { WwQueueInfo } = require("%scripts/worldWar/handler/wwQueueInfo.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
-let { tryToJoin, getCantJoinReasonData, getBattleStatusWithCanJoinText, isAutoBattle, isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 
@@ -926,7 +927,7 @@ let WwBattleDescription = class (BaseGuiHandlerWT) {
 
   function tryToJoin(side) {
     this.queueInfoHandlerWeak.hideQueueInfoObj()
-    tryToJoin(this.operationBattle, side)
+    tryToJoinImpl(this.operationBattle, side)
   }
 
   function tryToSetCrewsReadyFlag() {

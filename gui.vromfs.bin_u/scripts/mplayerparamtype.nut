@@ -41,6 +41,7 @@ let expEventLocIds = {
   [EXP_EVENT_MISSILE_EVADE]      = "expEventScore/missileEvade",
   [EXP_EVENT_SHELL_INTERCEPTION] = "expEventScore/shellInterception",
   [EXP_EVENT_KILL_HUMAN]         = "expEventScore/killHuman",
+  [EXP_EVENT_SECTOR_CAPTURE]     = "expEventScore/sectorCapture",
 }
 
 let g_mplayer_param_type = {

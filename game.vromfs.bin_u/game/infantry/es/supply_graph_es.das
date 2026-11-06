@@ -60,39 +60,60 @@ def supply_base_appear_es(evt : Event;
     destroyEntity(baseEid)
     return true
 
-def private add_supplies(base_eid : EntityId; team : int; dt : float)
-  var visited : table<EntityId; bool>
+def private update_supply_base_links(base_eid : EntityId; team : int)
+  var linked : table<EntityId; bool>
   var stack : array<EntityId>
-  visited[base_eid] = true
+  linked[base_eid] = true
   query(base_eid) <| $ [es] (supply_graph__linkedEids : EidList)
     for linkedEid in supply_graph__linkedEids
       push(stack, linkedEid)
   while length(stack) > 0
     let nodeEid = back(stack)
     pop(stack)
-    if visited?[nodeEid] ?? false
+    if key_exists(linked, nodeEid)
       continue
-    visited[nodeEid] = true
+    linked[nodeEid] = false
     query(nodeEid) <| $ [es] (active : bool;
                               capzone__owningTeam : int;
-                              supply_graph__linkedEids : EidList;
-                              supply_node__maxPoints : int;
-                              supply_node__pointsPerMinute : int;
-                              var supply_node__pointsCarry : float&;
-                              var supply_node__points : int&)
+                              supply_graph__linkedEids : EidList)
       if !active || capzone__owningTeam != team
         return
-      supply_node__pointsCarry += float(supply_node__pointsPerMinute) * dt / 60.0
-      let gain = int(supply_node__pointsCarry)
-      supply_node__pointsCarry -= float(gain)
-      supply_node__points = min(supply_node__points + gain, supply_node__maxPoints)
+      linked[nodeEid] = true
       for linkedEid in supply_graph__linkedEids
-        if !(visited?[linkedEid] ?? false)
+        if !key_exists(linked, linkedEid)
           push(stack, linkedEid)
+  query() <| $ [es] (eid : EntityId;
+                     capzone__owningTeam : int;
+                     var supply_node__hasBaseLink : bool&)
+    if capzone__owningTeam == team
+      supply_node__hasBaseLink = linked?[eid] ?? false
+
+[es(tag=server, on_appear, REQUIRE=supplyBase, after=supply_graph_node_appear_es)]
+def supply_base_link_es(evt : Event; eid : EntityId; team : int)
+  update_supply_base_links(eid, team)
+
+[es(tag=server, on_appear, track=(capzone__owningTeam, active), REQUIRE=(capzone__owningTeam, active), after=supply_graph_node_appear_es)]
+def supply_node_base_link_es(evt : Event; var supply_node__hasBaseLink : bool&)
+  supply_node__hasBaseLink = false
+  query() <| $ [es(REQUIRE=supplyBase)] (eid : EntityId; team : int)
+    update_supply_base_links(eid, team)
+
+def private add_supplies(team : int; dt : float)
+  query() <| $ [es] (capzone__owningTeam : int;
+                     supply_node__hasBaseLink : bool;
+                     supply_node__maxPoints : int;
+                     supply_node__pointsPerMinute : int;
+                     var supply_node__pointsCarry : float&;
+                     var supply_node__points : int&)
+    if !supply_node__hasBaseLink || capzone__owningTeam != team
+      return
+    supply_node__pointsCarry += float(supply_node__pointsPerMinute) * dt / 60.0
+    let gain = int(supply_node__pointsCarry)
+    supply_node__pointsCarry -= float(gain)
+    supply_node__points = min(supply_node__points + gain, supply_node__maxPoints)
 
 [es(tag=server, no_order, REQUIRE=supplyBase)]
 def supply_base_update_es(info : UpdateStageInfoAct;
-                          eid : EntityId;
                           team : int;
                           supply_base__updatePeriod : float;
                           var supply_base__nextUpdateAt : float&)
@@ -102,7 +123,7 @@ def supply_base_update_es(info : UpdateStageInfoAct;
   if info.curTime < supply_base__nextUpdateAt
     return
   supply_base__nextUpdateAt += supply_base__updatePeriod
-  add_supplies(eid, team, supply_base__updatePeriod)
+  add_supplies(team, supply_base__updatePeriod)
 
 [es(tag=server, on_event=EventMissionUnload, REQUIRE=supplyBase)]
 def supply_base_mission_unload(evt : Event; eid : EntityId)

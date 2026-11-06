@@ -65,6 +65,13 @@ def phys_obj_collision_sound(info : ParallelUpdateFrameDelayed;
       phys_obj_collision_sound__time = 0.
 
 
+[es(tag=sound, on_appear, REQUIRE=phys_obj_collision_sound__controlledHeroOnly)]
+def phys_obj_collision_sound_controlled_hero_only(evt : Event;
+                                                  shell__owner : EntityId;
+                                                  var phys_obj_collision_sound__enabled : bool&)
+  phys_obj_collision_sound__enabled = has(shell__owner, "controlledHero")
+
+
 [es(tag=sound, on_appear, REQUIRE=disableUpdate)]
 def phys_obj_collision_sound_disable(evt : Event;
                                      var phys_obj_collision_sound__time : float&;

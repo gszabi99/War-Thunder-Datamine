@@ -2185,13 +2185,23 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_v_01_dm",
+            "drive_turret_v_02_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm",
+            "fire_control_system_dm",
+            "fire_control_system_01_dm",
+            "drive_turret_h_01_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm"
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -4046,7 +4056,7 @@
     "color": [
       0.8,
       0.0,
-      0.01
+      0.0
     ],
     "maxColorBrightness": 35000.0,
     "lightPatternSize": 0.4

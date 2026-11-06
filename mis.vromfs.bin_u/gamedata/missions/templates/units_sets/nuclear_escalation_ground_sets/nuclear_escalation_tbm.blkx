@@ -1,0 +1,206 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gamedata/missions/templates/units_sets/nuclear_escalation_ground_sets/nuclear_escalation_tbm_1970.blk",
+        "rankRange": [
+          0,
+          38
+        ],
+        "importUnits": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/units_sets/nuclear_escalation_ground_sets/nuclear_escalation_tbm_2000.blk",
+        "rankRange": [
+          39,
+          50
+        ],
+        "importUnits": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "spawn_tactical_missile_launchers": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitRespawn": [
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t1_tactical_missile_launcher_01",
+            "target": "t1_tactical_missile_spawn_area_01",
+            "randomSpawn": true
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t1_tactical_missile_launcher_02",
+            "target": "t1_tactical_missile_spawn_area_02",
+            "randomSpawn": true
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t1_tactical_missile_launcher_03",
+            "target": "t1_tactical_missile_spawn_area_03",
+            "randomSpawn": true
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t2_tactical_missile_launcher_01",
+            "target": "t2_tactical_missile_spawn_area_01",
+            "randomSpawn": true
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t2_tactical_missile_launcher_02",
+            "target": "t2_tactical_missile_spawn_area_02",
+            "randomSpawn": true
+          },
+          {
+            "delay": 0.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "t2_tactical_missile_launcher_03",
+            "target": "t2_tactical_missile_spawn_area_03",
+            "randomSpawn": true
+          }
+        ],
+        "wait": {
+          "time": 30.0
+        },
+        "unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t1_tactical_missile_launcher_01",
+            "place_to_respawn": "t1_tactical_missile_spawn_area_01",
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t1_tactical_missile_launcher_02",
+            "place_to_respawn": "t1_tactical_missile_spawn_area_02",
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t1_tactical_missile_launcher_03",
+            "place_to_respawn": "t1_tactical_missile_spawn_area_03",
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t2_tactical_missile_launcher_01",
+            "place_to_respawn": "t2_tactical_missile_spawn_area_01",
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t2_tactical_missile_launcher_02",
+            "place_to_respawn": "t2_tactical_missile_spawn_area_02",
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 600.0,
+            "object_name": "t2_tactical_missile_launcher_03",
+            "place_to_respawn": "t2_tactical_missile_spawn_area_03",
+            "cycle_respawn": true
+          }
+        ],
+        "unitSetProperties": {
+          "object": [
+            "t1_tactical_missile_launcher_squad",
+            "t2_tactical_missile_launcher_squad"
+          ],
+          "movementTraceRI": true
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

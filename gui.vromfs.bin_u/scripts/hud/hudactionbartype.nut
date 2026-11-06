@@ -464,7 +464,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     _name = "sub_hydrophone"
     _icon = "#ui/gameuiskin#ship_hydrophone"
-    _title = loc("hotkeys/ID_SUBMARINE_SWITCH_ACTIVE_SONAR")
+    _title = loc("hotkeys/ID_SHIP_TOGGLE_HYDROPHONE_MODE")
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
   }

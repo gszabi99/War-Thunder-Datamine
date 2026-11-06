@@ -93,15 +93,16 @@ function getBulletHellMinAircraftMrank(event) {
     isAircraftType, MIN_MRANK_FOR_BULLET_HELL)
 }
 
-function isSuitableAircraft(teamData, unit, ediff, minMRank) {
+function isSuitableAircraft(teamData, unit, ediff, minMRank, mrankDeltaByUnit) {
   if (unit == null || !unit.isAir())
     return false
-  if (unit.getEconomicRank(ediff) < minMRank)
+  let mrankDelta = mrankDeltaByUnit?[unit.name] ?? 0
+  if (getEffectiveMrank(unit, ediff, mrankDelta) < minMRank)
     return false
-  return teamData == null || isUnitAllowedByTeamData(teamData, unit.name, ediff)
+  return teamData == null || isUnitAllowedByTeamData(teamData, unit.name, ediff, mrankDelta)
 }
 
-function getBulletHellSuitableUnits(event, _tagPrefix, unitNames, brokenNames = []) {
+function getBulletHellSuitableUnits(event, _tagPrefix, unitNames, mrankDeltaByUnit, brokenNames = []) {
   if (!hasBulletHellGameModes(event))
     return []
   let teamData = getBulletHellTeamData(event)
@@ -112,7 +113,7 @@ function getBulletHellSuitableUnits(event, _tagPrefix, unitNames, brokenNames = 
     if (isInArray(unitName, brokenNames))
       continue
     let unit = getAircraftByName(unitName)
-    if (isSuitableAircraft(teamData, unit, ediff, minMRank))
+    if (isSuitableAircraft(teamData, unit, ediff, minMRank, mrankDeltaByUnit))
       units.append(unit)
   }
   return units
@@ -146,18 +147,18 @@ function getMaxMrank(units, ediff, mrankDeltaByUnit) {
   return mrank
 }
 
-function getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits, needMrankDelta = false) {
+function getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits) {
   let ownCraftNames = getOwnCraftNames()
-  let ownMrankDeltaByUnit = needMrankDelta ? getMrankDeltaByUnit(ownCraftNames) : null
+  let ownMrankDeltaByUnit = getMrankDeltaByUnit(ownCraftNames)
   let participants = [{
-    units = getSuitableUnits(event, tagPrefix, ownCraftNames)
+    units = getSuitableUnits(event, tagPrefix, ownCraftNames, ownMrankDeltaByUnit)
     mrankDeltaByUnit = ownMrankDeltaByUnit
   }]
   foreach (member in getSquadOnlineMembers()) {
-    let memberMrankDeltaByUnit = needMrankDelta ? member?.mrankDeltaByUnit ?? {} : null
+    let memberMrankDeltaByUnit = member?.mrankDeltaByUnit ?? {}
     participants.append({
       units = getSuitableUnits(event, tagPrefix,
-        member?.crewAirs?[member.country] ?? [], member?.brokenAirs ?? [])
+        member?.crewAirs?[member.country] ?? [], memberMrankDeltaByUnit, member?.brokenAirs ?? [])
       mrankDeltaByUnit = memberMrankDeltaByUnit
     })
   }
@@ -169,13 +170,13 @@ let isSubmodeAvailableByUnits = @(event, tagPrefix, getSuitableUnits)
 
 function getSubmodeMrank(event, tagPrefix, getSuitableUnits) {
   let ediff = events.getEDiffByEvent(event)
-  return getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits, true)
+  return getSuitableUnitsParticipants(event, tagPrefix, getSuitableUnits)
     .map(@(p) getMaxMrank(p.units, ediff, p.mrankDeltaByUnit))
     .reduce(@(a, b) max(a, b))
 }
 
-let getBulletHellParticipantsCrafts = @(event, needMrankDelta = false)
-  getSuitableUnitsParticipants(event, null, getBulletHellSuitableUnits, needMrankDelta)
+let getBulletHellParticipantsCrafts = @(event)
+  getSuitableUnitsParticipants(event, null, getBulletHellSuitableUnits)
 
 function getBulletHellAvailableCraftsCount(event) {
   return getBulletHellParticipantsCrafts(event)
@@ -185,7 +186,7 @@ function getBulletHellAvailableCraftsCount(event) {
 
 function getBulletHellMrank(event) {
   let ediff = events.getEDiffByEvent(event)
-  return getBulletHellParticipantsCrafts(event, true)
+  return getBulletHellParticipantsCrafts(event)
     .map(@(p) getMaxMrank(p.units, ediff, p.mrankDeltaByUnit))
     .reduce(@(a, b) max(a, b))
 }
@@ -230,13 +231,13 @@ function getTeamDataByTagPrefix(event, tagPrefix) {
   return gameMode != null ? getTeamData(gameMode, Team.A) : null
 }
 
-function isNavalEcSuitableCraft(teamData, unit, ediff) {
+function isNavalEcSuitableCraft(teamData, unit, ediff, mrankDeltaByUnit) {
   if (unit == null || !unit.isShipOrBoat())
     return false
-  return teamData == null || isUnitAllowedByTeamData(teamData, unit.name, ediff)
+  return teamData == null || isUnitAllowedByTeamData(teamData, unit.name, ediff, mrankDeltaByUnit?[unit.name] ?? 0)
 }
 
-function getNavalEcSuitableUnits(event, tagPrefix, unitNames, brokenNames = []) {
+function getNavalEcSuitableUnits(event, tagPrefix, unitNames, mrankDeltaByUnit, brokenNames = []) {
   if (!hasGameModeByTagPrefix(event, tagPrefix))
     return []
   let teamData = getTeamDataByTagPrefix(event, tagPrefix)
@@ -246,7 +247,7 @@ function getNavalEcSuitableUnits(event, tagPrefix, unitNames, brokenNames = []) 
     if (isInArray(unitName, brokenNames))
       continue
     let unit = getAircraftByName(unitName)
-    if (isNavalEcSuitableCraft(teamData, unit, ediff))
+    if (isNavalEcSuitableCraft(teamData, unit, ediff, mrankDeltaByUnit))
       units.append(unit)
   }
   return units
@@ -296,7 +297,7 @@ function getNuclearEscalationMinAircraftMrank(event, tagPrefix) {
     isAircraftType, MIN_MRANK_FOR_NUCLEAR_ESCALATION)
 }
 
-function getNuclearEscalationSuitableUnits(event, tagPrefix, unitNames, brokenNames = []) {
+function getNuclearEscalationSuitableUnits(event, tagPrefix, unitNames, mrankDeltaByUnit, brokenNames = []) {
   if (!hasGameModeByTagPrefix(event, tagPrefix))
     return []
   let teamDataPerSide = getTeamDataPerSide(event, tagPrefix)
@@ -307,7 +308,7 @@ function getNuclearEscalationSuitableUnits(event, tagPrefix, unitNames, brokenNa
     if (isInArray(unitName, brokenNames))
       continue
     let unit = getAircraftByName(unitName)
-    if (teamDataPerSide.findvalue(@(teamData) isSuitableAircraft(teamData, unit, ediff, minMrank)) != null)
+    if (teamDataPerSide.findvalue(@(teamData) isSuitableAircraft(teamData, unit, ediff, minMrank, mrankDeltaByUnit)) != null)
       units.append(unit)
   }
   return units

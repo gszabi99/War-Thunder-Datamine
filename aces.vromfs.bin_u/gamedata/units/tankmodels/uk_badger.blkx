@@ -2303,7 +2303,9 @@
         "breechDP": "cannon_breech_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "speedYaw": 28.0,
         "speedPitch": 28.0,
@@ -2465,13 +2467,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -4430,7 +4431,9 @@
               "breechDP": "cannon_breech_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "speedYaw": 28.0,
               "speedPitch": 28.0,
@@ -4592,13 +4595,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4914,5 +4916,29 @@
       "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
+  },
+  "stopSignalLights": {
+    "leftLightPos": [
+      -3.78,
+      1.66,
+      1.11
+    ],
+    "lightInfluenceSize": [
+      0.3,
+      0.2,
+      0.3
+    ],
+    "innerLightSize": [
+      0.2,
+      1.0
+    ],
+    "innerLightBrightnessFalloff": 10.0,
+    "color": [
+      0.8,
+      0.0,
+      0.0
+    ],
+    "maxColorBrightness": 35000.0,
+    "lightPatternSize": 0.25
   }
 }

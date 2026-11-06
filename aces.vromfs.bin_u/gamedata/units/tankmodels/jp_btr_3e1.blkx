@@ -2043,7 +2043,9 @@
         "breechDP": "cannon_breech_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "speedYaw": 35.0,
         "speedPitch": 35.0,
@@ -2174,11 +2176,13 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
             "fire_control_system_01_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
+            "turret_hydraulics_dm",
             "fire_control_system_dm",
             "fire_control_system_01_dm"
           ],
@@ -2294,13 +2298,19 @@
           "gun": "bone_mg_twin_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "shootingDmPart": [
+          "rotatedTurret": "bone_turret",
+          "verDriveDm": [
             "fire_control_system_dm",
             "fire_control_system_01_dm"
           ],
-          "rotatedTurret": "bone_turret",
-          "verDriveDm": "fire_control_system_01_dm",
-          "horDriveDm": "fire_control_system_01_dm"
+          "horDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -4171,7 +4181,9 @@
               "breechDP": "cannon_breech_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "speedYaw": 35.0,
               "speedPitch": 35.0,
@@ -4302,11 +4314,13 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
+                  "turret_hydraulics_dm",
                   "fire_control_system_dm",
                   "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
+                  "turret_hydraulics_dm",
                   "fire_control_system_dm",
                   "fire_control_system_01_dm"
                 ],
@@ -4422,13 +4436,19 @@
                 "gun": "bone_mg_twin_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "shootingDmPart": [
+                "rotatedTurret": "bone_turret",
+                "verDriveDm": [
                   "fire_control_system_dm",
                   "fire_control_system_01_dm"
                 ],
-                "rotatedTurret": "bone_turret",
-                "verDriveDm": "fire_control_system_01_dm",
-                "horDriveDm": "fire_control_system_01_dm"
+                "horDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4691,7 +4711,7 @@
     "color": [
       0.8,
       0.0,
-      0.01
+      0.0
     ],
     "maxColorBrightness": 35000.0,
     "lightPatternSize": 0.4

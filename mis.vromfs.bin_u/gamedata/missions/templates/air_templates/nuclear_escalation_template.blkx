@@ -1,0 +1,329 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": {}
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "add_objectives": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "has_strategic_bombers",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "moAddMissionObjective": [
+          {
+            "target": "nuclear_escalation_objective_t1"
+          },
+          {
+            "target": "nuclear_escalation_objective_t2"
+          }
+        ]
+      },
+      "else_actions": {
+        "moAddMissionObjective": [
+          {
+            "target": "destroy_vehicles_and_airfields_t1"
+          },
+          {
+            "target": "destroy_vehicles_and_airfields_t2"
+          }
+        ]
+      }
+    },
+    "check_win": {
+      "isCategory": true,
+      "is_enabled": true,
+      "t1_check_win": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "airfieldWhenStatus": {
+            "object_type": "isBombingAreaDestroyed",
+            "object": "t2_airfield_main"
+          }
+        },
+        "actions": {
+          "moSetObjectiveStatus": {
+            "target": "nuclear_escalation_objective_t1",
+            "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          },
+          "triggerEnable": {
+            "target": "t1_smooth_win"
+          }
+        },
+        "else_actions": {}
+      },
+      "t1_smooth_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 2.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -1,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_check_win": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": {
+          "airfieldWhenStatus": {
+            "object_type": "isBombingAreaDestroyed",
+            "object": "t1_airfield_main"
+          }
+        },
+        "actions": {
+          "moSetObjectiveStatus": {
+            "target": "nuclear_escalation_objective_t2",
+            "status": 2,
+            "object_marking": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          },
+          "triggerEnable": {
+            "target": "t2_smooth_win"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_smooth_win": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 2.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -1,
+            "valueSystem": "percentage",
+            "team": "A"
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "debug_in_single": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitWakeUp": {
+          "target": "t1_player01"
+        },
+        "__changeUnit": {
+          "unit_class": "nt_su_24m",
+          "weaponPreset": "nt_su_24m_rn_40",
+          "isIndividual": false,
+          "hangarMission": false,
+          "object": "t1_player01",
+          "type": "plane"
+        },
+        "changeUnit": {
+          "unit_class": "nt_su_24m",
+          "weaponPreset": "nt_su_24m_bomb_fab500m_62",
+          "isIndividual": false,
+          "hangarMission": false,
+          "object": "t1_player01",
+          "type": "plane"
+        },
+        "unitSetProperties": {
+          "object": "t1_player01",
+          "targetableByAi": false,
+          "isImmortal": true,
+          "speed": 900.0
+        },
+        "missionSetProperties": {
+          "allowEmptyTeams": true
+        }
+      },
+      "else_actions": {}
+    },
+    "debug_in_multiplayer": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "all_players_squad",
+          "targetableByAi": false,
+          "isImmortal": true
+        }
+      },
+      "else_actions": {}
+    },
+    "spawn_longrange_radars": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "unit",
+            "object": "t1_longrange_radar_squad",
+            "object_type": "isDelayed",
+            "target": [
+              "t1_longrange_radar_place_01",
+              "t1_longrange_radar_place_02",
+              "t1_longrange_radar_place_03"
+            ]
+          },
+          {
+            "type": "unit",
+            "object": "t2_longrange_radar_squad",
+            "object_type": "isDelayed",
+            "target": [
+              "t2_longrange_radar_place_01",
+              "t2_longrange_radar_place_02",
+              "t2_longrange_radar_place_03"
+            ]
+          }
+        ],
+        "unitRespawnAfterTime": [
+          {
+            "time_to_respawn": 900.0,
+            "object_name": "t1_longrange_radar_squad",
+            "just_restore": true,
+            "cycle_respawn": true
+          },
+          {
+            "time_to_respawn": 900.0,
+            "object_name": "t2_longrange_radar_squad",
+            "just_restore": true,
+            "cycle_respawn": true
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "main_airfield_hp": 0.0,
+    "front_airfield_hp": 0.0,
+    "has_strategic_bombers": false
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

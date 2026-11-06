@@ -23,10 +23,10 @@
     36768.0
   ],
   "customLevelMap": "air_skyscraper_city_map*",
-  "numBorderCellsXPos": 16,
-  "numBorderCellsXNeg": 16,
-  "numBorderCellsZPos": 16,
-  "numBorderCellsZNeg": 16,
+  "numBorderCellsXPos": 32,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 32,
+  "numBorderCellsZNeg": 32,
   "gridSteps": [
     9216.0,
     9216.0
@@ -40,6 +40,11 @@
   "layeredFogHeightOffset": -3.0,
   "water_level": 0.0,
   "earth": {
+    "infiniteMirror": true,
+    "mirrorPortionXPos": 0.05,
+    "mirrorPortionXNeg": 0.0,
+    "mirrorPortionZPos": 1.0,
+    "mirrorPortionZNeg": 1.0,
     "earthWorldEnabled": true,
     "earthWorldMin": [
       -32768.0,
@@ -127,7 +132,7 @@
     "maxRadius": 400.0,
     "sowPerlinFreq": 0.1,
     "fadeDelta": 100.0,
-    "lodFadeDelta": 30.0,
+    "lodFadeDelta": 60.0,
     "minLodDensity": 0.2,
     "blendToLandDelta": 100.0,
     "texSize": 256,

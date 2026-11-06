@@ -25,7 +25,7 @@ function contentColor(sf, isEnabled, isHighlighted) {
   return (sf & S_HOVER) ? cssColors.buttonFontColorHover : cssColors.gray
 }
 
-function toolbarButton(p, onClick) {
+function toolbarButton(p, onClickCb) {
   let sf = Watched(0)
   let { id, icon = null, iconRotate = 0, text = null, isEnabled = null, isHighlighted = null, tooltip = null,
     altIcon = null, isAltIcon = null } = p
@@ -53,7 +53,7 @@ function toolbarButton(p, onClick) {
         if (!enabled)
           return
         soundWt?.playSound("click")
-        onClick()
+        onClickCb()
       }
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER

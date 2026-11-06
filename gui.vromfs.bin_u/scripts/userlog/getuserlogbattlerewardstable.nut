@@ -70,6 +70,10 @@ let visibleRewards = [
     locId = "expEventScore/captureZone"
   }
   {
+    id = "eventSectorCapture"
+    locId = "expEventScore/sectorCapture"
+  }
+  {
     id = "eventDestroyZone"
     locId = "expEventScore/destroyZone"
   }

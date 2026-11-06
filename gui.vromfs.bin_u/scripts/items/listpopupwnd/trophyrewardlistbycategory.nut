@@ -5,8 +5,7 @@ from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
 from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/dagui_library.nut" import *
-
-let { getChestChancesData, fillChestChances } = require("%scripts/items/prizeChance.nut")
+from "%scripts/items/prizeChance.nut" import getChestChancesData, fillChestChances as fillChestChancesImpl
 
 local class TrophyRewardListByCategory (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -30,7 +29,7 @@ local class TrophyRewardListByCategory (BaseGuiHandlerWT) {
     let itemsNest = this.scene.findObject("item_info_collapsable_prizes")
     if (!itemsNest?.isValid())
       return
-    fillChestChances(itemsNest, chancesData)
+    fillChestChancesImpl(itemsNest, chancesData)
   }
 
   getSceneTplView = @() {

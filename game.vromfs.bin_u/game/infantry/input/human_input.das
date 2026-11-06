@@ -1065,6 +1065,7 @@ def human_cam_move_tilt_shake_es(info : UpdateStageInfoAct;
                                  camera__moveTilt_enterCoef : float3;
                                  camera__moveTilt_leaveTime : float3;
                                  camera__moveTilt_leaveCoef : float3;
+                                 camera__moveTilt_resetTau : float;
                                  var camera__moveTilt_currDests : float2&;
                                  var camera__moveTilt_currTimes : float2&;
                                  var camera__moveTilt_currDLast : float2&;
@@ -1073,10 +1074,11 @@ def human_cam_move_tilt_shake_es(info : UpdateStageInfoAct;
                                  human_net_phys__isInAir : bool = false;
                                  isTpsView : bool = false)
   var reset = true
+  let resetFadeout = !isTpsView
   if !human_net_phys__isClimbing && !human_net_phys__isInAir && !isTpsView
     let joyParams = get_current_joy_param()
     if joyParams != null && joyParams.cameraShakeToogleForHuman
-      var srcVel = length_sq(human_net_phys__velocity) > 0.001 ? normalize(human_net_phys__velocity) : float3()
+      let srcVel = length_sq(human_net_phys__velocity) > 0.001 ? normalize(human_net_phys__velocity) : float3()
       let velDir = normalize(srcVel)
       let leftProj = dot(velDir, transform[2])
       let forwProj = dot(velDir, transform[0])
@@ -1122,7 +1124,13 @@ def human_cam_move_tilt_shake_es(info : UpdateStageInfoAct;
       reset = false
 
   if reset
-    camera__moveTilt_currDests = float2()
-    camera__moveTilt_currTimes = float2()
-    camera__moveTilt_currDLast = float2()
-    camera__moveTilt_currDispl = float2()
+    if resetFadeout
+      camera__moveTilt_currDispl = approach(camera__moveTilt_currDispl, float2(), info.dt, camera__moveTilt_resetTau)
+      camera__moveTilt_currDLast = camera__moveTilt_currDispl
+      camera__moveTilt_currDests = camera__moveTilt_currDispl
+      camera__moveTilt_currTimes = float2()
+    else
+      camera__moveTilt_currDispl = float2()
+      camera__moveTilt_currDLast = float2()
+      camera__moveTilt_currDests = float2()
+      camera__moveTilt_currTimes = float2()

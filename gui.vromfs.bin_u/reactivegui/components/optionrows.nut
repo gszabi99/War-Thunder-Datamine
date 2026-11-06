@@ -13,6 +13,7 @@
 
 
 
+
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst, px
 from "%rGui/components/text.nut" import mkText, mulAlpha
@@ -67,35 +68,19 @@ let separator = @(alpha) @() {
 let atX = @(x, comp) { pos = [x, 0], vplace = ALIGN_CENTER, children = comp }
 
 function mkValueStep(p) {
-  let { id, kind, value, onChange } = p
-  if (kind == "switchbox")
-    return @(_dir) onChange(id, !value.get())
-  if (kind == "slider" || kind == "options_bar") {
-    let lo = p?.min ?? 0
-    let hi = p?.max ?? ((p?.items?.len() ?? 1) - 1)
-    let stepV = p?.step ?? 1
-    return function(dir) {
-      let next = clamp((value.get() ?? lo) + dir * stepV, lo, hi)
-      if (next != value.get())
-        onChange(id, next)
-    }
+  let { id, value, onChange } = p
+  let lo = p?.min ?? 0
+  let hi = p?.max ?? ((p?.items?.len() ?? 1) - 1)
+  let stepV = p?.step ?? 1
+  return function(dir) {
+    let next = clamp((value.get() ?? lo) + dir * stepV, lo, hi)
+    if (next != value.get())
+      onChange(id, next)
   }
-  if (kind == "combobox")
-    return function(dir) {
-      local idx = value.get() ?? 0
-      do {
-        idx += dir
-      } while (p?.items?[idx]?.enabled == false)
-      if (idx in (p?.items ?? []))
-        onChange(id, idx)
-    }
-  return null
 }
 
 function valueNav(p) {
   let step = mkValueStep(p)
-  if (step == null)
-    return null
   let { navActive, isEnabled = null } = p
   let onStep = @(dir) (isEnabled?.get() ?? true) ? step(dir) : null
   let navHotkeys = [["Left | J:D.Left", @() onStep(-1)], ["Right | J:D.Right", @() onStep(1)]]
@@ -114,8 +99,11 @@ function controlComps(p) {
     return [atX(controlX, switchBox({ id, textChecked = p?.textChecked, textUnchecked = p?.textUnchecked, alpha,
       isEnabled, skipDirPadNav }, value, onChange))]
   if (kind == "options_bar")
-    return [{ pos = [controlX, 0], children = optionsBar({ id, items, isEnabled, highlight, skipDirPadNav },
-      value, onChange, [w, rowH], p?.onHover) }]
+    return [
+      { pos = [controlX, 0], children = optionsBar({ id, items, isEnabled, highlight, skipDirPadNav },
+        value, onChange, [w, rowH], p?.onHover) }
+      valueNav(p)
+    ]
   if (kind == "editbox")
     return [atX(controlX, editBox({ id, maxLen = p?.maxLength, skipDirPadNav }, value, onChange, [w, comboH]))]
   if (kind == "slider") {
@@ -123,7 +111,8 @@ function controlComps(p) {
     let sliderW = valueText == null ? w : w - valueTextW
     let sliderComp = atX(controlX, slider({ id, minVal = p.min, maxVal = p.max, step = p.step, alpha, isEnabled,
       skipDirPadNav }, value, onChange, [sliderW, sliderH]))
-    return valueText == null ? [sliderComp] : [
+    let valueNavComp = valueNav(p)
+    return valueText == null ? [sliderComp, valueNavComp] : [
       sliderComp
       atX(controlX + sliderW + blockInterval, @() {
         watch = [valueText, alpha]
@@ -132,6 +121,7 @@ function controlComps(p) {
         color = mulAlpha(cssColors.commonTextColor, alpha.get())
         text = valueText.get() ?? ""
       })
+      valueNavComp
     ]
   }
   if (kind == "button")
@@ -139,8 +129,6 @@ function controlComps(p) {
       margin = 0, isEnabled, skipDirPadNav, hotkey = p?.hotkey }, p.onClick))]
   return []
 }
-
-let controlCell = @(p) controlComps(p).append(valueNav(p))
 
 
 let isClickSafe = @[pure, nodiscard] (kind) kind != "slider" && kind != "options_bar"
@@ -239,7 +227,7 @@ function optionRow(ctx, row, tableW) {
     pos = [leftW, 0]
     size = [cellW, flex()]
     children = [sep]
-      .extend(customCell ?? (controlP == null ? [] : controlCell(controlP.__merge({ items = shape.get().items }))))
+      .extend(customCell ?? (controlP == null ? [] : controlComps(controlP.__merge({ items = shape.get().items }))))
       .append(shape.get().isLocked ? lockSign : null)
   }
   let blockerSf = Watched(0)

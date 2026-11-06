@@ -308,10 +308,12 @@
   },
   "supply_graph_node": {
     "supply_graph__name": "",
+    "_tracked": "supply_graph__linkedEids",
+    "_replicated": "supply_graph__linkedEids",
     "supply_graph__linkNames:list<t>": {},
+    "supply_graph__linkedEids:list<eid>": {},
     "_group": {
       "_tags": "server",
-      "supply_graph__linkedEids:list<eid>": {},
       "supply_graph__laptopEids:list<eid>": {}
     }
   },
@@ -370,8 +372,15 @@
     "supply_node__points": 0,
     "supply_node__spawnCost": 10,
     "supply_node__supplyTransportArea": "",
-    "_tracked": "supply_node__points",
-    "_replicated": "supply_node__points",
+    "supply_node__hasBaseLink": false,
+    "_tracked": [
+      "supply_node__points",
+      "supply_node__hasBaseLink"
+    ],
+    "_replicated": [
+      "supply_node__points",
+      "supply_node__hasBaseLink"
+    ],
     "_group": {
       "_tags": "server",
       "supply_node__pointsCarry": 0.0
@@ -523,12 +532,14 @@
     "_tracked": [
       "capzone_sector__owningTeam",
       "capzone_sector__capTeam",
-      "capzone_sector__progress"
+      "capzone_sector__progress",
+      "capzone_sector__presenceCount"
     ],
     "_replicated": [
       "capzone_sector__owningTeam",
       "capzone_sector__capTeam",
-      "capzone_sector__progress"
+      "capzone_sector__progress",
+      "capzone_sector__presenceCount"
     ],
     "active": false,
     "capzone__owningTeam": -1,
@@ -538,6 +549,13 @@
     "capzoneSector:tag": {},
     "capzone_sector__points:list<p2>": {},
     "capzone_sector__parentEid:eid": {},
+    "capzone_sector__presenceCount:list<i>": {
+      "value": [
+        0,
+        0,
+        0
+      ]
+    },
     "teamPresence:object": {},
     "_group": {
       "_tags": "server",

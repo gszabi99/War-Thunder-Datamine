@@ -2299,7 +2299,9 @@
         "recoilOffset": 0.15,
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2445,13 +2447,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3580,7 +3581,9 @@
               "recoilOffset": 0.15,
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3726,13 +3729,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3978,7 +3980,7 @@
     "color": [
       0.8,
       0.0,
-      0.01
+      0.0
     ],
     "maxColorBrightness": 35000.0,
     "lightPatternSize": 0.4

@@ -4,6 +4,7 @@ require math
 require DagorMath
 require Mission
 require Unit
+require MPlayer
 require %appGame.infantry.es.team_common
 require %appGame.infantry.es.capzones_common
 
@@ -109,6 +110,15 @@ def private add_vehicle_presence(zone_id : int;
     if capturer__sectorEid != null
       *capturer__sectorEid = sectorEid
 
+def private reward_sector_capture(sector_eid : EntityId; sector_team : int)
+  query() <| $ [es] (unit__ref : UnitRef; capturer__sectorEid : EntityId; team : int)
+    let unit = unit__ref.unit
+    if capturer__sectorEid != sector_eid || team != sector_team || unit == null
+      return
+    let player = unit.myPlayer
+    if player != null && !player.isBot
+      award_sector_capture(*unit)
+
 [es(tag=server, no_order, REQUIRE=sectoredCapzone)]
 def sectored_capzone_update_es(info : UpdateStageInfoAct;
                                eid : EntityId;
@@ -204,6 +214,7 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
         owner = TEAM_UNASSIGNED
       if owner == TEAM_UNASSIGNED && abs(progress) >= 1.0
         owner = leader
+        reward_sector_capture(sectorEid, leader)
     elif owner == TEAM_UNASSIGNED && progress != 0.0
       progress -= sign(progress) * min(rate, abs(progress))
       if progress == 0.0
@@ -227,6 +238,7 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
     query(sectored_capzone__sectorEids[i]) <| $ [es] (capzone_sector__neighborEids : EidList;
                                                       capzone_sector__capTeam : int;
                                                       capzone_sector__progress : float;
+                                                      var capzone_sector__presenceCount : IntList&;
                                                       var active aka sector_active : bool&;
                                                       var capzone__owningTeam aka sector_capzone__owningTeam : int&;
                                                       var capzone__capTeam : int&;
@@ -237,6 +249,8 @@ def sectored_capzone_update_es(info : UpdateStageInfoAct;
       sector_capzone__owningTeam = canCapture1 == canCapture2 ? TEAM_UNASSIGNED : (canCapture1 ? 2 : 1)
       capzone__capTeam = capzone_sector__capTeam
       capzone__progress = abs(capzone_sector__progress)
+      capzone_sector__presenceCount[1] = presence1[i]
+      capzone_sector__presenceCount[2] = presence2[i]
 
   var allOwner = owners[0]
   var enemyOwned = false

@@ -11,8 +11,9 @@ from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, S_AIRCRAFT, S_HELICOPT
   mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc, mkCountermeasureDesc,
   mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
   mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc,
-  mkFireControlSystemDesc, mkHydraulicsSystemDesc, mkElectronicEquipmentDesc,
-  mkSimpleDescByPartType, mkSupportPlaneDesc, mkOpticBodyDesc, getPartPressureCompartmentDesc
+  mkAuxiliaryPowerUnitDesc, mkFireControlSystemDesc, mkHydraulicsSystemDesc,
+  mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkSupportPlaneDesc, mkOpticBodyDesc,
+  getPartPressureCompartmentDesc
 from "blkGetters" import get_modifications_blk, get_wpcost_blk
 from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
@@ -115,7 +116,7 @@ let xrayDescCtorsMap = {
   gun_trunnion = mkSimpleDescByPartType
   fuel_tank_exterior = mkSimpleDescByPartType
   aircraft = mkSupportPlaneDesc
-  auxiliary_power_unit = mkSimpleDescByPartType
+  auxiliary_power_unit = mkAuxiliaryPowerUnitDesc
 }
 
 let getModEffectMul = @(commonData, modId, effectId)

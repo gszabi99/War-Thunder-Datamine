@@ -3,9 +3,11 @@
 
 
 
+
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst
 from "%rGui/components/text.nut" import mkText, mulAlpha
+from "%rGui/components/commonBg.nut" import commonBg
 from "%rGui/components/tooltip.nut" import withHint, tooltipDetach
 from "%rGui/ctrlsState.nut" import showConsoleButtons
 from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
@@ -40,11 +42,25 @@ let colorsByState = freeze({
   Disabled = [cssColors.buttonColorDisabled, cssColors.buttonBorderColorDisabled, cssColors.buttonFontColorDisabled],
   Pushed = [cssColors.buttonColorPushed, cssColors.buttonBorderColorPushed, cssColors.buttonFontColorPushed],
   NoBgr = [0, 0, cssColors.buttonFontColor],
+  Secondary = [cssColors.buttonColorSecondary, 0, cssColors.buttonFontColorSecondary],
+  SecondaryHover = [cssColors.buttonColorSecondary, 0, cssColors.activeTextColor],
+  SecondaryDisabled = [cssColors.buttonColorSecondary, 0, cssColors.buttonFontColorSecondary],
+  SecondaryPushed = [cssColors.buttonColorSecondary, 0, cssColors.buttonFontColorSecondary],
 })
+
+let secondaryBgByState = freeze({
+  [""] = { image = "#ui/gameuiskin#button_flat_", position = "2, 3, 2, 2" }
+  Hover = { image = "#ui/gameuiskin#button_flat_hover", position = "2, 3, 2, 2" }
+  Disabled = { image = "#ui/gameuiskin#button_flat_disabled", position = "1, 3, 1, 1" }
+  Pushed = { image = "#ui/gameuiskin#button_flat_active", position = "2, 3" }
+})
+
+let winkAnimations = freeze([{ prop = AnimProp.opacity, from = 1.0, to = 170 / 255.0, duration = 3.0,
+  easing = CosineFull, loop = true, play = true }])
 
 let contentSize = freeze([SIZE_TO_CONTENT, flex()])
 
-function button(p, onClick = null) {
+function button(p, onClickCb = null) {
   let sf = Watched(0)
   let { id = null, visualStyle = null, content = null, alpha = null, isEnabled = null, text = "", hotkey = null,
     tooltip = null } = p
@@ -62,11 +78,22 @@ function button(p, onClick = null) {
   return function() {
     let a = alpha?.get() ?? 255
     let enabled = isEnabled?.get() ?? true
-    let colors = colorsByState[stateName(sf.get(), enabled, visualStyle)]
+    let state = stateName(sf.get(), enabled, visualStyle)
+    let isSecondary = visualStyle == "secondary"
+    let colors = colorsByState[isSecondary ? $"Secondary{state}" : state]
     let textColor = mulAlpha(colors[2], a)
     let label = content != null ? content(sf.get(), enabled, textColor)
       : mkText(textW?.get() ?? text, font, textColor, const { vplace = ALIGN_CENTER })
     let isHintShown = hint != null && showConsoleButtons.get()
+    let secondaryBg = isSecondary ? secondaryBgByState[state] : null
+    let bg = !isSecondary
+      ? [{ size = flex(), rendObj = ROBJ_FRAME, borderWidth, color = mulAlpha(colors[1], a) }]
+      : commonBg({ image = secondaryBg?.image, repeat = "expand", position = secondaryBg?.position,
+          bgcolor = mulAlpha(colors[0], a) })
+    let wink = !isSecondary || state != "" ? null : commonBg({
+      image = "#ui/gameuiskin#button_flat_glow", repeat = "expand", position = "2, 3, 2, 2",
+      bgcolor = mulAlpha(cssColors.buttonWinkColorSecondary, a)
+    })[0].__update({ animations = winkAnimations })
     return {
       watch
       key = id
@@ -74,7 +101,7 @@ function button(p, onClick = null) {
       minWidth = p?.minWidth ?? btnWidth
       margin = p?.margin ?? btnMargin
       rendObj = ROBJ_SOLID
-      color = mulAlpha(colors[0], a)
+      color = isSecondary ? 0 : mulAlpha(colors[0], a)
       behavior = Behaviors.Button
       skipDirPadNav = p?.skipDirPadNav
       hotkeys = btnHotkeys
@@ -84,19 +111,16 @@ function button(p, onClick = null) {
         if (!(isEnabled?.get() ?? true))
           return
         soundWt?.playSound("click")
-        onClick?()
+        onClickCb?()
       }
-      children = [
-        { size = flex(), rendObj = ROBJ_FRAME, borderWidth, color = mulAlpha(colors[1], a) }
-        {
-          size = contentSize
-          hplace = ALIGN_CENTER
-          padding
-          flow = FLOW_HORIZONTAL
-          gap = hintGap
-          children = [isHintShown ? hint : null, label]
-        }
-      ]
+      children = bg.append(wink, {
+        size = contentSize
+        hplace = isHintShown ? ALIGN_LEFT : ALIGN_CENTER
+        padding
+        flow = FLOW_HORIZONTAL
+        gap = hintGap
+        children = [isHintShown ? hint : null, label]
+      })
     }
   }
 }

@@ -76,6 +76,9 @@ def on_unit_appear_change_pos_es(evt : Event;
                                  var unit_fire_and_change_pos__state : int&;
                                  var unit_fire_and_change_pos__move_target_pos_index : int&;
                                  var unit__ref : UnitRef&)
+  if unit__ref.unit.isDelayed
+    return
+
   set_fire_and_change_pos_state(eid, unit__missionName, int(FireAndChangePosState.CHANGING_POSITION), unit_fire_and_change_pos__state, unit_fire_and_change_pos__move_target_pos_index, unit__ref)
 
   var gm = as_gm(unit__ref.unit)

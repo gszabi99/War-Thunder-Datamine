@@ -2241,7 +2241,9 @@
         "breechDP": "cannon_breech_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "speedYaw": 57.0,
         "speedPitch": 45.0,
@@ -2496,7 +2498,9 @@
         "barrelDP": "gun_barrel_02_dm",
         "stabilizerDmPart": [
           "fire_control_system_dm",
-          "power_system_dm"
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
         ],
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -4557,7 +4561,9 @@
               "breechDP": "cannon_breech_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "speedYaw": 57.0,
               "speedPitch": 45.0,
@@ -4812,7 +4818,9 @@
               "barrelDP": "gun_barrel_01_dm",
               "stabilizerDmPart": [
                 "fire_control_system_dm",
-                "power_system_dm"
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
               ],
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -5040,13 +5048,20 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "turret_hydraulics_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "turret_hydraulics_dm"
+                  "turret_hydraulics_dm",
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
                 "rotatedTurret": "bone_turret"
               },
               "limits": {

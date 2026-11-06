@@ -230,6 +230,12 @@ debriefingRows = [
     text = "multiplayer/zone_captures"
     icon = "icon/mpstats/captureZone"
   }
+  { id = "SectorCapture"
+    rowType = "num"
+    showByModes = isGameModeVersus
+    text = "multiplayer/sector_captures"
+    icon = "icon/mpstats/captureZone"
+  }
   "Landings"
   "Takeoffs"
   { id = "MissileEvade"

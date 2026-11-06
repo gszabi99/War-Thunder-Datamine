@@ -24,10 +24,10 @@ from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
+from "%scripts/controls/shortcutsUtils.nut" import isShortcutMapped as isShortcutMappedImpl
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 const SELECTOR_PIN_STATE_SAVE_ID = "airWeaponSelectorState"
@@ -773,7 +773,7 @@ class HudAirWeaponSelector {
 
   function isShortcutMapped(shortcutId) {
     let shortcut = getShortcuts([shortcutId])
-    return isShortcutMapped(shortcut[0])
+    return isShortcutMappedImpl(shortcut[0])
   }
 
   function checkAndSaveCachedState() {

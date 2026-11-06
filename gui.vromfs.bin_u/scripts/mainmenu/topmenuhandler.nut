@@ -34,12 +34,12 @@ from "%appGlobals/login/loginState.nut" import hasFullLoginState
 from "%scripts/dagui_natives.nut" import is_news_adver_actual, req_news, get_news_blk
 from "%globalScripts/loc_helpers.nut" import locByVendor
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gamercard/gamercard.nut" import updateGamercards as updateGamercardsImpl
 
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
-let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { topMenuLeftSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
@@ -343,7 +343,7 @@ class TopMenu (BaseGuiHandlerWT) {
   }
 
   function updateGamercards() {
-    updateGamercards()
+    updateGamercardsImpl()
   }
 
   function updateOnShopWndAnim(isVisible) {

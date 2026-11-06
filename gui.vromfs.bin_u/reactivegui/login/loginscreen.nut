@@ -52,6 +52,7 @@ let framePadding = cssConst("framePadding")
 let btnH = cssConst("navBarBattleButtonHeight")
 let btnImgPadding = cssConst("buttonImgPadding")
 let btnTextPadding = cssConst("buttonTextPadding")
+let btnPadding = [btnImgPadding, btnTextPadding]
 let hintSize = cssConst("cIco")
 let lineW = px("(@sf/@pf) $max 1")
 let editH = px("@cIco + 2@buttonImgPadding")
@@ -138,7 +139,19 @@ function mkLink(id, text, action) {
   }
 }
 
-function battleButtonView(text, isEnabled, sf, size) {
+function mkButtonContent(hint, content) {
+  let isHintShown = hint != null
+  return {
+    size = flex()
+    padding = btnPadding
+    flow = FLOW_HORIZONTAL
+    halign = isHintShown ? ALIGN_LEFT : ALIGN_CENTER
+    gap = btnImgPadding
+    children = [hint, content]
+  }
+}
+
+function battleButtonView(text, isEnabled, sf, size, hint) {
   let [w, h] = size
   let isHover = isEnabled && (sf & S_HOVER) != 0
   let isPushed = isEnabled && (sf & S_ACTIVE) != 0
@@ -162,16 +175,18 @@ function battleButtonView(text, isEnabled, sf, size) {
         ? { size = [w, pct(h, 60)], children = commonBg({ image = "#ui/gameuiskin#button_glance",
             repeat = "expand", position = "1", bgcolor = BATTLE_GLANCE_COLOR }) }
         : { pos = [2, 2], size = [w - 4, pct(h, 65) - 4], rendObj = ROBJ_SOLID, color = BATTLE_GLANCE_DISABLED_COLOR }
-      mkText(text, fontNormalBold,
-        !isEnabled ? cssColors.inactiveButtonTextColor
-          : isPushed ? cssColors.pushedBattleButtonColor
-          : isHover ? cssColors.hoverBattleButtonColor
-          : cssColors.battleButtonColor,
-        { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, fontFx = FFT_GLOW, fontFxColor = 0x55000000, fontFxFactor = 48 })
+      mkButtonContent(hint,
+        mkText(text, fontNormalBold,
+          !isEnabled ? cssColors.inactiveButtonTextColor
+            : isPushed ? cssColors.pushedBattleButtonColor
+            : isHover ? cssColors.hoverBattleButtonColor
+            : cssColors.battleButtonColor,
+          { vplace = ALIGN_CENTER, fontFx = FFT_GLOW, fontFxColor = 0x55000000, fontFxFactor = 48 })
+      )
     ])
 }
 
-function plainButtonView(text, isEnabled, sf, size) {
+function plainButtonView(text, isEnabled, sf, size, hint) {
   let [w, h] = size
   let isHover = isEnabled && (sf & S_HOVER) != 0
   let isPushed = isEnabled && (sf & S_ACTIVE) != 0
@@ -181,7 +196,9 @@ function plainButtonView(text, isEnabled, sf, size) {
     [
       mkPattern("#ui/gameuiskin#pattern_bright_texture", [w - 2 * btnTextPadding, h - 2 * btnImgPadding],
         { pos = [btnTextPadding, btnImgPadding] })
-      mkText(text, fontNormal, cssColors[$"buttonFontColor{state}"], { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER })
+      mkButtonContent(hint,
+        mkText(text, fontNormal, cssColors[$"buttonFontColor{state}"], { vplace = ALIGN_CENTER })
+      )
     ])
 }
 
@@ -191,7 +208,7 @@ function mkStyledButton(id, text, action, isBattleFn, hotkey, ovr = {}) {
   let sf = Watched(0)
   let item = loginItemW(id)
   let hotkeys = [[$"^{hotkey}"]]
-  let hintParams = { height = hintSize, vplace = ALIGN_CENTER, pos = [btnImgPadding, 0] }
+  let hintParams = { height = hintSize, vplace = ALIGN_CENTER }
   return @() {
     watch = [sf, item, styleW, isHelpShownW, showConsoleButtons]
     size = FLEX_H
@@ -207,8 +224,8 @@ function mkStyledButton(id, text, action, isBattleFn, hotkey, ovr = {}) {
         playSound("click")
         sendAction(action)
       }
-      children = (isBattleFn() ? battleButtonView : plainButtonView)(text, item.get()?.enabled ?? true, sf.get(), btnSize)
-        .append(showConsoleButtons.get() ? mkImageCompByDargKey(hotkey, null, hintParams) : null)
+      children = (isBattleFn() ? battleButtonView : plainButtonView)(text, item.get()?.enabled ?? true, sf.get(), btnSize,
+        showConsoleButtons.get() ? mkImageCompByDargKey(hotkey, null, hintParams) : null)
     }.__update(ovr)
   }
 }
@@ -227,10 +244,10 @@ const NAV_ACTIONS = {
 let { textButton, linkButton } = mkNavButtons(loginItemW, @(id) sendAction(NAV_ACTIONS[id]), HIDDEN_BY_DEFAULT)
 
 let ssoBtn = linkButton("sso_login_action_button", loc("mainmenu/loginWithSso"),
-  { size = btnSize, margin = [blockInterval, 0, blockInterval, 0], hotkey = "J:RB" })
+  { size = btnSize, margin = [blockInterval, 0, blockInterval, 0], hotkey = "J:RB", minWidth = mainInnerW })
 
 let steamBtn = textButton("steam_login_action_button", loc("mainmenu/loginWithSteam"), "J:LB",
-  { size = btnSize, margin = [0, 0, blockInterval, 0] })
+  { size = btnSize, margin = [blockInterval, 0, blockInterval, 0], minWidth = mainInnerW, visualStyle = "secondary" })
 
 let tabOrder = ["loginbox_username", "loginbox_password"]
 let focusedEditId = Watched(null)

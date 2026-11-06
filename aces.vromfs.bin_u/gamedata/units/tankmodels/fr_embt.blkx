@@ -1193,6 +1193,16 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
+      }
     }
   },
   "PhysSys": {
@@ -1221,6 +1231,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "sound": {
     "EngineName": "engine_leo2a5",
@@ -2509,6 +2531,12 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm",
+          "fire_control_system_01_dm",
+          "power_system_01_dm"
+        ],
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
@@ -3670,6 +3698,12 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm",
+                "fire_control_system_01_dm",
+                "power_system_01_dm"
+              ],
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
@@ -4215,7 +4249,7 @@
     "color": [
       0.8,
       0.0,
-      0.01
+      0.0
     ],
     "maxColorBrightness": 35000.0,
     "lightPatternSize": 0.4

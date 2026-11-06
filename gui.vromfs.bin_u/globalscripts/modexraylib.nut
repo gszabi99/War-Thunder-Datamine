@@ -2936,6 +2936,27 @@ function mkPowerSystemDesc(partType, params, commonData) {
 let mkSimpleDescByPartType = @(partType, _params, _commonData)
   { desc = [ loc($"armor_class/desc/{partType}") ] }
 
+function mkAuxiliaryPowerUnitDesc(partType, params, commonData) {
+  let { unitBlk, getUnitWeaponsList } = commonData
+  let apuBlk = unitBlk?.auxiliaryPowerUnit
+  let desc = [
+    apuBlk?.isAlwaysOn ? loc("armor_class/desc/auxiliary_power_unit_always_on")
+      : loc($"armor_class/desc/{partType}")
+  ]
+
+  let drivesPoweredByApu = getUnitWeaponsList(commonData).findvalue(function(weapon) {
+    let turretBlk = weapon?.turret
+    return turretBlk != null
+      && ((turretBlk % "verDriveDm").contains(params.name)
+        || (turretBlk % "horDriveDm").contains(params.name))
+  }) != null
+
+  if (drivesPoweredByApu)
+    desc.append(loc("armor_class/desc/auxiliary_power_unit_damaged",
+      { partsList = loc("xray/filter/drives") }))
+
+  return { desc }
+}
 
 function mkSupportPlaneDesc(partType, _params, commonData) {
   let weaponInfoData = commonData?.makeWeaponInfoData(commonData.supportPlane)
@@ -3000,6 +3021,7 @@ return freeze({
   mkHydraulicsSystemDesc
   mkElectronicEquipmentDesc
   mkPowerSystemDesc
+  mkAuxiliaryPowerUnitDesc
   mkSimpleDescByPartType
   mkSupportPlaneDesc
   getInfoBlk

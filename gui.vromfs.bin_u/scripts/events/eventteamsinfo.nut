@@ -4,6 +4,7 @@ from "%scripts/unit/unitInfo.nut" import getUnitTypeByText
 from "%scripts/ranks.nut" import maxCountryRank
 from "%scripts/events/eventsState.nut" import getEvent, getEventDifficulty
 from "%appGlobals/ranks_common_shared.nut" import getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
 from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
@@ -252,7 +253,8 @@ function getEDiffByEvent(event) {
   }
   return event.ediff
 }
-function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1) {
+
+function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1, mrankDelta = null) {
   if (rulesList.len() <= 0)
     return defReturn
 
@@ -270,7 +272,7 @@ function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1) {
     }
 
     if ("mranks" in rule) {
-      let unitMRank = ediff != -1 ? unit.getEconomicRank(ediff) : 0
+      let unitMRank = ediff != -1 ? getEffectiveMrank(unit, ediff, mrankDelta) : 0
       if (unitMRank < (rule.mranks?.min ?? 0) || (rule.mranks?.max ?? maxEconomicRank) < unitMRank)
         continue
     }
@@ -289,20 +291,20 @@ function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1) {
   }
   return false
 }
-function isUnitAllowedByTeamData(teamData, airName, ediff = -1) {
+function isUnitAllowedByTeamData(teamData, airName, ediff = -1, mrankDelta = null) {
   let unit = getAircraftByName(airName)
   if (!unit || unit.disableFlyout)
     return false
   if (!isInArray(unit.shopCountry, getCountries(teamData)))
     return false
 
-  let airInAllowedList = isUnitMatchesRule(unit, getAlowedCrafts(teamData), true, ediff)
-  let airInForbidenList = isUnitMatchesRule(unit, getForbiddenCrafts(teamData), false, ediff)
+  let airInAllowedList = isUnitMatchesRule(unit, getAlowedCrafts(teamData), true, ediff, mrankDelta)
+  let airInForbidenList = isUnitMatchesRule(unit, getForbiddenCrafts(teamData), false, ediff, mrankDelta)
   return !airInForbidenList && airInAllowedList
 }
-function isAirRequiredAndAllowedByTeamData(teamData, airName, ediff) {
-  return (isUnitMatchesRule(airName, getRequiredCrafts(teamData), true, ediff)
-      && isUnitAllowedByTeamData(teamData, airName, ediff))
+function isAirRequiredAndAllowedByTeamData(teamData, airName, ediff, mrankDelta = null) {
+  return (isUnitMatchesRule(airName, getRequiredCrafts(teamData), true, ediff, mrankDelta)
+      && isUnitAllowedByTeamData(teamData, airName, ediff, mrankDelta))
 }
 function isUnitAllowed(event, team, airName) {
   let teamData = getTeamData(event, team)

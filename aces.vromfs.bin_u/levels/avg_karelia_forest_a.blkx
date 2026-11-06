@@ -43,9 +43,10 @@
   "weatherTypes": "gamedata/environments/weather_types_avg.blk",
   "water_level": 30.0,
   "lightprobe_offset": 300.0,
-  "numBorderCellsXNeg": 4,
-  "numBorderCellsZPos": 6,
-  "numBorderCellsZNeg": 6,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 32,
+  "numBorderCellsZPos": 32,
+  "numBorderCellsZNeg": 32,
   "gridSteps": [
     2048.0,
     2048.0
@@ -90,6 +91,11 @@
     }
   },
   "earth": {
+    "infiniteMirror": true,
+    "mirrorPortionXPos": 0.0,
+    "mirrorPortionXNeg": 0.0,
+    "mirrorPortionZPos": 1.0,
+    "mirrorPortionZNeg": 1.0,
     "earthWorldEnabled": true,
     "earthWorldMin": [
       -8192.0,
@@ -137,7 +143,7 @@
     "maxRadius": 300.0,
     "sowPerlinFreq": 0.1,
     "fadeDelta": 100.0,
-    "lodFadeDelta": 30.0,
+    "lodFadeDelta": 60.0,
     "minLodDensity": 0.2,
     "blendToLandDelta": 100.0,
     "texSize": 1024,

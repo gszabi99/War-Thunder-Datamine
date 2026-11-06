@@ -30,24 +30,24 @@ from "%scripts/queue/queueConsts.nut" import queueStates
 let { mainModePairs } = require("%scripts/events/secondGameModesUtils.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
 
-function getCustomMgm(eventName) {
+function getCustomMgmImpl(eventName) {
   return events.getCustomGameMode(events.getEvent(eventName))
 }
 
 let ADDITIVE_GMS_TAG_PREFIXES = [ SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX ]
 
 function hasCustomModeByEventName(eventName) {
-  return hasFeature("QueueCustomEventRoom") && !!getCustomMgm(eventName)
+  return hasFeature("QueueCustomEventRoom") && !!getCustomMgmImpl(eventName)
 }
 
-function hasOptions(eventName) {
+function hasOptionsImpl(eventName) {
   return hasCustomModeByEventName(eventName)
     && getQueueClass("Event").isAllowedToSwitchCustomMode()
     && !findQueueByName(eventName, true)
 }
 
-function getOptions(eventName) {
-  if (!hasOptions(eventName))
+function getOptionsImpl(eventName) {
+  if (!hasOptionsImpl(eventName))
     return null
   return {
     options = [[USEROPT_QUEUE_EVENT_CUSTOM_MODE]]
@@ -100,15 +100,15 @@ let Event = class (BaseQueue) {
   }
 
   static function getCustomMgm(eventName) {
-    return getCustomMgm(eventName)
+    return getCustomMgmImpl(eventName)
   }
 
   static function hasOptions(eventName) {
-    return hasOptions(eventName)
+    return hasOptionsImpl(eventName)
   }
 
   static function getOptions(eventName) {
-    return getOptions(eventName)
+    return getOptionsImpl(eventName)
   }
 
   function join(successCallback, errorCallback) {
@@ -285,7 +285,7 @@ let Event = class (BaseQueue) {
   }
 
   function isCustomModeQUeued() {
-    let customMgm = getCustomMgm(this.name)
+    let customMgm = getCustomMgmImpl(this.name)
     if (!customMgm)
       return false
     return !!u.search(this.queueUidsList, @(q) q.gameModeId == customMgm.gameModeId)
@@ -313,9 +313,9 @@ let Event = class (BaseQueue) {
     }
     this.isCustomModeInTransition = true
     if (this.shouldQueueCustomMode)
-      this._joinQueueImpl(this.getQueryParams(true, getCustomMgm(this.name)), cb, cb, false)
+      this._joinQueueImpl(this.getQueryParams(true, getCustomMgmImpl(this.name)), cb, cb, false)
     else
-      requestLeaveQueue(this.getQueryParams(false, getCustomMgm(this.name)), cb, cb, false)
+      requestLeaveQueue(this.getQueryParams(false, getCustomMgmImpl(this.name)), cb, cb, false)
   }
 
   function afterCustomModeQueueChanged(wasShouldQueue) {

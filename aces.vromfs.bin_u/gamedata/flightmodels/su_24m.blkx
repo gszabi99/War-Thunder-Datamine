@@ -2801,6 +2801,7 @@
               "Type 903",
               "AN-SPG-48",
               "AN-SPG-51",
+              "Mk-95",
               "MK25-radar",
               "WM-27",
               "SGR-108",
@@ -3309,6 +3310,10 @@
       {
         "name": "su_24m_rbk_500_ao_2_5rtm",
         "blk": "gamedata/flightModels/weaponPresets/su_24m_rbk_500_ao_2_5rtm.blk"
+      },
+      {
+        "name": "su_24m_rbk_500_ptab",
+        "blk": "gamedata/flightModels/weaponPresets/su_24m_rbk_500_ptab.blk"
       },
       {
         "name": "su_24m_bomb_kab500kr",
@@ -4065,6 +4070,27 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot1",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_1_bd3u",
+                "pylon_1_bd3u_holder2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+              "emitter": "pylon_1_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 3
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "wing_left_in_single_zb500",
             "reqModification": "su_24m2_fab_500_kab_500s",
@@ -4750,6 +4776,27 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot2",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_2_bd3u",
+                "pylon_2_bd3u_holder2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+              "emitter": "pylon_2_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
+            }
+          },
+          {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "rbk_500_ao_2_5rtm_x2_slot2",
             "reqModification": "su_24m2_fab_500_kab_500s",
@@ -4774,6 +4821,40 @@
               {
                 "trigger": "bombs",
                 "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "pylon_2a_fab_500m_62_in",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 7
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "rbk_500_ptab_x2_slot2",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_2a_bd3u",
+                "pylon_2a_bd3u_holder_in2",
+                "pylon_2a_bd3u_holder_out2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "pylon_2a_fab_500m_62_out",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
                 "emitter": "pylon_2a_fab_500m_62_in",
                 "bullets": 1,
                 "external": true,
@@ -6222,6 +6303,24 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot3",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_3_bd3u_holder2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+              "emitter": "pylon_3_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 9
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "fuse_left_single_zb500",
             "reqModification": "su_24m2_fab_500_kab_500s",
@@ -7210,6 +7309,86 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "pylon_7_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 12
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "fuse_kh_29l"
+              },
+              {
+                "slot": 5,
+                "preset": "fuse_kh_29te"
+              },
+              {
+                "slot": 5,
+                "preset": "fuse_kab_1500kr"
+              },
+              {
+                "slot": 5,
+                "preset": "fuse_kab_500l"
+              },
+              {
+                "slot": 5,
+                "preset": "fuse_kab_500s"
+              },
+              {
+                "slot": 5,
+                "preset": "fuse_kab_1500l"
+              },
+              {
+                "slot": 5,
+                "preset": "apk_9"
+              },
+              {
+                "slot": 2,
+                "preset": "left_wing_kh_59m"
+              },
+              {
+                "slot": 2,
+                "preset": "kh_58u_a_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "kh_58u_b_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "kh_58u_c_slot2"
+              },
+              {
+                "slot": 7,
+                "preset": "right_wing_kh_59m"
+              },
+              {
+                "slot": 7,
+                "preset": "kh_58u_a_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "kh_58u_b_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "kh_58u_c_slot7"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot4",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_7_bd3u_holder2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
               "emitter": "pylon_7_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -8963,6 +9142,24 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot6",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": "pylon_4_bd3u_holder2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+              "emitter": "pylon_4_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 10
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "fuse_right_single_zb500",
             "reqModification": "su_24m2_fab_500_kab_500s",
@@ -9419,6 +9616,27 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot7",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_5_bd3u",
+                "pylon_5_bd3u_holder2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+              "emitter": "pylon_5_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 8
+            }
+          },
+          {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "rbk_500_ao_2_5rtm_x2_slot7",
             "reqModification": "su_24m2_fab_500_kab_500s",
@@ -9443,6 +9661,40 @@
               {
                 "trigger": "bombs",
                 "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "pylon_5a_fab_500m_62_in",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 8
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x2",
+            "name": "rbk_500_ptab_x2_slot7",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_5a_bd3u",
+                "pylon_5a_bd3u_holder_in2",
+                "pylon_5a_bd3u_holder_out2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "pylon_5a_fab_500m_62_out",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
                 "emitter": "pylon_5a_fab_500m_62_in",
                 "bullets": 1,
                 "external": true,
@@ -10969,6 +11221,27 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+              "emitter": "pylon_6_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 4
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "rbk_500_ptab_slot8",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_6_bd3u",
+                "pylon_6_bd3u_holder2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
               "emitter": "pylon_6_fab_500m_62",
               "bullets": 1,
               "external": true,

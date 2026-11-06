@@ -12,8 +12,10 @@ from "%rGui/components/modalWindowsMngr.nut" import addModalWindow, removeModalW
 from "%rGui/components/tooltip.nut" import withHint, tooltipDetach
 from "%rGui/components/commonBg.nut" import toColor
 import "%rGui/components/scrollBox.nut" as scrollBox
+import "%rGui/control/gui_buttons.nut" as JB
 import "%rGui/style/fontsState.nut" as fontsState
 import "%appGlobals/style/cssColors.nut" as cssColors
+from "%rGui/ctrlsState.nut" import showConsoleButtons
 
 let soundWt = require_optional("sound_wt")
 
@@ -68,12 +70,17 @@ function optionContent(o, textColor, height) {
   }
 }
 
-function listOption(o, idx, key, isCurrent, height, onSelect, onHover) {
+function listOption(o, idx, key, isCurrent, height, onSelect, onHover, keepInView) {
   let sf = Watched(0)
+  let xmbNode = XmbNode({ onFocus = @() keepInView(idx) })
   let isEnabled = o?.enabled ?? true
   let tooltip = (o?.tooltip ?? "") == "" ? null : o.tooltip
   let onElemState = tooltip == null ? @(s) sf.set(s) : withHint(sf, key, @() tooltip)
   let onDetach = tooltip == null ? null : tooltipDetach(sf, key)
+  function onAttach() {
+    if (showConsoleButtons.get())
+      gui_scene.setXmbFocus(xmbNode)
+  }
   
   return @() {
     watch = sf
@@ -85,7 +92,9 @@ function listOption(o, idx, key, isCurrent, height, onSelect, onHover) {
       : isEnabled && (sf.get() & S_HOVER) ? cssColors.comboHoverOptionColor
       : cssColors.comboOptionColor
     behavior = isEnabled || tooltip != null ? Behaviors.Button : null
+    xmbNode
     onElemState
+    onAttach = isCurrent ? onAttach : null
     onDetach
     onHover = onHover == null ? null : @(on) on ? onHover(idx) : null
     onClick = isEnabled ? @() onSelect(idx) : null
@@ -127,20 +136,32 @@ function comboBox(p, state = null, onChange = null, size = null) {
   let popupH = min(listH, sh(100))
   function open(rect) {
     isExpanded.set(true)
+    let scrollOffsY = Watched(0)
+    function keepInView(idx) {
+      let top = idx * (h + dpPx)
+      let off = scrollOffsY.get()
+      let next = top < off ? top : top + h > off + popupH ? top + h - popupH : off
+      if (next != off)
+        scrollOffsY.set(next)
+    }
+    keepInView(value.get() ?? 0)
     let list = @(innerW, _offset, _viewH) {
       size = [innerW, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
-      children = options.map(@(o, idx) listOption(o, idx, $"{popupKey}_{idx}", idx == value.get(), h, select, p?.onHover))
+      xmbNode = XmbContainer({ wrap = false })
+      children = options.map(@(o, idx) listOption(o, idx, $"{popupKey}_{idx}", idx == value.get(), h, select,
+        p?.onHover, keepInView))
     }
     addModalWindow({
       key = popupKey
       onClick = close
+      hotkeys = [["Esc | {0}".subst(JB.B)]]
       children = {
         pos = [rect.l, rect.b + popupH <= sh(100) ? rect.b : max(0, rect.t - popupH)]
         rendObj = ROBJ_SOLID
         color = cssColors.comboListBgColor
         stopMouse = true
-        children = scrollBox({ size = [rect.r - rect.l, popupH], contentHeight = Watched(listH) }, list)
+        children = scrollBox({ size = [rect.r - rect.l, popupH], contentHeight = Watched(listH), scrollOffsY }, list)
       }
     })
   }
