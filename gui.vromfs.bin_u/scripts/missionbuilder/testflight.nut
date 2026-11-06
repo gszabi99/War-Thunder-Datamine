@@ -5,7 +5,7 @@ from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/weaponry/unitWeaponsHandler.nut" import unitWeaponsHandler
 from "%scripts/missionBuilder/changeAircraftForBuilder.nut" import changeAircraftForBuilder
 from "%scripts/genericOptions.nut" import GenericOptions, GenericOptionsModal
-from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon, getTorpedoAutoUpdateDepthByDiff
+from "%scripts/weaponry/weaponryInfo.nut" import getLastWeapon
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
 from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
@@ -123,14 +123,6 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
-  function onChangeTorpedoDiveDepth(obj) {
-    let option = this.get_option_by_id(obj?.id)
-    if (!option)
-      return
-
-    set_option(option.type, obj.getValue(), option)
-  }
-
   function onChangeRadarModeSelectedUnit(obj) {
     set_option_radar_name(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get()), obj.getValue())
 
@@ -155,7 +147,6 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     this.checkBombActivationTimeRow()
     this.checkBombSeriesRow()
     this.checkDepthChargeActivationTimeRow()
-    this.updateTorpedoDiveDepth()
     this.updateCountermeasureOptions()
   }
 
@@ -261,13 +252,11 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     if (this.unit?.isShipOrBoat())
       this.options.append(
         [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
-        [USEROPT_ROCKET_FUSE_DIST, "spinner"],
-        [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+        [USEROPT_ROCKET_FUSE_DIST, "spinner"]
       )
     else if (isAir)
       this.options.append(
-        [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
-        [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+        [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"]
       )
 
     let radarModesCount = get_radar_mode_names(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get())).len()
@@ -532,9 +521,6 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
 
     this.setDifficultyOption(obj.getValue())
 
-    this.updateOption(USEROPT_TORPEDO_DIVE_DEPTH)
-    this.updateTorpedoDiveDepth()
-
     this.updateFuelAmount()
     this.updateOption(USEROPT_BOMB_ACTIVATION_TIME)
     this.updateWeaponsSelector(true)
@@ -713,20 +699,6 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     let show = isTripleColorSmokeAvailable()
     foreach (option in aerobaticsSmokeOptions)
       this.showOptionRow(option, show)
-  }
-
-  function updateTorpedoDiveDepth() {
-    let option = this.findOptionInContainers(USEROPT_TORPEDO_DIVE_DEPTH)
-    if (!option)
-      return
-
-    this.showOptionRow(option, !getTorpedoAutoUpdateDepthByDiff(this.getCurrentEdiff())
-      && (getCurrentPreset(this.unit)?.torpedo ?? false))
-
-    let depthOptIdx = this.optionsConfig.diffCode == g_difficulty.ARCADE.diffCode
-      ? (option.values.findindex(@(v) v == option.defaultValue) ?? 0)
-      : option.value
-    set_option(option.type, depthOptIdx, option)
   }
 
   function updateVerticalTargetingOption() {

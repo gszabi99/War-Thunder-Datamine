@@ -2082,6 +2082,10 @@
       {
         "name": "ah_64e_spike_nlos",
         "blk": "gamedata/flightModels/weaponPresets/ah_64e_spike_nlos.blk"
+      },
+      {
+        "name": "ah_64e_spike_nlos_wo_mitl",
+        "blk": "gamedata/flightModels/weaponPresets/ah_64e_spike_nlos_wo_mitl.blk"
       }
     ]
   },
@@ -2733,7 +2737,7 @@
           {
             "iconType": "atgm_type_spike_er_x2",
             "name": "spike_nlos_x2",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2.blk",
@@ -2750,10 +2754,44 @@
           {
             "iconType": "atgm_type_spike_er_x4",
             "name": "spike_nlos_x4",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_wo_mitl_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2_wo_mitl.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_wo_mitl_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4_wo_mitl.blk",
               "emitter": "pylon_m272_002",
               "external": true,
               "separate": true,
@@ -2878,7 +2916,7 @@
           {
             "iconType": "atgm_type_spike_er_x2",
             "name": "spike_nlos_x2",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2.blk",
@@ -2895,10 +2933,44 @@
           {
             "iconType": "atgm_type_spike_er_x4",
             "name": "spike_nlos_x4",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_wo_mitl_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2_wo_mitl.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_wo_mitl_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4_wo_mitl.blk",
               "emitter": "pylon_m272_003",
               "external": true,
               "separate": true,
@@ -3022,7 +3094,7 @@
           {
             "iconType": "atgm_type_spike_er_x2",
             "name": "spike_nlos_x2",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2.blk",
@@ -3039,10 +3111,44 @@
           {
             "iconType": "atgm_type_spike_er_x4",
             "name": "spike_nlos_x4",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_wo_mitl_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2_wo_mitl.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_wo_mitl_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_4_wo_mitl.blk",
               "emitter": "pylon_m272_004",
               "external": true,
               "separate": true,
@@ -4544,6 +4650,14 @@
       "reqModification": "us_agm_179_ir",
       "modClass": "weapon",
       "tier": 4
+    },
+    "atgm_spike_nlos_mitl": {
+      "deactivationIsAllowed": false,
+      "reqModification": "atgm_spike_nlos",
+      "modClass": "weapon",
+      "tier": 4,
+      "addMrank": 1,
+      "isEnabledByDefaultForAddMrank": false
     },
     "us_apkws": {
       "deactivationIsAllowed": false,

@@ -78,22 +78,6 @@ def setup_ammo_cluster_subtract_amount(cluster_id : int; var num_ammo : int&;
     v.ammo_slots__numAmmo[slot_id] = slot_ammo
   return num_ammo_before - num_ammo
 
-def setup_ammo_get_weapon_stored_count(weapon : Weapon?; remove_loaded_ammo : bool; can_load_to_breech : bool) : int
-  if weapon == null
-    return 0
-  let gun = weapon |> as_gun()
-  if gun != null
-    var count = 0
-    for bullet_set in gun.properties.bulletSets
-      count += max(0, bullet_set.bulletsCount)
-    if remove_loaded_ammo && can_load_to_breech
-      count -= int(gun.currentLoadedAmmoCount)
-    return max(0, count)
-  var count = max(0, int(weapon.countBullets))
-  if remove_loaded_ammo && can_load_to_breech && count > 0
-    count--
-  return count
-
 [with_bundle(v)]
 def setup_ammo_get_weapon_ammo_type(unit : Unit?; stowage_id : int; weapon_idx : int;
                                     v : tuple<
@@ -293,7 +277,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
                                 ammo_per_type_data__state : UInt32List
                                 >) : bool
   let eid = unit.eid
-  let show_full_stowage = is_in_hangar() && !hangar_is_xray_ammo_count_set(eid)
+  let show_full_stowage = ammo_stowage_shows_full_stowage(eid)
   
   let can_load_to_breech = !show_full_stowage
 
@@ -358,7 +342,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
         let weapon = weapon_controller.Weapons |> get_weapon(weapon_idx)
         if weapon != null && !(*weapon) |> isBulletCountKnown()
           continue
-        let current_ammo = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
+        let current_ammo = ammo_stowage_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
         let prev_ammo = v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx]
         let delta_ammo = current_ammo - prev_ammo
         var updated_ammo = current_ammo
@@ -406,7 +390,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
       for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
         let weapon_idx = v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx]
         let weapon = weapon_controller.Weapons |> get_weapon(weapon_idx)
-        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
+        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = ammo_stowage_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
 
   
   for cluster_id in iter_range(v.ammo_clusters__state)

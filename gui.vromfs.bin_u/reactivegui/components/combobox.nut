@@ -5,6 +5,7 @@
 
 
 
+
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst, roundPx
 from "%rGui/components/text.nut" import mkText, mulAlpha, pictureName
@@ -16,6 +17,7 @@ import "%rGui/control/gui_buttons.nut" as JB
 import "%rGui/style/fontsState.nut" as fontsState
 import "%appGlobals/style/cssColors.nut" as cssColors
 from "%rGui/ctrlsState.nut" import showConsoleButtons
+from "%rGui/style/screenState.nut" import safeAreaSizeMenu
 
 let soundWt = require_optional("sound_wt")
 
@@ -133,9 +135,15 @@ function comboBox(p, state = null, onChange = null, size = null) {
   }
 
   let listH = options.len() * (h + dpPx)
-  let popupH = min(listH, sh(100))
   function open(rect) {
     isExpanded.set(true)
+    let safeAreaBorder = safeAreaSizeMenu.get().borders[0]
+    let areaTop = safeAreaBorder + (p?.listTopMargin ?? 0)
+    let areaBottom = sh(100) - safeAreaBorder - (p?.listBottomMargin ?? 0)
+    let spaceAbove = rect.t - areaTop
+    let spaceBelow = max(0, areaBottom - rect.b)
+    let openAbove = listH > spaceBelow && spaceAbove > spaceBelow
+    let popupH = min(listH, openAbove ? spaceAbove : spaceBelow)
     let scrollOffsY = Watched(0)
     function keepInView(idx) {
       let top = idx * (h + dpPx)
@@ -157,7 +165,7 @@ function comboBox(p, state = null, onChange = null, size = null) {
       onClick = close
       hotkeys = [["Esc | {0}".subst(JB.B)]]
       children = {
-        pos = [rect.l, rect.b + popupH <= sh(100) ? rect.b : max(0, rect.t - popupH)]
+        pos = [rect.l, openAbove ? rect.t - popupH : rect.b]
         rendObj = ROBJ_SOLID
         color = cssColors.comboListBgColor
         stopMouse = true

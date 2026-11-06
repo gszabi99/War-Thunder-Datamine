@@ -86,7 +86,6 @@ let shipState = {
   showReloadedSignalSecondRow = Watched(false)
   burningParts = Watched({})
   periscopeCanBeEnabled = Watched(false)
-  magneticFuseSensitivity = Watched(0.0)
   fuseMode = Watched(0)
 }
 

@@ -10,6 +10,8 @@ from "%scripts/matchingRooms/sessionLobbyMembersInfo.nut" import getRoomMemberIn
 from "%scripts/matchingRooms/sessionLobbyState.nut" import getSessionLobbyMaxRespawns, getSessionLobbyCurRoomEdiff, getRoomMembers
 from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
 from "%scripts/unit/unitInfoTexts.nut" import getUnitClassIco
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "%scripts/teams.nut" import g_team
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/contacts/playerStateTypes.nut" import g_player_state
@@ -26,10 +28,11 @@ function getPlayerUnitList(player) {
 
   let roomEdiff = getSessionLobbyCurRoomEdiff()
   let ediff = roomEdiff != -1 ? roomEdiff : getCurrentGameModeEdiff()
+  let mrankDelta = player.isLocal ? null : player.mrankDeltaByUnit?[unit.name] ?? 0
   return [{
     unit = unit.name
     icon = getUnitClassIco(unit)
-    rank = format("%.1f", unit.getBattleRating(ediff))
+    rank = format("%.1f", calcBattleRatingFromRank(getEffectiveMrank(unit, ediff, mrankDelta)))
     isWideIco = unit.unitType.isWideUnitIco
   }]
 }

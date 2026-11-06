@@ -1866,6 +1866,10 @@
         "blk": "gamedata/flightModels/weaponPresets/z_10_cm_502kg.blk"
       },
       {
+        "name": "z_10_cm_502kg_wo_mitl",
+        "blk": "gamedata/flightModels/weaponPresets/z_10_cm_502kg_wo_mitl.blk"
+      },
+      {
         "name": "z_10_cm_ba_11",
         "blk": "gamedata/flightModels/weaponPresets/z_10_ba_11.blk"
       },
@@ -2322,12 +2326,24 @@
           {
             "iconType": "missile_air_to_uni_group_x4",
             "name": "cm_502kg_slot1",
-            "reqModification": "cn_cm_502kg",
+            "reqModification": "cn_cm_502kg_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/ch_cm502kg_4_left.blk",
+              "emitter": "akd_9_launcher_1"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_group_x4",
+            "name": "cm_502kg_wo_mitl_slot1",
+            "reqModification": "cn_cm_502kg",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/ch_cm502kg_4_left_wo_mitl.blk",
               "emitter": "akd_9_launcher_1"
             }
           },
@@ -2423,12 +2439,24 @@
           {
             "iconType": "missile_air_to_uni_group_x4",
             "name": "cm_502kg_slot2",
-            "reqModification": "cn_cm_502kg",
+            "reqModification": "cn_cm_502kg_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/ch_cm502kg_4_left.blk",
+              "emitter": "ty_90_launcher_1"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_group_x4",
+            "name": "cm_502kg_wo_mitl_slot2",
+            "reqModification": "cn_cm_502kg",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/ch_cm502kg_4_left_wo_mitl.blk",
               "emitter": "ty_90_launcher_1"
             }
           }
@@ -2500,12 +2528,24 @@
           {
             "iconType": "missile_air_to_uni_group_x4",
             "name": "cm_502kg_slot3",
-            "reqModification": "cn_cm_502kg",
+            "reqModification": "cn_cm_502kg_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/ch_cm502kg_4_right.blk",
+              "emitter": "ty_90_launcher_2"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_group_x4",
+            "name": "cm_502kg_wo_mitl_slot3",
+            "reqModification": "cn_cm_502kg",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/ch_cm502kg_4_right_wo_mitl.blk",
               "emitter": "ty_90_launcher_2"
             }
           }
@@ -2555,12 +2595,24 @@
           {
             "iconType": "missile_air_to_uni_group_x4",
             "name": "cm_502kg_slot4",
-            "reqModification": "cn_cm_502kg",
+            "reqModification": "cn_cm_502kg_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/ch_cm502kg_4_right.blk",
+              "emitter": "akd_9_launcher_2"
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_group_x4",
+            "name": "cm_502kg_wo_mitl_slot4",
+            "reqModification": "cn_cm_502kg",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/ch_cm502kg_4_right_wo_mitl.blk",
               "emitter": "akd_9_launcher_2"
             }
           },
@@ -3547,9 +3599,17 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "cn_ba_11": {
+    "cn_cm_502kg_mitl": {
       "deactivationIsAllowed": false,
       "reqModification": "cn_cm_502kg",
+      "modClass": "weapon",
+      "tier": 3,
+      "addMrank": 1,
+      "isEnabledByDefaultForAddMrank": false
+    },
+    "cn_ba_11": {
+      "deactivationIsAllowed": false,
+      "reqModification": "cn_cm_502kg_mitl",
       "modClass": "weapon",
       "tier": 4
     },

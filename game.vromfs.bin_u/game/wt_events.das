@@ -74,6 +74,14 @@ struct EventApuAutoSet
 struct EventApuAutoToggle
 {}
 
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdSetMagneticFuseSensitivityPreset
+  presetIdx : int
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdSetTorpedoDiveDepth
+  depth : float
+
 [cpp_event(unicast)]
 struct EventAnimIrq
   irqType : int

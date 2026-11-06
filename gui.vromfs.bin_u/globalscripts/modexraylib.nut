@@ -995,7 +995,8 @@ let hasAutoLoad = @(unitBlk, trigger)
   getAmmoStowageBlockByParam(unitBlk, trigger, "autoLoad") ?? false
 
 function getTankWeaponReloadTime(weaponInfoBlk, status, commonData) {
-  let { getUnitWeaponsList, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode } = commonData
+  let { getUnitWeaponsList, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode,
+    getProp_tankLoaderTimeMult } = commonData
 
   local reloadTimeS = 0
   local topValue = 0.0
@@ -1016,8 +1017,10 @@ function getTankWeaponReloadTime(weaponInfoBlk, status, commonData) {
           }
           else {
             let mainGunReloadTimeMax = getGunReloadTimeMax(mainWeaponInfoBlk)
-            if (mainGunReloadTimeMax)
-              reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
+            if (mainGunReloadTimeMax) {
+              let reloadTimeMult = mainWeaponInfoBlk?.autoLoader ? getProp_tankLoaderTimeMult(commonData) : 1.0
+              reloadTimeS = mainGunReloadTime * reloadTimeMult * thisGunReloadTimeMax / mainGunReloadTimeMax
+            }
           }
           topValue = round_by_value(thisGunReloadTimeMax, 0.1)
         }
@@ -1197,7 +1200,7 @@ let toStr_secTrimmed = @(v) (v % 1) ? format("%.1f", v) : format("%d", v)
 
 
 function getWeaponAmmoReserveReplenishDesc(trigger, commonData, stowageInfo) {
-  let { unitBlk, simUnitType, getUnitWeaponsList } = commonData
+  let { unitBlk, simUnitType, getUnitWeaponsList, getProp_tankLoaderTimeMult, getProp_tankLoaderTimeMultTop } = commonData
   let desc = []
 
   if (simUnitType == S_TANK) {
@@ -1214,9 +1217,16 @@ function getWeaponAmmoReserveReplenishDesc(trigger, commonData, stowageInfo) {
     if (replenishmentDelay)
       desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_delay", ""), colon,
         toStr_secTrimmed(replenishmentDelay), getUnitsSec()) })
-    if (replenishmentTime)
-      desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_time", ""), colon,
-        toStr_secTrimmed(replenishmentTime), getUnitsSec()) })
+    if (replenishmentTime) {
+      
+      let curTime = round_by_value(replenishmentTime * getProp_tankLoaderTimeMult(commonData), 0.1)
+      let topTime = round_by_value(replenishmentTime * getProp_tankLoaderTimeMultTop(commonData), 0.1)
+      let res = { value = "".concat(loc("xray/ammo/first_stage/replenish_time", ""), colon,
+        toStr_secTrimmed(curTime), getUnitsSec()) }
+      if (topTime < curTime)
+        res.topValue <- " ".concat(toStr_secTrimmed(topTime), getUnitsSec())
+      desc.append(res)
+    }
 
     if (stowageInfo.stowageOrder != 1) {
       let unitWeaponsList = getUnitWeaponsList(commonData)
@@ -1229,6 +1239,11 @@ function getWeaponAmmoReserveReplenishDesc(trigger, commonData, stowageInfo) {
 
         let status = getWeaponStatus(weaponInfoBlk?.barrelDP, weaponInfoBlk, commonData)
         local { reloadTimeS, topValue } = getTankWeaponReloadTime(weaponInfoBlk, status, commonData)
+        
+        if (weaponInfoBlk?.autoLoader && !stowageInfo.isAutoLoad && hasBackupManualLoading(ammoStowage)) {
+          topValue = reloadTimeS * getProp_tankLoaderTimeMultTop(commonData)
+          reloadTimeS = reloadTimeS * getProp_tankLoaderTimeMult(commonData)
+        }
         reloadTimeS = round_by_value(reloadTimeS * reloadTimeMult, 0.1)
         let isReloadWhenEmptyUnavailable = stowageOrder <= 0 && hasAutoLoad(unitBlk, trigger)
           && !hasBackupManualLoading(ammoStowage)
@@ -2799,8 +2814,48 @@ function mkFireControlRoomOrBridgeDesc(_partType, params, commonData) {
   return { desc }
 }
 
+function getSensorTypeByPath(sensorBlkPath, sensorTypesCache) {
+  if (sensorBlkPath not in sensorTypesCache)
+    sensorTypesCache[sensorBlkPath] <- blkOptFromPath(sensorBlkPath)?.type ?? ""
+  return sensorTypesCache[sensorBlkPath]
+}
+
+function isEffectsHaveLwsSensor(effectsBlk, sensorTypesCache) {
+  let sensorsBlk = effectsBlk?.sensors
+  if (sensorsBlk == null)
+    return false
+  foreach (sensorBlk in sensorsBlk % "sensor") {
+    let sensorBlkPath = sensorBlk?.blk
+    if (sensorBlkPath != null && getSensorTypeByPath(sensorBlkPath, sensorTypesCache) == "lws")
+      return true
+  }
+  return false
+}
+
+function getRangefinderLocId(commonData, partName) {
+  let { findEnabledModEffectsBlks = @(...) [], unitDataCache = {} } = commonData
+  if ("sensorTypeByPath" not in unitDataCache)
+    unitDataCache.sensorTypeByPath <- {}
+  let sensorTypesCache = unitDataCache.sensorTypeByPath
+  local isRangefinder = false
+  foreach (effectsBlk in findEnabledModEffectsBlks(commonData, "rangefinderDmPart"))
+    if ((effectsBlk % "rangefinderDmPart").contains(partName)) {
+      if (effectsBlk?.rangefinderMounted == true && effectsBlk?.isLaser == true
+        && isEffectsHaveLwsSensor(effectsBlk, sensorTypesCache))
+          return "modification/laser_rangefinder_lws"
+      isRangefinder = true
+    }
+  return isRangefinder ? "armor_class/laser_rangefinder" : null
+}
+
+const FCS_TURRET_PARTS = [
+  { key = "verDriveDm", locId = "armor_class/drive_turret_v" }
+  { key = "horDriveDm", locId = "armor_class/drive_turret_h" }
+  { key = "shootingDmPart", locId = "xray/firing" }
+]
+
 function mkFireControlSystemDesc(partType, params, commonData) {
-  let { getUnitWeaponsList, findAnyModEffectValueBlk, findModEffectValuesString = @(...) [], unitBlk } = commonData
+  let { getUnitWeaponsList, getWeaponNameByBlkPath, findAnyModEffectValueBlk, unitBlk } = commonData
   let partName = params.name
   let desc = []
   let partsList = []
@@ -2817,23 +2872,38 @@ function mkFireControlSystemDesc(partType, params, commonData) {
       }
   }
 
-  foreach (cfg in [
-    { key = "verDriveDm", locId = "armor_class/drive_turret_v" }
-    { key = "horDriveDm", locId = "armor_class/drive_turret_h" }
-    { key = "shootingDmPart", locId = "xray/firing" }
-  ]) {
-    foreach (weapon in unitWeaponsList) {
-      let turretBlk = weapon?.turret
-      if (turretBlk != null && (turretBlk % cfg.key).findindex(@(v) v == partName) != null) {
-        partsList.append(loc(cfg.locId))
-        break
-      }
+  
+  let weaponNames = []
+  let usedKeysByWeapon = {}
+  foreach (weapon in unitWeaponsList) {
+    let turretBlk = weapon?.turret
+    if (turretBlk == null)
+      continue
+    let weaponName = getWeaponNameByBlkPath(weapon?.blk ?? "")
+    if (weaponName == "")
+      continue
+    let usedParts = FCS_TURRET_PARTS.filter(@(cfg) (turretBlk % cfg.key).contains(partName))
+    if (usedParts.len() == 0)
+      continue
+    if (weaponName not in usedKeysByWeapon) {
+      weaponNames.append(weaponName)
+      usedKeysByWeapon[weaponName] <- {}
     }
+    foreach (cfg in usedParts)
+      usedKeysByWeapon[weaponName][cfg.key] <- true
   }
 
-  let rangefinderDmParts = findModEffectValuesString(commonData, "rangefinderDmPart")
-  if (rangefinderDmParts.contains(partName))
-    partsList.append(loc("modification/laser_rangefinder_lws"))
+  foreach (weaponName in weaponNames) {
+    let usedKeys = usedKeysByWeapon[weaponName]
+    partsList.append("".concat(getWeaponLocName(weaponName, commonData), colon))
+    foreach (cfg in FCS_TURRET_PARTS)
+      if (cfg.key in usedKeys)
+        partsList.append("".concat("  ", bullet, loc(cfg.locId)))
+  }
+
+  let rangefinderLocId = getRangefinderLocId(commonData, partName)
+  if (rangefinderLocId != null)
+    partsList.append(loc(rangefinderLocId))
 
   let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision")
   let unitNightVisionBlk = unitBlk?.nightVision

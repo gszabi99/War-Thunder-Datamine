@@ -135,17 +135,24 @@ function findAnyModEffectValueBlk(commonData, effectId) {
   return null
 }
 
-function findModEffectValuesString(commonData, effectId) {
+function findEnabledModEffectsBlks(commonData, effectId = null) {
   let { unitBlk, unitName, isDebugBatchExportProcess } = commonData
   let res = []
+  local modificationsBlk = null
   for (local b = 0; b < (unitBlk?.modifications.blockCount() ?? 0); b++) {
     let modBlk = unitBlk.modifications.getBlock(b)
-    let modEffectsBlk = modBlk?.effects
-    if (!modEffectsBlk)
+    let modName = modBlk.getBlockName()
+    local effectsBlk = modBlk?.effects
+    if (effectsBlk == null) {
+      if (modificationsBlk == null)
+        modificationsBlk = get_modifications_blk()
+      effectsBlk = modificationsBlk?.modifications?[modName]?.effects
+    }
+    if (effectsBlk == null || (effectId != null && (effectsBlk % effectId).len() == 0))
       continue
-    let effects = (modEffectsBlk % effectId)
-    if (effects.len() && (isDebugBatchExportProcess || shopIsModificationEnabled(unitName, modBlk.getBlockName())))
-      res.extend(effects)
+    if (!isDebugBatchExportProcess && !shopIsModificationEnabled(unitName, modName))
+      continue
+    res.append(effectsBlk)
   }
   return res
 }
@@ -259,6 +266,10 @@ let getProp_tankReloadTime = @(commonData)
   getCrewSkillsCur(commonData)?.loader.loading_time_mult.tankLoderReloadingTime ?? 0.0
 let getProp_tankReloadTimeTop = @(commonData)
   getCrewSkillsTop(commonData)?.loader.loading_time_mult.tankLoderReloadingTime ?? 0.0
+let getProp_tankLoaderTimeMult = @(commonData)
+  getCrewSkillsCur(commonData)?.loader.loading_time_mult_raw.tankLoaderLoadingTimeMult ?? 1.0
+let getProp_tankLoaderTimeMultTop = @(commonData)
+  getCrewSkillsTop(commonData)?.loader.loading_time_mult_raw.tankLoaderLoadingTimeMult ?? 1.0
 
 let getProp_shipReloadTimeMainDef = @(commonData, weaponName)
   get_wpcost_blk()?[commonData.unitName][$"shipMainCaliberReloadTime_{weaponName}"] ?? 0.0
@@ -322,7 +333,7 @@ let xrayCommonGetters = {
   getWeaponNameByBlkPath
   getWeaponDescTextByWeaponInfoBlk
   findAnyModEffectValueBlk
-  findModEffectValuesString
+  findEnabledModEffectsBlks
   isModAvailableOrFree
   getUnitFmBlk
   getUnitWeaponsList
@@ -343,6 +354,8 @@ let xrayCommonGetters = {
   getProp_tankMainTurretSpeedPitchTop
   getProp_tankReloadTime
   getProp_tankReloadTimeTop
+  getProp_tankLoaderTimeMult
+  getProp_tankLoaderTimeMultTop
   getProp_shipReloadTimeMainDef
   getProp_shipReloadTimeMainCur
   getProp_shipReloadTimeMainTop

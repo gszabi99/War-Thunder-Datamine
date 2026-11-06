@@ -5,6 +5,7 @@ from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst, px
 from "%rGui/components/text.nut" import mkText
 import "%rGui/style/fontsState.nut" as fontsState
+import "%rGui/components/scrollBox.nut" as scrollBox
 import "%appGlobals/style/cssColors.nut" as cssColors
 
 let soundWt = require_optional("sound_wt")
@@ -57,6 +58,17 @@ function navigationPanel(p, state, onSelect = null) {
     return null
   let innerW = panelW - 2 * blockInterval - dpPx
   let headerW = innerW - 2 * offsetX
+  let contentHeight = Watched(items.len() * itemH)
+  let viewH = Watched(0)
+  let scrollOffsY = Watched(0)
+  let viewKey = {}
+  let navItems = items.map(@(item, idx) navItem(item, idx, state, onSelect))
+  function scrollToSelected(_) {
+    if (viewH.get() < itemH)
+      return
+    let selectedY = state.get() * itemH
+    scrollOffsY.set(clamp(scrollOffsY.get(), selectedY + itemH - viewH.get(), selectedY))
+  }
   return {
     size = [panelW, flex()]
     flow = FLOW_HORIZONTAL
@@ -73,10 +85,46 @@ function navigationPanel(p, state, onSelect = null) {
             children = mkText(headerText, headerFont, cssColors.activeTextColor)
           }
           {
+            key = viewKey
             size = flex()
-            flow = FLOW_VERTICAL
-            clipChildren = true
-            children = items.map(@(item, idx) navItem(item, idx, state, onSelect))
+            behavior = Behaviors.RecalcHandler
+            function onAttach() {
+              scrollToSelected(state.get())
+              state.subscribe(scrollToSelected)
+            }
+            onDetach = @() state.unsubscribe(scrollToSelected)
+            function onRecalcLayout(_initial, elem) {
+              let height = elem.getHeight()
+              if (viewH.get() == height)
+                return
+              viewH.set(height)
+              scrollToSelected(state.get())
+            }
+            children = @() {
+              watch = viewH
+              size = flex()
+              children = viewH.get() <= 0
+                ? {
+                    size = flex()
+                    flow = FLOW_VERTICAL
+                    clipChildren = true
+                    children = navItems
+                }
+                : scrollBox(
+                    {
+                      size = [innerW, viewH.get()]
+                      contentHeight
+                      scrollOffsY
+                    },
+                    function(tableW, _offset, _viewH) {
+                      return {
+                        size = [tableW, SIZE_TO_CONTENT]
+                        flow = FLOW_VERTICAL
+                        children = navItems
+                      }
+                    }
+                  )
+            }
           }
         ]
       }

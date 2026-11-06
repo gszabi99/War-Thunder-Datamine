@@ -23,9 +23,12 @@ def camera_walk_bhv(info : UpdateStageInfoAct&;
                     human_cam_walk_bhv__spreadMult : float;
                     human_cam_walk_bhv__spreadTimePeriod : float;
                     human_cam_walk_bhv__spreadHorzMult : float;
-                    human_cam_walk_bhv__aimMagnitudeMult : float;
                     human_cam_walk_bhv__maxOpticsMult : float;
                     var human_weap__gunOffsAngles : float3&)
+  if !human_net_phys.phys.currentState.isAiming
+    human_weap__gunOffsAngles = float3(0.f)
+    return
+
   var moveState  = uint(human_net_phys.phys.currentState.moveState)
 
   if (uint(human_net_phys.phys.currentState.states) & uint(StateFlag.ST_ON_GROUND)) == 0u
@@ -88,9 +91,6 @@ def camera_walk_bhv(info : UpdateStageInfoAct&;
     moveMagnitude    *= gun__moveOffsetMult
     isIntegratedScope = gun__integratedScope
 
-  if human_net_phys.phys.currentState.isAiming
-    moveMagnitude  *= human_cam_walk_bhv__aimMagnitudeMult
-
   let sineMoves   = float2(sin(info.curTime * TWOPI * movePeriod),
                            sin(info.curTime * TWOPI * movePeriod * human_cam_walk_bhv__offsetYPeriodMult))
 
@@ -135,7 +135,6 @@ def human_camera_walk_bhv_es(info : UpdateStageInfoAct&;
                              human_cam_walk_bhv__spreadMult : float = 0.5f;
                              human_cam_walk_bhv__spreadTimePeriod : float = 0.5f;
                              human_cam_walk_bhv__spreadHorzMult : float = 2.f;
-                             human_cam_walk_bhv__aimMagnitudeMult : float = 0.5f;
                              human_cam_walk_bhv__maxOpticsMult : float = 0.8f;
                              var human_weap__gunOffsAngles : float3&)
   if human_weap__currentGunEid == INVALID_ENTITY_ID
@@ -146,7 +145,7 @@ def human_camera_walk_bhv_es(info : UpdateStageInfoAct&;
                   human_cam_walk_bhv__runMagnitude, human_cam_walk_bhv__sprintMagnitude, human_cam_walk_bhv__movePeriod,
                   human_cam_walk_bhv__runPeriod, human_cam_walk_bhv__sprintPeriod, human_cam_walk_bhv__offsetXMult,
                   human_cam_walk_bhv__offsetYPeriodMult, human_cam_walk_bhv__spreadMult, human_cam_walk_bhv__spreadTimePeriod,
-                  human_cam_walk_bhv__spreadHorzMult, human_cam_walk_bhv__aimMagnitudeMult, human_cam_walk_bhv__maxOpticsMult,
+                  human_cam_walk_bhv__spreadHorzMult, human_cam_walk_bhv__maxOpticsMult,
                   human_weap__gunOffsAngles)
 
 [es(tag=render, REQUIRE=watchedHero, after=(human_camera_walk_bhv_es, human_attached_gun_controls_update_es))]
@@ -167,4 +166,4 @@ def human_camera_walk_bhv_attached_gun_es(info : UpdateStageInfoAct&;
   camera_walk_bhv(info, eid, human_net_phys, human_weap__currentGunEid, human_weap__currentGunModEids,
                   0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f,
                   human_cam_walk_bhv__attachedGunSpreadMult, human_cam_walk_bhv__spreadTimePeriod,
-                  human_cam_walk_bhv__spreadHorzMult, 0.f, 1.f, gunOffsAngles)
+                  human_cam_walk_bhv__spreadHorzMult, 1.f, gunOffsAngles)

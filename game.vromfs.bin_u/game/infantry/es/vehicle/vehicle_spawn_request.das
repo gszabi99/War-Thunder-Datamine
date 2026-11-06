@@ -2,7 +2,7 @@ require ecs
 require ecs.common
 require app
 require math
-require math.base
+require Grid
 require net
 require Mission
 require MPlayer
@@ -11,6 +11,30 @@ require %game.unit.unit_events
 require %appGame.wt_events
 
 let supplyTransportSubTemplates = "+unit_init_params+requested_vehicle+supply_transport"
+
+def private find_transport_spawn_pos(area_name : string; free_radius : float; var spawn_tm : float3x4&) : bool
+  let areaId = get_area_id(area_name)
+  let limits = get_area_limits_xz(areaId)
+  let limitsY = get_area_limits_y(areaId)
+  let center = spawn_tm[3]
+  let step = 2. * free_radius
+  let cellsPerSide = int(length(max(abs(limits.xy - center.xz), abs(limits.zw - center.xz))) / step)
+  var cells : array<int2>
+  for i in range(-cellsPerSide, cellsPerSide + 1)
+    for j in range(-cellsPerSide, cellsPerSide + 1)
+      cells |> push(int2(i, j))
+  sort(cells) <| $(a, b)
+    return a.x * a.x + a.y * a.y < b.x * b.x + b.y * b.y
+  for cell in cells
+    let pos = center + (float(cell.x) * spawn_tm[0] + float(cell.y) * spawn_tm[2]) * step
+    let pos2 = pos.xz
+    if !is_in_area(areaId, pos2)
+      continue
+    let top = float3(pos.x, limitsY.y, pos.z)
+    if !is_entity_found_in_grid(fixed_array(ecs_hash("vehicles"), ecs_hash("humans")), top, float3(0., -1., 0.), limitsY.y - limitsY.x, free_radius, GridEntCheck.BOUNDING)
+      spawn_tm[3] = pos
+      return true
+  return false
 
 [es(tag=server)]
 def vehicle_spawn_request_es(evt : RequestSpawnVehicle;
@@ -36,6 +60,7 @@ def vehicle_spawn_request_es(evt : RequestSpawnVehicle;
   query(nodeEid) <| $ [es] (supply_graph__name : string;
                             @shared_comp supply_terminal__transports : Array;
                             supply_terminal__transportSpawnTm : float3x4;
+                            supply_terminal__transportSpawnArea : string;
                             supply_terminal__transportSpawnFreeRadius : float)
     let areaId = get_area_id(supply_graph__name)
     if areaId < 0 || !is_in_area(areaId, requesterPos)
@@ -54,12 +79,8 @@ def vehicle_spawn_request_es(evt : RequestSpawnVehicle;
     let cost = get_int(offer, "cost") ?? 0
     if empty(templateName) || empty(unitClass)
       return
-    let spawnTm = supply_terminal__transportSpawnTm
-    let spawnFreeRadiusSq = square(supply_terminal__transportSpawnFreeRadius)
-    let spawnPos = spawnTm[3].xz
-    let spawnBlocked = find_query() <| $ [es(REQUIRE_NOT=unit_tag__human)] (transform aka unit_transform : float3x4; unit__ref : UnitRef)
-      return unit__ref.unit != null && !unit__ref.unit.isDelayed && length_sq(unit_transform[3].xz - spawnPos) < spawnFreeRadiusSq
-    if spawnBlocked
+    var spawnTm = supply_terminal__transportSpawnTm
+    if !find_transport_spawn_pos(supply_terminal__transportSpawnArea, supply_terminal__transportSpawnFreeRadius, spawnTm)
       send_net_event(requester_eid, CmdHeroLogEvent(event = "supply", text = "supply/spawn_blocked"))
       return
     if !spend_player_spawn_score(*player, cost)

@@ -25,6 +25,7 @@ let memberDefaults = freeze({
   clanTag = ""
   title = ""
   selAirs = ""
+  mrankDeltaByUnit = null
   state = PLAYER_IN_LOBBY_NOT_READY
 })
 

@@ -1824,7 +1824,9 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   }
 
   function onEventUnitMrankSelectionChanged(p) {
-    this.updateDifficulty(this.getSlotsData(p.unitName))
+    let unitSlots = this.getSlotsData(p.unitName)
+    this.updateDifficulty(unitSlots)
+    this.updateSlotsStatuses(unitSlots)
   }
 
   function onEventUnitWeaponChanged(p) {

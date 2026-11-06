@@ -1640,6 +1640,10 @@
       {
         "name": "aw_159_spike",
         "blk": "gamedata/flightModels/weaponPresets/aw_159_spike.blk"
+      },
+      {
+        "name": "aw_159_spike_wo_mitl",
+        "blk": "gamedata/flightModels/weaponPresets/aw_159_spike_wo_mitl.blk"
       }
     ]
   },
@@ -1836,10 +1840,27 @@
           {
             "iconType": "atgm_type_spike_nlos_x2",
             "name": "spike_nlos_x2",
-            "reqModification": "atgm_spike_nlos",
+            "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
               "trigger": "atgm",
               "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "uk_martlet_lmm_pod_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_nlos_x2",
+            "name": "spike_nlos_wo_mitl_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2_wo_mitl.blk",
               "emitter": "uk_martlet_lmm_pod_001",
               "external": true,
               "separate": true,
@@ -2629,6 +2650,14 @@
       "reqModification": "uk_martlet",
       "modClass": "weapon",
       "tier": 4
+    },
+    "atgm_spike_nlos_mitl": {
+      "deactivationIsAllowed": false,
+      "reqModification": "atgm_spike_nlos",
+      "modClass": "weapon",
+      "tier": 4,
+      "addMrank": 3,
+      "isEnabledByDefaultForAddMrank": false
     }
   },
   "user_skin": {

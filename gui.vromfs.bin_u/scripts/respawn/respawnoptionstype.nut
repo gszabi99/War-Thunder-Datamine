@@ -4,7 +4,7 @@ from "%scripts/unit/unitWeaponryInfo.nut" import getCurrentPreset, bombNbr, hasC
 from "%scripts/options/optionsManager.nut" import isTripleColorSmokeAvailable
 from "%scripts/customization/skins.nut" import getSkinsOption
 from "%scripts/options/optionsExtNames.nut" import USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES, USEROPT_DEPTHCHARGE_ACTIVATION_TIME
-  , USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES, USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE
+  , USEROPT_ROCKET_FUSE_DIST, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES, USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE
   , USEROPT_SKIN, USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_INFANTRY_SKIN
   , USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN
 from "%scripts/customization/bannedSkins.nut" import isSkinBanned
@@ -16,7 +16,6 @@ from "%scripts/customization/infantryCamouflageUtils.nut" import convertLevelNam
 from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
-from "weaponryOptions" import get_option_torpedo_dive_depth_auto
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
@@ -277,16 +276,6 @@ options.addTypes({
     needCheckValueWhenOptionUpdate = true
     isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
       && (getCurrentPreset(p.unit)?.hasRocketDistanceFuse ?? false)
-  }
-  torpedo_dive_depth = {
-    sortIdx = idx++
-    userOption = USEROPT_TORPEDO_DIVE_DEPTH
-    triggerUpdateBitMask = RespawnOptUpdBit.UNIT_ID | RespawnOptUpdBit.UNIT_WEAPONS
-    triggerUpdContentBitMask = RespawnOptUpdBit.UNIT_ID
-    needSetToReqData = true
-    needCheckValueWhenOptionUpdate = true
-    isAvailableInMission = @() !get_option_torpedo_dive_depth_auto()
-    isShowForUnit = @(p) (getCurrentPreset(p.unit)?.torpedo ?? false)
   }
   fuel_amount = {
     sortIdx = idx++

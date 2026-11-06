@@ -529,11 +529,22 @@
       13.19
     ]
   },
+  "human_cam_walk_bhv": {
+    "human_cam_walk_bhv__spreadMult": 0.2,
+    "human_cam_walk_bhv__attachedGunSpreadMult": 0.14,
+    "human_cam_walk_bhv__spreadTimePeriod": 4.0,
+    "human_cam_walk_bhv__spreadHorzMult": 1.0,
+    "human_cam_walk_bhv__moveMagnitude": 0.75,
+    "human_cam_walk_bhv__runMagnitude": 1.0,
+    "human_cam_walk_bhv__runPeriod": 1.22,
+    "human_cam_walk_bhv__maxOpticsMult": 0.0
+  },
   "base_human_weap": {
     "_use": [
       "base_human_weap_inertia",
       "human_melee",
-      "human_weap_breath"
+      "human_weap_breath",
+      "human_cam_walk_bhv"
     ],
     "_tracked": [
       "human_weap__grenadeThrower",

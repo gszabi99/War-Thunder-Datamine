@@ -1,6 +1,6 @@
 import "regexp2" as regexp2
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
-from "%scripts/unit/unitMrankSelectionState.nut" import getUnitSelectedBattleRating
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank, getEffectiveMrankDelta, getUnitSelectedBattleRating
 from "%scripts/events/eventsState.nut" import getEvent, isCustomGameMode
 from "%scripts/events/eventTeamsInfo.nut" import getCountries, getCountriesByTeams, getEventRequiredUnitTypesMask, getEventUnitTypesMask, getRequiredCrafts, getSidesList, getTeamData
   , getTeamName, hasUnitRequirements, isUnitAllowedByTeamData, isUnitMatchesRule, isUnitTypeRequired
@@ -284,6 +284,7 @@ function getBattleRatingParamByPlayerInfo(member, ediff, esUnitTypeFilter = null
   let craftsInfo = member?.crafts_info
   if (craftsInfo == null)
     return null
+  let isLocal = isMyUserId(member.id)
   let units = []
   foreach (unitInfo in craftsInfo) {
     let unitName = unitInfo.name
@@ -291,10 +292,13 @@ function getBattleRatingParamByPlayerInfo(member, ediff, esUnitTypeFilter = null
     if (esUnitTypeFilter != null && esUnitTypeFilter != unit.esUnitType)
       continue
 
+    let mrank = unitInfo?.mrank ?? -1
+    let mrankDelta = isLocal && unit != null ? getEffectiveMrankDelta(unit)
+      : (member?.mrankDeltaByUnit[unitName] ?? 0)
     units.append({
       unitName
-      rating = (unitInfo?.mrank ?? -1) >= 0 ? calcBattleRatingFromRank(unitInfo.mrank)
-        : (unit?.getBattleRating(ediff) ?? 0)
+      rating = mrank >= 0 ? calcBattleRatingFromRank(mrank + mrankDelta)
+        : (unit ? calcBattleRatingFromRank(getEffectiveMrank(unit, ediff, mrankDelta)) : 0)
       name = loc($"{unitName}_shop")
       rankUnused = unitInfo?.rankUnused ?? false
     })

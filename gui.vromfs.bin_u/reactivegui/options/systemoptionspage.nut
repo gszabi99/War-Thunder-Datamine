@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/dagui/units.nut" import cssConst, px
 from "%rGui/components/text.nut" import pictureName
-from "%rGui/components/optionRows.nut" import rowH, rowPitch, headerCells, rowLabel, scrollToRow, mkListXmb,
-  optionRow, changedMarker
+from "%rGui/components/optionRows.nut" import rowH, rowPitch, headerCells,
+  rowLabel, scrollToRow, mkListXmb, optionRow, changedMarker
 from "%appGlobals/options/optionsScreenState.nut" import optionsScreen
 import "%rGui/components/scrollBox.nut" as scrollBox
 import "%rGui/style/fontsState.nut" as fontsState
@@ -23,41 +23,62 @@ let changedTabIdsW = Computed(@() optionsScreen.get().sysopt?.changedTabIds ?? {
 
 function unitTab(tab, idx, tabId, sendAction) {
   let { image = null, text = null, disabled = false } = tab
-  let icon = image == null ? null : { size = iconSize, rendObj = ROBJ_IMAGE,
-    image = Picture($"{pictureName(image)}:{iconSize}:{iconSize}:K"), color = disabled ? cssColors.disabledTextColor : 0xFFFFFFFF }
-  return watchElemState(@(sf) {
-    watch = [curTabW, changedTabIdsW]
-    size = [SIZE_TO_CONTENT, rowH]
-    padding = [0, tabPad]
-    flow = FLOW_HORIZONTAL
-    valign = ALIGN_CENTER
-    gap = 4 * dpPx
-    behavior = disabled ? null : Behaviors.Button
-    onClick = @() sendAction("sysoptTab", { idx })
-    rendObj = ROBJ_SOLID
-    color = curTabW.get() == idx ? cssColors.buttonColor : 0
-    children = [
-      icon
-      text == null ? null
-        : rowLabel(text, disabled ? cssColors.disabledTextColor
-            : (sf & S_HOVER) != 0 ? cssColors.activeTextColor : cssColors.commonTextColor)
-      changedTabIdsW.get()?[tabId] ? changedMarker : null
-    ]
+  return watchElemState(function(sf) {
+    let isSelected = curTabW.get() == idx
+    let isHover = (sf & S_HOVER) != 0
+    let color = disabled ? cssColors.disabledTextColor
+      : isSelected ? cssColors.activeTextColor
+      : isHover ? cssColors.highlightedTextColor
+      : cssColors.commonTextColor
+    return {
+      watch = [curTabW, changedTabIdsW]
+      size = [SIZE_TO_CONTENT, rowH]
+      behavior = disabled ? null : Behaviors.Button
+      onClick = @() sendAction("sysoptTab", { idx })
+      children = [
+        {
+          flow = FLOW_HORIZONTAL
+          vplace = ALIGN_CENTER
+          padding = [0, tabPad]
+          gap = 4 * dpPx
+          children = [
+            image == null ? null : {
+              size = iconSize
+              rendObj = ROBJ_IMAGE
+              image = Picture($"{pictureName(image)}:{iconSize}:{iconSize}:K")
+              color
+            }
+            text == null ? null : rowLabel(text, color)
+          ]
+        }
+        changedTabIdsW.get()?[tabId] ? changedMarker : null
+        !isSelected && !isHover ? null : {
+          size = [flex(), 2 * dpPx]
+          vplace = ALIGN_BOTTOM
+          rendObj = ROBJ_SOLID
+          color = isSelected ? cssColors.headerOptionSelectedColor : cssColors.headerOptionHoverColor
+        }
+      ]
+    }
   })
 }
 
 let sectionHeader = @(section, tableW, sendAction) {
   size = [tableW, rowH]
   margin = [cssConst("blockInterval"), 0, 0, 0]
-  children = headerCells(section.title).append(section.tabs == null ? null : {
-    hplace = ALIGN_RIGHT
-    flow = FLOW_HORIZONTAL
-    children = section.tabs.map(@(tab, idx) unitTab(tab, idx, $"{section.titleId}_{tab.unitTypeTag}", sendAction))
-  })
+  children = headerCells(section.title)
+    .append(section.tabs == null ? null : {
+      hplace = ALIGN_RIGHT
+      flow = FLOW_HORIZONTAL
+      children = section.tabs.map(@(tab, idx)
+        unitTab(tab, idx, $"{section.titleId}_{tab.unitTypeTag}", sendAction)
+      )
+    })
 }
 
-let sectionRows = @(section, tableW, ctx, sendAction) [sectionHeader(section, tableW, sendAction)]
-  .extend(section.rows.map(@(row) optionRow(ctx, row, tableW)))
+let sectionRows = @(section, tableW, ctx, sendAction)
+  [sectionHeader(section, tableW, sendAction)]
+    .extend(section.rows.map(@(row) optionRow(ctx, row, tableW)))
 
 let contentHeightW = Computed(@() sectionsW.get().reduce(@(res, s) res + 1 + s.rows.len(), 0) * rowPitch)
 
@@ -81,7 +102,11 @@ function stickyHeader(offset, tableW, sendAction) {
     children = sectionIdxW.get() == null ? null
       : sectionHeader(sectionsW.get()[sectionIdxW.get()], tableW, sendAction) 
   }
-  return @() { watch = offset, pos = [0, offset.get()], children = header }
+  return @() {
+    watch = offset
+    pos = [0, offset.get()]
+    children = header
+  }
 }
 
 
@@ -117,7 +142,13 @@ function sysoptPage(rowCtx, sendAction, listW, listH) {
       xmbNode
       children = sectionsW.get().reduce(@(res, s) res.extend(sectionRows(s, tableW, ctx, sendAction)), []) 
     }
-    return { size = [tableW, SIZE_TO_CONTENT], children = [rows, stickyHeader(offset, tableW, sendAction)] }
+    return {
+      size = [tableW, SIZE_TO_CONTENT]
+      children = [
+        rows
+        stickyHeader(offset, tableW, sendAction)
+      ]
+    }
   })
   return @() {
     watch = errorTextW

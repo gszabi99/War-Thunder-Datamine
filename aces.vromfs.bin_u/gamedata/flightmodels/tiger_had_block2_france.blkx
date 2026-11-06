@@ -1929,6 +1929,14 @@
         "blk": "gamedata/flightModels/weaponPresets/tiger_had_block2_france_8_spike.blk"
       },
       {
+        "name": "tiger_had_block2_france_4_spike_wo_mitl",
+        "blk": "gamedata/flightModels/weaponPresets/tiger_had_block2_france_4_spike_wo_mitl.blk"
+      },
+      {
+        "name": "tiger_had_block2_france_8_spike_wo_mitl",
+        "blk": "gamedata/flightModels/weaponPresets/tiger_had_block2_france_8_spike_wo_mitl.blk"
+      },
+      {
         "name": "tiger_had_france_stinger",
         "blk": "gamedata/flightModels/weaponPresets/tiger_had_france_stinger.blk"
       },
@@ -2223,7 +2231,7 @@
           {
             "iconType": "atgm_type_spike_x2",
             "name": "spike_x2",
-            "reqModification": "atgm_spike_x2",
+            "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -2236,12 +2244,38 @@
           {
             "iconType": "atgm_type_spike_x4",
             "name": "spike_x4",
-            "reqModification": "atgm_spike_x4",
+            "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/spike_x4.blk",
+              "emitter": "spike_launcher_001",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_x2",
+            "name": "spike_wo_mitl_x2",
+            "reqModification": "atgm_spike_x2",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/spike_x2_wo_mitl.blk",
+              "emitter": "spike_launcher_001",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_x4",
+            "name": "spike_wo_mitl_x4",
+            "reqModification": "atgm_spike_x4",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/spike_x4_wo_mitl.blk",
               "emitter": "spike_launcher_001",
               "dragCx": 0.01
             }
@@ -2291,7 +2325,7 @@
           {
             "iconType": "atgm_type_spike_x2",
             "name": "spike_x2",
-            "reqModification": "atgm_spike_x2",
+            "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
@@ -2304,12 +2338,38 @@
           {
             "iconType": "atgm_type_spike_x4",
             "name": "spike_x4",
-            "reqModification": "atgm_spike_x4",
+            "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/spike_x4.blk",
+              "emitter": "spike_launcher_002",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_x2",
+            "name": "spike_wo_mitl_x2",
+            "reqModification": "atgm_spike_x2",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/spike_x2_wo_mitl.blk",
+              "emitter": "spike_launcher_002",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_x4",
+            "name": "spike_wo_mitl_x4",
+            "reqModification": "atgm_spike_x4",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/spike_x4_wo_mitl.blk",
               "emitter": "spike_launcher_002",
               "dragCx": 0.01
             }
@@ -3233,13 +3293,23 @@
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_AGM_114_16",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 3,
+      "addMrank": 1,
+      "isEnabledByDefaultForAddMrank": false
     },
     "atgm_spike_x4": {
       "deactivationIsAllowed": false,
       "reqModification": "atgm_spike_x2",
       "modClass": "weapon",
       "tier": 4
+    },
+    "atgm_spike_x4_mitl": {
+      "deactivationIsAllowed": false,
+      "reqModification": "atgm_spike_x4",
+      "modClass": "weapon",
+      "tier": 4,
+      "addMrank": 2,
+      "isEnabledByDefaultForAddMrank": false
     },
     "stinger_aam": {
       "prevModification": "aden_new_gun",

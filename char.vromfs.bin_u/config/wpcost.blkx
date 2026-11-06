@@ -686646,7 +686646,7 @@
       "aw_159_default": {
         "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
         "atgmVisibilityType": [
-          "infraRedWithMITL",
+          "infraRed",
           "default"
         ],
         "atgmMaxDistance": 32000.0,
@@ -686673,7 +686673,10 @@
       },
       "aw_159_spike": {
         "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": [
+          "infraRed",
+          "infraRedWithMITL"
+        ],
         "atgmMaxDistance": 32000.0,
         "hasCountermeasures": true,
         "weaponmask": 64,
@@ -686681,6 +686684,18 @@
           "containers_is_spike_nlos_launcher_2_default": 1,
           "equipment_spike_nlos_targeting_pod_aw_159": 1,
           "containers_is_spike_nlos_launcher_2": 1
+        }
+      },
+      "aw_159_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 64,
+        "sum_weapons": {
+          "containers_is_spike_nlos_launcher_2_default": 1,
+          "equipment_spike_nlos_targeting_pod_aw_159": 1,
+          "containers_is_spike_nlos_launcher_2_wo_mitl": 1
         }
       },
       "equipment_spike_nlos_targeting_pod_aw_159": {
@@ -686695,12 +686710,19 @@
         "weaponmask": 64,
         "reqModification": "uk_martlet"
       },
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
       "containers_is_spike_nlos_launcher_2": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_uk_martlet_lmm_laucher_default": {
         "isWeaponForCustomSlot": true,
@@ -686711,7 +686733,7 @@
       },
       "containers_is_spike_nlos_launcher_2_default": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64
       },
@@ -686757,6 +686779,12 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 3
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 3
+              }
             }
           }
         ]
@@ -686769,7 +686797,7 @@
         "reqExp": 30000,
         "value": 44000,
         "costGold": 0,
-        "openCostGold": 490
+        "openCostGold": 530
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -686777,7 +686805,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 280
+        "openCostGold": 300
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -686786,16 +686814,16 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 410
+        "openCostGold": 450
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.079,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 800
+        "openCostGold": 590
       },
       "heli_structure": {
         "tier": 2,
@@ -686804,7 +686832,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 280
+        "openCostGold": 300
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large",
@@ -686820,7 +686848,7 @@
         "reqExp": 30000,
         "value": 44000,
         "costGold": 0,
-        "openCostGold": 490,
+        "openCostGold": 530,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -686829,7 +686857,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 280
+        "openCostGold": 300
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -686838,7 +686866,7 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 410
+        "openCostGold": 450
       },
       "heli_night_vision_system": {
         "tier": 3,
@@ -686848,22 +686876,32 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 410
+        "openCostGold": 450
       },
       "uk_martlet": {
         "tier": 2,
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 280
+        "openCostGold": 300
       },
       "atgm_spike_nlos": {
         "reqModification": "uk_martlet",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 800
+        "openCostGold": 590
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 3,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 48000,
+        "costGold": 0,
+        "openCostGold": 590
       },
       "premExpMul": {
         "tier": 0,
@@ -688276,7 +688314,7 @@
     "needBuyToOpenNextInTier1": 1,
     "needBuyToOpenNextInTier2": 2,
     "needBuyToOpenNextInTier3": 3,
-    "needBuyToOpenNextInTier4": 1,
+    "needBuyToOpenNextInTier4": 2,
     "weapons": {
       "tiger_had_france_default": {
         "image": "!#ui/gameuiskin#pilons.avif",
@@ -688343,6 +688381,26 @@
           "containers_spike_x4": 2
         }
       },
+      "tiger_had_block2_france_4_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x2_wo_mitl": 2
+        }
+      },
+      "tiger_had_block2_france_8_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x4_wo_mitl": 2
+        }
+      },
       "tiger_had_france_stinger": {
         "image": "!#ui/gameuiskin#air_to_air_missile.avif",
         "aamGuidanceType": "default",
@@ -688366,7 +688424,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x4"
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "containers_atas_2x_stinger_atas_tiger": {
         "isWeaponForCustomSlot": true,
@@ -688380,6 +688438,13 @@
         "totalBombRocketMass": 111,
         "weaponDamage": 806,
         "weaponmask": 32
+      },
+      "containers_spike_x2_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x2"
       },
       "containers_m279_hellfire_x2": {
         "isWeaponForCustomSlot": true,
@@ -688401,6 +688466,13 @@
         "weaponmask": 32,
         "reqModification": "tiger_tel12"
       },
+      "containers_spike_x4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
+      },
       "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "default",
@@ -688413,7 +688485,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x2"
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "custom_presets": {
         "slot": [
@@ -688445,6 +688517,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             }
           },
           {
@@ -688463,6 +688541,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             }
           },
           {
@@ -688492,7 +688576,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -688500,7 +688584,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 470
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -688509,22 +688593,22 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 390
+        "openCostGold": 420
       },
       "new_heli_cover": {
         "tier": 4,
         "repairCostCoef": 0.081,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 870
+        "openCostGold": 690
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "heli_structure": {
         "tier": 2,
@@ -688532,7 +688616,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 470
       },
       "air_extinguisher": {
         "prevModification": "heli_structure",
@@ -688541,7 +688625,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 390
+        "openCostGold": 420
       },
       "aden_air_targets": {
         "reqModification": "aden_belt_pack",
@@ -688568,7 +688652,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "aden_new_gun": {
         "prevModification": "aden_belt_pack",
@@ -688577,14 +688661,14 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 470
       },
       "tiger_tel12": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "ah_1_AGM_114_16": {
         "prevModification": "tiger_tel12",
@@ -688592,23 +688676,35 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 470
       },
       "atgm_spike_x2": {
         "reqModification": "ah_1_AGM_114_16",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
         "tier": 3,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 390
+        "openCostGold": 420
       },
       "atgm_spike_x4": {
         "reqModification": "atgm_spike_x2",
         "tier": 4,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 870
+        "openCostGold": 690
+      },
+      "atgm_spike_x4_mitl": {
+        "reqModification": "atgm_spike_x4",
+        "addMrank": 2,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 25000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 690
       },
       "stinger_aam": {
         "prevModification": "aden_new_gun",
@@ -688616,15 +688712,15 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 390
+        "openCostGold": 420
       },
       "heli_atam_mistral": {
         "reqModification": "stinger_aam",
         "tier": 4,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 870
+        "openCostGold": 690
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large",
@@ -688646,7 +688742,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 310,
+        "openCostGold": 330,
         "deactivationIsAllowed": true
       },
       "heli_night_vision_system": {
@@ -688658,7 +688754,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 390
+        "openCostGold": 420
       },
       "premExpMul": {
         "tier": 0,
@@ -692805,6 +692901,17 @@
           "containers_ch_cm502kg_4_right": 2
         }
       },
+      "z_10_cm_502kg_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 25000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_ch_cm502kg_4_left_wo_mitl": 2,
+          "containers_ch_cm502kg_4_right_wo_mitl": 2
+        }
+      },
       "z_10_cm_ba_11": {
         "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
         "atgmVisibilityType": "infraRed",
@@ -692858,7 +692965,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 25000.0,
         "weaponmask": 64,
-        "reqModification": "cn_cm_502kg"
+        "reqModification": "cn_cm_502kg_mitl"
       },
       "containers_hf7d_cn_fs_70": {
         "isWeaponForCustomSlot": true,
@@ -692873,7 +692980,33 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 25000.0,
         "weaponmask": 64,
+        "reqModification": "cn_cm_502kg_mitl"
+      },
+      "containers_ch_cm502kg_4_right_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 25000.0,
+        "weaponmask": 64,
         "reqModification": "cn_cm_502kg"
+      },
+      "containers_akd_9_x4": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 6000.0,
+        "weaponmask": 64
+      },
+      "containers_ty_90_x4": {
+        "isWeaponForCustomSlot": true,
+        "aamGuidanceType": "default",
+        "weaponmask": 128,
+        "reqModification": "cn_ty_90"
+      },
+      "containers_akd_10_x4": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 10000.0,
+        "weaponmask": 64,
+        "reqModification": "cn_akd_10"
       },
       "weapons_gun_qjk_99_12_7_1": {
         "isWeaponForCustomSlot": true,
@@ -692894,18 +693027,6 @@
         "weaponDamage": 719,
         "weaponmask": 32
       },
-      "containers_akd_9_x4": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 6000.0,
-        "weaponmask": 64
-      },
-      "containers_ty_90_x4": {
-        "isWeaponForCustomSlot": true,
-        "aamGuidanceType": "default",
-        "weaponmask": 128,
-        "reqModification": "cn_ty_90"
-      },
       "containers_ba_11_x4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRed",
@@ -692913,12 +693034,12 @@
         "weaponmask": 64,
         "reqModification": "cn_ba_11"
       },
-      "containers_akd_10_x4": {
+      "containers_ch_cm502kg_4_left_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 10000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 25000.0,
         "weaponmask": 64,
-        "reqModification": "cn_akd_10"
+        "reqModification": "cn_cm_502kg"
       },
       "custom_presets": {
         "slot": [
@@ -692935,6 +693056,9 @@
             },
             "cm_502kg_slot1": {
               "containers_ch_cm502kg_4_left": 1
+            },
+            "cm_502kg_wo_mitl_slot1": {
+              "containers_ch_cm502kg_4_left_wo_mitl": 1
             },
             "ba_11_slot1": {
               "containers_ba_11_x4": 1
@@ -692959,6 +693083,9 @@
             },
             "cm_502kg_slot2": {
               "containers_ch_cm502kg_4_left": 1
+            },
+            "cm_502kg_wo_mitl_slot2": {
+              "containers_ch_cm502kg_4_left_wo_mitl": 1
             }
           },
           {
@@ -692977,6 +693104,9 @@
             },
             "cm_502kg_slot3": {
               "containers_ch_cm502kg_4_right": 1
+            },
+            "cm_502kg_wo_mitl_slot3": {
+              "containers_ch_cm502kg_4_right_wo_mitl": 1
             }
           },
           {
@@ -692992,6 +693122,9 @@
             },
             "cm_502kg_slot4": {
               "containers_ch_cm502kg_4_right": 1
+            },
+            "cm_502kg_wo_mitl_slot4": {
+              "containers_ch_cm502kg_4_right_wo_mitl": 1
             },
             "ba_11_slot4": {
               "containers_ba_11_x4": 1
@@ -693010,7 +693143,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290
+        "openCostGold": 310
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -693018,16 +693151,16 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 500
+        "openCostGold": 520
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
         "tier": 3,
         "repairCostCoef": 0.098,
-        "reqExp": 15000,
-        "value": 22000,
+        "reqExp": 13000,
+        "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 400
       },
       "new_heli_cover": {
         "tier": 4,
@@ -693035,24 +693168,24 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 730
+        "openCostGold": 770
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290
+        "openCostGold": 310
       },
       "automatic_air_extinguisher": {
         "prevModification": "new_heli_cover",
         "tier": 3,
         "modClass": "weapon",
         "repairCostCoef": 0.09,
-        "reqExp": 15000,
-        "value": 22000,
+        "reqExp": 13000,
+        "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 400
       },
       "heli_structure": {
         "tier": 2,
@@ -693060,7 +693193,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 500
+        "openCostGold": 520
       },
       "type_23l_armor_targets": {
         "reqModification": "type_23l_belt_pack",
@@ -693086,7 +693219,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290
+        "openCostGold": 310
       },
       "type_23l_new_gun": {
         "reqModification": "type_23l_belt_pack",
@@ -693095,7 +693228,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 500
+        "openCostGold": 520
       },
       "qjk_99_universal": {
         "reqModification": "qjk_99_belt_pack",
@@ -693137,10 +693270,10 @@
       "qjk_99_belt_pack": {
         "prevModification": "type_23l_new_gun",
         "tier": 3,
-        "reqExp": 15000,
-        "value": 22000,
+        "reqExp": 13000,
+        "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 400
       },
       "qjk_99_new_gun": {
         "reqModification": "qjk_99_belt_pack",
@@ -693149,21 +693282,21 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 730
+        "openCostGold": 770
       },
       "cn_hf7d": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290
+        "openCostGold": 310
       },
       "cn_akd_9": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290
+        "openCostGold": 310
       },
       "cn_akd_10": {
         "reqModification": "cn_akd_9",
@@ -693171,23 +693304,33 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 500
+        "openCostGold": 520
       },
       "cn_cm_502kg": {
         "reqModification": "cn_akd_10",
         "tier": 3,
-        "reqExp": 15000,
-        "value": 22000,
+        "reqExp": 13000,
+        "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 400
+      },
+      "cn_cm_502kg_mitl": {
+        "reqModification": "cn_cm_502kg",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 3,
+        "reqExp": 13000,
+        "value": 19000,
+        "costGold": 0,
+        "openCostGold": 400
       },
       "cn_ba_11": {
-        "reqModification": "cn_cm_502kg",
+        "reqModification": "cn_cm_502kg_mitl",
         "tier": 4,
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 730
+        "openCostGold": 770
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -693202,7 +693345,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 290,
+        "openCostGold": 310,
         "deactivationIsAllowed": true
       },
       "heli_night_vision_system": {
@@ -693211,10 +693354,10 @@
         "modClass": "weapon",
         "repairCostCoef": 0.09,
         "image": "!#ui/gameuiskin#thermal_sight.avif",
-        "reqExp": 15000,
-        "value": 22000,
+        "reqExp": 13000,
+        "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 400
       },
       "cn_ty_90": {
         "prevModification": "heli_night_vision_system",
@@ -693222,7 +693365,7 @@
         "reqExp": 25000,
         "value": 37000,
         "costGold": 0,
-        "openCostGold": 730
+        "openCostGold": 770
       },
       "premExpMul": {
         "tier": 0,
@@ -695260,7 +695403,7 @@
     "needBuyToOpenNextInTier1": 1,
     "needBuyToOpenNextInTier2": 2,
     "needBuyToOpenNextInTier3": 3,
-    "needBuyToOpenNextInTier4": 2,
+    "needBuyToOpenNextInTier4": 3,
     "weapons": {
       "a_129_d_default": {
         "image": "!#ui/gameuiskin#pilons.avif",
@@ -695348,6 +695491,26 @@
           "containers_spike_x4": 2
         }
       },
+      "a_129_d_4_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x2_wo_mitl": 2
+        }
+      },
+      "a_129_d_8_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x4_wo_mitl": 2
+        }
+      },
       "a_129_d_stinger": {
         "image": "!#ui/gameuiskin#air_to_air_missile.avif",
         "aamGuidanceType": "default",
@@ -695371,14 +695534,14 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x4"
+        "reqModification": "atgm_spike_x4_mitl"
       },
-      "containers_spike_x2": {
+      "containers_spike_x4_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x2"
+        "reqModification": "atgm_spike_x4"
       },
       "containers_m272_hellfire_b_x4": {
         "isWeaponForCustomSlot": true,
@@ -695415,18 +695578,6 @@
         "weaponmask": 32,
         "reqModification": "tiger_rmp_lc"
       },
-      "containers_atam_2x_mistral_a129": {
-        "isWeaponForCustomSlot": true,
-        "aamGuidanceType": "default",
-        "weaponmask": 128,
-        "reqModification": "heli_atam_mistral"
-      },
-      "weapons_gunfn_m3p": {
-        "isWeaponForCustomSlot": true,
-        "mass_per_sec": 0.736276,
-        "weaponmask": 1024,
-        "reqModification": "tiger_hmp400_lcc"
-      },
       "containers_hl_7_70_heli_stone_hydra_70_m247": {
         "isWeaponForCustomSlot": true,
         "maxRocketTntMass": 1.19,
@@ -695434,11 +695585,37 @@
         "weaponDamage": 739,
         "weaponmask": 32
       },
+      "weapons_gunfn_m3p": {
+        "isWeaponForCustomSlot": true,
+        "mass_per_sec": 0.736276,
+        "weaponmask": 1024,
+        "reqModification": "tiger_hmp400_lcc"
+      },
+      "containers_atam_2x_mistral_a129": {
+        "isWeaponForCustomSlot": true,
+        "aamGuidanceType": "default",
+        "weaponmask": 128,
+        "reqModification": "heli_atam_mistral"
+      },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
         "aamGuidanceType": "default",
         "weaponmask": 128,
         "reqModification": "stinger_aam"
+      },
+      "containers_spike_x2_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
+      },
+      "containers_spike_x2": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "custom_presets": {
         "slot": [
@@ -695461,6 +695638,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             },
             "atas": {
               "containers_atas_2x_stinger": 1
@@ -695533,6 +695716,12 @@
             "spike_x4": {
               "containers_spike_x4": 1
             },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
+            },
             "atas": {
               "containers_atas_2x_stinger": 1
             },
@@ -695550,7 +695739,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "cd_98_main_rotor": {
         "prevModification": "new_compressor_heli",
@@ -695559,7 +695748,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 480
+        "openCostGold": 500
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -695568,17 +695757,17 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "new_heli_cover": {
         "prevModification": "hp_105_jet",
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.086,
-        "reqExp": 20000,
-        "value": 29000,
+        "reqExp": 16000,
+        "value": 24000,
         "costGold": 0,
-        "openCostGold": 680
+        "openCostGold": 570
       },
       "heli_structure": {
         "tier": 3,
@@ -695587,30 +695776,30 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
         "tier": 4,
         "repairCostCoef": 0.091,
-        "reqExp": 20000,
-        "value": 29000,
+        "reqExp": 16000,
+        "value": 24000,
         "costGold": 0,
-        "openCostGold": 680
+        "openCostGold": 570
       },
       "tiger_hmp400_lcc": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "tiger_rmp_lc": {
         "reqModification": "tiger_hmp400_lcc",
@@ -695618,7 +695807,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 480
+        "openCostGold": 500
       },
       "bmg50_belt_pack": {
         "prevModification": "tiger_rmp_lc",
@@ -695626,16 +695815,16 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "bmg50_new_gun": {
         "reqModification": "bmg50_belt_pack",
         "tier": 4,
         "repairCostCoef": 0.019,
-        "reqExp": 20000,
-        "value": 29000,
+        "reqExp": 16000,
+        "value": 24000,
         "costGold": 0,
-        "openCostGold": 680
+        "openCostGold": 570
       },
       "t_160_universal": {
         "reqModification": "t_160_belt_pack",
@@ -695679,7 +695868,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "t_160_new_gun": {
         "reqModification": "t_160_belt_pack",
@@ -695688,7 +695877,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 480
+        "openCostGold": 500
       },
       "50cal_universal": {
         "reqModification": "bmg50_belt_pack",
@@ -695733,22 +695922,22 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "heli_atam_mistral": {
         "reqModification": "stinger_aam",
         "tier": 4,
-        "reqExp": 20000,
-        "value": 29000,
+        "reqExp": 16000,
+        "value": 24000,
         "costGold": 0,
-        "openCostGold": 680
+        "openCostGold": 570
       },
       "a_129_hl_19_70": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "ah_1_AGM_114_16": {
         "prevModification": "a_129_hl_19_70",
@@ -695756,23 +695945,35 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 480
+        "openCostGold": 500
       },
       "atgm_spike_x2": {
         "reqModification": "ah_1_AGM_114_16",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
         "tier": 3,
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "atgm_spike_x4": {
         "reqModification": "atgm_spike_x2",
         "tier": 4,
-        "reqExp": 20000,
-        "value": 29000,
+        "reqExp": 16000,
+        "value": 24000,
         "costGold": 0,
-        "openCostGold": 680
+        "openCostGold": 570
+      },
+      "atgm_spike_x4_mitl": {
+        "reqModification": "atgm_spike_x4",
+        "addMrank": 2,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 16000,
+        "value": 24000,
+        "costGold": 0,
+        "openCostGold": 570
       },
       "countermeasures_launcher_chaff": {
         "reqModification": "countermeasures_belt_pack",
@@ -695787,7 +695988,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 340,
+        "openCostGold": 360,
         "deactivationIsAllowed": true
       },
       "heli_counterMeasures": {
@@ -695797,7 +695998,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 480
+        "openCostGold": 500
       },
       "heli_night_vision_system": {
         "prevModification": "heli_counterMeasures",
@@ -695808,7 +696009,7 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 440
+        "openCostGold": 460
       },
       "premExpMul": {
         "tier": 0,
@@ -695881,13 +696082,13 @@
     "needBuyToOpenNextInTier1": 1,
     "needBuyToOpenNextInTier2": 1,
     "needBuyToOpenNextInTier3": 3,
-    "needBuyToOpenNextInTier4": 1,
+    "needBuyToOpenNextInTier4": 2,
     "weapons": {
       "aw_249_default": {
         "image": "!#ui/gameuiskin#atgm_heli_rocket.avif",
         "totalBombRocketMass": 579,
         "maxRocketTntMass": 1.19,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 8000.0,
         "hasCountermeasures": true,
         "weaponmask": 100,
@@ -695908,12 +696109,26 @@
       },
       "aw_249_8_spike": {
         "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": [
+          "infraRedWithMITL",
+          "infraRed"
+        ],
         "atgmMaxDistance": 8000.0,
         "hasCountermeasures": true,
         "weaponmask": 68,
         "sum_weapons": {
           "containers_spike_x4": 3,
+          "containers_spike_x4_default": 1
+        }
+      },
+      "aw_249_8_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x4_wo_mitl": 3,
           "containers_spike_x4_default": 1
         }
       },
@@ -695931,20 +696146,14 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x4"
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "containers_spike_x2": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x2"
-      },
-      "containers_spike_x4_default": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
-        "atgmMaxDistance": 8000.0,
-        "weaponmask": 64
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "containers_hl_19_70_hydra_70_m247": {
         "isWeaponForCustomSlot": true,
@@ -695955,9 +696164,29 @@
       },
       "containers_spike_x2_default": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64
+      },
+      "containers_spike_x4_default": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64
+      },
+      "containers_spike_x2_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
+      },
+      "containers_spike_x4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -695984,6 +696213,12 @@
             "spike_x4": {
               "containers_spike_x4": 1
             },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
+            },
             "atas": {
               "containers_atas_2x_stinger": 1
             }
@@ -696001,6 +696236,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             }
           },
           {
@@ -696016,6 +696257,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             }
           },
           {
@@ -696049,7 +696296,7 @@
         "reqExp": 20000,
         "value": 30000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "cd_98_main_rotor": {
         "prevModification": "new_compressor_heli",
@@ -696058,7 +696305,7 @@
         "reqExp": 23000,
         "value": 34000,
         "costGold": 0,
-        "openCostGold": 520
+        "openCostGold": 550
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -696067,17 +696314,17 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "new_heli_cover": {
         "prevModification": "hp_105_jet",
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.084,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 740
+        "openCostGold": 600
       },
       "heli_structure": {
         "tier": 3,
@@ -696086,14 +696333,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 20000,
         "value": 30000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -696110,17 +696357,17 @@
         "reqExp": 23000,
         "value": 34000,
         "costGold": 0,
-        "openCostGold": 520,
+        "openCostGold": 550,
         "deactivationIsAllowed": true
       },
       "air_extinguisher": {
         "prevModification": "MAW_system_heli_false_thermal_targets_large_dircm",
         "tier": 4,
         "repairCostCoef": 0.089,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 740
+        "openCostGold": 600
       },
       "t_160_universal": {
         "reqModification": "t_160_belt_pack",
@@ -696164,7 +696411,7 @@
         "reqExp": 20000,
         "value": 30000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "t_160_new_gun": {
         "reqModification": "t_160_belt_pack",
@@ -696173,7 +696420,7 @@
         "reqExp": 23000,
         "value": 34000,
         "costGold": 0,
-        "openCostGold": 520
+        "openCostGold": 550
       },
       "stinger_aam": {
         "prevModification": "t_160_new_gun",
@@ -696181,22 +696428,34 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "atgm_spike_x2": {
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
         "tier": 3,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "atgm_spike_x4": {
         "reqModification": "atgm_spike_x2",
         "tier": 4,
-        "reqExp": 33000,
-        "value": 49000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 740
+        "openCostGold": 600
+      },
+      "atgm_spike_x4_mitl": {
+        "reqModification": "atgm_spike_x4",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 25000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 600
       },
       "heli_night_vision_system": {
         "tier": 3,
@@ -696206,7 +696465,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 340
+        "openCostGold": 360
       },
       "premExpMul": {
         "tier": 0,
@@ -699192,6 +699451,16 @@
           "containers_lmur_x2": 4
         }
       },
+      "mi_28nm_rocket_lmur_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 17000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_lmur_x2_wo_mitl": 4
+        }
+      },
       "mi_28nm_fab250": {
         "image": "!#ui/gameuiskin#bomb_middle_01.avif",
         "totalBombRocketMass": 908,
@@ -699226,7 +699495,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 17000.0,
         "weaponmask": 64,
-        "reqModification": "su_lmur"
+        "reqModification": "su_lmur_mitl"
       },
       "containers_b8m_20": {
         "isWeaponForCustomSlot": true,
@@ -699235,11 +699504,11 @@
         "weaponDamage": 2447,
         "weaponmask": 32
       },
-      "containers_9m39_4x_igla": {
+      "containers_9m120_x4_left_ataka_laser": {
         "isWeaponForCustomSlot": true,
-        "aamGuidanceType": "default",
-        "weaponmask": 128,
-        "reqModification": "mi_35_9M39"
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 6000.0,
+        "weaponmask": 64
       },
       "rocketguns_su_9m127_1": {
         "isWeaponForCustomSlot": true,
@@ -699249,46 +699518,12 @@
         "weaponmask": 64,
         "reqModification": "ka_9K121"
       },
-      "weapons_cannongsh_23l_upk_23_250": {
-        "isWeaponForCustomSlot": true,
-        "mass_per_sec": 9.905,
-        "weaponmask": 1024,
-        "reqModification": "il_28sh_upk23_gunpod"
-      },
-      "bombguns_su_fab_500m_62t": {
-        "isWeaponForCustomSlot": true,
-        "totalBombRocketMass": 508,
-        "totalBombCount": 1,
-        "weaponDamage": 6307,
-        "weaponmask": 8,
-        "reqModification": "mi_24_fab_500"
-      },
-      "containers_9m123_4x_chrizantema": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 10000.0,
-        "weaponmask": 64,
-        "reqModification": "mi_28nm_9M123"
-      },
       "containers_9m120_x4_right_ataka_laser": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "default",
         "atgmMaxDistance": 6000.0,
         "weaponmask": 64,
         "reqModification": "mi_35_9M120_8"
-      },
-      "containers_9m120_x4_left_ataka_laser": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 6000.0,
-        "weaponmask": 64
-      },
-      "containers_lmur_x2": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
-        "atgmMaxDistance": 17000.0,
-        "weaponmask": 64,
-        "reqModification": "su_lmur"
       },
       "bombguns_su_fab_250m_62": {
         "isWeaponForCustomSlot": true,
@@ -699298,6 +699533,54 @@
         "weaponmask": 8,
         "reqModification": "mi_24_fab_250"
       },
+      "bombguns_su_fab_500m_62t": {
+        "isWeaponForCustomSlot": true,
+        "totalBombRocketMass": 508,
+        "totalBombCount": 1,
+        "weaponDamage": 6307,
+        "weaponmask": 8,
+        "reqModification": "mi_24_fab_500"
+      },
+      "containers_9m39_4x_igla": {
+        "isWeaponForCustomSlot": true,
+        "aamGuidanceType": "default",
+        "weaponmask": 128,
+        "reqModification": "mi_35_9M39"
+      },
+      "weapons_cannongsh_23l_upk_23_250": {
+        "isWeaponForCustomSlot": true,
+        "mass_per_sec": 9.905,
+        "weaponmask": 1024,
+        "reqModification": "il_28sh_upk23_gunpod"
+      },
+      "containers_9m123_4x_chrizantema": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 10000.0,
+        "weaponmask": 64,
+        "reqModification": "mi_28nm_9M123"
+      },
+      "containers_lmur_x2_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 17000.0,
+        "weaponmask": 64,
+        "reqModification": "su_lmur"
+      },
+      "containers_9m120_x8_ataka_laser": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 6000.0,
+        "weaponmask": 64,
+        "reqModification": "mi_35_9M120_8"
+      },
+      "containers_lmur_x2": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmMaxDistance": 17000.0,
+        "weaponmask": 64,
+        "reqModification": "su_lmur_mitl"
+      },
       "containers_b13l_s13of": {
         "isWeaponForCustomSlot": true,
         "maxRocketTntMass": 10.63,
@@ -699306,12 +699589,12 @@
         "weaponmask": 32,
         "reqModification": "mi_28_C13"
       },
-      "containers_9m120_x8_ataka_laser": {
+      "containers_lmur_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 6000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 17000.0,
         "weaponmask": 64,
-        "reqModification": "mi_35_9M120_8"
+        "reqModification": "su_lmur"
       },
       "custom_presets": {
         "slot": [
@@ -699344,6 +699627,12 @@
             "lmur_x2": {
               "containers_lmur_x2": 1
             },
+            "lmur_wo_mitl": {
+              "containers_lmur_wo_mitl": 1
+            },
+            "lmur_x2_wo_mitl": {
+              "containers_lmur_x2_wo_mitl": 1
+            },
             "fab250": {
               "bombguns_su_fab_250m_62": 1
             },
@@ -699361,6 +699650,12 @@
             },
             "lmur_x2": {
               "containers_lmur_x2": 1
+            },
+            "lmur_wo_mitl": {
+              "containers_lmur_wo_mitl": 1
+            },
+            "lmur_x2_wo_mitl": {
+              "containers_lmur_x2_wo_mitl": 1
             },
             "c8ko": {
               "containers_b8m_20": 1
@@ -699388,6 +699683,12 @@
             },
             "lmur_x2": {
               "containers_lmur_x2": 1
+            },
+            "lmur_wo_mitl": {
+              "containers_lmur_wo_mitl": 1
+            },
+            "lmur_x2_wo_mitl": {
+              "containers_lmur_x2_wo_mitl": 1
             },
             "c8ko": {
               "containers_b8m_20": 1
@@ -699439,6 +699740,12 @@
             },
             "lmur_x2": {
               "containers_lmur_x2": 1
+            },
+            "lmur_wo_mitl": {
+              "containers_lmur_wo_mitl": 1
+            },
+            "lmur_x2_wo_mitl": {
+              "containers_lmur_x2_wo_mitl": 1
             }
           }
         ]
@@ -699451,7 +699758,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "cd_98_main_rotor": {
         "prevModification": "new_compressor_heli",
@@ -699460,7 +699767,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -699469,22 +699776,22 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "new_heli_cover": {
         "tier": 4,
         "repairCostCoef": 0.084,
-        "reqExp": 25000,
-        "value": 37000,
+        "reqExp": 20000,
+        "value": 29000,
         "costGold": 0,
-        "openCostGold": 810
+        "openCostGold": 680
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "heli_structure": {
         "tier": 2,
@@ -699492,7 +699799,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "automatic_air_extinguisher": {
         "prevModification": "heli_structure",
@@ -699501,7 +699808,7 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "2A42_ground_targets": {
         "reqModification": "2A42_belt_pack",
@@ -699535,7 +699842,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "2A42_new_gun": {
         "reqModification": "2A42_belt_pack",
@@ -699544,7 +699851,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "il_28sh_upk23_gunpod": {
         "prevModification": "2A42_new_gun",
@@ -699552,15 +699859,15 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "ns23_belt_pack": {
         "reqModification": "il_28sh_upk23_gunpod",
         "tier": 4,
-        "reqExp": 25000,
-        "value": 37000,
+        "reqExp": 20000,
+        "value": 29000,
         "costGold": 0,
-        "openCostGold": 810
+        "openCostGold": 680
       },
       "ns23_armor_targets": {
         "reqModification": "ns23_belt_pack",
@@ -699595,7 +699902,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "mi_24_fab_250": {
         "prevModification": "mi_28_C13",
@@ -699603,7 +699910,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "mi_24_fab_500": {
         "reqModification": "mi_24_fab_250",
@@ -699611,14 +699918,14 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "mi_35_9M120_8": {
         "tier": 1,
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "mi_28nm_9M123": {
         "reqModification": "mi_35_9M120_8",
@@ -699626,7 +699933,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 450
+        "openCostGold": 480
       },
       "ka_9K121": {
         "reqModification": "mi_28nm_9M123",
@@ -699634,15 +699941,25 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "su_lmur": {
         "reqModification": "ka_9K121",
         "tier": 4,
-        "reqExp": 25000,
-        "value": 37000,
+        "reqExp": 20000,
+        "value": 29000,
         "costGold": 0,
-        "openCostGold": 810
+        "openCostGold": 680
+      },
+      "su_lmur_mitl": {
+        "reqModification": "su_lmur",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 20000,
+        "value": 29000,
+        "costGold": 0,
+        "openCostGold": 680
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -699657,7 +699974,7 @@
         "reqExp": 10000,
         "value": 15000,
         "costGold": 0,
-        "openCostGold": 320,
+        "openCostGold": 340,
         "deactivationIsAllowed": true
       },
       "heli_night_vision_system": {
@@ -699669,15 +699986,15 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 440
       },
       "mi_35_9M39": {
         "prevModification": "heli_night_vision_system",
         "tier": 4,
-        "reqExp": 25000,
-        "value": 37000,
+        "reqExp": 20000,
+        "value": 29000,
         "costGold": 0,
-        "openCostGold": 810
+        "openCostGold": 680
       },
       "premExpMul": {
         "tier": 0,
@@ -721719,6 +722036,17 @@
           "containers_is_spike_nlos_launcher_4": 3
         }
       },
+      "ah_64e_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "equipment_spike_nlos_targeting_pod": 1,
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 3
+        }
+      },
       "equipment_spike_nlos_targeting_pod": {
         "isWeaponForCustomSlot": true,
         "weaponmask": 0
@@ -721750,12 +722078,26 @@
         "weaponmask": 64,
         "reqModification": "us_agm_179"
       },
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
+      "containers_lau_131aa_olive_us_apkws_m282": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 11000.0,
+        "weaponmask": 64,
+        "reqModification": "us_apkws"
+      },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_lau_131aa_olive_us_apkws_m151": {
         "isWeaponForCustomSlot": true,
@@ -721764,12 +722106,12 @@
         "weaponmask": 64,
         "reqModification": "us_apkws"
       },
-      "containers_lau_131aa_olive_us_apkws_m282": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 11000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "us_apkws"
+        "reqModification": "atgm_spike_nlos"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -721782,7 +722124,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
@@ -721864,6 +722206,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
             }
           },
           {
@@ -721897,6 +722251,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
@@ -721937,6 +722303,18 @@
                 "spike_nlos_targeting_pod": 1
               }
             },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -721956,7 +722334,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -721964,7 +722342,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -721973,16 +722351,16 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.084,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
       },
       "heli_structure": {
         "tier": 2,
@@ -721991,7 +722369,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -722007,7 +722385,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370,
+        "openCostGold": 390,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -722016,7 +722394,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -722025,7 +722403,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "aden_new_gun": {
         "tier": 1,
@@ -722033,7 +722411,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_night_vision_system": {
         "prevModification": "aden_new_gun",
@@ -722044,14 +722422,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "ah_1_AGM_114_16": {
         "tier": 1,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "us_agm_179": {
         "reqModification": "ah_1_AGM_114_16",
@@ -722059,7 +722437,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "us_agm_179_ir": {
         "reqModification": "us_agm_179",
@@ -722067,22 +722445,32 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "atgm_spike_nlos": {
         "reqModification": "us_agm_179_ir",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 49000,
+        "costGold": 0,
+        "openCostGold": 870
       },
       "us_apkws": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "stinger_aam": {
         "prevModification": "us_apkws",
@@ -722090,7 +722478,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "premExpMul": {
         "tier": 0,
@@ -722258,6 +722646,17 @@
           "containers_is_spike_nlos_launcher_4": 3
         }
       },
+      "ah_64e_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "equipment_spike_nlos_targeting_pod": 1,
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 3
+        }
+      },
       "equipment_spike_nlos_targeting_pod": {
         "isWeaponForCustomSlot": true,
         "weaponmask": 0
@@ -722289,12 +722688,26 @@
         "weaponmask": 64,
         "reqModification": "us_agm_179"
       },
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
+      "containers_lau_131aa_olive_us_apkws_m282": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 11000.0,
+        "weaponmask": 64,
+        "reqModification": "us_apkws"
+      },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_lau_131aa_olive_us_apkws_m151": {
         "isWeaponForCustomSlot": true,
@@ -722303,12 +722716,12 @@
         "weaponmask": 64,
         "reqModification": "us_apkws"
       },
-      "containers_lau_131aa_olive_us_apkws_m282": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 11000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "us_apkws"
+        "reqModification": "atgm_spike_nlos"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -722321,7 +722734,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
@@ -722403,6 +722816,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
             }
           },
           {
@@ -722436,6 +722861,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
@@ -722476,6 +722913,18 @@
                 "spike_nlos_targeting_pod": 1
               }
             },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -722495,7 +722944,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -722503,7 +722952,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -722512,16 +722961,16 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.084,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
       },
       "heli_structure": {
         "tier": 2,
@@ -722530,7 +722979,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -722546,7 +722995,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370,
+        "openCostGold": 390,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -722555,7 +723004,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -722564,7 +723013,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "aden_new_gun": {
         "tier": 1,
@@ -722572,7 +723021,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_night_vision_system": {
         "prevModification": "aden_new_gun",
@@ -722583,14 +723032,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "ah_1_AGM_114_16": {
         "tier": 1,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "us_agm_179": {
         "reqModification": "ah_1_AGM_114_16",
@@ -722598,7 +723047,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "us_agm_179_ir": {
         "reqModification": "us_agm_179",
@@ -722606,22 +723055,32 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "atgm_spike_nlos": {
         "reqModification": "us_agm_179_ir",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 49000,
+        "costGold": 0,
+        "openCostGold": 870
       },
       "us_apkws": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "stinger_aam": {
         "prevModification": "us_apkws",
@@ -722629,7 +723088,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "premExpMul": {
         "tier": 0,
@@ -722797,6 +723256,17 @@
           "containers_is_spike_nlos_launcher_4": 3
         }
       },
+      "ah_64e_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "equipment_spike_nlos_targeting_pod": 1,
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 3
+        }
+      },
       "equipment_spike_nlos_targeting_pod": {
         "isWeaponForCustomSlot": true,
         "weaponmask": 0
@@ -722828,12 +723298,26 @@
         "weaponmask": 64,
         "reqModification": "us_agm_179"
       },
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
+      "containers_lau_131aa_olive_us_apkws_m282": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 11000.0,
+        "weaponmask": 64,
+        "reqModification": "us_apkws"
+      },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_lau_131aa_olive_us_apkws_m151": {
         "isWeaponForCustomSlot": true,
@@ -722842,12 +723326,12 @@
         "weaponmask": 64,
         "reqModification": "us_apkws"
       },
-      "containers_lau_131aa_olive_us_apkws_m282": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 11000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "us_apkws"
+        "reqModification": "atgm_spike_nlos"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -722860,7 +723344,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
@@ -722942,6 +723426,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
             }
           },
           {
@@ -722975,6 +723471,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
@@ -723015,6 +723523,18 @@
                 "spike_nlos_targeting_pod": 1
               }
             },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -723034,7 +723554,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -723042,7 +723562,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -723051,16 +723571,16 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.084,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
       },
       "heli_structure": {
         "tier": 2,
@@ -723069,7 +723589,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -723085,7 +723605,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370,
+        "openCostGold": 390,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -723094,7 +723614,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -723103,7 +723623,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "aden_new_gun": {
         "tier": 1,
@@ -723111,7 +723631,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_night_vision_system": {
         "prevModification": "aden_new_gun",
@@ -723122,14 +723642,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "ah_1_AGM_114_16": {
         "tier": 1,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "us_agm_179": {
         "reqModification": "ah_1_AGM_114_16",
@@ -723137,7 +723657,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "us_agm_179_ir": {
         "reqModification": "us_agm_179",
@@ -723145,22 +723665,32 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "atgm_spike_nlos": {
         "reqModification": "us_agm_179_ir",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 49000,
+        "costGold": 0,
+        "openCostGold": 870
       },
       "us_apkws": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "stinger_aam": {
         "prevModification": "us_apkws",
@@ -723168,7 +723698,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "premExpMul": {
         "tier": 0,
@@ -723346,6 +723876,17 @@
           "containers_is_spike_nlos_launcher_4": 3
         }
       },
+      "ah_64e_china_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "equipment_spike_nlos_targeting_pod": 1,
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 3
+        }
+      },
       "containers_m261_hydra_70_m247": {
         "isWeaponForCustomSlot": true,
         "maxRocketTntMass": 1.19,
@@ -723360,19 +723901,19 @@
         "weaponmask": 64,
         "reqModification": "us_apkws"
       },
-      "containers_m272_hellfire_x4": {
+      "containers_lau_131aa_olive_us_apkws_m151": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "default",
-        "atgmMaxDistance": 8000.0,
+        "atgmMaxDistance": 11000.0,
         "weaponmask": 64,
-        "reqModification": "ah_1_AGM_114_16"
+        "reqModification": "us_apkws"
       },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "equipment_spike_nlos_targeting_pod": {
         "isWeaponForCustomSlot": true,
@@ -723398,6 +723939,19 @@
         "weaponmask": 64,
         "reqModification": "us_agm_179"
       },
+      "containers_atas_2x_stinger": {
+        "isWeaponForCustomSlot": true,
+        "aamGuidanceType": "default",
+        "weaponmask": 128,
+        "reqModification": "stinger_aam"
+      },
+      "containers_is_spike_nlos_launcher_2": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos_mitl"
+      },
       "containers_m272_agm_179_ir_x4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRed",
@@ -723416,12 +723970,12 @@
         "weaponmask": 128,
         "reqModification": "stinger_aam"
       },
-      "containers_lau_131aa_olive_us_apkws_m151": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 11000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "us_apkws"
+        "reqModification": "atgm_spike_nlos"
       },
       "containers_atas_2x_stinger_right": {
         "isWeaponForCustomSlot": true,
@@ -723429,18 +723983,19 @@
         "weaponmask": 128,
         "reqModification": "stinger_aam"
       },
-      "containers_is_spike_nlos_launcher_2": {
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
         "reqModification": "atgm_spike_nlos"
       },
-      "containers_atas_2x_stinger": {
+      "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
-        "aamGuidanceType": "default",
-        "weaponmask": 128,
-        "reqModification": "stinger_aam"
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "ah_1_AGM_114_16"
       },
       "custom_presets": {
         "slot": [
@@ -723512,13 +724067,25 @@
             "spike_nlos_x2": {
               "containers_is_spike_nlos_launcher_2": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
               }
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
               }
             }
           },
@@ -723548,13 +724115,25 @@
             "spike_nlos_x2": {
               "containers_is_spike_nlos_launcher_2": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
               }
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
               }
             }
           },
@@ -723584,13 +724163,25 @@
             "spike_nlos_x2": {
               "containers_is_spike_nlos_launcher_2": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
               }
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
               "DependentWeaponPreset": {
-                "spike_nlos_targeting_pod": 1
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 2
               }
             },
             "aim92": {
@@ -723624,7 +724215,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -723632,7 +724223,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -723641,16 +724232,16 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.074,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
       },
       "heli_structure": {
         "tier": 2,
@@ -723659,7 +724250,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -723674,7 +724265,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_flak_jacket": {
         "prevModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -723682,7 +724273,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -723691,7 +724282,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "aden_new_gun": {
         "tier": 1,
@@ -723699,7 +724290,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_night_vision_system": {
         "prevModification": "aden_new_gun",
@@ -723710,14 +724301,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "ah_1_AGM_114_16": {
         "tier": 1,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "us_agm_179": {
         "reqModification": "ah_1_AGM_114_16",
@@ -723725,7 +724316,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "us_agm_179_ir": {
         "reqModification": "us_agm_179",
@@ -723733,22 +724324,32 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "atgm_spike_nlos": {
         "reqModification": "us_agm_179_ir",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 49000,
+        "costGold": 0,
+        "openCostGold": 870
       },
       "us_apkws": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "stinger_aam": {
         "prevModification": "us_apkws",
@@ -723756,7 +724357,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "premExpMul": {
         "tier": 0,
@@ -723924,6 +724525,17 @@
           "containers_is_spike_nlos_launcher_4": 3
         }
       },
+      "ah_64e_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "equipment_spike_nlos_targeting_pod": 1,
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 3
+        }
+      },
       "equipment_spike_nlos_targeting_pod": {
         "isWeaponForCustomSlot": true,
         "weaponmask": 0
@@ -723955,12 +724567,26 @@
         "weaponmask": 64,
         "reqModification": "us_agm_179"
       },
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
+      "containers_lau_131aa_olive_us_apkws_m282": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 11000.0,
+        "weaponmask": 64,
+        "reqModification": "us_apkws"
+      },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_lau_131aa_olive_us_apkws_m151": {
         "isWeaponForCustomSlot": true,
@@ -723969,12 +724595,12 @@
         "weaponmask": 64,
         "reqModification": "us_apkws"
       },
-      "containers_lau_131aa_olive_us_apkws_m282": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 11000.0,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "us_apkws"
+        "reqModification": "atgm_spike_nlos"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -723987,7 +724613,7 @@
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "containers_m272_hellfire_x4": {
         "isWeaponForCustomSlot": true,
@@ -724069,6 +724695,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
             }
           },
           {
@@ -724102,6 +724740,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 1
               }
@@ -724142,6 +724792,18 @@
                 "spike_nlos_targeting_pod": 1
               }
             },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 1
+              }
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -724161,7 +724823,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -724169,7 +724831,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -724178,16 +724840,16 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "new_heli_cover": {
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.084,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
       },
       "heli_structure": {
         "tier": 2,
@@ -724196,7 +724858,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large_dircm",
@@ -724212,7 +724874,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370,
+        "openCostGold": 390,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -724221,7 +724883,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "air_extinguisher": {
         "prevModification": "heli_flak_jacket",
@@ -724230,7 +724892,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "aden_new_gun": {
         "tier": 1,
@@ -724238,7 +724900,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "heli_night_vision_system": {
         "prevModification": "aden_new_gun",
@@ -724249,14 +724911,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "ah_1_AGM_114_16": {
         "tier": 1,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "us_agm_179": {
         "reqModification": "ah_1_AGM_114_16",
@@ -724264,7 +724926,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "us_agm_179_ir": {
         "reqModification": "us_agm_179",
@@ -724272,22 +724934,32 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "atgm_spike_nlos": {
         "reqModification": "us_agm_179_ir",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 49000,
         "costGold": 0,
-        "openCostGold": 1200
+        "openCostGold": 870
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 49000,
+        "costGold": 0,
+        "openCostGold": 870
       },
       "us_apkws": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "stinger_aam": {
         "prevModification": "us_apkws",
@@ -724295,7 +724967,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 390
       },
       "premExpMul": {
         "tier": 0,
@@ -724786,6 +725458,17 @@
           "equipment_spike_nlos_saraph_targeting_pod": 1
         }
       },
+      "ah_64d_i_saraph_spike_nlos_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_is_spike_nlos_launcher_4_wo_mitl": 4,
+          "equipment_spike_nlos_saraph_targeting_pod": 1
+        }
+      },
       "ah_64d_i_saraph_aim92": {
         "image": "!#ui/gameuiskin#air_to_air_missile.avif",
         "aamGuidanceType": "default",
@@ -724813,6 +725496,13 @@
         "weaponmask": 128,
         "reqModification": "stinger_aam"
       },
+      "containers_m279_hellfire_x2": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "default",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "ah_1_AGM_114_8"
+      },
       "containers_atas_2x_stinger_right": {
         "isWeaponForCustomSlot": true,
         "aamGuidanceType": "default",
@@ -724825,16 +725515,9 @@
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64
       },
-      "containers_m279_hellfire_x2": {
+      "containers_is_spike_nlos_launcher_2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
-        "atgmMaxDistance": 8000.0,
-        "weaponmask": 64,
-        "reqModification": "ah_1_AGM_114_8"
-      },
-      "containers_is_spike_nlos_launcher_2": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
         "reqModification": "atgm_spike_nlos"
@@ -724846,12 +725529,26 @@
         "weaponDamage": 2007,
         "weaponmask": 32
       },
+      "containers_is_spike_nlos_launcher_4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos"
+      },
+      "containers_is_spike_nlos_launcher_2": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_nlos_mitl"
+      },
       "containers_is_spike_nlos_launcher_4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 32000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_nlos"
+        "reqModification": "atgm_spike_nlos_mitl"
       },
       "custom_presets": {
         "slot": [
@@ -724883,6 +725580,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 6
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
             }
           },
           {
@@ -724904,6 +725613,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 6
               }
@@ -724931,6 +725652,18 @@
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 6
               }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
             }
           },
           {
@@ -724952,6 +725685,18 @@
             },
             "spike_nlos_x4": {
               "containers_is_spike_nlos_launcher_4": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x2": {
+              "containers_is_spike_nlos_launcher_2_wo_mitl": 1,
+              "DependentWeaponPreset": {
+                "spike_nlos_targeting_pod": 6
+              }
+            },
+            "spike_nlos_wo_mitl_x4": {
+              "containers_is_spike_nlos_launcher_4_wo_mitl": 1,
               "DependentWeaponPreset": {
                 "spike_nlos_targeting_pod": 6
               }
@@ -724981,7 +725726,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 250
+        "openCostGold": 270
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -724989,7 +725734,7 @@
         "reqExp": 34000,
         "value": 50000,
         "costGold": 0,
-        "openCostGold": 710
+        "openCostGold": 760
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -724998,22 +725743,22 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "new_heli_cover": {
         "tier": 4,
         "repairCostCoef": 0.074,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 1000
+        "openCostGold": 740
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 250
+        "openCostGold": 270
       },
       "heli_structure": {
         "tier": 2,
@@ -725021,7 +725766,7 @@
         "reqExp": 34000,
         "value": 50000,
         "costGold": 0,
-        "openCostGold": 710
+        "openCostGold": 760
       },
       "air_extinguisher": {
         "prevModification": "heli_structure",
@@ -725030,7 +725775,7 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "aden_new_gun": {
         "tier": 1,
@@ -725038,14 +725783,14 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 250
+        "openCostGold": 270
       },
       "ah_1_AGM_114_8": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 250
+        "openCostGold": 270
       },
       "ah_1_AGM_114_16": {
         "reqModification": "ah_1_AGM_114_8",
@@ -725053,15 +725798,25 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "atgm_spike_nlos": {
         "reqModification": "ah_1_AGM_114_16",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 1000
+        "openCostGold": 740
+      },
+      "atgm_spike_nlos_mitl": {
+        "reqModification": "atgm_spike_nlos",
+        "addMrank": 2,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 48000,
+        "costGold": 0,
+        "openCostGold": 740
       },
       "countermeasures_launcher_chaff": {
         "reqModification": "countermeasures_belt_pack",
@@ -725075,7 +725830,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 250
+        "openCostGold": 270
       },
       "heli_night_vision_system": {
         "prevModification": "countermeasures_belt_pack",
@@ -725086,14 +725841,14 @@
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "stinger_aam": {
         "tier": 3,
         "reqExp": 15000,
         "value": 22000,
         "costGold": 0,
-        "openCostGold": 310
+        "openCostGold": 330
       },
       "premExpMul": {
         "tier": 0,
@@ -726399,19 +727154,38 @@
           "containers_spike_x4": 4
         }
       },
+      "ah_60_iaf_8_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x2_wo_mitl": 4
+        }
+      },
+      "ah_60_iaf_16_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "hasCountermeasures": true,
+        "weaponmask": 68,
+        "sum_weapons": {
+          "containers_spike_x4_wo_mitl": 4
+        }
+      },
       "containers_spike_x4": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x4"
+        "reqModification": "atgm_spike_x4_mitl"
       },
-      "containers_spike_x2": {
+      "containers_m279_hellfire_x2_default": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "default",
         "atgmMaxDistance": 8000.0,
-        "weaponmask": 64,
-        "reqModification": "atgm_spike_x2"
+        "weaponmask": 64
       },
       "containers_lau_131aa_heli_desert_il_gatr": {
         "isWeaponForCustomSlot": true,
@@ -726420,12 +727194,12 @@
         "weaponmask": 64,
         "reqModification": "il_gatr"
       },
-      "containers_lau_131a_desert_hydra_70_m247": {
+      "containers_spike_x2_wo_mitl": {
         "isWeaponForCustomSlot": true,
-        "maxRocketTntMass": 1.19,
-        "totalBombRocketMass": 71,
-        "weaponDamage": 739,
-        "weaponmask": 32
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 32000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
       },
       "containers_atas_2x_stinger": {
         "isWeaponForCustomSlot": true,
@@ -726447,6 +727221,13 @@
         "weaponmask": 64,
         "reqModification": "ah_1_AGM_114_8"
       },
+      "containers_spike_x4_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
+      },
       "containers_m261_hydra_70_m247": {
         "isWeaponForCustomSlot": true,
         "maxRocketTntMass": 1.19,
@@ -726454,11 +727235,19 @@
         "weaponDamage": 2007,
         "weaponmask": 32
       },
-      "containers_m279_hellfire_x2_default": {
+      "containers_spike_x2": {
         "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "default",
+        "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
-        "weaponmask": 64
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4_mitl"
+      },
+      "containers_lau_131a_desert_hydra_70_m247": {
+        "isWeaponForCustomSlot": true,
+        "maxRocketTntMass": 1.19,
+        "totalBombRocketMass": 71,
+        "weaponDamage": 739,
+        "weaponmask": 32
       },
       "custom_presets": {
         "slot": [
@@ -726484,6 +727273,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             },
             "aim92": {
               "containers_atas_2x_stinger": 1
@@ -726512,6 +727307,12 @@
             "spike_x4": {
               "containers_spike_x4": 1
             },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -726538,6 +727339,12 @@
             },
             "spike_x4": {
               "containers_spike_x4": 1
+            },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
             },
             "aim92": {
               "containers_atas_2x_stinger": 1
@@ -726566,6 +727373,12 @@
             "spike_x4": {
               "containers_spike_x4": 1
             },
+            "spike_wo_mitl_x2": {
+              "containers_spike_x2_wo_mitl": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_wo_mitl": 1
+            },
             "aim92": {
               "containers_atas_2x_stinger": 1
             }
@@ -726580,7 +727393,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "cd_98_main_rotor": {
         "tier": 2,
@@ -726588,7 +727401,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 400
       },
       "hp_105_jet": {
         "prevModification": "cd_98_main_rotor",
@@ -726597,22 +727410,22 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "new_heli_cover": {
         "tier": 4,
         "repairCostCoef": 0.083,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 1300
+        "openCostGold": 930
       },
       "heli_flak_jacket": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "heli_structure": {
         "tier": 2,
@@ -726620,7 +727433,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 400
       },
       "air_extinguisher": {
         "prevModification": "heli_structure",
@@ -726629,7 +727442,7 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "t_160_universal": {
         "reqModification": "t_160_belt_pack",
@@ -726673,7 +727486,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "t_160_new_gun": {
         "reqModification": "t_160_belt_pack",
@@ -726682,14 +727495,14 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "ah_1_AGM_114_8": {
         "tier": 1,
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 320
+        "openCostGold": 340
       },
       "ah_1_AGM_114_16": {
         "reqModification": "ah_1_AGM_114_8",
@@ -726697,30 +727510,42 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 400
       },
       "atgm_spike_x2": {
         "reqModification": "ah_1_AGM_114_16",
+        "addMrank": 1,
+        "isEnabledByDefaultForAddMrank": false,
         "tier": 3,
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "atgm_spike_x4": {
         "reqModification": "atgm_spike_x2",
         "tier": 4,
-        "reqExp": 49000,
-        "value": 72000,
+        "reqExp": 33000,
+        "value": 48000,
         "costGold": 0,
-        "openCostGold": 1300
+        "openCostGold": 930
+      },
+      "atgm_spike_x4_mitl": {
+        "reqModification": "atgm_spike_x4",
+        "addMrank": 2,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 33000,
+        "value": 48000,
+        "costGold": 0,
+        "openCostGold": 930
       },
       "il_gatr": {
         "tier": 2,
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 400
       },
       "stinger_aam": {
         "prevModification": "il_gatr",
@@ -726728,7 +727553,7 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large",
@@ -726743,7 +727568,7 @@
         "reqExp": 12000,
         "value": 18000,
         "costGold": 0,
-        "openCostGold": 320,
+        "openCostGold": 340,
         "deactivationIsAllowed": true
       },
       "heli_counterMeasures": {
@@ -726754,7 +727579,7 @@
         "reqExp": 14000,
         "value": 21000,
         "costGold": 0,
-        "openCostGold": 370
+        "openCostGold": 400
       },
       "heli_night_vision_system": {
         "prevModification": "heli_counterMeasures",
@@ -726765,7 +727590,7 @@
         "reqExp": 13000,
         "value": 19000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 370
       },
       "premExpMul": {
         "tier": 0,
@@ -731102,11 +731927,11 @@
     "needBuyToOpenNextInTier1": 1,
     "needBuyToOpenNextInTier2": 2,
     "needBuyToOpenNextInTier3": 2,
-    "needBuyToOpenNextInTier4": 1,
+    "needBuyToOpenNextInTier4": 2,
     "weapons": {
       "h145m_default": {
         "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
-        "atgmVisibilityType": "infraRedWithMITL",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 8000.0,
         "hasCountermeasures": true,
         "weaponmask": 64,
@@ -731174,31 +731999,22 @@
           "containers_spike_x4_without_wire": 2
         }
       },
-      "containers_fz231_x12": {
-        "isWeaponForCustomSlot": true,
-        "maxRocketTntMass": 1.17,
-        "totalBombRocketMass": 97,
-        "weaponDamage": 1240,
-        "weaponmask": 32
-      },
-      "weapons_gunfn_m3p": {
-        "isWeaponForCustomSlot": true,
-        "mass_per_sec": 0.736276,
-        "weaponmask": 1024,
-        "reqModification": "tiger_hmp400_lcc"
-      },
-      "containers_spike_x2_without_wire": {
-        "isWeaponForCustomSlot": true,
-        "atgmVisibilityType": "infraRedWithMITL",
+      "h145m_8_spike_wo_mitl": {
+        "image": "!#ui/gameuiskin#atgm_heli_preset.avif",
+        "atgmVisibilityType": "infraRed",
         "atgmMaxDistance": 8000.0,
-        "weaponmask": 64
+        "hasCountermeasures": true,
+        "weaponmask": 64,
+        "sum_weapons": {
+          "containers_spike_x4_without_wire_wo_mitl": 2
+        }
       },
       "containers_spike_x4_without_wire": {
         "isWeaponForCustomSlot": true,
         "atgmVisibilityType": "infraRedWithMITL",
         "atgmMaxDistance": 8000.0,
         "weaponmask": 64,
-        "reqModification": "atgm_spike_x4"
+        "reqModification": "atgm_spike_x4_mitl"
       },
       "containers_fz231_x12_275lgr": {
         "isWeaponForCustomSlot": true,
@@ -731206,6 +732022,12 @@
         "atgmMaxDistance": 9000.0,
         "weaponmask": 64,
         "reqModification": "fr_fz275"
+      },
+      "containers_spike_x2_without_wire": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64
       },
       "weapons_gunfn_m3p_cwp": {
         "isWeaponForCustomSlot": true,
@@ -731221,10 +732043,30 @@
         "weaponmask": 32,
         "reqModification": "tiger_rmp_lc"
       },
+      "containers_fz231_x12": {
+        "isWeaponForCustomSlot": true,
+        "maxRocketTntMass": 1.17,
+        "totalBombRocketMass": 97,
+        "weaponDamage": 1240,
+        "weaponmask": 32
+      },
+      "weapons_gunfn_m3p": {
+        "isWeaponForCustomSlot": true,
+        "mass_per_sec": 0.736276,
+        "weaponmask": 1024,
+        "reqModification": "tiger_hmp400_lcc"
+      },
       "weapons_cannonglat_m621": {
         "isWeaponForCustomSlot": true,
         "mass_per_sec": 1.38632,
         "weaponmask": 1024
+      },
+      "containers_spike_x4_without_wire_wo_mitl": {
+        "isWeaponForCustomSlot": true,
+        "atgmVisibilityType": "infraRed",
+        "atgmMaxDistance": 8000.0,
+        "weaponmask": 64,
+        "reqModification": "atgm_spike_x4"
       },
       "custom_presets": {
         "slot": [
@@ -731251,6 +732093,9 @@
             },
             "spike_x4": {
               "containers_spike_x4_without_wire": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_without_wire_wo_mitl": 1
             }
           },
           {
@@ -731276,6 +732121,9 @@
             },
             "spike_x4": {
               "containers_spike_x4_without_wire": 1
+            },
+            "spike_wo_mitl_x4": {
+              "containers_spike_x4_without_wire_wo_mitl": 1
             }
           }
         ]
@@ -731288,7 +732136,7 @@
         "reqExp": 20000,
         "value": 29000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 450
       },
       "hp_105_jet": {
         "prevModification": "new_compressor_heli",
@@ -731297,17 +732145,17 @@
         "reqExp": 19000,
         "value": 28000,
         "costGold": 0,
-        "openCostGold": 400
+        "openCostGold": 420
       },
       "new_heli_cover": {
         "prevModification": "hp_105_jet",
         "tier": 4,
         "modClass": "lth",
         "repairCostCoef": 0.075,
-        "reqExp": 33000,
-        "value": 48000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 690
+        "openCostGold": 560
       },
       "cd_98_main_rotor": {
         "tier": 3,
@@ -731315,7 +732163,7 @@
         "reqExp": 19000,
         "value": 28000,
         "costGold": 0,
-        "openCostGold": 400
+        "openCostGold": 420
       },
       "heli_structure": {
         "prevModification": "cd_98_main_rotor",
@@ -731325,7 +732173,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 380
       },
       "maw_countermeasures_launcher_chaff": {
         "reqModification": "MAW_system_heli_false_thermal_targets_large",
@@ -731341,7 +732189,7 @@
         "reqExp": 20000,
         "value": 29000,
         "costGold": 0,
-        "openCostGold": 420,
+        "openCostGold": 450,
         "deactivationIsAllowed": true
       },
       "heli_flak_jacket": {
@@ -731350,7 +732198,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 380
       },
       "heli_night_vision_system": {
         "tier": 3,
@@ -731360,14 +732208,14 @@
         "reqExp": 19000,
         "value": 28000,
         "costGold": 0,
-        "openCostGold": 400
+        "openCostGold": 420
       },
       "tiger_hmp400_lcc": {
         "tier": 1,
         "reqExp": 20000,
         "value": 29000,
         "costGold": 0,
-        "openCostGold": 420
+        "openCostGold": 450
       },
       "tiger_rmp_lc": {
         "reqModification": "tiger_hmp400_lcc",
@@ -731375,7 +732223,7 @@
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 380
       },
       "50cal_universal": {
         "reqModification": "bmg50_belt_pack",
@@ -731420,31 +732268,41 @@
         "reqExp": 19000,
         "value": 28000,
         "costGold": 0,
-        "openCostGold": 400
+        "openCostGold": 420
       },
       "bmg50_new_gun": {
         "reqModification": "bmg50_belt_pack",
         "tier": 4,
         "repairCostCoef": 0.016,
-        "reqExp": 33000,
-        "value": 48000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 690
+        "openCostGold": 560
       },
       "fr_fz275": {
         "tier": 2,
         "reqExp": 17000,
         "value": 25000,
         "costGold": 0,
-        "openCostGold": 350
+        "openCostGold": 380
       },
       "atgm_spike_x4": {
         "reqModification": "fr_fz275",
         "tier": 4,
-        "reqExp": 33000,
-        "value": 48000,
+        "reqExp": 25000,
+        "value": 37000,
         "costGold": 0,
-        "openCostGold": 690
+        "openCostGold": 560
+      },
+      "atgm_spike_x4_mitl": {
+        "reqModification": "atgm_spike_x4",
+        "addMrank": 2,
+        "isEnabledByDefaultForAddMrank": false,
+        "tier": 4,
+        "reqExp": 25000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 560
       },
       "premExpMul": {
         "tier": 0,

@@ -282,6 +282,7 @@ function updateMyCountryData(needUpdateSessionLobbyData = true) {
       crewAirs = memberData.crewAirs
       selAirs = memberData.selAirs  
       slots = memberData.selSlots
+      mrankDeltaByUnit = memberData.mrankDeltaByUnit
     })
 }
 
@@ -385,7 +386,7 @@ registerRespondent("is_in_squad", function is_in_squad(forChat = false) {
 addListenersWithoutEnv({
   CrewsOrderChanged = @(_p) updateMyCountryData(false)
   CountryChanged = @(_) updateMyCountryData()
-  UnitMrankSelectionChanged = @(_p) updateMyCountryData(false)
+  UnitMrankSelectionChanged = @(_p) updateMyCountryData()
   function CrewChanged(p) {
     let { isInitSelectedCrews = false } = p
     if (!isInitSelectedCrews)

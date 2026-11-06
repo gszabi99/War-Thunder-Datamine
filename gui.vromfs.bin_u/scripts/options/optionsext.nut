@@ -109,7 +109,6 @@ from "gameOptions" import *
 from "soundOptions" import *
 from "radarOptions" import get_radar_mode_names, get_option_radar_name, get_radar_scan_pattern_names, get_option_radar_scan_pattern_name, get_radar_range_values, get_option_radar_range_value, set_option_radar_name
   , set_option_radar_scan_pattern_name, set_option_radar_range_value
-from "weaponryOptions" import get_option_torpedo_dive_depth, set_option_torpedo_dive_depth, get_option_torpedo_dive_depth_range
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT, TANK_ALT_CROSSHAIR_ADD_NEW, AIR_SPAWN_POINT
@@ -997,23 +996,6 @@ let optionsMap = {
       descr.value = u.find_in_array(descr.values, get_unit_option(unitName, USEROPT_ROCKET_FUSE_DIST), null)
     if (!is_numeric(descr.value))
       descr.value = u.find_in_array(descr.values, get_option_rocket_fuse_dist(), null)
-    descr.defaultValue = 0
-  },
-  [USEROPT_TORPEDO_DIVE_DEPTH] = function(_optionId, descr, _context) {
-    descr.id = "torpedo_dive_depth"
-    descr.optionCb ="onChangeTorpedoDiveDepth"
-    let items = get_option_torpedo_dive_depth_range()
-    descr.items = []
-    descr.values = []
-    foreach (val in items) {
-      descr.items.append(val.tostring())
-      descr.values.append(val)
-    }
-    let unitName = unitNameForWeapons.get() ?? ""
-    if (unitName != "")
-      descr.value = u.find_in_array(descr.values, get_unit_option(unitName, USEROPT_TORPEDO_DIVE_DEPTH), null)
-    if (!is_numeric(descr.value))
-      descr.value = u.find_in_array(descr.values, get_option_torpedo_dive_depth(), null)
     descr.defaultValue = 0
   },
   [USEROPT_AEROBATICS_SMOKE_TYPE] = function(_optionId, descr, _context) {
@@ -4345,12 +4327,6 @@ let optionsSetMap = {
   [USEROPT_USE_PERFECT_RANGEFINDER] = @(value, _descr, _optionId) set_option_use_perfect_rangefinder(value ? 1 : 0),
   [USEROPT_ROCKET_FUSE_DIST] = function(value, descr, optionId) {
     set_option_rocket_fuse_dist(descr.values[value])
-    let unitName = unitNameForWeapons.get() ?? ""
-    if (unitName != "")
-      set_unit_option(unitName, optionId, descr.values[value])
-  },
-  [USEROPT_TORPEDO_DIVE_DEPTH] = function(value, descr, optionId) {
-    set_option_torpedo_dive_depth(descr.values[value])
     let unitName = unitNameForWeapons.get() ?? ""
     if (unitName != "")
       set_unit_option(unitName, optionId, descr.values[value])

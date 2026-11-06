@@ -1314,8 +1314,15 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
 
   function updateMrankSelection() {
     let rowObj = this.scene.findObject("mrank_selection_row")
+    if (this.researchMode) {
+      rowObj.show(false)
+      this.mainModsObj["margin-bottom"] = "0"
+      this.applyMrankLocks()
+      return
+    }
     if (!hasFeature("SelectableBattleRating") || this.air == null || !hasAnyAddMrankMod(this.air)) {
       rowObj.show(false)
+      this.mainModsObj["margin-bottom"] = "0"
       return
     }
 
@@ -1348,6 +1355,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     labelObj.setValue("".concat(loc("shop/battle_rating"), loc("ui/colon")))
     rowObj.tooltip = tooltipText
     rowObj.show(true)
+    this.mainModsObj["margin-bottom"] = "1@additionalButtonHeight"
     this.applyMrankLocks()
   }
 

@@ -153,6 +153,9 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
                                     ammo_stowage__ammoLost : int -const;
                                     ammo_stowages__state : UInt32List -const;
                                     ammo_stowages__clustersRange : IPoint2List;
+                                    ammo_stowages__weaponAmmoRange : IPoint2List;
+                                    ammo_stowage__weaponAmmoIds : IntList;
+                                    ammo_stowage__weaponAmmoCount : IntList -const;
                                     ammo_clusters__typeAndStage : UInt16List;
                                     ammo_clusters__slotsRange : IPoint2List
                                     >) : void
@@ -183,9 +186,23 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
     let slot_num_ammo = v.ammo_slots__numAmmo[slot_id].x
     let loaded_in_gun = get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
     if slot_num_ammo > 0
+      let remove_loaded_ammo = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REMOVE_LOADED_AMMO)
+      let can_load_to_breech = !ammo_stowage_shows_full_stowage(unit.eid)
+      let weapon_ammo_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+      var stored_before : array<int>
+      for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+        let weapon = unit.weap.Weapons |> get_weapon(v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx])
+        stored_before |> push(ammo_stowage_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech))
+
       var bulletModId = -1
       ammo_stowage_change_weapon_ammo(unit.weap, slot_ammo_type, false, loaded_in_gun, -slot_num_ammo, bulletModId, v)
       v.ammo_stowage__ammoLost += slot_num_ammo
+
+      
+      for weapon_ammo_idx in weapon_ammo_range.x..weapon_ammo_range.y
+        let weapon = unit.weap.Weapons |> get_weapon(v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx])
+        let stored_after = ammo_stowage_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
+        v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] += stored_after - stored_before[weapon_ammo_idx - weapon_ammo_range.x]
     
     var need_start_reload = slot_num_ammo > 0 && loaded_in_gun
     if need_start_reload
@@ -241,6 +258,9 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
                                         ammo_stowage__weaponsIds : IntList;
                                         ammo_stowages__state : UInt32List -const;
                                         ammo_stowages__clustersRange : IPoint2List;
+                                        ammo_stowages__weaponAmmoRange : IPoint2List;
+                                        ammo_stowage__weaponAmmoIds : IntList;
+                                        ammo_stowage__weaponAmmoCount : IntList -const;
                                         ammo_clusters__typeAndStage : UInt16List;
                                         ammo_clusters__slotsRange : IPoint2List;
                                         ammo_slots__state : UInt32List -const;
@@ -504,6 +524,9 @@ def ammo_stowage_disable_affected_slots(var unit : Unit?; stowage_id : int; clus
                                           ammo_stowage__weaponsIds : IntList;
                                           ammo_stowages__state : UInt32List -const;
                                           ammo_stowages__clustersRange : IPoint2List;
+                                          ammo_stowages__weaponAmmoRange : IPoint2List;
+                                          ammo_stowage__weaponAmmoIds : IntList;
+                                          ammo_stowage__weaponAmmoCount : IntList -const;
                                           ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__slotsRange : IPoint2List;
                                           ammo_slots__state : UInt32List -const;
@@ -537,6 +560,9 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowage__weaponsIds : IntList;
                                       ammo_stowages__state : UInt32List -const;
                                       ammo_stowages__clustersRange : IPoint2List;
+                                      ammo_stowages__weaponAmmoRange : IPoint2List;
+                                      ammo_stowage__weaponAmmoIds : IntList;
+                                      ammo_stowage__weaponAmmoCount : IntList -const;
                                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                                       ammo_clusters__fireParamsId : IntList;
                                       ammo_clusters__fireEvtId : IntList;
@@ -666,7 +692,6 @@ def ammo_stowage_do_launch(var unit : Unit?; eid : EntityId; remap : PartRemap; 
                              ammo_stowages__replenishmentStartEnd : Point2List;
                              ammo_stowages__weaponAmmoRange : IPoint2List;
                              ammo_stowage__weaponAmmoIds : IntList;
-                             ammo_stowage__weaponAmmoCount : IntList -const;
                              ammo_clusters__typeAndStage : UInt16List;
                              ammo_slots__state : UInt32List;
                              ammo_slots__ammoMaskAndType : UInt32List;
@@ -690,7 +715,6 @@ def ammo_stowage_do_launch(var unit : Unit?; eid : EntityId; remap : PartRemap; 
 
   var weapon : Weapon? = null
   var emitter_no = -1
-  var weapon_ammo_idx = -1
   let weapon_range = v.ammo_stowages__weaponAmmoRange[remap.stowageId]
   for weapon_i in weapon_range.x..weapon_range.y
     var candidate = unit.weap.Weapons |> get_weapon(v.ammo_stowage__weaponAmmoIds[weapon_i])
@@ -700,12 +724,9 @@ def ammo_stowage_do_launch(var unit : Unit?; eid : EntityId; remap : PartRemap; 
     if candidate_emitter_no >= 0
       weapon = candidate
       emitter_no = candidate_emitter_no
-      weapon_ammo_idx = weapon_i
       break
   if weapon == null
     return
-
-  let launched_ammo = v.ammo_slots__numAmmo[remap.slotId].x
 
   let vel = unit.vel
   *unit |> sendLaunchShell(weapon, true, float(get_app().usefulTotalTime), unit.unitTm, vel, seed, uint8(0), emitter_no, 1.0f, 0.f, true)
@@ -713,8 +734,6 @@ def ammo_stowage_do_launch(var unit : Unit?; eid : EntityId; remap : PartRemap; 
     partId = remap.partId,
     effect = AmmoSlotEffectType.DESTROYED
   ))
-  if weapon_ammo_idx >= 0
-    v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = max(v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] - launched_ammo, 0)
   sendEvent(eid, EventAmmoStowageInvalidateRenderer())
   ammo_stowage_send_net_sync(eid) <| v
 
@@ -883,7 +902,6 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_stowages__replenishmentStartEnd : Point2List;
                                 ammo_stowages__weaponAmmoRange : IPoint2List;
                                 ammo_stowage__weaponAmmoIds : IntList;
-                                ammo_stowage__weaponAmmoCount : IntList -const;
                                 ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List -const;
                                 ammo_clusters__damageEffectPresetId : IntList;

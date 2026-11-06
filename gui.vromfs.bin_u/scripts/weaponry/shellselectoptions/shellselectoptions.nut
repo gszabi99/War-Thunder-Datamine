@@ -315,13 +315,15 @@ function mkShellSelectOptions(config) {
 
       function filterByName(handler, scene, searchStr) {
         let threats = options.UNITTYPE.values
+        let { structure } = options
         let list = shopSearchCore.findUnitsByLocName(searchStr)
-          .filter(@(unit) threats.contains(unit.esUnitType))
+          .filter(@(unit) threats.contains(unit.esUnitType)
+            && (structure == null || unit.name in structure?[unit.esUnitType][unit.shopCountry][unit.rank]))
           .map(@(unit) { unit, id = unit.name, unitType = unit.unitType.esUnitType,
             br = unit.getBattleRating(getCurrentGameModeEdiff()) })
           .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
-        this.applyUnitsList(list)
 
+        this.applyUnitsList(list)
         this.updateView(handler, scene)
         this.updateDependentOptions(handler, scene)
         onValuesChanged?(options)

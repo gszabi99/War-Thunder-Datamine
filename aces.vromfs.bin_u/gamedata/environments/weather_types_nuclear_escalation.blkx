@@ -62,13 +62,15 @@
     "sky": {
       "mie_scale": [
         1.0,
-        2.0
+        1.0
       ],
       "mie2_thickness": 450.0,
-      "mie2_scale": 10.0,
+      "mie2_scale": 1.0,
       "sun_brightness": 0.85,
       "moon_brightness": 0.85,
-      "polarization_strength": 0.75
+      "polarization_strength": 0.75,
+      "mie_height": 2.0,
+      "mie_assymetry": 0.6
     },
     "clouds_gen": {
       "humidity": [
@@ -112,8 +114,8 @@
     },
     "strata_clouds": {
       "altitude": [
-        7.5,
-        8.5
+        9.0,
+        9.5
       ],
       "amount": {
         "p": [
@@ -604,11 +606,13 @@
     },
     "sky": {
       "mie_height": 2.0,
-      "mie_scale": 2.0,
+      "mie_scale": 1.0,
       "mie2_thickness": 500.0,
-      "mie2_scale": 4.0,
+      "mie2_scale": 1.0,
       "mie2_altitude": 5.0,
-      "polarization_strength": 1.0
+      "polarization_strength": 1.0,
+      "mie_assymetry": 0.5,
+      "rayleigh_scale": 0.8
     },
     "clouds_gen": {
       "humidity": [
@@ -752,10 +756,12 @@
       "mie_height": 2.0,
       "mie_scale": 2.0,
       "mie2_thickness": 300.0,
-      "mie2_scale": 6.0,
+      "mie2_scale": 1.0,
       "mie2_altitude": 5.0,
       "multiple_scattering_factor": 1.3,
-      "polarization_strength": 1.0
+      "polarization_strength": 1.0,
+      "mie_assymetry": 0.5,
+      "rayleigh_scale": 0.8
     },
     "clouds_gen": {
       "humidity": [
@@ -1474,8 +1480,8 @@
       "forward_eccentricity_weight": 0.5
     },
     "sky": {
-      "mie_height": 8.0,
-      "mie_scale": 1.0,
+      "mie_height": 2.0,
+      "mie_scale": 8.0,
       "mie_back_assymetry": 0.2,
       "mie2_thickness": 200.0,
       "mie2_scale": 3.5,
@@ -1483,7 +1489,8 @@
       "rayleigh_scale": [
         0.2,
         0.35
-      ]
+      ],
+      "mie_assymetry": 0.5
     },
     "clouds_gen": {
       "humidity": 0.45,

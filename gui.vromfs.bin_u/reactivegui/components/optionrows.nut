@@ -39,7 +39,10 @@ let edgePad = cssConst("optContainerCellEdgePadding")
 let sepMargin = cssConst("optCellSeparatorMargin")
 let tablePad = cssConst("tablePad")
 let comboH = cssConst("comboOptContainerHeight")
+let bottomPanelH = cssConst("bottomMenuPanelHeight")
 let iconSize = cssConst("cIco")
+let lockIconSize = cssConst("sIco")
+let miniIconSize = px("8@sf/@pf")
 let sliderH = px("@sliderHeight + 2@sliderIncHeight")
 let defValueTextW = px("32@sf/@pf")
 let warningIconGap = px("6@sf/@pf")
@@ -51,8 +54,19 @@ let navAnchorPad = blockInterval
 let disabledLabelColor = mulAlpha(cssColors.commonTextColor, 85)
 
 let headerCells = @(title) [
-  { rendObj = ROBJ_TEXT, font = fontMedium, color = cssColors.activeTextColor, text = title, vplace = ALIGN_BOTTOM }
-  { size = [flex(), 2 * dpPx], vplace = ALIGN_BOTTOM, rendObj = ROBJ_SOLID, color = cssColors.separatorBlockColor }
+  {
+    rendObj = ROBJ_TEXT
+    font = fontMedium
+    color = cssColors.activeTextColor
+    text = title
+    vplace = ALIGN_CENTER
+  }
+  {
+    size = [flex(), 2 * dpPx]
+    vplace = ALIGN_BOTTOM
+    rendObj = ROBJ_SOLID
+    color = cssColors.separatorBlockColor
+  }
 ]
 
 let rowLabel = @(text, color, ovr = {}) mkText(text, fontNormal, color, { vplace = ALIGN_CENTER }.__update(ovr))
@@ -93,8 +107,8 @@ function controlComps(p) {
   let w = controlW(width)
   let skipDirPadNav = true
   if (kind == "combobox")
-    return [atX(controlX, comboBox({ id, options = items, alpha, highlight, isEnabled, skipDirPadNav, onHover = p?.onHover },
-      value, onChange, [w, comboH]))]
+    return [atX(controlX, comboBox({ id, options = items, alpha, highlight, isEnabled, skipDirPadNav,
+      listBottomMargin = bottomPanelH, onHover = p?.onHover }, value, onChange, [w, comboH]))]
   if (kind == "switchbox")
     return [atX(controlX, switchBox({ id, textChecked = p?.textChecked, textUnchecked = p?.textUnchecked, alpha,
       isEnabled, skipDirPadNav }, value, onChange))]
@@ -160,7 +174,20 @@ let rowBox = @(tableW, isLit, isHeader, ovr) {
   eventPassThrough = true
 }.__update(ovr)
 
-let changedMarker = freeze({ size = [3 * dpPx, flex()], rendObj = ROBJ_SOLID, color = cssColors.headerOptionSelectedColor })
+let changedRow = freeze({
+  size = flex()
+  margin = [blockInterval, 0]
+  rendObj = ROBJ_SOLID
+  color = cssColors.rowHoverBackgroundColor
+})
+
+let changedMarker = freeze({
+  size = [miniIconSize, miniIconSize]
+  margin = miniIconSize
+  image = Picture($"ui/gameuiskin#controls_help_point.svg:{miniIconSize}:{miniIconSize}:K")
+  rendObj = ROBJ_IMAGE
+  color = cssColors.activeTextColor
+})
 
 function rowLabelBox(row, labelColor, width, isLabelLeft) {
   let warningIcon = !(row?.hasWarningIcon ?? false) ? null : { size = iconSize, margin = [0, warningIconGap, 0, 0],
@@ -220,8 +247,15 @@ function optionRow(ctx, row, tableW) {
   
   let shape = Computed(@() { items = item.get()?.items ?? control?.items ?? const [], isLocked = item.get()?.isLocked ?? false })
   let sep = separator(alpha)
-  let lockSign = !hasStateMarks ? null : { size = iconSize, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER,
-    rendObj = ROBJ_IMAGE, image = Picture($"ui/gameuiskin#locked.svg:{iconSize}:{iconSize}:K") }
+  let lockSign = !hasStateMarks ? null
+    : {
+        size = lockIconSize
+        hplace = ALIGN_RIGHT
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#locked.svg:{lockIconSize}:{lockIconSize}:K")
+        color = cssColors.commonTextColor
+      }
   let controls = @() {
     watch = shape
     pos = [leftW, 0]
@@ -244,10 +278,15 @@ function optionRow(ctx, row, tableW) {
   }
   let nav = control == null ? null
     : mkRowNav(isClickSafe(control.kind) ? leftW + controlX + navAnchorPad : edgePad, @() ctx.keepInView(id))
-  let hasChanged = !hasStateMarks ? null : Computed(@() item.get()?.hasChangedRow ?? false)
-  let marker = hasChanged == null ? null
-    : @() { watch = hasChanged, size = const [SIZE_TO_CONTENT, flex()], children = hasChanged.get() ? changedMarker : null }
-  let children = [marker, rowLabelBox(row, labelColor, leftW, ctx.isLabelLeft), controls, blocker, nav]
+  let hasRowChanged = !hasStateMarks ? null : Computed(@() item.get()?.hasChangedRow ?? false)
+  let marker = hasRowChanged == null ? null
+    : @() {
+        watch = hasRowChanged
+        size = const [pw(50), flex()]
+        children = hasRowChanged.get() ? changedRow : null
+      }
+  let labelBox = rowLabelBox(row, labelColor, leftW, ctx.isLabelLeft)
+
   let hint = row?.hint ?? ""
   let hintSf = Watched(0)
   let showHint = hint == "" ? null : withHint(hintSf, id, @() hint)
@@ -268,9 +307,18 @@ function optionRow(ctx, row, tableW) {
       sf.set(0)
     }
     onClick = @() ctx?.onClick?(row)
-    children
+    children = [
+      marker
+      labelBox
+      controls
+      blocker
+      nav
+    ]
   })
-  return @() { watch = shownW, children = shownW.get() ? rowElem : null }
+  return @() {
+    watch = shownW
+    children = shownW.get() ? rowElem : null
+  }
 }
 
 

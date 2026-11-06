@@ -15,6 +15,7 @@ require DagorDataBlock
 require GeomNodeTree
 require AmmoStowage
 require DagorSystem
+require WTHangar
 require %game.utils.component_bundle_macro
 require %game.utils.utils_common
 require %game.unit.ammo_stowage_events
@@ -611,6 +612,25 @@ def ammo_stowage_is_bullet_count_known(weap : WeaponController const?; stowage_i
     if !(*weapon) |> isBulletCountKnown()
       is_known = false
   return is_known
+
+def ammo_stowage_shows_full_stowage(eid : EntityId) : bool
+  return is_in_hangar() && !hangar_is_xray_ammo_count_set(eid)
+
+def ammo_stowage_get_weapon_stored_count(weapon : Weapon?; remove_loaded_ammo : bool; can_load_to_breech : bool) : int
+  if weapon == null
+    return 0
+  let gun = weapon |> as_gun()
+  if gun != null
+    var count = 0
+    for bullet_set in gun.properties.bulletSets
+      count += max(0, bullet_set.bulletsCount)
+    if remove_loaded_ammo && can_load_to_breech
+      count -= int(gun.currentLoadedAmmoCount)
+    return max(0, count)
+  var count = max(0, int(weapon.countBullets))
+  if remove_loaded_ammo && can_load_to_breech && count > 0
+    count--
+  return count
 
 def ammo_stowage_change_weapon_ammo_for_weapon(weap : WeaponController const?; weapon_idx : int; bullet_set_idx : int; initial_count : bool; value : int;
                                                var bullet_mod_id : int&) : int

@@ -32,21 +32,39 @@ function scrollBox(p, content) {
   let onDetach = @() offset.unsubscribe(onOffset)
   
   let viewKey = {}
+  let barSf = Watched(0)
+  let knob = {
+    key = "knob"
+    size = [flex(1), flex(h)]
+    rendObj = ROBJ_SOLID
+  }
   let bar = function() {
-    let contentH = contentHeight.get()
-    let thumbH = contentH > 0 ? h * h / contentH : h
+    let knobColor = (barSf.get() & S_ACTIVE) != 0 ? cssColors.activeTextColor
+      : (barSf.get() & S_HOVER) != 0 ? cssColors.scrollbarSliderColorHover
+      : cssColors.scrollbarSliderColor
+    let coloredKnob = knob.__merge({ color = knobColor })
     return {
-      watch = [offset, contentHeight]
+      watch = [offset, contentHeight, barSf]
       pos = [isBarLeft ? 0 : w - barW, 0]
       size = [barW, h]
+      behavior = Behaviors.Slider
+      skipDirPadNav = true
+      orientation = O_VERTICAL
+      min = 0
+      max = maxOffset()
+      unit = 1
+      fValue = shownOffset()
+      onChange = @(val) offset.set(clamp(val, 0, maxOffset()))
+      onElemState = @(sf) barSf.set(sf)
       rendObj = ROBJ_SOLID
       color = cssColors.scrollbarBgColor
-      children = {
-        pos = [0, contentH > 0 ? shownOffset() * h / contentH : 0]
-        size = [barW, thumbH]
-        rendObj = ROBJ_SOLID
-        color = cssColors.scrollbarSliderColor
-      }
+      flow = FLOW_VERTICAL
+      knob = coloredKnob
+      children = [
+        { size = [flex(1), flex(shownOffset())] }
+        coloredKnob
+        { size = [flex(1), flex(maxOffset() - shownOffset())] }
+      ]
     }
   }
   let inners = {}

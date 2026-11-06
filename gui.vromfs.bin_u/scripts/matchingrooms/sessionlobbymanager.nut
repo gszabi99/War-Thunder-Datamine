@@ -245,6 +245,7 @@ function syncAllInfo() {
     country = SessionLobbyState.countryData?.country
     selAirs = SessionLobbyState.countryData?.selAirs
     slots = SessionLobbyState.countryData?.slots
+    mrankDeltaByUnit = SessionLobbyState.countryData?.mrankDeltaByUnit
     spectator = SessionLobbyState.spectator
     clanTag = myInfo.clanTag
     title = myStats ? myStats.title : ""
