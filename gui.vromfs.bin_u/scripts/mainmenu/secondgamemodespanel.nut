@@ -79,7 +79,11 @@ function updateSecondGameModes(nest, event, handler) {
       let switchBox = detailsObj.findObject("switch_box")
       switchBox.setValue(isModeSelected)
       switchBox.enable(isModeAvalible)
-      detailsObj.findObject("switch_box_holder").tooltip = modeData?.getTooltipText(event)
+      let gameMode = modeData?.getGameMode(event)
+      let tooltip = modeData?.getTooltipText(event)
+      detailsObj.findObject("switch_box_holder").tooltip = gameMode?.jip.forced
+        ? "".concat(tooltip, "\n\n", loc("events/forced_jip", { option = loc("options/queue_jip") }))
+        : tooltip
     }
 
     if (!statusObj?.isValid())

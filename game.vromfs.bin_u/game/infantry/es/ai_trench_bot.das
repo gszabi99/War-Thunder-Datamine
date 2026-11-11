@@ -196,6 +196,16 @@ def trench_bot_visible_distance_update(info : ParallelUpdateFrameDelayed;
   animchar__considerAsVisibleDistance = trench_bot__generalState == 0 ? trench_bot__passiveStateVisibleDist : trench_bot__activeStateVisibleDist
 
 
+
+[es(tag=server, on_appear, REQUIRE=trenchBot)]
+def trench_bot_pick_face(evt : Event;
+                         trench_bot__faceTemplates : StringList;
+                         var human_equipment__wearTemplates : Object)
+  if !empty(trench_bot__faceTemplates)
+    let idx = rnd_int(0, length(trench_bot__faceTemplates) - 1)
+    human_equipment__wearTemplates |> set("face", string(trench_bot__faceTemplates[idx]))
+
+
 [es(tag=server, no_order)]
 def trench_bot_spawner_update(info : UpdateStageInfoAct;
                               eid : EntityId;

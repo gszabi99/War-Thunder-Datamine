@@ -97,6 +97,9 @@
         <<@tooltipParams>>
       }
     <</tooltipObj>>
+    <<#idx>>
+    idx:t='<<idx>>'
+    <</idx>>
     <<#tooltipOnHold>>
     tooltipId:t='<<tooltipId>>'
     <</tooltipOnHold>>

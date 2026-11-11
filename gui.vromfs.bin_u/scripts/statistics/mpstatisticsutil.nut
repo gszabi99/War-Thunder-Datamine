@@ -200,7 +200,7 @@ const DELAYED_TOOLTIP_MARKUP =
   on_hold_stop:t='gcb.delayedTooltipHoldStop'
   on_hover:t='gcb.delayedTooltipHover'
   on_unhover:t='gcb.delayedTooltipHover'
-  on_r_click:t='onUserRClick'
+  on_r_click:t='onUserCellRClick'
   tooltipId:t=''
   focusBtnName:t='A'"
 

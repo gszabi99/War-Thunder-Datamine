@@ -14,7 +14,11 @@
 
 
 
+
+
+
 from "%rGui/globals/ui_library.nut" import *
+from "dagor.workcycle" import defer
 from "%rGui/dagui/units.nut" import cssConst, px
 from "%rGui/components/text.nut" import mkText, mulAlpha
 from "%rGui/components/tooltip.nut" import withHint, tooltipDetach
@@ -88,8 +92,10 @@ function mkValueStep(p) {
   let stepV = p?.step ?? 1
   return function(dir) {
     let next = clamp((value.get() ?? lo) + dir * stepV, lo, hi)
-    if (next != value.get())
-      onChange(id, next)
+    if (next == value.get())
+      return
+    p?.onNavStep()
+    onChange(id, next)
   }
 }
 
@@ -100,6 +106,8 @@ function valueNav(p) {
   let navHotkeys = [["Left | J:D.Left", @() onStep(-1)], ["Right | J:D.Right", @() onStep(1)]]
   return @() { watch = navActive, hotkeys = navActive.get() ? navHotkeys : null }
 }
+
+let sliderWidth = @(p) controlW(p.width) - (p?.valueText == null ? 0 : p.valueTextW)
 
 
 function controlComps(p) {
@@ -121,8 +129,8 @@ function controlComps(p) {
   if (kind == "editbox")
     return [atX(controlX, editBox({ id, maxLen = p?.maxLength, skipDirPadNav }, value, onChange, [w, comboH]))]
   if (kind == "slider") {
-    let { valueText = null, valueTextW = defValueTextW } = p
-    let sliderW = valueText == null ? w : w - valueTextW
+    let { valueText = null } = p
+    let sliderW = sliderWidth(p)
     let sliderComp = atX(controlX, slider({ id, minVal = p.min, maxVal = p.max, step = p.step, alpha, isEnabled,
       skipDirPadNav }, value, onChange, [sliderW, sliderH]))
     let valueNavComp = valueNav(p)
@@ -144,8 +152,21 @@ function controlComps(p) {
   return []
 }
 
+let hasFixedCursorAnchor = @[pure, nodiscard] (kind) kind != "options_bar"
 
-let isClickSafe = @[pure, nodiscard] (kind) kind != "slider" && kind != "options_bar"
+
+
+const CONTROL_CURSOR_POS = 0.10
+
+
+let controlAnchorX = @(kind, width) (kind == "slider") || (kind == "combobox")
+  ? controlX + (controlW(width) * CONTROL_CURSOR_POS).tointeger()
+  : controlX + navAnchorPad
+
+function optionsBarValuePosX(p, items, value) {
+  let count = max(items.len(), 1)
+  return controlX + ((clamp(value ?? 0, 0, count - 1) + 0.5) * controlW(p.width) / count).tointeger()
+}
 
 function scrollToRow(offset, viewH, idx) {
   let top = idx * rowPitch
@@ -163,6 +184,22 @@ let mkRowNav = @(anchorX, keepInView) {
   behavior = Behaviors.ProcessPointingInput
   xmbNode = XmbNode({ onFocus = keepInView })
   cursorNavAnchor = [anchorX, rowH / 2]
+}
+
+function mkOptionsBarRowNav(valueXPos, keepInView, cursorFollow) {
+  let navBase = mkRowNav(0, keepInView) 
+  let key = {}
+  
+  let moveCursorToValue = @() move_mouse_cursor(key, false)
+  function onChangeValue(_) {
+    if (!cursorFollow.isPending)
+      return
+    cursorFollow.isPending = false
+    defer(moveCursorToValue)
+  }
+  let onAttach = @() valueXPos.subscribe(onChangeValue)
+  let onDetach = @() valueXPos.unsubscribe(onChangeValue)
+  return @() navBase.__merge({ watch = valueXPos, key, onAttach, onDetach, cursorNavAnchor = [valueXPos.get(), rowH / 2] })
 }
 
 let rowBox = @(tableW, isLit, isHeader, ovr) {
@@ -229,6 +266,7 @@ function optionRow(ctx, row, tableW) {
   let cellW = tableW - leftW
   let cellControlW = controlW(cellW)
   let customCell = control == null ? null : ctx?.mkCell?(row, cellControlW, alpha)
+  let cursorFollow = { isPending = false }
   let controlP = (control == null || customCell != null) ? null : control.__merge({
     id = itemId
     value = Computed(@() item.get()?.value)
@@ -243,6 +281,7 @@ function optionRow(ctx, row, tableW) {
     text = Computed(@() control?.text ?? item.get()?.value)
     onClick = @() ctx.onButton(row)
     onHover = ctx?.onValueHover == null ? null : @(idx) ctx.onValueHover(row, idx)
+    onNavStep = function() { cursorFollow.isPending = true }
   })
   
   let shape = Computed(@() { items = item.get()?.items ?? control?.items ?? const [], isLocked = item.get()?.isLocked ?? false })
@@ -276,8 +315,13 @@ function optionRow(ctx, row, tableW) {
     onElemState = onBlockerState
     onDetach = onBlockerDetach
   }
-  let nav = control == null ? null
-    : mkRowNav(isClickSafe(control.kind) ? leftW + controlX + navAnchorPad : edgePad, @() ctx.keepInView(id))
+  let keepInView = @() ctx.keepInView(id)
+  let nav = control == null
+    ? null
+    : hasFixedCursorAnchor(control.kind)
+      ? mkRowNav(leftW + controlAnchorX(control.kind, controlP?.width ?? cellW), keepInView)
+      : mkOptionsBarRowNav(Computed(@() leftW + optionsBarValuePosX(controlP, shape.get().items, item.get()?.value)),
+        keepInView, cursorFollow)
   let hasRowChanged = !hasStateMarks ? null : Computed(@() item.get()?.hasChangedRow ?? false)
   let marker = hasRowChanged == null ? null
     : @() {

@@ -28,6 +28,7 @@ const MIN_MRANK_FOR_BULLET_HELL = 22
 const MIN_CRAFTS_FOR_BULLET_HELL = 2
 const MIN_MRANK_FOR_NAVAL_EC = 7
 const MIN_MRANK_FOR_NUCLEAR_ESCALATION = 23
+const DEFAULT_MM_RANGE_MRANK_SPREAD = 3
 
 function getNightBattlesDesc(event) {
   return loc("mode/night_battles/desc", {
@@ -212,12 +213,28 @@ function getBulletHellForbiddenCraftsText(event) {
   return names
 }
 
+function getModeBRSpread(gameMode) {
+  let mmRanges = gameMode?.matchmaking.mmRanges
+  if (mmRanges == null)
+    return null
+  local maxMrankSpread = 0
+  foreach (r in mmRanges)
+    if (r.len() >= 2)
+      maxMrankSpread = max(maxMrankSpread, r[1] - r[0])
+  if (maxMrankSpread <= DEFAULT_MM_RANGE_MRANK_SPREAD)
+    return null
+  return calcBattleRatingFromRank(maxMrankSpread) - calcBattleRatingFromRank(0)
+}
+
 function getBulletHellDesc(event) {
   let req = getBulletHellRequirement(event)
   local desc = loc("mode/bullet_hell/desc", {
     requiredCount = req.count
     requiredBR = req.br
   })
+  let brSpread = getModeBRSpread(getBulletHellGameMode(event))
+  if (brSpread != null)
+    desc = "".concat(desc, "\n\n", loc("events/br_spread", { brSpread = format("%.1f", brSpread) }))
   let forbiddenNames = getBulletHellForbiddenCraftsText(event)
   if (forbiddenNames.len() > 0)
     desc = "".concat(desc, "\n\n", loc("events/forbidden_crafts"), "\n", "\n".join(forbiddenNames))
@@ -570,6 +587,7 @@ let submodeModePresentation = {
 
 let makeSubmodeModeEntry = @(cfg) {
   modeId = cfg.submodeModeId
+  getGameMode = @(event) getGameModeByTagPrefix(event, cfg.tagPrefix)
   getDetails = @(event) getSubmodeDetails(event, cfg)
   isSelected = @(_event) isSubModeOn(cfg)
   isActive = @(event) canQueueWithoutClassic(event, cfg)
@@ -591,6 +609,7 @@ let additionalGameModes = [
     icon = "#ui/gameuiskin#ic_reduced_team.svg",
     iconSize = "24@sf/@pf, 24@sf/@pf",
     name = "#mode/small_teams",
+    getGameMode = @(event) getGameModeByTagPrefix(event, SMALL_TEAMS_GAME_MODE_TAG_PREFIX),
     getDetails = getSmallTeamsDetails,
     isSelected = isSmallTeamsModeSelected,
     isActive = isSmallTeamsModeActive,
@@ -604,6 +623,7 @@ let additionalGameModes = [
     icon = "#ui/gameuiskin#ic_bullet_hell.svg",
     iconSize = "24@sf/@pf, 24@sf/@pf",
     name = "#events/bullet_hell",
+    getGameMode = getBulletHellGameMode,
     getDetails = getBulletHellDetails,
     isSelected = isBulletHellModeSelected,
     isActive = isBulletHellModeActive,

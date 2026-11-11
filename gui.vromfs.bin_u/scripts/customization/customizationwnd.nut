@@ -2354,7 +2354,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
     defer(function() {
       if (this == null)
         return
-      base.goBack.call(this)
+      BaseGuiHandlerWT.goBack.call(this)
     }.bindenv(this))
     hangar_focus_model(false)
   }

@@ -1999,6 +1999,7 @@ let Events = class {
     textsList.append(this.getTextBoostersDoNotWork(event))
     textsList.append(this.getUnlockProgress(event))
     textsList.append(this.getTimeAwardingEconomicsDesc(event))
+    textsList.append(this.getForcedJipText(event))
 
     if (mroom)
       textsList.append(this.descFormat(loc("options/cluster"),
@@ -2077,6 +2078,13 @@ let Events = class {
 
   function getTimeAwardingEconomicsDesc(event) {
     return event.mission_decl?.useTimeAwardingEconomics ? loc("events/has_time_awarding_economics") : ""
+  }
+
+  function getForcedJipText(event) {
+    foreach (gm in getGameModesByEconomicName(getEventEconomicName(event)))
+      if (gm?.jip.forced)
+        return loc("events/forced_jip", { option = loc("options/queue_jip") })
+    return ""
   }
 
   function isEventForClanGlobalLb(event) {

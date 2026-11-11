@@ -16,6 +16,7 @@ let changeAircraftForBuilder = class (BaseGuiHandlerWT) {
          showNewSlot = false,
          showEmptySlot = false,
          hasActions = false,
+         draggableSlots = false,
          afterSlotbarSelect = this.updateButtons,
          slotbarBehavior = "posNavigator",
          onSlotDblClick = Callback(@(_crew) this.onApply(), this)

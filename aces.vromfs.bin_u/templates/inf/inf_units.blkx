@@ -21,12 +21,25 @@
     "human__gunObjTexReplace:object": {},
     "human__gunObjTexSet:object": {},
     "human__gunCamoParams:p4": {},
-    "_group": {
-      "_tags": "render",
-      "animchar_node_collapser__nodes:object": {
-        "Bip01 Head": "Bip01 Neck"
+    "_group": [
+      {
+        "_tags": "render",
+        "animchar_node_collapser__nodes:object": {
+          "Bip01 Head": "Bip01 Neck"
+        }
+      },
+      {
+        "_tags": "server",
+        "trench_bot__faceTemplates:list<t>": {
+          "name": [
+            "attachable_wear_s_male_head_05_item",
+            "attachable_wear_s_male_head_16_item",
+            "attachable_wear_s_male_head_21_item",
+            "attachable_wear_s_male_head_22_item"
+          ]
+        }
       }
-    }
+    ]
   },
   "dead_trench_soldier": {
     "_use": "dead_entity",
@@ -35,7 +48,6 @@
   "germ_inf_gw": {
     "_use": "base_trench_soldier",
     "human_equipment__initialEquip:object": {
-      "random_face": "face",
       "attachable_wear_ger_m17_helmet_item": "helmet"
     },
     "human_equipment__wearTemplates:object": {
@@ -52,7 +64,6 @@
   "uk_inf_gw": {
     "_use": "base_trench_soldier",
     "human_equipment__initialEquip:object": {
-      "random_face": "face",
       "attachable_wear_uk_mk1_brodie_helmet_item": "helmet"
     },
     "human_equipment__wearTemplates:object": {

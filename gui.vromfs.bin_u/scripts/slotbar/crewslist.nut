@@ -4,9 +4,8 @@ from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 from "gameplayBinding" import isInFlight
-from "chard" import getProfileCountry
 from "%sqstd/globalState.nut" import hardPersistWatched
-from "%scripts/dagui_natives.nut" import get_crew_info
+from "%scripts/dagui_natives.nut" import get_crew_info, get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
 function getCrewInfo(isInBattle) {
@@ -19,8 +18,8 @@ function getCrewInfo(isInBattle) {
   if (crewInfo.len() <= 1)
     return crewInfo
 
-  let curCountry = getProfileCountry()
-  if (curCountry == "country_0") {
+  let curCountry = get_local_player_country()
+  if (curCountry == "country_0" || curCountry == "") {
     if (!shouldDisableMenu)
       logerr("[CREW_LIST] Country not selected")
     return crewInfo

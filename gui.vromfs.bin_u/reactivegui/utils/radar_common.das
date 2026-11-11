@@ -33,6 +33,9 @@ class Radar
     return loc_for_lang_id(modeName, langId)
 
   def static getCueHeights(var hmin : float &; var hmax : float &) : bool
+    return Radar`getScanHeightsAtDistanceRel(get_radar_hud_cue_distance(), hmin, hmax)
+
+  def static getScanHeightsAtDistanceRel(distance_rel : float; var hmin : float &; var hmax : float &) : bool
     let hero = get_controlled_hero()
     if hero == null || hero.isDelayed
       return false
@@ -42,7 +45,7 @@ class Radar
 
     let scanElevationWidth = get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()
     let ownAltitude = hero.pos.y
-    let distance = get_radar_hud_cue_distance() * get_radar_hud_distance_max() * 1000.
+    let distance = distance_rel * get_radar_hud_distance_max() * 1000.
     let tangage = fmw.tangage * degToRad
     hmin = ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() + tangage)
     hmax = ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + tangage)

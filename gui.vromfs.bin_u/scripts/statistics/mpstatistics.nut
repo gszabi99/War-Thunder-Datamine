@@ -712,7 +712,11 @@ let MPStatistics = class (BaseGuiHandlerWT) {
   function onUserRClick(obj) {
     this.onStatsTblSelect(obj)
     let { hoveredObj } = InContainersNavigator.getHoveredChild(obj)
-    let { contextMenu = "no" } = hoveredObj
+    this.onUserCellRClick(hoveredObj)
+  }
+
+  function onUserCellRClick(obj) {
+    let { contextMenu = "no" } = obj
 
     if (contextMenu == "wishlist")
       this.showAddToFavRClickMenu()

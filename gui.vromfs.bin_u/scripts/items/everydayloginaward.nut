@@ -445,7 +445,7 @@ class EveryDayLoginAward (BaseGuiHandlerWT) {
       defer(function() {
         if (this == null)
           return
-        base.goBack.call(this)
+        BaseGuiHandlerWT.goBack.call(this)
       }.bindenv(this))
   }
 

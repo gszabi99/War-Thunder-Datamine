@@ -125,6 +125,7 @@ class SlotbarUnitDnD (BaseGuiHandlerWT) {
   onCrewDrop = @(_obj) null
   onCrewMove = @(_obj) null
   onCrewBlockHover = @(_obj) null
+  showCrewSlotHint = @(_obj) null
 }
 
 register_gui_handler("SlotbarUnitDnD", SlotbarUnitDnD)

@@ -178,10 +178,10 @@ let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
       this.onPlayerSelectCb(this.getSelectedPlayer())
   }
 
-  function onTableDblClick()    { if (this.onPlayerDblClickCb) this.onPlayerDblClickCb(this.getSelectedPlayer()) }
-  function onTableRClick()      { if (this.onPlayerRClickCb)   this.onPlayerRClickCb(this.getSelectedPlayer()) }
-  function onUserRClick(_obj)   { this.onTableRClick() }
-  function onTableHover(obj)    { if (this.onTablesHoverChange) this.onTablesHoverChange(obj.id, obj.isHovered()) }
+  function onTableDblClick()      { if (this.onPlayerDblClickCb) this.onPlayerDblClickCb(this.getSelectedPlayer()) }
+  function onTableRClick()        { if (this.onPlayerRClickCb)   this.onPlayerRClickCb(this.getSelectedPlayer()) }
+  function onUserCellRClick(_obj) { this.onTableRClick() }
+  function onTableHover(obj)      { if (this.onTablesHoverChange) this.onTablesHoverChange(obj.id, obj.isHovered()) }
 
   function onPlayerHover(obj) {
     if (!checkObj(obj) || !obj.isHovered())

@@ -37,7 +37,9 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.lineWidth = props |> getFloat("lineWidth", 1.)
 
 def draw_elevation_scope(var ctx : GuiContext&; data : CanvasParams&; size : float2; frameL : float; frameT : float; frameB : float)
+  let altMinFt = -10000.0
   let altMaxFt = 60000.0
+  let altSpanFt = altMaxFt - altMinFt
   let scpX = frameL + size.x * 0.03
   let scpBot = frameT + (frameB - frameT) * 0.90
   let scpTop = frameT + (frameB - frameT) * 0.62
@@ -50,24 +52,23 @@ def draw_elevation_scope(var ctx : GuiContext&; data : CanvasParams&; size : flo
   let vl <- to_array_move(fixed_array<float2>(float2(scpX, scpTop), float2(scpX, scpBot)))
   ctx |> render_line_aa(vl, false, data.lineWidth, float2(0., 0.), f15Green)
 
-  // Ticks with labels: 0, 10, 20, 30, 40, 50, 60 (x1000 ft)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.radarFontSize + 4)
   var fctxElev : StdGuiFontContext
   get_font_context(fctxElev, data.fontId, 0, 0, data.radarFontSize + 4)
-  for i in range(0, 7)
+  for i in range(-1, 7)
     let altFt = float(i) * 10000.0
-    let yPos = scpBot - (altFt / altMaxFt) * scpH
+    let yPos = scpBot - ((altFt - altMinFt) / altSpanFt) * scpH
     let tk <- to_array_move(fixed_array<float2>(float2(scpX, yPos), float2(scpX - majorTickLen, yPos)))
     ctx |> render_line_aa(tk, false, data.lineWidth, float2(0., 0.), f15Green)
   // Minor ticks at 5000 ft intervals
-  for i in range(0, 12)
+  for i in range(-2, 12)
     let altFt = float(i) * 5000.0 + 5000.0
     if altFt >= altMaxFt
       continue
     if roundi(altFt) % 10000 == 0
       continue
-    let yPos = scpBot - (altFt / altMaxFt) * scpH
+    let yPos = scpBot - ((altFt - altMinFt) / altSpanFt) * scpH
     let tk <- to_array_move(fixed_array<float2>(float2(scpX, yPos), float2(scpX - tickLen * 0.6, yPos)))
     ctx |> render_line_aa(tk, false, data.lineWidth * 0.7, float2(0., 0.), f15GreenDim)
 
@@ -75,7 +76,7 @@ def draw_elevation_scope(var ctx : GuiContext&; data : CanvasParams&; size : flo
   let hero = get_controlled_hero()
   if hero != null && !hero.isDelayed
     let ownAltFt = hero.pos.y * metrToFeet
-    let ownY = scpBot - clamp(ownAltFt / altMaxFt, 0.0, 1.0) * scpH
+    let ownY = scpBot - clamp((ownAltFt - altMinFt) / altSpanFt, 0.0, 1.0) * scpH
     let ownArrow <- to_array_move(fixed_array<float2>(
       float2(scpX - arrowW, ownY - arrowW * 0.5),
       float2(scpX, ownY),
@@ -83,16 +84,19 @@ def draw_elevation_scope(var ctx : GuiContext&; data : CanvasParams&; size : flo
     ctx |> render_line_aa(ownArrow, true, data.lineWidth, float2(0., 0.), f15Blue)
 
   // Radar scan zone top/bottom markers on altitude scale
-  let distMaxKm = get_radar_hud_distance_max()
-  let scanElevMin = get_radar_hud_scan_elevation_min()
-  let scanElevMax = get_radar_hud_scan_elevation_max()
-  if hero != null && !hero.isDelayed && distMaxKm > 0.1
-    let ownAltM = hero.pos.y
-    let distM = distMaxKm * 1000.0
-    let scanTopAltFt = (ownAltM + distM * sin(scanElevMax)) * metrToFeet
-    let scanBotAltFt = (ownAltM + distM * sin(scanElevMin)) * metrToFeet
-    let scanTopY = scpBot - clamp(scanTopAltFt / altMaxFt, 0.0, 1.0) * scpH
-    let scanBotY = scpBot - clamp(scanBotAltFt / altMaxFt, 0.0, 1.0) * scpH
+  var scanDistRel = get_radar_hud_cue_visible() ? get_radar_hud_cue_distance() : 1.0
+  if get_radar_hud_has_distance_scale()
+    Radar`foreach_visible_target() <| $(var target)
+      if target.isSelected && target.isSelectedTargetOfInterest && target.distanceRel >= 0.0
+        scanDistRel = target.distanceRel
+  var scanAltM : float2
+  if get_radar_hud_distance_max() > 0.1 && Radar`getScanHeightsAtDistanceRel(scanDistRel, scanAltM.x, scanAltM.y)
+    let scanTopAltFt = scanAltM.y * metrToFeet
+    let scanBotAltFt = scanAltM.x * metrToFeet
+    let scanBandRel = clamp((scanTopAltFt - scanBotAltFt) / altSpanFt, 0.0, 1.0)
+    let scanBotRel = clamp((scanBotAltFt - altMinFt) / altSpanFt, 0.0, 1.0 - scanBandRel)
+    let scanTopY = scpBot - (scanBotRel + scanBandRel) * scpH
+    let scanBotY = scpBot - scanBotRel * scpH
     // Scan zone bracket lines
     let bracketW = size.x * 0.012
     let scanTopL <- to_array_move(fixed_array<float2>(float2(scpX + bracketW, scanTopY), float2(scpX, scanTopY)))
@@ -105,21 +109,23 @@ def draw_elevation_scope(var ctx : GuiContext&; data : CanvasParams&; size : flo
     // Scan zone altitude labels (kft)
     ctx |> set_color(f15White)
     let scanTopKft = roundi(scanTopAltFt / 1000.0)
-    let scanTopLbl = scanTopKft <= 0 ? "O" : "O{fmt(":d", scanTopKft)}"
+    let scanTopLbl = fmt(":d", scanTopKft)
     let scanTopBox = get_str_bbox(scanTopLbl, scanTopLbl |> length(), fctxElev)
-    ctx |> goto_xy(scpX + bracketW + size.x * 0.003, scanTopY + scanTopBox.width.y * 0.4)
+    let scanLblMidY = (scanTopY + scanBotY) * 0.5
+    let scanLblHalfGap = max(scanBotY - scanTopY, scanTopBox.width.y * 1.1) * 0.5
+    ctx |> goto_xy(scpX + bracketW + size.x * 0.003, scanLblMidY - scanLblHalfGap + scanTopBox.width.y * 0.4)
     ctx |> draw_str_scaled(1.0, scanTopLbl, scanTopLbl |> length())
     let scanBotKft = roundi(scanBotAltFt / 1000.0)
-    let scanBotLbl = scanBotKft <= 0 ? "O" : "O{fmt(":d", scanBotKft)}"
+    let scanBotLbl = fmt(":d", scanBotKft)
     let scanBotBox = get_str_bbox(scanBotLbl, scanBotLbl |> length(), fctxElev)
-    ctx |> goto_xy(scpX + bracketW + size.x * 0.003, scanBotY + scanBotBox.width.y * 0.4)
+    ctx |> goto_xy(scpX + bracketW + size.x * 0.003, scanLblMidY + scanLblHalfGap + scanBotBox.width.y * 0.4)
     ctx |> draw_str_scaled(1.0, scanBotLbl, scanBotLbl |> length())
 
   // Target blips to the right of the line
   Radar`foreach_visible_target() <| $(var target)
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let altFt = target.height * metrToFeet
-      let yPos = scpBot - clamp(altFt / altMaxFt, 0.0, 1.0) * scpH
+      let yPos = scpBot - clamp((altFt - altMinFt) / altSpanFt, 0.0, 1.0) * scpH
       let blipColor = target.isSelected && target.isSelectedTargetOfInterest ? f15Yellow : f15Green
       let bh = size.y * 0.008
       let bw = size.x * 0.012
