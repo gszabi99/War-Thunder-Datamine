@@ -2123,7 +2123,7 @@
     "headPos": [
       0.0,
       26.0,
-      -90.0
+      -82.0
     ],
     "headPosOnShooting": [
       31.6,
@@ -4406,32 +4406,56 @@
           {
             "isUnit": false,
             "velRange": [
-              950.0,
+              900.0,
               1150.0
             ],
             "massRange": [
               580.0,
-              730.0
+              950.0
             ],
             "groundRangeRange": [
               0.0,
-              10000.0
+              20000.0
             ],
             "altRange": [
-              14500.0,
-              15500.0
+              14000.0,
+              16000.0
             ],
             "distRange": [
               10000.0,
-              40000.0
+              80000.0
             ],
             "priority": 1000
           },
           {
             "isUnit": false,
             "velRange": [
-              180.0,
+              700.0,
               1150.0
+            ],
+            "massRange": [
+              900.0,
+              1000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              20000.0
+            ],
+            "altRange": [
+              -50.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              60000.0
+            ],
+            "priority": 1000
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              600.0,
+              1200.0
             ],
             "massRange": [
               80.0,
@@ -4439,15 +4463,15 @@
             ],
             "groundRangeRange": [
               0.0,
-              1000.0
+              300.0
             ],
             "altRange": [
-              -50.0,
-              20000.0
+              500.0,
+              16000.0
             ],
             "distRange": [
               2500.0,
-              50000.0
+              22000.0
             ],
             "priority": 300
           },
@@ -4474,6 +4498,30 @@
               50000.0
             ],
             "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              200.0,
+              950.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              15000.0
+            ],
+            "altRange": [
+              -50.0,
+              100.0
+            ],
+            "distRange": [
+              1000.0,
+              15000.0
+            ],
+            "priority": 400
           },
           {
             "isUnit": false,
@@ -6630,21 +6678,21 @@
       135.0,
       610.2
     ],
-    "waterMassVel": -61453.0,
-    "waterMassMult": 154.0,
-    "additionalWaterDeathThreshold": 19516704.0,
+    "waterMassVel": -121350.0,
+    "waterMassMult": 404.0,
+    "additionalWaterDeathThreshold": 27156896.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 27.0,
+    "maxHeelingAngle": 38.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 3.0,
-    "maxTrimmingAngle": 4.4,
+    "maxTrimmingAngle": 2.8,
     "maxTrimmingTime": 20.0,
     "criticalTrimmingAnglePercent": 0.75,
     "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.316,
+    "sideCenterOfMassOffsetPercent": 0.457,
     "minCaliberToBreach": 0.07,
     "minExplRadiusToBreach": 0.4,
     "deadCoverCounterfloodingRel": 0.5,
@@ -6654,92 +6702,92 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.1,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.56,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.13
             },
             {
               "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.13
             },
             {
               "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.12
             },
             {
               "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.12
             }
           ]
         }
       },
       {
         "part": "cover_03_dm",
-        "weight": 1.0,
+        "weight": 0.7,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "fire_control_room_01_dm",
-            "critWaterLevel": 0.75
+            "critWaterLevel": 0.73
           }
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 1.0,
+        "weight": 0.76,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.3
             },
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.3
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.8,
+        "weight": 0.77,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "engine_room_02_dm",
-            "critWaterLevel": 0.75
+            "critWaterLevel": 0.31
           }
         }
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.8,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "transmission_02_dm",
-            "critWaterLevel": 0.75
+            "critWaterLevel": 0.3
           }
         }
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.5,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       }
     ]

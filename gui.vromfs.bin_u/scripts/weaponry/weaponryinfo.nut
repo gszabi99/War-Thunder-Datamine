@@ -1012,6 +1012,8 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
               if (itemBlk.guidance?.datalink != null || itemBlk.guidance?.inertialGuidance.datalink != null)
                 item.guidanceType = "".concat(item.guidanceType, "+DL")
             }
+            if (itemBlk?.fpvModeSettings?.hasFPVMode)
+              item.guidanceType = "".concat(item.guidanceType, "+MITL")
           }
         }
         if (currentTypeName == WEAPON_TYPE.AAM) {

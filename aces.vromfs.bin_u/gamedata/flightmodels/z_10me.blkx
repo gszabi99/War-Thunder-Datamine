@@ -3358,7 +3358,10 @@
         }
       },
       {
-        "avionics": "sensors",
+        "avionics": [
+          "sensors",
+          "counterMeasures"
+        ],
         "health": {
           "dm": "electronic_block3_dm",
           "killHp": 0.01
@@ -3678,6 +3681,7 @@
           "LeftModule": {
             "turretNodeName": "emtr_ircm1",
             "emitter": "emtr_ircm1",
+            "dmPart": "ircm1_dm",
             "horAngles": [
               -2.0,
               182.0
@@ -3708,13 +3712,15 @@
                 "size": [
                   0.05,
                   0.5
-                ]
+                ],
+                "ally": true
               }
             }
           },
           "RightModule": {
             "turretNodeName": "emtr_ircm2",
             "emitter": "emtr_ircm2",
+            "dmPart": "ircm2_dm",
             "horAngles": [
               -182.0,
               2.0
@@ -3745,7 +3751,8 @@
                 "size": [
                   0.05,
                   0.5
-                ]
+                ],
+                "ally": true
               }
             }
           }

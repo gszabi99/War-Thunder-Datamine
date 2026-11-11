@@ -12,6 +12,13 @@ let skillParametersRequestType = {
   types = []
 }
 
+function tmpWorkaroundCalcCrewParamsSkipAir(crewId, values, unitName) {
+  let unit = getAircraftByName(unitName)
+  if (unit != null && (unit.isAir() || unit.isHelicopter()))
+    return { arcade = {}, historical = {}, fullreal = {} }
+  return calc_crew_parameters(crewId, values, unitName)
+}
+
 skillParametersRequestType._getParameters <- function _getParameters(crewId, unit) {
   if (unit == null)
     return null
@@ -22,7 +29,7 @@ skillParametersRequestType._getParameters <- function _getParameters(crewId, uni
     return res
 
   let values = this.getValues()
-  res = calc_crew_parameters(crewId, values, unit.name)
+  res = tmpWorkaroundCalcCrewParamsSkipAir(crewId, values, unit.name)
   cacheCrewData(crewId, unit, cacheUid,  res)
   return res
 }
@@ -54,7 +61,7 @@ skillParametersRequestType._getSelectedParameters <- function _getSelectedParame
         values[valueMemberName][valueSkillName] <- skillData.newValue
     }
   }
-  res = calc_crew_parameters(crewId, values, unit.name)
+  res = tmpWorkaroundCalcCrewParamsSkipAir(crewId, values, unit.name)
   cacheCrewData(crewId, unit, cacheUid, res)
   return res
 }
@@ -154,4 +161,5 @@ enums.addTypes(skillParametersRequestType, {
 
 return {
   skillParametersRequestType
+  tmpWorkaroundCalcCrewParamsSkipAir
 }

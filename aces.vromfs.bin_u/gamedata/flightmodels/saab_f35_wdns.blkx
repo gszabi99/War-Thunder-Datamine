@@ -2845,6 +2845,10 @@
         "blk": "gamedata/flightModels/weaponPresets/saab_f35_wdns_aim_9b.blk"
       },
       {
+        "name": "saab_f35_wdns_aim_9n",
+        "blk": "gamedata/flightModels/weaponPresets/saab_f35_wdns_aim_9n.blk"
+      },
+      {
         "name": "saab_f35_wdns_lau3a",
         "blk": "gamedata/flightModels/weaponPresets/saab_f35_wdns_lau3a.blk"
       },
@@ -3016,7 +3020,6 @@
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9b",
-            "reqModification": "us_aim_9b",
             "ShowNodes": {
               "node": [
                 "rakkaps_pylon7",
@@ -3035,6 +3038,7 @@
           {
             "iconType": "missile_type_b_air_to_air",
             "name": "aim_9n",
+            "reqModification": "us_aim_9n",
             "ShowNodes": {
               "node": [
                 "rakkaps_pylon7",
@@ -3794,7 +3798,6 @@
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9b",
-            "reqModification": "us_aim_9b",
             "ShowNodes": {
               "node": [
                 "rakkaps_pylon8",
@@ -3813,6 +3816,7 @@
           {
             "iconType": "missile_type_b_air_to_air",
             "name": "aim_9n",
+            "reqModification": "us_aim_9n",
             "ShowNodes": {
               "node": [
                 "rakkaps_pylon8",
@@ -4319,12 +4323,13 @@
       "reqModification": "aden_belt_pack",
       "tier": 3
     },
-    "us_aim_9b": {
+    "us_aim_9n": {
       "tier": 1,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "addMrank": 2
     },
     "us_2_75_in_ffar_lau_3a": {
-      "prevModification": "us_aim_9b",
+      "prevModification": "us_aim_9n",
       "tier": 2,
       "modClass": "weapon"
     },

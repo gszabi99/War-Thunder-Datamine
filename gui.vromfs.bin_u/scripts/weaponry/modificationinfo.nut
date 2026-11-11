@@ -163,6 +163,9 @@ function getModificationBulletsGroup(modifName) {
   return modificationBulletsGroupCache[modifName]
 }
 
+let isPremiumListMod = @(mod) isModClassPremium(mod)
+  || ((mod?.modClass ?? "") == "" && getModificationBulletsGroup(mod.name) == "")
+
 function updateRelationModificationList(unit, modifName) {
   let mod = getModificationByName(unit, modifName)
   if (mod && !("relationModification" in mod)) {
@@ -246,6 +249,7 @@ return freeze({
   isModResearched
   isModClassPremium
   isModClassExpendable
+  isPremiumListMod
   canResearchMod
   findAnyNotResearchedMod
   isModAvailableOrFree

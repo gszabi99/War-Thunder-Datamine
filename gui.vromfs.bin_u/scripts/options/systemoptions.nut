@@ -2089,7 +2089,7 @@ mSettings = {
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
     infoImgPattern = "#ui/images/settings/rendinstRange/%s"
-    availableInfoImgVals = [50, 100, 150, 200, 250, 300, 350]
+    availableInfoImgVals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
   }
   rendinstExDistMul = { widgetType = "slider" def = 100 min = 50 max = riDistMulCapPct step = 10 blk = "graphics/rendinstExDistMul" restart = false
     getValueFromConfig = function(blk, desc) {
@@ -2098,6 +2098,8 @@ mSettings = {
     }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val) round(val * 100).tointeger()
+    infoImgPattern = "#ui/images/settings/rendinstExRange/%s"
+    availableInfoImgVals = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
   }
   skyQuality = { widgetType = "slider" def = 1 min = 0 max = 2 blk = "graphics/skyQuality" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 2 - desc.def) }

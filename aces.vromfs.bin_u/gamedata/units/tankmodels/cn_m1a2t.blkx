@@ -774,10 +774,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -1117,6 +1113,17 @@
         "armorThrough": 20.0,
         "armorThickness": 10.0,
         "hp": 20.0
+      }
+    },
+    "apu_power_bock": {
+      "armorClass": "armor_tank_engine",
+      "hidableInViewer": true,
+      "hp": 100.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "restrainDamage": 0.5,
+      "auxiliary_power_unit_dm": {
+        "armorThickness": 10.0
       }
     }
   },
@@ -2812,7 +2819,7 @@
     "mechanics": {
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.32,
-      "neutralGearRatio": 18.0,
+      "neutralGearRatio": 11.0,
       "manufacturer": "allison",
       "model": "x_1100_3b",
       "type": "auto",
@@ -2874,6 +2881,18 @@
         "to": "wheel"
       }
     }
+  },
+  "auxiliaryPowerUnit": {
+    "dmPart": "auxiliary_power_unit_dm",
+    "isAlwaysOn": false,
+    "startDelay": 2.0,
+    "stopDelay": 1.5,
+    "chargingTime": 30.0,
+    "node": "emtr_exhaust_apu",
+    "runFx": "smoke_exhaust_p_small_add_fx",
+    "sfxStart": "apu_diesel_start",
+    "sfxRun": "apu_diesel",
+    "sfxStop": "apu_diesel_stop"
   },
   "ammo": {
     "combustionTime": 7.0,
@@ -4315,29 +4334,5 @@
         "to": "fr_camo_winter_green_white*"
       }
     }
-  ],
-  "stopSignalLights": {
-    "leftLightPos": [
-      -4.309,
-      1.628,
-      1.612
-    ],
-    "lightInfluenceSize": [
-      0.3,
-      0.2,
-      0.3
-    ],
-    "innerLightSize": [
-      0.2,
-      1.0
-    ],
-    "innerLightBrightnessFalloff": 10.0,
-    "color": [
-      0.8,
-      0.0,
-      0.0
-    ],
-    "maxColorBrightness": 35000.0,
-    "lightPatternSize": 0.25
-  }
+  ]
 }

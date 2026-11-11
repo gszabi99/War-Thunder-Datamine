@@ -99,19 +99,6 @@ def supply_transport_hint_es(evt : EventSupplyTransportHint;
       set(eventData, "points", supply_transport__points)
       hud_notify_script("hint:supply/node_full", eventData)
 
-[es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved)]
-def supply_reward_hint_es(evt : EventSupplyReward)
-  using() <| $(var eventData : DataBlock)
-    set(eventData, "score", evt.score)
-    if evt.kind == int(SupplyRewardKind.UNLOAD)
-      hud_notify_script("hint:supply/reward_unload", eventData)
-    elif evt.kind == int(SupplyRewardKind.RETURN)
-      hud_notify_script("hint:supply/reward_return", eventData)
-    elif evt.kind == int(SupplyRewardKind.DESTROY)
-      hud_notify_script("hint:supply/reward_destroy", eventData)
-    elif evt.kind == int(SupplyRewardKind.ESCORT)
-      hud_notify_script("hint:supply/reward_escort", eventData)
-
 [es(tag=gameClient, REQUIRE=(heroVehicle, supplyTransport), REQUIRE_NOT=isReplayObserved)]
 def supply_transport_zone_track_es(info : ParallelUpdateFrameDelayed;
                                    unit__ref : UnitRef;

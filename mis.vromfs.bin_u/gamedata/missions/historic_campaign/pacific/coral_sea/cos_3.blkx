@@ -717,7 +717,45 @@
             "time": 1.0
           }
         ],
-        "unitMoveTo": [
+        "unitRespawn": [
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "player",
+            "target": "player_tele_point",
+            "shouldKeepFormation": true,
+            "lookAtTargetUponRespawn": "us_fleet_4500"
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "shokaku_b5n",
+            "target": "b5n_tele_point",
+            "shouldKeepFormation": true,
+            "lookAtTargetUponRespawn": "us_fleet_4000"
+          },
+          {
+            "delay": 1.0,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "object": "shokaku_fighters",
+            "target": "b5n_tele_point",
+            "shouldKeepFormation": true,
+            "lookAtTargetUponRespawn": "us_fleet_4500"
+          }
+        ],
+        "__unitMoveTo": [
           {
             "target": "player_tele_point",
             "follow_target": false,
@@ -792,7 +830,9 @@
             "move_type": "teleport",
             "lookat": "us_fleet_4500",
             "velocity": 250.0
-          },
+          }
+        ],
+        "unitMoveTo": [
           {
             "target": "us_fleet_4000",
             "follow_target": false,

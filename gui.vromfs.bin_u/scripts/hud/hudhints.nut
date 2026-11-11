@@ -2611,8 +2611,8 @@ NEED_STOP_FOR_RADAR = {
     showEvent = "hint:sm_how_to_change_depth"
     lifeTime = 5.0
     buildText = @(_data) "\n".join([
-      " ".concat(loc("hints/sm_how_to_change_depth_dive"), getShortcutTag("submarine_depth_rangeMax"))
-      " ".concat(loc("hints/sm_how_to_change_depth_surface"), getShortcutTag("submarine_depth_rangeMin"))
+      " ".concat(loc("hints/sm_how_to_change_depth_dive"), getShortcutTag("submarine_depth_rangeMin"))
+      " ".concat(loc("hints/sm_how_to_change_depth_surface"), getShortcutTag("submarine_depth_rangeMax"))
     ])
     isVerticalAlignText = true
     uid = 11248
@@ -2687,6 +2687,7 @@ NEED_STOP_FOR_RADAR = {
     isHideOnWatchedHeroChanged = true
     showEvent = "hint:sm_use_hydrophone"
     locId = "hints/sm_use_hydrophone"
+    shortcuts = "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
     lifeTime = 5.0
     hintTopImages = [
       { src = "!#ui/gameuiskin#acoustic_countermeasures.avif", size = "0.08@shHud" }
@@ -3600,38 +3601,6 @@ NEED_STOP_FOR_RADAR = {
     showEvent = "hint:supply/node_full"
     lifeTime = 3.0
     getLocParams = @(hintData) { points = hintData.points }
-  }
-
-  SUPPLY_REWARD_UNLOAD = {
-    hintType = g_hud_hint_types.COMMON
-    locId    = "hint/supplyRewardUnload"
-    showEvent = "hint:supply/reward_unload"
-    lifeTime = 3.0
-    getLocParams = @(hintData) { score = hintData.score }
-  }
-
-  SUPPLY_REWARD_RETURN = {
-    hintType = g_hud_hint_types.COMMON
-    locId    = "hint/supplyRewardReturn"
-    showEvent = "hint:supply/reward_return"
-    lifeTime = 3.0
-    getLocParams = @(hintData) { score = hintData.score }
-  }
-
-  SUPPLY_REWARD_DESTROY = {
-    hintType = g_hud_hint_types.COMMON
-    locId    = "hint/supplyRewardDestroy"
-    showEvent = "hint:supply/reward_destroy"
-    lifeTime = 3.0
-    getLocParams = @(hintData) { score = hintData.score }
-  }
-
-  SUPPLY_REWARD_ESCORT = {
-    hintType = g_hud_hint_types.COMMON
-    locId    = "hint/supplyRewardEscort"
-    showEvent = "hint:supply/reward_escort"
-    lifeTime = 3.0
-    getLocParams = @(hintData) { score = hintData.score }
   }
 
   ENTER_DRIVER_SEAT = {

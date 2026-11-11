@@ -1731,11 +1731,11 @@
           ],
           [
             8.0,
-            11.5
+            13.5
           ],
           [
             14.9,
-            22.2
+            28.2
           ]
         ]
       },
@@ -1747,11 +1747,11 @@
           ],
           [
             4.0,
-            6.4
+            7.4
           ],
           [
             6.0,
-            10.9
+            15.9
           ]
         ]
       },
@@ -1925,22 +1925,41 @@
         "defaultPitch": 0.0,
         "speedYaw": 60.0,
         "speedPitch": 35.0,
-        "bullets": 115,
+        "bullets": 400,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
         "allowableDelta": 1.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
-        "AttackMaxRadius": 20000.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
+        "AttackMaxRadius": 5000.0,
         "randomAngle": 0.0,
-        "accuracyAir": 0.85,
-        "accuracyGnd": 0.7,
-        "errMeasureVel": 4.0,
-        "errTargettingOn100kmph": 0.09,
-        "errMeasureVelFast": 3.0,
+        "accuracyAir": 0.78,
+        "accuracyGnd": 0.65,
+        "errMeasureVel": 8.0,
+        "errTargettingOn100kmph": 0.08,
+        "errMeasureVelFast": 2.0,
         "errMeasureVelFwdShift": 0.5,
         "errMeasureVelDir": 1.0,
-        "errTargetting": 0.1,
+        "errTargetting": 0.75,
+        "targetMsl": true,
+        "shellGroundRangeMax": 5000.0,
+        "shellMassRange": [
+          30.0,
+          3500.0
+        ],
+        "AttackShellMaxRadius": 5000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -2033,12 +2052,202 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              5000.0,
+              50000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              5000.0,
+              50000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              50.0,
+              2500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              5000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              8000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              12000.0
+            ],
+            "priority": 20
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              5.0,
+              20000.0
+            ],
+            "distRange": [
+              0.0,
+              50000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              7000.0
+            ],
+            "distRange": [
+              0.0,
+              12000.0
+            ],
+            "priority": 400
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              12000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              120.0,
+              700.0
+            ],
+            "massRange": [
+              1000.0,
+              3500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              12000.0
+            ],
+            "priority": 400
+          }
+        ]
       },
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/rocket_mk13_naval_rocket_launcher.blk",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_mk13_ai_naval_rocket_launcher.blk",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "ammoDP": "ammo_turret_01_dm",
@@ -2092,6 +2301,8 @@
         "AttackShellMaxRadius": 56300.0,
         "targetPriorityDefault": 0,
         "targetPriorityMin": 1,
+        "targetChannelsMax": 2,
+        "missileChannelsMax": 1,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -2137,6 +2348,30 @@
           "verticalSpeedLimitKPH": 80.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              3500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              3500.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2212,32 +2447,56 @@
           {
             "isUnit": false,
             "velRange": [
-              950.0,
+              900.0,
               1150.0
             ],
             "massRange": [
               580.0,
-              730.0
+              950.0
             ],
             "groundRangeRange": [
               0.0,
-              10000.0
+              20000.0
             ],
             "altRange": [
-              14500.0,
-              15500.0
+              14000.0,
+              16000.0
             ],
             "distRange": [
               10000.0,
-              40000.0
+              80000.0
             ],
             "priority": 1000
           },
           {
             "isUnit": false,
             "velRange": [
-              180.0,
+              700.0,
               1150.0
+            ],
+            "massRange": [
+              900.0,
+              1000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              20000.0
+            ],
+            "altRange": [
+              -50.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              60000.0
+            ],
+            "priority": 1000
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              600.0,
+              1200.0
             ],
             "massRange": [
               80.0,
@@ -2245,15 +2504,15 @@
             ],
             "groundRangeRange": [
               0.0,
-              1000.0
+              300.0
             ],
             "altRange": [
-              -50.0,
-              20000.0
+              500.0,
+              16000.0
             ],
             "distRange": [
               2500.0,
-              50000.0
+              22000.0
             ],
             "priority": 300
           },
@@ -2280,6 +2539,30 @@
               50000.0
             ],
             "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              200.0,
+              950.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              15000.0
+            ],
+            "altRange": [
+              -50.0,
+              100.0
+            ],
+            "distRange": [
+              1000.0,
+              15000.0
+            ],
+            "priority": 400
           },
           {
             "isUnit": false,
@@ -2377,8 +2660,26 @@
         "isBulletBelt": true,
         "speedYaw": 100.0,
         "speedPitch": 86.0,
-        "bullets": 4950,
+        "bullets": 1550,
         "useGunnerTargetingQuality": false,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
+        "targetPriorityDefault": [
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1
+        ],
         "allowableDelta": 1.0,
         "ChainfireTime": 1.75,
         "DelayAfterShoot": 0.35,
@@ -2398,13 +2699,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          100.0,
-          800.0
-        ],
         "AttackShellMaxRadius": 5000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "aa_turret_01",
           "gun": "aa_gun_01",
@@ -2487,6 +2782,51 @@
           "verticalSpeedLimitKPH": 120.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "ignoreAttackersLimit": true
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              3000.0,
+              100000.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2680,7 +3020,8 @@
       29.2,
       0.0
     ],
-    "detectionHeight": 37.0
+    "detectionHeight": 37.0,
+    "cameraAhead": true
   },
   "sound": {
     "EngineName": "engine_shipmid01",
@@ -4141,6 +4482,11 @@
   },
   "optics": {
     "binoculars": "navy_binoculars"
+  },
+  "modifications": {
+    "76mm_ger_dm251_HE": {},
+    "76mm_ger_dm261_HE_radio_fuse": {},
+    "76mm_ger_dm261_HE_radio_fuse_ammo_pack": {}
   },
   "breaches": {
     "repairSpeed": 30.0,

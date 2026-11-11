@@ -1434,6 +1434,7 @@
     },
     "apu_power_bock": {
       "armorClass": "armor_tank_engine",
+      "hidableInViewer": true,
       "hp": 100.0,
       "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
@@ -3011,6 +3012,60 @@
             ]
           }
         }
+      },
+      {
+        "dummy": true,
+        "trigger": "gunner7",
+        "triggerGroup": "machinegun",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
+        "emitter": "emtr_mortar_flame_15",
+        "defaultYaw": 0.0,
+        "defaultPitch": 5.0,
+        "speedYaw": 1000.0,
+        "speedPitch": 1000.0,
+        "bullets": 1,
+        "showBulletsInHud": false,
+        "turret": {
+          "head": "bone_countermeasure_02_h",
+          "gun": "bone_countermeasure_02_v"
+        },
+        "limits": {
+          "yaw": [
+            -113.0,
+            97.0
+          ],
+          "pitch": [
+            -15.0,
+            55.0
+          ]
+        }
+      },
+      {
+        "dummy": true,
+        "trigger": "gunner7",
+        "triggerGroup": "machinegun",
+        "blk": "gamedata/weapons/dummy_weapon.blk",
+        "emitter": "emtr_mortar_flame_14",
+        "defaultYaw": 0.0,
+        "defaultPitch": 5.0,
+        "speedYaw": 1000.0,
+        "speedPitch": 1000.0,
+        "bullets": 1,
+        "showBulletsInHud": false,
+        "turret": {
+          "head": "bone_countermeasure_01_h",
+          "gun": "bone_countermeasure_01_v"
+        },
+        "limits": {
+          "yaw": [
+            -105.0,
+            105.0
+          ],
+          "pitch": [
+            -15.0,
+            55.0
+          ]
+        }
       }
     ],
     "hideNodes": {
@@ -3101,8 +3156,8 @@
     "mechanics": {
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.312,
-      "neutralGearRatio": 17.0,
-      "steerType": "double_differential",
+      "neutralGearRatio": 9.0,
+      "steerType": "clutch_braking",
       "mainGearRatio": 5.082,
       "sideGearRatio": 1.0,
       "gearRatios": {
@@ -4274,6 +4329,60 @@
               }
             },
             {
+              "dummy": true,
+              "trigger": "gunner7",
+              "triggerGroup": "machinegun",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
+              "emitter": "emtr_mortar_flame_15",
+              "defaultYaw": 0.0,
+              "defaultPitch": 5.0,
+              "speedYaw": 1000.0,
+              "speedPitch": 1000.0,
+              "bullets": 1,
+              "showBulletsInHud": false,
+              "turret": {
+                "head": "bone_countermeasure_02_h",
+                "gun": "bone_countermeasure_02_v"
+              },
+              "limits": {
+                "yaw": [
+                  -113.0,
+                  97.0
+                ],
+                "pitch": [
+                  -15.0,
+                  55.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner7",
+              "triggerGroup": "machinegun",
+              "blk": "gamedata/weapons/dummy_weapon.blk",
+              "emitter": "emtr_mortar_flame_14",
+              "defaultYaw": 0.0,
+              "defaultPitch": 5.0,
+              "speedYaw": 1000.0,
+              "speedPitch": 1000.0,
+              "bullets": 1,
+              "showBulletsInHud": false,
+              "turret": {
+                "head": "bone_countermeasure_01_h",
+                "gun": "bone_countermeasure_01_v"
+              },
+              "limits": {
+                "yaw": [
+                  -105.0,
+                  105.0
+                ],
+                "pitch": [
+                  -15.0,
+                  55.0
+                ]
+              }
+            },
+            {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
               "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
@@ -4817,15 +4926,15 @@
       1.4
     ],
     "lightInfluenceSize": [
-      0.5,
       0.3,
-      0.5
+      0.2,
+      0.15
     ],
     "innerLightSize": [
-      0.2,
-      1.0
+      0.1,
+      0.3
     ],
-    "innerLightBrightnessFalloff": 10.0,
+    "innerLightBrightnessFalloff": 6.0,
     "color": [
       0.8,
       0.0,

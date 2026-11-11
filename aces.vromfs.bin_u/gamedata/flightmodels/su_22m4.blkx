@@ -2945,6 +2945,7 @@
               "4R-90-Yatagan",
               "Yakor-M",
               "MR-90",
+              "H/LJP-345",
               "Type-275",
               "Type 903",
               "AN-SPG-48",
@@ -3046,6 +3047,8 @@
               "Giraffe AMB",
               "9K330 TA",
               "viking",
+              "AN-SPS-49",
+              "MR-750-Kil-U",
               "9K33 TA"
             ]
           },
@@ -3846,7 +3849,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -3866,7 +3869,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4219,7 +4222,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4239,7 +4242,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4494,44 +4497,72 @@
             ]
           },
           {
-            "iconType": "bombs_small_high_drag",
-            "name": "rbk_500_ao_2_5rtm",
+            "iconType": "bombs_heavy_cluster_group",
+            "name": "rbk_500_ao_2_5rtm_x2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "mbd3_u6_68"
+                "mbd3_u6_68",
+                "pylon_2_holder_500",
+                "pylon_8_holder_500",
+                "pylon_8"
               ]
             },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
-              "emitter": "fab_500m_62_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "fab_500m_62_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "fab_500m_62_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
-            "iconType": "bombs_small_high_drag",
-            "name": "rbk_500_ptab",
+            "iconType": "bombs_heavy_middle_cluster_group",
+            "name": "rbk_500_ptab_x2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "mbd3_u6_68"
+                "mbd3_u6_68",
+                "pylon_2_holder_500",
+                "pylon_8_holder_500",
+                "pylon_8"
               ]
             },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
-              "emitter": "fab_500m_62_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "fab_500m_62_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "fab_500m_62_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
             "iconType": "napalm_large",
@@ -4957,6 +4988,14 @@
               "preset": "fuse_left_fab_500sh_x2"
             },
             {
+              "slot": 4,
+              "preset": "rbk_500_ao_2_5rtm_x2"
+            },
+            {
+              "slot": 4,
+              "preset": "rbk_500_ptab_x2"
+            },
+            {
               "slot": 6,
               "preset": "fuse_containers_right_ofab_100_120_x4"
             },
@@ -4975,6 +5014,14 @@
             {
               "slot": 6,
               "preset": "fuse_right_fab_500sh_x2"
+            },
+            {
+              "slot": 6,
+              "preset": "rbk_500_ao_2_5rtm_x2"
+            },
+            {
+              "slot": 6,
+              "preset": "rbk_500_ptab_x2"
             }
           ]
         }
@@ -5107,44 +5154,72 @@
             ]
           },
           {
-            "iconType": "bombs_small_high_drag",
-            "name": "rbk_500_ao_2_5rtm",
+            "iconType": "bombs_heavy_cluster_group",
+            "name": "rbk_500_ao_2_5rtm_x2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "mbd3_u6_68"
+                "mbd3_u6_68",
+                "pylon_1_holder_500",
+                "pylon_7_holder_500",
+                "pylon_7"
               ]
             },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
-              "emitter": "fab_500m_62_005",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "fab_500m_62_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ao_2_5rtm.blk",
+                "emitter": "fab_500m_62_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
-            "iconType": "bombs_small_high_drag",
-            "name": "rbk_500_ptab",
+            "iconType": "bombs_heavy_middle_cluster_group",
+            "name": "rbk_500_ptab_x2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "mbd3_u6_68"
+                "mbd3_u6_68",
+                "pylon_1_holder_500",
+                "pylon_7_holder_500",
+                "pylon_7"
               ]
             },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
-              "emitter": "fab_500m_62_005",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "fab_500m_62_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gamedata/weapons/bombguns/su_rbk_500_ptab.blk",
+                "emitter": "fab_500m_62_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
             "iconType": "napalm_large",
@@ -5617,7 +5692,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5637,7 +5712,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5889,7 +5964,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5909,7 +5984,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6639,45 +6714,6 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
-  },
-  "dmSkeleton": {
-    "wing_l": {
-      "node": [
-        "wing1_l_dm",
-        "spar1_l_dm",
-        "spar2_l_dm",
-        "wing2_l_dm",
-        "tank6_dm",
-        "tank7_dm",
-        "wingcontrol_l_dm"
-      ],
-      "xray": "sweep_wing_l_xray"
-    },
-    "wing_r": {
-      "node": [
-        "wing1_r_dm",
-        "spar1_r_dm",
-        "spar2_r_dm",
-        "wing2_r_dm",
-        "tank9_dm",
-        "tank10_dm",
-        "wingcontrol_r_dm"
-      ],
-      "xray": "sweep_wing_r_xray"
-    },
-    "spar_l_dm": {
-      "node": [
-        "wing_l_dm",
-        "cannon2_dm"
-      ]
-    },
-    "spar_r_dm": {
-      "node": [
-        "wing_r_dm",
-        "wingcontrol_dm",
-        "cannon3_dm"
-      ]
-    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

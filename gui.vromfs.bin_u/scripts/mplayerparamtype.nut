@@ -42,6 +42,10 @@ let expEventLocIds = {
   [EXP_EVENT_SHELL_INTERCEPTION] = "expEventScore/shellInterception",
   [EXP_EVENT_KILL_HUMAN]         = "expEventScore/killHuman",
   [EXP_EVENT_SECTOR_CAPTURE]     = "expEventScore/sectorCapture",
+  [EXP_EVENT_SUPPLIES_DELIVERY]  = "expEventScore/suppliesDelivery",
+  [EXP_EVENT_SUPPLIES_RETURN]    = "expEventScore/suppliesReturn",
+  [EXP_EVENT_SUPPLIES_DESTROY]   = "expEventScore/suppliesDestroy",
+  [EXP_EVENT_SUPPLIES_ESCORT]    = "expEventScore/suppliesEscort",
 }
 
 let g_mplayer_param_type = {

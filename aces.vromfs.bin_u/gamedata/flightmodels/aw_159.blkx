@@ -1762,6 +1762,23 @@
               "slot": 3,
               "preset": "spike_nlos_targeting_pod"
             }
+          },
+          {
+            "iconType": "atgm_type_spike_nlos_mitl_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos_mitl",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "uk_martlet_lmm_pod_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -1838,7 +1855,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_nlos_x2",
+            "iconType": "atgm_type_spike_nlos_mitl_x2",
             "name": "spike_nlos_x2",
             "reqModification": "atgm_spike_nlos_mitl",
             "Weapon": {
@@ -2649,14 +2666,15 @@
       "deactivationIsAllowed": false,
       "reqModification": "uk_martlet",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 4,
+      "addMrank": 2
     },
     "atgm_spike_nlos_mitl": {
       "deactivationIsAllowed": false,
       "reqModification": "atgm_spike_nlos",
       "modClass": "weapon",
       "tier": 4,
-      "addMrank": 3,
+      "addMrank": 5,
       "isEnabledByDefaultForAddMrank": false
     }
   },

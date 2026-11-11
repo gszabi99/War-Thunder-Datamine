@@ -8,6 +8,7 @@ from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
 
 let { TrtMode, EngineTemperature } = require("%rGui/airState.nut")
+let { CustomPagesBlk } = require("%rGui/planeState/planeToolsState.nut")
 
 const baseColor = Color(0, 255, 0, 255)
 const baseFontSize = 20
@@ -28,116 +29,118 @@ let arrow = {
   ]
 }
 
-let buttons = {
-  size = FLEX
-  children = [
-    {
-      pos = const [pw(14), ph(1)]
-      size = const [pw(8), ph(5)]
-      flow = FLOW_VERTICAL
-      children = [
-        arrow
-        {
+function buttons(fs) {
+  return {
+    size = FLEX
+    children = [
+      {
+        pos = const [pw(14), ph(1)]
+        size = const [pw(8), ph(5)]
+        flow = FLOW_VERTICAL
+        children = [
+          arrow
+          {
+              size = SIZE_TO_CONTENT
+              pos = [pw(5), ph(1)]
+              rendObj = ROBJ_TEXT
+              color = baseColor
+              font = Fonts.ah64
+              fontSize = fs
+              text = "ENG"
+          }
+        ]
+      }
+      {
+        pos = const [pw(40), ph(1)]
+        size = const [pw(8), ph(5)]
+        flow = FLOW_VERTICAL
+        children = [
+          arrow
+          {
             size = SIZE_TO_CONTENT
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
             font = Fonts.ah64
-            fontSize = baseFontSize
-            text = "ENG"
-        }
-      ]
-    }
-    {
-      pos = const [pw(40), ph(1)]
-      size = const [pw(8), ph(5)]
-      flow = FLOW_VERTICAL
-      children = [
-        arrow
-        {
-          size = SIZE_TO_CONTENT
-          pos = [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "FUEL"
-        }
-      ]
-    }
-    {
-      pos = const [pw(53), ph(1)]
-      size = const [pw(8), ph(5)]
-      flow = FLOW_VERTICAL
-      children = [
-        arrow
-        {
-          size = SIZE_TO_CONTENT
-          pos = [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "PERF"
-        }
-      ]
-    }
-    {
-      pos = const [pw(78), ph(1)]
-      size = const [pw(8), ph(5)]
-      flow = FLOW_VERTICAL
-      children = [
-        arrow
-        {
-          size = SIZE_TO_CONTENT
-          pos = [pw(5), ph(1)]
-          rendObj = ROBJ_TEXT
-          color = baseColor
-          font = Fonts.ah64
-          fontSize = baseFontSize
-          text = "UTIL"
-        }
-      ]
-    }
-    {
-      size = SIZE_TO_CONTENT
-      pos = const [pw(79), ph(95)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ah64
-      fontSize = baseFontSize
-      text = "SET"
-    }
-    {
-      rendObj = ROBJ_FRAME
-      pos = const [pw(13), ph(94)]
-      size = const [pw(10), ph(5)]
-      color = baseColor
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = {
+            fontSize = fs
+            text = "FUEL"
+          }
+        ]
+      }
+      {
+        pos = const [pw(53), ph(1)]
+        size = const [pw(8), ph(5)]
+        flow = FLOW_VERTICAL
+        children = [
+          arrow
+          {
+            size = SIZE_TO_CONTENT
+            pos = [pw(5), ph(1)]
+            rendObj = ROBJ_TEXT
+            color = baseColor
+            font = Fonts.ah64
+            fontSize = fs
+            text = "PERF"
+          }
+        ]
+      }
+      {
+        pos = const [pw(78), ph(1)]
+        size = const [pw(8), ph(5)]
+        flow = FLOW_VERTICAL
+        children = [
+          arrow
+          {
+            size = SIZE_TO_CONTENT
+            pos = [pw(5), ph(1)]
+            rendObj = ROBJ_TEXT
+            color = baseColor
+            font = Fonts.ah64
+            fontSize = fs
+            text = "UTIL"
+          }
+        ]
+      }
+      {
         size = SIZE_TO_CONTENT
+        pos = const [pw(79), ph(95)]
         rendObj = ROBJ_TEXT
         color = baseColor
         font = Fonts.ah64
-        fontSize = baseFontSize
-        text = "FLT"
+        fontSize = fs
+        text = "SET"
       }
-    }
-    {
-      size = SIZE_TO_CONTENT
-      pos = const [pw(1), ph(66)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ah64
-      fontSize = baseFontSize
-      text = "-W-"
-    }
-  ]
+      {
+        rendObj = ROBJ_FRAME
+        pos = const [pw(13), ph(94)]
+        size = const [pw(10), ph(5)]
+        color = baseColor
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = {
+          size = SIZE_TO_CONTENT
+          rendObj = ROBJ_TEXT
+          color = baseColor
+          font = Fonts.ah64
+          fontSize = fs
+          text = "FLT"
+        }
+      }
+      {
+        size = SIZE_TO_CONTENT
+        pos = const [pw(1), ph(66)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ah64
+        fontSize = fs
+        text = "-W-"
+      }
+    ]
+  }
 }
 
 let CompassInt = Computed(@() ((360.0 + CompassValue.get()) % 360.0).tointeger())
-let generateCompassMark = function(num, width) {
+function generateCompassMark(num, width, fs = baseFontSize) {
   local text = num % 30 == 0 ? (num / 10).tostring() : ""
   if (num == 90)
     text = "E"
@@ -156,7 +159,7 @@ let generateCompassMark = function(num, width) {
         rendObj = ROBJ_TEXT
         color = baseColor
         hplace = ALIGN_CENTER
-        fontSize = baseFontSize
+        fontSize = fs
         font = Fonts.ah64
         text = text
         behavior = Behaviors.RtPropUpdate
@@ -174,7 +177,7 @@ let generateCompassMark = function(num, width) {
   }
 }
 
-function compass(width, generateFunc) {
+function compass(width, generateFunc, fs = baseFontSize) {
   let children = []
   let step = 10.0
 
@@ -182,7 +185,7 @@ function compass(width, generateFunc) {
 
     let num = (i * step) % 360
 
-    children.append(generateFunc(num, width))
+    children.append(generateFunc(num, width, fs))
   }
   let getOffset = @() (360.0 + CompassValue.get()) * 0.005 * width
   return {
@@ -198,34 +201,36 @@ function compass(width, generateFunc) {
   }
 }
 
-function compassWrap(width, height, generateFunc) {
+function compassWrap(width, height, generateFunc, fs = baseFontSize) {
   return {
     size = [width * 0.5, height]
     pos = [width * 0.25, height * 0.12]
     clipChildren = true
     children = [
-      compass(width * 0.5, generateFunc)
+      compass(width * 0.5, generateFunc, fs)
       {
         rendObj = ROBJ_SOLID
         color = baseColor
         size = [baseLineWidth * 3.0, ph(4)]
-        pos = [width * 0.25 - baseLineWidth, baseFontSize + baseLineWidth * 10]
+        pos = [width * 0.25 - baseLineWidth, fs + baseLineWidth * 10]
       }
     ]
   }
 }
 
-let compassVal = @(){
-  size = const [pw(8), ph(8)]
-  pos = const [pw(46), ph(9)]
-  watch = CompassInt
-  rendObj = ROBJ_TEXT
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  color = baseColor
-  font = Fonts.ah64
-  fontSize = baseFontSize * 1.4
-  text = CompassInt.get().tostring()
+function compassVal(fs) {
+  return @(){
+    size = const [pw(8), ph(8)]
+    pos = const [pw(46), ph(9)]
+    watch = CompassInt
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    color = baseColor
+    font = Fonts.ah64
+    fontSize = fs * 1.4
+    text = CompassInt.get().tostring()
+  }
 }
 
 const rpmLimitBox = {
@@ -236,34 +241,36 @@ const rpmLimitBox = {
   borderWidth = baseLineWidth
   borderRadius = hdpx(5)
 }
-let engineTorq = @(){
-  watch = Rpm
-  size = const [pw(10), ph(6)]
-  pos = const [pw(5), ph(13)]
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  rendObj = ROBJ_TEXT
-  color = baseColor
-  font = Fonts.ah64
-  fontSize = baseFontSize * 1.2
-  text = string.format("%d%%", Rpm.get())
-  children = Rpm.get() >= 98 ? rpmLimitBox : null
+function engineTorq(fs) {
+  return @(){
+    watch = Rpm
+    size = const [pw(10), ph(6)]
+    pos = const [pw(5), ph(13)]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_TEXT
+    color = baseColor
+    font = Fonts.ah64
+    fontSize = fs * 1.2
+    text = string.format("%d%%", Rpm.get())
+    children = Rpm.get() >= 98 ? rpmLimitBox : null
+  }
 }
 
-function angleTxt(num, isLeft, x = 0, y = 0) {
+function angleTxt(num, isLeft, fs, x = 0, y = 0) {
   return {
     pos = [x, y]
     rendObj = ROBJ_TEXT
     vplace = num < 0 ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = num > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
-    fontSize = baseFontSize
+    fontSize = fs
     font = Fonts.ah64
     text = abs(num).tostring()
   }
 }
 
-function generatePitchLine(num) {
+function generatePitchLine(num, fs = baseFontSize) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 10)
   return {
@@ -279,7 +286,7 @@ function generatePitchLine(num) {
       commands = [
         [VECTOR_LINE, -50, 0, 150, 0]
       ]
-      children = [angleTxt(-10, true, pw(-32)), angleTxt(-10, false, pw(32))]
+      children = [angleTxt(-10, true, fs, pw(-32)), angleTxt(-10, false, fs, pw(32))]
     } : {
       size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
@@ -296,18 +303,18 @@ function generatePitchLine(num) {
         (num < 0 ? [VECTOR_LINE, 77, 0, 70, 0] : []),
         [VECTOR_LINE, 47, 50, 53, 50]
       ]
-      children = newNum <= 90 ? [angleTxt(newNum, true, pw(-25)), angleTxt(newNum, false, pw(25))] : null
+      children = newNum <= 90 ? [angleTxt(newNum, true, fs, pw(-25)), angleTxt(newNum, false, fs, pw(25))] : null
     }
   }
 }
 
-function pitch(width, height, generateFunc) {
+function pitch(width, height, generateFunc, fs = baseFontSize) {
   const step = 10.0
   let children = []
 
   for (local i = 90.0 / step; i >= -90.0 / step; --i) {
     let num = (i * step).tointeger()
-    children.append(generateFunc(num))
+    children.append(generateFunc(num, fs))
   }
 
   return {
@@ -398,15 +405,17 @@ let flyPath = {
 }
 
 let barAltValue = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
-let barAltitude = @(){
-  watch = barAltValue
-  size = SIZE_TO_CONTENT
-  pos = const [pw(85), ph(14)]
-  rendObj = ROBJ_TEXT
-  color = baseColor
-  font = Fonts.ah64
-  fontSize = baseFontSize * 1.2
-  text = barAltValue.get().tostring()
+function barAltitude(fs) {
+  return @(){
+    watch = barAltValue
+    size = SIZE_TO_CONTENT
+    pos = const [pw(85), ph(14)]
+    rendObj = ROBJ_TEXT
+    color = baseColor
+    font = Fonts.ah64
+    fontSize = fs * 1.2
+    text = barAltValue.get().tostring()
+  }
 }
 
 let showAltitudeBar = Computed(@() Altitude.get() <= 60.96)
@@ -454,21 +463,23 @@ let climbSpeedGrid = @(){
 
 let radarAltVisible = Computed(@() Altitude.get() <= 435.2)
 let altValue = Computed(@() (Altitude.get() * metrToFeet < 50.0 ? Altitude.get() * metrToFeet : Altitude.get() * metrToFeet * 0.1).tointeger())
-let altitudeText = @() {
-  watch = radarAltVisible
-  size = FLEX
-  children = radarAltVisible.get() ? @(){
-    watch = altValue
-    size = const [pw(8), ph(4)]
-    pos = const [pw(81), ph(48.5)]
-    rendObj = ROBJ_TEXT
-    color = baseColor
-    halign = ALIGN_RIGHT
-    valign = ALIGN_CENTER
-    font = Fonts.ah64
-    fontSize = baseFontSize
-    text = (Altitude.get() * metrToFeet < 50.0 ? altValue.get() : altValue.get() * 10).tostring()
-  } : null
+function altitudeText(fs) {
+  return @() {
+    watch = radarAltVisible
+    size = FLEX
+    children = radarAltVisible.get() ? @(){
+      watch = altValue
+      size = const [pw(8), ph(4)]
+      pos = const [pw(81), ph(48.5)]
+      rendObj = ROBJ_TEXT
+      color = baseColor
+      halign = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      font = Fonts.ah64
+      fontSize = fs
+      text = (Altitude.get() * metrToFeet < 50.0 ? altValue.get() : altValue.get() * 10).tostring()
+    } : null
+  }
 }
 
 function climbSpeedMark(width, height){
@@ -504,70 +515,76 @@ let altitudeBar = @(){
   } : null
 }
 
-let lowAlt = @(){
-  watch = showAltitudeBar
-  size = FLEX
-  children = showAltitudeBar.get() ? {
-    rendObj = ROBJ_TEXT
-    size = SIZE_TO_CONTENT
-    pos = const [pw(83), ph(54)]
-    color = Color(255, 0, 0)
-    font = Fonts.ah64
-    fontSize = baseFontSize * 1.2
-    text = "LO"
-  } : null
+function lowAlt(fs) {
+  return @(){
+    watch = showAltitudeBar
+    size = FLEX
+    children = showAltitudeBar.get() ? {
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      pos = const [pw(83), ph(54)]
+      color = Color(255, 0, 0)
+      font = Fonts.ah64
+      fontSize = fs * 1.2
+      text = "LO"
+    } : null
+  }
 }
 
-function climbSpeed(width, height) {
+function climbSpeed(width, height, fs) {
   return {
     size = FLEX
     children = [
       climbSpeedGrid
-      altitudeText
+      altitudeText(fs)
       climbSpeedMark(width, height)
       altitudeBar
-      lowAlt
+      lowAlt(fs)
     ]
   }
 }
 
 let speedVal = Computed(@() (Tas.get() * mpsToKnots).tointeger())
-let speed = @(){
-  watch = [speedVal, isHoverMode]
-  size = const [pw(8), ph(4.5)]
-  pos = const [pw(8), ph(48)]
-  rendObj = ROBJ_TEXT
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  color = baseColor
-  font = Fonts.ah64
-  fontSize = baseFontSize * 1.2
-  text = speedVal.get().tointeger()
-  children = speedVal.get() >= 210 || isHoverMode.get() ? {
-    size = const [pw(150), ph(150)]
-    rendObj = ROBJ_BOX
-    fillColor = Color(0, 0, 0, 0)
-    borderColor = isHoverMode.get() ? baseColor : Color(255, 0, 0)
-    borderWidth = baseLineWidth
-    borderRadius = hdpx(5)
-  } : null
+function speed(fs) {
+  return @(){
+    watch = [speedVal, isHoverMode]
+    size = const [pw(8), ph(4.5)]
+    pos = const [pw(8), ph(48)]
+    rendObj = ROBJ_TEXT
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    color = baseColor
+    font = Fonts.ah64
+    fontSize = fs * 1.2
+    text = speedVal.get().tointeger()
+    children = speedVal.get() >= 210 || isHoverMode.get() ? {
+      size = const [pw(150), ph(150)]
+      rendObj = ROBJ_BOX
+      fillColor = Color(0, 0, 0, 0)
+      borderColor = isHoverMode.get() ? baseColor : Color(255, 0, 0)
+      borderWidth = baseLineWidth
+      borderRadius = hdpx(5)
+    } : null
+  }
 }
 
 let OverloadVisible = Computed(@() Overload.get() >= 2.0)
 let OverloadVal = Computed(@() (Overload.get() * 10.0).tointeger())
-let overload = @(){
-  watch = OverloadVisible
-  size = FLEX
-  children = OverloadVisible.get() ? @(){
-    watch = OverloadVal
-    size = SIZE_TO_CONTENT
-    pos = const [pw(8), ph(54.5)]
-    rendObj = ROBJ_TEXT
-    color = Color(255, 255, 255)
-    font = Fonts.ah64
-    fontSize = baseFontSize * 1.2
-    text = string.format("%.1fG", OverloadVal.get() * 0.1)
-  } : null
+function overload(fs) {
+  return @(){
+    watch = OverloadVisible
+    size = FLEX
+    children = OverloadVisible.get() ? @(){
+      watch = OverloadVal
+      size = SIZE_TO_CONTENT
+      pos = const [pw(8), ph(54.5)]
+      rendObj = ROBJ_TEXT
+      color = Color(255, 255, 255)
+      font = Fonts.ah64
+      fontSize = fs * 1.2
+      text = string.format("%.1fG", OverloadVal.get() * 0.1)
+    } : null
+  }
 }
 
 let tvvVisible = Computed(@() Tas.get() * mpsToKnots >= 5.0)
@@ -657,46 +674,50 @@ let engineTemperature0 = EngineTemperature[0]
 let engineTemperature1 = EngineTemperature[1]
 let engineTempVisible = Computed(@() engineTemperature0.get() > 807 || engineTemperature1.get() > 807)
 let engineTempVal = Computed(@() max(engineTemperature0.get(), engineTemperature1.get()).tointeger())
-let engineTemp = @(){
-  watch = engineTempVisible
-  size = FLEX
-  children = engineTempVisible.get() ? @(){
-    watch = engineTempVal
-    size = SIZE_TO_CONTENT
-    pos = const [pw(6), ph(20)]
-    rendObj = ROBJ_TEXT
-    color = Color(255, 200, 0)
-    font = Fonts.ah64
-    fontSize = baseFontSize * 1.2
-    text = string.format("%dC", engineTempVal.get())
-  } : null
+function engineTemp(fs) {
+  return @(){
+    watch = engineTempVisible
+    size = FLEX
+    children = engineTempVisible.get() ? @(){
+      watch = engineTempVal
+      size = SIZE_TO_CONTENT
+      pos = const [pw(6), ph(20)]
+      rendObj = ROBJ_TEXT
+      color = Color(255, 200, 0)
+      font = Fonts.ah64
+      fontSize = fs * 1.2
+      text = string.format("%dC", engineTempVal.get())
+    } : null
+  }
 }
 
 function fltPage(pos, size) {
+  let blk = CustomPagesBlk.get()?["ah64Flt"]
+  let fs = (blk?.fontSize ?? baseFontSize).tointeger()
   return {
     size
     pos
     children = [
-      buttons
-      compassWrap(size[0], size[1], generateCompassMark)
-      compassVal
-      engineTorq
+      buttons(fs)
+      compassWrap(size[0], size[1], generateCompassMark, fs)
+      compassVal(fs)
+      engineTorq(fs)
       {
         size = const [pw(40), ph(50)]
         pos = [pw(30), ph(25)]
         clipChildren = true
-        children = pitch(size[0], size[1], generatePitchLine)
+        children = pitch(size[0], size[1], generatePitchLine, fs)
       }
       flyPath
       bankAngle
-      barAltitude
-      climbSpeed(size[0], size[1])
-      speed
-      overload
+      barAltitude(fs)
+      climbSpeed(size[0], size[1], fs)
+      speed(fs)
+      overload(fs)
       tvvMark(size[0], size[1])
       skidBall
       turnRate
-      engineTemp
+      engineTemp(fs)
     ]
   }
 }

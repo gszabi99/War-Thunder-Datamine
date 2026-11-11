@@ -10,10 +10,11 @@ from "%scripts/options/consoleMode.nut" import showConsoleButtons
 from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
 from "%scripts/missions/modificationTutorial.nut" import needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial
 from "%scripts/misCustomRules/missionCustomState.nut" import getCurMissionRules
-from "%scripts/weaponry/modificationInfo.nut" import getModificationByName
+from "%scripts/weaponry/modificationInfo.nut" import getModificationByName, isPremiumListMod
 from "%scripts/items/itemsManagerModule.nut" import getInventoryList
 from "%scripts/unit/unitStatus.nut" import isUnitUsable
 from "%scripts/unit/unitMrankSelectionState.nut" import isMrankLockableItem
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "%scripts/discounts/discountUtils.nut" import getDiscountByPath
 from "%scripts/weaponry/weaponryPresets.nut" import EMPTY_PRESET_NAME
 from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
@@ -367,6 +368,15 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.priceText = notAvailableText
     res.spawnScoreCost = notAvailableText
     res.nameTextWithPrice = "".concat(res.nameText, loc("ui/parentheses/space", { text = notAvailableText }))
+  }
+
+  if (params?.mrankBrPreview && visualItem.type == weaponsItem.modification && !isPremiumListMod(visualItem)) {
+    if (isMrankLockableItem(visualItem))
+      res.priceText = format("%.1f", calcBattleRatingFromRank(params.mrankBrPreview.baseMrank + visualItem.addMrank))
+    else
+      res.priceText = ""
+    res.hideProgressBlock = true
+    res.isShowDiscount = false
   }
 
   res.isShowPrice = res.priceText != "" && !params?.hideSpawnScoreCost

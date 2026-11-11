@@ -15,7 +15,7 @@ from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
 from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_child, move_mouse_on_obj, getObjValidIndex
 from "%scripts/weaponry/modsTree.nut" import getModsTreeSize, generateModsTree, generateModsBgElems, isModificationInTree, getNextTierModsCount
-from "%scripts/weaponry/modificationInfo.nut" import canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium, isModClassExpendable, getModificationByName
+from "%scripts/weaponry/modificationInfo.nut" import canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium, isModClassExpendable, isPremiumListMod, getModificationByName
   , findAnyNotResearchedMod, getModificationBulletsGroup
 from "%scripts/unit/unitWeaponryInfo.nut" import isUnitHaveSecondaryWeapons
 from "%scripts/weaponry/itemInfo.nut" import getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl, isCanBeDisabled, isModInResearch
@@ -74,7 +74,7 @@ from "string" import format
 from "chardResearch" import shopIsModificationEnabled
 from "math" import floor
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
-from "dagor.workcycle" import defer
+from "dagor.workcycle" import defer, setInterval, clearTimer
 from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen, shop_set_researchable_unit_module
   , set_auto_buy_modifications, shop_get_researchable_module_name
@@ -195,6 +195,10 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   needHideSlotbar = false
   mrankHoverDelta = null
   mrankDeltaIds = null
+  isMrankBrPreviewActive = false
+  mrankBrPreviewWatchCb = null
+  mrankRowObj = null
+  mrankComboObj = null
 
   shouldBeRestoredOnMainMenu = false
   isHeaderHidden = false
@@ -384,9 +388,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.premiumModsList = []
     foreach (mod in this.air.getModifications())
       if ((!this.researchMode || canResearchMod(this.air, mod))
-          && (isModClassPremium(mod)
-              || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
-          ))
+          && isPremiumListMod(mod))
             this.premiumModsList.append(mod)
 
     this.lastBullets = []
@@ -444,6 +446,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.mrankHoverDelta = null
 
     this.initMainParams()
+    this.updateMrankBrPreview()
     if (this.needHideSlotbar)
       this.guiScene.performDelayed(this, function() {
         this.destroySlotbar()
@@ -989,6 +992,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       researchFinished = this?.researchBlock.prevMod == item.name && this.lastResearchMod == null
       isModeEnabledFn = @() shopIsModificationEnabled(this.air.name, item.name)
       mrankDelta = this.mrankHoverDelta
+      mrankBrPreview = this.isMrankBrPreviewActive ? { baseMrank = this.air.getEconomicRank(currentEdiff) } : null
     })
   }
 
@@ -1312,8 +1316,46 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.applyMrankLocks()
   }
 
+  function calcMrankBrPreviewActive() {
+    let rowObj = this.mrankRowObj
+    let comboObj = this.mrankComboObj
+    if ((checkObj(rowObj) && rowObj.isHovered()) || (checkObj(comboObj) && comboObj.isHovered()))
+      return true
+    local isPopupOpen = false
+    if (checkObj(comboObj) && comboObj.childrenCount() > 0)
+      isPopupOpen = comboObj.getChild(0).getParent().tag == "listBox"
+    return isPopupOpen
+  }
+
+  function updateMrankBrPreview(_obj = null) {
+    if (!this?.isValid())
+      return
+    let isActive = this.calcMrankBrPreviewActive()
+    if (isActive == this.isMrankBrPreviewActive)
+      return
+    this.isMrankBrPreviewActive = isActive
+    if (isActive) {
+      if (this.mrankBrPreviewWatchCb == null) {
+        let cb = this.updateMrankBrPreview.bindenv(this)
+        this.mrankBrPreviewWatchCb = cb
+        setInterval(0.25, cb)
+      }
+    }
+    else if (this.mrankBrPreviewWatchCb != null) {
+      clearTimer(this.mrankBrPreviewWatchCb)
+      this.mrankBrPreviewWatchCb = null
+    }
+    foreach (idx, item in this.items) {
+      let resolvedItem = getBundleCurItem(this.air, item) || item
+      if (resolvedItem.type != weaponsItem.modification || isPremiumListMod(resolvedItem))
+        continue
+      this.updateItem(idx)
+    }
+  }
+
   function updateMrankSelection() {
     let rowObj = this.scene.findObject("mrank_selection_row")
+    this.mrankRowObj = rowObj
     if (this.researchMode) {
       rowObj.show(false)
       this.mainModsObj["margin-bottom"] = "0"
@@ -1337,7 +1379,9 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       id = "mrank_selection"
       funcName = "onMrankSelect"
       hoverFuncName = "onMrankOptionHover"
+      popupEnterFuncName = "updateMrankBrPreview"
       popupLeaveFuncName = "onMrankListUnhover"
+      comboHoverFuncName = "updateMrankBrPreview"
       values = deltas.map(@(delta, idx) {
         valueId = delta.tostring()
         text = format("%.1f", calcBattleRatingFromRank(baseMrank + delta))
@@ -1347,13 +1391,15 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     let data = handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("mrank_selection_combo_block"), data, data.len(), this)
     let comboObj = this.scene.findObject("mrank_selection")
+    this.mrankComboObj = comboObj
 
     let isUnlocked = deltas.len() > 1
     comboObj.enable(isUnlocked)
-    let tooltipText = isUnlocked ? "" : loc("modification/mrankSelectLockedTooltip")
+    let tooltipText = isUnlocked ? loc("modification/mrankSelectTooltip") : loc("modification/mrankSelectLockedTooltip")
     let labelObj = this.scene.findObject("mrank_selection_label")
     labelObj.setValue("".concat(loc("shop/battle_rating"), loc("ui/colon")))
     rowObj.tooltip = tooltipText
+    comboObj.tooltip = tooltipText
     rowObj.show(true)
     this.mainModsObj["margin-bottom"] = "1@additionalButtonHeight"
     this.applyMrankLocks()
@@ -1376,6 +1422,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
       setSelectedUnitAddMrank(unitName, newDelta)
       this.mrankHoverDelta = null
       this.applyMrankLocks()
+      this.updateMrankBrPreview()
       let revertMrankSelect = function(_result) {
         resetSelectedUnitAddMrank(unitName)
         if (!this?.isValid())
@@ -2383,6 +2430,10 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     && findAnyNotResearchedMod(this.air) != null
 
   function onDestroy() {
+    if (this.mrankBrPreviewWatchCb != null) {
+      clearTimer(this.mrankBrPreviewWatchCb)
+      this.mrankBrPreviewWatchCb = null
+    }
     if (this.needRestoreResearchMode() || this.shouldBeRestoredOnMainMenu)
       handlersManager.requestHandlerRestore(this, MainMenu)
 

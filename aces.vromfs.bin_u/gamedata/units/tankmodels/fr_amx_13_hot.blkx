@@ -2426,10 +2426,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -3026,7 +3022,15 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
+          "barrel": "bone_gun_barrel",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "turret_hydraulics_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3146,7 +3150,19 @@
           ],
           "dependOnParent": false,
           "yawParentScale": 0.0,
-          "pitchParentScale": 0.9
+          "pitchParentScale": 0.9,
+          "verDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3372,7 +3388,15 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
+                "barrel": "bone_gun_barrel",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "turret_hydraulics_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3492,7 +3516,19 @@
                 ],
                 "dependOnParent": false,
                 "yawParentScale": 0.0,
-                "pitchParentScale": 0.9
+                "pitchParentScale": 0.9,
+                "verDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [

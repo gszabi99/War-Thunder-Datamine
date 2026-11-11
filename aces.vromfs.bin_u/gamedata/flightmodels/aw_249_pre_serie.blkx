@@ -1613,7 +1613,18 @@
             0.33
           ],
           "page": {
-            "type": "rwr"
+            "type": "rwr",
+            "hideBackground": true,
+            "grid": {
+              "scale": 0.4,
+              "lineWidthScale": 0.4,
+              "fontScale": 0.4
+            },
+            "object": {
+              "scale": 0.6,
+              "lineWidthScale": 0.4,
+              "fontScale": 0.4
+            }
           }
         },
         {
@@ -1731,7 +1742,8 @@
           ],
           "page": {
             "type": "custom",
-            "pageName": "ah64Flt"
+            "pageName": "ah64Flt",
+            "fontSize": 12.0
           }
         },
         {
@@ -1756,7 +1768,8 @@
           ],
           "page": {
             "type": "custom",
-            "pageName": "ah64Flt"
+            "pageName": "ah64Flt",
+            "fontSize": 12.0
           }
         }
       ]
@@ -2163,7 +2176,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x2",
+            "iconType": "atgm_type_spike_er_mitl_x2",
             "name": "spike_x2",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2176,7 +2189,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x4",
+            "iconType": "atgm_type_spike_er_mitl_x4",
             "name": "spike_x4",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2256,7 +2269,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x2",
+            "iconType": "atgm_type_spike_er_mitl_x2",
             "name": "spike_x2",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2269,7 +2282,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x4",
+            "iconType": "atgm_type_spike_er_mitl_x4",
             "name": "spike_x4",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2337,7 +2350,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x2",
+            "iconType": "atgm_type_spike_er_mitl_x2",
             "name": "spike_x2",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2350,7 +2363,7 @@
             }
           },
           {
-            "iconType": "atgm_type_spike_x4",
+            "iconType": "atgm_type_spike_er_mitl_x4",
             "name": "spike_x4",
             "reqModification": "atgm_spike_x4_mitl",
             "Weapon": {
@@ -2425,6 +2438,19 @@
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/containers/spike_x4_default.blk",
+              "emitter": "spike_launcher_004",
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_mitl_x4",
+            "name": "spike_x4",
+            "reqModification": "atgm_spike_x4_mitl",
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/containers/spike_x4.blk",
               "emitter": "spike_launcher_004",
               "dragCx": 0.01
             }
@@ -3029,89 +3055,6 @@
         }
       },
       {
-        "avionics": "counterMeasures",
-        "health": {
-          "dm": "ircm1_dm",
-          "killHp": 0.01
-        },
-        "damage": {
-          "dm": "ircm1_dm",
-          "damageTypeHitEffect": [
-            {
-              "damageType": "shatter",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 11.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.2
-                },
-                {
-                  "damage": 35.0,
-                  "prob": 0.4
-                }
-              ]
-            },
-            {
-              "damageType": "generic",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            },
-            {
-              "damageType": "explosion",
-              "hitEffect": [
-                {
-                  "damage": 5.0,
-                  "prob": 0.05
-                },
-                {
-                  "damage": 12.0,
-                  "prob": 0.1
-                },
-                {
-                  "damage": 20.0,
-                  "prob": 0.3
-                },
-                {
-                  "damage": 40.0,
-                  "prob": 0.5
-                },
-                {
-                  "damage": 100.0,
-                  "prob": 0.7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
         "avionics": "indicators",
         "health": {
           "dm": "electronic_block4_dm",
@@ -3187,7 +3130,10 @@
         }
       },
       {
-        "avionics": "sensors",
+        "avionics": [
+          "sensors",
+          "counterMeasures"
+        ],
         "health": {
           "dm": "electronic_block3_dm",
           "killHp": 0.01
@@ -3452,6 +3398,7 @@
           "Module": {
             "turretNodeName": "emtr_ircm1",
             "emitter": "emtr_ircm1",
+            "dmPart": "ircm1_dm",
             "horAngles": [
               -180.0,
               180.0
@@ -3491,7 +3438,8 @@
                 "size": [
                   0.05,
                   0.5
-                ]
+                ],
+                "ally": true
               }
             }
           }

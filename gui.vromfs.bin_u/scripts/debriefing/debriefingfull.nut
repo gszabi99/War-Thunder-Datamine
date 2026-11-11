@@ -236,6 +236,26 @@ debriefingRows = [
     text = "multiplayer/sector_captures"
     icon = "icon/mpstats/captureZone"
   }
+  { id = "SuppliesDelivery"
+    rowType = "num"
+    showByModes = isGameModeVersus
+    text = "multiplayer/supplies_deliveries"
+  }
+  { id = "SuppliesReturn"
+    rowType = "num"
+    showByModes = isGameModeVersus
+    text = "multiplayer/supplies_returns"
+  }
+  { id = "SuppliesDestroy"
+    rowType = "num"
+    showByModes = isGameModeVersus
+    text = "multiplayer/supplies_destroyed"
+  }
+  { id = "SuppliesEscort"
+    rowType = "num"
+    showByModes = isGameModeVersus
+    text = "multiplayer/supplies_escorts"
+  }
   "Landings"
   "Takeoffs"
   { id = "MissileEvade"

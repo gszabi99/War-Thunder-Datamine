@@ -5,6 +5,7 @@ require math.base
 require Mission
 require Unit
 require DagorDataBlock
+require level
 require %appGame.wt_events
 require %game.unit.unit_events
 
@@ -36,6 +37,11 @@ def unit_spawn_and_route_assign_es(evt : Event;
     directionToNextPoint.y = 0.
     if length(directionToNextPoint) > 0.01
       spawnHeading = normalize(directionToNextPoint)
+  if unit__ref.unit.isShip
+    if !unit__ref.unit.isSubmarine
+      spawnPointTm[3].y = get_water_level()
+  elif unit__ref.unit.isGroundModel
+    drop_object_on_ground_normal(spawnPointTm, true, 3000.)
   let up = float3(0., 1., 0.)
   *unit__ref.unit |> teleportToPos(false, spawnPointTm[3])
   unit__ref.unit |> setOrientation(spawnHeading, up)

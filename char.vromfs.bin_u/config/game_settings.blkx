@@ -3432,12 +3432,7 @@
       "condition": ""
     },
     "loginGuard": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER",
-        "perm_feature.debug"
-      ]
+      "condition": ""
     },
     "DamageControl": {
       "condition": ""
@@ -3548,12 +3543,7 @@
       ]
     },
     "optionDlssNr": {
-      "condition": [
-        "role_GAIJIN",
-        "role_DEVELOPER",
-        "role_TESTER",
-        "wt_open_dev_promo_access"
-      ]
+      "condition": ""
     },
     "optionConsolePreset": {
       "condition": [
@@ -3593,7 +3583,10 @@
       "condition": ""
     },
     "DynamicResolution": {
-      "condition": ""
+      "condition": [
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
     },
     "DevFeatures": {
       "condition": [

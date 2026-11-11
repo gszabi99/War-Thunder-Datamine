@@ -3984,15 +3984,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 53000000.0,
+      "Empty": 57000000.0,
       "momentOfInertia": [
         130.0,
         2900.0,
         1700.0
       ],
       "CenterOfGravity": [
-        3.7,
-        0.8,
+        1.0,
+        0.0,
         0.0
       ]
     },
@@ -4219,11 +4219,11 @@
     "headPos": [
       0.0,
       36.0,
-      -138.0
+      -158.0
     ],
     "headPosOnShooting": [
-      45.0,
-      38.0,
+      22.0,
+      41.0,
       0.0
     ],
     "detectionHeight": 50.0
@@ -12608,12 +12608,12 @@
       154.0,
       1185.8
     ],
-    "waterMassVel": -400000.0,
-    "waterMassMult": 400.0,
-    "additionalWaterDeathThreshold": 60000000.0,
+    "waterMassVel": -236081.0,
+    "waterMassMult": 472.0,
+    "additionalWaterDeathThreshold": 69130430.0,
     "additionalWaterShouldDiePercent": 0.23,
     "fatalBreachDrownTime": 45.0,
-    "maxHeelingAngle": 16.0,
+    "maxHeelingAngle": 22.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
@@ -12622,7 +12622,7 @@
     "criticalTrimmingAnglePercent": 0.75,
     "maxCriticalTrimmingTime": 5.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.11,
+    "sideCenterOfMassOffsetPercent": 0.208,
     "minCaliberToBreach": 0.2,
     "minExplRadiusToBreach": 0.5,
     "deadCoverCounterfloodingRel": 0.5,
@@ -12632,50 +12632,38 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.15,
+        "weight": 0.1,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.6,
-        "maxWaterAlive": 1.0,
-        "innerParts": {
-          "part": [
-            {
-              "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.3
-            },
-            {
-              "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.5
-            }
-          ]
-        }
+        "weight": 0.2,
+        "maxWaterAlive": 1.0
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.6,
+        "weight": 0.7,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
-              "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.3
-            },
-            {
-              "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.5
-            },
-            {
               "partNo": "ammunition_storage_aux_01_dm",
               "critWaterLevel": 0.5
+            },
+            {
+              "partNo": "ammunition_storage_charges_01_dm",
+              "critWaterLevel": 0.53
+            },
+            {
+              "partNo": "ammunition_storage_shells_01_dm",
+              "critWaterLevel": 0.34
             }
           ]
         }
       },
       {
         "part": "cover_04_dm",
-        "weight": 0.5,
+        "weight": 0.91,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -12692,19 +12680,23 @@
               "critWaterLevel": 0.5
             },
             {
-              "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.3
+              "partNo": "ammunition_storage_charges_02_dm",
+              "critWaterLevel": 0.56
             },
             {
-              "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.3
+              "partNo": "ammunition_storage_shells_02_dm",
+              "critWaterLevel": 0.38
+            },
+            {
+              "partNo": "fire_control_room_01_dm",
+              "critWaterLevel": 0.37
             }
           ]
         }
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.7,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -12729,19 +12721,15 @@
               "critWaterLevel": 0.4
             },
             {
-              "partNo": "engine_room_03_dm",
-              "critWaterLevel": 0.3
-            },
-            {
-              "partNo": "engine_room_04_dm",
-              "critWaterLevel": 0.3
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.38
             }
           ]
         }
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.8,
+        "weight": 0.68,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -12758,62 +12746,64 @@
               "critWaterLevel": 0.5
             },
             {
-              "partNo": "ammunition_storage_aux_14_dm",
-              "critWaterLevel": 0.5
-            },
-            {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.3
+              "critWaterLevel": 0.28
             },
             {
-              "partNo": "transmission_03_dm",
-              "critWaterLevel": 0.3
+              "partNo": "engine_room_02_dm",
+              "critWaterLevel": 0.38
             }
           ]
         }
       },
       {
         "part": "cover_07_dm",
-        "weight": 1.0,
+        "weight": 0.67,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
-              "partNo": "ammunition_storage_shells_03_dm",
-              "critWaterLevel": 0.3
-            },
-            {
-              "partNo": "ammunition_storage_charges_03_dm",
-              "critWaterLevel": 0.5
-            },
-            {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.3
+              "critWaterLevel": 0.28
+            },
+            {
+              "partNo": "engine_room_03_dm",
+              "critWaterLevel": 0.38
+            },
+            {
+              "partNo": "transmission_03_dm",
+              "critWaterLevel": 0.28
             }
           ]
         }
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.8,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": [
-            {
-              "partNo": "ammunition_storage_shells_04_dm",
-              "critWaterLevel": 0.3
-            },
-            {
-              "partNo": "ammunition_storage_charges_04_dm",
-              "critWaterLevel": 0.5
-            }
-          ]
+          "part": {
+            "partNo": "engine_room_04_dm",
+            "critWaterLevel": 0.37
+          }
         }
       },
       {
         "part": "cover_09_dm",
-        "weight": 0.2,
-        "maxWaterAlive": 1.0
+        "weight": 0.15,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "ammunition_storage_charges_03_dm",
+              "critWaterLevel": 0.58
+            },
+            {
+              "partNo": "ammunition_storage_shells_03_dm",
+              "critWaterLevel": 0.39
+            }
+          ]
+        }
       }
     ]
   },

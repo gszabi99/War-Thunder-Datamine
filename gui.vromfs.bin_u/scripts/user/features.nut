@@ -258,7 +258,7 @@ let defaults = Watched({
 
   optionGFXAPIVulkan = true
   optionConsolePreset = true
-  DynamicResolution = true
+  DynamicResolution = disableNetwork
   ReplaySystemWindow = true
   DevFeatures = true
 })

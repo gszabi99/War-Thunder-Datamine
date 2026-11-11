@@ -26,6 +26,7 @@ from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
+from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
 
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -552,7 +553,7 @@ let Base = class {
   function isUnitEnabledBySessionRank(unit) {
     if (!(this.missionParams?.disableUnitsOutOfSessionRank ?? false) || (unit == null))
       return true
-    return unit.getEconomicRank(get_mission_difficulty_int()) >= this.getMinSessionRank()
+    return getEffectiveMrank(unit, get_mission_difficulty_int()) >= this.getMinSessionRank()
   }
 
   isAllowSpareInMission = @() this.missionParams?.allowSpare ?? false

@@ -17,9 +17,16 @@ ComboBox {
   <<#funcName>>
     on_select:t='<<funcName>>'
   <</funcName>>
+  <<#popupEnterFuncName>>
+    on_popup_mouse_enter:t='<<popupEnterFuncName>>'
+  <</popupEnterFuncName>>
   <<#popupLeaveFuncName>>
     on_popup_mouse_leave:t='<<popupLeaveFuncName>>'
   <</popupLeaveFuncName>>
+  <<#comboHoverFuncName>>
+    on_hover:t='<<comboHoverFuncName>>'
+    on_unhover:t='<<comboHoverFuncName>>'
+  <</comboHoverFuncName>>
 
   <<#values>>
     option {

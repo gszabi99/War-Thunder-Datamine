@@ -124,8 +124,8 @@ def human_cam_apply_reye_rotation(info : UpdateStageInfoAct;
   
   let reyeFwd = reyeTm[1]
   let reyeUp = reyeTm[0]
-  let camLocalFwd = float3(reyeFwd.z, reyeFwd.x, reyeFwd.y)
-  let camLocalUp = float3(reyeUp.z, reyeUp.x, reyeUp.y)
+  let camLocalFwd = float3(-reyeFwd.z, reyeFwd.x, reyeFwd.y)
+  let camLocalUp = float3(-reyeUp.z, reyeUp.x, reyeUp.y)
   query(bindedCamera) <| $ [es] (var transform aka camera_transform : float3x4&)
     let fwd = rotate(camera_transform, camLocalFwd)
     let up = rotate(camera_transform, camLocalUp)

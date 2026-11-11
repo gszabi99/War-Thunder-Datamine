@@ -677,10 +677,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -2282,7 +2278,19 @@
           "gun": "bone_rocket_37",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "verDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "horDriveDm": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -2436,13 +2444,12 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "fire_control_system_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "fire_control_system_dm"
-          ],
-          "shootingDmPart": "fire_control_system_dm"
+            "turret_hydraulics_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -4440,7 +4447,19 @@
                 "gun": "bone_rocket_37",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret"
+                "rotatedTurret": "bone_turret",
+                "verDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "horDriveDm": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ],
+                "shootingDmPart": [
+                  "fire_control_system_dm",
+                  "fire_control_system_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4594,13 +4613,12 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "fire_control_system_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "fire_control_system_dm"
-                ],
-                "shootingDmPart": "fire_control_system_dm"
+                  "turret_hydraulics_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4914,15 +4932,15 @@
       1.28
     ],
     "lightInfluenceSize": [
-      0.5,
       0.3,
-      0.5
+      0.15,
+      0.2
     ],
     "innerLightSize": [
-      0.2,
-      1.0
+      0.15,
+      0.6
     ],
-    "innerLightBrightnessFalloff": 10.0,
+    "innerLightBrightnessFalloff": 6.0,
     "color": [
       0.8,
       0.0,

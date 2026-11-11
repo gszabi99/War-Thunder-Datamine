@@ -581,6 +581,7 @@
       "fireProtectionHp": 60.0,
       "armorThickness": 15.0,
       "turret_01_side_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 50.8,
         "hp": 270.0
       },
@@ -593,6 +594,7 @@
         "hp": 250.0
       },
       "turret_01_top_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 25.4,
         "hp": 250.0
       },
@@ -605,18 +607,22 @@
         "hp": 250.0
       },
       "turret_01_front_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 50.8,
         "hp": 250.0
       },
       "turret_02_front_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 38.1,
         "hp": 250.0
       },
       "turret_03_front_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 88.9,
         "hp": 250.0
       },
       "turret_04_front_dm": {
+        "armorClass": "CHA_tank",
         "armorThickness": 76.2,
         "hp": 250.0
       }
@@ -2639,23 +2645,6 @@
       }
     }
   },
-  "Effects": {
-    "waterSplashFx": "water_splash_small",
-    "sideSplashSpeedMult": 0.5,
-    "sideSplashUpDirMult": 0.4,
-    "sideSplashSpawnRate": 2.0,
-    "sideSplashNormalMult": 0.8,
-    "sideSplashemissionCurve": [
-      1.0,
-      0.0,
-      0.0
-    ],
-    "waterSplashFxBow": "water_splash_small_bow",
-    "bowSplashSpeedMult": 0.8,
-    "bowSplashUpDirMult": 0.5,
-    "bowSplashSpawnRate": 1.0,
-    "bowSplashNormalMult": 4.0
-  },
   "shipSinkingFx": {
     "emit": [
       {
@@ -2684,6 +2673,23 @@
       }
     ]
   },
+  "Effects": {
+    "waterSplashFx": "water_splash_small",
+    "sideSplashSpeedMult": 0.5,
+    "sideSplashUpDirMult": 0.4,
+    "sideSplashSpawnRate": 2.0,
+    "sideSplashNormalMult": 0.8,
+    "sideSplashemissionCurve": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "waterSplashFxBow": "",
+    "bowSplashSpeedMult": 0.8,
+    "bowSplashUpDirMult": 0.5,
+    "bowSplashSpawnRate": 1.0,
+    "bowSplashNormalMult": 4.0
+  },
   "optics": {
     "binoculars": "navy_binoculars"
   },
@@ -2696,7 +2702,6 @@
     "new_ship_engine": {
       "prevModification": "new_ship_screw"
     },
-    "75mm_us_m3_naval_he": {},
     "75mm_us_m3_naval_apcbc": {},
     "75mm_us_m3_naval_apcbc_ammo_pack": {},
     "12mm_usa_M2HB_universal": {},
@@ -2728,44 +2733,50 @@
       30.0,
       537.0
     ],
-    "waterMassVel": -6000.0,
-    "waterMassMult": 80.0,
-    "additionalWaterDeathThreshold": 100000.0,
+    "waterMassVel": -12661.0,
+    "waterMassMult": 158.0,
+    "additionalWaterDeathThreshold": 112554.0,
     "additionalWaterShouldDiePercent": 0.4,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 25.0,
+    "maxHeelingAngle": 13.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
-    "maxTrimmingAngle": 14.0,
+    "maxTrimmingAngle": 5.2,
     "maxTrimmingTime": 20.0,
     "criticalTrimmingAnglePercent": 0.75,
     "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.18
+    "sideCenterOfMassOffsetPercent": 0.033
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.85,
+        "weight": 0.86,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 1.0,
+        "weight": 0.94,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
-            "partNo": "transmission_01_dm",
-            "critWaterLevel": 0.3
+            "partNo": "engine_01_dm",
+            "critWaterLevel": 0.9
           }
         }
       },
       {
         "part": "compartment_03_dm",
         "weight": 1.0,
-        "maxWaterAlive": 1.0
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "transmission_01_dm",
+            "critWaterLevel": 0.31
+          }
+        }
       }
     ]
   },

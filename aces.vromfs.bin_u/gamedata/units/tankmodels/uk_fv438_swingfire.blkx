@@ -388,10 +388,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -1238,18 +1234,18 @@
         "aimForOperatedShell": true,
         "turret": {
           "head": "bone_turret_01",
-          "gun": "bone_gun_01"
-        },
-        "linkedAnimPart": {
-          "verNode": "bone_camera_gunner",
-          "verLimits": [
-            0.0,
-            90.0
-          ],
-          "verOriginLimits": [
-            -180.0,
-            180.0
-          ]
+          "gun": "bone_gun_01",
+          "linkedAnimPart": {
+            "verNode": "bone_camera_gunner",
+            "verLimits": [
+              0.0,
+              90.0
+            ],
+            "verOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -1299,10 +1295,7 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun_barrel_01",
-          "gunnerDm": [
-            "commander_dm",
-            "commander_dm"
-          ],
+          "gunnerDm": "commander_dm",
           "dependOnParent": false,
           "yawParentScale": 0.0,
           "pitchParentScale": 0.9
@@ -1354,10 +1347,7 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun_barrel_02",
-          "gunnerDm": [
-            "commander_dm",
-            "commander_dm"
-          ],
+          "gunnerDm": "commander_dm",
           "dependOnParent": false,
           "yawParentScale": 0.0,
           "pitchParentScale": 0.9
@@ -2499,18 +2489,18 @@
               "aimForOperatedShell": true,
               "turret": {
                 "head": "bone_turret_01",
-                "gun": "bone_gun_01"
-              },
-              "linkedAnimPart": {
-                "verNode": "bone_camera_gunner",
-                "verLimits": [
-                  0.0,
-                  90.0
-                ],
-                "verOriginLimits": [
-                  -180.0,
-                  180.0
-                ]
+                "gun": "bone_gun_01",
+                "linkedAnimPart": {
+                  "verNode": "bone_camera_gunner",
+                  "verLimits": [
+                    0.0,
+                    90.0
+                  ],
+                  "verOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -2560,10 +2550,7 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun_barrel_01",
-                "gunnerDm": [
-                  "commander_dm",
-                  "commander_dm"
-                ],
+                "gunnerDm": "commander_dm",
                 "dependOnParent": false,
                 "yawParentScale": 0.0,
                 "pitchParentScale": 0.9
@@ -2615,10 +2602,7 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun_barrel_02",
-                "gunnerDm": [
-                  "commander_dm",
-                  "commander_dm"
-                ],
+                "gunnerDm": "commander_dm",
                 "dependOnParent": false,
                 "yawParentScale": 0.0,
                 "pitchParentScale": 0.9

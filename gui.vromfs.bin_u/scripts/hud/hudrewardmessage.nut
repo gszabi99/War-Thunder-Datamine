@@ -282,6 +282,34 @@ enumsAddTypes(g_hud_reward_message, {
     priority = REWARD_PRIORITY.hit
   }
 
+  SUPPLIES_DELIVERY = {
+    code = EXP_EVENT_SUPPLIES_DELIVERY
+    locId = "exp_reasons/supplies_delivery"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.hit
+  }
+
+  SUPPLIES_RETURN = {
+    code = EXP_EVENT_SUPPLIES_RETURN
+    locId = "exp_reasons/supplies_return"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.hit
+  }
+
+  SUPPLIES_DESTROY = {
+    code = EXP_EVENT_SUPPLIES_DESTROY
+    locId = "exp_reasons/supplies_destroy"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.hit
+  }
+
+  SUPPLIES_ESCORT = {
+    code = EXP_EVENT_SUPPLIES_ESCORT
+    locId = "exp_reasons/supplies_escort"
+    viewClass = "kill"
+    priority = REWARD_PRIORITY.hit
+  }
+
 })
 
 return {

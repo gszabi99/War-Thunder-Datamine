@@ -488,10 +488,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -2181,8 +2177,22 @@
         "gun": "bone_gun",
         "gunnerDm": "gunner_dm",
         "rotatedTurret": "bone_turret",
-        "verDriveDm": "drive_turret_v_dm",
-        "horDriveDm": "drive_turret_h_dm"
+        "verDriveDm": [
+          "drive_turret_v_dm",
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
+        "horDriveDm": [
+          "drive_turret_h_dm",
+          "turret_hydraulics_dm",
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ],
+        "shootingDmPart": [
+          "fire_control_system_dm",
+          "fire_control_system_01_dm"
+        ]
       },
       "limits": {
         "yaw": [

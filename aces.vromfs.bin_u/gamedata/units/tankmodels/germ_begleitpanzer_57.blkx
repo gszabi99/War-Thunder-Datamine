@@ -457,10 +457,6 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "auxiliary_power_unit": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -2194,12 +2190,16 @@
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
-            "drive_turret_v_dm",
-            "turret_hydraulics_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ],
           "horDriveDm": [
-            "drive_turret_h_dm",
-            "turret_hydraulics_dm"
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "shootingDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
           ]
         },
         "limits": {
@@ -4360,15 +4360,15 @@
       1.07
     ],
     "lightInfluenceSize": [
-      0.5,
       0.3,
-      0.5
+      0.2,
+      0.2
     ],
     "innerLightSize": [
-      0.2,
-      1.0
+      0.1,
+      0.6
     ],
-    "innerLightBrightnessFalloff": 10.0,
+    "innerLightBrightnessFalloff": 6.0,
     "color": [
       0.8,
       0.0,

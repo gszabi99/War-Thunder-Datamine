@@ -74,6 +74,22 @@ let visibleRewards = [
     locId = "expEventScore/sectorCapture"
   }
   {
+    id = "eventSuppliesDelivery"
+    locId = "expEventScore/suppliesDelivery"
+  }
+  {
+    id = "eventSuppliesReturn"
+    locId = "expEventScore/suppliesReturn"
+  }
+  {
+    id = "eventSuppliesDestroy"
+    locId = "expEventScore/suppliesDestroy"
+  }
+  {
+    id = "eventSuppliesEscort"
+    locId = "expEventScore/suppliesEscort"
+  }
+  {
     id = "eventDestroyZone"
     locId = "expEventScore/destroyZone"
   }

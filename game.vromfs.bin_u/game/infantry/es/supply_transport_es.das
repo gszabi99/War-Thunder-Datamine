@@ -45,15 +45,12 @@ def private node_transfer_status(node_eid : EntityId; team : int) : SupplyNodeTr
           enemyStrongpoint = true
   return alliedStrongpoint && enemyStrongpoint ? SupplyNodeTransfer.UNDER_FIGHT : SupplyNodeTransfer.ALLOWED
 
-def private reward_player(var player : MPlayer; target_eid : EntityId; kind : SupplyRewardKind; score : int)
-  if score <= 0
-    return
-  inc_player_spawn_score(player, score)
-  if target_eid != INVALID_ENTITY_ID
-    send_net_event(target_eid, EventSupplyReward(kind = int(kind), score = score))
+def private award_unloader(unloader_eid : EntityId; amount : int)
+  let unloader = player_get_by_eid(unloader_eid)
+  if unloader != null
+    award_supplies_delivery(*unloader, amount)
 
-def private killer_player(killer_eid : EntityId; var target_eid : EntityId&) : MPlayer?
-  target_eid = killer_eid
+def private killer_player(killer_eid : EntityId) : MPlayer?
   let possessedByPlr = get_Eid(killer_eid, "possessedByPlr") ?? INVALID_ENTITY_ID
   if possessedByPlr != INVALID_ENTITY_ID
     return player_get_by_eid(possessedByPlr)
@@ -78,14 +75,17 @@ def private cargo_push(var source_eids : EidList&; var source_teams : IntList&; 
 
 def private cargo_take(var source_eids : EidList&; var source_teams : IntList&; var portions : IntList&;
                        points : int; node_eid : EntityId; team : int;
-                       per_point : float; km_mult : float; stolen_mult : float) : float
+                       per_point : float; km_mult : float; stolen_mult : float; base_mult : float) : float
   var left = points
   var reward = 0.0
   while left > 0 && length(portions) > 0
     let slice = min(left, portions[0])
-    let km = max(supply_graph_distance(source_eids[0], node_eid), 0.0) / 1000.0
-    let stolen = source_teams[0] != team
-    reward += float(slice) * per_point * (1.0 + km_mult * km) * (stolen ? stolen_mult : 1.0)
+    if source_eids[0] != node_eid
+      if source_teams[0] != team
+        reward += float(slice) * stolen_mult
+      else
+        let km = max(supply_graph_distance(source_eids[0], node_eid), 0.0) / 1000.0
+        reward += float(slice) * per_point * (1.0 + km_mult * km) * (has(source_eids[0], "supplyBase") ? base_mult : 1.0)
     left -= slice
     portions[0] -= slice
     if portions[0] <= 0
@@ -112,15 +112,11 @@ def private pay_escorts(var player_eids : EidList&; var escort_time : FloatList&
   if deliveryTime <= 0.0
     return
   for playerEid, escortSeconds in player_eids, escort_time
-    var escorter = player_get_by_eid(playerEid)
+    let escorter = player_get_by_eid(playerEid)
     if escorter == null
       continue
-    var target = INVALID_ENTITY_ID
-    let unit = getControlledUnit(*escorter)
-    if unit != null
-      target = unit.eid
     let ratio = min(escortSeconds / deliveryTime, 1.0)
-    reward_player(*escorter, target, SupplyRewardKind.ESCORT, int(float(session_score) * escort_mult * ratio))
+    award_supplies_escort(*escorter, int(float(session_score) * escort_mult * ratio))
 
 [es(tag=server)]
 def supply_transport_request_es(evt : RequestSupplyTransfer;
@@ -142,6 +138,7 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
                                supply_transport__standStillSpeed : float;
                                supply_reward__unloadPerPoint : float;
                                supply_reward__routeMultPerKm : float;
+                               supply_reward__baseLoadMult : float;
                                supply_reward__stolenMult : float;
                                supply_reward__returnEmpty : int;
                                supply_reward__escortMult : float;
@@ -156,6 +153,7 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
                                var supply_transport__returnRewardPending : bool&;
                                var supply_transport__rewardCarry : float&;
                                var supply_transport__sessionScore : int&;
+                               var supply_transport__unloaderPlayerEid : EntityId&;
                                var supply_transport__deliveryStartAt : float&;
                                var supply_transport__escortPlayerEids : EidList&;
                                var supply_transport__escortTime : FloatList&)
@@ -209,7 +207,7 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
           if give > 0
             supply_node__points += give
             points -= give
-            reward += cargo_take(supply_transport__cargoSourceEids, supply_transport__cargoSourceTeams, supply_transport__cargoPortions, give, node_eid, team, supply_reward__unloadPerPoint, supply_reward__routeMultPerKm, supply_reward__stolenMult)
+            reward += cargo_take(supply_transport__cargoSourceEids, supply_transport__cargoSourceTeams, supply_transport__cargoPortions, give, node_eid, team, supply_reward__unloadPerPoint, supply_reward__routeMultPerKm, supply_reward__stolenMult, supply_reward__baseLoadMult)
             state = int(SupplyTransportState.UNLOADING)
           elif points > 0
             hint = int(SupplyTransportHint.NODE_FULL)
@@ -218,6 +216,8 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
           if take > 0
             supply_node__points -= take
             points += take
+            cargo_push(supply_transport__cargoSourceEids, supply_transport__cargoSourceTeams, supply_transport__cargoPortions, node_eid, team, take)
+            escort_restart(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, get_sync_time())
             state = int(SupplyTransportState.LOADING)
         return true
       if state == int(SupplyTransportState.IDLE)
@@ -230,7 +230,7 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
         return false
       if supply_transport__returnRewardPending && points <= 0 && in_area(supply_graph__name, pos)
         supply_transport__returnRewardPending = false
-        reward_player(*player, transport_eid, SupplyRewardKind.RETURN, supply_reward__returnEmpty)
+        award_supplies_return(*player, supply_reward__returnEmpty)
         pay_escorts(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, supply_reward__returnEmpty, supply_reward__escortMult)
         escort_restart(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, -1.0)
       if !in_area(supply_base__loadArea, pos)
@@ -240,16 +240,16 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
       let loaded = min(points + int(float(supply_transport__loadRatePerSecond) * dt), capacity) - points
       points += loaded
       cargo_push(supply_transport__cargoSourceEids, supply_transport__cargoSourceTeams, supply_transport__cargoPortions, base_eid, team, loaded)
+      supply_transport__returnRewardPending = true
       escort_restart(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, get_sync_time())
       state = int(SupplyTransportState.LOADING)
       return true
     if reward > 0.0
-      supply_transport__returnRewardPending = true
       supply_transport__rewardCarry += reward
       let pay = int(supply_transport__rewardCarry)
       if pay > 0
         supply_transport__rewardCarry -= float(pay)
-        inc_player_spawn_score(*player, pay)
+        supply_transport__unloaderPlayerEid = vehicle__controlledByPlayer
         supply_transport__sessionScore += pay
     if points >= capacity && supply_transport__points < capacity
       hint = int(SupplyTransportHint.LOADED)
@@ -259,7 +259,7 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
   if state != int(SupplyTransportState.UNLOADING) && supply_transport__state == int(SupplyTransportState.UNLOADING)
     if supply_transport__sessionScore > 0
       pay_escorts(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, supply_transport__sessionScore, supply_reward__escortMult)
-      send_net_event(transport_eid, EventSupplyReward(kind = int(SupplyRewardKind.UNLOAD), score = supply_transport__sessionScore))
+      award_unloader(supply_transport__unloaderPlayerEid, supply_transport__sessionScore)
       supply_transport__sessionScore = 0
     if supply_transport__points <= 0
       escort_restart(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, supply_transport__returnRewardPending ? get_sync_time() : -1.0)
@@ -272,14 +272,14 @@ def supply_transport_update_es(info : UpdateStageInfoAct;
 def supply_transport_dead_es(evt : EventUnitBecameDead;
                              var supply_transport__sessionScore : int&;
                              var supply_transport__state : int&;
-                             eid aka transport_eid : EntityId;
+                             supply_transport__unloaderPlayerEid : EntityId;
                              supply_reward__escortMult : float;
                              var supply_transport__deliveryStartAt : float&;
                              var supply_transport__escortPlayerEids : EidList&;
                              var supply_transport__escortTime : FloatList&)
   if supply_transport__sessionScore > 0
     pay_escorts(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, supply_transport__sessionScore, supply_reward__escortMult)
-    send_net_event(transport_eid, EventSupplyReward(kind = int(SupplyRewardKind.UNLOAD), score = supply_transport__sessionScore))
+    award_unloader(supply_transport__unloaderPlayerEid, supply_transport__sessionScore)
     supply_transport__sessionScore = 0
   supply_transport__state = int(SupplyTransportState.IDLE)
   escort_restart(supply_transport__escortPlayerEids, supply_transport__escortTime, supply_transport__deliveryStartAt, -1.0)
@@ -293,7 +293,6 @@ def supply_transport_destroyed_es(evt : EventOnUnitDead;
   if supply_transport__points > 0 && evt.killer_eid != INVALID_ENTITY_ID
     let killerTeam = get_int(evt.killer_eid, "team") ?? TEAM_UNASSIGNED
     if killerTeam != TEAM_UNASSIGNED && killerTeam != supply_transport__team
-      var targetEid = INVALID_ENTITY_ID
-      var killer = killer_player(evt.killer_eid, targetEid)
+      let killer = killer_player(evt.killer_eid)
       if killer != null
-        reward_player(*killer, targetEid, SupplyRewardKind.DESTROY, supply_reward__destroyLoaded + int(float(supply_transport__points) * supply_reward__destroyPerPoint))
+        award_supplies_destroy(*killer, supply_reward__destroyLoaded + int(float(supply_transport__points) * supply_reward__destroyPerPoint))

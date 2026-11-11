@@ -31,7 +31,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_big",
+  "exhaustFx": "ship_exhaust_blur",
   "aimPointOffset": [
     0.0,
     -7.0,
@@ -79,7 +79,8 @@
     "catapultFx": "",
     "catapultLength": 1.0,
     "catapultStart": 1.0,
-    "runwayWidth": 50.0
+    "runwayWidth": 50.0,
+    "catapultWidth": 20.0
   },
   "default_skin_tomoe": {
     "replace_tex": [
@@ -1389,26 +1390,27 @@
       ],
       "CenterOfGravity": [
         -12.9,
-        2.0,
-        -0.08
+        1.1,
+        0.0
       ]
     },
     "engines": {
       "maxSpeed": 16.46,
       "maxReverseSpeed": 5.0,
+      "horsePowers": 151000.0,
       "speedToTime": {
         "row": [
           [
             4.5,
-            12.8
+            15.8
           ],
           [
             9.0,
-            20.7
+            25.7
           ],
           [
             16.46,
-            35.8
+            45.8
           ]
         ]
       },
@@ -1416,15 +1418,15 @@
         "row": [
           [
             2.0,
-            6.2
+            8.2
           ],
           [
             3.7,
-            15.0
+            18.0
           ],
           [
             5.0,
-            23.0
+            30.0
           ]
         ]
       },
@@ -1503,7 +1505,7 @@
             -5.0,
             10.5
           ],
-          "area": 25.0,
+          "area": 44.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -1513,7 +1515,7 @@
             -5.0,
             -10.5
           ],
-          "area": 25.0,
+          "area": 44.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }
@@ -1523,13 +1525,13 @@
   "cockpit": {
     "headPos": [
       0.0,
-      50.0,
-      -185.0
+      60.0,
+      -220.0
     ],
     "headPosOnShooting": [
-      35.6,
-      35.8,
-      0.0
+      25.6,
+      45.8,
+      -28.0
     ],
     "detectionHeight": 53.0
   },
@@ -1597,8 +1599,8 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
+        "triggerGroup": "primary",
+        "blk": "gamedata/weapons/navalModels_weapons/30mm_hpj11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1607,10 +1609,28 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 70.0,
-        "speedPitch": 50.0,
-        "bullets": 12000,
+        "speedYaw": 120.0,
+        "speedPitch": 100.0,
+        "bullets": 2560,
         "useGunnerTargetingQuality": false,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
+        "targetPriorityDefault": [
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1
+        ],
         "allowableDelta": 1.0,
         "ChainfireTime": 0.85,
         "DelayAfterShoot": 1.3,
@@ -1630,13 +1650,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          100.0,
-          800.0
-        ],
         "AttackShellMaxRadius": 5000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1695,6 +1709,51 @@
           "verticalSpeedLimitKPH": 120.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "ignoreAttackersLimit": true
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              3000.0,
+              100000.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -1863,8 +1922,8 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
+        "triggerGroup": "primary",
+        "blk": "gamedata/weapons/navalModels_weapons/30mm_hpj11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1873,10 +1932,28 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 70.0,
-        "speedPitch": 50.0,
-        "bullets": 12000,
+        "speedYaw": 120.0,
+        "speedPitch": 100.0,
+        "bullets": 2560,
         "useGunnerTargetingQuality": false,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
+        "targetPriorityDefault": [
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1
+        ],
         "allowableDelta": 1.0,
         "ChainfireTime": 0.85,
         "DelayAfterShoot": 1.3,
@@ -1896,13 +1973,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          100.0,
-          800.0
-        ],
         "AttackShellMaxRadius": 5000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_02",
           "gun": "main_caliber_gun_02",
@@ -1973,6 +2044,51 @@
           "verticalSpeedLimitKPH": 120.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "ignoreAttackersLimit": true
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              3000.0,
+              100000.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2141,8 +2257,8 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
+        "triggerGroup": "primary",
+        "blk": "gamedata/weapons/navalModels_weapons/30mm_hpj11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -2151,10 +2267,28 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 70.0,
-        "speedPitch": 50.0,
-        "bullets": 12000,
+        "speedYaw": 120.0,
+        "speedPitch": 100.0,
+        "bullets": 2560,
         "useGunnerTargetingQuality": false,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
+        "targetPriorityDefault": [
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1
+        ],
         "allowableDelta": 1.0,
         "ChainfireTime": 0.85,
         "DelayAfterShoot": 1.3,
@@ -2174,13 +2308,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          100.0,
-          800.0
-        ],
         "AttackShellMaxRadius": 5000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_03",
           "gun": "main_caliber_gun_03",
@@ -2239,6 +2367,51 @@
           "verticalSpeedLimitKPH": 120.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "ignoreAttackersLimit": true
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              3000.0,
+              100000.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2407,8 +2580,8 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
+        "triggerGroup": "primary",
+        "blk": "gamedata/weapons/navalModels_weapons/30mm_hpj11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -2417,10 +2590,28 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 70.0,
-        "speedPitch": 50.0,
-        "bullets": 12000,
+        "speedYaw": 120.0,
+        "speedPitch": 100.0,
+        "bullets": 2560,
         "useGunnerTargetingQuality": false,
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            100.0,
+            800.0
+          ]
+        ],
+        "targetPriorityDefault": [
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1
+        ],
         "allowableDelta": 1.0,
         "ChainfireTime": 0.85,
         "DelayAfterShoot": 1.3,
@@ -2440,13 +2631,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          100.0,
-          800.0
-        ],
         "AttackShellMaxRadius": 5000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_04",
           "gun": "main_caliber_gun_04",
@@ -2511,6 +2696,51 @@
           "verticalSpeedLimitKPH": 120.0
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              300.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              3000.0
+            ],
+            "priority": 400,
+            "ignoreAttackersLimit": true
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              3000.0,
+              100000.0
+            ],
+            "priority": 0
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2679,8 +2909,8 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/152mm_9M311_naval_rocket_launcher.blk",
+        "triggerGroup": "special",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_hhq10_naval_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2698,14 +2928,42 @@
         "speedYaw": 70.0,
         "speedPitch": 50.0,
         "isBulletBelt": true,
+        "allowableDelta": 2.0,
+        "forceUseAllowableDelta": true,
         "fireConeAngle": [
-          1.0,
+          2.0,
           1.0
         ],
-        "bullets": 72,
+        "bullets": 18,
+        "bulletsCartridge": 18,
+        "targetPriorityDefault": [
+          0,
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1,
+          1
+        ],
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            120.0,
+            1200.0
+          ]
+        ],
+        "targetChannelsMax": 4,
+        "missileChannelsMax": 1,
+        "DelayAfterShoot": [
+          1.0,
+          3.0
+        ],
         "salvoAmount": 1.0,
         "ChainfireTime": 1.0,
-        "DelayAfterShoot": 3.0,
         "targetAngularRateMax": 15.0,
         "AttackMaxRadius": 12000.0,
         "accuracyAir": 1.5,
@@ -2723,13 +2981,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          120.0,
-          1200.0
-        ],
         "AttackShellMaxRadius": 20000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
           "gun": "auxiliary_caliber_gun_01",
@@ -2742,10 +2994,66 @@
           ],
           "pitch": [
             0.0,
-            30.0
+            80.0
           ]
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              50.0,
+              30000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              -50.0,
+              20000.0
+            ],
+            "distRange": [
+              300.0,
+              9000.0
+            ],
+            "priority": 400
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -2873,11 +3181,11 @@
               1000.0
             ],
             "altRange": [
-              5.0,
+              -50.0,
               900.0
             ],
             "distRange": [
-              -50.0,
+              300.0,
               7000.0
             ],
             "priority": 90
@@ -2886,8 +3194,8 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/152mm_9M311_naval_rocket_launcher.blk",
+        "triggerGroup": "rockets",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_hhq10_naval_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_19",
@@ -2905,14 +3213,42 @@
         "speedYaw": 70.0,
         "speedPitch": 50.0,
         "isBulletBelt": true,
+        "allowableDelta": 2.0,
+        "forceUseAllowableDelta": true,
         "fireConeAngle": [
-          1.0,
+          2.0,
           1.0
         ],
-        "bullets": 72,
+        "bullets": 18,
+        "bulletsCartridge": 18,
+        "targetPriorityDefault": [
+          0,
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1,
+          1
+        ],
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            120.0,
+            1200.0
+          ]
+        ],
+        "targetChannelsMax": 4,
+        "missileChannelsMax": 1,
+        "DelayAfterShoot": [
+          1.0,
+          3.0
+        ],
         "salvoAmount": 1.0,
         "ChainfireTime": 1.0,
-        "DelayAfterShoot": 3.0,
         "targetAngularRateMax": 15.0,
         "AttackMaxRadius": 12000.0,
         "accuracyAir": 1.5,
@@ -2930,13 +3266,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          120.0,
-          1200.0
-        ],
         "AttackShellMaxRadius": 20000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
           "gun": "auxiliary_caliber_gun_02",
@@ -2949,10 +3279,66 @@
           ],
           "pitch": [
             0.0,
-            30.0
+            80.0
           ]
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              50.0,
+              30000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              -50.0,
+              20000.0
+            ],
+            "distRange": [
+              300.0,
+              9000.0
+            ],
+            "priority": 400
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -3080,11 +3466,11 @@
               1000.0
             ],
             "altRange": [
-              5.0,
+              -50.0,
               900.0
             ],
             "distRange": [
-              -50.0,
+              300.0,
               7000.0
             ],
             "priority": 90
@@ -3093,8 +3479,8 @@
       },
       {
         "trigger": "gunner6",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/152mm_9M311_naval_rocket_launcher.blk",
+        "triggerGroup": "rockets_secondary",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_hhq10_naval_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_189",
@@ -3112,14 +3498,42 @@
         "speedYaw": 70.0,
         "speedPitch": 50.0,
         "isBulletBelt": true,
+        "allowableDelta": 2.0,
+        "forceUseAllowableDelta": true,
         "fireConeAngle": [
-          1.0,
+          2.0,
           1.0
         ],
-        "bullets": 72,
+        "bullets": 18,
+        "bulletsCartridge": 18,
+        "targetPriorityDefault": [
+          0,
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1,
+          1
+        ],
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            120.0,
+            1200.0
+          ]
+        ],
+        "targetChannelsMax": 4,
+        "missileChannelsMax": 1,
+        "DelayAfterShoot": [
+          1.0,
+          3.0
+        ],
         "salvoAmount": 1.0,
         "ChainfireTime": 1.0,
-        "DelayAfterShoot": 3.0,
         "targetAngularRateMax": 15.0,
         "AttackMaxRadius": 12000.0,
         "accuracyAir": 1.5,
@@ -3137,13 +3551,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          120.0,
-          1200.0
-        ],
         "AttackShellMaxRadius": 20000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "auxiliary_caliber_turret_08",
           "gun": "auxiliary_caliber_gun_08",
@@ -3156,10 +3564,66 @@
           ],
           "pitch": [
             0.0,
-            30.0
+            80.0
           ]
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              50.0,
+              30000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              -50.0,
+              20000.0
+            ],
+            "distRange": [
+              300.0,
+              9000.0
+            ],
+            "priority": 400
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -3287,11 +3751,11 @@
               1000.0
             ],
             "altRange": [
-              5.0,
+              -50.0,
               900.0
             ],
             "distRange": [
-              -50.0,
+              300.0,
               7000.0
             ],
             "priority": 90
@@ -3300,8 +3764,8 @@
       },
       {
         "trigger": "gunner7",
-        "triggerGroup": "secondary",
-        "blk": "gamedata/weapons/navalModels_weapons/152mm_9M311_naval_rocket_launcher.blk",
+        "triggerGroup": "rockets_tertiary",
+        "blk": "gamedata/weapons/navalModels_weapons/rocket_hhq10_naval_rocket_launcher.blk",
         "weaponType": "rockets",
         "useEmitter": true,
         "emitter": "bone_rocket_231",
@@ -3319,14 +3783,42 @@
         "speedYaw": 70.0,
         "speedPitch": 50.0,
         "isBulletBelt": true,
+        "allowableDelta": 2.0,
+        "forceUseAllowableDelta": true,
         "fireConeAngle": [
-          1.0,
+          2.0,
           1.0
         ],
-        "bullets": 72,
+        "bullets": 18,
+        "bulletsCartridge": 18,
+        "targetPriorityDefault": [
+          0,
+          0,
+          0
+        ],
+        "targetPriorityMin": [
+          1,
+          1,
+          1
+        ],
+        "shellSpeedRange": [
+          [
+            100.0,
+            1300.0
+          ],
+          [
+            120.0,
+            1200.0
+          ]
+        ],
+        "targetChannelsMax": 4,
+        "missileChannelsMax": 1,
+        "DelayAfterShoot": [
+          1.0,
+          3.0
+        ],
         "salvoAmount": 1.0,
         "ChainfireTime": 1.0,
-        "DelayAfterShoot": 3.0,
         "targetAngularRateMax": 15.0,
         "AttackMaxRadius": 12000.0,
         "accuracyAir": 1.5,
@@ -3344,13 +3836,7 @@
           30.0,
           3500.0
         ],
-        "shellSpeedRange": [
-          120.0,
-          1200.0
-        ],
         "AttackShellMaxRadius": 20000.0,
-        "targetPriorityDefault": 0,
-        "targetPriorityMin": 1,
         "turret": {
           "head": "auxiliary_caliber_turret_10",
           "gun": "auxiliary_caliber_gun_10",
@@ -3363,10 +3849,66 @@
           ],
           "pitch": [
             0.0,
-            30.0
+            80.0
           ]
         },
         "targetPriority": [
+          {
+            "isUnit": false,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              -100.0,
+              30000.0
+            ],
+            "distRange": [
+              0.0,
+              500.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": true,
+            "altRange": [
+              50.0,
+              30000.0
+            ],
+            "priority": 0
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1300.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              -50.0,
+              20000.0
+            ],
+            "distRange": [
+              300.0,
+              9000.0
+            ],
+            "priority": 400
+          },
           {
             "isUnit": true,
             "velRange": [
@@ -3494,11 +4036,11 @@
               1000.0
             ],
             "altRange": [
-              5.0,
+              -50.0,
               900.0
             ],
             "distRange": [
-              -50.0,
+              300.0,
               7000.0
             ],
             "priority": 90
@@ -5011,21 +5553,21 @@
       154.0,
       1185.8
     ],
-    "waterMassVel": -172000.0,
-    "waterMassMult": 400.0,
-    "additionalWaterDeathThreshold": 285000000.0,
+    "waterMassVel": -2193534.0,
+    "waterMassMult": 7312.0,
+    "additionalWaterDeathThreshold": 690025200.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 45.0,
-    "maxHeelingAngle": 15.0,
+    "maxHeelingAngle": 12.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
-    "maxTrimmingAngle": 3.5,
+    "maxTrimmingAngle": 6.2,
     "maxTrimmingTime": 20.0,
     "criticalTrimmingAnglePercent": 0.75,
     "maxCriticalTrimmingTime": 5.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.25,
+    "sideCenterOfMassOffsetPercent": 0.274,
     "minCaliberToBreach": 0.2,
     "minExplRadiusToBreach": 0.5,
     "deadCoverCounterfloodingRel": 0.5,
@@ -5035,12 +5577,12 @@
     "cover": [
       {
         "part": "cover_01_dm",
-        "weight": 0.2,
+        "weight": 0.15,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -5051,7 +5593,7 @@
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.75,
+        "weight": 0.7,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -5062,59 +5604,59 @@
       },
       {
         "part": "cover_04_dm",
-        "weight": 1.0,
+        "weight": 0.81,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_05_dm",
-        "weight": 1.0,
+        "weight": 0.62,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "engine_room_01_dm",
-            "critWaterLevel": 0.7
+            "critWaterLevel": 0.2
           }
         }
       },
       {
         "part": "cover_06_dm",
-        "weight": 1.0,
+        "weight": 0.62,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
             "partNo": "engine_room_02_dm",
-            "critWaterLevel": 0.5
+            "critWaterLevel": 0.18
           }
         }
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.8,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
             {
               "partNo": "transmission_01_dm",
-              "critWaterLevel": 0.4
+              "critWaterLevel": 0.19
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.19
             },
             {
               "partNo": "transmission_03_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.19
             },
             {
               "partNo": "transmission_04_dm",
-              "critWaterLevel": 0.9
+              "critWaterLevel": 0.19
             }
           ]
         }
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.5,
+        "weight": 0.2,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -5125,7 +5667,7 @@
       },
       {
         "part": "cover_09_dm",
-        "weight": 0.25,
+        "weight": 0.15,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {

@@ -1376,7 +1376,7 @@
       ],
       "CenterOfGravity": [
         0.0,
-        -0.6,
+        0.4,
         0.0
       ],
       "AdvancedMass": false
@@ -1461,62 +1461,6 @@
         "area": 1.0,
         "deflection": 38.0,
         "dmPart": "steering_gear_01_dm"
-      },
-      "hydrofoils": {
-        "hydrofoil": [
-          {
-            "euler": [
-              -0.9,
-              90.0,
-              18.0
-            ],
-            "pos": [
-              4.6,
-              -0.6,
-              -0.8
-            ],
-            "size": [
-              0.9,
-              1.26
-            ],
-            "maxV": 58.0,
-            "polar": {
-              "Cl0": 0.06,
-              "CdMin": 0.008,
-              "lineClCoeff": 0.1,
-              "ClCritHigh": 0.6,
-              "ClCritLow": -0.5,
-              "alphaCritHigh": 5.5,
-              "alphaCritLow": -5.5
-            }
-          },
-          {
-            "euler": [
-              0.9,
-              -90.0,
-              18.0
-            ],
-            "pos": [
-              4.6,
-              -0.6,
-              0.8
-            ],
-            "size": [
-              0.9,
-              1.26
-            ],
-            "maxV": 58.0,
-            "polar": {
-              "Cl0": 0.06,
-              "CdMin": 0.008,
-              "lineClCoeff": 0.1,
-              "ClCritHigh": 0.6,
-              "ClCritLow": -0.5,
-              "alphaCritHigh": 5.5,
-              "alphaCritLow": -5.5
-            }
-          }
-        ]
       }
     }
   },
@@ -2820,11 +2764,11 @@
     "headPos": [
       0.0,
       6.0,
-      -27.0
+      -23.0
     ],
     "headPosOnShooting": [
-      -0.6,
-      9.4,
+      1.6,
+      8.4,
       0.0
     ],
     "detectionHeight": 9.3
@@ -2898,32 +2842,32 @@
       30.0,
       537.0
     ],
-    "waterMassVel": -5500.0,
-    "waterMassMult": 55.0,
-    "additionalWaterDeathThreshold": 140000.0,
+    "waterMassVel": -15613.0,
+    "waterMassMult": 195.0,
+    "additionalWaterDeathThreshold": 427522.0,
     "additionalWaterShouldDiePercent": 0.45,
     "fatalBreachDrownTime": 35.0,
-    "maxHeelingAngle": 49.0,
+    "maxHeelingAngle": 37.0,
     "maxHeelingTime": 10.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
-    "maxTrimmingAngle": 14.0,
+    "maxTrimmingAngle": 8.5,
     "maxTrimmingTime": 20.0,
     "criticalTrimmingAnglePercent": 0.75,
     "maxCriticalTrimmingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.236
   },
   "shipCover": {
     "cover": [
       {
         "part": "compartment_01_dm",
-        "weight": 0.35,
+        "weight": 0.22,
         "maxWaterAlive": 1.0
       },
       {
         "part": "compartment_02_dm",
-        "weight": 0.8,
+        "weight": 0.56,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": {
@@ -2940,24 +2884,34 @@
           "part": [
             {
               "partNo": "engine_01_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.43
             },
             {
               "partNo": "engine_02_dm",
-              "critWaterLevel": 0.75
+              "critWaterLevel": 0.43
             }
           ]
         }
       },
       {
         "part": "compartment_04_dm",
-        "weight": 1.0,
+        "weight": 0.88,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": {
-            "partNo": "ammunition_storage_02_dm",
-            "critWaterLevel": 0.75
-          }
+          "part": [
+            {
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.75
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.01
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.01
+            }
+          ]
         }
       }
     ]

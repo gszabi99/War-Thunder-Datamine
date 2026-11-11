@@ -2645,7 +2645,8 @@ function mkAvionicsDesc(partType, params, commonData) {
   let parts = []
   foreach (part in avionicsParts)
     if (part?.health.dm == partName)
-      parts.append(loc($"xray/{part.avionics}"))
+      foreach (avionicsName in part % "avionics")
+        parts.append(loc($"xray/{avionicsName}"))
   desc.append("\n".join(parts, true))
   return { desc }
 }

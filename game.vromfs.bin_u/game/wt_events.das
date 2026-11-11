@@ -147,11 +147,6 @@ struct RequestSpawnVehicle
   transportIdx : int
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
-struct EventSupplyReward
-  kind : int
-  score : int
-
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventSupplyTransportHint
   hint : int
 

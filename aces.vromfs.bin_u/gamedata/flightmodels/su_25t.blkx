@@ -4071,7 +4071,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm_slot2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4087,7 +4087,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab_slot2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4343,7 +4343,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm_slot3",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4359,7 +4359,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab_slot3",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4674,7 +4674,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -4691,7 +4691,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5008,7 +5008,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5025,7 +5025,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5287,18 +5287,17 @@
         "order": 11,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "iconType": "night_container",
+          "iconType": "optic_container",
           "name": "mercury",
           "reqModification": "su_mercury_pod",
           "hasTargetingPod": true,
-          "removeGunnerOpticFps": 0,
           "ShowNodes": {
-            "node": "su_hod"
+            "node": "su_mercury"
           },
           "ShowDmParts": {
             "node": [
-              "electronic_block6_dm",
-              "cover10_dm"
+              "electronic_block5_dm",
+              "cover9_dm"
             ]
           },
           "Weapon": {
@@ -5528,7 +5527,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -5545,7 +5544,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6029,7 +6028,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6046,7 +6045,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6382,7 +6381,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm_slot9",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6398,7 +6397,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab_slot9",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6700,7 +6699,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_cluster",
             "name": "rbk_500_ao_2_5rtm_slot10",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -6716,7 +6715,7 @@
             }
           },
           {
-            "iconType": "bombs_small_high_drag",
+            "iconType": "bombs_heavy_middle_cluster",
             "name": "rbk_500_ptab_slot10",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
@@ -7352,6 +7351,89 @@
         },
         "damage": {
           "dm": "optic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "targetingPod",
+        "health": {
+          "dm": "electronic_block5_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block5_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
