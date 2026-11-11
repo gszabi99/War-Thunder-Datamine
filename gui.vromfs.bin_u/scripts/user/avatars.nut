@@ -34,7 +34,7 @@ function invalidateIcons() {
 
 subscriptions.addListenersWithoutEnv({
   LoginComplete    = @(_p) invalidateIcons()
-  ProfileUpdated   = @(_p) invalidateIcons()
+  UnlocksCacheInvalidate = @(_p) invalidateIcons()
 }, g_listener_priority.CONFIG_VALIDATION)
 
 bhvAvatar.init({
