@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/wndLib/qrWindow.nut" as openQrWindow
 import "%sqStdLibs/helpers/u.nut" as u
@@ -441,7 +442,11 @@ class EveryDayLoginAward (BaseGuiHandlerWT) {
     else if (!this.rouletteAnimationFinished)
       this.stopRouletteSpinning()
     else
-      this.guiScene.performDelayed(this, base.goBack)
+      defer(function() {
+        if (this == null)
+          return
+        base.goBack.call(this)
+      }.bindenv(this))
   }
 
   function updateUnitItem(curUnit = null, obj = null) {

@@ -497,13 +497,13 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
   function onNewsMarkerClick(obj) {
     let news = unitNews.get().findvalue(@(v) v.titleshort == obj["newsId"])
     if (news != null)
-      this.guiScene.performDelayed(this, @() openUnitNews(news))
+      defer(@() openUnitNews(news))
   }
 
   function onEventMarkerClick(obj) {
     let news = unitNews.get().findvalue(@(v) v.titleshort == obj["eventId"])
     if (news != null)
-      this.guiScene.performDelayed(this, @() openUnitEventNews(news))
+      defer(@() openUnitEventNews(news))
   }
 
   function updateUnitCell(cellObj, unit, params = null, statusTable = null) {
@@ -1733,10 +1733,10 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     let value = to_integer_safe(cutPrefix(obj?.id, "high_") ?? "-1", -1, false)
     if (value >= 0)
       this.selCellOnSearchQuit = value
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.searchBoxWeak?.searchCancel()
-    })
+    }.bindenv(this))
   }
 
   function onShadedCellClick(_obj) {
@@ -1991,7 +1991,7 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
   }
 
   function destroyGroupChooseDelayed() {
-    this.guiScene.performDelayed(this, this.destroyGroupChoose)
+    defer(function() { this?.destroyGroupChoose() }.bindenv(this))
   }
 
   function onCancelSlotChoose(_obj) {

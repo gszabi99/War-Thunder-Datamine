@@ -22,7 +22,6 @@ from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/utils/delayedActions.nut" import addDelayedAction, LOST_DELAYED_ACTION_MSEC
 from "%scripts/seen/seenIds.nut" import SEEN
 
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { inventory, itemsByItemdefId, rawInventoryItemAmountsByItemdefId, itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
 
@@ -186,6 +185,11 @@ function markItemsDefsListUpdate() {
 }
 
 local lastItemDefsUpdatedelayedCall = 0
+function markItemsDefsListUpdateDelayedDeferCb() {
+  lastItemDefsUpdatedelayedCall = 0
+  markItemsDefsListUpdate()
+}
+
 function markItemsDefsListUpdateDelayed() {
   if (getReqUpdateItemDefsList())
     return
@@ -194,10 +198,7 @@ function markItemsDefsListUpdateDelayed() {
     return
 
   lastItemDefsUpdatedelayedCall = get_time_msec()
-  handlersManager.doDelayed(function() {
-    lastItemDefsUpdatedelayedCall = 0
-    markItemsDefsListUpdate()
-  })
+  deferOnce(markItemsDefsListUpdateDelayedDeferCb)
 }
 
 function markInventoryUpdate() {

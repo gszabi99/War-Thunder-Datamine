@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/protectionAnalysis/protectionAnalysis.nut" as protectionAnalysis
 from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -508,7 +509,7 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
     if (this.isPerformedUpdateInfo)
       return
     this.isPerformedUpdateInfo = true
-    this.guiScene.performDelayed(this, this.updateAirAndCrewInfo)
+    defer(function() { this?.updateAirAndCrewInfo() }.bindenv(this))
   }
 
   function onEventHangarModelLoading(_eventData) {
@@ -516,7 +517,7 @@ class SlotInfoPanel (BaseGuiHandlerWT) {
     if (this.isPerformedUpdateInfo)
       return
     this.isPerformedUpdateInfo = true
-    this.guiScene.performDelayed(this, this.updateAirAndCrewInfo)
+    defer(function() { this?.updateAirAndCrewInfo() }.bindenv(this))
   }
 
   function updateUnitIcon(unit) {

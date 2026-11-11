@@ -25,10 +25,12 @@ const RETRY_MSEC = 30000
 const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
+const MAX_FAILED_ROUNDS = 5
 let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
 let queue = Computed(@() queueByUserId.get()?[userIdStr.get()] ?? [])
 let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
 let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
+let failedRoundsCount = hardPersistWatched("bqQueue.failedRoundsCount", 0)
 
 let urls = Watched([])
 let url = Computed(@() urls.get()?[currentUrlIndex.get()] ?? urls.get()?[0])
@@ -125,6 +127,7 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
   let { status = -1, http_code = -1, context = null } = res
   if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
     logBQ($"Success send {context?.list.len()} events")
+    failedRoundsCount.set(0)
     if (!(context?.isAllSent ?? true))
       startSendTimer()
     return
@@ -133,7 +136,12 @@ eventbus_subscribe(RESPONSE_EVENT, function(res) {
   changeUrl()
 
   if(currentUrlIndex.get() == 0) {
-    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
+    failedRoundsCount.set(failedRoundsCount.get() + 1)
+    let msg = $"All servers unreachable, failed round {failedRoundsCount.get()} ({urls.get().len()} servers). Last status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_MSEC} sec"
+    if (failedRoundsCount.get() == MAX_FAILED_ROUNDS)
+      logerr($"[BQ] {msg}")
+    else
+      logBQ(msg)
     nextCanSendMsec.set(get_time_msec() + RETRY_MSEC)
     initUrl()
   }

@@ -2,6 +2,7 @@ from "reactiveGuiCommand" import reloadDargUiScript
 from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "graphicsOptions" import onRendererSettingsChange
+from "dagor.workcycle" import defer
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -40,7 +41,7 @@ eventbus_subscribe("on_renderer_settings_applied", function onRendererSettingsAp
   handlersManager.updateSceneBgBlur(true)
   handlersManager.updateSceneVrParams()
 
-  handlersManager.doDelayed(function() {
+  defer(function() {
     isRequestedReloadScene = isRequestedReloadScene || forceReloadGuiScene
 
     if (isRequestedReloadScene) {

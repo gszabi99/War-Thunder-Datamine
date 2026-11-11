@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/protectionAnalysis/protectionAnalysisHint.nut" as protectionAnalysisHint
 import "controllerState" as controllerState
 import "DataBlock" as DataBlock
@@ -69,7 +70,11 @@ let ProtectionAnalysis = class (BaseGuiHandlerWT) {
   function initScreen() {
     dmViewer.init(this)
     hangar_focus_model(true)
-    this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))
+    defer(function() {
+      if (this == null)
+        return
+      hangar_set_dm_viewer_mode(this.protectionAnalysisMode)
+    }.bindenv(this))
     this.setSceneTitle(" ".concat(loc("mainmenu/btnProtectionAnalysis"),
       loc("ui/mdash"), getUnitName(this.unit.name)))
 

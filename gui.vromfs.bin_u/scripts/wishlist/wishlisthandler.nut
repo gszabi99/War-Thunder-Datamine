@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/openCrossPromoWnd.nut" as openCrossPromoWnd
 import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
@@ -434,7 +435,7 @@ class WishListWnd (BaseGuiHandlerWT) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
     else
-      this.guiScene.performDelayed(this, this.goBack)
+      defer(function() { this?.goBack() }.bindenv(this))
   }
 
   function getSelectedUnit(obj) {

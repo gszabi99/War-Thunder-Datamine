@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "statsd" as statsd
 from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
@@ -25,7 +26,7 @@ register_gui_handler("LoginWndHandlerDMM", class (BaseGuiHandler) {
 
     let isAutologin = !get_disable_autorelogin_once()
     if (isAutologin) {
-      this.guiScene.performDelayed(this, function() { this.doLogin() })
+      defer(function() { this?.doLogin() }.bindenv(this))
       return
     }
 

@@ -319,10 +319,10 @@ let Options = class (GenericOptionsModal) {
     if ((this.getSearchText() ?? "") != "")
       this.resetSearch()
     else
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      defer(function() {
+        if (this?.isValid())
           this.goBack()
-      })
+      }.bindenv(this))
   }
 
   getSearchText = @() optionsScreen.get().searchText
@@ -473,7 +473,7 @@ let Options = class (GenericOptionsModal) {
     if (!isDelayed)
       return fn.acall(args)
     defer(function() {
-      if (this.isValid())
+      if (this?.isValid())
         fn.acall(args)
     }.bindenv(this))
   }

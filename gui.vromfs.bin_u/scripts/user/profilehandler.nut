@@ -897,7 +897,7 @@ let Profile = class (UserCardHandler) {
   function onUpdate(_obj, _dt) {
     if (this.pending_logout && isAppActive() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
       this.pending_logout = false
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
         startLogout()
       })
     }
@@ -905,7 +905,11 @@ let Profile = class (UserCardHandler) {
 
   function onChangeName() {
     local textLocId = "mainmenu/questionChangeName"
-    local afterOkFunc = @() this.guiScene.performDelayed(this, function() { this.pending_logout = true })
+    local afterOkFunc = @() defer(function() {
+      if (this == null)
+        return
+      this.pending_logout = true
+    }.bindenv(this))
 
     if (steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
       textLocId = "mainmenu/questionChangeNameSteam"

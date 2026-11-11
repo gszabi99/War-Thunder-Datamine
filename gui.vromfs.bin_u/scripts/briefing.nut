@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/customization/contentPreset.nut" as contentPreset
 import "DataBlock" as DataBlock
 from "%scripts/missions/missionsStates.nut" import currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings, is_user_mission, isCustomMissionFlight
@@ -619,14 +620,13 @@ let Briefing = class (GenericOptions) {
       show_gui(false);
 
       let guihandler = this
-      local nextFunc = function() {
-          get_gui_scene().performDelayed(guihandler, function() {
-            show_gui(true);
-            this.applyOptions()
-          })
-        }
-
-      this.guiScene.performDelayed(guihandler, nextFunc)
+      function nextFunc() {
+        defer(function() {
+          show_gui(true)
+          this?.applyOptions()
+        }.bindenv(guihandler))
+      }
+      defer(nextFunc)
     }
   }
 

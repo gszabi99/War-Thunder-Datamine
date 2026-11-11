@@ -1,4 +1,5 @@
 import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+from "dagor.workcycle" import defer
 import "statsd" as statsd
 from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
 from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
@@ -40,7 +41,7 @@ let LoginWndHandlerPs4 = class (BaseGuiHandler) {
   isAutologin = false
 
   function initScreen() {
-    this.guiScene.performDelayed(this, function () {
+    defer(function () {
       forceHideCursor.set(true)
     })
     animBgLoad()
@@ -79,7 +80,7 @@ let LoginWndHandlerPs4 = class (BaseGuiHandler) {
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.updateButtons(false)
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
       ps4_initial_check_settings()
     })
 

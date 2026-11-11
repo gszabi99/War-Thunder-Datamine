@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/social/crossplay.nut" as crossplayModule
 import "%scripts/clans/clanVehiclesModal.nut" as clanVehiclesModal
 import "%scripts/penitentiary/antiCheat.nut" as antiCheat
@@ -462,11 +463,11 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   function onEventGameModesUpdated(_params) {
     this.setGameMode(getCurrentGameModeId(), true)
     this.updateUnseenGameModesCounter()
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
-    })
+    }.bindenv(this))
   }
 
   function onCountrySelect() {
@@ -541,7 +542,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
         missionBlk[name] <- value
     select_mission(missionBlk, false)
     currentCampaignMission.set(missionBlk.name)
-    this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight) })
+    defer(function() { this?.goForward(guiStartFlight) }.bindenv(this))
   }
 
   function onStart() {
@@ -606,7 +607,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
       g_squad_manager.setReadyFlag()
     }
     else if (isWorldWarEnabled())
-      this.guiScene.performDelayed(this, @() joinOperationById(
+      defer(@() joinOperationById(
         g_squad_manager.getWwOperationId(), g_squad_manager.getWwOperationCountry()))
   }
 
@@ -924,9 +925,11 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   function afterCountryApply(membersData = null, team = null, event = null) {
     if (disableNetwork) {
       matchSearchGm.set(GM_DOMINATION)
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
+        if (this == null)
+          return
         this.goForwardIfOnline(guiStartSessionList, false)
-      })
+      }.bindenv(this))
       return
     }
 
@@ -1251,7 +1254,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   }
 
   function checkShowViralAcquisition() {
-    this.guiScene.performDelayed({}, function() {
+    defer(function() {
       if (isMeNewbie())
         return
 
@@ -1285,7 +1288,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   }
 
   function checkShowChangelog() {
-    this.guiScene.performDelayed({}, function() {
+    defer(function() {
       if (needShowChangelog() && get_cur_base_gui_handler().isSceneActiveNoModals())
         handlersManager.animatedSwitchScene(openChangelog)
     })

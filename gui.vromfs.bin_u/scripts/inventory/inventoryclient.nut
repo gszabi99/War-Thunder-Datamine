@@ -25,8 +25,8 @@ from "%globalScripts/charActionConsts.nut" import *
 from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "modules" import on_module_unload
 from "%scripts/inventory/inventoryItemdefs.nut" import addItemdefs
+from "dagor.workcycle" import defer
 
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 
 enum validationCheckBitMask {
@@ -426,7 +426,7 @@ class InventoryClient {
           && (this._lastDelayedItemdefsRequestTime + LOST_DELAYED_ACTION_MSEC > get_time_msec())))
       return
     this._lastDelayedItemdefsRequestTime = get_time_msec()
-    handlersManager.doDelayed(function() {
+    defer(function() {
       this._lastDelayedItemdefsRequestTime = 0
       this.requestItemDefsImpl()
     }.bindenv(this))

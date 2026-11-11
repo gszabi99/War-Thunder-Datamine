@@ -448,10 +448,12 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     this.initMainParams()
     this.updateMrankBrPreview()
     if (this.needHideSlotbar)
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
+        if (this == null)
+          return
         this.destroySlotbar()
         getSlotbarPresetsList(this)?.destroy()
-      })
+      }.bindenv(this))
   }
 
   function checkOnResearchCurMod() {
@@ -1922,8 +1924,8 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   }
 
   function onBundleUnHover(obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid() || this.curBundleTblObj == null)
+    defer(function() {
+      if (!this?.isValid() || this.curBundleTblObj == null)
         return
       local needResetDropdown = false
 
@@ -1943,7 +1945,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
 
       if (needResetDropdown)
         this.onDropDownToggle(obj)
-    })
+    }.bindenv(this))
   }
 
   function onBundleHover(obj) {
@@ -1957,11 +1959,11 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     if (needDropdownForceOpen) {
       this.curBundleTblObj = hoveredBundleObj
       this.onDropDownToggle(obj)
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isValid())
+      defer(function() {
+        if (!this?.isValid())
           return
         this.applyMrankLocks()
-      })
+      }.bindenv(this))
       return
     }
     if (!showConsoleButtons.get() || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
 from "%scripts/sqDagui/daguiUtil.nut" import select_editbox
 from "%scripts/baseGuiHandlerManagerWT.nut" import loadHandler
@@ -108,7 +109,7 @@ let EditBoxHandler = class (BaseGuiHandler) {
   function onOk() {
     this.value = this.editBoxObj.getValue() ?? ""
     if (this.isApplyEnabled(this.value))
-      return this.guiScene.performDelayed(this, this.goBack)
+      return defer(function() { this?.goBack() }.bindenv(this))
 
     this.value = null
   }

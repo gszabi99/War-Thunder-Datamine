@@ -1,4 +1,5 @@
 import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+from "dagor.workcycle" import defer
 from "%scripts/login/loginState.nut" import get_disable_autorelogin_once
 from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
@@ -31,7 +32,7 @@ register_gui_handler("LoginWndHandlerXboxOne", class (BaseGuiHandler) {
 
   function initScreen() {
     if (this.shouldHideCursor) {
-      this.guiScene.performDelayed(this, function () {
+      defer(function () {
         forceHideCursor.set(true)
       })
     }

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/missions/mapPreferencesModal.nut" as mapPreferencesModal
 import "%scripts/missions/mapPreferencesParams.nut" as mapPreferencesParams
 import "%scripts/clusterSelect.nut" as clustersModule
@@ -464,8 +465,8 @@ let GameModeSelect = class (BaseGuiHandlerWT) {
       return
     }
 
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this.goBack()
 
@@ -476,7 +477,7 @@ let GameModeSelect = class (BaseGuiHandlerWT) {
         guiStartModalEvents({ event = event?.name })
       else
         setCurrentGameModeById(gameMode.modeId, true)
-    })
+    }.bindenv(this))
   }
 
   function markGameModeSeen(obj) {

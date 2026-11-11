@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/items/trophyRewardWnd.nut" import trophyRewardWnd
 from "%scripts/items/everyDayLoginAward.nut" import EveryDayLoginAward
@@ -107,12 +108,12 @@ let RecentItemsHandler = class (BaseGuiHandlerWT) {
       itemName = item.getName()
     })
 
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.msgBox("recent_item_confirmation", msgBoxText, [
           ["ok", Callback(@() this._doActivateItem(item, params), this)
           ], ["cancel", function () {}]], "ok")
-    })
+    }.bindenv(this))
   }
 
   function _doActivateItem(item, params) {

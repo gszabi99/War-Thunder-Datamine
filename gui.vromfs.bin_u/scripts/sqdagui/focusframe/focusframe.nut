@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/sqDagui/focusFrame/bhvFocusFrameTarget.nut" as focusTarget
 import "%scripts/sqDagui/focusFrame/bhvFocusFrameAnim.nut" as focusAnim
 from "%scripts/sqDagui/daguiUtil.nut" import check_obj
@@ -51,7 +52,9 @@ local focusFrame = {
 
   
   function playAnimDelayed(curObj, tgtObj, shouldCheckDelayedBug = true) {
-    curObj.getScene().performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       if (!check_obj(curObj) || !check_obj(tgtObj))
         return
 
@@ -59,7 +62,7 @@ local focusFrame = {
         this.playAnimDelayed(curObj, tgtObj, false)
       else
         focusAnim.play(curObj, tgtObj)
-    })
+    }.bindenv(this))
   }
 
   validateObjList = function() {

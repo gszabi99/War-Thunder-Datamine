@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
@@ -31,7 +32,7 @@ let NameFilterHandler = class (BaseGuiHandlerWT) {
     if (obj.getValue() != "")
       obj.setValue("")
     else
-      this.guiScene.performDelayed(this, this.goBack)
+      defer(function() { this?.goBack() }.bindenv(this))
   }
 
   function goBack() {

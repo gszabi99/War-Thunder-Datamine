@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqstd/math.nut" as stdMath
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -34,9 +35,10 @@ let ItemsListWndBase = class (BaseGuiHandlerWT) {
   function initScreen() {
     this.setCurItem(this.itemsList[0])
     this.updateWndAlign()
-    this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this, function() {
-      if (this.scene.isValid())
-        move_mouse_on_child_by_value(this.scene.findObject("items_list"))
+    let curScene= this.scene
+    defer(@() defer(function() {
+      if (curScene.isValid())
+        move_mouse_on_child_by_value(curScene.findObject("items_list"))
     }))
 
     if (this.itemsList.findindex(@(i) i.hasTimer()) != null)

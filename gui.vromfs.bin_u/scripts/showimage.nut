@@ -93,7 +93,7 @@ let ShowImage = class (BaseGuiHandlerWT) {
       if (this.moveBack && t <= 0.0) {
         t = 0.0
         this.timer = 0.0
-        this.goBack() 
+        this.goBack()
       }
 
       this.imgObj.width = this.countProp(this.baseSize[0], this.maxSize[0], t)

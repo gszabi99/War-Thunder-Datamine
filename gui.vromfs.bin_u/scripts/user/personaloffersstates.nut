@@ -11,13 +11,12 @@ from "%scripts/items/trophyReward.nut" import getTrophyRewardType
 from "%scripts/discounts/discountsState.nut" import getUnitDiscount
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "json" import parse_json
-from "dagor.workcycle" import setTimeout, clearTimer
+from "dagor.workcycle" import setTimeout, clearTimer, deferOnce
 from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import shop_is_aircraft_purchased
 from "%scripts/dagui_library.nut" import *
 from "types" import String
 
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 
@@ -289,7 +288,7 @@ function cachePersonalOfferIfNeed() {
 
 isInProgressOfferValidation.subscribe(function(v) {
   if(!v)
-    handlersManager.doDelayed(cachePersonalOfferIfNeed)
+    deferOnce(cachePersonalOfferIfNeed)
 })
 
 addListenersWithoutEnv({

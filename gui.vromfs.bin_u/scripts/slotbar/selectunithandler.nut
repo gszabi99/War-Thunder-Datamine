@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/unit/unitsData.nut" import getAllUnits
 import "%scripts/slotbar/guiStartSelectingCrew.nut" as guiStartSelectingCrew
 import "%sqStdLibs/helpers/u.nut" as u
@@ -745,7 +746,7 @@ register_gui_handler("SelectUnitHandler", SelectUnitHandler)
 
 return freeze({
   SelectUnitHandler
-  open = @(crew, slotbar) get_cur_gui_scene().performDelayed({},
+  open = @(crew, slotbar) defer(
     function() {
       let params = getParamsFromSlotbarConfig(crew, slotbar)
       if (params == null)

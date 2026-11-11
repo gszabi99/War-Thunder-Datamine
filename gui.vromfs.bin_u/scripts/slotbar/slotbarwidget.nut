@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/callback.nut" as callback
 import "%scripts/slotbar/selectUnitHandler.nut" as selectUnitHandler
 import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
@@ -680,7 +681,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
     if (this.selectedCrewData) {
       let selItem = getSlotObj(this.crewsObj, this.selectedCrewData.idCountry, this.selectedCrewData.idInCountry)
       if (selItem)
-        this.guiScene.performDelayed(this, function() {
+        defer(function() {
           if (checkObj(selItem) && selItem.isVisible())
             selItem.scrollToView()
         })
@@ -745,8 +746,8 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   }
 
   function updateCountriesVisualStyle() {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.scene?.isValid())
+    defer(function() {
+      if (!this?.scene.isValid())
         return
       let autorefillSettingsObjLeft = this.scene.findObject("autorefill-settings").getPosRC()[0]
       let nextCountryBtnObjWidth = showConsoleButtons.get() ? this.scene.findObject("next_country_btn").getSize()[0] : 0
@@ -760,7 +761,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         return
 
       this.updateCountriesVisualStyleImpl("ultraShort")
-    })
+    }.bindenv(this))
   }
 
   getCountryBonusData = @(country) getBonus(
@@ -1497,11 +1498,11 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   }
 
   function onEventCrewsListChanged(_p) {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid() || this.lastUpdatedVersion == getCrewsListVersion())
+    defer(function() {
+      if (!this?.isValid() || this.lastUpdatedVersion == getCrewsListVersion())
         return
       this.fullUpdate()
-    })
+    }.bindenv(this))
   }
 
   function onEventSlotbarPresetChangedWithoutProfileUpdate(_p) {

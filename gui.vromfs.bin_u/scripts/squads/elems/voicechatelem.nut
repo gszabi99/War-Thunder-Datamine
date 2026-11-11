@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 from "%scripts/squads/squadManager.nut" import g_squad_manager
 from "%scripts/sqDagui/daguiUtil.nut" import toPixels
@@ -59,13 +60,13 @@ elemViewType.addTypes({
 
       if (obj.childrenCount() < childRequired) {
         if (this.isAnybodyTalk())
-          obj.getScene().performDelayed(this, function() {
-            if (!obj.isValid())
+          defer(function() {
+            if (this == null || !obj.isValid())
               return
 
             this.fillContainer(obj, childRequired)
             this.updateMembersView(obj, nestObj)
-          })
+          }.bindenv(this))
       }
       else
         this.updateMembersView(obj, nestObj)

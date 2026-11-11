@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/hud/hudActionBarInfo.nut" as actionBarInfo
 import "DataBlock" as DataBlock
 from "%scripts/squads/squadManager.nut" import g_squad_manager
@@ -453,7 +454,7 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     select_training_mission(misBlk)
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
-    this.guiScene.performDelayed(this, guiStartFlight)
+    defer(guiStartFlight)
 
     sendStartTestFlightToBq(this.unit.name)
   }
@@ -591,14 +592,16 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
     if (option.value == obj.getValue())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       set_option(option.type, obj.getValue())
       this.updateOption(option.type)
       enable_bullets_modifications(this.unit.name)
       enable_current_modifications(this.unit.name)
       broadcastEvent("UnitWeaponChanged", { unitName = this.unit.name })
       broadcastEvent("ModificationChanged")
-    })
+    }.bindenv(this))
   }
 
   function onMyWeaponOptionUpdate(obj) {

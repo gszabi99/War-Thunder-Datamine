@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
 import "%scripts/time.nut" as time
@@ -98,16 +99,16 @@ class AutoStartBattleHandler (BaseGuiHandlerWT) {
     if (gameMode == null)
       return
 
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid() && this.curQueue == null) {
+    defer(function() {
+      if (this?.isValid() && this.curQueue == null) {
         let event = getGameModeEvent(gameMode)
         EventJoinProcess(event, null, null, Callback(this.goBack, this))
       }
-    })
+    }.bindenv(this))
   }
 
   function goBack() {
-    this.guiScene.performDelayed(this, gui_start_mainmenu)
+    defer(@() gui_start_mainmenu())
     leaveAllQueuesSilent()
     base.goBack()
   }

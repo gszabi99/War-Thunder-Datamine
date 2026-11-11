@@ -119,14 +119,16 @@ class ExporterForTss {
     let stepFn = steps[this.currentStep]
 
     
-    defer((function() {
+    defer(function() {
+      if (this == null)
+        return
       try {
         stepFn()
       } catch (e) {
         debugLog($"[ERROR] Step {this.currentStep} is broken | {e}")
         finishExport(false)
       }
-    }).bindenv(this))
+    }.bindenv(this))
   }
 
   

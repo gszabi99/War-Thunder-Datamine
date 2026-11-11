@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/social/crossplay.nut" as crossplayModule
 from "%scripts/viewUtils/daguiFonts.nut" import getStringWidthPx
 from "%scripts/squads/squadManager.nut" import g_squad_manager
@@ -253,7 +254,7 @@ register_gui_handler("SquadWidgetCustomHandler", class (BaseGuiHandlerWT) {
     if (squadLeaderOperationId == null || squadLeaderOperationId == wwGetOperationId())
       return
 
-    this.guiScene.performDelayed(this, @() joinOperationById(squadLeaderOperationId,
+    defer(@() joinOperationById(squadLeaderOperationId,
       g_squad_manager.getWwOperationCountry()))
   }
 })

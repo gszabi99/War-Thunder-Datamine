@@ -1240,7 +1240,8 @@ function getWeaponAmmoReserveReplenishDesc(trigger, commonData, stowageInfo) {
         let status = getWeaponStatus(weaponInfoBlk?.barrelDP, weaponInfoBlk, commonData)
         local { reloadTimeS, topValue } = getTankWeaponReloadTime(weaponInfoBlk, status, commonData)
         
-        if (weaponInfoBlk?.autoLoader && !stowageInfo.isAutoLoad && hasBackupManualLoading(ammoStowage)) {
+        if (weaponInfoBlk?.autoLoader && hasBackupManualLoading(ammoStowage)
+          && (stowageOrder <= 0 || !stowageInfo.isAutoLoad)) {
           topValue = reloadTimeS * getProp_tankLoaderTimeMultTop(commonData)
           reloadTimeS = reloadTimeS * getProp_tankLoaderTimeMult(commonData)
         }

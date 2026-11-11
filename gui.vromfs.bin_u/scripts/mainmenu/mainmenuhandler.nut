@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/clientState/contentState.nut" as contentStateModule
 import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
@@ -75,7 +76,11 @@ let MainMenu = class (InstantDomination) {
     if (!g_squad_manager.isInSquad()) {
       let fleetTrainingMisName = getFleetTrainingMissionName()
       if (fleetTrainingMisName) {
-        this.guiScene.performDelayed(this, @() this.goForward(@() startFleetTrainingMission(fleetTrainingMisName)))
+        defer(function() {
+          if (this == null)
+            return
+          this.goForward(@() startFleetTrainingMission(fleetTrainingMisName))
+        }.bindenv(this))
         return
       }
     }
@@ -234,7 +239,7 @@ let MainMenu = class (InstantDomination) {
       if (unlockTime <= 0) {
         if (wasShown) {
           invalidateCrewsList()
-          obj.getScene().performDelayed(this, function() { reinitAllSlotbars() })
+          defer(function() { reinitAllSlotbars() })
         }
         return true
       }

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "DataBlock" as DataBlock
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -168,15 +169,15 @@ let FlightMenu = class (BaseGuiHandlerWT) {
       return
 
     this._isWaitForResume = true
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this._isWaitForResume = false
       this.lastSelectedBtnId = null
       inFlightMenu(false) 
       if (this.usePause)
         pauseGame(false)
-    })
+    }.bindenv(this))
   }
 
   function onCancel(obj) {
@@ -360,7 +361,7 @@ function gui_start_flight_menu(_ = null) {
 
 function gui_start_flight_menu_help(_) {
   if (!hasFeature("ControlsHelp")) {
-    get_gui_scene().performDelayed({}, function() {
+    defer(function() {
       closeIngameGui()
       if (isGamePaused())
         pauseGame(false)

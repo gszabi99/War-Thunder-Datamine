@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 from "%scripts/onlineShop/browserWndHelpers.nut" import is_builtin_browser_active
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -402,7 +403,7 @@ class LimitBuyUnitsHandler (BaseGuiHandlerWT) {
   function onPreviewUnit(obj) {
     let unit = getAircraftByName(obj.unitName)
     if (unit.canPreview() && canStartPreviewScene(true, true))
-      obj.getScene().performDelayed(this, @() unit.doPreview())
+      defer(@() unit.doPreview())
   }
 
   function onHoverPreviewBtn(_obj) {

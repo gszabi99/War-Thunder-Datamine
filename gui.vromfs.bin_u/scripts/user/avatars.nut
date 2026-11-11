@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%scripts/user/bhvAvatar.nut" as bhvAvatar
@@ -28,9 +29,7 @@ function getAllowedIcons() {
 function invalidateIcons() {
   icons = null
   allowedIcons = null
-  let guiScene = get_cur_gui_scene()
-  if (guiScene) 
-    guiScene.performDelayed(this, @() seenAvatars.onListChanged())
+  defer(@() seenAvatars.onListChanged())
 }
 
 subscriptions.addListenersWithoutEnv({

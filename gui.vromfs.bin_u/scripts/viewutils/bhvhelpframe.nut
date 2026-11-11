@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "math" import ceil
 from "%globalScripts/guiBehaviourConsts.nut" import *
@@ -9,10 +10,10 @@ let BhvHelpFrame = class {
 
   function onAttach(obj) {
     if (!obj.getIntProp(this.isUpdateInProgressPID, 0))
-      obj.getScene().performDelayed(this, function() {
-        if (obj.isValid())
+      defer(function() {
+        if (obj?.isValid())
           this.updateView(obj)
-      })
+      }.bindenv(this))
     return RETCODE_NOTHING
   }
 

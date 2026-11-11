@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/clusterSelect.nut" as clustersModule
 import "%scripts/penitentiary/antiCheat.nut" as antiCheat
 import "%scripts/onlineInfo/clustersMenuWnd.nut" as openClustersMenuWnd
@@ -736,13 +737,13 @@ let EventRoomsHandler = class (BaseGuiHandlerWT) {
     if (this._isDelayedCrewchangedStarted) 
       return
     this._isDelayedCrewchangedStarted = true
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this._isDelayedCrewchangedStarted = false
       this.updateButtons()
       this.checkRoomsOrder()
-    })
+    }.bindenv(this))
   }
 
   function onEventAfterJoinEventRoom(_ev) {
@@ -754,10 +755,10 @@ let EventRoomsHandler = class (BaseGuiHandlerWT) {
     if (events.getEventByEconomicName(getEventEconomicName(this.event)))
       return
 
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.goBack()
-    })
+    }.bindenv(this))
   }
 
   function getHandlerRestoreData() {

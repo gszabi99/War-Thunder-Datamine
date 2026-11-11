@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/user/playerContextMenu.nut" as playerContextMenu
 import "%scripts/unit/vehiclesModal.nut" as vehiclesModal
@@ -589,11 +590,14 @@ let clanPageModal = class (BaseGuiHandlerWT) {
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       sync_handler_simulate_signal("clan_info_reload")
-      this.afterSlotOp = this.guiScene.performDelayed(this, function() {
+      this.afterSlotOp = defer(function() {
           updateGamercards()
+          if (this == null)
+              return
+
           this.msgBox("left_clan", loc("clan/leftClan"),
             [["ok", function() { if (this.isValid()) this.afterClanLeave() } ]], "ok")
-        })
+        }.bindenv(this))
     }
   }
 
@@ -917,7 +921,11 @@ let clanPageModal = class (BaseGuiHandlerWT) {
       local columnData = this.getColumnDataById(value)
       this.statsSortReverse = columnData?.inverse ?? false
     }
-    this.guiScene.performDelayed(this, function() { this.fillClanMemberList(this.clanData.members) })
+    defer(function() {
+      if (this == null)
+        return
+      this.fillClanMemberList(this.clanData.members)
+    }.bindenv(this))
   }
 
   function onSelectUser(obj = null) {

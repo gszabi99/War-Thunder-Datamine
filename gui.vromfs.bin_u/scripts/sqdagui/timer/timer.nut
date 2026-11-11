@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%sqStdLibs/helpers/callback.nut" import Callback
 from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/daguiNativeApi.nut" import *
@@ -36,8 +37,10 @@ let Timer = class {
   function performAction() {
     if (!this.isDelayed)
       this.onTimeOut()
-    else
-      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut)) 
+    else {
+      let onTimeOutCb = this.onTimeOut
+      defer(@() onTimeOutCb())
+    }
   }
 
   function setDelay(newDelay) {

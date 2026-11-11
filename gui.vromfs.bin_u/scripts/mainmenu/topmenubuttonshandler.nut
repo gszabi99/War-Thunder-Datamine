@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
@@ -226,10 +227,10 @@ let TopMenuButtonsHandler = class (BaseGuiHandlerWT) {
 
     let btn = getButtonConfigById(obj.id)
     if (btn.isDelayed)
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      defer(function() {
+        if (this?.isValid())
           btn.onClickFunc(null, this.parentHandlerWeak)
-      })
+      }.bindenv(this))
     else
       btn.onClickFunc(obj, this.parentHandlerWeak)
   }

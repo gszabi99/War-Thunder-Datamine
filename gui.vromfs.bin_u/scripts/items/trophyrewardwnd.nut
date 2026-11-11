@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/options/handlers/preloaderOptionsModal.nut" as preloaderOptionsModal
 import "%scripts/unit/takeUnitInSlotbar.nut" as takeUnitInSlotbar
@@ -585,12 +586,14 @@ let trophyRewardWnd = class (BaseGuiHandlerWT) {
     if (this.reUseRecipe == null)
       return
     let useAllowAmmount = min(this.usedRecipeAmount, this.reUseRecipe.quantityAvailableExchanges)
+    let useRecipe = this.reUseRecipe
+    let trophy = this.trophyItem
+    let shouldSkipMsgBox = this.reUseRecipe.isUsable
+    let isHidePrizeActionBtn  = this.isHidePrizeActionBtn
+    defer(@() tryUseRecipeSeveralTime(useRecipe, trophy, useAllowAmmount,
+      { shouldSkipMsgBox, isHidePrizeActionBtn })
+    )
     this.goBack()
-    this.guiScene.performDelayed(this, @() tryUseRecipeSeveralTime(this.reUseRecipe, this.trophyItem,
-      useAllowAmmount, {
-        shouldSkipMsgBox = this.reUseRecipe.isUsable
-        isHidePrizeActionBtn  = this.isHidePrizeActionBtn
-      }))
   }
 
   canGoToItem = @() !!(this.rewardItem && sheets.getSheetDataByItem(this.rewardItem))

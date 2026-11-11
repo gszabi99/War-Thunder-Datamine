@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/sqDagui/framework/progressMsg.nut" as progressMsg
 import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
@@ -469,7 +470,7 @@ let CampaignChapter = class (BaseGuiHandlerWT) {
     if (checkSeen && was_video_seen(videoName))
       return
 
-    let playVideo = @() this.guiScene.performDelayed(this, function(_obj) {
+    let playVideo = @() defer(function() {
       play_movie(videoName, false, true, true)
       add_video_seen(videoName)
     })

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/slotbar/fillSlotbarLegend.nut" as fillSlotbarLegend
 import "%scripts/slotbar/selectCrewSlotbarBaseCfg.nut" as slotbarBaseCfg
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
@@ -52,7 +53,7 @@ class SlotbarUnitDnD (BaseGuiHandlerWT) {
         selectOnHover = true
         applySlotSelectionOverride = @(_, __) this.onSlotSelection()
       }),"take-aircraft-slotbar")
-    this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(-1))
+    defer(function() { this?.slotbarWeak.selectCrew(-1) }.bindenv(this))
 
     this.draggedObjParent = this.draggedObj.getParent()
     let tdPos = this.draggedObjParent.getPosRC()

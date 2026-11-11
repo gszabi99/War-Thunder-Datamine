@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
 import "%sqstd/ecs.nut" as ecs
@@ -171,8 +172,11 @@ class ActionBar {
     : this.isCollapsed ? ActionBarVsisbility.COLLAPSED
     : ActionBarVsisbility.EXPANDED
 
-  notifyActionBarStateChanged = @() get_cur_gui_scene()
-    .performDelayed(this, @() eventbus_send("setActionBarState", this.getState()))
+  notifyActionBarStateChanged = @() defer(function() {
+    if (this == null)
+      return
+    eventbus_send("setActionBarState", this.getState())
+  }.bindenv(this))
 
   constructor(nestObj, itemBlk = null, itemDivName = null, secondItemsTpl = null) {
     if (!checkObj(nestObj))
@@ -1234,10 +1238,12 @@ class ActionBar {
       return
 
     if (this.killStreaksActions.len() == 1) {
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
+        if (this == null)
+          return
         activateShortcutActionBarAction(this.killStreaksActions[0])
         closeCurWheelmenu()
-      })
+      }.bindenv(this))
       return
     }
 
@@ -1350,8 +1356,7 @@ class ActionBar {
     toggleShortcut(shortcutId)
   }
 
-  onEventWeaponSelectorInit = @(_) get_cur_gui_scene()
-    .performDelayed(this, this.syncWithWeaponSelector)
+  onEventWeaponSelectorInit = @(_) defer(function() { this?.syncWithWeaponSelector() }.bindenv(this))
 
   onEventWeaponSelectorUserInteraction = @(_) this.clearAutoCollapseTimer()
 }

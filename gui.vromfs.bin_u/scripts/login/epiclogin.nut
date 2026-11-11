@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 import "statsd" as statsd
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -20,7 +21,7 @@ register_gui_handler("LoginWndHandlerEpic", class (LoginWndHandler) {
     setVersionText(this.scene)
     setProjectAwards(this)
 
-    this.guiScene.performDelayed(this, function() { this.doLogin() })
+    defer(function() { this?.doLogin() }.bindenv(this))
   }
 
   function doLogin() {

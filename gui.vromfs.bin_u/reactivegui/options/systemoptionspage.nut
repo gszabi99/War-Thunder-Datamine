@@ -15,6 +15,8 @@ let dpPx = cssConst("dp")
 let iconSize = cssConst("cIco")
 let tabPad = cssConst("listboxHPadding")
 let sliderTextW = px("80@sf/@pf")
+let scrollBarPlaceW = cssConst("scrollBarSize")
+let headerInterval = cssConst("blockInterval")
 
 let sectionsW = Computed(@() optionsScreen.get().sysopt?.sections ?? [])
 let errorTextW = Computed(@() optionsScreen.get().sysopt?.errorText)
@@ -65,7 +67,7 @@ function unitTab(tab, idx, tabId, sendAction) {
 
 let sectionHeader = @(section, tableW, sendAction) {
   size = [tableW, rowH]
-  margin = [cssConst("blockInterval"), 0, 0, 0]
+  margin = [headerInterval, 0, 0, 0]
   children = headerCells(section.title)
     .append(section.tabs == null ? null : {
       hplace = ALIGN_RIGHT
@@ -76,36 +78,33 @@ let sectionHeader = @(section, tableW, sendAction) {
     })
 }
 
+let headerSlot = @(s) s.sectionIdx == 0 ? 0 : 1
+let sectionPitch = @(s) s.rows.len() + headerSlot(s)
+
 let sectionRows = @(section, tableW, ctx, sendAction)
-  [sectionHeader(section, tableW, sendAction)]
+  (headerSlot(section) == 0 ? [] : [sectionHeader(section, tableW, sendAction)])
     .extend(section.rows.map(@(row) optionRow(ctx, row, tableW)))
 
-let contentHeightW = Computed(@() sectionsW.get().reduce(@(res, s) res + 1 + s.rows.len(), 0) * rowPitch)
+let contentHeightW = Computed(@() sectionsW.get().reduce(@(res, s) res + sectionPitch(s), 0) * rowPitch)
 
 
 function stickyHeader(offset, tableW, sendAction) {
   let sectionIdxW = Computed(function() {
-    local top = 0
-    local res = null
+    local top = headerInterval
+    local res = 0
     foreach (idx, s in sectionsW.get()) {
-      if (top >= offset.get())
+      if (offset.get() < top + rowH)
         break
       res = idx
-      top += (1 + s.rows.len()) * rowPitch
+      top += sectionPitch(s) * rowPitch
     }
     return res
   })
-  let header = @() {
-    watch = [sectionIdxW, sectionsW]
-    rendObj = ROBJ_SOLID
-    color = cssColors.frameBackgroundColor
-    children = sectionIdxW.get() == null ? null
-      : sectionHeader(sectionsW.get()[sectionIdxW.get()], tableW, sendAction) 
-  }
   return @() {
-    watch = offset
-    pos = [0, offset.get()]
-    children = header
+    watch = [sectionIdxW, sectionsW]
+    size = [tableW, rowH]
+    children = sectionHeader(sectionsW.get()[sectionIdxW.get()], tableW, sendAction) 
+      .__update({ margin = 0 })
   }
 }
 
@@ -115,46 +114,70 @@ function sysoptRowIdx(rowId) {
   foreach (s in sectionsW.get()) {
     let i = s.rows.findindex(@(r) r.id == rowId)
     if (i != null)
-      return idx + 1 + i
-    idx += 1 + s.rows.len()
+      return idx + headerSlot(s) + i
+    idx += sectionPitch(s)
   }
   return 0
 }
 
 
 function sysoptPage(rowCtx, sendAction, listW, listH) {
-  let list = scrollBox({ size = [listW, listH], contentHeight = contentHeightW }, function(tableW, offset, viewH) {
-    let ctx = rowCtx.__merge({
-      leftW = @(w) w / 2
-      isLabelLeft = true
-      rightMaxW = null
-      valueTextW = sliderTextW
-      hasStateMarks = true
-      onClick = null
-      keepInView = @(rowId) scrollToRow(offset, viewH, sysoptRowIdx(rowId))
-      onValueHover = @(row, idx) sendAction("sysoptValueHover", { optId = row.optId, idx })
-    })
-    let xmbNode = mkListXmb()
-    let rows = @() {
-      watch = sectionsW
-      size = [tableW, SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      xmbNode
-      children = sectionsW.get().reduce(@(res, s) res.extend(sectionRows(s, tableW, ctx, sendAction)), []) 
+  let scrollOffsY = Watched(0)
+  let tableWidth = listW - scrollBarPlaceW
+  let listH_eff = listH - rowH
+  let maxOffset = @() max(0, contentHeightW.get() - listH_eff)
+  
+  let onWheelScroll = @(delta) scrollOffsY.set(clamp(scrollOffsY.get() - delta, 0, maxOffset()))
+  let header = stickyHeader(scrollOffsY, tableWidth, sendAction)
+  let list = scrollBox({
+      size = [listW, listH_eff]
+      contentHeight = contentHeightW
+      scrollOffsY
+    },
+    function(tableW, offset, viewH) {
+      let ctx = rowCtx.__merge({
+        leftW = @(w) w / 2
+        isLabelLeft = true
+        rightMaxW = null
+        valueTextW = sliderTextW
+        hasStateMarks = true
+        onClick = null
+        keepInView = @(rowId) scrollToRow(offset, viewH, sysoptRowIdx(rowId))
+        onValueHover = @(row, idx) sendAction("sysoptValueHover", { optId = row.optId, idx })
+      })
+      let xmbNode = mkListXmb()
+      return @() {
+        watch = sectionsW
+        size = [tableW, SIZE_TO_CONTENT]
+        flow = FLOW_VERTICAL
+        xmbNode
+        children = sectionsW.get().reduce(@(res, s) res.extend(sectionRows(s, tableW, ctx, sendAction)), []) 
+      }
     }
-    return {
-      size = [tableW, SIZE_TO_CONTENT]
-      children = [
-        rows
-        stickyHeader(offset, tableW, sendAction)
-      ]
-    }
-  })
+  )
   return @() {
     watch = errorTextW
-    children = errorTextW.get() == null ? list
-      : { size = [listW, listH], rendObj = ROBJ_TEXTAREA, behavior = Behaviors.TextArea, halign = ALIGN_CENTER,
-          valign = ALIGN_CENTER, font = fontNormal, color = cssColors.commonTextColor, text = errorTextW.get() }
+    children = errorTextW.get() == null
+      ? {
+          size = [listW, listH]
+          flow = FLOW_VERTICAL
+          behavior = Behaviors.WheelScroll
+          onWheelScroll
+          children = [
+            header
+            list
+          ]
+        }
+      : {
+          size = [listW, listH]
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          font = fontNormal
+          color = cssColors.commonTextColor
+          text = errorTextW.get()
+        }
   }
 }
 

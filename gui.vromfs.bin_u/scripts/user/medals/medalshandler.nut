@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -179,7 +180,7 @@ let MedalsHandler = class (BaseGuiHandlerWT) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
     else if (this.parent != null)
-      this.guiScene.performDelayed(this.parent, this.parent.goBack)
+      defer(function() { this?.goBack() }.bindenv(this.parent))
   }
 
   function onMedalsCountrySelect(obj) {

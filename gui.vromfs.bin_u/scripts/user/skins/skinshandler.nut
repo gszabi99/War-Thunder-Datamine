@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "DataBlock" as DataBlock
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -146,7 +147,7 @@ local SkinsHandler = class (BaseGuiHandlerWT) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
     else if (this.parent != null)
-      this.guiScene.performDelayed(this.parent, this.parent.goBack)
+      defer(function() { this?.goBack() }.bindenv(this.parent))
   }
 
   function prepareSkins() {
@@ -318,7 +319,7 @@ local SkinsHandler = class (BaseGuiHandlerWT) {
     let skinId = this.skinsListObj.getChild(index).id
     let decorator = getDecoratorById(skinId)
     if (decorator && canStartPreviewScene(true, true))
-      this.guiScene.performDelayed(this, @() decorator.doPreview())
+      defer(@() decorator.doPreview())
   }
 
   function fillSkinDescr(skin) {

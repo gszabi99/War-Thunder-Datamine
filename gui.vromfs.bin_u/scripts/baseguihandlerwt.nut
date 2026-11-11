@@ -690,7 +690,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     let isOpened = obj.getFloatProp(timerPID, 0.0) == 1
     if (!isOpened) {
       let rootObj = getDropDownRootObj(obj)
-      this.guiScene.performDelayed({}, function() {
+      defer(function() {
         if (rootObj?.isValid())
           setForceMove(rootObj, "no") 
       })
@@ -860,10 +860,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onShowMapRenderFilters() {}
 
   function onCustomLangInfo() {
-    this.guiScene.performDelayed(this, @() broadcastEvent("showOptionsWnd"))
+    defer(@() broadcastEvent("showOptionsWnd"))
   }
 
-  onCustomSoundMods = @() this.guiScene.performDelayed(this,
+  onCustomSoundMods = @() defer(
     @() broadcastEvent("showOptionsWnd", { group = "sound" }))
 
   function onUnitHover(obj) {

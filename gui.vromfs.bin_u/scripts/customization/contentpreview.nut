@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%scripts/guidParser.nut" as guidParser
 from "%scripts/squads/squadManager.nut" import g_squad_manager
@@ -410,35 +411,33 @@ function useDecorator(decorator, decoratorUnit, decoratorSlot) {
   })
 }
 
-let doDelayed = @(action) get_gui_scene().performDelayed({}, action)
-
 globalCallbacks.addTypes({
   ITEM_PREVIEW = {
     onCb = function(_obj, params) {
       let item = findItemById(params?.itemId)
       if (item && item.canPreview() && canStartPreviewScene(true, true))
-        doDelayed(@() item.doPreview())
+        defer(@() item.doPreview())
     }
   }
   ITEM_LINK = {
     onCb = function(_obj, params) {
       let item = findItemById(params?.itemId)
       if (item && item.hasLink())
-        doDelayed(@() item.openLink())
+        defer(@() item.openLink())
     }
   }
   UNIT_PREVIEW = {
     onCb = function(_obj, params) {
       let unit = getAircraftByName(params?.unitId)
       if (unit && unit.canPreview() && canStartPreviewScene(true, true))
-        doDelayed(@() unit.doPreview())
+        defer(@() unit.doPreview())
     }
   }
   DECORATOR_PREVIEW = {
     onCb = function(_obj, params) {
       let decorator = getDecoratorByResource(params?.resource, params?.resourceType)
       if (decorator && decorator.canPreview() && canStartPreviewScene(true, true))
-        doDelayed(@() decorator.doPreview())
+        defer(@() decorator.doPreview())
     }
   }
 })

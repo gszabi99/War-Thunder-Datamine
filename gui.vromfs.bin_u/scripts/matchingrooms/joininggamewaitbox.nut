@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
 from "%scripts/events/eventsManager.nut" import events
@@ -131,11 +132,13 @@ register_gui_handler("JoiningGameWaitBox", class (BaseGuiHandlerWT) {
   }
 
   function onCancel() {
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       if (this.timer >= 0)
         return
       destroySessionScripted("on cancel join game")
       leaveSessionRoom()
-    })
+    }.bindenv(this))
   }
 })

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%scripts/statistics/mpStatistics.nut" import MPStatistics
@@ -92,7 +93,7 @@ let MPStatisticsModal = class (MPStatistics) {
     setMuteSoundInFlightMenu(false)
     inFlightMenu(true)
     this.forceUpdate()
-    this.guiScene.performDelayed(this, this.selectLocalPlayer)
+    defer(function() { this?.selectLocalPlayer() }.bindenv(this))
     this.showMissionResult()
   }
 

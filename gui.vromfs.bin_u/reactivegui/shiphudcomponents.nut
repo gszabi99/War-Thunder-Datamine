@@ -7,10 +7,15 @@ from "%rGui/fcsState.nut" import HasFcsIndication, IsFcsVisible, IsVisible
 from "%rGui/radar.nut" import radarHud, radarIndication
 from "%rGui/sonar.nut" import sonarIndication
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/style/airHudStyle.nut" import greenColor
+import "%rGui/compass.nut" as compass
 
 let collapsedIconPos = Computed(@() [bw.get() + 0.015 * rw.get(), bh.get() + 0.032 * rh.get()])
 let radarPos = Computed(@() [bw.get(), bh.get()])
 let radarColor = Watched(Color(0, 255, 0, 255))
+
+let compassSize = [hdpx(500), hdpx(32)]
+let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 
 let radarVisible = Computed(@() IsRadarVisible.get() || IsRadar2Visible.get() || !CollapsedIcon.get())
 let isFcsAvailable = Computed(@() IsVisible.get() && HasFcsIndication.get())
@@ -58,7 +63,18 @@ let sonarComponent = @() {
   children = [ mkSonar(), sonarIndication() ]
 }
 
+let getCompassDescription = memoize(@() {
+  pos = compassPos
+  children = compass(compassSize, greenColor)
+})
+
+let shipCompassComponent = @() {
+  watch = IsRadarVisible
+  children = !IsRadarVisible.get() ? getCompassDescription() : null
+}
+
 return freeze({
   radarComponent
   sonarComponent
+  shipCompassComponent
 })

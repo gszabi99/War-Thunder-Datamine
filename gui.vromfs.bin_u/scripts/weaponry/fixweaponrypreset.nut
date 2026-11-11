@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/unit/unitInfo.nut" import getUnitName
 from "%scripts/weaponry/editWeaponryPreset.nut" import EditWeaponryPresetsModal
@@ -71,12 +72,14 @@ local handlerClass = class (EditWeaponryPresetsModal) {
 
   function goBack() {
     this.savePreset()
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       handlersManager.destroyHandler(this)
       handlersManager.clearInvalidHandlers()
 
       this.onModalWndDestroy()
-    })
+    }.bindenv(this))
   }
 }
 

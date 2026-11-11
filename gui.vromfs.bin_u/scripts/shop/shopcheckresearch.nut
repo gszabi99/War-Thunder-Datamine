@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/user/newbieTutorialDisplay.nut" as tutorialModule
 import "%scripts/tutorials/tutorialActions.nut" as tutorAction
 from "%scripts/unit/unitsData.nut" import getAllUnits
@@ -211,22 +212,22 @@ let ShopCheckResearch = class (ShopMenuHandler) {
       unit = this.curResearchingUnit
 
     if (!unit) {
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isSceneActiveNoModals())
+      defer(function() {
+        if (!this?.isSceneActiveNoModals())
           return
         this.showRankRestrictionMsgBox()
-      })
+      }.bindenv(this))
       return unit
     }
 
     this.destroyGroupChoose(isGroupPart(unit) ? unit.group : "")
 
     if (isGroupPart(unit))
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isSceneActiveNoModals())
+      defer(function() {
+        if (!this?.isSceneActiveNoModals())
           return
         this.checkSelectAirGroup(this.getItemBlockFromShopTree(unit.group), unit.name)
-      })
+      }.bindenv(this))
 
     this.selectCellByUnitName(unit.name)
     return unit

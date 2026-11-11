@@ -15,8 +15,7 @@ from "%scripts/unit/unitMrankSelectionState.nut" import getEffectiveMrank
 from "dagor.time" import get_time_msec
 from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+from "dagor.workcycle" import defer
 
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
@@ -229,7 +228,7 @@ function updateBattleRatingDelayed() {
   if (isRequestDelayed || isInFlight() || reqFirstUnitTypeChoice() || !hasOptionsInitialized()) 
     return
   isRequestDelayed = true
-  handlersManager.doDelayed(function() {
+  defer(function() {
     isRequestDelayed = false
     updateBattleRating()
   })

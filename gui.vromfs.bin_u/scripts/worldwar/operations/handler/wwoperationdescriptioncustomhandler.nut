@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
 import "%scripts/worldWar/worldWarRender.nut" as g_world_war_render
 import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
@@ -44,10 +45,10 @@ register_gui_handler("WwOperationDescriptionCustomHandler", class (WwMapDescript
     this.updateTeamsInfo()
     
     
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.updateMap()
-    })
+    }.bindenv(this))
   }
 
   function isVisible() {

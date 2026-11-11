@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "dagor.webpoll" as api
@@ -104,7 +105,7 @@ function invalidateTokensCache(pollId = null) {
     tokenInvalidationTimeById.$rawdelete(pollId)
   }
 
-  get_cur_gui_scene().performDelayed(this,
+  defer(
     function() { broadcastEvent("WebPollTokenInvalidated", { pollId = pollId?.tostring() }) })
 }
 

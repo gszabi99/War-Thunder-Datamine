@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/loading/loadingTips.nut" import getTip
 from "%globalScripts/guiBehaviourConsts.nut" import *
@@ -37,14 +38,14 @@ from "%scripts/dagui_library.nut" import *
     }
 
     function updateTip(obj) {
-      obj.getScene().performDelayed(this, function() {
-          if (!obj.isValid())
+      defer(function() {
+          if (this == null || !obj.isValid())
             return
 
           let textObj = obj.findObject("tip_hint")
           if (checkObj(textObj))
             textObj.setValue(getTip(this.getUnitTypeMask(obj)))
-        })
+        }.bindenv(this))
     }
   }
 

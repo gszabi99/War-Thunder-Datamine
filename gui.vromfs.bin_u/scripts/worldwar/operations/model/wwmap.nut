@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/unit/unitInfoRoles.nut" import getUnitRole
@@ -368,7 +369,7 @@ setStatusTypeLoadList("MAPS", function loadList() {
 
   let guiScene = get_cur_gui_scene()
   if (guiScene) 
-    guiScene.performDelayed(this,
+    defer(
       function() {
         seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)
         seenWWMapsAvailable.onListChanged()

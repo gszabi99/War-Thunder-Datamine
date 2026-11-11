@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "DataBlock" as DataBlock
 import "math" as math
@@ -305,7 +306,7 @@ class TopMenu (BaseGuiHandlerWT) {
       shopMove.setFloatProp(dagui_propid_add_name_id("_size-timer"), 1.0)
       shopMove.height = "sh"
 
-      this.guiScene.performDelayed(this, function () { this.updateOnShopWndAnim(true) })
+      defer(function () { this?.updateOnShopWndAnim(true) }.bindenv(this))
       this.adjustHeight(shopMove, true)
       this.activateShopImpl(true)
     }

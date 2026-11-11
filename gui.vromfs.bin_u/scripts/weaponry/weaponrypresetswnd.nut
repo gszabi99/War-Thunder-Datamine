@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
 import "%sqstd/ecs.nut" as ecs
@@ -443,7 +444,7 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
       checkSecondaryWeaponModsRecount(this.unit)
       this.checkSaveBulletsAndDo()
     }
-    this.guiScene.performDelayed(this, @()this.goBack())
+    defer(function() { this?.goBack() }.bindenv(this))
   }
 
   function onBuy(item) {

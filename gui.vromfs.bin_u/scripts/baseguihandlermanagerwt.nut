@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/global/updateExtWatched.nut" as updateExtWatched
 import "fonts" as fonts
 import "%appGlobals/style/cssColors.nut" as cssColors
@@ -464,7 +465,7 @@ handlersManager.__update({
       return
 
     rootObj["css-hier-invalidate"] = "all"  
-    guiScene.performDelayed(this, function() {
+    defer(function() {
       if (check_obj(rootObj))
         rootObj["css-hier-invalidate"] = "no"
     })

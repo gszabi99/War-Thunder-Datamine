@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/customization/decorLayoutPresetsWnd.nut" as decorLayoutPresets
 import "%scripts/weaponry/guiStartWeaponryPresets.nut" as guiStartWeaponryPresets
@@ -246,7 +247,9 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
 
     hangar_focus_model(true)
 
-    this.guiScene.performDelayed(this, this.createSlotInfoPanelDelayed)
+    defer(function() {
+      this?.createSlotInfoPanelDelayed()
+    }.bindenv(this))
 
     this.decorMenu = decorMenuHandler(this.scene.findObject("decor_menu_container")).weakref()
 
@@ -290,12 +293,28 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   function createSlotInfoPanelDelayed() {
     if (!this.isValid())
       return
-    let unitInfoPanel = createSlotInfoPanel(this.scene, {showTabs = false, configSaveId = "showroom"})
+    let unitInfoPanel = createSlotInfoPanel(this.scene, { showTabs = false, configSaveId = "showroom" })
     this.isSlotInfoOpenedPrevValue = true
     this.registerSubHandler(unitInfoPanel)
     this.unitInfoPanelWeak = unitInfoPanel.weakref()
     if (this.needForceShowUnitInfoPanel)
       this.unitInfoPanelWeak.uncollapse()
+    this.updateSlotInfoPanelVisibility()
+  }
+
+  function updateSlotInfoPanelVisibility() {
+    if (!this.unitInfoPanelWeak?.isValid())
+      return
+
+    let isInEditMode = this.currentState & decoratorEditState.EDITING
+    let isDmgSkinPreviewMode = hasFeature("DamagedSkinPreview")
+      && this.scene.findObject("btn_toggle_damaged").getValue()
+    let needOpenSlotInfo = !isInEditMode && !this.decorMenu?.isOpened && !isDmgSkinPreviewMode
+
+    if (this.isSlotInfoOpenedPrevValue == needOpenSlotInfo)
+      return
+    this.unitInfoPanelWeak.onSceneActivate(needOpenSlotInfo)
+    this.isSlotInfoOpenedPrevValue = needOpenSlotInfo
   }
 
   function canRestartSceneNow() {
@@ -763,8 +782,10 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
 
     if (!havePremium.get()) {
       obj.setValue(oldValue)
-      this.guiScene.performDelayed(this, @()
-        this.isValid() && this.askBuyPremium(Callback(this.updateSkinSliders, this)))
+      defer(function() {
+        if (this?.isValid())
+          this.askBuyPremium(Callback(this.updateSkinSliders, this))
+      }.bindenv(this))
       return
     }
 
@@ -1078,13 +1099,7 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
 
     updateWishlistButton(this.scene, this.unit)
 
-    if ((this.unitInfoPanelWeak?.isValid()) ?? false) {
-      let needToSlotInfoOpen = !isInEditMode && !this.decorMenu?.isOpened && !isDmgSkinPreviewMode
-      if (this.isSlotInfoOpenedPrevValue != needToSlotInfoOpen) {
-        this.unitInfoPanelWeak.onSceneActivate(needToSlotInfoOpen)
-        this.isSlotInfoOpenedPrevValue = needToSlotInfoOpen
-      }
-    }
+    this.updateSlotInfoPanelVisibility()
 
     if (needUpdateSlotDivs)
       this.updateSlotsDivsVisibility(decoratorType)
@@ -2336,7 +2351,11 @@ register_gui_handler("DecalMenuHandler", class (BaseGuiHandlerWT) {
   function goBack() {
     
     clearLivePreviewParams()
-    this.guiScene.performDelayed(this, base.goBack)
+    defer(function() {
+      if (this == null)
+        return
+      base.goBack.call(this)
+    }.bindenv(this))
     hangar_focus_model(false)
   }
 

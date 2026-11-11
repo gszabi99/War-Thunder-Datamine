@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/unlocks/unlocksModule.nut" import isUnlockOpened
 from "%scripts/unlocks/unlocksState.nut" import getFullUnlockDescByName
 from "%scripts/user/userInfoStats.nut" import getProfileInfo
@@ -67,15 +68,16 @@ function isRanksAllowed(handler, tbl) {
     if (has_entitlement(tbl.entitlement))
       return true
     else if (!silent && (tbl.entitlement == shop_get_premium_account_ent_name())) {
-      let guiScene = get_gui_scene()
       let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
           let text = loc($"charServer/noEntitlement/{locText}")
           handler.msgBox("no_entitlement", text,
           [
-            ["yes", function() { guiScene.performDelayed(handler, function() {
+            ["yes", function() { defer(function() {
+                if (!(this?.isValid() ?? false))
+                  return
                 this.onOnlineShopPremium()
-              }) }],
+              }.bindenv(handler)) }],
             ["no", function() {} ]
           ], "yes")
         }

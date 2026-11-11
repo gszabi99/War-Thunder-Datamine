@@ -33,6 +33,7 @@ from "math" import ceil
 from "string" import format
 from "%scripts/dagui_natives.nut" import wp_get_cost, shop_get_researchable_unit_name, shop_get_free_exp, set_char_cb, shop_convert_free_exp_for_unit, wp_get_exp_convert_exp_for_gold_rate
 from "%scripts/dagui_library.nut" import *
+from "dagor.workcycle" import defer
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -708,7 +709,7 @@ function openConvertExpWnd(unit = null) {
 }
 
 function closeConvertExpWnd() {
-  handlersManager.doDelayed(function() {
+  defer(function() {
     let handler = handlersManager.findHandlerClassInScene(ConvertExpHandler)
     handlersManager.destroyHandler(handler)
     handlersManager.clearInvalidHandlers()

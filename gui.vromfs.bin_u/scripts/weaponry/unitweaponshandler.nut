@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/weaponry/weaponWarningHandler.nut" import WeaponWarningHandler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -116,7 +117,11 @@ let unitWeaponsHandler = class (BaseGuiHandlerWT) {
     this.updateAllItems()
 
     if (this.needCheckTutor) {
-      this.guiScene.performDelayed(this, @() checkShowShipWeaponsTutor(this, columnsConfig))
+      defer(function() {
+        if (this == null)
+          return
+        checkShowShipWeaponsTutor(this, columnsConfig)
+      }.bindenv(this))
       this.needCheckTutor = false
     }
   }

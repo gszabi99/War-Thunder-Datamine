@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
 import "%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut" as slotbarPresets
 import "%scripts/tutorials/tutorialActions.nut" as tutorAction
@@ -150,7 +151,7 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
       let crewId = this.canSetCurUnit
         ? -1
         : (curCrew?.idInCountry ?? -1)
-      this.guiScene.performDelayed(this, @() this.slotbarWeak?.selectCrew(crewId))
+      defer(function() { this?.slotbarWeak.selectCrew(crewId) }.bindenv(this))
     }
 
     this.onChangeUnit()

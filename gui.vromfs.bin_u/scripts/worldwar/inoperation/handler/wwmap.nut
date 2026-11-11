@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/worldWar/inOperation/model/wwMapAirfields.nut" as mapAirfields
 import "%scripts/worldWar/inOperation/wwActionModesManager.nut" as actionModesManager
@@ -155,10 +156,10 @@ let WwMap = class (BaseGuiHandlerWT) {
     if (g_world_war_render.isCategoryEnabled(RenderCategory.ERC_ARMY_RADIUSES))
       g_world_war_render.setCategory(RenderCategory.ERC_ARMY_RADIUSES, false)
 
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         checkNonApprovedResearches(true)
-    })
+    }.bindenv(this))
 
     this.scene.findObject("worldwar_map").show(false)
     dargMapVisible.set(true)
@@ -461,12 +462,12 @@ let WwMap = class (BaseGuiHandlerWT) {
     if (g_squad_manager.isSquadMember()) {
       let leaderState = getLeaderOperationState()
       if (leaderState == LEADER_OPERATION_STATES.OUT) {
-        this.guiScene.performDelayed(this, this.goBackToHangar)
+        defer(function() { this?.goBackToHangar() }.bindenv(this))
         return
       }
 
       if (leaderState == LEADER_OPERATION_STATES.ANOTHER_OPERATION) {
-        this.guiScene.performDelayed(this, @()
+        defer(@()
           g_world_war.joinOperationById(g_squad_manager.getWwOperationId()))
         return
       }

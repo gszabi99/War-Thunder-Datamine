@@ -1352,6 +1352,8 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SPAWN"
     getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      if (unit == null)
+        return ""
       let supportUnits = getSupportUnits(unit.name)
       if (supportUnits.len() == 0)
         return ""
@@ -1367,6 +1369,8 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SWITCH"
     getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      if (unit == null)
+        return ""
       let supportUnits = getSupportUnits(unit.name)
       let supportUnitImage = getSupportUnitImage(supportUnits.len() > 0 ? supportUnits[0] : getBaseUnit(unit.name))
       return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isChange = true })
@@ -1386,6 +1390,8 @@ enumsAddTypes(g_hud_action_bar_type, {
       return $"ID_SLAVE_UNIT_PROHIBIT_{idx}"
     }
     getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      if (unit == null)
+        return ""
       let supportUnits = getSupportUnits(unit.name)
       let supportUnitImage = getSupportUnitImage(supportUnits.len() > 0 ? supportUnits[0] : unit.name)
       return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isSlave = true })

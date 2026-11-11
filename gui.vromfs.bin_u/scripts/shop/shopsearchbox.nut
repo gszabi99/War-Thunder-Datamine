@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/shop/shopSearchCore.nut" as shopSearchCore
 import "%scripts/shop/shopSearchWnd.nut" as shopSearchWnd
 import "%sqStdLibs/helpers/u.nut" as u
@@ -151,7 +152,10 @@ let ShopSearchBox = class (BaseGuiHandlerWT) {
   }
 
   function onSearchEditBoxFocusChanged(obj) {
-    this.guiScene.performDelayed(this, @() checkObj(obj) && this.onActiveStateChanged(obj.isFocused()))
+    defer(function() {
+      if (this != null && obj.isValid())
+        this.onActiveStateChanged(obj.isFocused())
+    }.bindenv(this))
   }
 
   function onSearchEditBoxMouseChanged(obj) {

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/penitentiary/antiCheat.nut" as antiCheat
 import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 import "%sqStdLibs/helpers/u.nut" as u
@@ -149,7 +150,7 @@ let actionByLogType = {
       return addPopup(null, colorize("warningTextColor", locByVendor("xbox/crossPlayRequired")))
 
     log($"join to tournament battle with id {battleId}")
-    get_cur_gui_scene().performDelayed({}, @() joinBattle(logObj.battleId))
+    defer(@() joinBattle(logObj.battleId))
   }
 }
 

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "DataBlock" as DataBlock
 from "%scripts/missions/missionsStates.nut" import currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -413,19 +414,19 @@ register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
   }
 
   function onSectorChange(obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this.updateOptionDescr(obj, this.update_dynamic_sector)
-    })
+    }.bindenv(this))
   }
 
   function onYearChange(obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
       this.updateOptionDescr(obj, this.update_dynamic_sector)
-    })
+    }.bindenv(this))
   }
 
   function onRandom(_obj) {

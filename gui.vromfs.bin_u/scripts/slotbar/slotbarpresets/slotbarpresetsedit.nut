@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -190,10 +191,12 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
 
     this.setSlotbarPresetsEditWndOpened(false)
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       handlersManager.destroyHandler(this)
       handlersManager.clearInvalidHandlers()
-    })
+    }.bindenv(this))
   }
 
   function showNotAllowedMessage() {

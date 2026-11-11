@@ -106,7 +106,7 @@ local NextTutorialHandler = class (BaseGuiHandlerWT) {
   function onStart() {
     prepareStartTutorial(this.checkIdx, this.tutorialMission)
     sendTutorialChoiceStatisticOnce("acceptTutorial", this.tutorialMission.name)
-    this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight); })
+    defer(function() { this?.goForward(guiStartFlight) }.bindenv(this))
   }
 
   function onClose() {

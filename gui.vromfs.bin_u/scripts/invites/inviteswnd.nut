@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%scripts/clientState/localProfileDeprecated.nut" import loadLocalByAccount, saveLocalByAccount
@@ -128,7 +129,7 @@ register_gui_handler("InvitesWnd", class (BaseGuiHandlerWT) {
     if (!invite)
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
       if (invite.haveRestrictions()) {
         if (invite.needCheckSystemRestriction) {
           if (!isMultiplayerPrivilegeAvailable.get()) {
@@ -149,11 +150,13 @@ register_gui_handler("InvitesWnd", class (BaseGuiHandlerWT) {
 
         return
       }
-
       invite.accept()
+
+      if (this == null)
+        return
       if (this.isAutoClose)
         this.goBack()
-    })
+    }.bindenv(this))
   }
 
   function onReject(obj) {
@@ -161,7 +164,7 @@ register_gui_handler("InvitesWnd", class (BaseGuiHandlerWT) {
     if (!invite)
       return
 
-    this.guiScene.performDelayed(this, @() invite.reject())
+    defer(@() invite.reject())
   }
 
   function initAutoClose() {

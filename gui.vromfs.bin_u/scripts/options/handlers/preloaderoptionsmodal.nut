@@ -159,7 +159,10 @@ local class PreloaderOptionsModal (BaseGuiHandlerWT) {
     if (editBoxObj.getValue() != "")
       editBoxObj.setValue("")
     else
-      this.guiScene.performDelayed(this, @() this.isValid() && this.goBack())
+      defer(function() {
+        if (this?.isValid())
+          this.goBack()
+      }.bindenv(this))
   }
 
   function onFilterEditBoxChangeValue(obj) {

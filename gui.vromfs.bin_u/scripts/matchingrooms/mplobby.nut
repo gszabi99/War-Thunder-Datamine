@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/penitentiary/antiCheat.nut" as antiCheat
 import "%scripts/matchingRooms/fillSessionInfo.nut" as fillSessionInfo
 from "%scripts/chat/chatStorage.nut" import getRoomById
@@ -321,9 +322,11 @@ register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
   function onEventLobbyMyInfoChanged(params) {
     this.updateButtons()
     if ("team" in params)
-      this.guiScene.performDelayed(this, function () {
+      defer(function () {
+        if (this == null)
+          return
         this.reinitSlotbar()
-      })
+      }.bindenv(this))
   }
 
   function onEventLobbyReadyChanged(_p) {

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "regexp2" as regexp2
 import "math" as math
 from "string" import format
@@ -460,7 +461,7 @@ function move_mouse_on_child(obj, idx = 0) {
   if (!child.isValid())
     return
   child.scrollToView()
-  get_cur_gui_scene().performDelayed({}, function() {
+  defer(function() {
     if (!child?.isValid())
       return
     child.setMouseCursorOnObject()

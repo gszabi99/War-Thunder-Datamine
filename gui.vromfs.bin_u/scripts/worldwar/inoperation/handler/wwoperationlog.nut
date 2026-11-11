@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/worldWar/wwEvent.nut" as wwEvent
 import "%scripts/worldWar/worldWarUtils.nut" as g_world_war
 import "%sqStdLibs/helpers/u.nut" as u
@@ -376,7 +377,7 @@ let WwOperationLog = class (BaseGuiHandlerWT) {
     else
       scrollTargetObj = this.logContainerObj.getChild(this.viewLogAmount - 1)
 
-    this.guiScene.performDelayed(this, function () {
+    defer(function () {
       if (checkObj(scrollTargetObj))
         scrollTargetObj.scrollToView()
     })

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -267,7 +268,7 @@ register_gui_handler("ChatThreadsListView", class (BaseGuiHandlerWT) {
     if (this.isSceneActive()) {
       
       let cb = Callback(this.updateAll, this)
-      this.guiScene.performDelayed(this, function() { cb() })
+      defer(function() { cb() })
     }
   }
 

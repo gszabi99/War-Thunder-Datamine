@@ -3,6 +3,7 @@ return freeze({
   showNewSlot = true
   showEmptySlot = true,
   needActionsWithEmptyCrews = false
+  draggableSlots = false
   alwaysShowBorder = true
   hasExtraInfoBlock = true
   hasExtraInfoBlockTop = false

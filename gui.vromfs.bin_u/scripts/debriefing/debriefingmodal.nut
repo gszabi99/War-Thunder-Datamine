@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/items/workshop/workshopPreview.nut" as workshopPreview
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
@@ -456,7 +457,7 @@ let DebriefingModal = class (MPStatistics) {
 
     
     
-    this.guiScene.performDelayed(this, function() { handlersManager.updateSceneBgBlur(true) })
+    defer(function() { handlersManager.updateSceneBgBlur(true) })
 
     if (this.isInited)
       this.scene.findObject("debriefing_timer").setUserData(this)
@@ -2813,7 +2814,7 @@ let DebriefingModal = class (MPStatistics) {
         skipRoulette = this.skipRoulette
       }
     })
-    this.guiScene.performDelayed(this, @() openHitsAnalysisWindow())
+    defer(@() openHitsAnalysisWindow())
   }
 
   function onViewHighlights() {

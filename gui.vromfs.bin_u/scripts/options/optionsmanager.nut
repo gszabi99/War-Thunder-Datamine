@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 from "%scripts/clientState/contentPacks.nut" import checkSpeechCountryUnitLocalizationPackageAndAskDownload
 from "%scripts/dagui_natives.nut" import get_option_aerobatics_smoke_type
@@ -10,13 +11,7 @@ function checkUnitSpeechLangPack(_params) {
   if (!checkUnitSpeechLangPackWatch.get())
     return
 
-  get_cur_gui_scene().performDelayed(
-    {},
-    function() {
-      checkSpeechCountryUnitLocalizationPackageAndAskDownload()
-    }
-  )
-
+  defer(checkSpeechCountryUnitLocalizationPackageAndAskDownload)
   checkUnitSpeechLangPackWatch.set(false)
 }
 

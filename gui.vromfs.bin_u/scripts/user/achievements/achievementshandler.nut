@@ -264,7 +264,7 @@ local AchievementsHandler = class (BaseGuiHandlerWT) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
     else if (this.parent != null)
-      this.guiScene.performDelayed(this.parent, this.parent.goBack)
+      defer(function() { this?.goBack() }.bindenv(this.parent))
   }
 
   function updateAchievementsTree() {

@@ -19,7 +19,7 @@ function doAction(obj, curEdiff) {
     if (unit == null)
       return
     broadcastEvent("ChangeDMVieverMode", { page = destination })
-    obj.getScene().performDelayed(this, @() unit.doPreview())
+    defer(@() unit.doPreview())
   }
   else if (destination == "secondaryWeapon")
     guiStartWeaponryPresets({ unit, curEdiff })

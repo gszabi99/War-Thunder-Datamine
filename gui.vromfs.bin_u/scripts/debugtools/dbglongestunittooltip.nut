@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/unit/unitsData.nut" import getAllUnits
 from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -63,12 +64,14 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
       return
     }
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       let unit = unitsList.remove(0)
       dlog($"DBG: Check: left {this.unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") 
 
       this.checkLongestUnitTooltip(unit)
-    })
+    }.bindenv(this))
   }
 
   function checkLongestUnitTooltip(unit) {

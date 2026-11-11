@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%sqStdLibs/helpers/u.nut" import isString
 from "dagor.localize" import doesLocTextExist
 from "%globalScripts/guiBehaviourConsts.nut" import *
@@ -16,10 +17,10 @@ class BhvHint {
   function onAttach(obj) {
     let value = obj?.value ?? ""
     if (value != "" && !obj.getIntProp(this.isUpdateInProgressPID, 0))
-      obj.getScene().performDelayed(this, function() {
-        if (obj.isValid())
+      defer(function() {
+        if (obj?.isValid())
           this.updateView(obj)
-      })
+      }.bindenv(this))
     return RETCODE_NOTHING
   }
 

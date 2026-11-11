@@ -1,5 +1,5 @@
+from "dagor.workcycle" import defer
 from "%scripts/items/workshop/workshopPreview.nut" import WorkshopPreview
-from "%scripts/baseGuiHandlerManagerWT.nut" import get_cur_base_gui_handler
 from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
@@ -25,7 +25,7 @@ function debug_show_workshop_event_preview(id) {
   let handler = handlersManager.findHandlerClassInScene(WorkshopPreview)
   if (handler) {
     handler.goBack()
-    get_cur_base_gui_handler().guiScene.performDelayed(this, @() workshopPreview.open(ws))
+    defer(@() workshopPreview.open(ws))
   }
   else
     workshopPreview.open(ws)

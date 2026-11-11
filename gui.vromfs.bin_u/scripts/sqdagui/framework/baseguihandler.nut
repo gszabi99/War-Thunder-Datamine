@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%sqStdLibs/helpers/handyman.nut" import handyman
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, removeAllListenersByEnv
@@ -175,7 +176,7 @@ let BaseGuiHandler = class {
   }
 
   function fullReloadScene() {
-    this.guiScene.performDelayed(this, @() handlersManager.startSceneFullReload())
+    defer(@() handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
@@ -187,12 +188,14 @@ let BaseGuiHandler = class {
 
   function goBack() {
     if (this.wndType == handlerType.MODAL) {
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
+        if (this == null)
+          return
         handlersManager.destroyHandler(this)
         handlersManager.clearInvalidHandlers()
 
         this.onModalWndDestroy()
-      })
+      }.bindenv(this))
       return
     }
 

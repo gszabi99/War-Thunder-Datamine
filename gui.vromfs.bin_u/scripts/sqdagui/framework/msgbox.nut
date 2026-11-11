@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "string" import format
 from "dagor.time" import get_time_msec
@@ -168,7 +169,11 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
           this.startingDialogNow = false;
         }
         this.startingDialogNow = true;
-        this.guiScene.performDelayed(this, delayedAction)
+        defer(function() {
+          if (this == null)
+            return
+          delayedAction.call(this)
+        }.bindenv(this))
       }
 
       function onButton(obj) {

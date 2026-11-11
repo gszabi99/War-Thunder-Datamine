@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 from "%scripts/sqDagui/daguiUtil.nut" import check_obj
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
@@ -98,9 +99,6 @@ let handlersManager = {
 
   _loadHandlerRecursionLevel         = 0
 
-  delayedActions                     = []
-  delayedActionsGuiScene             = null
-
   function init() {
     subscriptions.subscribe_handler(this, subscriptions.DEFAULT_HANDLER)
   }
@@ -147,8 +145,6 @@ let handlersManager = {
     this._loadHandlerRecursionLevel--
     if (!this._loadHandlerRecursionLevel)
       this.onActiveHandlersChanged()
-    if (hType == handlerType.BASE || hType == handlerType.ROOT)
-      this.checkActionsDelayGuiScene()
     return handler
   }
 
@@ -462,7 +458,6 @@ let handlersManager = {
 
     this.updateCssParams(guiScene)
     this.setGuiRootOptions(guiScene, false)
-    this.startActionsDelay()
     guiScene.initCursor("%gui/cursor.blk", "normal")
     if (!guiScene.isEqual(get_cur_gui_scene())) {
       this.onClearScene(guiScene)
@@ -577,7 +572,7 @@ let handlersManager = {
       return false
 
     if (handler == null)
-      get_cur_gui_scene().performDelayed(this, @() this.clearScene())
+      defer(function() { this?.clearScene() }.bindenv(this))
     else
       handler.fullReloadScene()
     return true
@@ -794,32 +789,6 @@ let handlersManager = {
 
     this.loadHandler(handlerClass, params)
     return isNewHandlerCreated
-  }
-
-  
-  function doDelayed(action) {
-    this.delayedActions.append(action)
-    if (this.delayedActions.len() == 1)
-      this.startActionsDelay()
-  }
-
-  function startActionsDelay() {
-    if (!this.delayedActions.len())
-      return
-    this.delayedActionsGuiScene = get_cur_gui_scene()
-    this.delayedActionsGuiScene.performDelayed(this, function() {
-      this.delayedActionsGuiScene = null
-      let actions = clone this.delayedActions
-      this.delayedActions.clear()
-      foreach (action in actions)
-        action()
-    })
-  }
-
-  function checkActionsDelayGuiScene() {
-    if (this.delayedActions.len()
-      && (!this.delayedActionsGuiScene || !this.delayedActionsGuiScene.isEqual(get_cur_gui_scene())))
-      this.startActionsDelay()
   }
 
   function onEventSignOut(_) {

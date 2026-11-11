@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%scripts/wndLib/editBoxHandler.nut" as openEditBoxDialog
 import "%sqStdLibs/helpers/u.nut" as u
@@ -208,10 +209,10 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
   }
 
   function onChatEditboxFocus(_obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (this.checkScene())
+    defer(function() {
+      if (this?.checkScene())
         this.updateControlsAllowMask()
-    })
+    }.bindenv(this))
   }
 
   function onChatWindowMouseOver(obj) {
@@ -839,18 +840,18 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
       this.checkNewMessages()
       this.updateRoomsList()
       this.updateSquadInfo()
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isValid())
+      defer(function() {
+        if (!this?.isValid())
           return
         update_objects_under_windows_state(this.guiScene)
         this.restoreFocus()
-      })
+      }.bindenv(this))
     }
     else
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      defer(function() {
+        if (this?.isValid())
           update_objects_under_windows_state(this.guiScene)
-      })
+      }.bindenv(this))
 
     this.onChatWindowMouseOver(this.scene)
   }
@@ -1849,9 +1850,9 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
     g_chat.rooms.remove(roomIdx)
     this.saveJoinedRooms()
     broadcastEvent("ChatRoomLeave", { room = roomData })
-    this.guiScene.performDelayed(this, function() {
-      this.updateRoomsList()
-    })
+    defer(function() {
+      this?.updateRoomsList()
+    }.bindenv(this))
   }
 
   function closeRoomById(id) {
@@ -2630,12 +2631,14 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
 
   function onMainChannels() {
     if (this.checkScene() && !this.defaultRoomsInSearch)
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
+        if (this == null)
+          return
         if (!this.defaultRoomsInSearch) {
           this.resetSearchList()
           this.fillSearchList()
         }
-      })
+      }.bindenv(this))
   }
 
   function isMenuChatActive() {
@@ -2686,9 +2689,12 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
   }
 
   function onEventNewSceneLoaded(_p) {
-    this.guiScene.performDelayed(this, function() { 
+    
+    defer(function() {
+      if (this == null)
+        return
       this.updateCustomChatTexts()
-    })
+    }.bindenv(this))
   }
 
   function drawCustomRoom(room, roomIdx) {

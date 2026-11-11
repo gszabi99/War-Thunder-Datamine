@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%sqStdLibs/helpers/u.nut" as u
 import "DataBlock" as DataBlock
@@ -529,7 +530,7 @@ let FileDialog = class (BaseGuiHandlerWT) {
 
 
   function onDirPathEditBoxFocus() {
-    this.guiScene.performDelayed(this, this.fillDirPathObj)
+    defer(function() { this?.fillDirPathObj() }.bindenv(this))
   }
 
 
@@ -630,9 +631,9 @@ let FileDialog = class (BaseGuiHandlerWT) {
         this.isUserSortReverse = false
       }
 
-      this.guiScene.performDelayed(this, function() {
-        this.fillFileTableObj(true)
-      })
+      defer(function() {
+        this?.fillFileTableObj(true)
+      }.bindenv(this))
       break
     }
   }
@@ -733,7 +734,7 @@ let FileDialog = class (BaseGuiHandlerWT) {
       return
 
     this.fileName = this.cachedFileNameByTableRowId[childObj.id]
-    this.guiScene.performDelayed(this, this.updateButtons)
+    defer(function() { this?.updateButtons() }.bindenv(this))
     let file = this.readFileInfo(stdpath.join(this.dirPath, this.fileName))
     if (file && !this.isDirectory(file))
       this.fillFileNameObj()
@@ -906,14 +907,16 @@ let FileDialog = class (BaseGuiHandlerWT) {
 
   function updateAllDelayed() {
     this.restoreFileName()
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.fillDirPathObj()
       this.fillFileNameObj()
       this.fillFileTableObj()
       this.fillNavListObj()
       this.fillFiltersObj()
       this.updateButtons()
-    })
+    }.bindenv(this))
   }
 
   isDirPathObjFilled = null
@@ -1060,7 +1063,7 @@ let FileDialog = class (BaseGuiHandlerWT) {
 
     let data = handyman.renderCached(this.fileTableTemplate, view)
     this.guiScene.replaceContentFromText(fileTableObj, data, data.len(), this)
-    this.guiScene.performDelayed(this, this.restoreLastSelectedFile)
+    defer(function() { this?.restoreLastSelectedFile() }.bindenv(this))
   }
 
 

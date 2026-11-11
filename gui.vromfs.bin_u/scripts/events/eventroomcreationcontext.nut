@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/utils_sa.nut" import array_to_blk, get_array_by_bit_value
 from "%scripts/teams.nut" import g_team
@@ -280,7 +281,7 @@ let EventRoomCreationContext = class {
       return
 
     if (this.onUnitAvailabilityChanged)
-      get_cur_gui_scene().performDelayed(this, function() { this.onUnitAvailabilityChanged() })
+      defer(function() { this?.onUnitAvailabilityChanged() }.bindenv(this))
   }
 
   function getRoomCreateParams() {

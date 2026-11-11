@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -161,10 +162,10 @@ local class CrewSkillsPageHandler (BaseGuiHandlerWT) {
 
   function applySkillRowChange(row, item, newValue) {
     this.onSkillRowChangeCb?(item, newValue)
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.updateSkills(row)
-    })
+    }.bindenv(this))
   }
 
   function onProgressButton(obj, inc, isRepeat = false, limit = false) {
@@ -261,10 +262,10 @@ local class CrewSkillsPageHandler (BaseGuiHandlerWT) {
         this.askBuySkills()
     }
     if (newValue == item.newValue) {
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      defer(function() {
+        if (this?.isValid())
           this.updateSkills(row, needUpdateIncButton)
-      })
+      }.bindenv(this))
       return
     }
     let changeCost = getCrewSkillCost(item, newValue, item.newValue)

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "DataBlock" as DataBlock
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -308,11 +309,13 @@ let DamageControlWnd = class (BaseGuiHandlerWT) {
   function onPresetDragStart(obj) {
     if (this.draggedPreset != null)
       return
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.draggedPreset = obj.getClone(this.scene, this)
       this.draggedPreset.pos = ", ".join(obj.getPosRC())
       this.draggedPreset.dragging = "yes"
-    })
+    }.bindenv(this))
   }
 
   function onPresetDrop(_obj) {
@@ -320,10 +323,12 @@ let DamageControlWnd = class (BaseGuiHandlerWT) {
       return
 
     this.currentPresetIndex = this.draggedPreset["presetIdx"].tointeger()
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.guiScene.destroyElement(this.draggedPreset)
       this.draggedPreset = null
-    })
+    }.bindenv(this))
     this.clearDropTarget()
 
     if (this.dropTargetObj == null)

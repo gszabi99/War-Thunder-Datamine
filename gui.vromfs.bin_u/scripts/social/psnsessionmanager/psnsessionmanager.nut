@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/social/psnSessionManager/psnSessionManagerApi.nut" as psnsm
 from "%scripts/squads/squadManager.nut" import g_squad_manager
 from "%scripts/sqDagui/framework/baseGuiHandlerManager.nut" import is_in_loading_screen
@@ -298,7 +299,7 @@ let proceedInvite = function(p) {
   if (!isInMenu.get()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
-    get_cur_gui_scene().performDelayed({}, function() {
+    defer(function() {
       showInfoMsgBox(loc("msgbox/add_to_squad_after_fight"), "add_to_squad_after_fight")
     })
     return

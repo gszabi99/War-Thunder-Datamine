@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%scripts/seen/bhvUnseen.nut" as bhvUnseen
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -188,7 +189,7 @@ local BattlePassShopWnd = class (BaseGuiHandlerWT) {
 
     let valueToSelect = rowsView.findindex(@(r) !r.isDisabled) ?? -1
     let tblObj = this.scene.findObject("items_list")
-    this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, valueToSelect))
+    defer(@() move_mouse_on_child(tblObj, valueToSelect))
   }
 
   hasOpenedPassUnlock = @(goodsConfig) (goodsConfig.passExchangeItem != null && !canExchangeItem(goodsConfig.passExchangeItem))

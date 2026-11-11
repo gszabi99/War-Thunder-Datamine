@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -297,10 +298,12 @@ local ServiceRecordsHandler = class (BaseGuiHandlerWT) {
       this.statsSortReverse = false
     }
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.prepareUnitsListData()
       this.updateUnitsList()
-     })
+     }.bindenv(this))
   }
 
   function goToPage(obj) {
@@ -334,7 +337,7 @@ local ServiceRecordsHandler = class (BaseGuiHandlerWT) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
     else if (this.parent != null)
-      this.guiScene.performDelayed(this.parent, this.parent.goBack)
+      defer(function() { this?.goBack() }.bindenv(this.parent))
   }
 
   function saveSelectedMode() {

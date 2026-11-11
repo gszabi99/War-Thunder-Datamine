@@ -1,4 +1,5 @@
 import "DataBlock" as DataBlock
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -400,10 +401,10 @@ let ArtilleryMap = class (BaseGuiHandlerWT) {
       base.goBack()
   }
 
-  doQuitDelayed = @() this.guiScene.performDelayed(this, function() {
-    if (this.isValid())
+  doQuitDelayed = @() defer(function() {
+    if (this?.isValid())
       this.doQuit()
-  })
+  }.bindenv(this))
   onEventCloseArtilleryRequest = @(_p) this.doQuitDelayed()
 
   function onEventHudTypeSwitched(_params) {

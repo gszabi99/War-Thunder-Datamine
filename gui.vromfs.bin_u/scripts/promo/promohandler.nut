@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/g_listener_priority.nut" as g_listener_priority
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/daguiUtil.nut" import move_mouse_on_obj
@@ -203,17 +204,17 @@ let Promo = class {
       id = cutPromoActionParamsKey(obj.id),
       collapsed = isFromCollapsed
     })
-    let objScene = obj.getScene()
-    objScene.performDelayed(
-      this,
+    defer(
       function() {
+        if (this == null)
+          return
         if (!checkObj(obj))
           return
 
         if (!performPromoAction(this.owner, obj))
           if (checkObj(obj))
             setSimpleWidgetData(this.widgetsTable, obj.id)
-      }
+      }.bindenv(this)
     )
   }
 
@@ -338,10 +339,12 @@ let Promo = class {
     if (is_mouse_last_time_used())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       if (this.isValid())
         move_mouse_on_obj(this.scene.findObject(buttonId))
-    })
+    }.bindenv(this))
   }
 
   function setTimers() {

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/mainmenu/onMainMenuReturnActions.nut" as onMainMenuReturnActions
 from "%scripts/sqDagui/framework/gui_handlers.nut" import get_gui_handler
 from "%scripts/mainmenu/topMenuStates.nut" import topMenuShopActive
@@ -57,7 +58,7 @@ function gui_start_mainmenu_reload(params = {}) {
   gui_start_mainmenu()
 }
 
-let guiStartMainmenuDelayed = @() get_cur_gui_scene().performDelayed({},
+let guiStartMainmenuDelayed = @() defer(
   @() switch_gui_scene(gui_start_mainmenu))
 
 eventbus_subscribe("gui_start_mainmenu", gui_start_mainmenu)

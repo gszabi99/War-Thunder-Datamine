@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
 import "%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut" as wwHelpSlotbarGroupsModal
 import "%scripts/queue/queueTypeBit.nut" as QUEUE_TYPE_BIT
@@ -1043,10 +1044,10 @@ let WwBattleDescription = class (BaseGuiHandlerWT) {
         this.curBattleInList = getBattleById(wwBattleName)
 
       if (!u.isEmpty(squadCountry) && profileCountrySq.get() != squadCountry)
-        this.guiScene.performDelayed(this, function() {
-          if (this.isValid())
+        defer(function() {
+          if (this?.isValid())
             this.syncSquadCountry()
-        })
+        }.bindenv(this))
       else if (isBattleDifferent)
           this.reinitBattlesList(true)
     }
@@ -1084,10 +1085,10 @@ let WwBattleDescription = class (BaseGuiHandlerWT) {
   }
 
   function onEventSlotbarPresetLoaded(_params) {
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.updateButtons()
-    })
+    }.bindenv(this))
   }
 
   function onEventWWLoadOperation(_params) {

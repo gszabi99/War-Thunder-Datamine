@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -134,10 +135,10 @@ let navigationPanel = class (BaseGuiHandlerWT) {
     let isNavRequired = this.itemList.len() > 1
     showObjById(this.panelObjId, isNavRequired && this.isPanelVisible, this.scene)
     showObjById(this.expandButtonObjId, isNavRequired && !this.isPanelVisible, this.scene)
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.updateMoveToPanelButton()
-    })
+    }.bindenv(this))
   }
 
   function onNavClick(_obj = null) {

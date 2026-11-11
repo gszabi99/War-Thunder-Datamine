@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/controls/help/controlsHelpTabs.nut" as helpTabs
 import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler, is_gui_handler_instance
@@ -202,12 +203,12 @@ let helpWndModalHandler = class (BaseGuiHandlerWT) {
 
     this.showTabSpecificControls(tab)
     tab?.customUpdateSheetFunc(sheetObj)
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
+    defer(function() {
+      if (!this?.isValid())
         return
 
       this.fillTabLinkLines(tab)
-    })
+    }.bindenv(this))
   }
 
   function showTabSpecificControls(tab) {

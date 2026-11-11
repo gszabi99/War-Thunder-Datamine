@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
 from "%scripts/sqDagui/framework/handlerType.nut" import handlerType
@@ -64,7 +65,7 @@ let XrayAmmoLoadWindow = class (BaseGuiHandlerWT) {
     popupObj["pos"] = $"0, {posY}"
   }
 
-  updateLayoutDelayed = @() this.guiScene.performDelayed(this, this.updateLayout)
+  updateLayoutDelayed = @() defer(function() { this?.updateLayout() }.bindenv(this))
 
   onEventUnitWeaponChanged = @(_p) this.updateLayoutDelayed()
   onEventModificationChanged = @(_p) this.updateLayoutDelayed()

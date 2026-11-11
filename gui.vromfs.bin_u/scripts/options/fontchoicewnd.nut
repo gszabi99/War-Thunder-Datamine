@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%appGlobals/clientState/localProfile.nut" import saveLocalAccountSettings, loadLocalAccountSettings
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -51,7 +52,7 @@ let FontChoiceWnd = class (BaseGuiHandlerWT) {
       return
 
     set_option(USEROPT_FONTS_CSS, newValue, this.option)
-    this.guiScene.performDelayed(this, @() handlersManager.getActiveBaseHandler().fullReloadScene())
+    defer(@() handlersManager.getActiveBaseHandler().fullReloadScene())
   }
 
   function goBack() {

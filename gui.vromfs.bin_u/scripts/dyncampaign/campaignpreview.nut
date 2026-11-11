@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/matchingRooms/destroySessionScripted.nut" as destroySessionScripted
 import "DataBlock" as DataBlock
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -286,12 +287,20 @@ register_gui_handler("CampaignPreview", class (BaseGuiHandlerWT) {
 
     let handlerClass = class {
       function goBack(_obj) {
-        let delayedAction = (@(handler, guiScene, infoBoxObject) function() { 
-          guiScene.destroyElement(infoBoxObject)
-          handler.isInInfo = false
-          handler.showNav(true)
-        })(this.handler, this.guiScene, this.infoBoxObject)
-        this.guiScene.performDelayed(this, delayedAction)
+        function delayedAction() {
+          if (this == null)
+            return
+
+          if (this.infoBoxObject?.isValid())
+            this.guiScene.destroyElement(this.infoBoxObject)
+
+          if (!this.handler?.isValid())
+            return
+
+          this.handler.isInInfo = false
+          this.handler.showNav(true)
+        }
+        defer(delayedAction.bindenv(this))
       }
       guiScene = null
       infoBoxObject = null

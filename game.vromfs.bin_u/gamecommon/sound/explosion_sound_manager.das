@@ -15,6 +15,7 @@ require DagorConsole
 let EXPLOSION_SOUND_COOLDOWN = 0.7
 let EXPLOSION_SOUND_SECTORS = 4
 let EXPLOSION_SOUND_RESERVE = 32
+let EXPLOSION_SOUND_NO_MANAGER_PATH = "aircraft/explosions/explosion_ground"
 
 
 def get_explosion_sector_index(listener_pos : float3; sound_pos : float3) : int
@@ -101,6 +102,13 @@ def explosion_sound_on_effect_appear(evt : Event;
                                      explosion_sound_type : string;
                                      transform : float3x4)
   if explosion_sound_type == ""
+    return
+
+  let hasManager = find_query() <| $ [es] (explosion_sound_manager__typeHashes : UInt32List)
+    return length(explosion_sound_manager__typeHashes) > 0
+  if !hasManager
+    let pos = transform[3]
+    delayed_oneshot(EXPLOSION_SOUND_NO_MANAGER_PATH, pos, get_sound_speed_delay(pos))
     return
 
   broadcastEvent(EventPlayExplosionSound(pos = transform[3], explosionSoundTypeHash = ecs_hash(explosion_sound_type)))

@@ -1,4 +1,5 @@
 import "%scripts/viewUtils/showTitleLogo.nut" as showTitleLogo
+from "dagor.workcycle" import defer
 import "%scripts/utils/exitGamePlatform.nut" as exitGamePlatform
 from "%scripts/login/loginState.nut" import set_disable_autorelogin_once
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -48,7 +49,7 @@ register_gui_handler("LoginWndHandlerSteam", class (LoginWndHandler) {
     if (!useSteamLoginAuto) 
       this.goToLoginWnd(useSteamLoginAuto == null)
     else
-      this.guiScene.performDelayed(this, @() this.steamAuthorization("steam-known"))
+      defer(function() { this?.steamAuthorization("steam-known") }.bindenv(this))
   }
 
   function proceedAuthorizationResult(result, no_dump_login) {

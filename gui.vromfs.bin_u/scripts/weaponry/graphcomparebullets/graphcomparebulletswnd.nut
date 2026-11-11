@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/utils/getNavigationImagesText.nut" as getNavigationImagesText
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -108,7 +109,7 @@ let GraphCompareBulletsWnd = class (BaseGuiHandlerWT) {
     this.updateButtons()
     this.fillTabs()
     if (this.applySelectedOptionAfterInit)
-      this.guiScene.performDelayed(this, @() this.onAddBulletForCompare())
+      defer(function() { this?.onAddBulletForCompare() }.bindenv(this))
   }
 
   function fillTabs() {

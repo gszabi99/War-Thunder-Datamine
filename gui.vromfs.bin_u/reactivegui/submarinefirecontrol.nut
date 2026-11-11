@@ -1,7 +1,5 @@
-import "%rGui/compass.nut" as compass
 from "%rGui/options/measureUnits.nut" import ALTITUDE, SPEED, DISTANCE
 from "%rGui/style/airHudStyle.nut" import greenColor
-from "%rGui/radarState.nut" import IsRadarVisible
 from "%rGui/fcsState.nut" import OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable, IsForestallVisible
   , IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength, TargetHeight, TargetDistance
   , TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular, isHydrophoneMode
@@ -10,9 +8,8 @@ from "string" import format
 from "math" import fabs, floor
 from "%sqstd/string.nut" import cutPrefix
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/shipHudComponents.nut" import shipCompassComponent
 
-let compassSize = [hdpx(500), hdpx(32)]
-let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 const progressBarWidth = hdpx(192)
 const fcsBarColor1 = 0x7F007F00
 const fcsBarColor2 = 0x19323232
@@ -23,11 +20,6 @@ const highlightColor = Color(255, 255, 255, 180)
 const highlightScale = 2.5
 
 let hydrophoneDistance = Computed(@() floor(TargetDistance.get() / 100) * 100)
-
-let compassComponent = {
-  pos = compassPos
-  children = compass(compassSize, greenColor)
-}
 
 let mkText = @(ovr) {
   padding = const [0, textPadding]
@@ -235,7 +227,7 @@ return @() {
   valign = ALIGN_TOP
   size = const [sw(100), sh(100)]
   children = IsVisible.get() ? [
-      !IsRadarVisible.get() ? compassComponent : null
+      shipCompassComponent
       isProcessing.get() ? processingHint : null
       IsForestallCalculating.get() ? calculatingBlock
         : !isProcessing.get() ? null

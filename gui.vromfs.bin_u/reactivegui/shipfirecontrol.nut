@@ -1,10 +1,8 @@
 import "%rGui/fcsState.nut" as fcsState
-import "%rGui/compass.nut" as compass
 import "%rGui/shipTorpedoStatus.nut" as torpedoWeaponsStatus
 from "%rGui/compassState.nut" import CompassValue
-from "%rGui/style/airHudStyle.nut" import greenColor, greenColorGrid
+from "%rGui/style/airHudStyle.nut" import greenColorGrid
 from "%rGui/shipState.nut" import fov, gunStatesFirstNumber, gunStatesSecondNumber, artilleryType
-from "%rGui/radarState.nut" import IsRadarVisible
 from "%rGui/fcsComponent.nut" import drawArrow
 from "%rGui/shipFireControlCommon.nut" import mkActionBarPanel
 from "%rGui/shipStateConsts.nut" import FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER
@@ -12,6 +10,7 @@ from "%rGui/shipGunStatus.nut" import mkWeaponsStatus
 from "%sqstd/math.nut" import PI, fabs, sqrt
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/weaponConsts.nut" import *
+from "%rGui/shipHudComponents.nut" import shipCompassComponent
 
 let { gunStatesFirstRow, gunStatesSecondRow } = require("%rGui/shipState.nut")
 
@@ -19,18 +18,11 @@ const redColor = Color(255, 109, 108, 255)
 const greyColor = Color(15, 25, 25, 255)
 const highlightColor = Color(255, 255, 255, 180)
 const highlightScale = 2.5
-let compassSize = [hdpx(500), hdpx(32)]
-let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 const rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 const rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
 const firstGunsRowHeight = hdpx(38)
 const secondGunsRowHeight = hdpx(32)
 const weaponGroupsGap = hdpx(20)
-
-let compassComponent = {
-  pos = compassPos
-  children = compass(compassSize, greenColor)
-}
 
 let progressBarContent = {
   halign = ALIGN_RIGHT
@@ -240,9 +232,9 @@ let weaponsStatus = mkActionBarPanel(getWeaponsStatusChildren,
 
 
 let root = @() {
-  watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected, fcsState.IsAutoAim]
+  watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, fcsState.IsTargetSelected, fcsState.IsAutoAim]
   children = [
-    !IsRadarVisible.get() ? compassComponent : null
+    shipCompassComponent
     fcsState.IsForestallVisible.get() ? forestallIndicator
         : (fcsState.IsBinocular.get() ? crosshairZeroMark : null)
     fcsState.IsBinocular.get() && fcsState.IsTargetSelected.get() && !fcsState.IsAutoAim.get() ? progressBar : null

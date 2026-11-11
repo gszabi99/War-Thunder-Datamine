@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/wndWidgets/navigationPanel.nut" import navigationPanel
@@ -213,10 +214,10 @@ let GenericOptions = class (BaseGuiHandlerWT) {
   }
 
   function updateOptionDelayed(optionType) {
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid() ?? false)
         this.updateOption(optionType)
-    })
+    }.bindenv(this))
   }
 
   function updateOption(optionType) {
@@ -406,13 +407,13 @@ let GenericOptions = class (BaseGuiHandlerWT) {
       let success = add_tank_alt_crosshair_template()
       let message = success && unit ? format(loc("hud/successUserSight"), unit.name) : loc("hud/failUserSight")
 
-      this.guiScene.performDelayed(this, function() {
-        if (!this.isValid())
+      defer(function() {
+        if (!(this?.isValid() ?? false))
           return
 
         showInfoMsgBox(message)
         this.updateOption(USEROPT_TANK_ALT_CROSSHAIR)
-      })
+      }.bindenv(this))
     }
     else
       this.setOptionValueByControlObj(obj)
@@ -546,12 +547,12 @@ let GenericOptions = class (BaseGuiHandlerWT) {
 
   function onConsolePresetChange(_obj) {
     let curValue = this.getSceneOptValue(USEROPT_CONSOLE_GFX_PRESET)
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
       set_option_console_preset(curValue)
       setVSyncMode(getVSyncMode(true)) 
-      if (this.isValid())
+      if (this?.isValid() ?? false)
         this.updateOption(USEROPT_VSYNC_MODE)
-    })
+    }.bindenv(this))
   }
 
   function onControls(_obj) {

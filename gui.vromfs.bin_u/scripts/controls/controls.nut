@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 import "controllerState" as controllerState
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
@@ -349,10 +350,10 @@ let Hotkeys = class (GenericOptions) {
     if (this.getSearchText() != "")
       this.resetSearch()
     else
-      this.guiScene.performDelayed(this, function() {
-        if (this.isValid())
+      defer(function() {
+        if (this?.isValid())
           this.goBack()
-      })
+      }.bindenv(this))
   }
 
   function resetSearch() {
@@ -768,14 +769,16 @@ let Hotkeys = class (GenericOptions) {
   delayedControlsGroupStrated = false
   function doControlsGroupChangeDelayed(_obj = null) {
     this.delayedControlsGroupStrated = true
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.delayedControlsGroupStrated = false
       let filterOption = get_option(USEROPT_HELPERS_MODE)
       let filterIdx = this.getHelpersFilterIdx()
       if (filterIdx != null && filterIdx != filterOption.value)
         this.setHelpersFilterIdx(filterOption.value)
       this.doControlsGroupChange(true)
-    })
+    }.bindenv(this))
   }
 
   function updateHidden() {
@@ -864,10 +867,12 @@ let Hotkeys = class (GenericOptions) {
     if (!(item.shortcutId in this.shortcuts))
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.shortcuts[item.shortcutId] = []
       broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = [item.shortcutId] })
-    })
+    }.bindenv(this))
   }
 
   function updateButtonsChangeValue() {
@@ -1279,13 +1284,17 @@ let Hotkeys = class (GenericOptions) {
     [
       ["resetToDefaults", function() {
         this.changeControlsWindowType(false)
-        this.guiScene.performDelayed(this, this.onDefaultPreset)
+        defer(function() {
+          this?.onDefaultPreset()
+        }.bindenv(this))
       }],
       ["backToControls", function() {
         this.changeControlsWindowType(false)
       }],
       ["stillContinue", function() {
-        this.guiScene.performDelayed(this, this.closeWnd)
+        defer(function() {
+          this?.closeWnd()
+        }.bindenv(this))
       }]
     ], "backToControls")
   }
@@ -1328,7 +1337,9 @@ let Hotkeys = class (GenericOptions) {
       let curPreset = getCurControlsPreset()
       let msg = format(loc("msg/zoomAssignmentsConflict"),
         remapAxisName(curPreset, axis.axisId))
-      this.guiScene.performDelayed(this, @()
+      defer(function() {
+        if (this == null)
+          return
         this.msgBox("zoom_axis_assigned", msg,
         [
           ["replace", @() this.setAxisBind(zoomAxisIndex, -1, axisName)],
@@ -1336,7 +1347,8 @@ let Hotkeys = class (GenericOptions) {
             if (checkObj(obj))
               obj.setValue(0)
           }]
-        ], "replace"))
+        ], "replace")
+      }.bindenv(this))
     }
     else if (axisName && (axisName == "camx" || axisName == "camy")
       && item.axis_num == MouseAxis.MOUSE_SCROLL) {
@@ -1349,7 +1361,9 @@ let Hotkeys = class (GenericOptions) {
         let msg = isMouseView
           ? loc("msg/replaceMouseViewToScroll")
           : loc("msg/replaceMouseViewToScrollNoAim")
-        this.guiScene.performDelayed(this, @()
+        defer(function() {
+          if (this == null)
+            return
           this.msgBox("mouse_used_for_view", msg,
           [
             ["replace", function() {
@@ -1363,7 +1377,8 @@ let Hotkeys = class (GenericOptions) {
               if (checkObj(obj))
                 obj.setValue(0)
             }]
-          ], "cancel"))
+          ], "cancel")
+        }.bindenv(this))
       }
     }
   }

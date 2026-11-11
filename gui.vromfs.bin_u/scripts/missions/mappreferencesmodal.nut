@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/missions/mapPreferencesParams.nut" as mapPreferencesParams
 import "mapPreferences" as mapPreferences
 from "%scripts/viewUtils/daguiFonts.nut" import getFontLineHeightPx
@@ -415,7 +416,7 @@ let mapPreferencesModal = class (BaseGuiHandlerWT) {
     let mlistObj = this.scene.findObject("maps_list")
     mlistObj?.setValue(mapId)
     move_mouse_on_child_by_value(mlistObj)
-    this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this,
+    defer(@() defer(
       @() mlistObj?.findObject($"nest_{mapId}").scrollToView()))
   }
 

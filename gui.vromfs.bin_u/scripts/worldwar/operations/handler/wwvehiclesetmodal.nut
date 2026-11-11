@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/unit/unitContextMenuState.nut" as unitContextMenuState
 import "%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut" as getLockedCountryData
 import "%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut" as slotbarWidget
@@ -189,10 +190,10 @@ local handlerClass = class (BaseGuiHandlerWT) {
   }
 
   function onEventSlotbarPresetLoaded(_) {
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
+    defer(function() {
+      if (this?.isValid())
         this.updateButtons()
-    })
+    }.bindenv(this))
   }
 
 }

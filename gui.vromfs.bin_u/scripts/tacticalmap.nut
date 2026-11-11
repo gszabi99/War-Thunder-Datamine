@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "DataBlock" as DataBlock
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler, has_gui_handler, is_gui_handler_instance
 from "%scripts/artilleryMap.nut" import ArtilleryMap
@@ -223,7 +224,7 @@ let TacticalMap = class (BaseGuiHandlerWT) {
       this.updateTacticalControl(obj, dt)
 
       if (isRespawnScreen()) {
-        this.guiScene.performDelayed({}, function() {
+        defer(function() {
           eventbus_send("gui_start_respawn")
           updateGamercards()
         })
@@ -254,16 +255,12 @@ let TacticalMap = class (BaseGuiHandlerWT) {
         }
         if (!is_aircraft_active(this.units[this.focus])) {
           log("still no active aircraft");
-          this.guiScene.performDelayed(this, function() {
-            this.doClose()
-          })
+          defer(function() { this?.doClose() }.bindenv(this))
           return;
         }
         if (!isActive) {
           set_tactical_screen_player(this.units[this.focus], false)
-          this.guiScene.performDelayed(this, function() {
-            this.doClose()
-          })
+          defer(function() { this?.doClose() }.bindenv(this))
         }
       }
 
@@ -494,13 +491,13 @@ let TacticalMap = class (BaseGuiHandlerWT) {
 
     function doClose() {
       let closeFn = base.goBack
-      this.guiScene.performDelayed(this, function() {
+      defer(function() {
         if (isInFlight()) {
           closeIngameGui()
-          if (this.isSceneActive())
+          if (this?.isSceneActive() ?? false)
             closeFn()
         }
-      })
+      }.bindenv(this))
     }
 
     goBack  = @() this.doClose()

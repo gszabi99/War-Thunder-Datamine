@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/utils_sa.nut" import getObjIdByPrefix
 from "%scripts/utils/genericTooltipTypes.nut" import getTooltipType
@@ -111,7 +112,7 @@ function closeGenericTooltip(obj, handler) {
   let guiScene = obj.getScene()
   obj.show(false)
 
-  guiScene.performDelayed(handler, function() {
+  defer(function() {
     if (!checkObj(obj) || !obj.childrenCount())
       return
 

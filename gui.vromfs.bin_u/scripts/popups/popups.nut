@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/g_listener_priority.nut" import DEFAULT_HANDLER
 from "%scripts/gamercard/gamercardHelpers.nut" import getActiveGamercardPopupNestObj
@@ -89,7 +90,7 @@ function performDelayedFlushPopupsIfCan() {
 
   let self = callee()
   lastPerformDelayedCallTime = curTime
-  get_cur_gui_scene().performDelayed({},
+  defer(
     function() {
       lastPerformDelayedCallTime = 0
 
@@ -212,12 +213,12 @@ class Popup {
   function onPopupButtonClick(obj) {
     let id = obj?.id
     let button = this.buttons.findvalue(@(b) b.id == id)
-    obj.getScene().performDelayed(this, function() {
-      if (!this.isValidView())
+    defer(function() {
+      if (!this?.isValidView())
         return
       this.performPopupAction(button?.func)
       this.requestDestroy()
-    })
+    }.bindenv(this))
   }
 
   function onTimerUpdate(_obj, _dt) {

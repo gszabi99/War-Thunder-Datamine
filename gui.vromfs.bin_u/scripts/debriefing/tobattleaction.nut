@@ -33,7 +33,7 @@ function goToBattleAction(eventParams) {
     return
   }
 
-  get_cur_gui_scene().performDelayed({}, function() {
+  defer(function() {
     if (hasAlredyActiveJoinProcess())
       return
     if (g_squad_manager.isSquadMember() && !g_squad_manager.isMeReady()) {

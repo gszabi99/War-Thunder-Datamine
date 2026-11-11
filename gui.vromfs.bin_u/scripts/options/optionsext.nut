@@ -4180,7 +4180,7 @@ function set_useropt_measureunits_speed(value, descr, optionId) {
       return true
 
     isWaitMeasureEvent = true
-    handlersManager.doDelayed(function() {
+    defer(function() {
       isWaitMeasureEvent = false
       broadcastEvent("MeasureUnitsChanged")
     })

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/customization/contentPreset.nut" as contentPreset
 import "%scripts/hud/hudActionBarInfo.nut" as actionBarInfo
@@ -533,11 +534,13 @@ let RespawnHandler = class (MPStatistics) {
   }
 
   function moveCursorToInitailPosition() {
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (!this?.isValid())
+        return
       let cursorStartObj = this.scene.findObject("cursor-initial-place")
       if (cursorStartObj?.isValid())
         setMousePointerInitialPos(cursorStartObj)
-    })
+    }.bindenv(this))
   }
 
   function isModeWithFriendlyUnits(gt = null) {
@@ -918,7 +921,7 @@ let RespawnHandler = class (MPStatistics) {
     this.setParams(params)
     this.initScreen()
     if (!this.isRespawn)
-      this.guiScene.performDelayed(this, this.moveCursorToInitailPosition)
+      defer(function() { this?.moveCursorToInitailPosition() }.bindenv(this))
   }
 
   function createRespawnOptions() {
@@ -2719,15 +2722,15 @@ let RespawnHandler = class (MPStatistics) {
     if (!unit || this.missionRules.getUnitLeftRespawns(unit) != 0)
       return false
 
-    this.guiScene.performDelayed(this, function() {
-      if (!this.doRespawnCalled)
+    defer(function() {
+      if (this == null || !this.doRespawnCalled)
         return
 
       let msg = loc("multiplayer/noTeamUnitLeft",
                         { unitName = this.lastSpawnUnitName.len() ? getUnitName(this.lastSpawnUnitName) : "" })
       this.reinitScreen()
       addPopup(null, msg)
-    })
+    }.bindenv(this))
     return true
   }
 
@@ -2801,12 +2804,12 @@ let RespawnHandler = class (MPStatistics) {
     if (!lockStateChanged)
       return
 
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid()) {
+    defer(function() {
+      if (this?.isValid()) {
         this.updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
         this.updateRespawnOptionsTooltip()
       }
-    })
+    }.bindenv(this))
   }
 
   
@@ -3140,9 +3143,11 @@ let RespawnHandler = class (MPStatistics) {
 
     if (!this.isRespawn) {
       if (!get_gui_option(USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP))
-        this.guiScene.performDelayed(this, function() {
+        defer(function() {
+          if (this == null)
+            return
           this.goBack()
-        })
+        }.bindenv(this))
       return
     }
 
@@ -3152,7 +3157,7 @@ let RespawnHandler = class (MPStatistics) {
     if (this.isSpectate && this.onSpectator() && hasAvailableSlots())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
       disableFlightMenu(false)
       gui_start_flight_menu()
     })
@@ -3296,7 +3301,7 @@ let RespawnHandler = class (MPStatistics) {
     if (!canRequestAircraftNow())
       return
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
       disableFlightMenu(false)
       guiStartMPStatScreen()
     })

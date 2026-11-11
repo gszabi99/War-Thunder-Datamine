@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -150,9 +151,11 @@ let BattleTasksPromoHandler = class (BaseGuiHandlerWT) {
 
     saveLocalAccountSettings(this.savePathBattleTasksDiff, difficultyGroup)
 
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       this.updateHandler()
-    })
+    }.bindenv(this))
   }
 
   function getDifficultyRadioButtonsListByTasks(tasksArray, difficultyTypeArray, curDifficultyGroup) {

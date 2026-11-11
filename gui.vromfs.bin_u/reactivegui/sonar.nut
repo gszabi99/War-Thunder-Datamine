@@ -9,18 +9,15 @@ let sonarDebugEnabled = Watched(false)
 register_command(@() sonarDebugEnabled.set(!sonarDebugEnabled.get()), "sonar.debug")
 
 
-local activeSonarScriptConfig = null
+local activeSonarIndication = null
 
 function getActiveSonarConfig() {
-  if (activeSonarScriptConfig != null)
-    return activeSonarScriptConfig
-
   let hudBlk = DataBlock()
   if (!tryLoadBlk(hudBlk, "config/hud.blk"))
     return {}
 
   let cfgBlk = hudBlk?.activeSonar
-  activeSonarScriptConfig = {
+  return {
     disabledTicksColor = cfgBlk?.getE3dcolor("disabledTicksColor", E3DCOLOR(192, 192, 192, 255))
     activeTicksColor = cfgBlk?.getE3dcolor("activeTicksColor", E3DCOLOR(38, 127, 0, 255))
     minorTickLenPx = cfgBlk?.getReal("minorTickLenPx", 3.0)
@@ -39,17 +36,23 @@ function getActiveSonarConfig() {
     pulseFadeTime = cfgBlk?.getReal("pulseFadeTime", 0.6)
     rangeTextColor = cfgBlk?.getE3dcolor("rangeTextColor", E3DCOLOR(10, 202, 10, 250))
   }
-  return activeSonarScriptConfig
 }
 
-let activeSonarIndication = {
-  size = FLEX
-  rendObj = ROBJ_DAS_CANVAS
-  script = getDasScriptByPath("%rGui/sonarIndication.das")
-  drawFunc = "draw_active_sonar_indication"
-  setupFunc = "setup_data"
-  font = Fonts.tiny_text_hud
-}.__update(getActiveSonarConfig())
+function getActiveSonarIndication() {
+  if (activeSonarIndication != null)
+    return activeSonarIndication
+
+  activeSonarIndication = {
+    size = FLEX
+    rendObj = ROBJ_DAS_CANVAS
+    script = getDasScriptByPath("%rGui/sonarIndication.das")
+    drawFunc = "draw_active_sonar_indication"
+    setupFunc = "setup_data"
+    font = Fonts.tiny_text_hud
+  }.__update(getActiveSonarConfig())
+
+  return activeSonarIndication
+}
 
 let sonarIndicationDebug = {
   size = FLEX
@@ -76,18 +79,15 @@ let hydrophoneMeasureIndication = {
   hpBearingArrPicture = Picture("ui/gameuiskin#hydrophone_bearing_arrow.svg:128:128:K")
 }
 
-local activeSonarInterceptScriptConfig = null
+local activeSonarInterceptIndication = null
 
 function getActiveSonarInterceptConfig() {
-  if (activeSonarInterceptScriptConfig != null)
-    return activeSonarInterceptScriptConfig
-
   let hudBlk = DataBlock()
   if (!tryLoadBlk(hudBlk, "config/hud.blk"))
     return {}
 
   let cfgBlk = hudBlk?.activeSonarIntercept
-  activeSonarInterceptScriptConfig = {
+  return {
     pulseArcColor = cfgBlk?.getE3dcolor("pulseArcColor", E3DCOLOR(255, 0, 0, 128))
     pulseSectorColor = cfgBlk?.getE3dcolor("pulseSectorColor", E3DCOLOR(0, 0, 0, 0))
     pulseArcRadius = cfgBlk?.getReal("pulseArcRadius", 0.25)
@@ -96,26 +96,32 @@ function getActiveSonarInterceptConfig() {
     pulseArrowSize = cfgBlk?.getReal("pulseArrowSize", 0.025)
     pulseFadeTime = cfgBlk?.getReal("pulseFadeTime", 1.0)
   }
-  return activeSonarInterceptScriptConfig
 }
 
-let activeSonarInterceptIndication = {
-  size = FLEX
-  rendObj = ROBJ_DAS_CANVAS
-  script = getDasScriptByPath("%rGui/activeSonarInterceptIndication.das")
-  drawFunc = "draw_active_sonar_intercept_indication"
-  setupFunc = "setup_data"
-}.__update(getActiveSonarInterceptConfig())
+function getActiveSonarInterceptIndication() {
+  if (activeSonarInterceptIndication != null)
+    return activeSonarInterceptIndication
+
+  activeSonarInterceptIndication = {
+    size = FLEX
+    rendObj = ROBJ_DAS_CANVAS
+    script = getDasScriptByPath("%rGui/activeSonarInterceptIndication.das")
+    drawFunc = "draw_active_sonar_intercept_indication"
+    setupFunc = "setup_data"
+  }.__update(getActiveSonarInterceptConfig())
+
+  return activeSonarInterceptIndication
+}
 
 function sonarIndication() {
   return @(){
     watch = sonarDebugEnabled
     size = FLEX
     children = [
-      activeSonarIndication
+      getActiveSonarIndication()
       hydrophoneMeasureIndication
       sonarDebugEnabled.get() ? sonarIndicationDebug : null
-      activeSonarInterceptIndication
+      getActiveSonarInterceptIndication()
     ]
   }
 }

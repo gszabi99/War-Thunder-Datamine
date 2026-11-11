@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -206,7 +207,7 @@ let OnlineShopHandler = class (BaseGuiHandlerWT) {
       })
       this.guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
       this.guiScene.setUpdatesEnabled(true, true)
-      this.guiScene.performDelayed(this, @() move_mouse_on_child(itemsListObj, 0))
+      defer(@() move_mouse_on_child(itemsListObj, 0))
     }
     else { 
       this.scene.findObject("chapter_update").setUserData(this)

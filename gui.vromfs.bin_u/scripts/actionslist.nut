@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 from "%scripts/sqDagui/framework/baseGuiHandler.nut" import BaseGuiHandler
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler, get_gui_handler
 from "%sqStdLibs/helpers/handyman.nut" import handyman
@@ -165,15 +166,15 @@ let ActionsList = class (BaseGuiHandler) {
     }
 
     if (showConsoleButtons.get())
-      this.guiScene.performDelayed(this, function () {
-        if (!nest.isValid())
+      defer(function () {
+        if (this == null || !nest.isValid())
           return
 
         let selIdx = this.params?.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         this.guiScene.applyPendingChanges(false)
         move_mouse_on_child(nest, max(selIdx, 0))
         this.updatePosition() 
-      })
+      }.bindenv(this))
   }
 
   function updatePosition() {
@@ -193,8 +194,8 @@ let ActionsList = class (BaseGuiHandler) {
     if (actionName == "")
       return
 
-    this.guiScene.performDelayed(this, function () {
-      if (!checkObj(this.scene))
+    defer(function () {
+      if (!this?.scene.isValid())
         return
 
       this.guiScene.destroyElement(this.scene)
@@ -212,7 +213,7 @@ let ActionsList = class (BaseGuiHandler) {
         this.params.handler[func].call(this.params.handler)
       else
         func.call(this.params.handler)
-    })
+    }.bindenv(this))
   }
 
   function close() {

@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/sqDagui/framework/gui_handlers.nut" import register_gui_handler
 from "%scripts/baseGuiHandlerWT.nut" import BaseGuiHandlerWT
@@ -1411,7 +1412,9 @@ register_gui_handler("controlsWizardModalHandler", class (BaseGuiHandlerWT) {
       return
 
     this.waitMsgButton = false
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       if ("optionType" in this.curItem) {
         this.optionsToSave.append({ type = this.curItem.optionType, value = value })
         if ("isFilterObj" in this.curItem && this.curItem.isFilterObj) {
@@ -1429,7 +1432,7 @@ register_gui_handler("controlsWizardModalHandler", class (BaseGuiHandlerWT) {
       if ("onButton" in this.curItem)
         this.curItem.onButton.call(this, value)
       this.nextItem()
-    })
+    }.bindenv(this))
   }
 
   function getCurListboxObj() {

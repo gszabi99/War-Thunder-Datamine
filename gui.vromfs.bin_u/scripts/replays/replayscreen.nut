@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%scripts/time.nut" as time
 import "%scripts/replays/replayMetadata.nut" as replayMetadata
 import "regexp2" as regexp2
@@ -565,7 +566,9 @@ let ReplayScreen = class (BaseGuiHandlerWT) {
       return
 
     set_presence_to_player("replay")
-    this.guiScene.performDelayed(this, function() {
+    defer(function() {
+      if (this == null)
+        return
       if (this.isReplayPressed)
         return
 
@@ -575,7 +578,7 @@ let ReplayScreen = class (BaseGuiHandlerWT) {
       currentReplay.path = this.replays[index].path
       on_view_replay(currentReplay.path)
       this.isReplayPressed = false
-    })
+    }.bindenv(this))
   }
 
   function doDelReplay() {
@@ -613,7 +616,11 @@ let ReplayScreen = class (BaseGuiHandlerWT) {
       return
 
     handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
-    this.guiScene.performDelayed(this, @() openHitsAnalysisWindow(this.replays[index].path))
+    defer(function() {
+      if (this == null)
+        return
+      openHitsAnalysisWindow(this.replays[index].path)
+    }.bindenv(this))
   }
 
   function onOpenFolder() {
@@ -702,7 +709,11 @@ let RenameReplayHandler = class (BaseGuiHandlerWT) {
       if (this.afterFunc)
         this.afterFunc.call(this.funcOwner, newName);
     }
-    this.guiScene.performDelayed(this, this.goBack);
+    defer(function() {
+      if (this == null)
+        return
+      this.goBack()
+    }.bindenv(this));
   }
 
   scene = null
