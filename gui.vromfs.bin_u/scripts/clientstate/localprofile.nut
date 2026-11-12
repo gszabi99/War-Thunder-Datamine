@@ -32,7 +32,6 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
 })
 
 eventbus_subscribe("onRefreshProfileOnLogin", @(_) onRefreshProfileOnLogin())
-registerRespondent("onBlksDataStorageLoaded", @() broadcastEvent("BlksDataStorageLoaded"))
 
 let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
 
