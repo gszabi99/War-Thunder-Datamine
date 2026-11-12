@@ -18,7 +18,8 @@ let radioSize = px("@checkboxSize")
 let radioH = px("1.2@checkboxSize")
 let navPad = px("1@blockInterval")
 
-let bottomPanelH = px("@bottomMenuPanelHeight")
+let bottomBarH = px("@bottomBarHeight")
+let safeBorderW = px("@bw")
 let shortcutPlace = freeze({ place = "controlsCell" })
 
 
@@ -54,7 +55,7 @@ let mkText = @(text, color = cssColors.activeTextColor) { rendObj = ROBJ_TEXT, f
 let navBar = freeze({
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
-  margin = [0, navPad, bottomPanelH + navPad, 0]
+  margin = [0, safeBorderW + navPad, bottomBarH + navPad, 0]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = navPad
@@ -71,7 +72,7 @@ let activationButtons = navBar.__merge({ children = [
   { id = "btn_back", locId = "mainmenu/btnBack", action = "back" }
   { id = "btn_apply", locId = "mainmenu/btnApply", action = "apply" }
   { id = "btn_cancel", locId = "msgbox/btn_cancel", action = "cancel" }
-].map(@(b) button({ id = b.id, text = loc(b.locId) }, @() sendAction(b.action))) })
+].map(@(b) button({ id = b.id, text = loc(b.locId), margin = 0 }, @() sendAction(b.action))) })
 
 
 let startImg = mkImageCompByDargKey("J:Start", null, { height = px("@cIco"), vplace = ALIGN_CENTER })

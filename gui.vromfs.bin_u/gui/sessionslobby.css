@@ -56,7 +56,8 @@ sessionInfoRow > textareaNoTab[isValue=yes] {
 
 sessionTeamVehicles {
   width:fw;
-  padding:1@frameHeaderPadding, 2@blockInterval;
+  min-height:ph;
+  padding:1@frameHeaderPadding, 1@blockInterval, 1@frameHeaderPadding, 0;
 }
 
 sessionTeamVehicles[hasSeparator=yes] {
@@ -68,6 +69,7 @@ sessionTeamVehicles[hasSeparator=yes] {
 sessionTeamVehicles > activeText {
   pos:0, (1@cIco-h)/2;
   position:relative;
+  margin-top:1@blockInterval;
   margin-right:2@blockInterval;
   font:@fontMedium;
   color:@commonTextColor;
@@ -76,7 +78,7 @@ sessionTeamVehicles > activeText {
 sessionVehicleRow {
   width:pw;
   min-height:1@cIco;
-  margin-bottom:1@blockInterval;
+  margin-top:1@blockInterval;
 }
 
 sessionVehicleRow > textareaNoTab {
@@ -85,4 +87,8 @@ sessionVehicleRow > textareaNoTab {
   position:relative;
   font:@fontSmall;
   color:@activeTextColor;
+}
+
+navBar[mpLobby=yes] {
+  pos:50%sw-50%w, 1@navBarMpLobbyBottom - h;
 }

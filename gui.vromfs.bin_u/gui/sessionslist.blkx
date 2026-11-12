@@ -6,7 +6,7 @@
     "tdiv": {
       "pos": "50%pw-50%w, 1@minYposWindow + 0.01@scrn_tgt",
       "position": "absolute",
-      "size": "1@slotbarWidthFull, sh - 1@minYposWindow - 1@bottomBarHeight - 0.03@scrn_tgt",
+      "size": "1@slotbarWidthFull, sh - 1@bottomBarHeight - 1@blockInterval - 1@minYposWindow - 11@sf/@pf",
       "flow": "vertical",
       "tdiv": {
         "size": "pw, fh",
@@ -74,8 +74,10 @@
                   "caption": "yes"
                 }
               },
-              "tdiv": {
-                "width": "pw",
+              "sessionVehiclesList": {
+                "size": "pw, 4@cIco + 8@blockInterval",
+                "overflow-y": "auto",
+                "scrollbarShortcuts": "yes",
                 "sessionTeamVehicles": [
                   {
                     "id": "session_vehicles_A"

@@ -218,7 +218,6 @@ return const {
   shopYPos = "sh -1@shopBottomOffset"
   shopWndWidth = "1@slotbarWidthFull"
   battleBtnBottomOffset = "sh-1@shopBottomOffset"
-
   onlineShopWidth = "@sf $max 512"
   researchNotificationWidth = "0.8@sf $max 600"
 
@@ -418,6 +417,8 @@ return const {
 
   navBarBattleButtonHeight = "(38@sf/@pf)\\1 + 2@buttonImgPadding"
   navBarBattleButtonMinWidth = "1.3 * (2 * (0.16*@sf\\2))"
+
+  navBarMpLobbyBottom = "1@battleBtnBottomOffset - 4@sf/@pf"
 
   buttonMargin = "@blockInterval"
   smallButtonMargin = "1@dp"

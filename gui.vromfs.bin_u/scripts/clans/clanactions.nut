@@ -283,7 +283,7 @@ function checkSquadronExpChangedEvent() {
 function requestMyClanData(forceUpdate = false) {
   let myClanPrevMembersUid = getMyClanMembers().map(@(m) m.uid)
   if (clansPersistent.isInRequestMyClanData)
-    return
+    return false
 
   checkClanChangedEvent()
   checkSquadronExpChangedEvent()
@@ -298,17 +298,21 @@ function requestMyClanData(forceUpdate = false) {
       broadcastEvent("ClanChanged") 
       updateGamercards()
     }
-    return
+    return false
   }
 
   if (!forceUpdate && (myClanInfo.get()?.id ?? "-1") == myClanId)
     if (get_time_msec() - lastUpdateMyClanTime.get() < MY_CLAN_UPDATE_DELAY_MSEC)
-      return
+      return false
+
+  let taskId = clan_request_my_info()
+  if (taskId < 0)
+    return false
 
   lastUpdateMyClanTime.set(get_time_msec())
-  let taskId = clan_request_my_info()
   clansPersistent.isInRequestMyClanData = true
   addBgTaskCb(taskId, function() {
+    clansPersistent.isInRequestMyClanData = false
     let wasCreated = !myClanInfo.get()
     myClanInfo.set(get_clan_info_table(true)) 
 
@@ -317,12 +321,12 @@ function requestMyClanData(forceUpdate = false) {
       clearClanTagForRemovedMembers(myClanPrevMembersUid, myClanCurrMembersUid)
 
     handleNewMyClanData()
-    clansPersistent.isInRequestMyClanData = false
     broadcastEvent("ClanInfoUpdate")
     updateGamercards()
     if (wasCreated)
       broadcastEvent("ClanChanged") 
   })
+  return true
 }
 
 function createClan(params, handler) {
@@ -379,9 +383,7 @@ eventbus_subscribe("on_have_to_start_chard_op", function on_have_to_start_chard_
     })
   }
   else if (message == "clan_info_reload") {
-    requestMyClanData(true)
-    let myClanId = clan_get_my_clan_id()
-    if (myClanId == "-1")
+    if (!requestMyClanData(true))
       sync_handler_simulate_request(message)
   }
   else if (message == "profile_reload") {
@@ -395,14 +397,18 @@ eventbus_subscribe("on_have_to_start_chard_op", function on_have_to_start_chard_
   }
 })
 
-if (isProfileReceived.get() && myClanInfo.get() == null)
+if (isProfileReceived.get() && myClanInfo.get() == null) {
+  
+  clansPersistent.isInRequestMyClanData = false
   defer(@() requestMyClanData())
+}
 
 addListenersWithoutEnv({
   ProfileUpdated             = @(_) requestMyClanData()
 
   function SignOut(_) {
     lastClanId = CLAN_ID_NOT_INITED
+    clansPersistent.isInRequestMyClanData = false
     setSeenCandidatesBlk(null)
     cacheSquadronExp = 0
     lastUpdateMyClanTime.set(-MY_CLAN_UPDATE_DELAY_MSEC)

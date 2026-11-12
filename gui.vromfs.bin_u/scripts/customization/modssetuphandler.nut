@@ -49,12 +49,12 @@ class ModsSetupHandler (BaseGuiHandlerWT) {
 
 
   function updateUnitMods(unit, groupIdx = 0) {
+    this.unit = unit
     let isModVisible = unit.isHuman()
     this.scene.show(isModVisible)
     if (!isModVisible)
       return
 
-    this.unit = unit
     this.modifications = unit.getModifications()
     let groupsByType = getModsListByType(this.modifications)
     this.modsListByType = groupsByType

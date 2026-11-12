@@ -7,8 +7,8 @@
     "div": {
       "pos": "50%pw-50%w, 1@minYposWindow + 0.01@scrn_tgt",
       "position": "absolute",
-      "size": "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar - 0.01@scrn_tgt",
-      "padding-bottom": "1@frameFooterHeightLarge",
+      "size": "1@slotbarWidthFull, 1@navBarMpLobbyBottom - 1@minYposWindow - 11@sf/@pf",
+      "padding-bottom": "1@buttonHeight + 10@sf/@pf",
       "sessionPanel": [
         {
           "size": "480@sf/@pf, ph",
@@ -73,8 +73,10 @@
                 "caption": "yes"
               }
             },
-            "tdiv": {
-              "width": "pw",
+            "sessionVehiclesList": {
+              "size": "pw, 4@cIco + 8@blockInterval",
+              "overflow-y": "auto",
+              "scrollbarShortcuts": "yes",
               "sessionTeamVehicles": [
                 {
                   "id": "session_vehicles_A"
@@ -239,7 +241,9 @@
   },
   "navBar": {
     "type": "slotbar",
+    "mpLobby": "yes",
     "largeNavBarHeight": "yes",
+    "isTransparent": "yes",
     "navLeft": {
       "id": "lobby_nav_left",
       "Button_text": [
