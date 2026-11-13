@@ -40,7 +40,7 @@ function getMissionsList() {
     .filter(function (mission) {
       let misChapter = mission?.chapter
 
-      return !["test", "hidden"].contains(misChapter)
+      return !["test"].contains(misChapter)
     })
 
   return missionsList
