@@ -261,6 +261,7 @@ class ExporterForTss {
     let unitInfo = {
       id = unit.name
       type = unit.esUnitType
+      expClass = unit.expClass.getExpClass()
       expType = unit.isSquadronVehicle()
         ? "squadron"
         : (isUnitSpecial(unit) ? "premium" : "regular")
@@ -268,6 +269,7 @@ class ExporterForTss {
       country = unit.shopCountry
       role = getUnitBasicRole(unit)
       restrict = unit.hideBrForVehicle || unit.showShortestUnitInfo || unit.isSlave()
+      modsIds = unit.getModifications().map(@(mod) mod.name)
       images = {
         fullImage = getUnitTooltipImage(unit)
         treeImage = image_for_air(unit)

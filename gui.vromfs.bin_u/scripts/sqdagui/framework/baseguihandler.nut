@@ -176,7 +176,7 @@ let BaseGuiHandler = class {
   }
 
   function fullReloadScene() {
-    defer(@() handlersManager.startSceneFullReload())
+    this.guiScene.performDelayed(this, @() handlersManager.startSceneFullReload())
   }
 
   function afterModalDestroy() {}
