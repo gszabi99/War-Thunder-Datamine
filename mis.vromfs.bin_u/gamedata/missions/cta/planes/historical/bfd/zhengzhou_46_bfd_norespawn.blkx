@@ -247,7 +247,7 @@
         "excludes": {}
       },
       {
-        "file": "gamedata/missions/templates/players_adjuster_template.blk",
+        "file": "gamedata/missions/templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -442,19 +442,19 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target": "t1_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "target": "t1_quest_units_squad",
+            "target_marking": 0
           },
           {
             "set": true,
-            "target": "t2_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "target": "t2_quest_units_squad",
+            "target_marking": 0
           }
         ]
       },
@@ -517,17 +517,8 @@
           "time": 30.0
         }
       },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "pa_players_count",
-          "value": 8,
-          "comparasion_func": "more"
-        }
-      },
+      "conditions": {},
       "actions": {
-        "comment": {
-          "value": "dlya bol'shogo kolichestva igrokov vklyuchaem kvest s kontr atakoj"
-        },
         "missionMarkAsCaptureZone": {
           "army": 0,
           "timeMultiplier": 1.0,
@@ -1246,6 +1237,7 @@
         ],
         "props": {
           "squad_members": [
+            "t2_land_squad",
             "t2_tanks_squad",
             "t2_bunkers_squad"
           ],
@@ -1659,6 +1651,7 @@
         ],
         "props": {
           "squad_members": [
+            "t1_land_squad",
             "t1_tanks_squad",
             "t1_bunkers_squad"
           ],

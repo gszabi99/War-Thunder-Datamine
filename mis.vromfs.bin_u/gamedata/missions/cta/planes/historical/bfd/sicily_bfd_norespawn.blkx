@@ -206,7 +206,7 @@
         "excludes": {}
       },
       {
-        "file": "gamedata/missions/templates/players_adjuster_template.blk",
+        "file": "gamedata/missions/templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -450,20 +450,20 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target": "t1_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t1_quest_units_squad",
+            "target_marking": 0,
             "team": "B"
           },
           {
             "set": true,
-            "target": "t2_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t2_quest_units_squad",
+            "target_marking": 0,
             "team": "A"
           }
         ],
@@ -5316,7 +5316,10 @@
           ]
         ],
         "props": {
-          "squad_members": "t1_tanks_squad",
+          "squad_members": [
+            "t1_land_squad",
+            "t1_tanks_squad"
+          ],
           "object_marking": 0
         }
       },
@@ -5345,7 +5348,10 @@
           ]
         ],
         "props": {
-          "squad_members": "t2_bunkers_squad",
+          "squad_members": [
+            "t2_land_squad",
+            "t2_bunkers_squad"
+          ],
           "object_marking": 0
         }
       },
@@ -5378,104 +5384,6 @@
             "t2_bunkers_01_squad",
             "t2_bunkers_02_squad",
             "t2_bunkers_03_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "5_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            9255.95,
-            28.4,
-            2367.75
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_tanks_01_01",
-            "t1_tanks_02_01",
-            "t2_bunkers_01_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "10_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            9503.25,
-            28.4,
-            1705.8
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_tanks_01_02",
-            "t1_tanks_02_02",
-            "t2_bunkers_02_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "all_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            9921.95,
-            28.4,
-            1064.05
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_quest_units_squad",
-            "t2_quest_units_squad"
           ],
           "object_marking": 0
         }

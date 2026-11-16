@@ -149,7 +149,7 @@
   "imports": {
     "import_record": [
       {
-        "file": "gamedata/missions/templates/players_adjuster_template.blk",
+        "file": "gamedata/missions/templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -273,20 +273,20 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target": "t1_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t1_quest_units_squad",
+            "target_marking": 0,
             "team": "Both"
           },
           {
             "set": true,
-            "target": "t2_quest_units_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t2_quest_units_squad",
+            "target_marking": 0,
             "team": "Both"
           }
         ],
@@ -3264,7 +3264,7 @@
     ],
     "squad": [
       {
-        "name": "t2_5ppl_bunkers_squad",
+        "name": "t2_bunkers_squad",
         "tm": [
           [
             1.0,
@@ -3299,45 +3299,17 @@
             "t2_bunker_08",
             "t2_bunker_09",
             "t2_bunker_10",
-            "t2_bunker_11"
+            "t2_bunker_11",
+            "t2_bunker_12",
+            "t2_bunker_13",
+            "t2_bunker_14",
+            "t2_bunker_15"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "5_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -10110.9,
-            38.7627,
-            7747.02
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_5ppl_bunkers_squad",
-            "t1_5ppl_tanks_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t2_10ppl_tanks_squad",
+        "name": "t2_tanks_squad",
         "tm": [
           [
             1.0,
@@ -3371,105 +3343,7 @@
             "t2_tank_07",
             "t2_tank_08",
             "t2_tank_09",
-            "t2_tank_10"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "10_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -8560.52,
-            38.7627,
-            8347.36
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_5ppl_bunkers_squad",
-            "t2_10ppl_tanks_squad",
-            "t1_5ppl_tanks_squad",
-            "t1_10ppl_tanks_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t2_allppl_bunkers_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -3761.83,
-            31.3999,
-            1023.02
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_bunker_12",
-            "t2_bunker_13",
-            "t2_bunker_14",
-            "t2_bunker_15"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t2_allppl_tanks_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -4542.29,
-            35.9263,
-            2202.1
-          ]
-        ],
-        "props": {
-          "squad_members": [
+            "t2_tank_10",
             "t2_tank_11",
             "t2_tank_12",
             "t2_tank_13",
@@ -3479,44 +3353,7 @@
         }
       },
       {
-        "name": "all_ppl_squad",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -7666.38,
-            38.7627,
-            9560.29
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_5ppl_bunkers_squad",
-            "t2_10ppl_tanks_squad",
-            "t2_allppl_bunkers_squad",
-            "t2_allppl_tanks_squad",
-            "t1_5ppl_tanks_squad",
-            "t1_10ppl_tanks_squad",
-            "t1_allppl_tanks_squad"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t1_5ppl_tanks_squad",
+        "name": "t1_bunkers_squad",
         "tm": [
           [
             -1.68801e-35,
@@ -3551,37 +3388,7 @@
             "t1_bunker_08",
             "t1_bunker_09",
             "t1_bunker_10",
-            "t1_bunker_11"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t1_10ppl_tanks_squad",
-        "tm": [
-          [
-            -4.07823e-32,
-            0.0,
-            -4.07823e-32
-          ],
-          [
-            0.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            -1.0446e-33
-          ],
-          [
-            -4391.13,
-            38.9063,
-            -2545.49
-          ]
-        ],
-        "props": {
-          "squad_members": [
+            "t1_bunker_11",
             "t1_bunker_12",
             "t1_bunker_13",
             "t1_bunker_14",
@@ -3591,37 +3398,7 @@
             "t1_bunker_18",
             "t1_bunker_19",
             "t1_bunker_20",
-            "t1_bunker_21"
-          ],
-          "object_marking": 0
-        }
-      },
-      {
-        "name": "t1_allppl_tanks_squad",
-        "tm": [
-          [
-            -1.07975e-33,
-            0.0,
-            -1.07975e-33
-          ],
-          [
-            0.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            -2.04634e-34
-          ],
-          [
-            -5050.97,
-            38.9063,
-            -2226.12
-          ]
-        ],
-        "props": {
-          "squad_members": [
+            "t1_bunker_21",
             "t1_bunker_22",
             "t1_bunker_23",
             "t1_bunker_24",
@@ -3695,9 +3472,8 @@
         ],
         "props": {
           "squad_members": [
-            "t1_5ppl_tanks_squad",
-            "t1_10ppl_tanks_squad",
-            "t1_allppl_tanks_squad"
+            "t1_land_squad",
+            "t1_bunkers_squad"
           ],
           "object_marking": 0
         }
@@ -3728,10 +3504,9 @@
         ],
         "props": {
           "squad_members": [
-            "t2_5ppl_bunkers_squad",
-            "t2_10ppl_tanks_squad",
-            "t2_allppl_bunkers_squad",
-            "t2_allppl_tanks_squad"
+            "t2_land_squad",
+            "t2_tanks_squad",
+            "t2_bunkers_squad"
           ],
           "object_marking": 0
         }

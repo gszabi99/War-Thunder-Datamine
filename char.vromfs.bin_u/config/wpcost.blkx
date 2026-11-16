@@ -515311,7 +515311,7 @@
     "unitMoveType": "air",
     "speed": 600.0,
     "maxAmmo": 500,
-    "maxFlightTimeMinutes": 75,
+    "maxFlightTimeMinutes": 105,
     "reqAir": "su-7b",
     "crewTotalCount": 1,
     "killStreak": true,
@@ -1202415,6 +1202415,318 @@
     "Shop": {
       "hullMaterial": "steel",
       "hullThickness": 6.0,
+      "superstructureMaterial": "steel",
+      "superstructureThickness": 4.0
+    }
+  },
+  "us_pce_842_class": {
+    "value": 700000,
+    "reqExp": 250000,
+    "trainCost": 200000,
+    "train2Cost": 700000,
+    "train3Cost_gold": 1500,
+    "train3Cost_exp": 670000,
+    "repairTimeHrsArcade": 279.49,
+    "repairTimeHrsHistorical": 567.08,
+    "repairTimeHrsSimulation": 0.0,
+    "repairTimeHrsNoCrewArcade": 894.98,
+    "repairTimeHrsNoCrewHistorical": 1470.16,
+    "repairTimeHrsNoCrewSimulation": 0.0,
+    "repairCostArcade": 9678,
+    "repairCostHistorical": 13895,
+    "repairCostSimulation": 0,
+    "repairCostPerMinArcade": 1070,
+    "repairCostPerMinHistorical": 1062,
+    "repairCostPerMinSimulation": 0,
+    "repairCostFullUpgradedArcade": 12159,
+    "repairCostFullUpgradedHistorical": 17457,
+    "battleTimeAwardArcade": 1900,
+    "battleTimeAwardHistorical": 2400,
+    "battleTimeAwardSimulation": 0,
+    "avgAwardArcade": 12867,
+    "avgAwardHistorical": 18473,
+    "avgAwardSimulation": 0,
+    "rewardMulArcade": 2.21,
+    "rewardMulHistorical": 4.25,
+    "rewardMulSimulation": 1.0,
+    "expMul": 1.9,
+    "battleTimeArcade": 149.83,
+    "battleTimeHistorical": 188.54,
+    "battleTimeSimulation": 0.0,
+    "rank": 4,
+    "economicRankArcade": 9,
+    "economicRankHistorical": 9,
+    "economicRankSimulation": 9,
+    "country": "country_usa",
+    "unitClass": "exp_torpedo_gun_boat",
+    "unitMoveType": "fast_ship",
+    "showOnlyWhenBought": true,
+    "commonWeaponImage": "!#ui/gameuiskin#ship_type_destr.avif",
+    "minCrewMemberAliveCount": 29,
+    "crewTotalCount": 99,
+    "breachRepairSpeed": 30.0,
+    "gift": "msi_notebook",
+    "event": "2026_11_ship",
+    "economicRank": 17,
+    "purchaseTrophyGift": "purchase_gift_trophy_spare_15",
+    "shipAuxCaliberReloadTime_76mm_3_50_mk10_naval_user_cannon": 3.4,
+    "shipAuxMaxAngle_76mm_3_50_mk10_naval_user_cannon": 0.075,
+    "shipMainCaliberReloadTime_40mm_l60_bofors_mk1_twin_naval_user_cannon": 0.375,
+    "shipMainCaliberMaxAngle_40mm_l60_bofors_mk1_twin_naval_user_cannon": 0.05,
+    "shipAntiAirCaliberReloadTime_20mm_oerlikon_mk2_single_naval_user_cannon": 4.0,
+    "shipAntiAirMaxAngle_20mm_oerlikon_mk2_single_naval_user_cannon": 0.08,
+    "needBuyToOpenNextInTier1": 1,
+    "needBuyToOpenNextInTier2": 3,
+    "needBuyToOpenNextInTier3": 2,
+    "needBuyToOpenNextInTier4": 1,
+    "extinguisherMinTime": 10.0,
+    "maxDmPartRepairTimeSec": 60,
+    "weapons": {
+      "depth_charges": {
+        "image": "!#ui/gameuiskin#depth_charge.avif",
+        "value": 440,
+        "maxCount": 30,
+        "validIfBought": true,
+        "hasDepthCharge": true,
+        "reqModification": "ship_depth_charge",
+        "weaponmask": 8
+      },
+      "bomb_mortars": {
+        "image": "!#ui/gameuiskin#depth_charge.avif",
+        "value": 600,
+        "maxCount": 30,
+        "validIfBought": true,
+        "hasDepthCharge": true,
+        "reqModification": "ship_bomb_mortar",
+        "weaponmask": 8
+      },
+      "depth_charges_bomb_mortars": {
+        "image": "!#ui/gameuiskin#depth_charge.avif",
+        "value": 1000,
+        "maxCount": 30,
+        "validIfBought": true,
+        "hasDepthCharge": true,
+        "reqModification": "ship_bomb_mortar",
+        "weaponmask": 8
+      },
+      "us_pce_842_class_default": {
+        "image": "!#ui/gameuiskin#pilons.avif",
+        "value": 0
+      }
+    },
+    "modifications": {
+      "ship_tool_kit": {
+        "tier": 1,
+        "repairCostCoef": 0.043,
+        "reqExp": 8400,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 220
+      },
+      "manual_ship_extinguisher": {
+        "tier": 2,
+        "repairCostCoef": 0.043,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "new_ship_pumps": {
+        "tier": 4,
+        "repairCostCoef": 0.01,
+        "reqExp": 23000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 610
+      },
+      "new_main_caliber_turrets": {
+        "prevModification": "new_aux_caliber_turrets",
+        "tier": 3,
+        "repairCostCoef": 0.008,
+        "reqExp": 13000,
+        "value": 21000,
+        "costGold": 0,
+        "openCostGold": 340
+      },
+      "new_aux_caliber_turrets": {
+        "prevModification": "new_aa_caliber_turrets",
+        "tier": 2,
+        "repairCostCoef": 0.016,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "ship_rangefinder": {
+        "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack",
+        "tier": 3,
+        "repairCostCoef": 0.01,
+        "reqExp": 13000,
+        "value": 21000,
+        "costGold": 0,
+        "openCostGold": 340
+      },
+      "new_ship_hull": {
+        "tier": 1,
+        "repairCostCoef": 0.024,
+        "reqExp": 8400,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 220
+      },
+      "new_ship_rudder": {
+        "prevModification": "new_ship_hull",
+        "tier": 2,
+        "repairCostCoef": 0.015,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "new_ship_screw": {
+        "tier": 3,
+        "repairCostCoef": 0.018,
+        "reqExp": 13000,
+        "value": 21000,
+        "costGold": 0,
+        "openCostGold": 340
+      },
+      "new_ship_engine": {
+        "prevModification": "new_ship_screw",
+        "tier": 4,
+        "repairCostCoef": 0.021,
+        "reqExp": 23000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 610
+      },
+      "ship_smoke_screen_system_mod": {
+        "tier": 2,
+        "repairCostCoef": 0.033,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "76mm_usa_navy_he": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0,
+        "ammoCount": 1,
+        "bulletsIconParam": 51
+      },
+      "76mm_usa_navy_AP_ammo_pack": {
+        "tier": 1,
+        "reqExp": 8400,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 220
+      },
+      "76mm_usa_navy_AP": {
+        "reqModification": "76mm_usa_navy_AP_ammo_pack",
+        "tier": 0,
+        "value": 5,
+        "costGold": 0,
+        "maxCount": 1200,
+        "validIfBought": true,
+        "ammoCount": 1,
+        "bulletsIconParam": 44
+      },
+      "76mm_usa_AA_radio_fuze": {
+        "reqModification": "76mm_usa_AA_radio_fuze_ammo_pack",
+        "tier": 0,
+        "value": 5,
+        "costGold": 0,
+        "maxCount": 1200,
+        "validIfBought": true,
+        "ammoCount": 1,
+        "bulletsIconParam": 51
+      },
+      "76mm_usa_AA_radio_fuze_ammo_pack": {
+        "prevModification": "76mm_usa_navy_AP_ammo_pack",
+        "tier": 2,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "40mm_bofors_l60_navy_universal": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0,
+        "caliber": 0.04,
+        "ammoCount": 24
+      },
+      "40mm_bofors_l60_navy_he": {
+        "reqModification": "40mm_bofors_l60_navy_he_ammo_pack",
+        "tier": 0,
+        "value": 20,
+        "costGold": 0,
+        "maxCount": 15000,
+        "validIfBought": true,
+        "ammoCount": 24
+      },
+      "40mm_bofors_l60_navy_he_ammo_pack": {
+        "tier": 1,
+        "reqExp": 8400,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 220
+      },
+      "40mm_bofors_l60_navy_ap": {
+        "reqModification": "40mm_bofors_l60_navy_ap_ammo_pack",
+        "tier": 0,
+        "value": 20,
+        "costGold": 0,
+        "maxCount": 15000,
+        "validIfBought": true,
+        "ammoCount": 24
+      },
+      "40mm_bofors_l60_navy_ap_ammo_pack": {
+        "prevModification": "40mm_bofors_l60_navy_he_ammo_pack",
+        "tier": 2,
+        "reqExp": 7900,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 210
+      },
+      "new_aa_caliber_turrets": {
+        "tier": 1,
+        "repairCostCoef": 0.016,
+        "reqExp": 8400,
+        "value": 13000,
+        "costGold": 0,
+        "openCostGold": 220
+      },
+      "ship_depth_charge": {
+        "prevModification": "76mm_usa_AA_radio_fuze_ammo_pack",
+        "tier": 3,
+        "reqExp": 13000,
+        "value": 21000,
+        "costGold": 0,
+        "openCostGold": 340
+      },
+      "ship_bomb_mortar": {
+        "reqModification": "ship_depth_charge",
+        "tier": 4,
+        "reqExp": 23000,
+        "value": 37000,
+        "costGold": 0,
+        "openCostGold": 610
+      },
+      "premExpMul": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 2000
+      }
+    },
+    "spare": {
+      "value": 0,
+      "costGold": 40
+    },
+    "Shop": {
+      "hullMaterial": "steel",
+      "hullThickness": 16.0,
       "superstructureMaterial": "steel",
       "superstructureThickness": 4.0
     }

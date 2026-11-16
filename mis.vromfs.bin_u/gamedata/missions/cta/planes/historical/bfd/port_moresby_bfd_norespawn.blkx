@@ -173,7 +173,7 @@
         "excludes": {}
       },
       {
-        "file": "gamedata/missions/templates/players_adjuster_template.blk",
+        "file": "gamedata/missions/templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -313,20 +313,20 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target": "t1_land_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t1_land_squad",
+            "target_marking": 0,
             "team": "B"
           },
           {
             "set": true,
-            "target": "t2_land_squad",
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "target": "t2_land_squad",
+            "target_marking": 0,
             "team": "A"
           }
         ],
@@ -4196,9 +4196,11 @@
         ],
         "props": {
           "squad_members": [
+            "t1_land_squad",
             "t1_bunkers_squad",
             "t1_tanks_squad",
-            "t1_carrier_destroyers_squad"
+            "t1_carrier_destroyers_squad",
+            "t1_carriers_squad"
           ],
           "object_marking": 0
         }
@@ -4229,8 +4231,10 @@
         ],
         "props": {
           "squad_members": [
+            "t2_land_squad",
             "t2_tanks_squad",
-            "t2_carrier_destroyers_squad"
+            "t2_carrier_destroyers_squad",
+            "t2_carriers_squad"
           ],
           "object_marking": 0
         }
