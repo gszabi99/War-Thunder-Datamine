@@ -5,7 +5,7 @@ from "%scripts/slotInfoPanel.nut" import createSlotInfoPanel
 from "%scripts/userstat/userstatItemsRewards.nut" import claimRegionalUnlockRewards
 from "%scripts/penitentiary/bannedStatusMsgBox.nut" import showBannedStatusMsgBox
 from "%scripts/mainmenu/reminderGaijinPass.nut" import checkGaijinPassReminder
-from "%scripts/options/systemOptions.nut" import systemOptionsMaintain, checkShowGraphicSettingsWasModified, checkShowFullscreenImeUnavailable
+from "%scripts/options/systemOptions.nut" import systemOptionsMaintain, checkShowGraphicSettingsWasModified
 from "%scripts/controls/hotas.nut" import checkJoystickThustmasterHotas
 from "%scripts/unlocks/battleTasks.nut" import checkNewSpecialTasks
 from "%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut" import checkInvitesAfterFlight
@@ -168,9 +168,6 @@ function onMainMenuReturn(handler, isAfterLogin) {
     ludeo?.activate_session()
 
   handler.doWhenActive(popGblkErrorPopups)
-
-  if (isAfterLogin && isAllowPopups)
-    handler.doWhenActive(checkShowFullscreenImeUnavailable)
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 

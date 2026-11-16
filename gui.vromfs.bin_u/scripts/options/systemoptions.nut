@@ -15,7 +15,7 @@ from "blkGetters" import get_settings_blk
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "math" import round
 from "string" import format, strip
-from "graphicsOptions" import get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, get_supported_generated_frames, is_dynamic_mfg_supported, is_dx11_supported, hasImeKeyboardLayout
+from "graphicsOptions" import get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, get_supported_generated_frames, is_dynamic_mfg_supported, is_dx11_supported
   , is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api, is_intel_gpu, getVideoModes, getDgsTexQuality
   , get_available_vsync_frequencies, get_video_memory_gb, is_dlss_nr_supported, is_dynamic_resolution_supported_by_driver
 from "dagor.system" import get_primary_screen_info
@@ -947,14 +947,6 @@ function graphicsQualityClickImpl(silent, applyFn = @() null) {
   updateGuiNavbar(true)
 }
 
-function showFullscreenImeUnavailableMsg() {
-  let text = loc("msgbox/fullscreen_ime_unavailable", {
-    mode = loc("options/mode_fullscreen")
-    winMode = loc("options/mode_fullscreenwindowed")
-  })
-  showInfoMsgBox(text, "msg_sysopt_fullscreen_ime", true)
-}
-
 
 mShared = {
   setQualityPreset = function(preset) {
@@ -1093,11 +1085,6 @@ mShared = {
   }
 
   modeClick = function() {
-    if (getGuiValue("mode") == "fullscreen" && hasImeKeyboardLayout()) {
-      setGuiValue("mode", "fullscreenwindowed")
-      showFullscreenImeUnavailableMsg()
-    }
-
     aaUseGui = true
 
     enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
@@ -3022,19 +3009,6 @@ function checkShowGraphicSettingsWasModified() {
   )
 }
 
-function checkShowFullscreenImeUnavailable() {
-  if (!isPC || is_gdk || !hasImeKeyboardLayout())
-    return
-  if (getSystemConfigOption("video/mode", "fullscreen") != "fullscreen")
-    return
-
-  setSystemConfigOption("video/mode", "fullscreenwindowed")
-  if ("mode" in mCfgApplied)
-    mCfgApplied.mode = "fullscreenwindowed"
-
-  showFullscreenImeUnavailableMsg()
-}
-
 function disableVrModeValue() {
   if (mCfgInitial.len() == 0)
     configRead()
@@ -3092,7 +3066,6 @@ return freeze({
   getSystemOptionInfoView = getOptionInfoView
   onSystemOptionValueHover
   checkShowGraphicSettingsWasModified
-  checkShowFullscreenImeUnavailable
   isVrModeEnable
   disableVrModeValue
   updateGuiOptionsGroup

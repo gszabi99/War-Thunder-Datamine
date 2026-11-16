@@ -11,24 +11,28 @@ from "%scripts/seen/seenIds.nut" import SEEN
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
 
-local icons = null
-local allowedIcons = null
+local iconIds = null
+local allowedIconIds = null
 
 function getIcons(full = false) {
-  if (!icons)
-    icons = getUnlocksByTypeInBlkOrder("pilot")
-  return full ? icons : icons.map(@(u) u.id)
+  if (full)
+    return getUnlocksByTypeInBlkOrder("pilot")
+  if (!iconIds)
+    iconIds = getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
+  return clone iconIds
 }
 
 function getAllowedIcons() {
-  if (!allowedIcons)
-    allowedIcons = getIcons(true).filter(@(unlock) isUnlockOpened(unlock.id, UNLOCKABLE_PILOT) && isUnlockVisible(unlock))
-  return allowedIcons.map(@(v) v.id)
+  if (!allowedIconIds)
+    allowedIconIds = getIcons(true)
+      .filter(@(unlock) isUnlockOpened(unlock.id, UNLOCKABLE_PILOT) && isUnlockVisible(unlock))
+      .map(@(unlock) unlock.id)
+  return clone allowedIconIds
 }
 
 function invalidateIcons() {
-  icons = null
-  allowedIcons = null
+  iconIds = null
+  allowedIconIds = null
   defer(@() seenAvatars.onListChanged())
 }
 
