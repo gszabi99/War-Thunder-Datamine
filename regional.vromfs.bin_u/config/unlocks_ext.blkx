@@ -5289,6 +5289,23 @@
       }
     },
     {
+      "id": "ready_for_battle_pack_award",
+      "type": "award",
+      "hidden": true
+    },
+    {
+      "id": "ready_for_battle_pack",
+      "userLogId": "ready_for_battle_pack_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "ready_for_battle_pack_award"
+      }
+    },
+    {
       "id": "2026_11_12_bundeswehr_armed_forces_day",
       "locId": "unlocks/group/bundeswehr_armed_forces_day",
       "locDescId": "gift_decals_trophy/desc",
@@ -27780,6 +27797,12 @@
     },
     {
       "id": "title_trench_fighter",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_overclocked",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -160444,7 +160467,7 @@
       "icon": "!https://static-ggc.gaijin.net/units/fw_190a_8_mistel.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -160469,8 +160492,8 @@
       "chapter": "sturmtiger_dream",
       "icon": "!https://static-ggc.gaijin.net/decals/2026_10_aircraft_event_decals.avif",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
@@ -160495,7 +160518,7 @@
       "chapter": "sturmtiger_dream",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -160520,8 +160543,8 @@
       "amount_trophies": 1,
       "chapter": "sturmtiger_dream",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -160546,7 +160569,7 @@
       "chapter": "sturmtiger_dream",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -160571,7 +160594,7 @@
       "icon": "!https://static-ggc.gaijin.net/avatar_frames/frame_mistel.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 5,
@@ -160596,7 +160619,7 @@
       "icon": "!https://static-ggc.gaijin.net/items/item_skin.png",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 7,
@@ -160615,6 +160638,7 @@
       "id": "09_11_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_7/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160678,6 +160702,7 @@
       "id": "07_11_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_6/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160741,6 +160766,7 @@
       "id": "05_11_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_5/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160804,6 +160830,7 @@
       "id": "03_11_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_4/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160867,6 +160894,7 @@
       "id": "01_11_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_3/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160930,6 +160958,7 @@
       "id": "30_10_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_2/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -160993,6 +161022,7 @@
       "id": "28_10_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_1/name",
       "chapter": "sturmtiger_dream",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -161484,7 +161514,7 @@
           {
             "type": "timeRange",
             "beginDate": "2026-11-16 11:00:00",
-            "endDate": "2026-11-17 11:30:00"
+            "endDate": "2026-11-17 13:30:00"
           },
           {
             "type": "playerUnit",
@@ -161799,7 +161829,7 @@
           {
             "type": "timeRange",
             "beginDate": "2026-11-16 11:00:00",
-            "endDate": "2026-11-17 11:30:00"
+            "endDate": "2026-11-17 13:30:00"
           },
           {
             "type": "playerUnit",
