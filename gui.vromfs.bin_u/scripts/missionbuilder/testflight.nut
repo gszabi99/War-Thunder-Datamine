@@ -23,7 +23,7 @@ from "%scripts/langUtils/language.nut" import getLanguageName
 from "%scripts/slotbar/slotbarView.nut" import buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText
 from "%scripts/slotbar/slotbarState.nut" import getCurSlotbarUnit
 from "%scripts/unit/unitInSlotbarStatus.nut" import isUnitInSlotbar, isUnitAvailableForGM
-from "%scripts/missions/startMissionsList.nut" import guiStartBuilder, guiStartFlight, guiStartCdOptions
+from "%scripts/missions/startMissionsList.nut" import guiStartBuilder, guiStartCdOptions
 from "%scripts/missions/missionsStates.nut" import currentCampaignMission
 from "%scripts/gameModes/gameModeManagerState.nut" import getCurrentGameModeEdiff
 from "%scripts/wishlist/addWishWnd.nut" import tryAddToWishlist, updateWishlistButton
@@ -453,9 +453,6 @@ register_gui_handler("TestFlight", class (GenericOptionsModal) {
 
     select_training_mission(misBlk)
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
-
-    defer(guiStartFlight)
-
     sendStartTestFlightToBq(this.unit.name)
   }
 
