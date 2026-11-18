@@ -29,13 +29,14 @@ from "%appGlobals/login/loginState.nut" import isAuthorized
 from "string" import format
 from "dagor.debug" import debug_dump_stack
 from "hangar" import hangar_get_current_unit_name
-from "graphicsOptions" import get_pipeline_compilation_queue_length, get_active_gfx_api
+from "graphicsOptions" import get_active_gfx_api
 from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { get_pipeline_compilation_queue_length = @() 0 } = require("graphicsOptions")
 
 let MainMenu = class (InstantDomination) {
   rootHandlerClass = TopMenu
