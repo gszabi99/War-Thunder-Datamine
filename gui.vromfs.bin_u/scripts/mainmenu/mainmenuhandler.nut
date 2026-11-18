@@ -29,6 +29,7 @@ from "%appGlobals/login/loginState.nut" import isAuthorized
 from "string" import format
 from "dagor.debug" import debug_dump_stack
 from "hangar" import hangar_get_current_unit_name
+from "graphicsOptions" import get_pipeline_compilation_queue_length, get_active_gfx_api
 from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
@@ -54,6 +55,7 @@ let MainMenu = class (InstantDomination) {
     tryOpenTutorialRewardHandler()
 
     this.forceUpdateSelUnitInfo()
+    this.startShaderCompileWarning()
 
     if (isAuthorized.get()) {
       this.showOnlineInfo()
@@ -181,6 +183,31 @@ let MainMenu = class (InstantDomination) {
     this.updateUnitRentInfo(unit)
     this.updateLowQualityModelWarning()
     this.updateSuggestedSkin(unit)
+  }
+
+  
+  function startShaderCompileWarning() {
+    
+    if (!isPC || get_active_gfx_api() != "dx12")
+      return
+    local maxQueue = 0
+    local percent = 0
+    SecondsUpdater(this.scene.findObject("notifications_block"), function(nestObj, _params) {
+      let obj = nestObj.findObject("shader_compile_warning")
+      let queue = get_pipeline_compilation_queue_length()
+      obj.show(queue > 0)
+      if (queue > 0) {
+        
+        maxQueue = max(maxQueue, queue)
+        percent = max(percent, (100.0 * (maxQueue - queue) / maxQueue).tointeger())
+        obj.findObject("shader_compile_progress").setValue($"{percent}{loc("measureUnits/percent")}")
+      }
+      else {
+        maxQueue = 0
+        percent = 0
+      }
+      return false
+    }, false)
   }
 
   function updateSuggestedSkin(unit) {

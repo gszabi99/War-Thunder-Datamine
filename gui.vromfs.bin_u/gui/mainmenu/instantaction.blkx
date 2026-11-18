@@ -220,6 +220,41 @@
             }
           },
           {
+            "id": "shader_compile_warning",
+            "pos": "pw/2-w/2, 0",
+            "position": "relative",
+            "flow": "vertical",
+            "display": "hide",
+            "padding-bottom": "10*@sf/@pf_outdated",
+            "textAreaCentered": {
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative",
+              "max-width": "0.4sw",
+              "overlayTextColor": "active",
+              "textShade": "yes",
+              "text": "#mainmenu/shaderCompilationInProgress",
+              "input-transparent": "yes"
+            },
+            "tdiv": {
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative",
+              "animated_wait_icon": {
+                "class": "inTextRow",
+                "margin-right": "6@sf/@pf",
+                "background-rotation": "0"
+              },
+              "textAreaCentered": {
+                "id": "shader_compile_progress",
+                "pos": "0, 50%ph-50%h",
+                "position": "relative",
+                "overlayTextColor": "active",
+                "textShade": "yes",
+                "text": "",
+                "input-transparent": "yes"
+              }
+            }
+          },
+          {
             "id": "unit_has_no_armoring",
             "pos": "50%pw-50%w,0",
             "position": "relative",

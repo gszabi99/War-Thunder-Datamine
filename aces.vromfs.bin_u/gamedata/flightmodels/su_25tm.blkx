@@ -5713,16 +5713,22 @@
               "bullets": 1
             },
             "sensors": {
-              "sensor": {
-                "blk": "gamedata/sensors/su_kopio_25.blk",
-                "dmPart": "radar_dm"
-              },
-              "sensorsMode": [
+              "sensor": [
                 {
-                  "blockSensorIndex": 5
+                  "blk": "gamedata/sensors/su_kopio_25.blk",
+                  "dmPart": "radar_dm",
+                  "replaceSensorIndex": 0
                 },
                 {
+                  "blk": "gamedata/sensors/su_spo_150_esm.blk"
+                }
+              ],
+              "sensorsMode": [
+                {
                   "blockSensorIndex": 0
+                },
+                {
+                  "blockSensorIndex": 5
                 }
               ]
             }
