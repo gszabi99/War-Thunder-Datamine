@@ -5,6 +5,7 @@ from "chard" import getPremiumSavedTimeMinutes
 from "dagor.workcycle" import setTimeout, clearTimer
 from "console" import register_command
 from "%scripts/dagui_natives.nut" import entitlement_expires_in, shop_get_premium_account_ent_name
+from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_library.nut" import *
 
 const PREM_TIMER_ID = "timer_premium_update"
@@ -37,6 +38,9 @@ addListenersWithoutEnv({
   ProfileUpdated = @(_) updatePremium()
   SignOut = @(_) resetInfo()
 })
+
+if (isProfileReceived.get())
+  updatePremium()
 
 register_command(@() forcePremium.set(true), "premium.forceOn")
 register_command(@() forcePremium.set(false), "premium.forceOff")
