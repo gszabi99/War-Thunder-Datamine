@@ -252,6 +252,13 @@
       }
     }
   },
+  "scopeRangeSets": {
+    "common": {
+      "range1": 30000.0,
+      "range2": 60000.0,
+      "range3": 120000.0
+    }
+  },
   "fsms": {
     "main": {
       "stateInit": "init",
@@ -991,6 +998,12 @@
             "checkWeaponRcTransmissionTimeOut": {
               "transmitter": "rc"
             }
+          }
+        },
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
           }
         }
       }
