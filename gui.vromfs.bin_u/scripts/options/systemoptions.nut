@@ -722,7 +722,7 @@ function getPrimaryScreenResolution() {
 
 function isAutoResolutionOnPrimaryDisplay(blk, mode, monitor) {
   if (is_linux)
-    return mode == "fullscreen"
+    return mode == "fullscreen" || mode == "fullscreenwindowed"
   if (!is_windows || monitor != "auto" || (mode != "fullscreen" && mode != "fullscreenwindowed"))
     return false
   if (get_active_gfx_api() != "dx11")
@@ -1630,7 +1630,7 @@ mSettings = {
       desc.values <-
         (is_windows && is_gdk)
         ? ["windowed", "fullscreenwindowed"]
-        : (is_windows
+        : ((is_windows || is_linux)
           ? ["windowed", "fullscreenwindowed", "fullscreen"]
           : ["windowed", "fullscreen"]
         )
