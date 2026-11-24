@@ -218,6 +218,7 @@ let getBulletBeltShortLocId = @(id) (id == "" || id.endswith("_default")) ? "mod
   : $"{getLocIdPrefixByCaliber(id)}/name/short"
 
 let torpedoSpeedMultByDiff = {}
+let torpedoAutoUpdateDepthByDiff = {}
 let scoutScoreMuliplierWithUavByDiff = {}
 
 function getTorpedoSpeedMultByDiff(ediff) {
@@ -249,6 +250,19 @@ function getScoutScoreMuliplierWithUavByDiff(unit, ediff) {
 
   scoutScoreMuliplierWithUavByDiff[difficultyName] <- scoreMulWithUav
   return scoutScoreMuliplierWithUavByDiff[difficultyName]
+}
+
+function getTorpedoAutoUpdateDepthByDiff(ediff) {
+  if (torpedoAutoUpdateDepthByDiff.len() == 0) {
+    let blk = get_game_params_blk()
+    torpedoAutoUpdateDepthByDiff.__update(g_difficulty.types.reduce(function(res, val) {
+      if (val.settingsName != "")
+        res[val.settingsName] <- blk.difficulty_settings.baseDifficulty[val.settingsName]?.shipTorpedoAutoUpdateDepth ?? false
+      return res
+    }, {}))
+  }
+  let diff = get_difficulty_by_ediff(ediff)
+  return torpedoAutoUpdateDepthByDiff[diff.settingsName]
 }
 
 let turretGuidanceSpeedMultByDiff = {}
@@ -1701,6 +1715,7 @@ return freeze({
   getTriggerType
   isGunnerTrigger
   get_weapon_icons_text
+  getTorpedoAutoUpdateDepthByDiff
   getTurretGuidanceSpeedMultByDiff
   getBulletBeltShortLocId
   getScoutScoreMuliplierWithUavByDiff

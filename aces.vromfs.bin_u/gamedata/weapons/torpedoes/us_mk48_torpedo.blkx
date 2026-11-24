@@ -51,6 +51,7 @@
     "caliber": 0.533,
     "mass": 1850.0,
     "explosiveType": "tnt",
+    "useUnderwaterExplosionTables": true,
     "explosiveMass": 300.0,
     "dragCx": 0.24,
     "startSpeed": 0.0,
@@ -115,7 +116,7 @@
     "fxConcreteDust": "dust_ground_explosions_wave_concrete_med",
     "fxWaterShockWave": "dust_waterwave_big",
     "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "water_under_explosion_big",
+    "explosionEffect": "water_explosion_medium",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "",
     "waterCollisionEffect": "hit_106_132mm_water_ap",
@@ -125,7 +126,7 @@
     "fallToWaterFx": "bomb_reflection_big",
     "drownFx": "bomb_reflection",
     "explosionFx": "bomb_expl_500kg",
-    "waterExplosionEffect": "water_explosion_medium",
+    "waterExplosionEffect": "water_explosion_small",
     "underwaterExplosionEffect": "underwater_explosion",
     "explosionPatchRadius": [
       4.0,
@@ -134,6 +135,7 @@
     "rendinstDamageRadius": 9.0,
     "shatterPatchRadius": 0.0,
     "explosionPatchHeightScale": 0.15,
+    "propellerEffect": "underwater_trp_propeller_water_splashes",
     "sonarSeeker": {
       "designationAngle": 10.0,
       "lockTime": 1.0,
@@ -189,6 +191,9 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0
       }
+    },
+    "pressureDamage": {
+      "damageType": "hydroShock"
     },
     "proximityFuse": {
       "timeOut": 0.5,

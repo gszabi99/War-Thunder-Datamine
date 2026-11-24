@@ -197,11 +197,6 @@ return [
     type = CONTROL_TYPE.SECTION
   }
   {
-    id = "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
-    needShowInHelp = true
-    checkAssign = false
-  }
-  {
     id = "ID_SHIP_SWITCH_ACTIVE_SONAR"
     checkAssign = false
   }

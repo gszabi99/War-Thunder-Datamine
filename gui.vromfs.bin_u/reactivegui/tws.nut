@@ -300,16 +300,33 @@ let rocketVector =
   ]
 
 const sectorOpacityMult = 0.25
+const mlwsRadiusMin = 20.0
+const mlwsRadiusMax = 100.0
+const mlwsMarkHalfSize = 0.225
+
+
+function calcMlwsRadiusMax(target, areaSize, bounds) {
+  if (bounds == null || areaSize <= 0.0)
+    return mlwsRadiusMax
+  let distMax = areaSize * math.sqrt(2.0)
+  let markHalfSize = mlwsMarkHalfSize * areaSize
+  let limitX = (target.x < 0.0 ? bounds.left : bounds.right) - markHalfSize
+  let limitY = (target.y < 0.0 ? bounds.top : bounds.bottom) - markHalfSize
+  let distX = limitX / max(math.fabs(target.x), 0.001)
+  let distY = limitY / max(math.fabs(target.y), 0.001)
+  return clamp(min(distX, distY) / distMax, 0.0, 1.0) * mlwsRadiusMax
+}
 
 let lswTargetTransform = {
   pivot = 0.0
   rotate = 135.0 
 }
 
-function createMlwsTarget(index, colorWatch) {
+function createMlwsTarget(index, colorWatch, areaSize, bounds) {
   let target = mlwsTargets[index]
+  let radiusMax = max(calcMlwsRadiusMax(target, areaSize, bounds), mlwsRadiusMin)
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.get(), 1.0)) * targetsOpacityMult.get())
-  let radius = target.rangeRel * 80.0 + 20.0
+  let radius = mlwsRadiusMin + target.rangeRel * (radiusMax - mlwsRadiusMin)
   let targetComponent = @() {
     watch = [targetOpacity, colorWatch]
     color = isColorOrWhite(colorWatch.get())
@@ -692,12 +709,13 @@ function mlwsTargetsState(colorWatched) {
   }
 }
 
-function mlwsTargetsComponent(colorWatch) {
+function mlwsTargetsComponent(colorWatch, areaSize, boundsWatched) {
+  let watch = boundsWatched == null ? mlwsTargetsTriggers : [mlwsTargetsTriggers, boundsWatched]
 
   return @() {
-    watch = mlwsTargetsTriggers
+    watch
     size = FLEX
-    children = mlwsTargets.filter(@(t) t != null).map(@(_, i) createMlwsTarget(i, colorWatch))
+    children = mlwsTargets.filter(@(t) t != null).map(@(_, i) createMlwsTarget(i, colorWatch, areaSize, boundsWatched?.get()))
   }
 }
 
@@ -925,7 +943,7 @@ function getCentralMark(forMfd, centralMark) {
 }
 
 function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
-    needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
+    needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult, mlwsAreaSize, mlwsBoundsWatched) {
   let lineColor = forMfd ? Computed(@() mfdRwrSettings.get().lineColor) : colorWatched
   return @(){
     watch = mfdRwrSettings
@@ -941,7 +959,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
         hplace = ALIGN_CENTER
         children = [
           needAdditionalLights ? mlwsTargetsState(lineColor) : null
-          mlwsTargetsComponent(lineColor)
+          mlwsTargetsComponent(lineColor, mlwsAreaSize, mlwsBoundsWatched)
           needAdditionalLights ? lwsTargetsState(lineColor) : null
           lwsTargetsComponent(lineColor, !needDrawCentralIcon)
           needAdditionalLights ? rwrTargetsState(lineColor) : null
@@ -955,7 +973,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
 
 let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0,
     needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0,
-    needAdditionalLights = true, forMfd = false, centralCircleSizeMult = 1.0) {
+    needAdditionalLights = true, forMfd = false, centralCircleSizeMult = 1.0, mlwsBoundsWatched = null) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
@@ -963,7 +981,8 @@ let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSiz
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = scope(colorWatched, relativCircleSize, scale, sizeWatched.get()[0] > 0.0 ? sizeWatched.get()[1] / sizeWatched.get()[0] : 1.0,
-     needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult)
+     needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult,
+     sizeWatched.get()[1] * relativCircleSize * scale * 0.01, mlwsBoundsWatched)
   }
 })
 

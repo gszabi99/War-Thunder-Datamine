@@ -4279,6 +4279,9 @@
           "dmPart": "steering_gear_01_dm"
         }
       ]
+    },
+    "electrodynamics": {
+      "hullMagneticMoment": 18590.0
     }
   },
   "SoundEmission": {
@@ -9246,7 +9249,8 @@
         "maxSpeedInWater": -2.05
       }
     },
-    "ship_supportPlane": {}
+    "ship_supportPlane": {},
+    "ship_base_degaussing": {}
   },
   "boilerExplosionFx": {
     "fx": [
@@ -9511,19 +9515,23 @@
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_01"
+            "emitter": "emtr_fire_ammo_01",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_02"
+            "emitter": "emtr_fire_ammo_02",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_03"
+            "emitter": "emtr_fire_ammo_03",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_04"
+            "emitter": "emtr_fire_ammo_04",
+            "underwater": true
           }
         ]
       },
@@ -9653,75 +9661,93 @@
           },
           {
             "name": "underwater_ship_engine_fire",
-            "emitter": "emtr_smoke_dmg_01"
+            "emitter": "emtr_smoke_dmg_01",
+            "underwater": true
           },
           {
             "name": "underwater_ship_engine_fire",
-            "emitter": "emtr_smoke_dmg_02"
+            "emitter": "emtr_smoke_dmg_02",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_01"
+            "emitter": "emtr_smoke_small_dmg_01",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_02"
+            "emitter": "emtr_smoke_small_dmg_02",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_03"
+            "emitter": "emtr_smoke_small_dmg_03",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_04"
+            "emitter": "emtr_smoke_small_dmg_04",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_05"
+            "emitter": "emtr_smoke_small_dmg_05",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_06"
+            "emitter": "emtr_smoke_small_dmg_06",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_07"
+            "emitter": "emtr_smoke_small_dmg_07",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_08"
+            "emitter": "emtr_smoke_small_dmg_08",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_09"
+            "emitter": "emtr_smoke_small_dmg_09",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_10"
+            "emitter": "emtr_smoke_small_dmg_10",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_11"
+            "emitter": "emtr_smoke_small_dmg_11",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_12"
+            "emitter": "emtr_smoke_small_dmg_12",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_13"
+            "emitter": "emtr_smoke_small_dmg_13",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_14"
+            "emitter": "emtr_smoke_small_dmg_14",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_15"
+            "emitter": "emtr_smoke_small_dmg_15",
+            "underwater": true
           },
           {
             "name": "underwater_bubbles",
-            "emitter": "emtr_smoke_small_dmg_16"
+            "emitter": "emtr_smoke_small_dmg_16",
+            "underwater": true
           }
         ]
       },
@@ -9914,15 +9940,18 @@
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_01"
+            "emitter": "emtr_explosion_center_01",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_02"
+            "emitter": "emtr_explosion_center_02",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_03"
+            "emitter": "emtr_explosion_center_03",
+            "underwater": true
           }
         ],
         "wreckages": [
@@ -9997,15 +10026,18 @@
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_01"
+            "emitter": "emtr_explosion_center_01",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_02"
+            "emitter": "emtr_explosion_center_02",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_03"
+            "emitter": "emtr_explosion_center_03",
+            "underwater": true
           }
         ],
         "wreckages": [
@@ -10080,15 +10112,18 @@
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_01"
+            "emitter": "emtr_explosion_center_01",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_02"
+            "emitter": "emtr_explosion_center_02",
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_03"
+            "emitter": "emtr_explosion_center_03",
+            "underwater": true
           }
         ],
         "wreckages": [
@@ -10203,11 +10238,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_01",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_01"
+            "emitter": "emtr_fire_ammo_01",
+            "underwater": true
           }
         ]
       },
@@ -10218,11 +10255,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_02",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_02"
+            "emitter": "emtr_fire_ammo_02",
+            "underwater": true
           }
         ]
       },
@@ -10233,11 +10272,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_03",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_03"
+            "emitter": "emtr_fire_ammo_03",
+            "underwater": true
           }
         ]
       },
@@ -10248,11 +10289,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_04",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_04"
+            "emitter": "emtr_fire_ammo_04",
+            "underwater": true
           }
         ]
       },
@@ -10263,11 +10306,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_05",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_05"
+            "emitter": "emtr_fire_ammo_05",
+            "underwater": true
           }
         ]
       },
@@ -10278,11 +10323,13 @@
           {
             "name": "explosion_ship_medium_ammo",
             "emitter": "emtr_fire_ammo_06",
-            "isFireBurnMark": false
+            "isFireBurnMark": false,
+            "underwater": true
           },
           {
             "name": "underwater_explosion_sub",
-            "emitter": "emtr_fire_ammo_06"
+            "emitter": "emtr_fire_ammo_06",
+            "underwater": true
           }
         ]
       },
@@ -10323,7 +10370,8 @@
         "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_medium_ammo_aux",
-          "emitter": "emtr_fire_ammo_01"
+          "emitter": "emtr_fire_ammo_01",
+          "underwater": true
         }
       },
       {
@@ -10331,7 +10379,8 @@
         "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_medium_ammo_aux",
-          "emitter": "emtr_fire_ammo_02"
+          "emitter": "emtr_fire_ammo_02",
+          "underwater": true
         }
       },
       {
@@ -10339,7 +10388,8 @@
         "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_medium_ammo_aux",
-          "emitter": "emtr_fire_ammo_03"
+          "emitter": "emtr_fire_ammo_03",
+          "underwater": true
         }
       },
       {
@@ -10347,7 +10397,8 @@
         "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_medium_ammo_aux",
-          "emitter": "emtr_fire_ammo_04"
+          "emitter": "emtr_fire_ammo_04",
+          "underwater": true
         }
       },
       {

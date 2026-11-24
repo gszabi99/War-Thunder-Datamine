@@ -7,15 +7,23 @@ require strings
 require %gameLibs.das.math.base
 require SonarHud
 require Localization
+require hud
 
 
 let GAIN_ARC_START = -110.0f
 let GAIN_ARC_SWEEP = 220.0f
 let SIGNAL_DETAILS = 51
 let SIGNAL_RADIUS = 115.0
+let SIGNAL_MIN_AMP = 1.0f
+let SIGNAL_MAX_AMP = 10.0f
 let CONE_RADIUS = 350.0
 let GAIN_RADIUS = 160.0
 let TEXT_GAP = 26.0
+let TEXT_X_OFFSET = 4.0
+
+let SEARCH_NOISE = 0
+let GAIN_ADJUSTMENT = 1
+let RECEIVE_PARAMS = 2
 
 
 struct CanvasParams
@@ -45,10 +53,10 @@ def draw_segment(var ctx : GuiContext&; var seg : array<float2>&; a, b : float2;
   ctx |> render_line_aa(seg, false, width, float2(0.), color)
 
 
-def mk_right_align_text(var ctx : GuiContext&; fctx : StdGuiFontContext&; text : string; pos : float2; color : E3DCOLOR)
+def mk_text(var ctx : GuiContext&; fctx : StdGuiFontContext&; text : string; pos : float2; color : E3DCOLOR)
   let box = get_str_bbox(text, text |> length(), fctx)
   ctx |> set_color(color)
-  ctx |> goto_xy(float2(pos.x - box.width.x, pos.y + box.width.y * 0.5f))
+  ctx |> goto_xy(float2(pos.x, pos.y + box.width.y * 0.5f))
   ctx |> draw_str_scaled(1.0, text, text |> length())
 
 
@@ -78,22 +86,29 @@ def mk_gain_dial(var ctx : GuiContext&; data : CanvasParams&; gainCenter : float
   resetViewTm(ctx)
 
 
-def mk_gain_signal(var ctx : GuiContext&; var seg : array<float2>&; center : float2; power, maxPower, curWidth : float; color : E3DCOLOR)
+def mk_gain_signal(var ctx : GuiContext&; var seg : array<float2>&; center : float2; gainMatch, curWidth : float; color : E3DCOLOR)
   var prevPoint : float2
+  let radius = ctx |> hdpx(SIGNAL_RADIUS)
+  let amp = lerp(SIGNAL_MIN_AMP, SIGNAL_MAX_AMP, gainMatch)
+  let xOffset = ctx |> hdpx(amp)
+  let yOffset = ctx |> hdpx(1.5f * amp)
   for i in range(SIGNAL_DETAILS)
     let deg : float = float((i - SIGNAL_DETAILS / 2) * 3 - 90)
     let rad : float = deg * DEG_TO_RAD
 
     if i == 0
-      prevPoint = center + float2(120 * cos(rad), 120 * sin(rad))
+      prevPoint = center + float2(
+        radius * cos(rad) + rnd_float(0.0f, xOffset),
+        radius * sin(rad) + rnd_float(0.0f, yOffset)
+      )
       continue
 
-    let width : float = curWidth + curWidth / 2 * power / maxPower
+    let width : float = curWidth + curWidth / 2 * gainMatch
     let edgeFade : float = sin(float(i) / float(SIGNAL_DETAILS - 1) * PI)
     let lineColor : E3DCOLOR = fade_color(color, edgeFade)
     let nextPoint : float2 = center + float2(
-      SIGNAL_RADIUS * cos(rad) + rnd_float(0.0f, power * 1.0f),
-      SIGNAL_RADIUS * sin(rad) + rnd_float(0.0f, power * 1.5f)
+      radius * cos(rad) + rnd_float(0.0f, xOffset),
+      radius * sin(rad) + rnd_float(0.0f, yOffset)
     )
 
     draw_segment(ctx, seg, prevPoint, nextPoint, width, lineColor)
@@ -105,27 +120,48 @@ def mk_gain_signal(var ctx : GuiContext&; var seg : array<float2>&; center : flo
 def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : float2; textGap : float; hud : HydrophoneMeasureHud)
   let hasNoise : bool = hud.isBearingCaught
   let hasConfirmed : bool = hud.showResult && hud.isResultConfirmed
-  let fadeColor : E3DCOLOR = fade_color(hud.bearingColor, 0.5f)
-  let noiseLocKey = hasNoise || hasConfirmed ? "noiseDetect" : "noiseSearch"
-  let noiseTxtColor = hasNoise || hasConfirmed ? hud.gainCorrectColor : hud.bearingColor
+  let isMeasured : bool = hud.isTargetMeasured && !hud.isGainMode
+  let isFailed : bool = hud.showResult && !hud.isResultConfirmed && !isMeasured
+  let stepFadeColor : E3DCOLOR = fade_color(hud.bearingColor, 0.5f)
+  let passFadeColor : E3DCOLOR = fade_color(hud.gainCorrectColor, 0.5f)
+  let noiseLocKey = hasNoise || hasConfirmed || isMeasured ? "noiseDetect" : "noiseSearch"
 
-  let signalTxtColor = (hud.isGainCorrect || hasConfirmed ? hud.gainCorrectColor
+  let offset = ctx |> hdpx(TEXT_X_OFFSET)
+  let step = (hud.showResult || isMeasured ? RECEIVE_PARAMS
+    : hud.isGainMode ? GAIN_ADJUSTMENT
+    : SEARCH_NOISE)
+
+  let noiseTxtColor = (isMeasured ? hud.gainCorrectColor
+    : step > SEARCH_NOISE ? passFadeColor
+    : hasNoise ? hud.gainCorrectColor
+    : hud.confirmedColor)
+
+  let signalTxtColor = (isMeasured ? hud.gainCorrectColor
+    : step > GAIN_ADJUSTMENT ? passFadeColor
+    : hud.isGainCorrect ? hud.gainCorrectColor
     : hud.isGainMode ? hud.confirmedColor
     : hasNoise ? hud.bearingColor
-    : fadeColor)
+    : stepFadeColor)
 
-  mk_right_align_text(ctx, fctx, loc("hud/hydrophone/{noiseLocKey}"), center, noiseTxtColor)
-  mk_right_align_text(ctx, fctx, loc("hud/hydrophone/signalAmplification"), center + float2(0.0, textGap), signalTxtColor)
+  mk_text(ctx, fctx, loc("hud/hydrophone/{noiseLocKey}"),
+    center + float2(-abs(float(step) * offset), -textGap * float(step)), noiseTxtColor)
+  mk_text(ctx, fctx, loc("hud/hydrophone/signalAmplification"),
+    center + float2(-abs((float(step) - 1) * offset), textGap * (1 - float(step))), signalTxtColor)
 
-  let launchColor = (hud.showResult && hud.isResultConfirmed ? hud.confirmedColor
-    : !hud.showResult ? fadeColor
-    : hud.failColor)
-  let launchLocId = (!hud.showResult || hud.showResult && hud.isResultConfirmed
-    ? "hud/hydrophone/launchPermitted"
-    : "hud/hydrophone/signalFailed")
+  let launchColor = (isFailed ? hud.failColor
+    : hud.isTargetMeasured ? hud.lockedColor
+    : hasConfirmed ? hud.gainCorrectColor
+    : stepFadeColor)
 
-  mk_right_align_text(ctx, fctx, loc(launchLocId), center + float2(0.0, textGap * 2), launchColor)
-  mk_right_align_text(ctx, fctx, loc("hud/hydrophone/recharge"), center + float2(0.0, textGap * 3), fadeColor)
+  let launchText = (isFailed ? loc("hud/hydrophone/signalFailed")
+    : hud.isTargetMeasured ? "{loc("hud/hydrophone/targetLocked")}: {get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, hud.lockRange, true, 0.1)} ({int(ceil(hud.lockTimeLeft))} {loc("measureUnits/seconds")})"
+    : loc("hud/hydrophone/launchPermitted"))
+  let rechargeColor = isMeasured && hud.isReadyToLaunch ? hud.gainCorrectColor : stepFadeColor
+
+  mk_text(ctx, fctx, launchText,
+    center + float2(-abs((float(step) - 2) * offset), textGap * (2 - float(step))), launchColor)
+  mk_text(ctx, fctx, loc("hud/hydrophone/recharge"),
+    center + float2(-abs((float(step) - 3) * offset), textGap * (3 - float(step))), rechargeColor)
 
 
 def fade_color(color : E3DCOLOR; alpha : float) : E3DCOLOR
@@ -151,7 +187,8 @@ def draw_hydrophone_measure(var ctx : GuiContext&; rdata : ElemRenderData& const
   let gainRadius = ctx |> hdpx(GAIN_RADIUS)
   let gainCenter : float2 = center + float2(0.0, coneRadius * 0.65)
 
-  let coneColor : E3DCOLOR = (hud.isGainCorrect ? hud.gainCorrectColor
+  let coneColor : E3DCOLOR = (hud.isTargetMeasured && !hud.isGainMode ? hud.lockedColor
+    : hud.isGainCorrect ? hud.gainCorrectColor
     : hud.isGainMode ? hud.gainCorrectColor
     : hud.bearingColor)
 
@@ -164,7 +201,7 @@ def draw_hydrophone_measure(var ctx : GuiContext&; rdata : ElemRenderData& const
 
   if (hud.isGainMode)
     let signalColor : E3DCOLOR = hud.isGainCorrect ? hud.gainCorrectColor : hud.confirmedColor
-    mk_gain_signal(ctx, seg, gainCenter, hud.gain, hud.maxGain, width, signalColor)
+    mk_gain_signal(ctx, seg, gainCenter, hud.gainMatch, width, signalColor)
 
   let textGap = ctx |> hdpx(TEXT_GAP)
-  mk_text_info(ctx, fctx, center - float2(coneRadius * 1.1, textGap * 2.0), textGap, hud)
+  mk_text_info(ctx, fctx, center + float2(coneRadius * 1.07, 0.0), textGap, hud)

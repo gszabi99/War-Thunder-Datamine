@@ -27,8 +27,7 @@ let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let aircraftControls = require("%scripts/controls/help/aircraftControls.nut")
 
-const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
-const DEF_PERESCOPE_DEPTH_VALUE = 10
+const DEF_PERESCOPE_DEPTH_VALUE = 7
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -338,7 +337,9 @@ enums.addTypes(result, {
     actionBars = generateSubmarineActionBars(2)
 
     customUpdateSheetFunc = function(obj) {
-      let { periscopeDepth = DEF_PERESCOPE_DEPTH_VALUE } = getFullUnitBlk(UNIT_WITH_PERISCOPE_DEPTH)
+      let unit = getPlayerCurUnit()
+      let periscopeDepth = (unit?.isSubmarine() ? getFullUnitBlk(unit.name)?.periscopeDepth : null)
+        ?? DEF_PERESCOPE_DEPTH_VALUE
 
       obj.findObject("periscope_usage_label")
         .setValue(loc("controls/help/submarine/periscope_usage_depth", { meters = periscopeDepth}))

@@ -104,6 +104,16 @@ return [
   }
 
   {
+    id = "ID_SENSORS_SUBMARINE_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
+    needShowInHelp = true
+    checkAssign = false
+  }
+
+  {
     id = "ID_SUBMARINE_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
   }

@@ -48,10 +48,9 @@
     "mission": {
       "level": "levels/avn_ice_port.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": true,
       "environment": "Day",
       "weather": "hazy",
+      "is_subs_play": false,
       "locName": "missions/_NDom;ice_port/name",
       "locDesc": "ice_port/desc;missions/_NDom/desc",
       "scoreLimit": 20000,
@@ -60,9 +59,11 @@
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
       "ctaCaptureZoneDiffPenaltyExp": 0.3,
       "randomSpawnTeams": true,
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -144,11 +145,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -158,11 +161,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -172,11 +177,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -186,24 +193,170 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "check_subs": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "is_subs_play",
+          "fromDescriptor": "is_subs_play"
+        },
+        "triggerEnable": {
+          "target": "add_extra_spawn_points"
+        }
+      },
+      "else_actions": {}
+    },
+    "add_extra_spawn_points": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_subs_play",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "varSetString": [
+          {
+            "value": "",
+            "var": "t1_sub_spawn_name",
+            "input_var": "modename"
+          },
+          {
+            "value": "",
+            "var": "t2_sub_spawn_name",
+            "input_var": "modename"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "t1_sub_spawn",
+            "digits": 0,
+            "var": "t1_sub_spawn_name"
+          },
+          {
+            "value": "t2_sub_spawn",
+            "digits": 0,
+            "var": "t2_sub_spawn_name"
+          }
+        ],
+        "missionCreateRespawnBasesByTemplate": [
+          {
+            "loc_name": "missions/spawn_submarine",
+            "spawnEffect": false,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "target": "@t1_sub_spawn_name",
+            "postfix": "",
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "varMaxBasesCount": "spawn_num",
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false,
+              "type_submarine": true
+            }
+          },
+          {
+            "loc_name": "missions/spawn_submarine",
+            "spawnEffect": false,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "target": "@t2_sub_spawn_name",
+            "postfix": "",
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "varMaxBasesCount": "spawn_num",
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false,
+              "type_submarine": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {},
+  "variables": {
+    "is_subs_play": false,
+    "t1_sub_spawn_name": "",
+    "t2_sub_spawn_name": ""
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -246,6 +399,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,

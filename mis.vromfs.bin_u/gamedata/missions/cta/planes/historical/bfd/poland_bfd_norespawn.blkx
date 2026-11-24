@@ -117,13 +117,13 @@
             {
               "icontype": "fighter",
               "side": "ally",
-              "target": "t1_airfield",
+              "target": "briefing_t1_airfield",
               "lookAt": "area_01"
             },
             {
               "icontype": "fighter",
               "side": "enemy",
-              "target": "t2_airfield",
+              "target": "briefing_t2_airfield",
               "lookAt": "area_01"
             },
             {
@@ -458,256 +458,6 @@
   "airfields": {},
   "effects": {},
   "units": {
-    "objectGroups": [
-      {
-        "name": "t1_airfield",
-        "tm": [
-          [
-            -0.947585,
-            0.0,
-            -0.319503
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.319503,
-            0.0,
-            -0.947585
-          ],
-          [
-            -10523.2,
-            90.3515,
-            -9579.01
-          ]
-        ],
-        "unit_class": "dynaf_universal_1line_b",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_airfield",
-        "tm": [
-          [
-            0.964292,
-            0.0,
-            0.264841
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.264841,
-            0.0,
-            0.964292
-          ],
-          [
-            15424.3,
-            27.2287,
-            15782.2
-          ]
-        ],
-        "unit_class": "dynaf_universal_1line_b",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_object_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            -5111.6,
-            31.05,
-            -1563.05
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_object_02",
-        "tm": [
-          [
-            0.737277,
-            0.0,
-            -0.67559
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.67559,
-            0.0,
-            0.737277
-          ],
-          [
-            -2588.0,
-            31.05,
-            -4406.05
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t1_bomb_object_03",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            3156.05,
-            31.05,
-            -5315.25
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_object_01",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            2891.25,
-            258.75,
-            10309.0
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_object_02",
-        "tm": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            6865.25,
-            196.6,
-            8819.2
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      },
-      {
-        "name": "t2_bomb_object_03",
-        "tm": [
-          [
-            0.924769,
-            0.0,
-            0.38053
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.38053,
-            0.0,
-            0.924769
-          ],
-          [
-            9177.25,
-            165.75,
-            6048.25
-          ]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    ],
     "structures": [
       {
         "name": "t2_bunker_01",
@@ -13004,6 +12754,194 @@
       },
       "way": {}
     },
+    "objectGroups": [
+      {
+        "name": "t1_bomb_object_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -5111.6,
+            31.05,
+            -1563.05
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_bomb_object_02",
+        "tm": [
+          [
+            0.737277,
+            0.0,
+            -0.67559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.67559,
+            0.0,
+            0.737277
+          ],
+          [
+            -2588.0,
+            31.05,
+            -4406.05
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_bomb_object_03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3156.05,
+            31.05,
+            -5315.25
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_object_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2891.25,
+            258.75,
+            10309.0
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_object_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            6865.25,
+            196.6,
+            8819.2
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_object_03",
+        "tm": [
+          [
+            0.924769,
+            0.0,
+            0.38053
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.38053,
+            0.0,
+            0.924769
+          ],
+          [
+            9177.25,
+            165.75,
+            6048.25
+          ]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ],
     "wheeled_vehicles": [
       {
         "name": "t1_subquest_units_01",
@@ -14626,6 +14564,60 @@
           3804.98,
           28.2715,
           5740.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_airfield": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3734.22,
+          72.749,
+          -9854.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_airfield": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          10718.7,
+          72.748,
+          13335.2
         ]
       ],
       "objLayer": 0,

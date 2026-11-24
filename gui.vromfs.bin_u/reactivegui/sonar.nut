@@ -71,12 +71,12 @@ let hydrophoneMeasureIndication = {
   script = getDasScriptByPath("%rGui/hydrophoneMeasure.das")
   drawFunc = "draw_hydrophone_measure"
   setupFunc = "setup_data"
-  font = Fonts.hud
-  hpBearingPicture    = Picture("ui/gameuiskin#hydrophone_bearing.svg:512:512:K")
+  font = Fonts.tiny_text_hud
+  hpBearingPicture    = Picture("!ui/gameuiskin/hydrophone_bearing.svg:1024:1024:K")
   hpAimPicture        = Picture("ui/gameuiskin#hydrophone_aim.avif")
-  hpGainCenterPicture = Picture("ui/gameuiskin#hydrophone_gain_center.svg:128:128:K")
-  hpGainPicture       = Picture("ui/gameuiskin#hydrophone_gain.svg:128:128:K")
-  hpBearingArrPicture = Picture("ui/gameuiskin#hydrophone_bearing_arrow.svg:128:128:K")
+  hpGainCenterPicture = Picture("!ui/gameuiskin/hydrophone_gain_center.svg:256:256:K")
+  hpGainPicture       = Picture("!ui/gameuiskin/hydrophone_gain.svg:256:256:K")
+  hpBearingArrPicture = Picture("!ui/gameuiskin/hydrophone_bearing_arrow.svg:256:256:K")
 }
 
 local activeSonarInterceptIndication = null

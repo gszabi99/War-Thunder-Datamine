@@ -127,14 +127,6 @@ function getUniqueShortcuts(shortcuts) {
   return uniqShortcuts
 }
 
-function getShortcutTag(shcId) {
-  let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shcId)
-  let hasShortcut = shortcutType.getFirstInput(shcId, getPreviewControlsPreset())?.getMarkup() != null
-  return hasShortcut
-    ? "".concat("{{", shcId, "}}")
-    : loc("hotkeys/shortcut_not_assigned")
-}
-
 function getAxisShortCutLoc(shcId) {
   let shortcutId = $"{shcId}_rangeMax"
   local shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
@@ -147,6 +139,25 @@ function getAxisShortCutLoc(shcId) {
   if (isAxisAssigned)
     return "".concat("{{", shcId, "}}")
   return "".concat("\"", loc($"controls/{shcId}"), "\"")
+}
+
+function getSubmarineDepthShortcutsText() {
+  let diveText = loc("hints/sm_how_to_change_depth_dive")
+  let surfaceText = loc("hints/sm_how_to_change_depth_surface")
+  let diveSurfaceText = loc("ui/slash").concat(diveText, surfaceText)
+  if (g_shortcut_type.AXIS.isAssignedToDeviceAxis("submarine_depth"))
+    return " ".concat(diveSurfaceText, "{{submarine_depth}}")
+
+  let isDiveAssigned = g_shortcut_type.COMMON_SHORTCUT.isAssigned("submarine_depth_rangeMin")
+  let isSurfaceAssigned = g_shortcut_type.COMMON_SHORTCUT.isAssigned("submarine_depth_rangeMax")
+  let notAssignedText = loc("hotkeys/shortcut_not_assigned")
+  if (isDiveAssigned || isSurfaceAssigned)
+    return "\n".join([
+      " ".concat(diveText, isDiveAssigned ? "{{submarine_depth_rangeMin}}" : notAssignedText)
+      " ".concat(surfaceText, isSurfaceAssigned ? "{{submarine_depth_rangeMax}}" : notAssignedText)
+    ])
+
+  return " ".concat(diveSurfaceText, notAssignedText)
 }
 
 g_hud_hints._buildText <- function _buildText(data) {
@@ -2610,10 +2621,7 @@ NEED_STOP_FOR_RADAR = {
     isHideOnWatchedHeroChanged = true
     showEvent = "hint:sm_how_to_change_depth"
     lifeTime = 5.0
-    buildText = @(_data) "\n".join([
-      " ".concat(loc("hints/sm_how_to_change_depth_dive"), getShortcutTag("submarine_depth_rangeMin"))
-      " ".concat(loc("hints/sm_how_to_change_depth_surface"), getShortcutTag("submarine_depth_rangeMax"))
-    ])
+    buildText = @(_data) getSubmarineDepthShortcutsText()
     isVerticalAlignText = true
     uid = 11248
     totalCount=2

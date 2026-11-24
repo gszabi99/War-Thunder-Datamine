@@ -136,8 +136,9 @@ local AchievementsHandler = class (BaseGuiHandlerWT) {
     let isForceVisibleInTree = unlock?.isForceVisibleInTree ?? false
     if (!unlockTypesToShow.contains(unlockTypeId) && !isForceVisibleInTree)
       return false
-    if (unlock?.isRevenueShare || !isUnlockVisible(unlock) || isBattleTask(unlock))
-     return false
+    if (unlock?.isRevenueShare || (!isUnlockVisible(unlock) && !canOpenUnlockManually(unlock))
+        || isBattleTask(unlock))
+      return false
     if (unlock?.chapter == CMH_CHAPTER)
       return false
 

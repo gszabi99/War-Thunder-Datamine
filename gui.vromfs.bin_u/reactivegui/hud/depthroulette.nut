@@ -464,7 +464,7 @@ let depthTextIndicators = {
 }
 
 
-let wishDistOpacity = Computed(@() wishDist.get() < scaleEndDepth.get() ? 0.5 : 1)
+let wishDistOpacity = Computed(@() wishDist.get() < scaleEndDepth.get() ? 1 : 0.5)
 
 let maxDepthComp = @() {
   watch = [scaleEndDepth, wishDistOpacity]

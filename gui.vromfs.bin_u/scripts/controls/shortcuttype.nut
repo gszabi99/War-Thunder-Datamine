@@ -312,6 +312,8 @@ enumsAddTypes(g_shortcut_type, {
       return isAssignedToAxis(shortcutId) || isAxisAssignedToShortcuts(shortcutId)
     }
 
+    isAssignedToDeviceAxis = @(shortcutId) isAssignedToAxis(shortcutId)
+
     expand = function (shortcutId, showKeyBoardShortcutsForMouseAim) {
       if (isAssignedToAxis(shortcutId, showKeyBoardShortcutsForMouseAim) || this.hasDirection(shortcutId))
         return [shortcutId]

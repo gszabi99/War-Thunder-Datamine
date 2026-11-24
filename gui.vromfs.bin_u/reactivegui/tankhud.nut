@@ -12,7 +12,7 @@ from "%rGui/twsState.nut" import IsMlwsLwsHudVisible, CollapsedIcon
 from "%rGui/hudState.nut" import needShowDmgIndicator, isPlayingReplay, isSpectatorMode, isMissionProgressVisible
 from "%rGui/hud/tankState.nut" import IndicatorsVisible
 from "%rGui/hud/targetTracker.nut" import lockSight, targetSize
-from "%rGui/style/screenState.nut" import bw, bh
+from "%rGui/style/screenState.nut" import bw, bh, safeAreaSizeHud
 from "%rGui/radarState.nut" import AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible, isCollapsedRadarInReplay
 from "%rGui/radar.nut" import radarHud, radarIndication
 from "%rGui/airHudComponents.nut" import mkCollapseButton
@@ -61,6 +61,35 @@ let xraydoll = {
   size = 1
 }
 
+let dmgIndicatorCenter = Watched(null) 
+
+
+let dmgIndicatorTwsBounds = Computed(function() {
+  let center = dmgIndicatorCenter.get()
+  if (center == null) {
+    let halfWidth = dmgIndicatorWidth.get() * 0.5
+    return { left = halfWidth, top = halfWidth, right = halfWidth, bottom = halfWidth }
+  }
+  let { size, borders } = safeAreaSizeHud.get()
+  return {
+    left = center[0] - borders[1]
+    top = center[1] - borders[0]
+    right = borders[1] + size[0] - center[0]
+    bottom = borders[0] + size[1] - center[1]
+  }
+})
+
+function onDmgIndicatorRecalc(initial, elem) {
+  updateDmgIndicatorElement(initial, elem)
+  if (elem.getWidth() <= 1 || elem.getHeight() <= 1)
+    return
+  let x = elem.getScreenPosX() + elem.getWidth() * 0.5
+  let y = elem.getScreenPosY() + elem.getHeight() * 0.5
+  let center = dmgIndicatorCenter.get()
+  if (center?[0] != x || center?[1] != y)
+    dmgIndicatorCenter.set([x, y])
+}
+
 let dmgIndicatorTws = tws({
   colorWatched = colorWacthed,
   posWatched = Watched([0, 0]),
@@ -68,7 +97,8 @@ let dmgIndicatorTws = tws({
   relativCircleSize = 49,
   needDrawCentralIcon = false,
   needDrawBackground =  true,
-  needAdditionalLights = false
+  needAdditionalLights = false,
+  mlwsBoundsWatched = dmgIndicatorTwsBounds
 })
 
 function tankDmgIndicator() {
@@ -97,7 +127,7 @@ function tankDmgIndicator() {
     image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorWidth.get()}:{dmgIndicatorWidth.get()}")
     children
     behavior = Behaviors.RecalcHandler
-    onRecalcLayout = updateDmgIndicatorElement
+    onRecalcLayout = onDmgIndicatorRecalc
   }
 }
 

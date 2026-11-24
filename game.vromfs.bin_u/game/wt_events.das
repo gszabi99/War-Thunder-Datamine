@@ -82,6 +82,13 @@ struct CmdSetMagneticFuseSensitivityPreset
 struct CmdSetTorpedoDiveDepth
   depth : float
 
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdSetTorpedoCourseProgram
+  guidanceMode : int
+  mode : int
+  startSection : float
+  pathSection : float
+
 [cpp_event(unicast)]
 struct EventAnimIrq
   irqType : int

@@ -4360,6 +4360,13 @@
       {
         "name": "pby_5_2xmk13_case",
         "blk": "gamedata/flightModels/weaponPresets/pby_5_2xmk13_case.blk"
+      },
+      {
+        "name": "pby_5_4x_350lb_depth_charge",
+        "blk": "gamedata/flightModels/weaponPresets/pby_5_4x_350lb_depth_charge.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -4585,6 +4592,21 @@
               "bullets": 1,
               "separate": true
             }
+          },
+          {
+            "iconType": "air_mines",
+            "name": "350lb_dp",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "blk": "gamedata/Weapons/bombGuns/us_350lb_db_an_mk44.blk",
+              "emitter": "bomb13",
+              "bullets": 1,
+              "separate": true
+            }
           }
         ]
       },
@@ -4659,6 +4681,25 @@
               "trigger": "bombs",
               "external": true,
               "blk": "gamedata/weapons/mines/us_mine_mk13_mod0.blk",
+              "emitter": "bomb15",
+              "bullets": 1,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "us_100lb_x6_left"
+            }
+          },
+          {
+            "iconType": "air_mines",
+            "name": "350lb_dp_left",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "blk": "gamedata/Weapons/bombGuns/us_350lb_db_an_mk44.blk",
               "emitter": "bomb15",
               "bullets": 1,
               "separate": true
@@ -4941,6 +4982,25 @@
               "slot": 4,
               "preset": "us_100lb_x6_right"
             }
+          },
+          {
+            "iconType": "air_mines",
+            "name": "350lb_dp_right",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "blk": "gamedata/Weapons/bombGuns/us_350lb_db_an_mk44.blk",
+              "emitter": "bomb16",
+              "bullets": 1,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 4,
+              "preset": "us_100lb_x6_right"
+            }
           }
         ]
       },
@@ -5007,6 +5067,21 @@
               "trigger": "bombs",
               "external": true,
               "blk": "gamedata/weapons/mines/us_mine_mk13_mod0.blk",
+              "emitter": "bomb14",
+              "bullets": 1,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "air_mines",
+            "name": "350lb_dp",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "blk": "gamedata/Weapons/bombGuns/us_350lb_db_an_mk44.blk",
               "emitter": "bomb14",
               "bullets": 1,
               "separate": true

@@ -87,6 +87,10 @@ let shipState = {
   burningParts = Watched({})
   periscopeCanBeEnabled = Watched(false)
   fuseMode = Watched(0)
+  isUseTorpedoSightSolution = Watched(false)
+  canUseCourseCorrectionFromSight = Watched(false)
+  hasAcousticTorpedo = Watched(false)
+  hasTorpedoCourseCorrection = Watched(false)
 }
 
 function isDiff(time1, time2) {

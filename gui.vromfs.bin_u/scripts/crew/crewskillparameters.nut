@@ -1,11 +1,12 @@
 import "%sqStdLibs/helpers/subscriptions.nut" as subscriptions
 import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/crew/crewSkills.nut" import getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership
+from "unitCalculcation" import calc_crew_parameters
 from "blkGetters" import get_game_params_blk, get_wpcost_blk
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitClassConsts.nut" import *
 
-let { skillParametersRequestType, tmpWorkaroundCalcCrewParamsSkipAir } = require("%scripts/crew/skillParametersRequestType.nut")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { g_skill_parameters_type } = require("%scripts/crew/skillParametersType.nut")
 let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
@@ -39,7 +40,7 @@ function getParametersByCrewId(crewId, unitName) {
 
 
 
-    parameters = tmpWorkaroundCalcCrewParamsSkipAir(crewId,  null, unitName)
+    parameters = calc_crew_parameters(crewId,  null, unitName)
     if (!(crewId in parametersByCrewId))
       parametersByCrewId[crewId] <- {}
     parametersByCrewId[crewId][unitName] <- parameters
