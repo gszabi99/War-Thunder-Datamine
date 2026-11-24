@@ -60,6 +60,11 @@ def mk_text(var ctx : GuiContext&; fctx : StdGuiFontContext&; text : string; pos
   ctx |> draw_str_scaled(1.0, text, text |> length())
 
 
+def append_text(var ctx : GuiContext&; text : string; color : E3DCOLOR)
+  ctx |> set_color(color)
+  ctx |> draw_str_scaled(1.0, text, text |> length())
+
+
 def mk_bearing_dial(var ctx : GuiContext&; data : CanvasParams&; center : float2; radius, bearing : float; color : E3DCOLOR)
   setRotViewTm(ctx, center.x, center.y, bearing * DEG_TO_RAD * -1.0, 0.0, false)
   render_picture(ctx, data.hpBearingPicture, center - float2(radius), float2(radius) * 2.0, color)
@@ -117,10 +122,34 @@ def mk_gain_signal(var ctx : GuiContext&; var seg : array<float2>&; center : flo
     prevPoint.y = nextPoint.y
 
 
-def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : float2; textGap : float; hud : HydrophoneMeasureHud)
+struct MeasureLock
+  isMeasured : bool
+  isReadyToLaunch : bool
+  isOutOfRange : bool
+  gainMatch : float
+  distance : float
+  timeLeft : float
+  color : E3DCOLOR
+
+
+def get_measure_lock(hud : HydrophoneMeasureHud) : MeasureLock
+  var measureLock : MeasureLock
+  static_if typeinfo(has_field<lockRange> type<HydrophoneMeasureHud>)
+    measureLock.isMeasured = hud.isTargetMeasured
+    measureLock.isReadyToLaunch = hud.isReadyToLaunch
+    measureLock.gainMatch = hud.gainMatch
+    measureLock.distance = hud.lockRange
+    measureLock.timeLeft = hud.lockTimeLeft
+    measureLock.color = hud.lockedColor
+  static_if typeinfo(has_field<isOutOfRange> type<HydrophoneMeasureHud>)
+    measureLock.isOutOfRange = hud.isOutOfRange
+  return measureLock
+
+
+def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : float2; textGap : float; hud : HydrophoneMeasureHud; measureLock : MeasureLock)
   let hasNoise : bool = hud.isBearingCaught
   let hasConfirmed : bool = hud.showResult && hud.isResultConfirmed
-  let isMeasured : bool = hud.isTargetMeasured && !hud.isGainMode
+  let isMeasured : bool = measureLock.isMeasured && !hud.isGainMode
   let isFailed : bool = hud.showResult && !hud.isResultConfirmed && !isMeasured
   let stepFadeColor : E3DCOLOR = fade_color(hud.bearingColor, 0.5f)
   let passFadeColor : E3DCOLOR = fade_color(hud.gainCorrectColor, 0.5f)
@@ -149,18 +178,24 @@ def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : floa
     center + float2(-abs((float(step) - 1) * offset), textGap * (1 - float(step))), signalTxtColor)
 
   let launchColor = (isFailed ? hud.failColor
-    : hud.isTargetMeasured ? hud.lockedColor
+    : measureLock.isMeasured ? measureLock.color
     : hasConfirmed ? hud.gainCorrectColor
     : stepFadeColor)
 
-  let launchText = (isFailed ? loc("hud/hydrophone/signalFailed")
-    : hud.isTargetMeasured ? "{loc("hud/hydrophone/targetLocked")}: {get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, hud.lockRange, true, 0.1)} ({int(ceil(hud.lockTimeLeft))} {loc("measureUnits/seconds")})"
-    : loc("hud/hydrophone/launchPermitted"))
-  let rechargeColor = isMeasured && hud.isReadyToLaunch ? hud.gainCorrectColor : stepFadeColor
+  let launchPos = center + float2(-abs((float(step) - 2) * offset), textGap * (2 - float(step)))
+  if measureLock.isMeasured && !isFailed
+    let distColor = measureLock.isOutOfRange ? hud.failColor : launchColor
+    mk_text(ctx, fctx, "{loc("hud/hydrophone/targetLocked")}: ", launchPos, launchColor)
+    append_text(ctx, get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, measureLock.distance, true, 0.1), distColor)
+    append_text(ctx, " ({int(ceil(measureLock.timeLeft))} {loc("measureUnits/seconds")})", launchColor)
+  else
+    mk_text(ctx, fctx, isFailed ? loc("hud/hydrophone/signalFailed") : loc("hud/hydrophone/launchPermitted"), launchPos, launchColor)
 
-  mk_text(ctx, fctx, launchText,
-    center + float2(-abs((float(step) - 2) * offset), textGap * (2 - float(step))), launchColor)
-  mk_text(ctx, fctx, loc("hud/hydrophone/recharge"),
+  let isOutOfRange = isMeasured && measureLock.isOutOfRange
+  let rechargeColor = (isOutOfRange ? hud.failColor
+    : isMeasured && measureLock.isReadyToLaunch ? hud.gainCorrectColor
+    : stepFadeColor)
+  mk_text(ctx, fctx, isOutOfRange ? loc("fcs_torpedo_too_far_to_launch") : loc("hud/hydrophone/recharge"),
     center + float2(-abs((float(step) - 3) * offset), textGap * (3 - float(step))), rechargeColor)
 
 
@@ -187,7 +222,8 @@ def draw_hydrophone_measure(var ctx : GuiContext&; rdata : ElemRenderData& const
   let gainRadius = ctx |> hdpx(GAIN_RADIUS)
   let gainCenter : float2 = center + float2(0.0, coneRadius * 0.65)
 
-  let coneColor : E3DCOLOR = (hud.isTargetMeasured && !hud.isGainMode ? hud.lockedColor
+  let measureLock = get_measure_lock(hud)
+  let coneColor : E3DCOLOR = (measureLock.isMeasured && !hud.isGainMode ? measureLock.color
     : hud.isGainCorrect ? hud.gainCorrectColor
     : hud.isGainMode ? hud.gainCorrectColor
     : hud.bearingColor)
@@ -201,7 +237,7 @@ def draw_hydrophone_measure(var ctx : GuiContext&; rdata : ElemRenderData& const
 
   if (hud.isGainMode)
     let signalColor : E3DCOLOR = hud.isGainCorrect ? hud.gainCorrectColor : hud.confirmedColor
-    mk_gain_signal(ctx, seg, gainCenter, hud.gainMatch, width, signalColor)
+    mk_gain_signal(ctx, seg, gainCenter, measureLock.gainMatch, width, signalColor)
 
   let textGap = ctx |> hdpx(TEXT_GAP)
-  mk_text_info(ctx, fctx, center + float2(coneRadius * 1.07, 0.0), textGap, hud)
+  mk_text_info(ctx, fctx, center + float2(coneRadius * 1.07, 0.0), textGap, hud, measureLock)

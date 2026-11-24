@@ -48,47 +48,61 @@ def private find_torpedo_course_run(unit : Unit const?) : TorpedoCourseRun
   var result : TorpedoCourseRun
   if unit == null || unit.weap == null
     return result
-  foreach_torpedo_gun(unit.weap.Weapons) <| $(weapon)
-    if result.props == null && weapon.prop.shellProps != null
-      let torpedoProps = try_get_props_TorpedoProperties(weapon.prop.shellProps.shellPropsId)
-      if torpedoProps != null && torpedoProps.gyroProgramProps.courseModesMask != 0
-        let speedMult = get_difficulty_config().torpedoSpeedMultFromDist
-        result.props = torpedoProps
-        result.distToLive = weapon.prop.distToLive
-        result.maxSpeed = weapon.prop.rawMaxSpeedInWater * max(speedMult.x, speedMult.y)
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    foreach_torpedo_gun(unit.weap.Weapons) <| $(weapon)
+      if result.props == null && weapon.prop.shellProps != null
+        let torpedoProps = try_get_props_TorpedoProperties(weapon.prop.shellProps.shellPropsId)
+        if torpedoProps != null && torpedoProps.gyroProgramProps.courseModesMask != 0
+          let speedMult = get_difficulty_config().torpedoSpeedMultFromDist
+          result.props = torpedoProps
+          result.distToLive = weapon.prop.distToLive
+          result.maxSpeed = weapon.prop.rawMaxSpeedInWater * max(speedMult.x, speedMult.y)
   return result
 
 def private get_course_run_factor(run : TorpedoCourseRun; mode : int) : float
-  if mode == int(TorpedoCourseMode.CIRCLE)
-    return 2.0 * PI
-  return max(float(run.props.gyroProgramProps.minSectionsAfterStart) - 1.5, 0.5)
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    if mode == int(TorpedoCourseMode.CIRCLE)
+      return 2.0 * PI
+    return max(float(run.props.gyroProgramProps.minSectionsAfterStart) - 1.5, 0.5)
+  else
+    return 0.0
 
 def private get_path_section_min(run : TorpedoCourseRun; mode : int) : float
-  assume gyroProps = run.props.gyroProgramProps
-  let turnMult = mode == int(TorpedoCourseMode.CIRCLE) ? gyroProps.radiusMinTurnMult : gyroProps.pathSectionMinTurnMult
-  let turnRadius = gyroProps.turnAngularSpeed > 0.0 ? run.maxSpeed / gyroProps.turnAngularSpeed : 0.0
-  return max(gyroProps.pathSectionMin, turnMult * turnRadius)
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    assume gyroProps = run.props.gyroProgramProps
+    let turnMult = mode == int(TorpedoCourseMode.CIRCLE) ? gyroProps.radiusMinTurnMult : gyroProps.pathSectionMinTurnMult
+    let turnRadius = gyroProps.turnAngularSpeed > 0.0 ? run.maxSpeed / gyroProps.turnAngularSpeed : 0.0
+    return max(gyroProps.pathSectionMin, turnMult * turnRadius)
+  else
+    return 0.0
 
 def private get_start_section_max(run : TorpedoCourseRun; mode : int; path_section : float) : float
-  return max(run.distToLive - get_course_run_factor(run, mode) * path_section, run.props.gyroProgramProps.startSectionMin)
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    return max(run.distToLive - get_course_run_factor(run, mode) * path_section, run.props.gyroProgramProps.startSectionMin)
+  else
+    return 0.0
 
 def private get_path_section_max(run : TorpedoCourseRun; mode : int; start_section : float) : float
   return max((run.distToLive - start_section) / get_course_run_factor(run, mode), get_path_section_min(run, mode))
 
 def private is_course_mode_valid(run : TorpedoCourseRun; mode : int) : bool
-  assume gyroProps = run.props.gyroProgramProps
-  if mode == int(TorpedoCourseMode.NONE)
-    return true
-  if !(gyroProps |> isModeAllowed(mode))
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    assume gyroProps = run.props.gyroProgramProps
+    if mode == int(TorpedoCourseMode.NONE)
+      return true
+    if !(gyroProps |> isModeAllowed(mode))
+      return false
+    let runAfterStart = get_course_run_factor(run, mode) * get_path_section_min(run, mode)
+    return gyroProps.startSectionMin + runAfterStart <= run.distToLive
+  else
     return false
-  let runAfterStart = get_course_run_factor(run, mode) * get_path_section_min(run, mode)
-  return gyroProps.startSectionMin + runAfterStart <= run.distToLive
 
 def private get_valid_course_modes_mask(run : TorpedoCourseRun) : int
   var mask = 0
-  for mode in range(int(TorpedoCourseMode.TRIANGULAR_ZIGZAG), int(TorpedoCourseMode.CIRCLE) + 1)
-    if is_course_mode_valid(run, mode)
-      mask |= 1 << mode
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    for mode in range(int(TorpedoCourseMode.TRIANGULAR_ZIGZAG), int(TorpedoCourseMode.CIRCLE) + 1)
+      if is_course_mode_valid(run, mode)
+        mask |= 1 << mode
   return mask
 
 def private update_course_program(run : TorpedoCourseRun;
@@ -106,29 +120,32 @@ def private update_course_program(run : TorpedoCourseRun;
   start_section_max = 0.0
   path_section_min = 0.0
   path_section_max = 0.0
-  if run.props == null
-    mode = int(TorpedoCourseMode.NONE)
-    return
-  assume gyroProps = run.props.gyroProgramProps
-  modes_mask = get_valid_course_modes_mask(run)
-  if !is_course_mode_valid(run, mode)
-    mode = int(TorpedoCourseMode.NONE)
-  if start_section < 0.0
-    start_section = gyroProps.startSectionDefault
-  if path_section < 0.0
-    path_section = gyroProps.pathSectionDefault
-  if mode == int(TorpedoCourseMode.NONE)
-    return
-  start_section_min = gyroProps.startSectionMin
-  path_section_min = get_path_section_min(run, mode)
-  if is_start_section_changed
-    start_section = clamp(start_section, start_section_min, get_start_section_max(run, mode, path_section_min))
-    path_section = clamp(path_section, path_section_min, get_path_section_max(run, mode, start_section))
+  static_if typeinfo(has_field<gyroProgramProps> type<TorpedoProperties>)
+    if run.props == null
+      mode = int(TorpedoCourseMode.NONE)
+      return
+    assume gyroProps = run.props.gyroProgramProps
+    modes_mask = get_valid_course_modes_mask(run)
+    if !is_course_mode_valid(run, mode)
+      mode = int(TorpedoCourseMode.NONE)
+    if start_section < 0.0
+      start_section = gyroProps.startSectionDefault
+    if path_section < 0.0
+      path_section = gyroProps.pathSectionDefault
+    if mode == int(TorpedoCourseMode.NONE)
+      return
+    start_section_min = gyroProps.startSectionMin
+    path_section_min = get_path_section_min(run, mode)
+    if is_start_section_changed
+      start_section = clamp(start_section, start_section_min, get_start_section_max(run, mode, path_section_min))
+      path_section = clamp(path_section, path_section_min, get_path_section_max(run, mode, start_section))
+    else
+      path_section = clamp(path_section, path_section_min, get_path_section_max(run, mode, start_section_min))
+      start_section = clamp(start_section, start_section_min, get_start_section_max(run, mode, path_section))
+    start_section_max = get_start_section_max(run, mode, path_section)
+    path_section_max = get_path_section_max(run, mode, start_section)
   else
-    path_section = clamp(path_section, path_section_min, get_path_section_max(run, mode, start_section_min))
-    start_section = clamp(start_section, start_section_min, get_start_section_max(run, mode, path_section))
-  start_section_max = get_start_section_max(run, mode, path_section)
-  path_section_max = get_path_section_max(run, mode, start_section)
+    mode = 0
 
 def private init_course_program(player_eid : EntityId; unit : Unit const?)
   let run = find_torpedo_course_run(unit)

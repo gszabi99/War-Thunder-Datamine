@@ -5,13 +5,15 @@ from "%rGui/shipState.nut" import fuseMode, isUseTorpedoSightSolution, canUseCou
 from "%sqstd/math.nut" import fabs
 from "dasevents" import sendNetEvent, CmdSetMagneticFuseSensitivityPreset, CmdSetTorpedoDiveDepth, CmdSetTorpedoCourseProgram
 from "mission" import get_local_mplayer
-from "weaponUtils" import set_fuse_mode, set_use_torpedo_sight_solution, CONTACT_FUSE_MODE, NONE_FUSE_MODE,
-  TORPEDO_COURSE_MODE_NONE, TORPEDO_COURSE_MODE_TRIANGULAR_ZIGZAG, TORPEDO_COURSE_MODE_SQUARE_ZIGZAG,
-  TORPEDO_COURSE_MODE_CIRCLE, TORPEDO_GUIDANCE_MODE_NONE, TORPEDO_GUIDANCE_MODE_ACOUSTIC,
-  TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM
+from "weaponUtils" import set_fuse_mode, CONTACT_FUSE_MODE, NONE_FUSE_MODE
 from "weaponryOptions" import get_option_torpedo_dive_depth_auto, get_option_torpedo_dive_depth_range
 from "%rGui/globals/ui_library.nut" import *
 import "%rGui/components/comboBox.nut" as comboBox
+
+let { set_use_torpedo_sight_solution = @(_) null,
+  TORPEDO_COURSE_MODE_NONE = 0, TORPEDO_COURSE_MODE_TRIANGULAR_ZIGZAG = 1, TORPEDO_COURSE_MODE_SQUARE_ZIGZAG = 2,
+  TORPEDO_COURSE_MODE_CIRCLE = 3, TORPEDO_GUIDANCE_MODE_NONE = 0, TORPEDO_GUIDANCE_MODE_ACOUSTIC = 2,
+  TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM = 3 } = require("weaponUtils")
 
 const textColor = 0xFFFFFFFF
 const btnColor = 0xFF3A4450

@@ -3114,6 +3114,31 @@
       }
     },
     {
+      "id": "2026_11_steam_award_popup_unlock",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2026-11-24 00:00:00",
+        "endDate": "2026-11-30 00:00:00",
+        "condition": [
+          {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          },
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount"
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "pixelstormAccount",
+            "invertResult": true
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_11_steam_award_popup_unlock",
       "type": "challenge",
       "hidden": true,
@@ -5316,7 +5341,7 @@
       "group": "bundeswehr_armed_forces_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5355,7 +5380,7 @@
       "group": "poland_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5397,7 +5422,7 @@
       "group": "pla_air_force_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -5441,7 +5466,7 @@
       "group": "norway_af_day",
       "costGold": 199,
       "visibleDaysAfter": 1.0,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 100500000,
@@ -25787,6 +25812,30 @@
     },
     {
       "id": "title_challenger_grand_champion_2026",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_gf_pro_mvp",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_2026_pro_mvp",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_gf_challenger_mvp",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_2026_challenger_mvp",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -160525,40 +160574,13 @@
       }
     },
     {
-      "id": "gift_anniversary_2026_plane",
-      "locId": "item/gift_anniversary_2026_plane",
-      "locDescId": "gift_anniversary_2026_plane/desc",
-      "userLogId": "fw_190a_8_mistel_trophy",
-      "type": "trophy",
-      "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
-      "icon": "!https://static-ggc.gaijin.net/units/fw_190a_8_mistel.avif",
-      "lockStyle": "lock",
-      "showInDesc": true,
-      "isMainReward": true,
-      "hidden": true,
-      "mode": {
-        "type": "char_unlocks",
-        "num": 6,
-        "unlock": [
-          "28_10_anniversary_2026_aircraft_stage",
-          "30_10_anniversary_2026_aircraft_stage",
-          "01_11_anniversary_2026_aircraft_stage",
-          "03_11_anniversary_2026_aircraft_stage",
-          "05_11_anniversary_2026_aircraft_stage",
-          "07_11_anniversary_2026_aircraft_stage",
-          "09_11_anniversary_2026_aircraft_stage"
-        ]
-      }
-    },
-    {
       "id": "gift_anniversary_2026_decal_trophy_1",
       "locId": "item/gift_anniversary_2026_decal_trophy",
       "locDescId": "gift_decals_trophy/desc",
       "userLogId": "anniversary_2026_decal_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "icon": "!https://static-ggc.gaijin.net/decals/2026_10_aircraft_event_decals.avif",
       "lockStyle": "lock",
       "hidden": true,
@@ -160584,7 +160606,7 @@
       "userLogId": "winter_quest_2023_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "lockStyle": "lock",
       "showInDesc": true,
       "hidden": true,
@@ -160610,7 +160632,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/2026_10_aircraft_event_decals.avif",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "lockStyle": "lock",
       "hidden": true,
       "showInDesc": true,
@@ -160635,7 +160657,7 @@
       "userLogId": "winter_quest_2023_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "lockStyle": "lock",
       "showInDesc": true,
       "hidden": true,
@@ -160659,7 +160681,7 @@
       "userLogId": "anniversary_2026_avatar_frame_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "icon": "!https://static-ggc.gaijin.net/avatar_frames/frame_mistel.avif",
       "lockStyle": "lock",
       "showInDesc": true,
@@ -160679,15 +160701,43 @@
       }
     },
     {
+      "id": "gift_anniversary_2026_plane",
+      "locId": "item/gift_anniversary_2026_plane",
+      "locDescId": "gift_anniversary_2026_plane/desc",
+      "userLogId": "fw_190a_8_mistel_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "mistel_dream",
+      "icon": "!https://static-ggc.gaijin.net/units/fw_190a_8_mistel.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "isMainReward": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "28_10_anniversary_2026_aircraft_stage",
+          "30_10_anniversary_2026_aircraft_stage",
+          "01_11_anniversary_2026_aircraft_stage",
+          "03_11_anniversary_2026_aircraft_stage",
+          "05_11_anniversary_2026_aircraft_stage",
+          "07_11_anniversary_2026_aircraft_stage",
+          "09_11_anniversary_2026_aircraft_stage"
+        ]
+      }
+    },
+    {
       "id": "gift_anniversary_2026_skin_trophy",
       "locDescId": "gift_skin_trophy/desc",
       "userLogId": "anniversary_2026_skin_trophy",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "icon": "!https://static-ggc.gaijin.net/items/item_skin.png",
       "lockStyle": "lock",
       "showInDesc": true,
+      "isMainReward": true,
       "hidden": true,
       "mode": {
         "type": "char_unlocks",
@@ -160704,9 +160754,9 @@
       }
     },
     {
-      "id": "09_11_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_7/name",
-      "chapter": "sturmtiger_dream",
+      "id": "28_10_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_1/name",
+      "chapter": "mistel_dream",
       "hidden": true,
       "type": "achievement",
       "group": "tasks",
@@ -160761,264 +160811,8 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2026-11-09 11:00:00",
-            "endDate": "2026-11-11 23:30:00"
-          }
-        ]
-      }
-    },
-    {
-      "id": "07_11_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_6/name",
-      "chapter": "sturmtiger_dream",
-      "hidden": true,
-      "type": "achievement",
-      "group": "tasks",
-      "visibleDays": 1.0,
-      "visibleDaysAfter": 30.0,
-      "costGold": 999,
-      "costGoldDiscountProgress0": 29750000,
-      "costGoldDiscountValue0": 50,
-      "costGoldDiscountProgress1": 33250000,
-      "costGoldDiscountValue1": 80,
-      "showInDesc": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 35000000,
-        "mulMode0": 1.0,
-        "mulMode1": 1.4,
-        "mulMode2": 2.3,
-        "forceShowMulMode": 0,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "mulRank9": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic",
-              "air_simulation_timeDelay_battles"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-11-07 11:00:00",
-            "endDate": "2026-11-09 11:30:00"
-          }
-        ]
-      }
-    },
-    {
-      "id": "05_11_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_5/name",
-      "chapter": "sturmtiger_dream",
-      "hidden": true,
-      "type": "achievement",
-      "group": "tasks",
-      "visibleDays": 1.0,
-      "visibleDaysAfter": 30.0,
-      "costGold": 999,
-      "costGoldDiscountProgress0": 29750000,
-      "costGoldDiscountValue0": 50,
-      "costGoldDiscountProgress1": 33250000,
-      "costGoldDiscountValue1": 80,
-      "showInDesc": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 35000000,
-        "mulMode0": 1.0,
-        "mulMode1": 1.4,
-        "mulMode2": 2.3,
-        "forceShowMulMode": 0,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "mulRank9": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic",
-              "air_simulation_timeDelay_battles"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-11-05 11:00:00",
-            "endDate": "2026-11-07 11:30:00"
-          }
-        ]
-      }
-    },
-    {
-      "id": "03_11_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_4/name",
-      "chapter": "sturmtiger_dream",
-      "hidden": true,
-      "type": "achievement",
-      "group": "tasks",
-      "visibleDays": 1.0,
-      "visibleDaysAfter": 30.0,
-      "costGold": 999,
-      "costGoldDiscountProgress0": 29750000,
-      "costGoldDiscountValue0": 50,
-      "costGoldDiscountProgress1": 33250000,
-      "costGoldDiscountValue1": 80,
-      "showInDesc": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 35000000,
-        "mulMode0": 1.0,
-        "mulMode1": 1.4,
-        "mulMode2": 2.3,
-        "forceShowMulMode": 0,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "mulRank9": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic",
-              "air_simulation_timeDelay_battles"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-11-03 11:00:00",
-            "endDate": "2026-11-05 11:30:00"
-          }
-        ]
-      }
-    },
-    {
-      "id": "01_11_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_3/name",
-      "chapter": "sturmtiger_dream",
-      "hidden": true,
-      "type": "achievement",
-      "group": "tasks",
-      "visibleDays": 1.0,
-      "visibleDaysAfter": 30.0,
-      "costGold": 999,
-      "costGoldDiscountProgress0": 29750000,
-      "costGoldDiscountValue0": 50,
-      "costGoldDiscountProgress1": 33250000,
-      "costGoldDiscountValue1": 80,
-      "showInDesc": true,
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 35000000,
-        "mulMode0": 1.0,
-        "mulMode1": 1.4,
-        "mulMode2": 2.3,
-        "forceShowMulMode": 0,
-        "mulRank1": 0.9,
-        "mulRank2": 0.9,
-        "mulRank3": 0.9,
-        "mulRank4": 0.9,
-        "mulRank5": 1.0,
-        "mulRank6": 1.1,
-        "mulRank7": 1.2,
-        "mulRank8": 1.2,
-        "mulRank9": 1.2,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "minRankForEvent": 1,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "gameModeInfoString",
-            "name": "name",
-            "exactName": true,
-            "value": [
-              "air_arcade",
-              "air_realistic",
-              "air_simulation_timeDelay_battles"
-            ],
-            "locParamName": "conditions/missionType",
-            "locValuePrefix": "missions/short/"
-          },
-          {
-            "type": "timeRange",
-            "beginDate": "2026-11-01 11:00:00",
-            "endDate": "2026-11-03 11:30:00"
+            "beginDate": "2026-10-28 11:00:00",
+            "endDate": "2026-10-30 11:30:00"
           }
         ]
       }
@@ -161026,7 +160820,7 @@
     {
       "id": "30_10_anniversary_2026_aircraft_stage",
       "locId": "marathon_air_stage_2/name",
-      "chapter": "sturmtiger_dream",
+      "chapter": "mistel_dream",
       "hidden": true,
       "type": "achievement",
       "group": "tasks",
@@ -161088,9 +160882,9 @@
       }
     },
     {
-      "id": "28_10_anniversary_2026_aircraft_stage",
-      "locId": "marathon_air_stage_1/name",
-      "chapter": "sturmtiger_dream",
+      "id": "01_11_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_3/name",
+      "chapter": "mistel_dream",
       "hidden": true,
       "type": "achievement",
       "group": "tasks",
@@ -161145,8 +160939,264 @@
           },
           {
             "type": "timeRange",
-            "beginDate": "2026-10-28 11:00:00",
-            "endDate": "2026-10-30 11:30:00"
+            "beginDate": "2026-11-01 11:00:00",
+            "endDate": "2026-11-03 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_11_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_4/name",
+      "chapter": "mistel_dream",
+      "hidden": true,
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "mulRank9": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-11-03 11:00:00",
+            "endDate": "2026-11-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05_11_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_5/name",
+      "chapter": "mistel_dream",
+      "hidden": true,
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "mulRank9": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-11-05 11:00:00",
+            "endDate": "2026-11-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07_11_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_6/name",
+      "chapter": "mistel_dream",
+      "hidden": true,
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "mulRank9": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-11-07 11:00:00",
+            "endDate": "2026-11-09 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09_11_anniversary_2026_aircraft_stage",
+      "locId": "marathon_air_stage_7/name",
+      "chapter": "mistel_dream",
+      "hidden": true,
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "mulRank9": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-11-09 11:00:00",
+            "endDate": "2026-11-11 23:30:00"
           }
         ]
       }
