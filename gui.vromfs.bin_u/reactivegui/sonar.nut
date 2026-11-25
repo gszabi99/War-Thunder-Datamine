@@ -65,6 +65,19 @@ let sonarIndicationDebug = {
   font = Fonts.hud
 }
 
+const HP_CONE_RADIUS = 350.0
+const HP_GAIN_RADIUS = 80.0
+const HP_BEARING_ARR_WIDTH_RATIO = 1.0 / 32 
+const HP_BEARING_ARR_ASPECT = 5 
+const HP_BEARING_ARR_WIDTH = HP_CONE_RADIUS * HP_BEARING_ARR_WIDTH_RATIO
+const HP_BEARING_ARR_HEIGHT = HP_BEARING_ARR_WIDTH * HP_BEARING_ARR_ASPECT
+
+let hpBearingSize = hdpxi(HP_CONE_RADIUS) * 2
+let hpGainSize = hdpxi(HP_GAIN_RADIUS) * 2
+let hpGainCenterSize = hdpxi(HP_GAIN_RADIUS)
+let hpBearingArrWidth = hdpxi(HP_BEARING_ARR_WIDTH)
+let hpBearingArrHeight = hdpxi(HP_BEARING_ARR_HEIGHT)
+
 let hydrophoneMeasureIndication = {
   size = FLEX
   rendObj = ROBJ_DAS_CANVAS
@@ -72,11 +85,15 @@ let hydrophoneMeasureIndication = {
   drawFunc = "draw_hydrophone_measure"
   setupFunc = "setup_data"
   font = Fonts.tiny_text_hud
-  hpBearingPicture    = Picture("!ui/gameuiskin/hydrophone_bearing.svg:1024:1024:K")
+  coneRadius = HP_CONE_RADIUS
+  gainRadius = HP_GAIN_RADIUS
+  bearingArrWidth = HP_BEARING_ARR_WIDTH
+  bearingArrHeight = HP_BEARING_ARR_HEIGHT
+  hpBearingPicture    = Picture($"!ui/gameuiskin/hydrophone_bearing.svg:{hpBearingSize}:{hpBearingSize}:K")
   hpAimPicture        = Picture("ui/gameuiskin#hydrophone_aim.avif")
-  hpGainCenterPicture = Picture("!ui/gameuiskin/hydrophone_gain_center.svg:256:256:K")
-  hpGainPicture       = Picture("!ui/gameuiskin/hydrophone_gain.svg:256:256:K")
-  hpBearingArrPicture = Picture("!ui/gameuiskin/hydrophone_bearing_arrow.svg:256:256:K")
+  hpGainCenterPicture = Picture($"!ui/gameuiskin/hydrophone_gain_center.svg:{hpGainCenterSize}:{hpGainCenterSize}:K")
+  hpGainPicture       = Picture($"!ui/gameuiskin/hydrophone_gain.svg:{hpGainSize}:{hpGainSize}:K")
+  hpBearingArrPicture = Picture($"!ui/gameuiskin/hydrophone_bearing_arrow.svg:{hpBearingArrWidth}:{hpBearingArrHeight}:F")
 }
 
 local activeSonarInterceptIndication = null

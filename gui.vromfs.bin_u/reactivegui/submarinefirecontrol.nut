@@ -1,7 +1,7 @@
-from "%rGui/options/measureUnits.nut" import ALTITUDE, SPEED, DISTANCE
+from "%rGui/options/measureUnits.nut" import ALTITUDE, DISTANCE
 from "%rGui/style/airHudStyle.nut" import greenColor
 from "%rGui/fcsState.nut" import OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable, IsForestallVisible
-  , IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength, TargetHeight, TargetDistance
+  , IsForestallCalculating, TargetAzimuth, TargetType, TargetDistance
   , TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular, isHydrophoneMode
 from "%rGui/fcsComponent.nut" import drawArrow
 from "string" import format
@@ -31,10 +31,6 @@ let mkText = @(ovr) {
   fontFxColor = 0xFFFFFFFF
 }.__update(ovr)
 
-let processingText = mkText({
-  text = loc("fcs_processing")
-})
-
 let calculatingText = mkText({
   text = loc("fcs_calculating")
 })
@@ -50,53 +46,6 @@ let attackBearingText = mkText({
 let processingHint = {
   pos = const [sw(61), sh(37)]
   children = mkText({ text = loc("fcs_keep_sight_on_target_hint") })
-}
-
-let processingBlock = @() {
-  watch = [OpticsWidth, StaticFov]
-  pos = [sw(52) + OpticsWidth.get(), StaticFov.get() > 6. ? sh(56.5) : sh(55)]
-  flow = FLOW_VERTICAL
-  children = [
-    @() {
-      watch = CalcProgress
-      size = const [progressBarWidth, SIZE_TO_CONTENT]
-      margin = const [0, 0, textPadding, 0]
-      fValue = CalcProgress.get()
-      rendObj = ROBJ_PROGRESS_LINEAR
-      fgColor = fcsBarColor1
-      bgColor = fcsBarColor2
-      children = processingText
-    }
-    @() {
-      watch = [TargetType, CalcProgress]
-      children = CalcProgress.get() < 0.15 ? null
-        : mkText({ text = "".concat(loc("fcs_target_type"), loc($"{TargetType.get()}_0", TargetType.get())) })
-    }
-    @() {
-      watch = [TargetLength, CalcProgress]
-      children = CalcProgress.get() < 0.3 ? null
-        : mkText({ text = "".concat(loc("fcs_target_length"), ALTITUDE.getMeasureUnitsText(TargetLength.get())) })
-    }
-    @() {
-      watch = [TargetHeight, CalcProgress]
-      children = CalcProgress.get() < 0.45 ? null
-        : mkText({
-          text = "".concat(loc("fcs_target_height"), ALTITUDE.getMeasureUnitsText(TargetHeight.get()))
-        })
-    }
-    @() {
-      watch = [TargetSpeed, CalcProgress]
-      children = CalcProgress.get() < 0.60 ? null
-        : mkText({
-          text = "".concat(loc("fcs_target_speed"), SPEED.getMeasureUnitsText(TargetSpeed.get()))
-        })
-    }
-    @() {
-      watch = [TargetAzimuth, CalcProgress]
-      children = CalcProgress.get() < 0.75 ? null
-        : mkText({ text = format("%s%d", loc("fcs_target_course"), TargetAzimuth.get()) })
-    }
-  ]
 }
 
 let hydrophoneProcessingBlock = @() {
@@ -229,9 +178,10 @@ return @() {
   children = IsVisible.get() ? [
       shipCompassComponent
       isProcessing.get() ? processingHint : null
-      IsForestallCalculating.get() ? calculatingBlock
+      isHydrophoneMode.get() ? null
+        : IsForestallCalculating.get() ? calculatingBlock
         : !isProcessing.get() ? null
-        : isHydrophoneMode.get() ? processingBlock : hydrophoneProcessingBlock
+        : hydrophoneProcessingBlock
     ]
     : IsBinocular.get() ? crosshairZeroMark
     : null

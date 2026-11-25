@@ -1,4 +1,3 @@
-import "%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut" as generateSubmarineActionBars
 import "%sqStdLibs/helpers/enums.nut" as enums
 import "DataBlock" as DataBlock
 from "%scripts/controls/hotas.nut" import checkJoystickThustmasterHotas
@@ -188,7 +187,7 @@ enums.addTypes(result, {
 
     pageBlkName = "%gui/help/controlsShip.blk"
 
-    imagePattern = "#ui/images/country_%s_ship_controls_help?P1"
+    imagePattern = "#ui/images/help/country_%s_ship_hydrophone_controls_help?P1"
     defaultValues = { country = "usa" }
     hasImageByCountries = [ "usa" ]
     countryRelatedObjs = {
@@ -196,6 +195,9 @@ enums.addTypes(result, {
       ]
     }
     linkLines = {
+      obstacles = [
+        "torpedo_sight_hint"
+      ]
       links = [
         { start = "weapon_is_active_label", end = "weapon_is_active_point" }
         { start = "weapon_is_not_active_label", end = "weapon_is_not_active_point" }
@@ -250,6 +252,12 @@ enums.addTypes(result, {
         ]
       }
     ]
+
+    customUpdateSheetFunc = function(obj) {
+      let unit = getPlayerCurUnit()
+      let canSetFuzeDepth = !unit?.isShipOrBoat() || getFullUnitBlk(unit.name)?.depthChargeSalvoParams != null
+      obj.findObject("fuze_depth_frame").show(canSetFuzeDepth)
+    }
   }
   IMAGE_HELICOPTER = {
     subTabName = "#hotkeys/ID_COMMON_CONTROL_HEADER"
@@ -305,7 +313,7 @@ enums.addTypes(result, {
     pageBlkName = "%gui/help/controlsSubmarine.blk"
 
     defaultValues = { country = "ussr" }
-    imagePattern = "#ui/images/help/country_%s_submarine_controls_help?P1"
+    imagePattern = "#ui/images/help/country_%s_submarine_hydrophone_controls_help?P1"
     hasImageByCountries = ["ussr"]
     countryRelatedObjs = {
       ussr = [
@@ -313,28 +321,17 @@ enums.addTypes(result, {
     }
     linkLines = {
       obstacles = [
-        "depth_indicator_help"
-        "hud_2_calculating"
-        "submorine_hull_obstacle"
-        "mines_line_obstacle"
-        "distance_line_obstacle"
+        "attack_bearing_row"
       ]
       links = [
-        { start = "mines_label", end = "bar_item_mine_1" }
-        { start = "torpedo_launch_label", end = "bar_item_torpedo_1" }
-        { start = "periscope_label", end = "bar_item_periscope_1" }
         { start = "depth_indicator_label", end = "depth_indicator_point" }
-        { start = "periscope_usage_label", end = "periscope_usage_point" }
         { start = "ship_target_label", end = "ship_target_point" }
-        { start = "attack_bearing_label", end = "attack_bearing_point_1" }
-        { start = "attack_bearing_label", end = "attack_bearing_point_2" }
         { start = "distance_label", end = "distance_point" }
-        { start = "urgently_surfacing_label", end = "urgently_surfacing_point_1" }
-        { start = "urgently_surfacing_label", end = "urgently_surfacing_point_2" }
+        { start = "noise_source_label", end = "noise_source_point" }
+        { start = "dive_modules_label", end = "dive_modules_point_1" }
+        { start = "dive_modules_label", end = "dive_modules_point_2" }
       ]
     }
-
-    actionBars = generateSubmarineActionBars(2)
 
     customUpdateSheetFunc = function(obj) {
       let unit = getPlayerCurUnit()

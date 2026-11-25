@@ -16,8 +16,6 @@ let SIGNAL_DETAILS = 51
 let SIGNAL_RADIUS = 115.0
 let SIGNAL_MIN_AMP = 1.0f
 let SIGNAL_MAX_AMP = 10.0f
-let CONE_RADIUS = 350.0
-let GAIN_RADIUS = 160.0
 let TEXT_GAP = 26.0
 let TEXT_X_OFFSET = 4.0
 
@@ -29,6 +27,10 @@ let RECEIVE_PARAMS = 2
 struct CanvasParams
   lineWidthPx : float = 2.0f
   fontId : int = -1
+  coneRadius : float
+  gainRadius : float
+  bearingArrWidth : float
+  bearingArrHeight : float
   hpBearingPicture : Picture?
   hpAimPicture : Picture?
   hpGainPicture : Picture?
@@ -40,6 +42,10 @@ struct CanvasParams
 def setup_data(props : Properties&; var data : CanvasParams&)
   data.lineWidthPx = props |> getFloat("lineWidthPx", 2.0f)
   data.fontId = props |> getFontId()
+  data.coneRadius = props |> getFloat("coneRadius", 0.0f)
+  data.gainRadius = props |> getFloat("gainRadius", 0.0f)
+  data.bearingArrWidth = props |> getFloat("bearingArrWidth", 0.0f)
+  data.bearingArrHeight = props |> getFloat("bearingArrHeight", 0.0f)
   data.hpBearingPicture = props |> getPicture("hpBearingPicture")
   data.hpAimPicture = props |> getPicture("hpAimPicture")
   data.hpGainPicture = props |> getPicture("hpGainPicture")
@@ -70,24 +76,22 @@ def mk_bearing_dial(var ctx : GuiContext&; data : CanvasParams&; center : float2
   render_picture(ctx, data.hpBearingPicture, center - float2(radius), float2(radius) * 2.0, color)
   resetViewTm(ctx)
 
-  let arrWidth : float = radius / 32.0
-  let arrPos : float2 = center - float2(arrWidth / 2.0, radius * 1.02)
-  let arrSize : float2 = float2(arrWidth, arrWidth * 5.0)
+  let arrSize = float2(ctx |> hdpx(data.bearingArrWidth), ctx |> hdpx(data.bearingArrHeight))
+  let arrPos : float2 = center - float2(arrSize.x / 2.0, radius * 1.02)
   render_picture(ctx, data.hpBearingArrPicture, arrPos, arrSize, color)
 
   let aimSize : float = radius * 0.34
   render_picture(ctx, data.hpAimPicture, center - float2(aimSize), float2(aimSize) * 2.0, color)
 
 
-def mk_gain_dial(var ctx : GuiContext&; data : CanvasParams&; gainCenter : float2; radius, gain, maxGain : float; color : E3DCOLOR)
-  let gainPos : float2 = gainCenter - float2(radius * 0.5)
-  render_picture(ctx, data.hpGainPicture, gainPos, float2(radius), color)
+def mk_gain_dial(var ctx : GuiContext&; data : CanvasParams&; gainCenter : float2; gainRadius, gain, maxGain : float; color : E3DCOLOR)
+  let gainPos : float2 = gainCenter - float2(gainRadius)
+  render_picture(ctx, data.hpGainPicture, gainPos, float2(gainRadius) * 2.0, color)
 
   let gArrDir = GAIN_ARC_START + gain * (GAIN_ARC_SWEEP / maxGain)
-  let gArrWidth : float = radius * 0.5
-  let gArrPos : float2 = gainCenter - float2(gArrWidth * 0.5)
+  let gArrPos : float2 = gainCenter - float2(gainRadius * 0.5)
   setRotViewTm(ctx, gainCenter.x, gainCenter.y, gArrDir * DEG_TO_RAD, 0.0, false)
-  render_picture(ctx, data.hpGainCenterPicture, gArrPos, float2(gArrWidth), color)
+  render_picture(ctx, data.hpGainCenterPicture, gArrPos, float2(gainRadius), color)
   resetViewTm(ctx)
 
 
@@ -218,8 +222,8 @@ def draw_hydrophone_measure(var ctx : GuiContext&; rdata : ElemRenderData& const
   let center = get_passive_sonar_hud_fov_center()
   let width = ctx |> hdpx(data.lineWidthPx)
 
-  let coneRadius = ctx |> hdpx(CONE_RADIUS)
-  let gainRadius = ctx |> hdpx(GAIN_RADIUS)
+  let coneRadius = ctx |> hdpx(data.coneRadius)
+  let gainRadius = ctx |> hdpx(data.gainRadius)
   let gainCenter : float2 = center + float2(0.0, coneRadius * 0.65)
 
   let measureLock = get_measure_lock(hud)

@@ -463,7 +463,9 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_SUB_HYDROPHONE
     isForWheelMenu = @() true
     _name = "sub_hydrophone"
-    _icon = "#ui/gameuiskin#ship_hydrophone"
+    _icon = "#ui/gameuiskin#look_for_noise_markers"
+    getLayeredIcon = @(_actionItem, _killStreakTag, _unit, _hudUnitType = null)
+      $"img \{ size:t='pw, ph'; background-image:t='{this._icon}'; background-repeat:t='part'; background-position:t='296, 0, 201, 0' \}"
     _title = loc("hotkeys/ID_SHIP_TOGGLE_HYDROPHONE_MODE")
     getTooltipText = @(actionItem = null) this.getTitle(actionItem)
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TOGGLE_HYDROPHONE_MODE"

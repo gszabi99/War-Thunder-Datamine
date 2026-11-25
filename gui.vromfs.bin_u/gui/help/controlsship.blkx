@@ -71,7 +71,7 @@
         },
         {
           "id": "weapon_is_not_active_point",
-          "pos": "563/1760pw, 342/900ph",
+          "pos": "563/1760pw, 352/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
@@ -206,17 +206,6 @@
               "pos": "0, 20/900p.p.h",
               "position": "relative",
               "keyDiv": {
-                "value": "{{ID_SHIP_WEAPON_DEPTH_CHARGE}}"
-              },
-              "textareaNoTab": {
-                "text": "#controls/help/ship_bombs_control"
-              }
-            },
-            {
-              "width": "pw",
-              "pos": "0, 20/900p.p.h",
-              "position": "relative",
-              "keyDiv": {
                 "value": "{{ID_SHIP_WEAPON_ROCKETS}}"
               },
               "textareaNoTab": {
@@ -236,10 +225,6 @@
             {
               "width": "pw",
               "text": "#controls/help/ship_torpedo_hint"
-            },
-            {
-              "width": "pw",
-              "text": "#controls/help/ship_bombs_info"
             }
           ]
         },
@@ -250,9 +235,9 @@
           "size": "1@dp, 1@dp"
         },
         {
-          "pos": "855/1760pw-w, 610/900ph",
+          "pos": "30/1760pw, 468/900ph",
           "position": "absolute",
-          "width": "230/1760pw",
+          "width": "300/1760pw",
           "flow": "vertical",
           "controlsHelpFrame": {
             "id": "torpedo_sight_label",
@@ -265,6 +250,7 @@
             }
           },
           "controlsHelpTextArea": {
+            "id": "torpedo_sight_hint",
             "width": "pw",
             "text": "#controls/help/ship/torpedo/sight"
           }
@@ -280,6 +266,81 @@
           "pos": "442/1760pw-w/2, 885/900ph-h",
           "position": "absolute",
           "height": "40/900ph"
+        },
+        {
+          "pos": "710/1760pw, 468/900ph",
+          "position": "absolute",
+          "width": "370/1760pw",
+          "flow": "vertical",
+          "controlsHelpTextArea": [
+            {
+              "width": "pw",
+              "text": "#controls/help/ship/submarine_hunting"
+            },
+            {
+              "width": "pw",
+              "text": "#controls/help/ship/active_sonar_info"
+            }
+          ],
+          "controlsHelpFrame": {
+            "width": "pw",
+            "keyDiv": {
+              "value": "{{ID_SHIP_SWITCH_ACTIVE_SONAR}}"
+            },
+            "textareaNoTab": {
+              "text": "#controls/help/ship/active_sonar"
+            }
+          }
+        },
+        {
+          "pos": "710/1760pw, 870/900ph-h",
+          "position": "absolute",
+          "width": "370/1760pw",
+          "flow": "vertical",
+          "tdiv": {
+            "width": "pw",
+            "controlsHelpFrame": [
+              {
+                "width": "pw/2",
+                "keyDiv": {
+                  "alwaysFlow": "yes",
+                  "value": "{{ID_SHIP_WEAPON_DEPTH_CHARGE}}"
+                },
+                "textareaNoTab": {
+                  "text": "#controls/help/ship/depth_charges"
+                }
+              },
+              {
+                "width": "fw",
+                "keyDiv": {
+                  "alwaysFlow": "yes",
+                  "value": "{{ID_SHIP_WEAPON_MORTAR}}"
+                },
+                "textareaNoTab": {
+                  "text": "#controls/help/ship/bomb_mortars"
+                }
+              }
+            ]
+          },
+          "controlsHelpFrame": {
+            "id": "fuze_depth_frame",
+            "width": "pw",
+            "keyDiv": [
+              {
+                "value": "{{ID_SHIP_BOMB_CYCLE_DEPTH}}"
+              },
+              {
+                "value": "{{ID_SHIP_BOMB_CYCLE_DEPTH_BACK}}"
+              }
+            ],
+            "textareaNoTab": {
+              "text": "#controls/help/ship/fuze_depth"
+            }
+          },
+          "controlsHelpTextArea": {
+            "width": "pw",
+            "text": "#controls/help/ship/depth_charges_info"
+          }
         },
         {
           "pos": "1411/1760pw -w/2, 637/900ph -h/2",
@@ -318,9 +379,9 @@
           }
         },
         {
-          "pos": "907/1760pw, 468/900ph",
+          "pos": "1110/1760pw, 468/900ph",
           "position": "absolute",
-          "width": "302/1760pw",
+          "width": "274/1760pw",
           "flow": "vertical",
           "controlsHelpTextArea": {
             "width": "pw",
@@ -364,7 +425,7 @@
         },
         {
           "id": "ai_shooting_modes_frame",
-          "pos": "907/1760pw, 870/900ph-h",
+          "pos": "1110/1760pw, 828/900ph-h",
           "position": "absolute",
           "width": "180/1760pw",
           "flow": "vertical",
@@ -384,26 +445,26 @@
         },
         {
           "id": "manual_target_1_point",
-          "pos": "1388/1760pw, 604/900ph",
+          "pos": "1435/1760pw, 604/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
           "id": "manual_target_2_point",
-          "pos": "1507/1760pw, 604/900ph",
+          "pos": "1551/1760pw, 604/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
           "id": "manual_target_3_point",
-          "pos": "1601/1760pw, 604/900ph",
+          "pos": "1648/1760pw, 604/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "pos": "1730/1760pw-w, 468/900ph",
+          "pos": "1740/1760pw-w, 468/900ph",
           "position": "absolute",
-          "width": "458/1760pw",
+          "width": "348/1760pw",
           "flow": "vertical",
           "controlsHelpTextArea": {
             "width": "pw",
@@ -415,7 +476,7 @@
             "controlsHelpFrame": [
               {
                 "id": "manual_target_1_label",
-                "width": "(pw-10/1760p.p.p.w) / 3",
+                "width": "104/1760p.p.p.w",
                 "keyDiv": {
                   "value": "{{ID_SHIP_SELECT_TARGET_AI_PRIM}}"
                 },
@@ -425,7 +486,7 @@
               },
               {
                 "id": "manual_target_2_label",
-                "width": "(pw-8/1760p.p.p.w) / 3",
+                "width": "132/1760p.p.p.w",
                 "keyDiv": {
                   "value": "{{ID_SHIP_SELECT_TARGET_AI_SEC}}"
                 },
@@ -469,17 +530,6 @@
           ]
         },
         {
-          "pos": "15/1760pw, 400/900ph",
-          "position": "absolute",
-          "width": "332/1760pw",
-          "keyDiv": {
-            "value": "{{ID_SHIP_TOGGLE_HYDROPHONE_MODE}}"
-          },
-          "textareaNoTab": {
-            "text": "#hotkeys/ID_SHIP_TOGGLE_HYDROPHONE_MODE"
-          }
-        },
-        {
           "pos": "1444/1760pw, ph-30/900ph-h",
           "position": "relative",
           "width": "282/1760pw",
@@ -490,8 +540,8 @@
       ],
       "controlsHelpTextArea": {
         "id": "torpedo_projection_label",
-        "width": "300/1760pw",
-        "pos": "855/1760pw-w, 870/900ph-h",
+        "width": "170/1760pw",
+        "pos": "680/1760pw-w, 870/900ph-h",
         "position": "absolute",
         "text": "#controls/help/ship/torpedo/projection"
       }

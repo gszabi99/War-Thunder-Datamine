@@ -253,6 +253,20 @@ textareaNoTab[controlsHelp=yes] {
   text-align:center;
 }
 
+textareaNoTab[fcsHud=yes] {
+  padding:3*@sf/@pf_outdated, 0;
+  font:@fontTiny;
+  color:@black;
+  text-shade:"smooth:24";
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:@white;
+}
+
+textareaNoTab[fcsHud=yes][isValue=yes] {
+  text-shade-color:#CC000000;
+}
+
 textarea[controlsHelpTitle=yes] {
   width:35%pw;
   position:absolute;
