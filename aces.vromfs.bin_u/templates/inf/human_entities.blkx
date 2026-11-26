@@ -510,6 +510,7 @@
   },
   "human_weap_breath": {
     "human_weap__breathScale": 0.065,
+    "human_weap__breathTimeMult": 0.21,
     "human_weap__breathDelay": 0.0,
     "human_weap__breathPeak": 0.6,
     "human_weap__breathCoef1": 2.7,
@@ -517,8 +518,8 @@
     "human_weap__breathCoef3": 2.15,
     "human_weap__breathCoef4": 3.0,
     "human_weap__breathNoiseScale": [
-      0.08,
-      0.07
+      0.04,
+      0.024
     ],
     "human_weap__breathNoiseFreq": [
       1.5,
@@ -527,6 +528,68 @@
     "human_weap__breathNoiseOffset": [
       17.21,
       13.19
+    ],
+    "human_weap__breathPitch": 0.0,
+    "human_weap__breathPitchViscosity": 1.5,
+    "human_weap__breathPitchPhaseShift": 0.12,
+    "human_weap__breathPitchMult": 0.35,
+    "human_weap__breathPitchAimMult": 0.08
+  },
+  "human_weap_hands_noise": {
+    "human_weap__handsNoiseDriftFreq": 0.8,
+    "human_weap__handsNoiseTremorFreq": 2.4,
+    "human_weap__handsNoiseDriftAmp": [
+      1.5,
+      0.5,
+      0.4
+    ],
+    "human_weap__handsNoiseTremorAmp": [
+      4.5,
+      0.4,
+      0.1
+    ],
+    "human_weap__handsNoisePhase": [
+      17.21,
+      13.19,
+      5.37
+    ],
+    "human_weap__handsNoisePhaseShift": 0.3,
+    "human_weap__handsNoiseAimMult": 0.05,
+    "human_weap__handsNoise": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "human_weap_turn_yaw": {
+    "human_weap__turnYawMult": -0.4,
+    "human_weap__turnYawMax": 1.4,
+    "human_weap__turnYawViscosity": 0.08,
+    "human_weap__turnYawAimMult": 0.3,
+    "human_weap__turnYaw": 0.0
+  },
+  "human_weap_move_tilt": {
+    "human_weap__moveTiltStartSpeed": 0.5,
+    "human_weap__moveTiltStopSpeed": 0.3,
+    "human_weap__moveTiltStartDuration": 0.2,
+    "human_weap__moveTiltStartPeakTime": 0.1,
+    "human_weap__moveTiltStartAngles": [
+      0.0,
+      1.73
+    ],
+    "human_weap__moveTiltStopDuration": 0.32,
+    "human_weap__moveTiltStopPeakTime": 0.1,
+    "human_weap__moveTiltStopAngles": [
+      -2.4,
+      -0.8
+    ],
+    "human_weap__moveTiltViscosity": 0.1,
+    "human_weap__moveTiltAimMult": 0.0,
+    "human_weap__moveTiltIsMoving": false,
+    "human_weap__moveTiltEventTime": -1000.0,
+    "human_weap__moveTilt": [
+      0.0,
+      0.0
     ]
   },
   "human_cam_walk_bhv": {
@@ -544,6 +607,9 @@
       "base_human_weap_inertia",
       "human_melee",
       "human_weap_breath",
+      "human_weap_hands_noise",
+      "human_weap_turn_yaw",
+      "human_weap_move_tilt",
       "human_cam_walk_bhv"
     ],
     "_tracked": [
@@ -1926,6 +1992,7 @@
     "human_anim__leanSpineRotateVarId": -1,
     "human_anim__isCrawlContinuousRotating": true,
     "human_anim__crawlContinuousRotationLastChangeTime": -1.0,
+    "human_anim__isDoubleSprintVarId": -1,
     "human_anim__lowerStateStand": -1,
     "human_anim__lowerStateStandStill": -1,
     "human_anim__lowerStateRun": -1,

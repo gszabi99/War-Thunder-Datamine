@@ -859,6 +859,12 @@ struct EventVerifySpawnOnSupplyNode
   verified : bool
   cost : int
 
+[cpp_event(broadcast)]
+struct EventVerifyZoneCapture
+  zoneId : int
+  team : int
+  verified : bool
+
 [event(unicast)]
 struct EventResetSpawnOnUnitEid {}
 

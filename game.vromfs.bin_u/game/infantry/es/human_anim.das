@@ -435,6 +435,7 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__rotateLeftElbowVarId : int&;
                          var human_anim__rotateRightElbowVarId : int&;
                          var human_anim__climbTrajBlendParamVarId : int&;
+                         var human_anim__isDoubleSprintVarId : int&;
                          var human_anim__bodyDirVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
@@ -469,6 +470,7 @@ def init_human_anim_vars(evt : Event;
   human_anim__rotateLeftElbowVarId = phys_vars |> registerVar("rotate_left_elbow", 0.0)
   human_anim__rotateRightElbowVarId = phys_vars |> registerVar("rotate_right_elbow", 0.0)
   human_anim__climbTrajBlendParamVarId = phys_vars |> registerVar("climb_trajectory_blend_param", 0.0)
+  human_anim__isDoubleSprintVarId = phys_vars |> registerVar("is_double_sprint", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -648,6 +650,13 @@ def init_fast_crawl_ids(evt : Event;
   if animchar.animGraph != null
     human_fast_prone_anim__stateId = *animchar.animGraph |> anim_graph_getStateIdx(human_fast_prone_anim__state)
     human_fast_prone_anim__progressVarId = phys_vars |> registerVar(human_fast_prone_anim__progressVar, 0.)
+
+[es(tag=gameClient, after=human_double_sprint)]
+def set_double_sprint_anim_var_es(evt : CmdPostPhysUpdate;
+                                  double_sprint__isActive : bool;
+                                  human_anim__isDoubleSprintVarId : int;
+                                  var phys_vars : PhysVars)
+  phys_vars |> setVar(human_anim__isDoubleSprintVarId, double_sprint__isActive ? 1.0 : 0.0)
 
 [es(on_appear, before=anim_phys_init_es)]
 def init_sprint_leap_ids(evt : Event;

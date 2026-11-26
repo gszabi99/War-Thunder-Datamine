@@ -1,6 +1,7 @@
 require ecs
 require math
 require DagorSystem
+require %appGame.wt_events
 
 def private find_supply_graph_node(name : string) : EntityId
   var found = INVALID_ENTITY_ID
@@ -97,6 +98,21 @@ def supply_node_base_link_es(evt : Event; var supply_node__hasBaseLink : bool&)
   supply_node__hasBaseLink = false
   query() <| $ [es(REQUIRE=supplyBase)] (eid : EntityId; team : int)
     update_supply_base_links(eid, team)
+
+[es(tag=server, REQUIRE=strongpoint)]
+def strongpoint_verify_capture_es(evt : EventVerifyZoneCapture;
+                                  capture_zone__zoneId : int;
+                                  supply_graph__linkedEids : EidList)
+  if capture_zone__zoneId != evt.zoneId
+    return
+  var linked = false
+  for linkedEid in supply_graph__linkedEids
+    query(linkedEid) <| $ [es] (active : bool; capzone__owningTeam : int)
+      linked ||= active && capzone__owningTeam == evt.team
+    query(linkedEid) <| $ [es(REQUIRE=supplyBase)] (team : int)
+      linked ||= team == evt.team
+  if !linked
+    evt.verified = false
 
 def private add_supplies(team : int; dt : float)
   query() <| $ [es] (capzone__owningTeam : int;

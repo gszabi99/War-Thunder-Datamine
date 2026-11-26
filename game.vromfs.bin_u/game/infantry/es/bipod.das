@@ -230,7 +230,7 @@ def animchar_visibility_in_bipod_state(evt : Event;
                                        bipod__cutSphereOffset : float3;
                                        var bipod__animcharWasHidden : bool&)
   var isTpsCam = true
-  find_query() <| $ [es] (camera__active : bool; isTpsView : bool = true)
+  find_query() <| $ [es] (camera__active : bool; isTpsView : bool = false)
     if camera__active
       isTpsCam = isTpsView
     return camera__active

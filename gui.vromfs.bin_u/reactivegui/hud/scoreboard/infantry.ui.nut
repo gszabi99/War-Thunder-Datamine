@@ -1,14 +1,14 @@
 from "%rGui/missionState.nut" import scoreLimit, localTeam, ticketsTeamA, ticketsTeamB
 from "%rGui/hud/scoreboard/hudElemsPkg.nut" import mkTeamProgress, mkTeamCapPoint
-from "%rGui/hud/capZones/capZonesState.nut" import startPollingZonesState, stopPollingZonesState, capZones
+from "%rGui/hud/capZones/capZonesState.nut" import startPollingZonesState, stopPollingZonesState, capZones, captureZoneStateIcons
 from "%rGui/hud/plantSites/plantSitesState.nut" import plantSitesList
 from "%rGui/hud/plantSites/plantSiteHudPoint.nut" import mkPlantSiteHudPoint
 from "console" import register_command
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/hud/scoreboard/capZonesStateIcons.ui.nut" import mkCaptureZonesStateIcons
 
 const ANIM_TRIGGER_ALLY = "main_anim_ally"
 const ANIM_TRIGGER_ENEMY = "main_anim_enemy"
-
 
 function mkCaptureZones() {
   let zonesCount = Computed(@() capZones.get().len())
@@ -44,19 +44,22 @@ return function mkBattleHud() {
 
   let onAllyTickets = @(score) score > 0 && anim_start(ANIM_TRIGGER_ALLY)
   let onEnemyTickets = @(score) score > 0 && anim_start(ANIM_TRIGGER_ENEMY)
+  let allyProgress = mkTeamProgress(true, localTeamTicketsW, scoreLimit, ANIM_TRIGGER_ALLY)
+  let enemyProgress = mkTeamProgress(false, enemyTeamTicketsW, scoreLimit, ANIM_TRIGGER_ENEMY)
 
   return {
     key = {}
     size = const [hdpx(420), SIZE_TO_CONTENT]
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(4)
-    valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = [
-      mkTeamProgress(true, localTeamTicketsW, scoreLimit, ANIM_TRIGGER_ALLY)
-      mkCaptureZones()
-      mkTeamProgress(false, enemyTeamTicketsW, scoreLimit, ANIM_TRIGGER_ENEMY)
-    ]
+    children = @() {
+      watch = captureZoneStateIcons
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(4)
+      valign = ALIGN_CENTER
+      children = captureZoneStateIcons.get()
+        ? mkCaptureZonesStateIcons()
+        : [allyProgress, mkCaptureZones(), enemyProgress]
+    }
     onAttach = function() {
       localTeamTicketsW.subscribe(onAllyTickets)
       enemyTeamTicketsW.subscribe(onEnemyTickets)
