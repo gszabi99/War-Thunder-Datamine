@@ -5,6 +5,7 @@ from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive, isWheelMenuAct
 from "%rGui/radarButtons.nut" import isRadarGamepadNavEnabled
 from "controlsMask" import setAllowedControlsMask
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/hud/actionBarState.nut" import isVisibleActionBarExpandedMenu
 
 
 
@@ -38,6 +39,13 @@ let ctrlsState = keepref(Computed(function() {
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
       | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU
       | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
+
+  if (isVisibleActionBarExpandedMenu.get())
+    return CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
+      | CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
+      | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
+      | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
+
   return res
 }))
 

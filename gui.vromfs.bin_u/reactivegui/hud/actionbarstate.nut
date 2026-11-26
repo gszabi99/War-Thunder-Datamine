@@ -16,6 +16,7 @@ let actionBarActionsCount = Watched(0)
 let actionBarCollapseShText = Watched("")
 let collapseBtnPressedTime = Watched(0)
 let actionBarExpandedMenu = Watched(null)
+let isVisibleActionBarExpandedMenu = Computed(@() actionBarExpandedMenu.get()?.name != null)
 
 let actionBarRect = Computed(function calcActionBarRect() {
   if (!isActionBarVisible.get() || isActionBarCollapsed.get())
@@ -136,4 +137,5 @@ return freeze({
   getActionBarItemRectByType
   actionBarRect
   actionBarExpandedMenu
+  isVisibleActionBarExpandedMenu
 })

@@ -280,8 +280,10 @@ enumsAddTypes(g_hud_action_bar_type, {
 
   TORPEDO_SIGHT = {
     code = EII_TORPEDO_SIGHT
+    isForWheelMenu = @() getHudUnitType() == HUD_UNIT_TYPE.SHIP_EX
     _name = "torpedo_sight"
     _icon = "#ui/gameuiskin#torpedo_sight"
+    _title = loc("hotkeys/ID_SUBMARINE_TORPEDO_COURSE_TOGGLE")
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let isSightSolution = (actionItem?.userHandle ?? 0) == 1
       return isSightSolution ? "#ui/gameuiskin#torpedo_sight_solution" : this._icon

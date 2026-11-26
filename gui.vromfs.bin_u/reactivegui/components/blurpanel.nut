@@ -13,6 +13,9 @@ let blurPanel = {
   }
 }
 
+
+let wndBlurPanel = blurPanel.__merge({ children = { rendObj = ROBJ_SOLID, size = FLEX, color = colors.menu.blurBgrColor } })
+
 let fullScreenBlurPanel = {
   rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : null
   size = FLEX
@@ -37,6 +40,7 @@ let ticketHudBlurPanel = {
 
 return {
   blurPanel
+  wndBlurPanel
   fullScreenBlurPanel
   hudBlurPanel
   ticketHudBlurPanel

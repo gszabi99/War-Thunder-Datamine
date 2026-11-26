@@ -6,7 +6,7 @@ from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/hudChatState.nut" import canWriteToChat, hudLog, lastInputTime
 from "%rGui/networkState.nut" import isMultiplayer
 from "%rGui/hud/hudPartVisibleState.nut" import isChatPlaceVisible, isVisualWeaponSelectorVisible
-from "%rGui/hud/actionBarState.nut" import isActionBarVisible, actionBarPos
+from "%rGui/hud/actionBarState.nut" import isActionBarVisible, actionBarPos, isVisibleActionBarExpandedMenu
 from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth
 from "%rGui/hudState.nut" import isSpectatorMode
 from "%rGui/style/screenState.nut" import bw
@@ -25,7 +25,8 @@ let tabsVisibleInSpectatorOnly = ["KillLog", "Orders"]
 let initialTabId = tabsList[0].id
 
 let isEnabled = Computed(@() isChatPlaceVisible.get() && isMultiplayer.get())
-let isInteractive = Computed(@() canWriteToChat.get() || (cursorVisible.get() && !isVisualWeaponSelectorVisible.get()))
+let isInteractive = Computed(@() canWriteToChat.get()
+  || (cursorVisible.get() && !isVisualWeaponSelectorVisible.get() && !isVisibleActionBarExpandedMenu.get()))
 let isNewMessage = Watched(false)
 let isFadingOut = Watched(false)
 let isInited = Watched(false)

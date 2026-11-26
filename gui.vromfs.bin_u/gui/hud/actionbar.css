@@ -272,6 +272,19 @@ actionBarExpandMenuBtn {
   background-position: 4, 4, 4, 4;
 }
 
+actionBarExpandMenuBtn > hoverBackground {
+  size: pw - 2@dp, ph - 2@dp;
+  position: absolute;
+  pos: 0.5pw - 0.5w, 0.5ph - 0.5h;
+  background-color: @transparent;
+  input-transparent: yes;
+}
+
+actionBarExpandMenuBtn:hover > hoverBackground,
+actionBarExpandMenuBtn[isOpened=yes] > hoverBackground {
+  background-color: #33333333;
+}
+
 actionBarExpandMenuBtn[shortcutType=text] {
   top: -h-1@hudActionBarTextShHight-1@hudActionBarExpandBtnGap;
 }

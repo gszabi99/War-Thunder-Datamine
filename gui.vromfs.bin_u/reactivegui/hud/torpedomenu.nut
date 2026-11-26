@@ -8,20 +8,23 @@ from "mission" import get_local_mplayer
 from "weaponUtils" import set_fuse_mode, CONTACT_FUSE_MODE, NONE_FUSE_MODE
 from "weaponryOptions" import get_option_torpedo_dive_depth_auto, get_option_torpedo_dive_depth_range
 from "%rGui/globals/ui_library.nut" import *
+from "%rGui/components/blurPanel.nut" import wndBlurPanel
 import "%rGui/components/comboBox.nut" as comboBox
+import "%rGui/components/button.nut" as button
+import "%appGlobals/style/cssColors.nut" as cssColors
+import "%rGui/components/slider.nut" as slider
+from "%rGui/dagui/units.nut" import cssConst
+from "%rGui/components/tooltip.nut" import withHint, tooltipDetach
 
 let { set_use_torpedo_sight_solution = @(_) null,
   TORPEDO_COURSE_MODE_NONE = 0, TORPEDO_COURSE_MODE_TRIANGULAR_ZIGZAG = 1, TORPEDO_COURSE_MODE_SQUARE_ZIGZAG = 2,
   TORPEDO_COURSE_MODE_CIRCLE = 3, TORPEDO_GUIDANCE_MODE_NONE = 0, TORPEDO_GUIDANCE_MODE_ACOUSTIC = 2,
   TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM = 3 } = require("weaponUtils")
 
-const textColor = 0xFFFFFFFF
-const btnColor = 0xFF3A4450
-const btnHoverColor = 0xFF4E5A68
-const trackColor = 0xFF4A525C
-const trackFillColor = 0xFFC0C0C0
-const knobColor = 0xFFFFFFFF
-const disabledOpacity = 0.4
+const textColor = 0xFFA0A0A0
+const valueColor = 0xFFC0C0C0
+const dividerColor = 0xFF373E46
+const disabledOpacity = 0.3
 
 const courseDistanceStep = 100
 let courseModeChoices = [
@@ -32,18 +35,29 @@ let courseModeChoices = [
 ]
 
 let menuWidth = hdpx(291)
-let menuPadding = hdpx(14)
-let rowGap = hdpx(8)
-let fuseGap = hdpx(4)
-let btnSize = hdpx(32)
-let trackHeight = hdpx(4)
-let knobSize = [hdpx(8), hdpx(18)]
-let radioSize = hdpx(20)
-let radioDotSize = hdpx(8)
-let radioBorderWidth = hdpx(2)
-let fuseIconSize = hdpx(40)
+let menuPadding = hdpx(4)
+let sectionGap = hdpx(4)
+let sliderSectionGap = hdpx(8)
+let choiceTitleGap = hdpx(2)
+let choiceGap = hdpx(10)
+let choiceOuterPadding = hdpx(26)
+let choiceInnerPadding = hdpx(35)
+let controlsWidth = hdpx(271)
+let sliderTitleGap = hdpx(6)
+let sliderControlsGap = hdpx(14)
+let sliderTrackWidth = hdpx(195)
+let btnSize = hdpx(24)
+let comboHeight = hdpx(36)
+let trackHeight = hdpx(7)
+let sliderHeight = trackHeight + 2 * cssConst("sliderIncHeight")
+let thumbSize = [hdpx(11), hdpx(19)]
+let radioSize = hdpx(22)
+let fuseIconSize = hdpx(42)
 let dividerWidth = hdpx(1)
-let font = fontsState.get("small")
+let dividerHeight = hdpx(40)
+let choiceWidth = (controlsWidth - dividerWidth) / 2
+let font = fontsState.get("tiny")
+let meterUnit = $" {loc("measureUnits/meters_alt")}"
 
 let shellProgramEid = Watched(ecs.INVALID_ENTITY_ID)
 let sensitivityPresets = Watched([])
@@ -166,9 +180,9 @@ function findNearestPresetIdx(presets, value) {
 let isContactFuse = Computed(@() fuseMode.get() == CONTACT_FUSE_MODE)
 let isNonContactFuse = Computed(@() !isContactFuse.get())
 let isStraightRun = Computed(@() !isUseTorpedoSightSolution.get())
-let isSensitivityDisabled = Computed(@() magneticFuseSensitivity.get() == null || isContactFuse.get())
-let sensitivityRange = Computed(@() [0.0, sensitivityPresets.get().len() > 0 ? sensitivityPresets.get().top() : 0.0])
-let isDiveDepthDisabled = Computed(@() diveDepth.get() == null)
+let isSensitivityEnabled = Computed(@() magneticFuseSensitivity.get() != null && !isContactFuse.get())
+let sensitivityRange = Computed(@() sensitivityPresets.get().len() > 0 ? [sensitivityPresets.get()[0], sensitivityPresets.get().top()] : [0.0, 0.0])
+let isDiveDepthEnabled = Computed(@() diveDepth.get() != null)
 let diveDepthRange = Computed(@() [diveDepthMin.get(), diveDepthMax.get()])
 let allowedCourseModes = Computed(@() courseModeChoices.filter(@(choice) choice.mode == TORPEDO_COURSE_MODE_NONE ||
   choice.mode == courseMode.get() || (courseModesMask.get() & (1 << choice.mode)) != 0))
@@ -184,65 +198,65 @@ let hasGuidanceChoice = Computed(@() hasAcousticTorpedo.get() || isRouteAvailabl
 let isRouteSelected = Computed(@() guidanceMode.get() == TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM && isRouteAvailable.get())
 let isAcousticSelected = Computed(@() hasAcousticTorpedo.get() && !isRouteSelected.get())
 
-let mkRadio = @(isSelected) {
+let mkRadio = @(isSelected, isEnabled, stateFlags) @() {
+  watch = stateFlags
   size = radioSize
-  rendObj = ROBJ_BOX
-  fillColor = btnColor
-  borderColor = trackColor
-  borderWidth = radioBorderWidth
-  borderRadius = radioSize / 2
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = isSelected
-    ? {
-        size = radioDotSize
-        rendObj = ROBJ_BOX
-        fillColor = knobColor
-        borderRadius = radioDotSize / 2
-      }
-    : null
+  rendObj = ROBJ_IMAGE
+  image = Picture(isSelected ? $"ui/gameuiskin#radiobutton_checked_.svg:{radioSize}:{radioSize}:P"
+    : isEnabled && ((stateFlags.get() & S_HOVER) != 0) ? $"ui/gameuiskin#radiobutton_unchecked_hover.svg:{radioSize}:{radioSize}:P"
+    : $"ui/gameuiskin#radiobutton_unchecked_.svg:{radioSize}:{radioSize}:P")
 }
 
-let mkIconChoice = @(iconName, isSelected, isEnabled, onClick) @() {
-  watch = [isSelected, isEnabled]
-  size = FLEX_H
-  behavior = (isSelected.get() || !(isEnabled?.get() ?? true)) ? null : Behaviors.Button
-  onClick
-  opacity = (isEnabled?.get() ?? true) ? 1.0 : disabledOpacity
-  flow = FLOW_HORIZONTAL
-  gap = rowGap
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = [
-    mkRadio(isSelected.get())
-    {
-      size = fuseIconSize
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#{iconName}.avif:{fuseIconSize}:{fuseIconSize}:P")
-    }
-  ]
+function mkIconChoice(iconName, isSelected, isEnabled, onClick, isFirst = true) {
+  let stateFlags = Watched(0)
+  let onElemState = withHint(stateFlags, iconName, @() loc($"hud/torpedo_menu/{iconName}/desc"))
+  let onDetach = tooltipDetach(stateFlags, iconName)
+  return @() {
+    key = iconName
+    watch = [isSelected, isEnabled]
+    size = [choiceWidth, fuseIconSize]
+    padding = isFirst ? [0, choiceInnerPadding, 0, choiceOuterPadding]
+      : [0, choiceOuterPadding, 0, choiceInnerPadding]
+    behavior = Behaviors.Button
+    onClick = (isSelected.get() || !(isEnabled?.get() ?? true)) ? null : onClick
+    onElemState
+    onDetach
+    opacity = (isEnabled?.get() ?? true) ? 1.0 : disabledOpacity
+    flow = FLOW_HORIZONTAL
+    gap = choiceGap
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      mkRadio(isSelected.get(), isEnabled?.get() ?? true, stateFlags)
+      {
+        size = fuseIconSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#{iconName}.avif:{fuseIconSize}:{fuseIconSize}:P")
+      }
+    ]
+  }
 }
 
 let choiceDivider = {
-  size = [dividerWidth, fuseIconSize]
+  size = [dividerWidth, dividerHeight]
   rendObj = ROBJ_SOLID
-  color = trackColor
+  color = dividerColor
 }
 
 let mkChoiceSection = @(titleLocId, firstChoice, secondChoice) {
   size = FLEX_H
   flow = FLOW_VERTICAL
-  gap = fuseGap
+  gap = choiceTitleGap
   halign = ALIGN_CENTER
   children = [
     @() {
       rendObj = ROBJ_TEXT
       font
       color = textColor
-      text = loc(titleLocId)
+      text = $"{loc(titleLocId)}:"
     }
     {
-      size = FLEX_H
+      size = [controlsWidth, fuseIconSize]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children = [
@@ -256,11 +270,11 @@ let mkChoiceSection = @(titleLocId, firstChoice, secondChoice) {
 
 let fuseSection = mkChoiceSection("hud/torpedo_menu/fuse",
   mkIconChoice("torpedo_contact_fuze", isContactFuse, null, @() set_fuse_mode(CONTACT_FUSE_MODE)),
-  mkIconChoice("torpedo_magnetic_fuze", isNonContactFuse, null, @() set_fuse_mode(NONE_FUSE_MODE)))
+  mkIconChoice("torpedo_magnetic_fuze", isNonContactFuse, null, @() set_fuse_mode(NONE_FUSE_MODE), false))
 
 let travelChoices = mkChoiceSection("hud/torpedo_menu/travel",
   mkIconChoice("torpedo_no_homing", isStraightRun, null, @() set_use_torpedo_sight_solution(false)),
-  mkIconChoice("torpedo_homing", isUseTorpedoSightSolution, null, @() set_use_torpedo_sight_solution(true)))
+  mkIconChoice("torpedo_homing", isUseTorpedoSightSolution, null, @() set_use_torpedo_sight_solution(true), false))
 
 let mkShowIf = @(isVisible, content) @() {
   watch = isVisible
@@ -273,13 +287,16 @@ let travelSection = mkShowIf(canUseCourseCorrectionFromSight, travelChoices)
 let guidanceChoices = mkChoiceSection("hud/torpedo_menu/guidance",
   mkIconChoice("torpedo_acoustic_homing", isAcousticSelected, hasAcousticTorpedo,
     @() setGuidanceMode(TORPEDO_GUIDANCE_MODE_ACOUSTIC)),
-  mkIconChoice("torpedo_gyro_homing", isRouteSelected, isRouteAvailable, @() setGuidanceMode(TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM)))
+  mkIconChoice("torpedo_gyro_homing", isRouteSelected, isRouteAvailable,
+    @() setGuidanceMode(TORPEDO_GUIDANCE_MODE_GYRO_PROGRAM), false))
 
 let guidanceSection = mkShowIf(hasGuidanceChoice, guidanceChoices)
 
-let mkSliderHeader = @(titleLocId, value) {
-  size = FLEX_H
+let mkSliderHeader = @(titleLocId, value, valueSuffix, isEnabled) @() {
+  watch = isEnabled
+  size = [controlsWidth, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
+  opacity = isEnabled.get() ? 1.0 : disabledOpacity
   children = [
     @() {
       size = FLEX_H
@@ -292,118 +309,79 @@ let mkSliderHeader = @(titleLocId, value) {
       watch = value
       rendObj = ROBJ_TEXT
       font
-      color = textColor
-      text = value.get()?.tointeger()?.tostring() ?? ""
+      color = valueColor
+      text = value.get() == null ? "" : $"{value.get().tointeger()}{valueSuffix}"
     }
   ]
 }
 
-let mkStepBtn = @(text, isDisabled, onClick) watchElemState(@(sf) {
-  watch = isDisabled
-  size = btnSize
-  rendObj = ROBJ_SOLID
-  color = (sf & S_HOVER) ? btnHoverColor : btnColor
-  behavior = isDisabled.get() ? null : Behaviors.Button
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  onClick
-  children = {
-    rendObj = ROBJ_TEXT
-    font
-    color = textColor
-    text
-  }
-})
+let mkStepBtn = @(id, text, isEnabled, onClick) button({
+  id
+  text
+  size = [btnSize, btnSize]
+  minWidth = btnSize
+  margin = 0
+  isEnabled
+  skipDirPadNav = true
+}, onClick)
 
-let sliderTrackBg = {
-  size = [FLEX, trackHeight]
-  rendObj = ROBJ_SOLID
-  color = trackColor
-}
-
-let sliderKnob = {
-  size = knobSize
-  rendObj = ROBJ_SOLID
-  color = knobColor
-}
-
-let mkSliderTrack = @(value, range, unit, isDisabled, onChange) function() {
-  let [minValue, maxValue] = range.get()
-  let curValue = value.get()
-  let clampedValue = clamp(curValue ?? minValue, minValue, maxValue)
-  return {
-    watch = [value, range, isDisabled]
-    size = [FLEX, btnSize]
-    behavior = isDisabled.get() ? null : Behaviors.Slider
-    min = minValue
-    max = maxValue
-    unit
-    ignoreWheel = true
-    fValue = clampedValue
-    knob = sliderKnob
-    onChange
-    valign = ALIGN_CENTER
-    children = [
-      sliderTrackBg
-      curValue == null ? null : {
-        size = FLEX_H
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
-        children = [
-          {
-            size = [flex(clampedValue - minValue), trackHeight]
-            rendObj = ROBJ_SOLID
-            color = trackFillColor
-          }
-          sliderKnob
-          { size = [flex(maxValue - clampedValue), trackHeight] }
-        ]
-      }
-    ]
+function mkSliderTrack(value, range, step, isEnabled, onChange) {
+  let sliderValue = Computed(@() value.get() ?? range.get()[0])
+  return function() {
+    let [minValue, maxValue] = range.get()
+    return {
+      watch = range
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = slider(
+        { minVal = minValue, maxVal = maxValue, step, hasThumb = true,
+          thumbSize, isEnabled, ignoreWheel = true },
+        sliderValue, @(_, v) onChange(v), [sliderTrackWidth, sliderHeight])
+    }
   }
 }
 
-function mkSliderSection(titleLocId, value, range, unit, isDisabled, onStep, onChange) {
-  let header = mkSliderHeader(titleLocId, value)
+function mkSliderSection(titleLocId, value, range, step, isEnabled, onStep, onChange, valueSuffix = "") {
+  let header = mkSliderHeader(titleLocId, value, valueSuffix, isEnabled)
   let controls = {
-    size = FLEX_H
+    size = [controlsWidth, btnSize]
     flow = FLOW_HORIZONTAL
-    gap = rowGap
+    gap = sliderControlsGap
     valign = ALIGN_CENTER
     children = [
-      mkStepBtn("-", isDisabled, @() onStep(-1))
-      mkSliderTrack(value, range, unit, isDisabled, onChange)
-      mkStepBtn("+", isDisabled, @() onStep(1))
+      mkStepBtn($"{titleLocId}_dec", "-", isEnabled, @() onStep(-1))
+      mkSliderTrack(value, range, step, isEnabled, onChange)
+      mkStepBtn($"{titleLocId}_inc", "+", isEnabled, @() onStep(1))
     ]
   }
-  return @() {
-    watch = isDisabled
+  return {
     size = FLEX_H
     flow = FLOW_VERTICAL
-    gap = rowGap
-    opacity = isDisabled.get() ? disabledOpacity : 1.0
+    gap = sliderTitleGap
+    halign = ALIGN_CENTER
     children = [header, controls]
   }
 }
 
 let sensitivitySection = mkSliderSection("hud/torpedo_menu/magnetic_fuse_sensitivity",
-  magneticFuseSensitivity, sensitivityRange, 0, isSensitivityDisabled,
+  magneticFuseSensitivity, sensitivityRange, 1, isSensitivityEnabled,
   @(dir) setSensitivityPresetIdx(sensitivityPresetIdx.get() + dir),
   @(newValue) setSensitivityPresetIdx(findNearestPresetIdx(sensitivityPresets.get(), newValue)))
 
-let diveDepthSlider = mkSliderSection("options/torpedo_dive_depth",
-  diveDepth, diveDepthRange, 1, isDiveDepthDisabled,
+let diveDepthSlider = mkSliderSection("bullet_properties/diveDepth",
+  diveDepth, diveDepthRange, 1, isDiveDepthEnabled,
   @(dir) setDiveDepth((diveDepth.get() ?? diveDepthMin.get()) + dir),
-  setDiveDepth)
+  setDiveDepth, meterUnit)
 
 let diveDepthSection = @() {
   watch = isDiveDepthAuto
   size = isDiveDepthAuto.get() ? null : FLEX_H
+  margin = isDiveDepthAuto.get() ? null : [0, 0, sectionGap, 0]
   children = isDiveDepthAuto.get() ? null : diveDepthSlider
 }
 
 let courseModeIdx = Computed(@() allowedCourseModes.get().findindex(@(choice) choice.mode == courseMode.get()) ?? 0)
-let courseModeComboSize = [menuWidth - 2 * menuPadding, btnSize]
+let courseModeComboSize = [controlsWidth, comboHeight]
 let isCourseModeComboEnabled = Computed(@() isRouteSelected.get() && courseStartSectionValue.get() != null &&
   coursePathSectionValue.get() != null)
 
@@ -415,15 +393,15 @@ let courseModeCombo = @() {
 }
 
 function mkCourseSlider(titleLocId, value, range, field) {
-  let isDisabled = Computed(@() value.get() == null || !isRouteSelected.get())
+  let isEnabled = Computed(@() value.get() != null && isRouteSelected.get())
   function setDistance(newValue) {
     let [minValue, maxValue] = range.get()
     let clamped = clamp(newValue, minValue, maxValue).tofloat()
     if (clamped != value.get())
       sendCourseProgram({ [field] = clamped })
   }
-  return mkSliderSection(titleLocId, value, range, courseDistanceStep, isDisabled,
-    @(dir) setDistance(value.get() + dir * courseDistanceStep), setDistance)
+  return mkSliderSection(titleLocId, value, range, courseDistanceStep, isEnabled,
+    @(dir) setDistance(value.get() + dir * courseDistanceStep), setDistance, meterUnit)
 }
 
 let courseStartSectionSlider = mkCourseSlider("hud/torpedo_menu/course_start_section",
@@ -434,7 +412,8 @@ let courseRadiusSlider = mkCourseSlider("hud/torpedo_menu/course_radius", course
 let courseParams = {
   size = FLEX_H
   flow = FLOW_VERTICAL
-  gap = rowGap
+  gap = sliderSectionGap
+  halign = ALIGN_CENTER
   children = [
     courseStartSectionSlider
     @() {
@@ -449,26 +428,50 @@ let courseProgramSection = @() {
   watch = [isRouteAvailable, isCourseModeSelected]
   size = isRouteAvailable.get() ? FLEX_H : null
   flow = FLOW_VERTICAL
-  gap = rowGap
+  gap = sliderSectionGap
+  halign = ALIGN_CENTER
   children = !isRouteAvailable.get() ? null : [
     courseModeCombo
     isCourseModeSelected.get() ? courseParams : null
   ]
 }
 
-let torpedoMenu = {
-  size = [menuWidth, hdpx(504)]
+let sectionsDivider = {
+  size = [controlsWidth, dividerWidth + 2 * sectionGap]
+  valign = ALIGN_CENTER
+  children = {
+    size = [flex(), dividerWidth]
+    rendObj = ROBJ_SOLID
+    color = dividerColor
+  }
+}
+
+let mkSectionBlock = @(children) {
+  size = FLEX_H
   flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
-  gap = rowGap
-  padding = menuPadding
+  gap = sectionGap
+  halign = ALIGN_CENTER
+  children
+}
+
+let torpedoMenu = {
+  size = [menuWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_SOLID
+  color = cssColors.frameDarkTransparentBgColor
   children = [
-    fuseSection
-    sensitivitySection
-    travelSection
-    guidanceSection
-    courseProgramSection
-    diveDepthSection
+    wndBlurPanel
+    {
+      size = FLEX_H
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      gap = sectionsDivider
+      padding = menuPadding
+      children = [
+        travelSection
+        mkSectionBlock([guidanceSection, diveDepthSection, courseProgramSection])
+        mkSectionBlock([fuseSection, sensitivitySection])
+      ]
+    }
   ]
 }
 

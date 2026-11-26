@@ -394,7 +394,11 @@ class ActionBar {
   }
 
   function setExpandMenuBtnOpened(actionId, isOpened) {
-    let iconObj = this.getExpandMenuBtnObj(actionId)?.findObject("expandMenuIcon")
+    let btnObj = this.getExpandMenuBtnObj(actionId)
+    if (btnObj == null)
+      return
+    btnObj.isOpened = isOpened ? "yes" : "no"
+    let iconObj = btnObj.findObject("expandMenuIcon")
     if (iconObj?.isValid())
       setExpandMenuIconOpened(iconObj, isOpened)
   }
@@ -1359,6 +1363,8 @@ class ActionBar {
   onEventWeaponSelectorInit = @(_) defer(function() { this?.syncWithWeaponSelector() }.bindenv(this))
 
   onEventWeaponSelectorUserInteraction = @(_) this.clearAutoCollapseTimer()
+
+  onEventActionBarExpandClickExternal = @(p) this.setExpandedMenu(p.actionId)
 }
 
 let mkActionBarAir = @(nestObj) ActionBar(
@@ -1375,6 +1381,7 @@ eventbus_subscribe("ActionBarCollapseBtnHidden", function(isHidden) {
   saveLocalByAccount(path, isHidden ? ActionBarVsisbility.HIDDEN : ActionBarVsisbility.EXPANDED)
 })
 
+eventbus_subscribe("actionBarExpandClick", @(p) broadcastEvent("ActionBarExpandClickExternal", p))
 
 return freeze({
   ActionBar
