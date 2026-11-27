@@ -84,11 +84,13 @@ def apply_slots_scale_attaches(slots : Object)
                     return
                   let idx = find_index(animchar__scaledWtmNodeIds, intNodeNo)
                   if idx >= 0
-                    let scale = (*hideNodeData).scale ?as float
+                    let scale = (*hideNodeData).scale ?as float3
                     if scale != null
-                      animchar__scaledWtmScales[idx] = min(animchar__scaledWtmScales[idx], float3(*scale))
+                      animchar__scaledWtmScales[idx].x = min(animchar__scaledWtmScales[idx].x, (*scale).x)
+                      animchar__scaledWtmScales[idx].y = min(animchar__scaledWtmScales[idx].y, (*scale).y)
+                      animchar__scaledWtmScales[idx].z = min(animchar__scaledWtmScales[idx].z, (*scale).z)
                     animchar__scaledWtmRecalc[idx] = (*hideNodeData)["recalc"] ?? false
                   else
                     animchar__scaledWtmNodeIds |> push(intNodeNo)
-                    animchar__scaledWtmScales |> push(float3((*hideNodeData)["scale"] ?? 1.))
+                    animchar__scaledWtmScales |> push((*hideNodeData)["scale"] ?? float3(1., 1., 1))
                     animchar__scaledWtmRecalc |> push((*hideNodeData)["recalc"] ?? false)

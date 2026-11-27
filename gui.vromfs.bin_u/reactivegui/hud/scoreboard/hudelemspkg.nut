@@ -3,9 +3,6 @@ import "console" as console
 from "%rGui/hud/scoreboard/missionModeState.nut" import TOTAL_DOMINATION_START_ANIM_ID, TOTAL_DOMINATION_MULT_ANIM_ID
 from "%rGui/missionState.nut" import totalDomTeam, totalDomMult, totalDomEnabled
 from "dagor.workcycle" import deferOnce
-from "dagor.time" import get_time_msec
-from "math" import pow
-from "%rGui/hud/scoreboard/capZonePulse.nut" import mkCapZonePulse, mkCapZoneWave
 from "%rGui/globals/ui_library.nut" import *
 
 let { ticketHudBlurPanel } = require("%rGui/components/blurPanel.nut")
@@ -13,8 +10,8 @@ let { ticketHudBlurPanel } = require("%rGui/components/blurPanel.nut")
 const neutralColor = 0XFFCCCCCC
 const darkColor = 0X98000000
 
-const pointBaseSize = hdpxi(22)
-const pointInZoneSize = hdpxi(40)
+const cpBasicSize = hdpxi(22)
+const cpInZoneSize = hdpxi(40)
 const superiorityIconSize = hdpxi(10)
 let progressLineSize = [hdpxi(200), hdpxi(10)]
 const progressGap = hdpxi(5)
@@ -142,54 +139,14 @@ for (local i = 0; i < shortAnimsCount; i++)
   capPointSizeAnimFlash.append(mkShortSizeAnim(i))
 
 
-let easeInOutCubic = @(t) t < 0.5 ? 4 * t * t * t : 1 - pow(-2 * t + 2, 3) / 2
-
-function mkTween() {
-  let st = { from = 0.0, to = null, startMs = 0, durMs = 0 }
-  function get() {
-    if (st.to == null)
-      return 0.0
-    let t = st.durMs <= 0 ? 1.0 : clamp((get_time_msec() - st.startMs).tofloat() / st.durMs, 0.0, 1.0)
-    return st.from + (st.to - st.from) * easeInOutCubic(t)
-  }
-  function setTarget(to, durSec) {
-    if (to == st.to)
-      return
-    st.from = st.to == null ? to : get()
-    st.to = to
-    st.startMs = get_time_msec()
-    st.durMs = (durSec * 1000).tointeger()
-  }
-  return { get, setTarget }
-}
-
-let lerpRange = @(range, t) range == null ? 1.0 : range[0] + (range[1] - range[0]) * t
-let getScaledSize = @(t, pointSize, scaleRange) (pointSize * lerpRange(scaleRange, t) + 0.5).tointeger()
-
-function mkTeamCapPointImpl(captureZoneW, localTeamW, zoneStateW, activeTween) {
+let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
   let captureZoneVal = captureZoneW.get()
   if (captureZoneVal == null)
     return { watch = captureZoneW }
 
-  let zoneState = zoneStateW?.get()
   let { id, progress, watchedHeroInZone, mpTimeX100 = 0 } = captureZoneVal
   let { teamScoreBlueColor, teamScoreRedColor } = teamColors.get()
-  let pointSize = zoneState?.size ?? (watchedHeroInZone ? pointInZoneSize : pointBaseSize)
-
-  let { isActive = false, scaleRange = null, opacityRange = null, activeAnimSec = 0 } = zoneState ?? {}
-  let hasActiveAnim = scaleRange != null || opacityRange != null
-  if (hasActiveAnim)
-    activeTween.setTarget(isActive ? 1.0 : 0.0, activeAnimSec)
-  let scaleMax = scaleRange == null ? 1.0 : max(scaleRange[0], scaleRange[1])
-  function updateActiveProps() {
-    let t = activeTween.get()
-    return { size = getScaledSize(t, pointSize, scaleRange), opacity = lerpRange(opacityRange, t) }
-  }
-  let activeProps = updateActiveProps()
-  
-  let rasterSize = (pointSize * max(scaleMax, 1.0) + 0.5).tointeger()
-  
-  let slotH = ((zoneState?.size ?? max(pointInZoneSize, pointBaseSize)) * max(scaleMax, 1.0) + 0.5).tointeger()
+  let cpSize = watchedHeroInZone ? cpInZoneSize : cpBasicSize
 
   let curTeam = mpTimeX100 == 0 ? 0
     : mpTimeX100 > 0 ? 2
@@ -198,42 +155,28 @@ function mkTeamCapPointImpl(captureZoneW, localTeamW, zoneStateW, activeTween) {
     : curTeam == localTeamW.get() ? teamScoreBlueColor
     : teamScoreRedColor
 
-  let pulseColor = zoneState?.pulseColor
-  let waveColor = zoneState?.waveColor
-
-  local capzoneIcon = zoneState?.iconPath
-  if (capzoneIcon == null) {
-    let zSymbol = zoneSymbols?[id] ?? zoneSymbols[zoneSymbols.len() - 1]
-    capzoneIcon = $"{ZONE_ICON_PATH}_{zSymbol}"
-  }
+  let zSymbol = zoneSymbols?[id] ?? zoneSymbols[zoneSymbols.len() - 1]
 
   return {
-    watch = [captureZoneW, teamColors, localTeamW, zoneStateW]
+    watch = [captureZoneW, teamColors, localTeamW]
     flow = FLOW_VERTICAL
-    size = [ SIZE_TO_CONTENT, slotH ]
+    size = const [ SIZE_TO_CONTENT, cpInZoneSize ]
     children = [
       {
-        size = [ SIZE_TO_CONTENT, slotH ]
+        size = const [ SIZE_TO_CONTENT, cpInZoneSize ]
         valign = ALIGN_CENTER
         children = {
-          size = activeProps.size
-          opacity = activeProps.opacity
+          size = cpSize
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
-          behavior = hasActiveAnim ? Behaviors.RtPropUpdate : null
-          rtRecalcLayout = true
-          update = updateActiveProps
           children = [
-            pulseColor == null ? null : mkCapZonePulse(id, rasterSize, pulseColor)
-            waveColor == null ? null
-              : mkCapZoneWave(id, getScaledSize(isActive ? 1.0 : 0.0, pointSize, scaleRange), waveColor)
             {
               size = FLEX
               rendObj = ROBJ_PROGRESS_CIRCULAR
-              fValue = zoneState?.fValue ?? (progress / 100.0)
-              fgColor = zoneState?.fgColor ?? teamColor
-              bgColor = zoneState?.bgColor ?? neutralColor
-              image = Picture($"ui/gameuiskin#basezone_small_rhombus.svg:{rasterSize}:{rasterSize}:P")
+              fValue = progress / 100.0
+              fgColor = teamColor
+              bgColor = neutralColor
+              image = Picture($"ui/gameuiskin#basezone_small_rhombus.svg:{cpSize}:{cpSize}:P")
               keepAspect = true
               transform = {}
               animations = capPointSizeAnimFlash
@@ -242,7 +185,7 @@ function mkTeamCapPointImpl(captureZoneW, localTeamW, zoneStateW, activeTween) {
             {
               size = FLEX
               rendObj = ROBJ_IMAGE
-              image = Picture($"{capzoneIcon}.svg:{rasterSize}:{rasterSize}:P")
+              image = Picture($"{ZONE_ICON_PATH}_{zSymbol}.svg:{cpInZoneSize}:{cpInZoneSize}:P")
               color = darkColor
             }
           ]
@@ -253,11 +196,6 @@ function mkTeamCapPointImpl(captureZoneW, localTeamW, zoneStateW, activeTween) {
         : null
     ]
   }
-}
-
-function mkTeamCapPoint(captureZoneW, localTeamW, zoneStateW = null) {
-  let activeTween = mkTween()
-  return @() mkTeamCapPointImpl(captureZoneW, localTeamW, zoneStateW, activeTween)
 }
 
 function mkMultArrowSlotTrigger(cycle, slot) {
