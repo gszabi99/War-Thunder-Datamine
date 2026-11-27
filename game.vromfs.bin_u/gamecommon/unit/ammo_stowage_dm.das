@@ -423,10 +423,6 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
                       ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
                       >) : bool
   let explosion_params = calc_explosion_params(unit, cluster_id, grnd()) <| v
-  if explosion_params.splashDamageTypeId < 0
-    logerr("do_fire_delayed: invalid splash damage type")
-    return false
-
   if explosion_params.powderMass == 0.f
     return false
 
@@ -441,18 +437,21 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
   if hit_slot_id == -1
     return false
   let part_id = v.ammo_slots__partId[hit_slot_id]
-  assume powder_mass_to_splash = v.ammo_stowages__powderMassToSplash[stowage_id]
-  sendEvent(eid, EventAmmoStowageDoDelayedFireEffects(
-    packedPartId = part_id.packed,
-    stowageId = stowage_id,
-    clusterId = cluster_id,
-    innerRadius = powder_mass_to_splash.innerRadius |> interpolate_tab_float_interpolate(explosion_params.powderMass),
-    outerRadius = powder_mass_to_splash.outerRadius |> interpolate_tab_float_interpolate(explosion_params.powderMass),
-    penetration = powder_mass_to_splash.penetration |> interpolate_tab_float_interpolate(explosion_params.powderMass),
-    damage = powder_mass_to_splash.damage |> interpolate_tab_float_interpolate(explosion_params.powderMass),
-    damageTypeId = explosion_params.splashDamageTypeId,
-    pos = cluster_center_pos / float(slots_range.y - slots_range.x)
-  ))
+  if explosion_params.splashDamageTypeId < 0
+    logerr("unit {unit.props.fileName}: ammo fire in stowage {stowage_id} cluster {cluster_id} has no splash damage type (no root ammo block?), fire splash skipped")
+  else
+    assume powder_mass_to_splash = v.ammo_stowages__powderMassToSplash[stowage_id]
+    sendEvent(eid, EventAmmoStowageDoDelayedFireEffects(
+      packedPartId = part_id.packed,
+      stowageId = stowage_id,
+      clusterId = cluster_id,
+      innerRadius = powder_mass_to_splash.innerRadius |> interpolate_tab_float_interpolate(explosion_params.powderMass),
+      outerRadius = powder_mass_to_splash.outerRadius |> interpolate_tab_float_interpolate(explosion_params.powderMass),
+      penetration = powder_mass_to_splash.penetration |> interpolate_tab_float_interpolate(explosion_params.powderMass),
+      damage = powder_mass_to_splash.damage |> interpolate_tab_float_interpolate(explosion_params.powderMass),
+      damageTypeId = explosion_params.splashDamageTypeId,
+      pos = cluster_center_pos / float(slots_range.y - slots_range.x)
+    ))
   sendEvent(eid, EventFireSystemStartBurnWithOffender(
     partId = part_id,
     fireParamsId = v.ammo_clusters__fireParamsId[cluster_id],
