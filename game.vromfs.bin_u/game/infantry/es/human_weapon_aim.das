@@ -6,9 +6,22 @@ require %game.events
 require DagorMath
 require DagorMathUtils
 require %appGame.infantry.es.human_weap_common
-require %appGame.infantry.es.human_breath_common
 require DagorSystem
 require Dacoll
+
+
+def private half_wave(t, p, q : float) : float
+  let a = pow(t, p)
+  let b = pow(1.f - t, q)
+  return a / (a + b)
+
+def private breath_wave(t, d, a, p1, q1, q2, p2 : float) : float
+  if t <= d
+    return 0.f
+  elif t <= a
+    return half_wave((t - d) / (a - d), p1, q1)
+  else
+    return half_wave((1.f - t) / (1.f - a), p2, q2)
 
 
 [es(REQUIRE_NOT=(deadEntity, menuSoldier))]
@@ -36,7 +49,6 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
                      human_weap__weaponShakeSpeedPow = -0.1f;
                      human_weap__weaponShakeDefaultWeight = 1.0f;
                      human_weap__breathScale = 0.2f;
-                     human_weap__breathTimeMult = 0.15f;
                      human_weap__breathDelay = 0.f;
                      human_weap__breathPeak = 0.6f;
                      human_weap__breathCoef1 = 2.7f;
@@ -99,12 +111,13 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
 
   let breathSpeed = currentState.breathShakeMult * holdBreathSpeedMult * weapShakeSpeedMult
   currentState.breathTime += evt.dt * breathSpeed
+  let timeMult = 0.15
   var breathFovMult = 1.0
   if currentState.aimPosition > 0.0
     let magnification = get_aim_optic_magnification(human_weap__currentGunEid, human_weap__currentGunModEids)
     breathFovMult = cvt(magnification, human_weap__magnificationCoeffs.x, human_weap__magnificationCoeffs.z, human_weap__magnificationCoeffs.y, human_weap__magnificationCoeffs.w)
 
-  let t = human_weap__breathTimeMult * currentState.breathTime
+  let t = timeMult * currentState.breathTime
   let breathWave = breath_wave(
     fract(t),
     human_weap__breathDelay,
@@ -121,9 +134,8 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
 
   let handShakeMagnitude = currentState.handsShakeMagnitude
   currentState.handsShakeTime += evt.dt * currentState.handsShakeSpeedMult
-  let handsShakeTimeMult = 0.15
-  currentState.handsShakeOffset.x = perlin_noise1(handsShakeTimeMult * currentState.handsShakeTime + 17.21) * handShakeMagnitude
-  currentState.handsShakeOffset.y = perlin_noise1(handsShakeTimeMult * currentState.handsShakeTime + 13.19) * handShakeMagnitude
+  currentState.handsShakeOffset.x = perlin_noise1(timeMult * currentState.handsShakeTime + 17.21) * handShakeMagnitude
+  currentState.handsShakeOffset.y = perlin_noise1(timeMult * currentState.handsShakeTime + 13.19) * handShakeMagnitude
 
   wishShootAngles += currentState.breathOffset + currentState.handsShakeOffset
 
