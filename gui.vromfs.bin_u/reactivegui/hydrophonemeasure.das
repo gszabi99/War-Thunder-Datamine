@@ -130,6 +130,7 @@ struct MeasureLock
   isMeasured : bool
   isReadyToLaunch : bool
   isOutOfRange : bool
+  isResultAlly : bool
   gainMatch : float
   distance : float
   timeLeft : float
@@ -147,6 +148,8 @@ def get_measure_lock(hud : HydrophoneMeasureHud) : MeasureLock
     measureLock.color = hud.lockedColor
   static_if typeinfo(has_field<isOutOfRange> type<HydrophoneMeasureHud>)
     measureLock.isOutOfRange = hud.isOutOfRange
+  static_if typeinfo(has_field<isResultAlly> type<HydrophoneMeasureHud>)
+    measureLock.isResultAlly = hud.isResultAlly
   return measureLock
 
 
@@ -154,7 +157,7 @@ def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : floa
   let hasNoise : bool = hud.isBearingCaught
   let hasConfirmed : bool = hud.showResult && hud.isResultConfirmed
   let isMeasured : bool = measureLock.isMeasured && !hud.isGainMode
-  let isAlly : bool = hasConfirmed && hud.isResultAlly
+  let isAlly : bool = hasConfirmed && measureLock.isResultAlly
   let isFailed : bool = hud.showResult && !hud.isResultConfirmed && !isMeasured
   let stepFadeColor : E3DCOLOR = fade_color(hud.bearingColor, 0.5f)
   let passFadeColor : E3DCOLOR = fade_color(hud.gainCorrectColor, 0.5f)
