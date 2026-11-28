@@ -530,7 +530,7 @@ foreach(idx, useropt in optList) {
   let relIdx = addUserOption(useropt) ?? idx
   export[useropt] <- relIdx
   export.userOptionNameByIdx[relIdx] <- useropt
-  lastIdx = relIdx
+  lastIdx = max(lastIdx, relIdx)
 }
 
 let devFeatures = getDevFeatures()

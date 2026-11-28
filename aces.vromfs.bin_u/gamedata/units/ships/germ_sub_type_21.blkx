@@ -30,6 +30,7 @@
   "haveEchoVision": true,
   "submergedDepth": 3.0,
   "periscopeDepth": 8.0,
+  "deadZoneDepth": 0.0,
   "cruiseDepth": -1.0,
   "torpedoLaunchMaxDepth": 20.0,
   "mineSetMaxDepth": 30.0,
@@ -308,49 +309,50 @@
     "crew_compartments": {
       "fireParamsPreset": "ship_compartment_destroyer",
       "armorClass": "ship_structural_steel",
-      "armorThickness": 4.0,
+      "armorThickness": 1.0,
       "oneSided": true,
       "armorThrough": 200.0,
-      "hydroShockArmorQuality": 3.0,
+      "hydroShockArmorQuality": 1.0,
       "hydroShockDamageMult": 1.0,
       "compartment_01_dm": {
-        "hp": 233.0
+        "hp": 50.0
       },
       "compartment_02_dm": {
-        "hp": 299.0
+        "hp": 50.0
       },
       "compartment_03_dm": {
-        "hp": 197.0
+        "hp": 50.0
       },
       "compartment_04_dm": {
-        "hp": 165.0
+        "hp": 50.0
       },
       "compartment_05_dm": {
-        "hp": 246.0
+        "hp": 50.0
       },
       "compartment_06_dm": {
-        "hp": 328.0
+        "hp": 50.0
       }
     },
     "control_compartments": {
       "armorClass": "ship_structural_steel",
-      "armorThickness": 4.0,
+      "armorThickness": 1.0,
       "genericDamageMult": 0.5,
       "armorThrough": 200.0,
-      "hydroShockArmorQuality": 3.0,
+      "hydroShockArmorQuality": 1.0,
       "hydroShockDamageMult": 1.5,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
-        "hp": 1918.0
+        "hp": 50.0
       },
       "radio_station_dm": {
-        "hp": 476.0
+        "hp": 20.0
       }
     },
     "superstructures": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 16.0,
       "genericDamageMult": 0.5,
+      "stopChanceOnDeadPart": 1.0,
       "superstructure_dm": {
         "hp": 320.0
       }
@@ -360,8 +362,8 @@
       "armorThickness": 16.0,
       "hidableInViewer": true,
       "hydroShockArmorQuality": 3.0,
-      "genericDamageMult": 0.1,
-      "stopChanceOnDeadPart": 0.1,
+      "genericDamageMult": 0.5,
+      "stopChanceOnDeadPart": 1.0,
       "splashPenetrationToArmorThreshold": 0.05,
       "kineticPenetrationToArmorThreshold": 0.05,
       "cover_01_dm": {
@@ -1085,7 +1087,27 @@
           "killEffect": "destruction"
         }
       }
-    ]
+    ],
+    "hull": {
+      "hp": 4000.0,
+      "allowedDamageType": "explosion",
+      "part": [
+        "superstructure_dm",
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm"
+      ],
+      "effect": {
+        "conditionDead": true,
+        "kill": true,
+        "killEffect": "damaged"
+      }
+    }
   },
   "ShipPhys": {
     "diveSpeedMult": 1.0,
@@ -1319,7 +1341,7 @@
     "activeDetectionRangeSide": 1500.0
   },
   "divingLockCooldown": {
-    "submerging": 20.0
+    "submerging": 2.0
   },
   "maxDepth": {
     "alive": [

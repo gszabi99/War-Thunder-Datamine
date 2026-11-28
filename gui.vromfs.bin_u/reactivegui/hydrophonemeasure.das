@@ -130,6 +130,7 @@ struct MeasureLock
   isMeasured : bool
   isReadyToLaunch : bool
   isOutOfRange : bool
+  isResultAlly : bool
   gainMatch : float
   distance : float
   timeLeft : float
@@ -147,6 +148,8 @@ def get_measure_lock(hud : HydrophoneMeasureHud) : MeasureLock
     measureLock.color = hud.lockedColor
   static_if typeinfo(has_field<isOutOfRange> type<HydrophoneMeasureHud>)
     measureLock.isOutOfRange = hud.isOutOfRange
+  static_if typeinfo(has_field<isResultAlly> type<HydrophoneMeasureHud>)
+    measureLock.isResultAlly = hud.isResultAlly
   return measureLock
 
 
@@ -154,6 +157,7 @@ def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : floa
   let hasNoise : bool = hud.isBearingCaught
   let hasConfirmed : bool = hud.showResult && hud.isResultConfirmed
   let isMeasured : bool = measureLock.isMeasured && !hud.isGainMode
+  let isAlly : bool = hasConfirmed && measureLock.isResultAlly
   let isFailed : bool = hud.showResult && !hud.isResultConfirmed && !isMeasured
   let stepFadeColor : E3DCOLOR = fade_color(hud.bearingColor, 0.5f)
   let passFadeColor : E3DCOLOR = fade_color(hud.gainCorrectColor, 0.5f)
@@ -182,18 +186,20 @@ def mk_text_info(var ctx : GuiContext&; fctx : StdGuiFontContext&; center : floa
     center + float2(-abs((float(step) - 1) * offset), textGap * (1 - float(step))), signalTxtColor)
 
   let launchColor = (isFailed ? hud.failColor
+    : isAlly ? hud.gainCorrectColor
     : measureLock.isMeasured ? measureLock.color
     : hasConfirmed ? hud.gainCorrectColor
     : stepFadeColor)
 
   let launchPos = center + float2(-abs((float(step) - 2) * offset), textGap * (2 - float(step)))
-  if measureLock.isMeasured && !isFailed
+  if measureLock.isMeasured && !isFailed && !isAlly
     let distColor = measureLock.isOutOfRange ? hud.failColor : launchColor
     mk_text(ctx, fctx, "{loc("hud/hydrophone/targetLocked")}: ", launchPos, launchColor)
     append_text(ctx, get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, measureLock.distance, true, 0.1), distColor)
     append_text(ctx, " ({int(ceil(measureLock.timeLeft))} {loc("measureUnits/seconds")})", launchColor)
   else
-    mk_text(ctx, fctx, isFailed ? loc("hud/hydrophone/signalFailed") : loc("hud/hydrophone/launchPermitted"), launchPos, launchColor)
+    let resultLocKey = isFailed ? "signalFailed" : isAlly ? "targetAlly" : "launchPermitted"
+    mk_text(ctx, fctx, loc("hud/hydrophone/{resultLocKey}"), launchPos, launchColor)
 
   let isOutOfRange = isMeasured && measureLock.isOutOfRange
   let rechargeColor = (isOutOfRange ? hud.failColor
